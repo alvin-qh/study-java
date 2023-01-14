@@ -1,6 +1,9 @@
 package alvin.study.process;
 
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.awaitility.Awaitility.await;
+
+import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
@@ -35,7 +38,6 @@ class ProcessUtilTest {
      */
     @Test
     @EnabledOnOs({ OS.MAC, OS.LINUX })
-    @SuppressWarnings("java:S2925")
     void kill_shouldTerminalProcess() throws Exception {
         // 启动一个持续执行的进程
         var process = ProcessUtil.exec("watch", "-n 1", "ps");
@@ -52,12 +54,9 @@ class ProcessUtilTest {
         var killed = ProcessUtil.kill(mayInfo.get().getPid(), true);
         then(killed).isTrue();
 
-        // 休眠一段时间, 确保进程已经完全退出
-        Thread.sleep(1000);
-
         // 再次根据进程 id 查询进程, 确认无法查询到
-        mayInfo = ProcessUtil.process(process.pid());
-        then(mayInfo).isEmpty();
+        await().atMost(1, TimeUnit.SECONDS)
+                .until(() -> ProcessUtil.process(process.pid()), opt -> opt.isEmpty());
     }
 
     /**
