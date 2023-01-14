@@ -94,6 +94,7 @@
     "jaxb",
     "jdbc",
     "Jedis",
+    "jenv",
     "JOAAT",
     "Jooq",
     "JPQL",

@@ -286,3 +286,79 @@ gradle/depends-common.gradle
 - `cloud-nacos`: Spring Cloud Nacos 服务注册, 服务发现和配置中心使用范例
 - `cloud-eureka`: Spring Cloud Eureka 服务注册, 服务发现使用范例
 - `cloud-gateway`: Spring Cloud Gateway 网关服务使用范例
+
+
+## 附录. 使用 jEnv 管理 JDK
+
+### 1. 安装
+
+#### 1.1. Linux / OS X
+
+```bash
+git clone https://github.com/jenv/jenv.git ~/.jenv
+```
+
+对于 macOS 也可以通过 Homebrew 进行安装
+
+```bash
+brew install jenv
+```
+
+#### 1.2. 配置
+
+Bash
+
+```bash
+echo 'export PATH="$HOME/.jenv/bin:$PATH"' >> ~/.bash_profile
+echo 'eval "$(jenv init -)"' >> ~/.bash_profile
+```
+
+Zsh
+
+```bash
+echo 'export PATH="$HOME/.jenv/bin:$PATH"' >> ~/.zshrc
+echo 'eval "$(jenv init -)"' >> ~/.zshrc
+```
+
+### 2. 使用
+
+添加已安装的 JDK
+
+``` bash
+jenv add /System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home
+  oracle64-1.6.0.39 added
+
+jenv add /Library/Java/JavaVirtualMachines/jdk17011.jdk/Contents/Home
+  oracle64-1.7.0.11 added
+```
+
+列出已添加的 JDK
+
+```bash
+jenv versions
+  system
+  oracle64-1.6.0.39
+* oracle64-1.7.0.11 (set by /Users/xxx/.jenv/version)
+```
+
+配置全局 JDK 版本
+
+```bash
+jenv global oracle64-1.6.0.39
+```
+
+配置当前目录 JDK  版本
+
+```bash
+jenv local oracle64-1.6.0.39
+```
+
+配置当前 Shell JDK 版本
+
+```bash
+jenv shell oracle64-1.6.0.39
+```
+
+### 3. Windows 上使用
+
+在 [此处](https://github.com/FelixSelter/JEnv-for-Windows) 下载 jEnv 的 Windows 版本, 执行其中的 `bat` 文件即可
