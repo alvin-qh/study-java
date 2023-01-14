@@ -23,7 +23,7 @@ plugins {
   id "nu.studer.jooq" version "${VER_GRADLE_JOOQ}"
 }
 
-// 引入 Spring Boot 3.x 依赖
+// 引入 Spring Boot 依赖
 apply from: "${rootDir}/gradle/depends-spring-boot.gradle"
 
 // 引入 Spring Boot 3.x Bom

@@ -1,7 +1,7 @@
 apply from: "${rootDir}/gradle/depends-common.gradle"
 
 /**
- * 设置 Spring Boot 2.x 相关依赖
+ * 设置 Spring Boot 相关依赖
  */
 
  ext {
