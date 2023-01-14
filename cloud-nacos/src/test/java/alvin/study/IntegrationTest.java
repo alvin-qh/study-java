@@ -134,17 +134,6 @@ public abstract class IntegrationTest {
     }
 
     /**
-     * 令当前线程休眠指定时间
-     *
-     * @param mills 线程休眠时间
-     */
-    @SneakyThrows
-    @SuppressWarnings("java:S2925")
-    protected void delay(long mills) {
-        Thread.sleep(mills);
-    }
-
-    /**
      * 读取测试用例
      *
      * @return 测试用例结果

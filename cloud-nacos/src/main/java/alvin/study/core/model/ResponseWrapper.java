@@ -1,6 +1,5 @@
 package alvin.study.core.model;
 
-import java.io.Serializable;
 import java.time.Instant;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -13,7 +12,7 @@ import lombok.Getter;
  * Controller 返回结果包装类型
  */
 @Getter
-public final class ResponseWrapper<T> implements Serializable {
+public final class ResponseWrapper<T> {
     /**
      * 返回的代码, {@code 0} 表示成功, 非 {@code 0} 表示失败
      */

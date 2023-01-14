@@ -1,12 +1,14 @@
 package alvin.study.app;
 
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.awaitility.Awaitility.await;
+import static org.hamcrest.Matchers.equalTo;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.junitpioneer.jupiter.RetryingTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 
@@ -59,10 +61,10 @@ class NacosConfigTest extends IntegrationTest {
     void listener_shouldListenedConfigChanged() throws Exception {
         // 发布一条配置信息
         assert nacosUtil.publishConfig(CONFIG_DATA_ID, CONFIG_GROUP, loadTestConfig(), ConfigType.YAML);
-        delay(2000);
 
         // 确认配置对象被正确发布
-        then(applicationConfig.getCommon().getSearchUrl()).isEqualTo("https://www.baidu.com");
+        await().atMost(2, TimeUnit.SECONDS)
+                .until(() -> applicationConfig.getCommon().getSearchUrl(), equalTo("https://www.baidu.com"));
 
         var event = new Object();
         var changeItems = new ArrayList<>();
@@ -108,25 +110,21 @@ class NacosConfigTest extends IntegrationTest {
      * 测试 {@link alvin.study.app.endpoint.ApplicationConfigController#getConfig()
      * ApplicationConfigController.getConfig()} 方法, 获取配置信息
      */
-    @RetryingTest(maxAttempts = 3, suspendForMs = 1000)
+    @Test
     void getConfig_shouldReturn200Ok() throws NacosException {
         // 发布一条配置信息
         assert nacosUtil.publishConfig(CONFIG_DATA_ID, CONFIG_GROUP, loadTestConfig(), ConfigType.YAML);
-        delay(1000);
 
         // 发起请求, 获取配置信息
-        var resp = getJson("/api/config")
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody(new ParameterizedTypeReference<ResponseWrapper<ApplicationConfigDto>>() {})
-                .returnResult()
-                .getResponseBody();
-
-        // 确认请求正确
-        then(resp.getRetCode()).isZero();
-
-        // 确认获取到配置信息内容
-        then(resp.getPayload().getCommon().getSearchUrl()).isEqualTo("https://www.baidu.com");
+        await().atMost(2, TimeUnit.SECONDS).until(
+            () -> getJson("/api/config")
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectBody(new ParameterizedTypeReference<ResponseWrapper<ApplicationConfigDto>>() {})
+                    .returnResult()
+                    .getResponseBody(),
+            resp -> resp.getRetCode() == 0
+                    && resp.getPayload().getCommon().getSearchUrl().equals("https://www.baidu.com"));
     }
 
     /**

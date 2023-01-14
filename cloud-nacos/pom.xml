@@ -65,12 +65,5 @@
       <artifactId>spring-boot-starter-webflux</artifactId>
       <scope>test</scope>
     </dependency>
-
-    <!-- Junit 扩展依赖 -->
-    <dependency>
-      <groupId>org.junit-pioneer</groupId>
-      <artifactId>junit-pioneer</artifactId>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 </project>

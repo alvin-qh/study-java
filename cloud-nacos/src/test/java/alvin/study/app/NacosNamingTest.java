@@ -1,9 +1,13 @@
 package alvin.study.app;
 
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.awaitility.Awaitility.await;
+
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junitpioneer.jupiter.RetryingTest;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -70,7 +74,6 @@ class NacosNamingTest extends IntegrationTest {
      * 通过服务名称和服务组, 获取当前已注册服务的服务实例
      * </p>
      */
-    @RetryingTest(maxAttempts = 3, suspendForMs = 1000)
     void getAllInstance_shouldGetRegisteredInstances() throws Exception {
         // 获取已注册的服务集合
         var instances = nacosUtil.getAllInstance(applicationName, NAMING_GROUP);
@@ -87,22 +90,21 @@ class NacosNamingTest extends IntegrationTest {
     /**
      * 测试根据服务名访问目标服务
      */
-    @RetryingTest(maxAttempts = 3, suspendForMs = 1000)
+    @Test
+    @SuppressWarnings("unchecked")
     void discover_shouldVisitServiceByName() throws NacosException {
         // 向配置中心发布一个配置项
         assert nacosUtil.publishConfig(CONFIG_DATA_ID, CONFIG_GROUP, loadTestConfig(), ConfigType.YAML);
-        delay(2000);
 
         // 通过服务名称访问目标服务
-        var resp = restTemplate.getForObject(
-            "http://alvin-study-spring-cloud-nacos/api/config",
-            ResponseWrapper.class);
-
-        // 确认服务访问成功
-        then(resp.getRetCode()).isZero();
-
-        var config = objectMapper.convertValue(resp.getPayload(), ApplicationConfigDto.class);
-        then(config.getCommon().getSearchUrl()).isEqualTo("https://www.baidu.com");
+        await().atMost(2, TimeUnit.SECONDS).until(
+            () -> (ResponseWrapper<Map<String, ?>>) restTemplate.getForObject(
+                "http://alvin-study-spring-cloud-nacos/api/config", ResponseWrapper.class),
+            resp -> {
+                var config = objectMapper.convertValue(resp.getPayload(), ApplicationConfigDto.class);
+                return resp.getRetCode() == 0
+                       && config.getCommon().getSearchUrl().equals("https://www.baidu.com");
+            });
     }
 
     /**

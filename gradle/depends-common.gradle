@@ -102,7 +102,8 @@ ext {
         },
         dependencies.create("org.awaitility:awaitility:${VER_AWAITILITY}") {
           exclude group: "org.hamcrest"
-        }
+        },
+        "org.hamcrest:hamcrest:${VER_HAMCREST}"
       ],
 
       // junit 扩展库
@@ -116,11 +117,6 @@ ext {
         dependencies.create("org.mockito:mockito-junit-jupiter:${VER_MOCKITO}") {
           exclude group: "org.junit.jupiter"
         }
-      ],
-
-      // Hamcrest 库
-      hamcrest: [
-        "org.hamcrest:hamcrest:${VER_HAMCREST}",
       ],
 
       // p6spy jdbc 执行指标依赖

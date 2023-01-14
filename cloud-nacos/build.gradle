@@ -41,8 +41,7 @@ dependencies {
     libs.main.springboot.web,
     libs.main.springboot.validator
 
-  testImplementation libs.test.junitPioneer,
-    libs.test.springboot.core,
+  testImplementation libs.test.springboot.core,
     libs.test.springboot.web
 
   developmentOnly dev.main.springboot
