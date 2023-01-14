@@ -38,7 +38,6 @@ dependencies {
     libs.main.slf4j
 
   testImplementation libs.test.springboot.core,
-    libs.test.hamcrest,
     libs.test.springboot.web
 
   developmentOnly dev.main.springboot
