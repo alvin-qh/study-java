@@ -1,9 +1,6 @@
 package alvin.study.mock;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
+import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
@@ -50,16 +47,16 @@ class SpyAndMockTest {
     @Test
     void spy_shouldMockObject() {
         // 默认情况下, spy 后的对象方法仍返回对象原本的值
-        assertThat(spiedUser.getId(), is(1));
-        assertThat(spiedUser.getName(), is("Alvin"));
+        then(spiedUser.getId()).isEqualTo(1);
+        then(spiedUser.getName()).isEqualTo("Alvin");
 
         // 重新设定方法的返回值
         when(spiedUser.getId()).thenReturn(2);
         when(spiedUser.getName()).thenReturn("Emma");
 
         // 改变对象行为后, 按照定义返回指定值
-        assertThat(spiedUser.getId(), is(equalTo(2)));
-        assertThat(spiedUser.getName(), is(equalTo("Emma")));
+        then(spiedUser.getId()).isEqualTo(2);
+        then(spiedUser.getName()).isEqualTo("Emma");
     }
 
     /**
@@ -76,15 +73,15 @@ class SpyAndMockTest {
     @Test
     void mock_shouldMockObject() {
         // 默认情况下, mock 后的对象方法返回 0, false 或 null
-        assertThat(mockedUser.getId(), is(0));
-        assertThat(mockedUser.getName(), is(nullValue()));
+        then(mockedUser.getId()).isZero();
+        then(mockedUser.getName()).isNull();
 
         // 重新设定方法的返回值
         when(mockedUser.getId()).thenReturn(2);
         when(mockedUser.getName()).thenReturn("Emma");
 
         // 改变对象行为后, 按照定义返回指定值
-        assertThat(mockedUser.getId(), is(2));
-        assertThat(mockedUser.getName(), is("Emma"));
+        then(mockedUser.getId()).isEqualTo(2);
+        then(mockedUser.getName()).isEqualTo("Emma");
     }
 }

@@ -1,9 +1,7 @@
 package alvin.study.mock;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
@@ -79,7 +77,7 @@ class MockObjectTest {
         when(userService.findByName("Emma")).thenReturn(Optional.of(new User(2, "Emma")));
 
         // 调用仿冒方法, 传入期待参数, 返回预设结果
-        assertThat(userController.getUser("Emma"), is(equalTo("{\"id\":2,\"name\":\"Emma\"}")));
+        then(userController.getUser("Emma")).isEqualTo("{\"id\":2,\"name\":\"Emma\"}");
     }
 
     /**
@@ -105,7 +103,7 @@ class MockObjectTest {
         when(userService.findByName("Emma")).thenReturn(Optional.of(new User(2, "Emma")));
 
         // 调用仿冒方法, 传入非期待的参数, 确认抛出异常
-        assertThrows(PotentialStubbingProblem.class, () -> userController.getUser("Alvin"));
+        thenThrownBy(() -> userController.getUser("Alvin")).isInstanceOf(PotentialStubbingProblem.class);
     }
 
     /**
@@ -131,7 +129,7 @@ class MockObjectTest {
         when(userService.findByName(anyString())).thenReturn(Optional.of(new User(1, "Alvin")));
 
         // 确认仿冒方法返回期待对象
-        assertThat(userController.getUser("any"), is(equalTo("{\"id\":1,\"name\":\"Alvin\"}")));
+        then(userController.getUser("any")).isEqualTo("{\"id\":1,\"name\":\"Alvin\"}");
     }
 
     /**
@@ -157,7 +155,7 @@ class MockObjectTest {
         when(userService.findByName(any())).thenReturn(Optional.of(new User(1, "Alvin")));
 
         // 确认仿冒方法返回期待对象
-        assertThat(userController.getUser("anystring"), is(equalTo("{\"id\":1,\"name\":\"Alvin\"}")));
+        then(userController.getUser("anystring")).isEqualTo("{\"id\":1,\"name\":\"Alvin\"}");
     }
 
     /**
@@ -184,7 +182,7 @@ class MockObjectTest {
         when(userService.findByName(any(String.class))).thenReturn(Optional.of(new User(1, "Alvin")));
 
         // 确认仿冒方法返回期待对象
-        assertThat(userController.getUser("anystring"), is(equalTo("{\"id\":1,\"name\":\"Alvin\"}")));
+        then(userController.getUser("anystring")).isEqualTo("{\"id\":1,\"name\":\"Alvin\"}");
     }
 
     /**
@@ -206,7 +204,7 @@ class MockObjectTest {
         when(userService.findByName(anyString())).thenThrow(RuntimeException.class);
 
         // 确认调用仿冒函数后捕获到期待的异常
-        assertThrows(RuntimeException.class, () -> userController.getUser("Alvin"));
+        thenThrownBy(() -> userController.getUser("Alvin")).isInstanceOf(RuntimeException.class);
     }
 
     /**
@@ -227,47 +225,48 @@ class MockObjectTest {
         // 仿冒指定方法, 指定任意类型参数, 且指定调用时的方法
         when(userService.findByName(anyString())).thenAnswer(invocation -> {
             // 获取被仿冒的对象
-            assertThat(invocation.getMock(), is(equalTo(userService)));
+            then(invocation.getMock()).isSameAs(userService);
             // 获取被取代的行为
-            assertThat(invocation.getMethod().getName(), is(equalTo("findByName")));
+            then(invocation.getMethod().getName()).isEqualTo("findByName");
             // 获取传入的参数
-            assertThat(invocation.getArgument(0), is(equalTo("Alvin")));
+            then((String) invocation.getArgument(0)).isEqualTo("Alvin");
 
             // 取代被仿冒行为的返回值
             return Optional.of(new User(1, "Alvin"));
         });
 
-        assertThat(userController.getUser("Alvin"), is(equalTo("{\"id\":1,\"name\":\"Alvin\"}")));
+        then(userController.getUser("Alvin")).isEqualTo("{\"id\":1,\"name\":\"Alvin\"}");
     }
 
     /**
      * 另一种格式设置方面对象的行为
      */
     @Test
-    void doSomething_shouldMehodMockedByOtherKindOfForm() {
+    void doSomething_shouldMethodMockedByOtherKindOfForm() {
         // 先设定返回值, 再设定要仿冒的方法
         doReturn(Optional.of(new User(1, "Alvin"))).when(userService).findByName(anyString());
-        assertThat(userController.getUser("Emma"), is(equalTo("{\"id\":1,\"name\":\"Alvin\"}")));
+        then(userController.getUser("Emma")).isEqualTo("{\"id\":1,\"name\":\"Alvin\"}");
 
         reset(userService);
 
         // 先设定异常类型, 再设定要仿冒的方法
         doThrow(RuntimeException.class).when(userService).findByName(anyString());
-        assertThrows(RuntimeException.class, () -> userController.getUser("Alvin"));
+        thenThrownBy(() -> userController.getUser("Alvin")).isInstanceOf(RuntimeException.class);
 
         reset(userService);
 
         // 先指定仿冒方法的执行, 再指定要仿冒的方法
         doAnswer(invocation -> {
             // 获取被仿冒的对象
-            assertThat(invocation.getMock(), is(equalTo(userService)));
+            then(invocation.getMock()).isSameAs(userService);
             // 获取被取代的行为
-            assertThat(invocation.getMethod().getName(), is(equalTo("findByName")));
+            then(invocation.getMethod().getName()).isEqualTo("findByName");
             // 获取传入的参数
-            assertThat(invocation.getArgument(0), is(equalTo("Alvin")));
+            then((String) invocation.getArgument(0)).isEqualTo("Alvin");
 
             return Optional.of(new User(1, "Alvin"));
         }).when(userService).findByName(anyString());
-        assertThat(userController.getUser("Alvin"), is(equalTo("{\"id\":1,\"name\":\"Alvin\"}")));
+
+        then(userController.getUser("Alvin")).isEqualTo("{\"id\":1,\"name\":\"Alvin\"}");
     }
 }

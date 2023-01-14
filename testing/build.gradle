@@ -31,7 +31,7 @@ dependencies {
   implementation libs.main.jackson
 
   testImplementation libs.test.mockito,
-    libs.test.hamcrest,
+    libs.test.junitPioneer,
     libs.test.javafaker
 
   testCompileOnly compiles.test.testng    // 引入 TestNG 测试框架

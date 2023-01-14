@@ -1,8 +1,6 @@
 package alvin.study.mock;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -54,6 +52,6 @@ class MockApiTest {
     @Test
     void getUser_shouldUserServiceMocked() {
         var json = userController.getUser("Alvin");
-        assertThat(json, is(equalTo("{\"id\":1,\"name\":\"Alvin\"}")));
+        then(json).isEqualTo("{\"id\":1,\"name\":\"Alvin\"}");
     }
 }

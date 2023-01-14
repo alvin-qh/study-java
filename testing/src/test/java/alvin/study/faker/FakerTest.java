@@ -1,14 +1,6 @@
 package alvin.study.faker;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.emptyString;
-import static org.hamcrest.Matchers.endsWith;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.lessThan;
-import static org.hamcrest.Matchers.matchesPattern;
-import static org.hamcrest.Matchers.not;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Locale;
 
@@ -120,16 +112,16 @@ class FakerTest {
 
         // 产生一个伪造的艺术家名字
         var artistName = faker.artist().name();
-        assertThat(artistName, not(emptyString()));
+        then(artistName).isNotEmpty();
 
         // 产生一个伪造的地址
         var address = faker.address();
         // 地址的城市名
-        assertThat(address.cityName(), not(emptyString()));
+        then(address.cityName()).isNotEmpty();
         // 地址的街道名
-        assertThat(address.streetAddress(), not(emptyString()));
+        then(address.streetAddress()).isNotEmpty();
         // 地址的楼号
-        assertThat(address.buildingNumber(), not(emptyString()));
+        then(address.buildingNumber()).isNotEmpty();
     }
 
     /**
@@ -156,7 +148,7 @@ class FakerTest {
         // 产生一个符合指定正则表达式的数据
         var value = faker.regexify("\\d{3}\\-\\d{7}");
         // 确认产生的数据符合预期的正则表达式
-        assertThat(value, is(matchesPattern("^\\d{3}\\-\\d{7}$")));
+        then(value).matches("^\\d{3}\\-\\d{7}$");
     }
 
     /**
@@ -180,14 +172,12 @@ class FakerTest {
         // 产生指定范围内的随机整数
         var value = service.nextInt(1, 10);
         // 确认产生的随机数符合预期
-        assertThat(value, is(allOf(
-            greaterThanOrEqualTo(1),
-            lessThan(10))));
+        then(value).isGreaterThanOrEqualTo(1).isLessThan(10);
 
         // 产生长度为 10 的随机 16 进制字符串
         var hex = service.hex(10);
         // 确认产生的字符串符合预期
-        assertThat(hex, is(matchesPattern("^[A-F0-9]{10}$")));
+        then(hex).matches("^[A-F0-9]{10}$");
     }
 
     /**
@@ -215,6 +205,6 @@ class FakerTest {
         var result = faker.resolve("internet.avatar");
 
         // 确认伪造数据符合预期
-        assertThat(result, is(endsWith("jpg")));
+        then(result).endsWith("jpg");
     }
 }

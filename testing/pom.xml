@@ -32,6 +32,13 @@
       <artifactId>jackson-annotations</artifactId>
     </dependency>
 
+    <!-- Junit 扩展依赖 -->
+    <dependency>
+      <groupId>org.junit-pioneer</groupId>
+      <artifactId>junit-pioneer</artifactId>
+      <scope>test</scope>
+    </dependency>
+
     <!-- Mockito 测试依赖 -->
     <dependency>
       <groupId>org.mockito</groupId>
@@ -80,14 +87,6 @@
       <groupId>com.github.javafaker</groupId>
       <artifactId>javafaker</artifactId>
       <version>${version.javafaker}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <!-- Hamcrest 依赖 -->
-    <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest</artifactId>
-      <version>${version.hamcrest}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

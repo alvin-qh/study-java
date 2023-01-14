@@ -1,10 +1,6 @@
 package alvin.study.junit;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.emptyOrNullString;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -78,7 +74,7 @@ class ParameterizeTest {
     @ValueSource(ints = { 1, 3, 5, -3, 15, Integer.MAX_VALUE })
     @ParameterizedTest
     void valueSource_shouldReturnTrueForOddNumbers(int input) {
-        assertThat(NumberService.isOdd(input), is(true));
+        then(NumberService.isOdd(input)).isTrue();
     }
 
     /**
@@ -98,7 +94,7 @@ class ParameterizeTest {
     @NullAndEmptySource
     @ParameterizedTest
     void valueSource_shouldReturnTrueForNullOrBlankStrings(String input) {
-        assertThat(input, is(emptyOrNullString()));
+        then(input).isNullOrEmpty();
     }
 
     /**
@@ -116,7 +112,7 @@ class ParameterizeTest {
     @ParameterizedTest
     void enumSource_shouldMonthsWith30DaysLong(Month month) {
         // 确认假设的月份天数均为 30 天 (非闰年情况)
-        assertThat(month.length(false), is(equalTo(30)));
+        then(month.length(false)).isEqualTo(30);
     }
 
     /**
@@ -138,7 +134,7 @@ class ParameterizeTest {
     @ParameterizedTest
     void enumSource_shouldMonthNameEndingWithBer(Month month) {
         var months = EnumSet.of(Month.SEPTEMBER, Month.OCTOBER, Month.NOVEMBER, Month.DECEMBER);
-        assertThat(months, is(hasItem(month)));
+        then(months).contains(month);
     }
 
     /**
@@ -160,7 +156,7 @@ class ParameterizeTest {
     @ParameterizedTest
     void csvSource_shouldGenerateTheExpectedUppercaseValue(String input, String expected) {
         var actual = input.toUpperCase();
-        assertThat(actual, is(equalTo(expected)));
+        then(actual).isEqualTo(expected);
     }
 
     /**
@@ -183,7 +179,7 @@ class ParameterizeTest {
     @ParameterizedTest
     void csvFileSource_shouldGenerateTheExpectedUppercaseValueCSVFile(String input, String expected) {
         var actual = input.toUpperCase();
-        assertThat(actual, is(equalTo(expected)));
+        then(actual).isEqualTo(expected);
     }
 
     /**
@@ -206,7 +202,7 @@ class ParameterizeTest {
     @ParameterizedTest
     void methodSource_shouldReturnTrueForNullOrBlankStringsByMethod(String input, boolean expected) {
         var actual = Strings.isNullOrEmpty(input);
-        assertThat(actual, is(equalTo(expected)));
+        then(actual).isEqualTo(expected);
     }
 
     /**
@@ -238,7 +234,7 @@ class ParameterizeTest {
     @ParameterizedTest
     void methodSource_shouldReturnTrueForNullOrBlankStringsByClassMethod(String input) {
         var actual = Strings.isNullOrEmpty(input);
-        assertThat(actual, is(true));
+        then(actual).isTrue();
     }
 
     /**
@@ -256,7 +252,7 @@ class ParameterizeTest {
     @ParameterizedTest
     void argumentsSource_shouldReturnTrueForNullOrBlankStringsArgProvider(String input) {
         var actual = Strings.isNullOrEmpty(input);
-        assertThat(actual, is(true));
+        then(actual).isTrue();
     }
 
     /**
@@ -289,7 +285,7 @@ class ParameterizeTest {
     @ParameterizedTest
     void variableSource_shouldReturnTrueForNullOrBlankStringsVariableSource(String input, boolean expected) {
         var actual = Strings.isNullOrEmpty(input);
-        assertThat(actual, is(equalTo(expected)));
+        then(actual).isEqualTo(expected);
     }
 
     /**
@@ -318,7 +314,7 @@ class ParameterizeTest {
     @CsvSource({ "JANUARY,31", "OCTOBER,31", "APRIL,30", "JUNE,30", "SEPTEMBER,30", "NOVEMBER,30" })
     @ParameterizedTest
     void csvSource_shouldConvertStringToEnumAndNumber(Month input, int expected) {
-        assertThat(input.length(false), is(equalTo(expected)));
+        then(input.length(false)).isEqualTo(expected);
     }
 
     /**
@@ -338,9 +334,10 @@ class ParameterizeTest {
      */
     @CsvSource({ "2018/12/25,2018", "2019/02/11,2019" })
     @ParameterizedTest
-    void csvSource_shouldConvertSlashyDateToLocalDate(@ConvertWith(SlashyDateConverter.class) LocalDate input,
+    void csvSource_shouldConvertSlashyDateToLocalDate(
+            @ConvertWith(SlashyDateConverter.class) LocalDate input,
             int expected) {
-        assertThat(input.getYear(), is(equalTo(expected)));
+        then(input.getYear()).isEqualTo(expected);
     }
 
     /**
@@ -372,7 +369,7 @@ class ParameterizeTest {
         var name = accessor.getString(1);
         var expected = accessor.get(2, String.class);
 
-        assertThat(new User(id, name).toString(), is(equalTo(expected)));
+        then(new User(id, name)).hasToString(expected);
     }
 
     /**
@@ -393,11 +390,12 @@ class ParameterizeTest {
      */
     @CsvSource({ "1,Alvin,1-Alvin", "2,Emma,2-Emma", "3,Arthur,3-Arthur", "4,Lily,4-Lily", "5,Jimmy,5-Jimmy" })
     @ParameterizedTest
-    void csvSource_shouldGetParameterByAggregator(@AggregateWith(UserAggregator.class) User user,
+    void csvSource_shouldGetParameterByAggregator(
+            @AggregateWith(UserAggregator.class) User user,
             ArgumentsAccessor accessor) {
         // 获取 csv 的第三列数据
         var expected = accessor.getString(2);
-        assertThat(user.toString(), is(equalTo(expected)));
+        then(user).hasToString(expected);
     }
 
     /**
@@ -427,7 +425,7 @@ class ParameterizeTest {
     @MethodSource
     @ParameterizedTest(name = "{index}: {0} test completed")
     void methodSource_shouldDisplayName(char input, int expected) {
-        assertThat((int) input, is(equalTo(expected)));
+        then((int) input).isEqualTo(expected);
     }
 
     /**
