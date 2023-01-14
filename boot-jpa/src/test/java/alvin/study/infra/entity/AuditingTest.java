@@ -75,8 +75,8 @@ class AuditingTest extends IntegrationTest {
      * @see javax.persistence.Column#updatable()
      */
     @Test
-    @SneakyThrows
-    void auditing_shouldUpdateModifyUpdatedAt() {
+    @SuppressWarnings("java:S2925")
+    void auditing_shouldUpdateModifyUpdatedAt() throws Exception {
         Department department;
 
         // 在当前上下文中持久化实体对象
@@ -85,10 +85,9 @@ class AuditingTest extends IntegrationTest {
         }
 
         // 休眠 1 秒
-        delay(1000);
+        Thread.sleep(1000);
 
         User user;
-
         // 持久化一个新的用户实体
         try (var ignore = beginTx(false)) {
             user = newBuilder(UserBuilder.class).create();

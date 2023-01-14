@@ -285,10 +285,4 @@ public abstract class IntegrationTest {
             }
         });
     }
-
-    @SneakyThrows
-    @SuppressWarnings("java:S2925")
-    protected void delay(long mills) {
-        Thread.sleep(mills);
-    }
 }
