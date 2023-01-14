@@ -170,7 +170,6 @@ merge libs, [
       // Spring Boot Kickstart Graphql 测试依赖
       graphql: [
         dependencies.create("com.graphql-java-kickstart:graphql-spring-boot-starter-test:${VER_KICKSTART_GRAPHQL}") {
-          exclude group: "org.hamcrest"
           exclude group: "org.springframework"
           exclude group: "org.springframework.boot"
           exclude group: "com.fasterxml.jackson.core"

@@ -38,6 +38,7 @@
     <version.assertj>3.24.1</version.assertj>
     <version.javafaker>1.0.2</version.javafaker>
     <version.testng>7.6.1</version.testng>
+    <version.awaitility>4.2.0</version.awaitility>
     <version.slf4j>2.0.4</version.slf4j>
     <version.jooq>3.17.5</version.jooq>
     <version.mybatis-plus>3.5.2</version.mybatis-plus>
@@ -196,12 +197,34 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- Hamcrest 依赖 -->
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest</artifactId>
+      <version>${version.hamcrest}</version>
+      <scope>test</scope>
+    </dependency>
+
     <!-- AssertJ 断言库 -->
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
       <version>${version.assertj}</version>
       <scope>test</scope>
+    </dependency>
+
+    <!-- Awaitility 异步测试库 -->
+    <dependency>
+      <groupId>org.awaitility</groupId>
+      <artifactId>awaitility</artifactId>
+      <version>${version.awaitility}</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.hamcrest</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
 

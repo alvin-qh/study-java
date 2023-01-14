@@ -36,13 +36,5 @@
       <artifactId>spring-boot-starter-webflux</artifactId>
       <scope>test</scope>
     </dependency>
-
-    <!-- Hamcrest 依赖 -->
-    <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest</artifactId>
-      <version>${version.hamcrest}</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 </project>

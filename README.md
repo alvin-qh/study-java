@@ -131,7 +131,8 @@ Markdown 插件
     "org.mockito.ArgumentMatchers.*",
     "org.mockito.Answers.*",
     "org.assertj.core.api.Assertions.*",
-    "org.assertj.core.api.BDDAssertions.*"
+    "org.assertj.core.api.BDDAssertions.*",
+    "org.awaitility.Awaitility.*"
   ],
   "java.eclipse.downloadSources": true,
   "java.format.settings.profile": "Eclipse",
@@ -286,7 +287,6 @@ gradle/depends-common.gradle
 - `cloud-nacos`: Spring Cloud Nacos 服务注册, 服务发现和配置中心使用范例
 - `cloud-eureka`: Spring Cloud Eureka 服务注册, 服务发现使用范例
 - `cloud-gateway`: Spring Cloud Gateway 网关服务使用范例
-
 
 ## 附录. 使用 jEnv 管理 JDK
 
