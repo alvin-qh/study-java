@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: study-springboot-dynamic-datasource
+
+  main:
+    banner-mode: off
+
+  # 数据源模板
+  datasource-template:
+    default-db-name: common
+    jdbc-url: jdbc:h2:./.data/%s;MODE=MYSQL;NON_KEYWORDS=USER
+    username: dev
+    password: password
+    maximum-pool-size: 50
+    connection-timeout: 30000
+    idle-timeout: 30000
+    max-lifetime: 590000
+    minimum-idle: 5
+    connection-test-query: select 1
+
+  # 对于多数据源, 需要禁用自动运行 flyway, 参考 alvin.study.core.flyway.Migration 类手动执行
+  flyway:
+    enabled: false
+
+# 应用程序设置
+application:
+  zone: UTC

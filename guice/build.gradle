@@ -1,0 +1,6 @@
+/**
+ * 设置依赖
+ */
+dependencies {
+  implementation libs.main.guice
+}

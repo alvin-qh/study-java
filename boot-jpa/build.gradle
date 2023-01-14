@@ -1,0 +1,96 @@
+/**
+ * 配置 gradle 插件
+ */
+plugins {
+  // Spring Boot 插件
+  id "org.springframework.boot" version "${VER_SPRING_BOOT3}"
+  // Spring Boot 依赖管理插件
+  id "io.spring.dependency-management" version "${VER_GRADLE_SPRING_DEPENDENCY_MANAGEMENT}"
+  // Flyway 插件
+  id "org.flywaydb.flyway" version "${VER_FLYWAY}"
+}
+
+// 引入 Spring Boot 3.x 依赖
+apply from: "${rootDir}/gradle/depends-spring-boot.gradle"
+
+// 引入 Spring Boot 3.x Bom
+dependencyManagement {
+  imports {
+    mavenBom springboot3Bom
+  }
+}
+
+// 设置 groupId
+group "alvin.study"
+
+// 设置版本号
+version "1.0-SNAPSHOT"
+
+configurations {
+  providedRuntime
+}
+
+/**
+ * 配置依赖
+ */
+dependencies {
+  implementation libs.main.springboot.core,
+    libs.main.springboot.jpa,
+    libs.main.springboot.web,
+    libs.main.commons.codec,
+    libs.main.db.h2,
+    libs.main.slf4j
+
+  testImplementation libs.test.springboot.core
+
+  developmentOnly dev.main.springboot
+
+  annotationProcessor annotations.main.springboot
+
+  runtimeOnly libs.main.db.migration
+}
+
+/**
+ * 配置 Spring Boot 插件
+ */
+springBoot {
+  // 设置入口类
+  mainClass = "alvin.study.Main"
+}
+
+/**
+ * 配置 Spring Boot 打包插件
+ */
+bootJar {
+  exclude "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA", "META-INF/*.MF"
+
+  // 配置 MANIFEST.MF 文件内容
+  manifest {
+    attributes "Implementation-Title": "Study Spring Boot JPA"
+    attributes "Implementation-Version": projectVersion.version
+  }
+
+  // 配置打包 jar 文件信息
+  archiveBaseName = project.group
+  archiveFileName = "alvin.study.springboot_jpa.${archiveExtension.get()}"
+}
+
+// 数据库地址
+def DB_URL = "jdbc:h2:${projectDir}/.data/dev"
+
+// 数据库用户名
+def DB_USER = "dev"
+
+// 数据库密码
+def DB_PASSWORD = "password"
+
+/**
+ * Flyway 配置
+ */
+flyway {
+  url = "${DB_URL};MODE=MYSQL"
+  user = DB_USER
+  password = DB_PASSWORD
+  locations = ["filesystem:${projectDir}/src/main/resources/migration"]
+  table = "schema_version"
+}

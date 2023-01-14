@@ -1,0 +1,59 @@
+{
+  "properties": [
+    {
+      "name": "application.zone",
+      "type": "java.lang.String",
+      "description": "A description for 'application.zone'"
+    },
+    {
+      "name": "spring.datasource-template.jdbc-url",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource-template.jdbc-url'"
+    },
+    {
+      "name": "spring.datasource-template.username",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource-template.username'"
+    },
+    {
+      "name": "spring.datasource-template.password",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource-template.password'"
+    },
+    {
+      "name": "spring.datasource-template.maximum-pool-size",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource-template.maximum-pool-size'"
+    },
+    {
+      "name": "spring.datasource-template.connection-timeout",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource-template.connection-timeout'"
+    },
+    {
+      "name": "spring.datasource-template.minimum-idle",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource-template.minimum-idle'"
+    },
+    {
+      "name": "spring.datasource-template.connection-test-query",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource-template.connection-test-query'"
+    },
+    {
+      "name": "spring.datasource-template.max-lifetime",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource-template.max-lifetime'"
+    },
+    {
+      "name": "spring.datasource-template.idle-timeout",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource-template.idle-timeout'"
+    },
+    {
+      "name": "spring.datasource-template.default-db-name",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource-template.default-db-name'"
+    }
+  ]
+}

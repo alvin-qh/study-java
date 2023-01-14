@@ -1,0 +1,52 @@
+/**
+ * 配置插件信息
+ */
+plugins {
+  // java 应用插件
+  id "application"
+}
+
+/**
+ * 配置依赖
+ */
+dependencies {
+  // 代码依赖
+  implementation libs.main.picocli
+}
+
+/**
+ * 配置执行 Java 应用
+ */
+task exec(type: JavaExec) {
+  group = "Execution"
+  description = "Run cli command"
+  classpath = sourceSets.main.runtimeClasspath
+  mainClass = "alvin.study.Main"
+}
+
+/**
+ * FatJar 打包任务
+ */
+task fatJar(type: Jar) {
+    // 打包结果中排除如下文件
+    exclude "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA", "META-INF/*.MF"
+
+    manifest { // Manifest.MF 文件生成规则
+        attributes(
+            "Implementation-Title": "PicoCli Demo",
+            "Implementation-Version": project.version,
+            "Main-Class": "alvin.study.Main",
+        )
+    }
+
+    // 打包文件名
+    archiveFileName = "cli.jar"
+
+    // 将运行时所需的 jar 文件解压缩后放入 jar 包
+    from {
+        configurations.runtimeClasspath.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    with jar
+}

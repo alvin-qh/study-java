@@ -1,0 +1,99 @@
+# Department 类型字段公共部分
+fragment departmentFields on Department {
+  id
+  orgId
+  org {
+    id
+    name
+  }
+  name
+  parentId
+  parent {
+    id
+    name
+  }
+  createdBy
+  createdByUser {
+    id
+    account
+  }
+  updatedBy
+  updatedByUser {
+    id
+    account
+  }
+  createdAt
+  updatedAt
+}
+
+# 根据 id 查询 Department 对象
+query queryDepartment(
+  $id: ID!
+  $childrenAfter: String
+  $employeesAfter: String
+  $first: Int
+) {
+  department(id: $id) {
+    ...departmentFields # 公共字段部分
+    children(after: $childrenAfter, first: $first) {
+      # 子部门
+      edges {
+        node {
+          __typename
+          id
+          name
+        }
+        cursor
+      }
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+        hasPreviousPage
+      }
+      totalCount
+    }
+    employees(after: $employeesAfter, first: $first) {
+      edges {
+        node {
+          __typename
+          id
+          name
+        }
+        cursor
+      }
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+        hasPreviousPage
+      }
+      totalCount
+    }
+  }
+}
+
+# 创建部门实体
+mutation createDepartment($input: DepartmentInput!) {
+  createDepartment(input: $input) {
+    department {
+      ...departmentFields
+    }
+  }
+}
+
+# 更新部门实体
+mutation updateDepartment($id: ID!, $input: DepartmentInput!) {
+  updateDepartment(id: $id, input: $input) {
+    department {
+      ...departmentFields
+    }
+  }
+}
+
+# 删除 Department 实体对象
+mutation deleteDepartment($id: ID!) {
+  deleteDepartment(id: $id) {
+    deleted
+  }
+}

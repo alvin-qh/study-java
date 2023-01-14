@@ -1,0 +1,6 @@
+/**
+ * 配置依赖
+ */
+dependencies {
+  implementation libs.main.jackson
+}

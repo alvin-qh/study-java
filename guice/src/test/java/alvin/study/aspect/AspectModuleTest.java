@@ -1,0 +1,47 @@
+package alvin.study.aspect;
+
+import static org.assertj.core.api.BDDAssertions.then;
+
+import java.time.Instant;
+
+import javax.inject.Inject;
+
+import org.junit.jupiter.api.Test;
+
+import com.google.inject.Module;
+
+import alvin.study.BaseModuleTest;
+import alvin.study.aspect.AspectModule.EventDemo;
+import alvin.study.aspect.AspectModule.HandlerDemo;
+
+/**
+ * 测试 {@link AspectModule} 模块, 拦截器的使用
+ */
+class AspectModuleTest extends BaseModuleTest {
+    // 注入事件触发对象
+    @Inject
+    private EventDemo eventDemo;
+
+    // 注入事件处理对象
+    @Inject
+    private HandlerDemo handlerDemo;
+
+    @Override
+    protected Module getModule() { return new AspectModule(); }
+
+    /**
+     * 测试方法拦截器是否工作
+     */
+    @Test
+    void aspect_shouldInterceptorWorked() {
+        // 执行方法, 触发时间
+        var result = eventDemo.doSomething("Demo", Instant.parse("2022-10-01T12:00:00Z"));
+        // 确认方法执行完毕, 返回值正确
+        then(result).isEqualTo("Thing: Demo started at: 2022-10-01T12:00:00Z");
+
+        // 从事件处理对象中获取 log 字符串
+        var log = handlerDemo.getLog();
+        // 确认事件处理完成
+        then(log).isEqualTo("Method: doSomething, arguments: [Demo, 2022-10-01T12:00:00Z]");
+    }
+}

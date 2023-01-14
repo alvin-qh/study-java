@@ -1,0 +1,26 @@
+package alvin.study.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import alvin.study.model.User;
+
+/**
+ * 用于测试的用户服务接口
+ */
+public interface UserService {
+    /**
+     * 获取所有用户实体
+     *
+     * @return 用户实体对象列表
+     */
+    List<User> findAll();
+
+    /**
+     * 根据用户名称获取用户实体
+     *
+     * @param name 用户名称
+     * @return 用户实体的 {@link Optional} 包装对象
+     */
+    Optional<User> findByName(String name);
+}

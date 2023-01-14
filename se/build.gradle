@@ -1,0 +1,23 @@
+/**
+ * 配置插件信息
+ */
+plugins {
+  id "application"
+}
+
+/**
+ * 配置依赖
+ */
+dependencies {
+  implementation libs.main.mail
+
+  testImplementation libs.test.javafaker
+}
+
+/**
+ * 配置 application 插件
+ */
+application {
+  // 设置入口类
+  mainClass.set("alvin.study.Main")
+}

@@ -1,0 +1,27 @@
+rootProject.name = "study-java"
+
+include(
+  "testing",
+  "cli",
+  "se",
+  "guice",
+  "security",
+  "jackson",
+  "boot-mvc",
+  "boot-aop",
+  "boot-spel",
+  "boot-validator",
+  "boot-testing",
+  "boot-jpa",
+  "boot-mybatis",
+  "boot-jooq",
+  "boot-graphql",
+  "boot-multi-ds",
+  "boot-dynamic-ds",
+  "boot-security",
+  "boot-shiro",
+  "boot-springdoc",
+  "cloud-nacos",
+  "cloud-eureka",
+  "cloud-gateway",
+)

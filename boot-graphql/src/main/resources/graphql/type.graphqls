@@ -1,0 +1,26 @@
+# 定义根查询类型, 所有的查询操作都对该类型继续扩展
+type Query
+
+# 定义根变更类型, 所有的变更操作都对该类型继续扩展
+type Mutation
+
+# 定义根 Schema, 包括查询和变更两个根类型
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+# 定义分页信息类型, 用于 relay 操作
+type PageInfo {
+  startCursor: String
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+}
+
+# 定义查询字段类型处理器, 用于将字段值转为大写
+# 参考 alvin.study.core.graphql.directive.UppercaseDirective 类型
+directive @uppercase on FIELD_DEFINITION
+
+# 定义参数或输入字段处理器, 用于限制输入字段的范围
+directive @len(min: Int!, max: Int!) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION

@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    # 配置多数据源
+    # 注意, 多数据源配置的方式和默认数据源略有不同
+    db1:
+      type: com.zaxxer.hikari.HikariDataSource
+      jdbc-url: jdbc:h2:mem:test1;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL;NON_KEYWORDS=USER
+      username: test1
+      pool-name: test1
+    db2:
+      type: com.zaxxer.hikari.HikariDataSource
+      jdbc-url: jdbc:h2:mem:test2;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL;NON_KEYWORDS=USER
+      username: test2
+      pool-name: test2

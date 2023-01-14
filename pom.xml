@@ -1,0 +1,277 @@
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>alvin.study</groupId>
+  <artifactId>study-java</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>${project.artifactId}</name>
+  <packaging>pom</packaging>
+
+  <!-- 项目属性 -->
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
+
+    <!-- 定义依赖版本 -->
+    <version.junit>5.9.1</version.junit>
+    <version.junit-pioneer>1.9.1</version.junit-pioneer>
+    <version.hamcrest>2.2</version.hamcrest>
+    <version.guava>31.1-jre</version.guava>
+    <version.lombok>1.18.24</version.lombok>
+    <version.jakarta-mail>2.0.1</version.jakarta-mail>
+    <version.jaxb>4.0.1</version.jaxb>
+    <version.auth-jwt>4.2.1</version.auth-jwt>
+    <version.commons-codec>1.15</version.commons-codec>
+    <version.commons-pool2>2.11.1</version.commons-pool2>
+    <version.picocli>4.7.0</version.picocli>
+    <version.guice>5.1.0</version.guice>
+    <version.h2>2.1.214</version.h2>
+    <version.spring-boot>3.0.1</version.spring-boot>
+    <version.spring-boot2>2.7.7</version.spring-boot2>
+    <version.flyway>9.8.3</version.flyway>
+    <version.jackson>2.14.1</version.jackson>
+    <version.mockito>4.9.0</version.mockito>
+    <version.assertj>3.24.1</version.assertj>
+    <version.javafaker>1.0.2</version.javafaker>
+    <version.testng>7.6.1</version.testng>
+    <version.slf4j>2.0.4</version.slf4j>
+    <version.jooq>3.17.5</version.jooq>
+    <version.mybatis-plus>3.5.2</version.mybatis-plus>
+    <version.modelmapper>3.1.0</version.modelmapper>
+    <version.p6spy>3.9.1</version.p6spy>
+    <version.kickstart-graphql>14.0.0</version.kickstart-graphql>
+    <version.kickstart-graphiql>11.1.0</version.kickstart-graphiql>
+    <version.spring-security-test>6.0.0</version.spring-security-test>
+    <version.shiro>1.10.0</version.shiro>
+    <version.springdoc>1.6.13</version.springdoc>
+    <version.spirng-cloud>2021.0.5</version.spirng-cloud>
+    <version.alibaba-clould>2021.0.4.0</version.alibaba-clould>
+
+    <!-- 定义插件版本 -->
+    <version.maven-compiler>3.10.1</version.maven-compiler>
+    <version.maven-surefire>3.0.0-M7</version.maven-surefire>
+    <version.maven-exec>3.1.0</version.maven-exec>
+    <version.maven-jar>3.3.0</version.maven-jar>
+    <version.maven-dependency>3.4.0</version.maven-dependency>
+    <version.maven-assembly>3.4.2</version.maven-assembly>
+    <version.maven-shade>3.4.1</version.maven-shade>
+    <version.maven-flyway>${version.flyway}</version.maven-flyway>
+    <version.maven-jooq>${version.jooq}</version.maven-jooq>
+    <version.maven-build-helper>3.3.0</version.maven-build-helper>
+  </properties>
+
+  <!-- 包含子项目所在的路径名 -->
+  <modules>
+    <module>testing</module>
+    <module>cli</module>
+    <module>guice</module>
+    <module>se</module>
+    <module>security</module>
+    <module>jackson</module>
+    <module>boot-mvc</module>
+    <module>boot-aop</module>
+    <module>boot-spel</module>
+    <module>boot-validator</module>
+    <module>boot-testing</module>
+    <module>boot-jpa</module>
+    <module>boot-mybatis</module>
+    <module>boot-jooq</module>
+    <module>boot-graphql</module>
+    <module>boot-multi-ds</module>
+    <module>boot-dynamic-ds</module>
+    <module>boot-security</module>
+    <module>boot-shiro</module>
+    <module>boot-springdoc</module>
+    <module>cloud-nacos</module>
+    <module>cloud-eureka</module>
+    <module>cloud-gateway</module>
+  </modules>
+
+  <!-- 依赖声明, 所有子项目可使用声明后的依赖 -->
+  <dependencyManagement>
+    <dependencies>
+      <!-- JUnit 依赖 -->
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>${version.junit}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <!-- Junit 扩展依赖 -->
+      <dependency>
+        <groupId>org.junit-pioneer</groupId>
+        <artifactId>junit-pioneer</artifactId>
+        <version>${version.junit-pioneer}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <!-- Guice 依赖 -->
+      <dependency>
+        <groupId>com.google.inject</groupId>
+        <artifactId>guice-bom</artifactId>
+        <version>${version.guice}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <!-- H2 DB Driver -->
+      <dependency>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
+        <version>${version.h2}</version>
+      </dependency>
+
+      <!-- Jackson BOM -->
+      <dependency>
+        <groupId>com.fasterxml.jackson</groupId>
+        <artifactId>jackson-bom</artifactId>
+        <version>${version.jackson}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <!-- Flyway 依赖 -->
+      <dependency>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-core</artifactId>
+        <version>${version.flyway}</version>
+      </dependency>
+
+      <!-- mybatis-plus 依赖 -->
+      <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus-boot-starter</artifactId>
+        <version>${version.mybatis-plus}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <!-- Guava 依赖 -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>${version.guava}</version>
+    </dependency>
+
+    <!-- Lombok 依赖 -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${version.lombok}</version>
+    </dependency>
+
+    <!-- JUnit 5 依赖 -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Guava 测试库依赖 -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava-testlib</artifactId>
+      <version>${version.guava}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>junit</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.junit.vintage</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.hamcrest</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- AssertJ 断言库 -->
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>${version.assertj}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <!-- 编译插件 -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${version.maven-compiler}</version>
+        </plugin>
+
+        <!-- 单元测试插件 -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${version.maven-surefire}</version>
+        </plugin>
+
+        <!-- 执行器插件 -->
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>${version.maven-exec}</version>
+        </plugin>
+
+        <!-- 数据库 Migration 插件 -->
+        <plugin>
+          <groupId>org.flywaydb</groupId>
+          <artifactId>flyway-maven-plugin</artifactId>
+          <version>${version.maven-flyway}</version>
+        </plugin>
+
+        <!-- 辅助构建插件 -->
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>${version.maven-build-helper}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <!-- 配置编译插件支持 lombok -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>17</source>
+          <target>17</target>
+          <!-- 编译期注解生成代码配置 -->
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>${version.lombok}</version>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
+      </plugin>
+
+      <!-- 测试插件 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <argLine>--enable-preview</argLine>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

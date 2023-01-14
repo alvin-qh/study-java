@@ -1,0 +1,4 @@
+spring:
+  datasource-template:
+    jdbc-url: jdbc:h2:mem:%s;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL;NON_KEYWORDS=USER
+    username: test

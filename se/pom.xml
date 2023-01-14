@@ -1,0 +1,36 @@
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>study-java-se</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  <name>${project.artifactId}</name>
+
+  <!-- 从根项目 pom.xml 继承 -->
+  <parent>
+    <groupId>alvin.study</groupId>
+    <artifactId>study-java</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <!-- 配置依赖 -->
+  <dependencies>
+    <!-- Java Mail 依赖 -->
+    <dependency>
+      <groupId>com.sun.mail</groupId>
+      <artifactId>jakarta.mail</artifactId>
+      <version>${version.jakarta-mail}</version>
+    </dependency>
+
+    <!-- Java Faker 依赖 -->
+    <dependency>
+      <groupId>com.github.javafaker</groupId>
+      <artifactId>javafaker</artifactId>
+      <version>${version.javafaker}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

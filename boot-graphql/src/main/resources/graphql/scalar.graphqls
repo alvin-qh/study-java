@@ -1,0 +1,9 @@
+# 扩展 Graphql 标准类型, 参考 alvin.study.conf.GraphqlConfig#graphQLScalarTypes 方法, 配合使用
+
+scalar Object
+scalar DateTime
+scalar JSON
+#scalar Url
+scalar Long
+#scalar Locale
+scalar Void

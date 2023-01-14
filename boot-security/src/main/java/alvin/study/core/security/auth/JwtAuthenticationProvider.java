@@ -1,0 +1,55 @@
+package alvin.study.core.security.auth;
+
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.stereotype.Component;
+
+import alvin.study.app.domain.service.AuthService;
+import lombok.RequiredArgsConstructor;
+
+/**
+ * 对 {@link JwtAuthenticationToken} 类型对象进行身份验证的类型
+ *
+ * <p>
+ * 该类型对象在
+ * {@link alvin.study.conf.SecurityConfig#authManager(org.springframework.security.config.annotation.web.builders.HttpSecurity)
+ * SecurityConfig.authManager(HttpSecurity)} 方法中进行注册
+ * </p>
+ */
+@Component
+@RequiredArgsConstructor
+public class JwtAuthenticationProvider implements AuthenticationProvider {
+    private final AuthService authService;
+
+    /**
+     * 对传入的 {@link JwtAuthenticationToken} 类型对象进行身份验证
+     *
+     * @param auth {@link JwtAuthenticationToken} 类型对象
+     * @return {@link NameAndPasswordAuthenticationToken} 存储
+     *         {@link alvin.study.infra.entity.User User} 实体对象
+     */
+    @Override
+    public Authentication authenticate(Authentication auth) throws AuthenticationException {
+        // 获取 JWT 字符串
+        var jwt = (String) auth.getCredentials();
+
+        // 对 JWT 进行解密, 并获取 User 对象
+        var user = authService.decodeJwtToken(jwt);
+
+        // 产生新的 Authentication 对象, 存储用户和其角色权限
+        return new NameAndPasswordAuthenticationToken(user, authService.findPermissionsByUserId(user.getId()));
+    }
+
+    /**
+     * 设置当前类型对象只处理 {@link JwtAuthenticationToken} 类型对象
+     *
+     * @param authType 待匹配的 {@link Authentication} 对象类型
+     * @return 如果 {@code authType} 参数类型为 {@link JwtAuthenticationToken} 类型则返回
+     *         {@code true}
+     */
+    @Override
+    public boolean supports(Class<?> authType) {
+        return JwtAuthenticationToken.class.isAssignableFrom(authType);
+    }
+}

@@ -1,0 +1,16 @@
+#
+# https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#application-properties.core
+#
+# 配置 SpringBoot
+spring:
+  application:
+    name: study-springboot-testing
+  jackson:
+    default-property-inclusion: non-null
+    mapper:
+      default-view-inclusion: false
+    generator:
+      ignore-unknown: false
+    serialization:
+      write-dates-as-timestamps: false
+      fail-on-empty-beans: false

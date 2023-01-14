@@ -1,0 +1,223 @@
+/**
+ * 设置构建脚本
+ */
+buildscript {
+  configurations["classpath"].resolutionStrategy.eachDependency {
+    // 将所有对 Jooq 的依赖替换为最新版本
+    if (requested.group == "org.jooq") {
+      useVersion "${VER_JOOQ}"
+    }
+  }
+}
+
+/**
+ * 配置插件信息
+ */
+plugins {
+  id "org.springframework.boot" version "${VER_SPRING_BOOT3}"
+  id "io.spring.dependency-management" version "${VER_GRADLE_SPRING_DEPENDENCY_MANAGEMENT}"
+
+  // Flyway DB Migration 插件
+  id "org.flywaydb.flyway" version "${VER_FLYWAY}"
+  // Jooq 代码生成器插件
+  id "nu.studer.jooq" version "${VER_GRADLE_JOOQ}"
+}
+
+// 引入 Spring Boot 3.x 依赖
+apply from: "${rootDir}/gradle/depends-spring-boot.gradle"
+
+// 引入 Spring Boot 3.x Bom
+dependencyManagement {
+  imports {
+    mavenBom springboot3Bom
+  }
+}
+
+// 数据库地址
+def DB_URL = "jdbc:h2:${projectDir}/.data/dev"
+
+// 数据库用户名
+def DB_USER = "dev"
+
+// 数据库密码
+def DB_PASSWORD = "password"
+
+/**
+ * 配置 Spring 依赖地址
+ */
+repositories {
+  maven { url "https://repo.spring.io/release" }
+}
+
+/**
+ * 配置依赖
+ */
+dependencies {
+  implementation libs.main.springboot.core,
+    libs.main.springboot.jooq,
+    libs.main.springboot.web,
+    libs.main.commons.codec,
+    libs.main.db.h2,
+    libs.main.slf4j
+
+  testImplementation libs.test.springboot.core
+
+  developmentOnly dev.main.springboot
+
+  annotationProcessor annotations.main.springboot
+
+  // 为 JOOQ 代码生成器设置数据库驱动
+  jooqGenerator libs.main.db.h2
+
+  runtimeOnly libs.main.db.migration
+}
+
+/**
+ * 设置源码路径
+ */
+sourceSets {
+  main {
+    java {
+      // 将 JOOQ 代码生成路径设置为附加源码路径
+      srcDirs += ["src/jooq/java"]
+    }
+  }
+}
+
+/**
+ * 配置 Spring Boot 插件
+ */
+springBoot {
+  mainClass = "alvin.study.Main"
+}
+
+/**
+ * 配置 Spring Boot 打包插件
+ */
+bootJar {
+  exclude "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA", "META-INF/*.MF"
+
+  // 配置 MANIFEST.MF 文件内容
+  manifest {
+    attributes "Implementation-Title": "Study Spring Boot Jooq"
+    attributes "Implementation-Version": projectVersion.version
+  }
+
+  // 配置打包 jar 文件信息
+  archiveBaseName = project.group
+  archiveFileName = "alvin.study.springboot_jooq.${archiveExtension.get()}"
+}
+
+/**
+ * 配置 flyway 插件, 用于 db migration
+ */
+flyway {
+  url = "${DB_URL};MODE=MYSQL"
+  user = DB_USER
+  password = DB_PASSWORD
+  locations = ["filesystem:${projectDir}/src/main/resources/migration"]
+  table = "schema_version"
+}
+
+/**
+ * 配置 JOOQ 插件
+ */
+jooq {
+  version = "${VER_JOOQ}"
+  edition = nu.studer.gradle.jooq.JooqEdition.OSS
+
+  // 配置 JOOQ 代码生成
+  configurations {
+    main {
+      // 代码生成工具配置
+      generationTool {
+        logging = org.jooq.meta.jaxb.Logging.INFO   // 生成过程中日志级别
+
+        // JDBC 连接属性
+        jdbc {
+          driver = "org.h2.Driver"
+          url = DB_URL
+          user = DB_USER
+          password = DB_PASSWORD
+        }
+
+        // 配置生成器
+        generator {
+          name = "org.jooq.codegen.DefaultGenerator"  // 生成器实现类
+          strategy.name = "org.jooq.codegen.DefaultGeneratorStrategy" // 代码生成策略类
+
+          // 配置要生成代码的数据库信息
+          database {
+            name = "org.jooq.meta.h2.H2Database"
+            includes = "PUBLIC.*"
+            excludes = "PUBLIC.schema_version | PUBLIC.flyway_schema_history"
+            recordVersionFields = "version"
+
+            // 特殊字段类型处理
+            forcedTypes {
+              // 处理 User.type 字段
+              forcedType {
+                // 字段对应的 java 类型
+                userType = "alvin.study.infra.model.UserType"
+                // 是否为枚举类型, 此时会使用 org.jooq.impl.EnumConverter 转换器进行处理
+                enumConverter = true
+                // 要处理的字段, 为一个正则表达式, 匹配所有要被处理的字段
+                includeExpression = "USER\\.TYPE"
+              }
+
+              // 处理 Employee.info 字段
+              forcedType {
+                // 字段对应的 java 类型
+                userType = "alvin.study.infra.model.EmployeeInfo"
+                // 是否为 JSON 类型, 此时会使用 org.jooq.jackson.extensions.converters.JSONtoJacksonConverter 转换器进行处理
+                converter = "alvin.study.infra.converter.EmployeeInfoConverter"
+                // 要处理的字段, 为一个正则表达式, 匹配所有要被处理的字段
+                includeExpression = "EMPLOYEE\\.INFO"
+              }
+            }
+          }
+
+          // 配置生成规则
+          generate {
+            deprecated = false
+            records = true
+            fluentSetters = true
+            pojos = true
+            // immutablePojos = true  // 令 pojo 类型必须通过构造器创建, 无 set 方法
+            pojosEqualsAndHashCode = true
+            // jooqVersionReference = false  // 不约束 Jooq 的版本号
+            // daos = true
+            fluentSetters = true
+            javaTimeTypes = true
+          }
+
+          // 生成代码配置
+          target {
+            packageName = "alvin.study.infra.model"
+            directory = "src/jooq/java"
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * 设置 generateJooq 任务
+ */
+tasks.named("generateJooq").configure {
+  // customize execution of the code generation tool (only show output if code generation failed)
+  def outRef = new java.util.concurrent.atomic.AtomicReference<OutputStream>()
+  javaExecSpec = { JavaExecSpec s ->
+    outRef.set(new ByteArrayOutputStream())
+    s.standardOutput = outRef.get()
+    s.errorOutput = outRef.get()
+    s.ignoreExitValue = true
+  }
+  execResultHandler = { ExecResult r ->
+    def out = outRef.getAndSet(null)
+    if (r.exitValue != 0) {
+      throw new RuntimeException("jOOQ source code generation failed:\n\n" + out.toString())
+    }
+  }
+}

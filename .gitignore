@@ -1,0 +1,15 @@
+.DS_Store
+.gradle
+.venv
+.vscode
+.settings
+.project
+.classpath
+.history
+.apt_generated
+.apt_generated_tests
+.idea
+
+build
+bin
+target

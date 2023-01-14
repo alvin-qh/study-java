@@ -1,0 +1,15 @@
+spring:
+  main:
+    banner-mode: off
+    allow-bean-definition-overriding: true
+  datasource:
+    hikari:
+      pool-name: test
+    url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL;NON_KEYWORDS=USER
+    username: test
+    password: password
+
+# logging:
+#   level:
+#     # 调整 jooq 的日志级别, 可以显示生成的 SQL 语句和执行过程
+#     org.jooq.tools.LoggerListener: DEBUG
