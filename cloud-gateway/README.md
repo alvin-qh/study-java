@@ -190,8 +190,10 @@ docker-compose -f cloud-gateway/docker/docker-compose.yml up
 
 - 测试自定义 JWT 断言
 
+  <!-- cspell: disable -->
   ```bash
   curl -L -X GET 'localhost:8080/auth' \
     -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJ0aGlyZC1wYXJ0Iiwic3ViIjoidV9iOTg5YzllYS1lMDdiLTQyNjMtYWU5OC0xMWQ2YjFiMGUzMjciLCJpc3MiOiJBbHZpbiIsInN1Yl91c2VyX3R5cGUiOiJlbXBsb3llZSIsImV4cCI6OTk5OTk5OTk5OSwic3ViX29yZ19jb2RlIjoib19hNGVmMzAiLCJpYXQiOjE1MDI5MzkxNzB9.JxVRbYIyAJisOwncRaisEvL8ge51HDhqfd45SfxLW2I' \
     -H 'Accept: application/json' | json_pp
   ```
+  <!-- cspell: enable -->

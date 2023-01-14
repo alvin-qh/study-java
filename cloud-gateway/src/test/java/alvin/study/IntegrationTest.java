@@ -6,7 +6,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import alvin.study.conf.TestingConfig;
-import lombok.SneakyThrows;
 
 /**
  * 集成测试类的超类
@@ -40,15 +39,4 @@ public abstract class IntegrationTest {
      */
     @AfterEach
     protected void afterEach() {}
-
-    /**
-     * 令当前线程休眠指定时间
-     *
-     * @param mills 线程休眠时间
-     */
-    @SneakyThrows
-    @SuppressWarnings("java:S2925")
-    protected void delay(long mills) {
-        Thread.sleep(mills);
-    }
 }
