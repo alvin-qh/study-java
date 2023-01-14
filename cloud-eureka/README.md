@@ -41,8 +41,7 @@
 - 需要配置 `hosts` 文件 (如 `/etc/hosts`), 为本地 `127.0.0.1` 地址映射多个域名, 例如
 
     ```plaintext
-    127.0.0.1  local-server-01
-    127.0.0.1  local-server-02
+    127.0.0.1   local-server-01   local-server-02
     ...
     ```
 
