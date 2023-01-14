@@ -131,7 +131,6 @@ mvn spring-boot:run -Dspring-boot.run.arguments=--spring.profiles.active=client
 
     此时在 `8080` 端口上启动了 Web 应用
 
-
 3. 执行测试
 
     ```bash
