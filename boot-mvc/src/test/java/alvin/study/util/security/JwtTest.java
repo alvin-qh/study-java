@@ -21,7 +21,7 @@ import alvin.study.WebTest;
  *
  * @see alvin.study.conf.BeansConfig#jwt(String, String, String)
  */
-public class JwtTest extends WebTest {
+class JwtTest extends WebTest {
     // 注入 Jwt 类型对象
     @Autowired
     private Jwt jwt;
