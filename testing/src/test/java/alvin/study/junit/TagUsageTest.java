@@ -23,20 +23,22 @@ import alvin.study.junit.tag.ImportantTagTest;
  * 在 Maven Surefire 插件中使用
  *
  * <pre>
- * &lt;build&gt;
- *   &lt;plugins&gt;
- *     &lt;plugin&gt;
- *       &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
- *       &lt;version&gt;x.x.x&lt;/version&gt;
- *       &lt;configuration&gt;
- *         &lt;!-- 要执行的 Tag --&gt;
- *         &lt;groups&gt;tag_test&lt;/groups&gt;
- *         &lt;!-- 不执行的 Tag --&gt;
- *         &lt;excludedGroups&gt;common_test&lt;/excludedGroups&gt;
- *       &lt;/configuration&gt;
- *     &lt;/plugin&gt;
- *   &lt;/plugins&gt;
- * &lt;/build&gt;
+ * {@code
+ * <build>
+ *   <plugins>
+ *     <plugin>
+ *       <artifactId>maven-surefire-plugin</artifactId>
+ *       <version>x.x.x</version>
+ *       <configuration>
+ *         <!-- 要执行的 Tag -->
+ *         <groups>tag_test</groups>
+ *         <!-- 不执行的 Tag -->
+ *         <excludedGroups>common_test</excludedGroups>
+ *       </configuration>
+ *     </plugin>
+ *   </plugins>
+ * </build>
+ * }
  * </pre>
  * </p>
  *
