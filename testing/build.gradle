@@ -22,6 +22,9 @@ test {
     // 异常显示格式: 全部信息
     exceptionFormat "full"
   }
+
+  jvmArgs "--add-opens", "java.base/java.util=ALL-UNNAMED",
+          "--add-opens", "java.base/java.lang=ALL-UNNAMED"
 }
 
 /**

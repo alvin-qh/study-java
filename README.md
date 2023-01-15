@@ -56,6 +56,7 @@ Java 开发插件
 - Dependency Analytics
 - Project Manager for Java
 - IntelliCode
+- Java Decompiler
 
 Gradle 工具插件
 
@@ -110,6 +111,8 @@ Markdown 插件
 
 ### 2.2. 配置文件
 
+公共配置部分
+
 ```json
 {
   "[java]": {
@@ -132,7 +135,8 @@ Markdown 插件
     "org.mockito.Answers.*",
     "org.assertj.core.api.Assertions.*",
     "org.assertj.core.api.BDDAssertions.*",
-    "org.awaitility.Awaitility.*"
+    "org.awaitility.Awaitility.*",
+    "org.hamcrest.Matchers.*"
   ],
   "java.eclipse.downloadSources": true,
   "java.format.settings.profile": "Eclipse",
@@ -142,38 +146,58 @@ Markdown 插件
   "java.referencesCodeLens.enabled": true,
   "redhat.telemetry.enabled": true,
   "sonarlint.rules": {
-    "xml:S125": {
-        "level": "off"
-    },
-    "java:S5853": {
-        "level": "off"
-    },
-    "java:S3415": {
+    "java:S106": {
         "level": "off"
     },
     "java:S108": {
         "level": "off"
     },
-    "java:S125": {
+    "java:S115": {
         "level": "off"
     },
-    "java:S115": {
+    "java:S125": {
         "level": "off"
     },
     "java:S1700": {
         "level": "off"
     },
+    "java:S1845": {
+        "level": "off"
+    },
     "java:S2176": {
+        "level": "off"
+    },
+    "java:S3415": {
         "level": "off"
     },
     "java:S5663": {
         "level": "off"
     },
-    "java:S1845": {
+    "java:S5853": {
+        "level": "off"
+    },
+    "xml:S125": {
         "level": "off"
     }
   },
   "boot-java.rewrite.reconcile": true
+}
+```
+
+远程配置部分 (以 WSL 远程开发为例)
+
+```json
+{
+  "java.configuration.runtimes": [
+    {
+      "name": "JavaSE-17",
+      "path": "/usr/lib/jvm/java-17-openjdk-amd64",
+      "sources": "/usr/lib/jvm/java-17-openjdk-amd64/lib/src.zip",
+      "javadoc": "https://docs.oracle.com/en/java/javase/17/docs/api/",
+      "default": true
+    }
+  ],
+  "java.jdt.ls.java.home": "/usr/lib/jvm/java-17-openjdk-amd64"
 }
 ```
 
