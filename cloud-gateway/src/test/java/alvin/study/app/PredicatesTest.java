@@ -23,7 +23,7 @@ import alvin.study.util.http.Headers;
 /**
  * 测试网关断言
  */
-public class PredicatesTest extends IntegrationTest {
+class PredicatesTest extends IntegrationTest {
     // cspell: disable
     // 定义 JWT 测试凭证
     private static final String JWT_VALUE = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJ0aGlyZC1wYXJ0Iiwic3ViIjoi"
