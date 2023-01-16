@@ -1,5 +1,6 @@
 package alvin.study.junit;
 
+import static org.assertj.core.api.BDDAssertions.then;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
@@ -56,10 +57,9 @@ class AssumptionsTest {
      * 执行后一个参数传入的 lambda 表达式
      */
     @Test
-    @SuppressWarnings("java:S2699")
     void assumingThat_shouldSkipTestByCondition() {
         assumingThat(() -> LocalTime.now().isBefore(LocalTime.of(12, 0, 0)), () -> {
-            System.out.println("Only work in morning");
+            then(LocalTime.now()).isBefore(LocalTime.of(12, 0, 0));
         });
     }
 }
