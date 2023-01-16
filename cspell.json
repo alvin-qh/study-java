@@ -72,6 +72,7 @@
     "flywaydb",
     "frch",
     "genkey",
+    "getenv",
     "GOST",
     "gradlew",
     "graphiql",
