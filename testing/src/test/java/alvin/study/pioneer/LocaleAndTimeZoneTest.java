@@ -10,6 +10,9 @@ import org.junit.jupiter.api.condition.EnabledIf;
 import org.junitpioneer.jupiter.DefaultLocale;
 import org.junitpioneer.jupiter.DefaultTimeZone;
 
+/**
+ * 测试通过 Pioneer 库对测试方法指定默认的国际化和时区标识
+ */
 class LocaleAndTimeZoneTest {
     /**
      * 测试获取系统默认的国际化标识
