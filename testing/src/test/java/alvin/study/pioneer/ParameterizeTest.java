@@ -181,10 +181,15 @@ class ParameterizeTest {
      * {@code (x=2, y=3)} 以及 {@code (x=2, y=4)} 的组合进行参数传递, 共执行 4 此测试
      * </p>
      *
+     * <p>
+     * {@link CartesianTest @CartesianTest} 注解的 {@code name} 属性可以指定本测试每次执行的名称, 便于在日志中进行观察, 可以使用的
+     * 占位符包括 <code>{index}</code>, 表示测试的索引编号; <code>{0}, {1}, ..., {n}</code>, 表示传入的第几个参数
+     * </p>
+     *
      * @param x 第一组参数
      * @param y 第二组参数
      */
-    @CartesianTest
+    @CartesianTest(name = "{index} => first arg: {0}, second arg: {1}")
     void cartesian_shouldInjectCartesianArguments(
             @Values(ints = { 1, 2 }) int x,
             @Values(ints = { 3, 4 }) int y) {
