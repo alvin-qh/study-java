@@ -169,10 +169,10 @@ class FakerTest {
         // 获取随机数服务对象
         var service = faker.random();
 
-        // 产生指定范围内的随机整数
+        // 产生指定范围内的随机整数 ([1..10])
         var value = service.nextInt(1, 10);
         // 确认产生的随机数符合预期
-        then(value).isGreaterThanOrEqualTo(1).isLessThan(10);
+        then(value).isGreaterThanOrEqualTo(1).isLessThanOrEqualTo(10);
 
         // 产生长度为 10 的随机 16 进制字符串
         var hex = service.hex(10);
