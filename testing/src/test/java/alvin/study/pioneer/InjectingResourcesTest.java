@@ -111,6 +111,12 @@ class InjectingResourcesTest {
      * </p>
      *
      * <p>
+     * {@link Shared @Shared} 注解的 {@code scope} 属性可以指定共享资源的范围, 默认情况下, 共享资源在当前测试类中共享, 即当前测试
+     * 类结束后, 共享资源被删除. 如果设置为 {@link Shared.Scope#GLOBAL}, 则该共享资源在整个测试中共享, 即所有测试完毕后共享资源才会被
+     * 删除
+     * </p>
+     *
+     * <p>
      * 当前测试方法创建的临时路径会在 {@link #new_shouldCreateSharedTempDirResourceWrite(Path)} 方法中使用
      * </p>
      *
