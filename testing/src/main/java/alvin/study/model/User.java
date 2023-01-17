@@ -2,23 +2,29 @@ package alvin.study.model;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
 import lombok.SneakyThrows;
 
 /**
  * 用于测试的用户实体类型
  */
-@Data
-@RequiredArgsConstructor
+@Getter
 public class User implements Serializable {
     // 用户 id
     private final int id;
 
     // 用户名称
     private final String name;
+
+    public User(
+            @JsonProperty("id") int id,
+            @JsonProperty("name") String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     @Override
     public String toString() {

@@ -3,17 +3,16 @@ package alvin.study.model;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
 import lombok.SneakyThrows;
 
 /**
  * 用于测试的组实体类型
  */
-@Data
-@RequiredArgsConstructor
+@Getter
 public class Group implements Serializable {
     // 组 id
     private final int id;
@@ -23,6 +22,15 @@ public class Group implements Serializable {
 
     // 组中包含的用户集合
     private final List<User> users;
+
+    public Group(
+            @JsonProperty("id") int id,
+            @JsonProperty("name") String name,
+            @JsonProperty("users") List<User> users) {
+        this.id = id;
+        this.name = name;
+        this.users = users;
+    }
 
     @Override
     public String toString() {

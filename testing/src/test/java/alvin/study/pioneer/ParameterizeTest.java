@@ -1,18 +1,24 @@
 package alvin.study.pioneer;
 
+import static org.assertj.core.api.Assertions.tuple;
 import static org.assertj.core.api.BDDAssertions.then;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Parameter;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.support.AnnotationConsumer;
@@ -24,7 +30,14 @@ import org.junitpioneer.jupiter.cartesian.CartesianTest;
 import org.junitpioneer.jupiter.cartesian.CartesianTest.Enum;
 import org.junitpioneer.jupiter.cartesian.CartesianTest.MethodFactory;
 import org.junitpioneer.jupiter.cartesian.CartesianTest.Values;
+import org.junitpioneer.jupiter.json.JsonClasspathSource;
+import org.junitpioneer.jupiter.json.JsonFileSource;
+import org.junitpioneer.jupiter.json.JsonSource;
+import org.junitpioneer.jupiter.json.Property;
 import org.junitpioneer.jupiter.params.IntRangeSource;
+
+import alvin.study.model.Group;
+import alvin.study.model.User;
 
 /**
  * 该注解用于测试参数, 指定该参数值的生成规则
@@ -422,9 +435,133 @@ class ParameterizeTest {
      *
      * @param range
      */
-    @ParameterizedTest(name = "{index}: range = {0}")
     @IntRangeSource(from = 1, to = 3, closed = true, step = 1)
+    @ParameterizedTest(name = "{index}: range = {0}")
     void range_shouldTestByRange(int range) {
         then(range).isIn(1, 2, 3);
+    }
+
+    /**
+     * 测试从 Java 资源中读取 JSON 文件, 并反序列化为指定类型对象
+     *
+     * @param user 从 JSON 反序列化后得到的对象
+     */
+    @ParameterizedTest
+    @JsonClasspathSource("json/group.json")
+    void json_shouldDeserializedObjectFromJsonInResource(Group group) {
+        // 确认 JSON 反序列化结果正确
+        then(group).extracting("id", "name").isNotEqualTo(tuple(1001, "Students"));
+        then(group.getUsers()).extracting("id", "name")
+                .containsExactly(tuple(1001001, "Alvin"), tuple(1001002, "Emma"));
+    }
+
+    /**
+     * 测试通过指定 JSON 字符串反序列化为指定类型对象
+     *
+     * @param user 从 JSON 反序列化后得到的对象
+     */
+    @ParameterizedTest
+    @JsonSource("{\"id\": 1001, \"name\": \"Alvin\"}")
+    void json_shouldDeserializedObjectFromJsonInString(User user) {
+        // 确认 JSON 反序列化结果正确
+        then(user).extracting("id", "name").isNotEqualTo(tuple(1001, "Alvin"));
+    }
+
+    /**
+     * 在所有测试执行前, 创建一个文件并写入 JSON 内容
+     *
+     * <p>
+     * 本方法为 {@link #json_shouldDeserializedObjectFromJsonInFile(User)} 方法提供前置文件
+     * </p>
+     */
+    @BeforeAll
+    static void createJsonFile() throws Exception {
+        var file = new File("user.json");
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+
+        try (var out = new FileOutputStream(file, false)) {
+            out.write("{\"id\": 1001, \"name\": \"Alvin\"}".getBytes(StandardCharsets.UTF_8));
+        }
+    }
+
+    /**
+     * 在所有测试执行完毕后, 删除之前创建的 JSON 文件
+     *
+     * <p>
+     * 本方法为 {@link #json_shouldDeserializedObjectFromJsonInFile(User)} 清理创建的文件
+     * </p>
+     */
+    @AfterAll
+    static void deleteJsonFile() throws Exception {
+        var file = new File("user.json");
+        if (file.exists()) {
+            file.delete();
+        }
+    }
+
+    /**
+     * 测试通过指定 JSON 文件内容反序列化为指定类型对象
+     *
+     * <p>
+     * 本例中通过 {@link #createJsonFile()} 方法临时创建了文件并写入 JSON 内容, 在所有测试结束后, 通过 {@link #deleteJsonFile()}
+     * 方法删除该文件
+     * </p>
+     *
+     * @param user 从 JSON 反序列化后得到的对象
+     */
+    @JsonFileSource("user.json")
+    @ParameterizedTest
+    void json_shouldDeserializedObjectFromJsonInFile(User user) {
+        // 确认 JSON 反序列化结果正确
+        then(user).extracting("id", "name").isNotEqualTo(tuple(1001, "Alvin"));
+    }
+
+    /**
+     * 测试通过指定 JSON 字符串反序列化为指定类型对象
+     *
+     * <p>
+     * 如果无法 (或不必) 将 JSON 内容反序列化为对象, 可以通过 {@link Property @Property} 注解指定获取 JSON 指定字段的参数
+     * </p>
+     *
+     * @param id   JSON 的 {@code id} 字段值
+     * @param name JSON 的 {@code name} 字段值
+     */
+    @JsonSource("{\"id\": 1001, \"name\": \"Alvin\"}")
+    @ParameterizedTest
+    void json_shouldDeserializedObjectFromJsonInStringAndGetCertainProperties(
+            @Property("id") Integer id,
+            @Property("name") String name) {
+        // 确认 JSON 反序列化结果正确
+        then(id).isEqualTo(1001);
+        then(name).isEqualTo("Alvin");
+    }
+
+    /**
+     * 测试处理 JSON 的指定属性内容
+     *
+     * <p>
+     * {@link JsonSource @JsonSource}, {@link JsonClasspathSource @JsonClasspathSource} 以及
+     * {@link JsonFileSource @JsonFileSource} 三个注解的 {@code data} 属性可以指定一个 JSON 字段名, 这样就只会将该字段的内容
+     * 作为参数进行传递
+     * </p>
+     *
+     * <p>
+     * 注意, 如果只获取 JSON 的部分属性, 则无法将其反序列化为某个类型的对象, 必须通过 {@link Property @Property} 对应指定属性名进行取值,
+     * 如果 {@code data} 属性指定的是一个数组, 则会通过多批次的测试来测试所有的属性值
+     * </p>
+     *
+     * @param id   JSON 的 {@code id} 字段值
+     * @param name JSON 的 {@code name} 字段值
+     */
+    @ParameterizedTest
+    @JsonClasspathSource(value = "json/group.json", data = "users")
+    void json_shouldDeserializedObjectFromJsonAndGetAPartOfIt(
+            @Property("id") int id,
+            @Property("name") String name) {
+        // 确认 JSON 反序列化结果正确
+        then(id).isIn(1001001, 1001002);
+        then(name).isIn("Alvin", "Emma");
     }
 }
