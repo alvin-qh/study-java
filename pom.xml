@@ -269,16 +269,21 @@
     </pluginManagement>
 
     <plugins>
-      <!-- 配置编译插件支持 lombok -->
+      <!-- 配置编译插件 -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
           <source>17</source>
           <target>17</target>
+          <compilerArgs>
+            <!-- 编译时保留参数名 -->
+            <arg>-parameters</arg>
+          </compilerArgs>
           <!-- 编译期注解生成代码配置 -->
           <annotationProcessorPaths>
             <path>
+              <!-- 支持 lombok 代码生成 -->
               <groupId>org.projectlombok</groupId>
               <artifactId>lombok</artifactId>
               <version>${version.lombok}</version>
