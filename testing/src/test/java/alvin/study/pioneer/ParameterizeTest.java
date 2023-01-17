@@ -14,6 +14,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.support.AnnotationConsumer;
 import org.junitpioneer.jupiter.cartesian.ArgumentSets;
 import org.junitpioneer.jupiter.cartesian.CartesianArgumentsSource;
@@ -381,5 +382,49 @@ class ParameterizeTest {
         };
 
         then(new int[] { x, y }).isIn(expected);
+    }
+
+    /**
+     * 定义一个在指定范围内执行的测试
+     *
+     * <p>
+     * 使用 {@link ParameterizedTest @ParameterizedTest} 注解配合方法上的 {@link IntRangeSource} 注解, 可以产生一个在指定范围
+     * 内执行的测试
+     * </p>
+     *
+     * <p>
+     * 对应的属性为:
+     * <ul>
+     * <li>{@code from} 范围起始值</li>
+     * <li>{@code to} 范围结束值</li>
+     * <li>
+     * {@code closed} 范围是否为闭区间, 默认为 {@code false}, 如果是闭区间, 则参数取值为 {@code from <= value <= to}, 否则为
+     * {@code from <= value < to}
+     * </li>
+     * <li>{@code step} 步长值, 即参数在区间内每次增加的值, 默认为 {@code 1}
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * 类似的注解还包括:
+     * <ul>
+     * <li>{@link org.junitpioneer.jupiter.params.ByteRangeSource ByteRangeSource}</li>
+     * <li>{@link org.junitpioneer.jupiter.params.ShortRangeSource ShortRangeSource}</li>
+     * <li>{@link org.junitpioneer.jupiter.params.LongRangeSource LongRangeSource}</li>
+     * <li>{@link org.junitpioneer.jupiter.params.FloatRangeSource FloatRangeSource}</li>
+     * <li>{@link org.junitpioneer.jupiter.params.DoubleRangeSource DoubleRangeSource}</li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * 规定为: {@link IntRangeSource @IntRangeSource} 等范围定义注解只能包含一次, 且只能包含一个对应参数
+     * </p>
+     *
+     * @param range
+     */
+    @ParameterizedTest(name = "{index}: range = {0}")
+    @IntRangeSource(from = 1, to = 3, closed = true, step = 1)
+    void range_shouldTestByRange(int range) {
+        then(range).isIn(1, 2, 3);
     }
 }
