@@ -96,10 +96,6 @@ ext {
       common: [
         "org.junit.jupiter:junit-jupiter:${VER_JUNIT_ENGINE}",
         "org.assertj:assertj-core:${VER_ASSERTJ}",
-        dependencies.create("com.google.guava:guava-testlib:${VER_GUAVA}") {
-          exclude group: "junit"
-          exclude group: "com.google.guava"
-        },
         dependencies.create("org.awaitility:awaitility:${VER_AWAITILITY}") {
           exclude group: "org.hamcrest"
         },
