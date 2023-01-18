@@ -73,6 +73,7 @@
     <module>se</module>
     <module>security</module>
     <module>jackson</module>
+    <module>guava</module>
     <module>boot-mvc</module>
     <module>boot-aop</module>
     <module>boot-spel</module>
