@@ -17,6 +17,7 @@
     <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
 
     <!-- 定义依赖版本 -->
+    <version.javax-annotation>1.3.2</version.javax-annotation>
     <version.junit>5.9.1</version.junit>
     <version.junit-pioneer>1.9.1</version.junit-pioneer>
     <version.hamcrest>2.2</version.hamcrest>
@@ -63,6 +64,7 @@
     <version.maven-flyway>${version.flyway}</version.maven-flyway>
     <version.maven-jooq>${version.jooq}</version.maven-jooq>
     <version.maven-build-helper>3.3.0</version.maven-build-helper>
+    <version.maven-assertj>2.2.0</version.maven-assertj>
   </properties>
 
   <!-- 包含子项目所在的路径名 -->
@@ -73,7 +75,6 @@
     <module>se</module>
     <module>security</module>
     <module>jackson</module>
-    <module>guava</module>
     <module>boot-mvc</module>
     <module>boot-aop</module>
     <module>boot-spel</module>

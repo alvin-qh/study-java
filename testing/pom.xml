@@ -89,6 +89,12 @@
       <version>${version.javafaker}</version>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>javax.annotation-api</artifactId>
+      <version>${version.javax-annotation}</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -104,6 +110,64 @@
             --add-opens="java.base/java.lang=ALL-UNNAMED"
           </argLine>
         </configuration>
+      </plugin>
+
+      <!-- AssertJ 自动生成代码插件 -->
+      <plugin>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-assertions-generator-maven-plugin</artifactId>
+        <version>${version.maven-assertj}</version>
+        <configuration>
+          <!-- 指定断言入口类 -->
+          <entryPointClassPackage>alvin.study.assertion</entryPointClassPackage>
+          <!-- 指定要生成断言类的类型列表 -->
+          <classes>
+            <param>alvin.study.model.User</param>
+          </classes>
+          <!-- 生成代码的路径 -->
+          <targetDir>${project.basedir}/src/test/assertj</targetDir>
+          <!-- 生成代码前清空目标目录 -->
+          <cleanTargetDir>true</cleanTargetDir>
+          <!-- 设置要生成那些断言类 -->
+          <generateAssertions>true</generateAssertions>
+          <generateBddAssertions>true</generateBddAssertions>
+          <generateSoftAssertions>true</generateSoftAssertions>
+          <generateJUnitSoftAssertions>true</generateJUnitSoftAssertions>
+        </configuration>
+        <executions>
+          <execution>
+            <id>generate-assertions</id>
+            <!-- 关联到 generate-test-sources 动作 -->
+            <phase>generate-test-sources</phase>
+            <goals>
+              <!-- 执行 generate-assertions goal, 生成 assertion 代码 -->
+              <goal>generate-assertions</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- 设置源码路径插件 -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>add-test-source</id>
+            <!-- 指定当前执行要附加到的 phase -->
+            <phase>generate-test-sources</phase>
+            <!-- 指定要执行的 goal, 即在 generate-test-sources 阶段执行 add-test-source 任务 -->
+            <goals>
+              <goal>add-test-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <!-- 设置额外的源码路径 -->
+                <source>${project.basedir}/src/test/assertj/</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

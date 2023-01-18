@@ -87,6 +87,13 @@ ext {
         dependencies.create("ch.qos.logback:logback-classic:${VER_LOGBACK}") {
           exclude group: "org.slf4j"
         }
+      ],
+
+      // javax 扩展依赖
+      javax: [
+        annotation: [
+          "javax.annotation:javax.annotation-api:${VER_JAVAX_ANNOTATION}"
+        ]
       ]
     ],
 

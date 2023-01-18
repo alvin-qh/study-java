@@ -1,3 +1,22 @@
+plugins {
+  id "com.waftex.assertj-generator" version "${VER_GRADLE_ASSERTJ_GENERATOR}"
+}
+
+assertjGenerator {
+  outputDir = "src/test/assertj"
+  entryPointTypes = ["STANDARD", "BDD", "SOFT"]
+  entryPointPackage = "alvin.study.assertion"
+  classOrPackageNames = ["alvin.study.model.User"]
+}
+
+sourceSets {
+  test {
+    java {
+      srcDirs += ["src/test/assertj"]
+    }
+  }
+}
+
 /**
  * 配置测试插件
  */
@@ -31,7 +50,8 @@ test {
  * 配置依赖
  */
 dependencies {
-  implementation libs.main.jackson
+  implementation libs.main.jackson,
+    libs.main.javax.annotation
 
   testImplementation libs.test.mockito,
     libs.test.junitPioneer,
@@ -39,4 +59,8 @@ dependencies {
 
   testCompileOnly compiles.test.testng    // 引入 TestNG 测试框架
   // JUnit5 引入参见 /build.gradle 文件
+}
+
+clean {
+  delete "${projectDir}/src/assertj"
 }
