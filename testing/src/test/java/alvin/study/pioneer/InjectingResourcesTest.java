@@ -12,6 +12,7 @@ import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junitpioneer.jupiter.resource.Dir;
 import org.junitpioneer.jupiter.resource.New;
 import org.junitpioneer.jupiter.resource.Shared;
 import org.junitpioneer.jupiter.resource.TemporaryDirectory;
@@ -29,7 +30,7 @@ class InjectingResourcesTest {
      * </p>
      *
      * <p>
-     * 注入的临时路径会创建到 {@code java.io.tmpdir} 系统属性指定的路径中, 即系统默认的临时路径根路径 (在 Linux 系统中, 这个路径
+     * 注入的临时路径会创建到 {@code "java.io.tmpdir"} 系统属性指定的路径中, 即系统默认的临时路径根路径 (在 Linux 系统中, 这个路径
      * 为 {@code /tmp})
      * </p>
      *
@@ -51,6 +52,25 @@ class InjectingResourcesTest {
         // relativize 方法用于获取 tmpDir 路径基于 rootTmpDir 路径的相对路径
         // 例如 tmpDir="/tmp/new-dir-prefix-xxx", rootTmpDir="/tmp", 则结果为 "new-dir-prefix-xxx"
         then(rootTmpDir.relativize(tmpDir).toString()).startsWith("new-dir-prefix");
+    }
+
+    /**
+     * 注入一个新的临时目录资源
+     *
+     * <p>
+     * {@link Dir @Dir} 注解相当于 {@code @New(TemporaryDirectory.class)} 注解的快捷方法
+     * </p>
+     */
+    @Test
+    void dir_shouldCreateNewTempDirResource(@Dir Path tmpDir) {
+        // 确认临时路径已被创建
+        then(tmpDir).exists();
+
+        // 获取系统临时路径根路径
+        var rootTmpDir = Paths.get(System.getProperty("java.io.tmpdir"));
+
+        // 确认产生的临时目录在 rootTmpDir 路径下
+        then(tmpDir).startsWith(rootTmpDir);
     }
 
     /**
