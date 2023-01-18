@@ -7,12 +7,14 @@ import static org.assertj.core.api.Assertions.entry;
 import static org.assertj.core.api.Assertions.not;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.assertj.core.api.Condition;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import alvin.study.model.Group;
@@ -21,7 +23,7 @@ import alvin.study.model.User;
 /**
  * 测试 AssertJ 断言库
  */
-class AssertJTest {
+class AssertionTest {
     /**
      * 断言值是否为 {@code true} 或 {@code false}
      */
@@ -384,5 +386,35 @@ class AssertJTest {
         then(map).hasEntrySatisfying(new Condition<Entry<String, Integer>>(
             e -> keyCond.matches(e.getKey()) && valueCond.matches(e.getValue()),
             ""));
+    }
+
+    /**
+     * 断言代码是否抛出异常
+     */
+    @Test
+    void thrown_shouldCacheException() {
+        thenThrownBy(() -> {
+            throw new IllegalAccessException("Test exception");
+        })
+                .isInstanceOf(IllegalAccessException.class)
+                .hasMessage("Test exception");
+    }
+
+    /**
+     * 给测试增加具体的描述
+     *
+     * <p>
+     * 描述信息会在测试失败后, 在测试报告中显示, 以说明该测试的目标
+     * </p>
+     *
+     * <p>
+     * {@code as} 和 {@code describedAs} 方法的含义是相同的, 注意: 设置描述必须在断言之前调用
+     * </p>
+     */
+    @Test
+    @Disabled("Just a demo")
+    void as_shouldGivenTestName() {
+        then(100 > 99).as("Number compare").isFalse();
+        then(100 > 99).describedAs("Number compare").isFalse();
     }
 }
