@@ -72,6 +72,7 @@
     <module>testing</module>
     <module>cli</module>
     <module>guice</module>
+    <module>guava</module>
     <module>se</module>
     <module>security</module>
     <module>jackson</module>

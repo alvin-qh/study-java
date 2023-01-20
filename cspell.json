@@ -146,6 +146,7 @@
     "println",
     "pycache",
     "pytest",
+    "quarkus",
     "rawtypes",
     "regexify",
     "Reloadable",
