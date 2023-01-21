@@ -3,16 +3,21 @@ package alvin.study;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Throwables;
 import com.google.common.base.Verify;
 import com.google.common.base.VerifyException;
+import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
 
 @SuppressWarnings("java:S5961")
@@ -172,6 +177,70 @@ class CommonTest {
     }
 
     /**
+     * 演示对象操作工具类
+     *
+     * <p>
+     * {@link Objects#equal(Object, Object)} 用于比较两个对象是否相等, 内部调用 {@link Object#equals(Object)} 方法, 和直接
+     * 使用 {@link Object#equals(Object)} 方法不同, {@link Objects#equal(Object, Object)} 方法可以比较左值为 {@code null}
+     * 的情况
+     * <div>
+     * 对于 JDK8 以上版本, 应使用 JDK 的 {@link java.util.Objects#equals(Object, Object) Objects.equals(Object, Object)}
+     * 方法和 {@link java.util.Objects#deepEquals(Object, Object) Objects.deepEquals(Object, Object)} 方法
+     * </div>
+     * </p>
+     *
+     * <p>
+     * {@link MoreObjects#firstNonNull(Object, Object)} 用于对两个值进行是否为 {@code null} 判断, 行为如下:
+     * <ul>
+     * <li>如果两个参数都不为 {@code null}, 则返回第一个参数的值</li>
+     * <li>如果第一个参数为 {@code null}, 则返回第二个参数的值</li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * {@link MoreObjects#toStringHelper(Class)} 方法用于辅助将对象转为字符串表达, 返回一个 {@link MoreObjects.ToStringHelper}
+     * 类型对象, 通过该对象的 {@code add} 方法和 {@code addValue} 方法生成字符串结果
+     * </p>
+     *
+     * <p>
+     * {@link ComparisonChain#start()} 方法用于返回一个 {@link ComparisonChain} 对象, 用于通过多个比较方法组织一个比较链, 规则为:
+     * 链条上优先比较的结果如果非 {@code 0}, 则整体返回该结果, 否则执行链条上下一级的比较方法. 比较时可以使用
+     * {@link java.util.Comparator} 对象或 {@link Ordering} 对象指定比较规则
+     * </p>
+     */
+    @Test
+    void objects_shouldOperateObjects() {
+        var obj1 = Integer.valueOf(100);
+        var obj2 = Integer.valueOf(100);
+
+        // 比较两个对象是否相等
+        then(Objects.equal(obj1, obj2)).isTrue();
+        then(Objects.equal(null, null)).isTrue();
+        then(Objects.hashCode(obj1, obj2)).isEqualTo(4161);
+
+        // 当第一个参数不为 null 时, 返回第一个参数值; 当地一个参数为 null 时, 返回第二个参数值
+        then(MoreObjects.firstNonNull(obj1, null)).isEqualTo(obj1);
+        then(MoreObjects.firstNonNull(null, obj2)).isEqualTo(obj2);
+        then(MoreObjects.firstNonNull(obj1, obj2)).isEqualTo(obj1);
+
+        // 产生一个 Integer 类型, 特定值的字符串结果
+        var s = MoreObjects.toStringHelper(Integer.class)
+                .add("name", "Alvin")
+                .addValue(obj1)
+                .toString();
+        then(s).isEqualTo("Integer{name=Alvin, 100}");
+
+        var obj3 = Integer.valueOf(200);
+
+        // 通过一系列值的比较, 明确最终的比较结果
+        var r = ComparisonChain.start()
+                .compare(obj1, obj2)
+                .compare(obj2, obj3, Ordering.explicit(obj3, obj2))
+                .result();
+        then(r).isEqualTo(1);
+    }
+
+    /**
      * 测试排序方法
      *
      * <p>
@@ -233,6 +302,11 @@ class CommonTest {
         // 确认集合有序
         then(ordering.isOrdered(list)).isTrue();
 
+        // 通过元素的 toString 方法转为字符串, 并对字符串进行排序
+        Collections.sort(list, Ordering.usingToString());
+        // 确认排序结果
+        then(list).containsExactly(1, 2, 3, 4, 5);
+
         // 设定两级排序规则
         // 所谓两级排序规则, 即在第一级排序规则的作用下, 如果两个元素相等, 则使用第二级排序规则进行排序
         // 第一级排序按元素值的余数排序 (逆序), 第二级排序按元素值的大小排序 (自然序)
@@ -291,5 +365,104 @@ class CommonTest {
         then(list).containsExactly(1, 2, 3, 4, 5, null);
         // 确认集合在指定规则下有序
         then(ordering.isOrdered(list)).isTrue();
+    }
+
+    /**
+     * 测试异常处理辅助类
+     *
+     * <p>
+     * 通过 {@link Throwables} 类可以简化异常的抛出和判断
+     * </p>
+     *
+     * <p>
+     * {@link Throwables} 类提供了三类方法简化异常的抛出
+     * <ul>
+     * <li>
+     * {@link Throwables#throwIfInstanceOf(Throwable, Class)} 方法表示当异常为指定类型异常时抛出该异常
+     * </li>
+     * <li>
+     * {@link Throwables#throwIfUnchecked(Throwable)} 方法表示当异常为 {@link RuntimeException} 或 {@link Error} 类型时
+     * 抛出该异常
+     * </li>
+     * <li>
+     * {@link Throwables#propagateIfPossible(Throwable, Class, Class)} 方法表示当异常为 {@link RuntimeException} 或
+     * {@link Error} 类型, 又抑或是指定的异常类型时, 抛出该异常
+     * </li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * {@link Throwables} 类提供了三类方法简化异常判断和处理
+     * <ul>
+     * <li>{@link Throwables#getCauseAs(Throwable, Class)} 可以从异常链上获取期望类型的异常</li>
+     * <li>{@link Throwables#getRootCause(Throwable)} 可以获取异常链的根异常, 即最初抛出的异常</li>
+     * <li></li>
+     * </ul>
+     * </p>
+     */
+    @Test
+    void throwable_shouldThrowExceptionWithThrowables() {
+        var exp = new IOException();
+        var rtExp = new RuntimeException();
+
+        // 抛出指定类型异常, 最终抛出 exp 为 IOException 类型
+        thenThrownBy(() -> {
+            Throwables.throwIfInstanceOf(exp, NullPointerException.class);
+            Throwables.throwIfInstanceOf(exp, IOException.class);
+        }).isInstanceOf(IOException.class);
+
+        // 抛出 RuntimeException 或 Error 类型异常, 最终抛出 rtExp 为 RuntimeException 类型
+        thenThrownBy(() -> {
+            Throwables.throwIfUnchecked(exp);
+            Throwables.throwIfUnchecked(rtExp);
+        }).isInstanceOf(RuntimeException.class);
+
+        // 抛出 RuntimeException 或 Error 类型异常, 或者指定类型异常, 最终抛出 exp 为 IOException 类型
+        thenThrownBy(() -> {
+            Throwables.propagateIfPossible(exp, NullPointerException.class, IOException.class);
+        }).isInstanceOf(IOException.class);
+
+        // 抛出 RuntimeException 或 Error 类型异常, 或者指定类型异常, 最终抛出 rtExp 为 RuntimeException 类型
+        thenThrownBy(() -> {
+            Throwables.propagateIfPossible(rtExp, NullPointerException.class, IOException.class);
+        }).isInstanceOf(RuntimeException.class);
+
+        // 抛出一个异常链
+        try {
+            try {
+                try {
+                    // 抛出根异常
+                    throw new IOException();
+                } catch (IOException e) {
+                    // 根异常包装后抛出
+                    throw new IllegalStateException(e);
+                }
+            } catch (Exception e) {
+                // 异常包装后抛出
+                throw new RuntimeException(e);
+            }
+        } catch (Exception e) {
+            // 确认最终捕获到的是外层异常
+            then(e).isInstanceOf(RuntimeException.class);
+
+            // 在异常链上获取 IllegalStateException 类型异常
+            var cause = Throwables.getCauseAs(e, IllegalStateException.class);
+            then(cause).isInstanceOf(IllegalStateException.class);
+
+            // 在异常链上获取根异常
+            var rootCause = Throwables.getRootCause(e);
+            then(rootCause).isInstanceOf(IOException.class);
+
+            // 获取异常链
+            var chain = Throwables.getCausalChain(e);
+            then(chain).hasSize(3);
+            then(chain.get(0).getClass()).isSameAs(RuntimeException.class);
+            then(chain.get(1).getClass()).isSameAs(IllegalStateException.class);
+            then(chain.get(2).getClass()).isSameAs(IOException.class);
+
+            // 将异常堆栈转化为字符串形式
+            var stack = Throwables.getStackTraceAsString(e);
+            then(stack).startsWith("java.lang.RuntimeException: java.lang.IllegalStateException: java.io.IOException");
+        }
     }
 }
