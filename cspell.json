@@ -122,6 +122,8 @@
     "Morty",
     "Multibinder",
     "multibindings",
+    "multimap",
+    "Multiset",
     "Mutex",
     "mybatis",
     "mybatisplus",
