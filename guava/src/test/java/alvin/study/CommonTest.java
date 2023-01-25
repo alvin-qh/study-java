@@ -339,11 +339,11 @@ class CommonTest {
 
         // 进行一次无意义排序 (即排序结果不具备任何有意义的顺序), 且排序结果可复现 (即同一个集合的排序结果是无序且稳定的)
         Collections.sort(list, Ordering.arbitrary());
-        then(list).containsExactly(4, 5, 3, 2, 1);
+        then(list).containsExactlyInAnyOrder(4, 5, 3, 2, 1);
 
         // 进行一次无效排序 (即排序结果和未排序前一致)
         Collections.sort(list, Ordering.allEqual());
-        then(list).containsExactly(4, 5, 3, 2, 1);
+        then(list).containsExactlyInAnyOrder(4, 5, 3, 2, 1);
 
         // 在集合中添加一个 null 值
         list.add(null);

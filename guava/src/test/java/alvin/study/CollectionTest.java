@@ -17,6 +17,9 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.AbstractIterator;
+import com.google.common.collect.BoundType;
+import com.google.common.collect.ContiguousSet;
+import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.ForwardingIterator;
 import com.google.common.collect.ForwardingList;
 import com.google.common.collect.ForwardingListIterator;
@@ -27,6 +30,7 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.MultimapBuilder;
 import com.google.common.collect.Ordering;
+import com.google.common.collect.Range;
 import com.google.common.collect.Sets;
 
 /**
@@ -518,6 +522,144 @@ class CollectionTest {
             then(map).contains(
                 entry("A", ImmutableList.of(1, 1, 2)),
                 entry("B", ImmutableList.of(10, 20, 30)));
+        }
+    }
+
+    /**
+     * 测试 {@link Range} 集合
+     *
+     * <p>
+     * {@link Range} 类型集合并不存储实际的元素值, 而是存储集合的边界以及边界是否开闭, 及从数学定义上的"开区间"或"闭区间", 例如
+     * {@code [1..3]}, {@code [2..1000)} 等
+     * </p>
+     *
+     * <p>
+     * {@link Range} 对象包括一系列方法对区间进行操作, 包括:
+     * <ul>
+     * <li>
+     * 创建开闭区间: {@code open}, {@code closed}, {@code cosedOpen}, {@code openClosed}, {@code greaterThan},
+     * {@code lessThan}, {@code atMost}, {@code atLeast} 以及 {@code all}
+     * </li>
+     * <li>
+     * 指定区间的开闭性: {@code range}, {@code downTo} 以及 {@code upTo}, 通过区间边界值和 {@link BoundType} 枚举来定义区间
+     * </li>
+     * <li>
+     * 判断一个数值是否包含在指定的区间内: {@code contains} 和 {@code containsAll} 方法
+     * </li>
+     * <li>
+     * 判断两区间的关系: {@code encloses} 和 {@code isConnected} 方法
+     * </li>
+     * <li>
+     * 对两区间进行运算: {@code intersection} 和 {@code span} 方法
+     * </li>
+     * <li>
+     * 对区间进行迭代: 通过 {@link ContiguousSet} 类配合 {@link DiscreteDomain} 类, 可以将区间转为一个
+     * {@link com.google.common.collect.ImmutableSortedSet ImmutableSortedSet}, 通过该集合对象进行操作
+     * </li>
+     * </ul>
+     * </p>
+     */
+    @Nested
+    class RangeTest {
+        /**
+         * 测试创建一个区间对象
+         *
+         * <p>
+         * {@link Range#closedOpen(Comparable, Comparable)} 方法用于创建一个半开区间 (左闭右开), 类似的方法还有:
+         * <ul>
+         * <li>{@link Range#closed(Comparable, Comparable)}, 创建闭区间</li>
+         * <li>{@link Range#open(Comparable, Comparable)}, 创建开区间</li>
+         * <li>{@link Range#openClosed(Comparable, Comparable)}, 创建半开区间 (左开右闭)</li>
+         * <li>{@link Range#lessThan(Comparable)}, 创建小于指定值的无限区间, 即 {@code (-∞..n)}</li>
+         * <li>{@link Range#greaterThan(Comparable)}, 创建大于指定值的无限区间, 即 {@code (n..∞)}</li>
+         * <li>{@link Range#atLeast(Comparable)}, 创建大于指定值的无限区间, 即 {@code [n..∞)}</li>
+         * <li>{@link Range#atMost(Comparable)}, 创建大于指定值的无限区间, 即 {@code (-∞..n]}</li>
+         * </ul>
+         * </p>
+         *
+         * <p>
+         * 出上述方法外, 还可以指定区间的开闭性:
+         * <ul>
+         * <li>{@link Range#range(Comparable, BoundType, Comparable, BoundType)}, 通过上下限和开闭性参数创建区间</li>
+         * <li>{@link Range#upTo(Comparable, BoundType)}, 创建开区间</li>
+         * <li>{@link Range#openClosed(Comparable, Comparable)}, 创建半开区间 (左开右闭)</li>
+         * <li>{@link Range#lessThan(Comparable)}, 创建小于指定值的无限区间, 即 {@code (-∞..n)}</li>
+         * <li>{@link Range#greaterThan(Comparable)}, 创建大于指定值的无限区间, 即 {@code (n..∞)}</li>
+         * <li>{@link Range#atLeast(Comparable)}, 创建大于指定值的无限区间, 即 {@code [n..∞)}</li>
+         * <li>{@link Range#atMost(Comparable)}, 创建大于指定值的无限区间, 即 {@code (-∞..n]}</li>
+         * </ul>
+         * </p>
+         */
+        @Test
+        void range_shouldCreateRangeNumber() {
+            // 创建一个 [1..5) 的区间
+            var range = Range.closedOpen(1, 5);
+
+            // 确认区间不为空
+            then(range.isEmpty()).isFalse();
+
+            // 确认区间具备下限, 如果区间下限为 ∞, 则该方法返回 false
+            then(range.hasLowerBound()).isTrue();
+            // 确认区间的下限为关闭
+            then(range.lowerBoundType()).isEqualTo(BoundType.CLOSED);
+            // 确认区间的上限
+            then(range.lowerEndpoint()).isEqualTo(1);
+
+            // 确认区间具备上限, 如果区间上限为 ∞, 则该方法返回 false
+            then(range.hasUpperBound()).isTrue();
+            // 确认区间的上限
+            then(range.upperBoundType()).isEqualTo(BoundType.OPEN);
+            // 确认区间的上限为开放
+            then(range.upperEndpoint()).isEqualTo(5);
+        }
+
+        /**
+         * 测试确认一个值或一个集合是否包含在指定区间内
+         */
+        @Test
+        void contains_shouldCheckIfRangeContainsValue() {
+            // 创建一个 [1..5) 的区间
+            var range = Range.range(1, BoundType.CLOSED, 5, BoundType.OPEN);
+
+            // 确认指定值是否包含在区间内
+            then(range.contains(1)).isTrue();
+            then(range.contains(5)).isFalse();
+
+            // 确认指定的集合是否包含在区间内
+            then(range.containsAll(ImmutableList.of(1, 2, 3, 4))).isTrue();
+
+            then(ContiguousSet.create(range, DiscreteDomain.integers())).containsExactly(1, 2, 3, 4);
+        }
+
+        /**
+         * 对两个区间进行计算
+         */
+        @Test
+        void operations_shouldOperateWithTwoRanges() {
+            // 创建一个 [-∞..10) 的区间
+            var range1 = Range.upTo(10, BoundType.OPEN);
+            // 创建一个 [10..100) 的区间
+            var range2 = Range.range(10, BoundType.CLOSED, 100, BoundType.OPEN);
+
+            // 确认区间 1 不包含区间 2, 即区间 2 内至少有一个值不在区间 1 中
+            then(range1.encloses(range2)).isFalse();
+
+            // 确认区间 1 和区间 2 连续, 即有一组值可以即在区间 1 内, 同时也在区间 2 内
+            then(range1.isConnected(range2)).isTrue();
+
+            // 获取两个区间共同的子区间
+            var range = range1.intersection(range2);
+            // 确认子区间为 [10 .. 10)
+            then(range.lowerEndpoint()).isEqualTo(10);
+            then(range.lowerBoundType()).isEqualTo(BoundType.CLOSED);
+            then(range.upperEndpoint()).isEqualTo(10);
+            then(range.upperBoundType()).isEqualTo(BoundType.OPEN);
+
+            range = range1.span(range2);
+            // 确认子区间为 [-∞ .. 10)
+            then(range.hasLowerBound()).isFalse();
+            then(range.upperEndpoint()).isEqualTo(100);
+            then(range.upperBoundType()).isEqualTo(BoundType.OPEN);
         }
     }
 
