@@ -32,7 +32,7 @@ import com.google.common.collect.MultimapBuilder;
  */
 class MultiCollectionTest {
     /**
-     * {@link com.google.common.collect.Multiset Multiset} 接口提供了一种可以存储重复元素的 {@link java.util.Set Set} 集合
+     * 测试 {@link com.google.common.collect.Multiset Multiset} 接口类型
      *
      * <p>
      * {@link com.google.common.collect.Multiset Multiset} 继承自 {@link java.util.Collection} 接口, 具备其定义的所有行为
@@ -183,9 +183,7 @@ class MultiCollectionTest {
     }
 
     /**
-     * {@link com.google.common.collect.Multimap Multimap} 集合是一个类似 {@link java.util.Map Map} 的 Key/Values 集合,
-     * 和 {@code Map} 不同的是, {@code Multimap} 的 Value 永远是一个集合 ({@code List} 或 {@code Set}), 即一个 Key 将对应
-     * 一组值
+     * 测试 {@link com.google.common.collect.Multimap Multimap} 接口类型
      *
      * <p>
      * {@link com.google.common.collect.Multimap Multimap} 的内部是通过一个 {@link java.util.Map Map} 集合来存储元素,
