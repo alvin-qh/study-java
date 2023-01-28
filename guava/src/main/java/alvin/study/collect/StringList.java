@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ForwardingIterator;
@@ -16,6 +15,7 @@ import com.google.common.collect.ForwardingListIterator;
 /**
  * 代理 {@link ArrayList} 类型的类型
  */
+@SuppressWarnings("java:S2160")
 public class StringList extends ForwardingList<String> {
     // 设置被代理的对象
     private final List<String> delegatedList = new ArrayList<>();
@@ -117,21 +117,5 @@ public class StringList extends ForwardingList<String> {
                 return delegatedIterator;
             }
         };
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof StringList other)) {
-            return false;
-        }
-        return Objects.equal(delegatedList, other.delegatedList);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(delegatedList);
     }
 }

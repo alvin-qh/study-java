@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ForwardingMap;
@@ -15,37 +14,41 @@ import com.google.common.collect.ForwardingMapEntry;
 /**
  * 代理 {@link LinkedHashMap} 类型的类型
  */
+@SuppressWarnings("java:S2160")
 public class IdMap extends ForwardingMap<Long, String> {
+    /**
+     * 代理 {@link Map.Entry} 类型
+     */
     static class IdMapEntry extends ForwardingMapEntry<Long, String> {
+        // 被代理的 Map.Entry 对象
         private final Map.Entry<Long, String> delegatedEntry;
 
-        public IdMapEntry(Entry<Long, String> delegatedEntry) {
+        /**
+         * 构造器, 设置被代理的 {@link Map.Entry} 类型对象
+         *
+         * @param delegatedEntry {@link Map.Entry} 类型对象
+         */
+        IdMapEntry(Entry<Long, String> delegatedEntry) {
             this.delegatedEntry = delegatedEntry;
         }
 
+        /**
+         * 获取被代理的 {@link Map.Entry} 类型对象
+         *
+         * @return {@link Map.Entry} 类型对象
+         */
         @Override
         protected Entry<Long, String> delegate() {
             return delegatedEntry;
         }
 
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
-            }
-
-            if (!(obj instanceof IdMapEntry other)) {
-                return false;
-            }
-
-            return Objects.equal(delegatedEntry, other.delegatedEntry);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hashCode(delegatedEntry);
-        }
-
+        /**
+         * 构造一个 {@link IdMapEntry} 类型对象
+         *
+         * @param key   键值
+         * @param value value 值
+         * @return {@link IdMapEntry} 对象
+         */
         public static Entry<Long, String> entry(Long key, String value) {
             Preconditions.checkNotNull(key);
             if (Strings.isNullOrEmpty(value)) {
@@ -107,26 +110,19 @@ public class IdMap extends ForwardingMap<Long, String> {
         delegatedMap.putAll(map);
     }
 
+    /**
+     * 重写 {@link Map#entrySet()} 方法
+     *
+     * <p>
+     * 本方法返回 {@link IdMapEntry} 类型 (即 {@link Map.Entry} 类型的代理类型) 的 {@link Set} 集合
+     * </p>
+     *
+     * @return {@link IdMapEntry} 类型的 {@link Set} 集合
+     */
     @Override
     public Set<Entry<Long, String>> entrySet() {
         return delegatedMap.entrySet().stream()
                 .map(IdMapEntry::new)
                 .collect(Collectors.toSet());
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof IdMap other)) {
-            return false;
-        }
-        return Objects.equal(delegatedMap, other.delegatedMap);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(delegatedMap);
     }
 }
