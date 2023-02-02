@@ -65,8 +65,14 @@ class RangeTest {
      * 除上述方法外, 还可以指定区间的开闭性:
      * <ul>
      * <li>{@link Range#range(Comparable, BoundType, Comparable, BoundType)}, 通过区间的上下限和开闭性参数创建区间</li>
-     * <li>{@link Range#upTo(Comparable, BoundType)}, 创建并设定区间的上限和其开闭性, 区间下限为 {@code -∞}</li>
-     * <li>{@link Range#downTo(Comparable, BoundType)}, 创建并设定区间的下限和其开闭性, 区间上限为 {@code ∞}</li>
+     * <li>
+     * {@link Range#upTo(Comparable, BoundType)}, 创建并设定区间的上限和其开闭性, 区间下限为 {@code -∞}; 如果上限为开, 则相当于
+     * {@link Range#lessThan(Comparable)} 方法, 如果上限为闭, 则相当于 {@link Range#atMost(Comparable)} 方法
+     * </li>
+     * <li>
+     * {@link Range#downTo(Comparable, BoundType)}, 创建并设定区间的下限和其开闭性, 区间上限为 {@code ∞}; 如果下限为开, 则相当于
+     * {@link Range#greaterThan(Comparable)} 方法, 如果下限为闭, 则相当于 {@link Range#atLeast(Comparable)} 方法
+     * </li>
      * </ul>
      * </p>
      */
@@ -91,6 +97,34 @@ class RangeTest {
         then(range.upperBoundType()).isEqualTo(BoundType.OPEN);
         // 确认区间的上限为开放
         then(range.upperEndpoint()).isEqualTo(5);
+
+        // 创建一个 (-∞, 1] 的区间
+        range = Range.upTo(1, BoundType.CLOSED);
+        // 确认区间下限为 -∞
+        then(range.hasLowerBound()).isFalse();
+        // 确认区间上限为 1
+        then(range.upperEndpoint()).isEqualTo(1);
+        // 确认区间上限为关闭
+        then(range.upperBoundType()).isEqualTo(BoundType.CLOSED);
+
+        // 确认 upTo 方法的第二个参数为 OPEN, 则相当于 lessThan 方法
+        then(Range.upTo(1, BoundType.OPEN)).isEqualTo(Range.lessThan(1));
+        // 确认 upTo 方法的第二个参数为 CLOSED, 则相当于 atMost 方法
+        then(Range.upTo(1, BoundType.CLOSED)).isEqualTo(Range.atMost(1));
+
+        // 创建一个 [1, ∞) 的区间
+        range = Range.downTo(1, BoundType.CLOSED);
+        // 确认区间下限为 1
+        then(range.lowerEndpoint()).isEqualTo(1);
+        // 确认区间下限为关闭
+        then(range.lowerBoundType()).isEqualTo(BoundType.CLOSED);
+        // 确认区间上限为 ∞
+        then(range.hasUpperBound()).isFalse();
+
+        // 确认 downTo 方法的第二个参数为 OPEN, 则相当于 greaterThan 方法
+        then(Range.downTo(1, BoundType.OPEN)).isEqualTo(Range.greaterThan(1));
+        // 确认 downTo 方法的第二个参数为 CLOSED, 则相当于 atLeast 方法
+        then(Range.downTo(1, BoundType.CLOSED)).isEqualTo(Range.atLeast(1));
     }
 
     /**
@@ -183,7 +217,7 @@ class RangeTest {
      * </p>
      */
     @Test
-    void discrete_shouldConvertRangeToDiscretelyCollection() {
+    void discrete_shouldConvertRangeToDiscretelySet() {
         var range = Range.closedOpen(-3, 3);
 
         // 将区间转化为集合
