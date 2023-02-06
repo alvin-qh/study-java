@@ -24,7 +24,7 @@ import com.google.common.collect.Lists;
  * 不对迭代器进行迭代 (即不移动迭代器的元素指针), 适合要重复获取当前迭代元素的情况
  * </p>
  */
-class IteratorTest {
+class IteratorExtensionTest {
     /**
      * 测试通过 {@link AbstractIterator} 类型对迭代器类型进行扩展
      *

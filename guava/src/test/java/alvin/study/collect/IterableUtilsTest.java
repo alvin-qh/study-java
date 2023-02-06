@@ -17,7 +17,7 @@ import com.google.common.collect.Ordering;
  * {@link Iterables} 工具类提供了一组对 {@link Iterable} 可迭代接口对象进行操作的辅助方法
  * </p>
  */
-class IterablesTest {
+class IterableUtilsTest {
     /**
      * 将一个可迭代对象内的元素添加到另一个集合中
      *
