@@ -4,6 +4,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.junit.jupiter.api.Test;
 
@@ -15,13 +16,12 @@ import com.google.common.collect.Lists;
  * 演示 Guava 列表集合工具类
  *
  * <p>
- * {@link Lists} 类提供了一系列静态方法用于创建和操作 {@link java.util.ArrayList ArrayList} 和 {@link java.util.LinkedList
- * LinkedList} 类型对象
+ * {@link Lists} 类提供了一系列静态方法用于创建和操作 {@link ArrayList} 和 {@link LinkedList} 类型对象
  * </p>
  */
 class ListUtilsTest {
     /**
-     * 通过指定元素和数组创建 {@link java.util.List} 集合对象
+     * 通过指定元素和数组创建 {@link java.util.List List} 集合对象
      *
      * <p>
      * 该方法有两个重载 {@link Lists#asList(Object, Object[])} 和 {@link Lists#asList(Object, Object, Object[])} 方法
@@ -107,13 +107,13 @@ class ListUtilsTest {
     }
 
     /**
+     * 创建 {@link java.util.List List} 集合对象
+     *
+     * <p>
      * 创建 {@link java.util.ArrayList ArrayList} 集合对象
-     *
-     * <p>
-     * 通过 {@link {@link Lists#newArrayList()} 方法可以创建一个 {@link java.util.ArrayList ArrayList} 集合对象
-     * </p>
-     *
-     * <p>
+     * <ul>
+     * <li>
+     * 通过 {@link {@link Lists#newArrayList()} 方法可以创建一个 {@link java.util.ArrayList ArrayList} 集合对象.
      * 该方法有一系列重载, 通过不同类型参数构建 {@link java.util.ArrayList ArrayList} 集合对象, 包括:
      * <ul>
      * <li>
@@ -134,9 +134,8 @@ class ListUtilsTest {
      * {@link java.util.ArrayList ArrayList} 集合对象
      * </li>
      * </ul>
-     * </p>
-     *
-     * <p>
+     * </li>
+     * <li>
      * 除上述重载方法外, Guava 还提供了和集合元素个数设定相关的几个方法, 可以提高代码执行效率, 包括:
      * <ul>
      * <li>
@@ -151,73 +150,14 @@ class ListUtilsTest {
      * {@code capacity} 值
      * </li>
      * </ul>
+     * </li>
+     * </ul>
      * </p>
-     */
-    @Test
-    void newArrayList_shouldCreateArrayList() {
-        {
-            // 构建空 ArrayList 集合对象
-            var list = Lists.newArrayList();
-
-            // 确认集合为空
-            then(list).isInstanceOf(ArrayList.class).isEmpty();
-        }
-        {
-            // 构建根据所给元素值构建 ArrayList 对象
-            var list = Lists.newArrayList(1, 2, 3, 4);
-
-            // 确认集合元素值
-            then(list).isInstanceOf(ArrayList.class).containsExactly(1, 2, 3, 4);
-        }
-
-        var iterable = ImmutableList.of(1, 2, 3, 4);
-
-        {
-            // 构建根据所给可迭代对象构建 ArrayList 对象
-            var list = Lists.newArrayList(iterable);
-
-            // 确认集合元素值
-            then(list).isInstanceOf(ArrayList.class).containsExactly(1, 2, 3, 4);
-        }
-        {
-            // 构建根据所给迭代器对象构建 ArrayList 对象
-            var list = Lists.newArrayList(iterable.iterator());
-
-            // 确认集合元素值
-            then(list).isInstanceOf(ArrayList.class).containsExactly(1, 2, 3, 4);
-        }
-        {
-            // 初始化 ArrayList 集合并设置其 capacity 值
-            var list = Lists.newArrayListWithCapacity(5);
-
-            list.add(1);
-            list.add(2);
-            list.add(3);
-            list.add(4);
-            list.add(5);
-            // 元素个数超出可能会影响到重新分配内存
-            list.add(6);
-            then(list).containsExactly(1, 2, 3, 4, 5, 6);
-        }
-        {
-            // 初始化 ArrayList 集合并设置预期可能的元素个数
-            var list = Lists.newArrayListWithExpectedSize(5);
-
-            list.add(1);
-            list.add(2);
-            list.add(3);
-            list.add(4);
-            list.add(5);
-            // 元素个数超出并不会立即导致内存重分配
-            list.add(6);
-            then(list).containsExactly(1, 2, 3, 4, 5, 6);
-        }
-    }
-
-    /**
-     * 创建 {@link java.util.concurrent.CopyOnWriteArrayList CopyOnWriteArrayList} 对象
      *
      * <p>
+     * 创建 {@link java.util.concurrent.CopyOnWriteArrayList CopyOnWriteArrayList} 对象
+     * <ul>
+     * <li>
      * 所谓 {@code CopyOnWriteArrayList}, 即一个 {@link java.util.List List} 类型集合, 和 {@link java.util.ArrayList
      * ArrayList} 类型的区别在于:
      * <ul>
@@ -230,46 +170,119 @@ class ListUtilsTest {
      * (或复制元素时忽略) 到新数组
      * </li>
      * </ul>
-     * </p>
-     *
-     * <p>
+     * </li>
+     * <li>
      * {@code CopyOnWriteArrayList} 会在操作数组元素时 (例如添加和删除元素) 加锁, 以保证线程安全性
-     * </p>
-     *
-     * <p>
+     * </li>
+     * <li>
      * {@code CopyOnWriteArrayList} 的宗旨是"读写分离", 即读的是集合中的原数组, 写的是从原数组中创建的新数组, 写完毕后, 再把原数组丢弃,
      * 换成新数组. 所以 {@code CopyOnWriteArrayList} 在读的时候无需加锁
-     * </p>
-     *
-     * <p>
+     * </li>
+     * <li>
      * {@code CopyOnWriteArrayList} 不能进行大规模写操作, 其效率非常低, 但一旦构建好, 即可进行高效率读操作; 一些特殊的情况 (必须写,
      * 但读多写少) 下, 可以使用该类型集合, 但更多时候, 应该使用 {@link ImmutableList} 来保证更好的效率和范式
+     * </li>
+     * </ul>
+     * </p>
+     * <p>
+     *
+     * <p>
+     * 创建 {@link LinkedList} 集合对象
+     * <ul>
+     * <li>
+     * {@link Lists#newLinkedList()} 方法可以创建 {@link LinkedList} 类型集合对象, 和直接使用 {@code LinkedList} 类型构造器一致
+     * </li>
+     * </ul>
      * </p>
      */
     @Test
-    void copyOnWrite_shouldCreateCopyOnWriteArrayList() {
-        {
-            // 创建一个空的集合对象
-            var cowList = Lists.newCopyOnWriteArrayList();
+    void new_shouldCreateList() {
+        var iterable = ContiguousSet.closedOpen(0, 10).asList();
 
-            // 添加元素
-            cowList.add(1);
-            cowList.add(2);
-            cowList.add(3);
-            // 确认集合中的元素值
-            then(cowList).containsExactly(1, 2, 3);
+        // 构建 ArrayList 对象
+        {
+            // 构建空 ArrayList 集合对象
+            var list = Lists.newArrayList();
+            // 确认集合为空
+            then(list).isInstanceOf(ArrayList.class).isEmpty();
+        }
+        {
+            // 构建根据所给元素值构建 ArrayList 对象
+            var list = Lists.newArrayList(1, 2, 3, 4);
+            // 确认集合元素值
+            then(list).isInstanceOf(ArrayList.class).containsExactly(1, 2, 3, 4);
+        }
+        {
+            // 构建根据所给可迭代对象构建 ArrayList 对象
+            var list = Lists.newArrayList(iterable);
+            // 确认集合元素值
+            then(list).isInstanceOf(ArrayList.class).containsExactlyElementsOf(iterable);
+        }
+        {
+            // 构建根据所给迭代器对象构建 ArrayList 对象
+            var list = Lists.newArrayList(iterable.iterator());
+            // 确认集合元素值
+            then(list).isInstanceOf(ArrayList.class).containsExactlyElementsOf(iterable);
+        }
+        {
+            // 初始化 ArrayList 集合并设置其 capacity 值
+            var list = Lists.newArrayListWithCapacity(5);
+
+            list.add(1);
+            list.add(2);
+            list.add(3);
+            list.add(4);
+            list.add(5);
+            // 元素个数超出可能会影响到重新分配内存
+            list.add(6);
+            then(list).isInstanceOf(ArrayList.class).containsExactly(1, 2, 3, 4, 5, 6);
+        }
+        {
+            // 初始化 ArrayList 集合并设置预期可能的元素个数
+            var list = Lists.newArrayListWithExpectedSize(5);
+
+            list.add(1);
+            list.add(2);
+            list.add(3);
+            list.add(4);
+            list.add(5);
+            // 元素个数超出并不会立即导致内存重分配
+            list.add(6);
+            then(list).isInstanceOf(ArrayList.class).containsExactly(1, 2, 3, 4, 5, 6);
         }
 
-        var iterable = ImmutableList.of(1, 2, 3);
+        // 构建 CopyOnWriteArrayList 集合对象
+        {
+            // 创建一个空的集合对象
+            var list = Lists.newCopyOnWriteArrayList();
 
+            // 添加元素
+            list.add(1);
+            list.add(2);
+            list.add(3);
+            // 确认集合中的元素值
+            then(list).containsExactly(1, 2, 3);
+        }
         {
             // 通过一个可迭代对象内容初始化集合对象
-            var cowList = Lists.newCopyOnWriteArrayList(iterable);
+            var list = Lists.newCopyOnWriteArrayList(iterable);
 
-            // 在额外添加一个元素
-            cowList.add(4);
             // 确认集合中的元素值
-            then(cowList).containsExactly(1, 2, 3, 4);
+            then(list).isInstanceOf(CopyOnWriteArrayList.class).containsExactlyElementsOf(iterable);
+        }
+
+        // 构建 LinkedList 集合对象
+        {
+            // 构建空 LinkedList 集合对象
+            var list = Lists.newLinkedList();
+            // 确认集合为空
+            then(list).isInstanceOf(LinkedList.class).isEmpty();
+        }
+        {
+            // 构建根据所给可迭代对象构建 LinkedList 对象
+            var list = Lists.newLinkedList(iterable);
+            // 确认集合元素值
+            then(list).isInstanceOf(LinkedList.class).containsExactlyElementsOf(iterable);
         }
     }
 
@@ -359,33 +372,5 @@ class ListUtilsTest {
         list.add(4);
         // 确认转换结果集合中也包含对应转换后的元素
         then(transformedList).containsExactly("01", "02", "03", "04");
-    }
-
-    /**
-     * 创建 {@link LinkedList} 集合对象
-     *
-     * <p>
-     * {@link Lists#newLinkedList()} 方法可以创建 {@link LinkedList} 类型集合对象, 和直接使用 {@code LinkedList} 类型构造器一致
-     * </p>
-     */
-    @Test
-    void newLinkedList_shouldCreateLinkedList() {
-        {
-            // 构建空 ArrayList 集合对象
-            var list = Lists.newLinkedList();
-
-            // 确认集合为空
-            then(list).isInstanceOf(LinkedList.class).isEmpty();
-        }
-
-        var iterable = ImmutableList.of(1, 2, 3, 4);
-
-        {
-            // 构建根据所给可迭代对象构建 ArrayList 对象
-            var list = Lists.newLinkedList(iterable);
-
-            // 确认集合元素值
-            then(list).isInstanceOf(LinkedList.class).containsExactly(1, 2, 3, 4);
-        }
     }
 }
