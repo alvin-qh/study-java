@@ -110,28 +110,27 @@ class ListUtilsTest {
      * 创建 {@link java.util.List List} 集合对象
      *
      * <p>
-     * 创建 {@link java.util.ArrayList ArrayList} 集合对象
+     * 创建 {@link ArrayList} 集合对象
      * <ul>
      * <li>
-     * 通过 {@link {@link Lists#newArrayList()} 方法可以创建一个 {@link java.util.ArrayList ArrayList} 集合对象.
-     * 该方法有一系列重载, 通过不同类型参数构建 {@link java.util.ArrayList ArrayList} 集合对象, 包括:
+     * 通过 {@link {@link Lists#newArrayList()} 方法可以创建一个 {@link ArrayList} 集合对象. 该方法有一系列重载,
+     * 通过不同类型参数构建 {@link ArrayList} 集合对象, 包括:
      * <ul>
      * <li>
-     * {@link Lists#newArrayList()}, 构建一个空的 {@link java.util.ArrayList ArrayList} 集合对象, 相当于直接执行
-     * {@code new ArrayList()}. 注意: 如果只是为了得到一个空集合且不会修改它, 则应该使用 {@link ImmutableList#of()} 方法, 或在
-     * JDK 9 之后使用 {@link java.util.List#of() List.of()} 方法
+     * {@link Lists#newArrayList()}, 构建一个空的 {@link ArrayList} 集合对象, 相当于直接执行 {@code new ArrayList()}.
+     * 注意: 如果只是为了得到一个空集合且不会修改它, 则应该使用 {@link ImmutableList#of()} 方法, 或在 JDK 9 之后使用
+     * {@link java.util.List#of() List.of()} 方法
      * </li>
      * <li>
-     * {@link Lists#newArrayList(Object...) Lists.newArrayList(T...)}, 通过一系列元素值构建
-     * {@link java.util.ArrayList ArrayList} 集合对象
+     * {@link Lists#newArrayList(Object...) Lists.newArrayList(T...)}, 通过一系列元素值构建 {@link ArrayList} 集合对象
      * </li>
      * <li>
      * {@link Lists#newArrayList(Iterable) Lists.newArrayList(Iterable)}, 将一个可迭代对象通过迭代获取元素, 构建
-     * {@link java.util.ArrayList ArrayList} 集合对象
+     * {@link ArrayList} 集合对象
      * </li>
      * <li>
      * {@link Lists#newArrayList(java.util.Iterator) Lists.newArrayList(Iterator)}, 将一个迭代器对象通过迭代获取元素, 构建
-     * {@link java.util.ArrayList ArrayList} 集合对象
+     * {@link ArrayList} 集合对象
      * </li>
      * </ul>
      * </li>
@@ -139,15 +138,14 @@ class ListUtilsTest {
      * 除上述重载方法外, Guava 还提供了和集合元素个数设定相关的几个方法, 可以提高代码执行效率, 包括:
      * <ul>
      * <li>
-     * {@link Lists#newArrayListWithCapacity(int)} 方法用于产生一个空 {@link java.util.ArrayList ArrayList} 集合对象,
-     * 并设置预期的 {@code capacity} 属性, 该集合对象可以在元素数量到达预期值前, 避免内存重新分配. 注意, 该方法已标记为过期, 应该直接使用
-     * {@code new ArrayList(int)} 方法, 通过参数设置 {@code capacity} 值
+     * {@link Lists#newArrayListWithCapacity(int)} 方法用于产生一个空 {@link ArrayList} 集合对象, 并设置预期的 {@code capacity}
+     * 属性, 该集合对象可以在元素数量到达预期值前, 避免内存重新分配. 注意, 该方法已标记为过期, 应该直接使用 {@code new ArrayList(int)}
+     * 方法, 通过参数设置 {@code capacity} 值
      * </li>
      * <li>
-     * {@link Lists#newArrayListWithExpectedSize(int)} 方法用于产生一个空 {@link java.util.ArrayList ArrayList} 集合对象,
-     * 并设置预期元素个数, 并通过预期元素个数计算应该设置的 {@code capacity} 值, 这样即便集合中的元素个数达到预期值,
-     * 继续添加元素也不会立即引发内存重分配. 注意, 该方法已标记为过期, 应该直接使用 {@code new ArrayList(int)} 方法, 通过参数设置
-     * {@code capacity} 值
+     * {@link Lists#newArrayListWithExpectedSize(int)} 方法用于产生一个空 {@link ArrayList} 集合对象, 并设置预期元素个数,
+     * 并通过预期元素个数计算应该设置的 {@code capacity} 值, 这样即便集合中的元素个数达到预期值, 继续添加元素也不会立即引发内存重分配.
+     * 注意, 该方法已标记为过期, 应该直接使用 {@code new ArrayList(int)} 方法, 通过参数设置 {@code capacity} 值
      * </li>
      * </ul>
      * </li>
@@ -155,31 +153,30 @@ class ListUtilsTest {
      * </p>
      *
      * <p>
-     * 创建 {@link java.util.concurrent.CopyOnWriteArrayList CopyOnWriteArrayList} 对象
+     * 创建 {@link CopyOnWriteArrayList} 对象
      * <ul>
      * <li>
-     * 所谓 {@code CopyOnWriteArrayList}, 即一个 {@link java.util.List List} 类型集合, 和 {@link java.util.ArrayList
-     * ArrayList} 类型的区别在于:
+     * 所谓 {@link CopyOnWriteArrayList}, 即一个 {@link java.util.List List} 类型集合, 和 {@link ArrayList} 类型的区别在于:
      * <ul>
      * <li>
-     * {@code ArrayList} 通过一个数组存储元素, 且数组长度有冗余, 在数组被占满前, 元素都是添加到该数组中, 直到数组占满后,
+     * {@link ArrayList} 通过一个数组存储元素, 且数组长度有冗余, 在数组被占满前, 元素都是添加到该数组中, 直到数组占满后,
      * 会重新分配更大的数组继续进行存储; 删除元素则直接在原数组上进行, 多出一个冗余的元素空间
      * </li>
      * <li>
-     * {@code CopyOnWriteArrayList} 也是通过一个数组存储元素, 每次添加或删除元素, 都会在原数组的基础上创建一个新数组, 将元素添加
+     * {@link CopyOnWriteArrayList} 也是通过一个数组存储元素, 每次添加或删除元素, 都会在原数组的基础上创建一个新数组, 将元素添加
      * (或复制元素时忽略) 到新数组
      * </li>
      * </ul>
      * </li>
      * <li>
-     * {@code CopyOnWriteArrayList} 会在操作数组元素时 (例如添加和删除元素) 加锁, 以保证线程安全性
+     * {@link CopyOnWriteArrayList} 会在操作数组元素时 (例如添加和删除元素) 加锁, 以保证线程安全性
      * </li>
      * <li>
-     * {@code CopyOnWriteArrayList} 的宗旨是"读写分离", 即读的是集合中的原数组, 写的是从原数组中创建的新数组, 写完毕后, 再把原数组丢弃,
-     * 换成新数组. 所以 {@code CopyOnWriteArrayList} 在读的时候无需加锁
+     * {@link CopyOnWriteArrayList} 的宗旨是"读写分离", 即读的是集合中的原数组, 写的是从原数组中创建的新数组, 写完毕后, 再把原数组丢弃,
+     * 换成新数组. 所以 {@link CopyOnWriteArrayList} 在读的时候无需加锁
      * </li>
      * <li>
-     * {@code CopyOnWriteArrayList} 不能进行大规模写操作, 其效率非常低, 但一旦构建好, 即可进行高效率读操作; 一些特殊的情况 (必须写,
+     * {@link CopyOnWriteArrayList} 不能进行大规模写操作, 其效率非常低, 但一旦构建好, 即可进行高效率读操作; 一些特殊的情况 (必须写,
      * 但读多写少) 下, 可以使用该类型集合, 但更多时候, 应该使用 {@link ImmutableList} 来保证更好的效率和范式
      * </li>
      * </ul>
@@ -190,7 +187,7 @@ class ListUtilsTest {
      * 创建 {@link LinkedList} 集合对象
      * <ul>
      * <li>
-     * {@link Lists#newLinkedList()} 方法可以创建 {@link LinkedList} 类型集合对象, 和直接使用 {@code LinkedList} 类型构造器一致
+     * {@link Lists#newLinkedList()} 方法可以创建 {@link LinkedList} 类型集合对象, 和直接使用 {@link LinkedList} 构造器一致
      * </li>
      * </ul>
      * </p>
