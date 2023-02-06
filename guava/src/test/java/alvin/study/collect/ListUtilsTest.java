@@ -195,9 +195,9 @@ class ListUtilsTest {
             list.add(3);
             list.add(4);
             list.add(5);
-            // 元素个数超出可能会影响到
+            // 元素个数超出可能会影响到重新分配内存
             list.add(6);
-            then(list).containsExactly(1, 2, 3, 4, 5);
+            then(list).containsExactly(1, 2, 3, 4, 5, 6);
         }
         {
             // 初始化 ArrayList 集合并设置预期可能的元素个数
@@ -328,6 +328,37 @@ class ListUtilsTest {
         list.add(4);
         // 确认反转集合中也增加了一个元素, 且位置被反转
         then(reversedList).containsExactly(4, 3, 2, 1);
+    }
+
+    /**
+     * 将一个 {@link java.util.List List} 集合的全部元素进行转换
+     *
+     * <p>
+     * {@link Lists#transform(java.util.List, com.google.common.base.Function) Lists.transform(List, Function)}
+     * 方法方法返回一个 {@link Lists.TransformingRandomAccessList} 或 {@link Lists.TransformingSequentialList} 类型对象,
+     * 存储转换后的元素集合
+     * </p>
+     *
+     * <p>
+     * 注意: 转换并不是在 {@code transform} 方法执行的过程中完成的, 事实上, {@code transform} 返回的
+     * {@code TransformingRandomAccessList} 或 {@code TransformingSequentialList} 类型只是一个原集合类型的代理类型,
+     * 在获取集合元素时, 才会将集合元素从原集合中获取, 并转换为所需的结果返回
+     * </p>
+     */
+    @Test
+    void transform_shouldTransformEachElementInList() {
+        // 产生一个元素值为 0~9 的列表集合
+        var list = Lists.newArrayList(1, 2, 3);
+
+        // 执行转换方法, 获取一个转换元素值后的集合类型
+        var transformedList = Lists.transform(list, e -> String.format("0%d", e));
+        // 确认集合中包含转换后的元素
+        then(transformedList).containsExactly("01", "02", "03");
+
+        // 在原集合中添加一个元素
+        list.add(4);
+        // 确认转换结果集合中也包含对应转换后的元素
+        then(transformedList).containsExactly("01", "02", "03", "04");
     }
 
     /**
