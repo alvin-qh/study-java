@@ -37,7 +37,7 @@ class ListUtilsTest {
      * </p>
      */
     @Test
-    void asList_shouldCreateListByGivenElementAndArray() {
+    void asList_shouldCreateListObject() {
         {
             var list = Lists.asList(1, new Integer[] { 2, 3, 4 });
             then(list).containsExactly(1, 2, 3, 4);
