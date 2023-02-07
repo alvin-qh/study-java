@@ -377,6 +377,41 @@ class SetUtilsTest {
     }
 
     /**
+     * 计算一个集合所有可能的子集
+     *
+     * <p>
+     * {@link Sets#powerSet(java.util.Set) Sets.powerSet(Set)} 方法返回指定集合的所有可能的子集结果
+     * </p>
+     *
+     * <p>
+     * 注意: "空集"也算一个子集, 另外, 所求子集不关心顺序, 即 {@code [1, 2] 和 [2, 1]} 被认为是同一个子集
+     * </p>
+     *
+     * <p>
+     * 例如 {@code [1, 2, 3] => [[], [1], [2], [3], [1, 2], [1, 3], [2, 3], [1, 2, 3]]}
+     * </p>
+     */
+    @Test
+    void powerSet_shouldGetAllSubSet() {
+        // 创建一个集合
+        var set = ImmutableSet.of(1, 2, 3);
+
+        // 求集合的所有子集
+        var subSets = Sets.powerSet(set);
+
+        // 确认所得子集
+        then(subSets).containsExactlyInAnyOrder(
+            ImmutableSet.of(),
+            ImmutableSet.of(1),
+            ImmutableSet.of(2),
+            ImmutableSet.of(3),
+            ImmutableSet.of(1, 2),
+            ImmutableSet.of(1, 3),
+            ImmutableSet.of(2, 3),
+            ImmutableSet.of(1, 2, 3));
+    }
+
+    /**
      * 创建一个包含指定类型枚举值的 {@link java.util.Set Set} 集合对象
      *
      * <p>
