@@ -181,7 +181,6 @@ class ListUtilsTest {
      * </li>
      * </ul>
      * </p>
-     * <p>
      *
      * <p>
      * 创建 {@link LinkedList} 集合对象
