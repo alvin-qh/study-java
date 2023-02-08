@@ -1,0 +1,878 @@
+package alvin.study.common;
+
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+
+import org.junit.jupiter.api.Test;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.primitives.Booleans;
+import com.google.common.primitives.Bytes;
+import com.google.common.primitives.Chars;
+import com.google.common.primitives.Doubles;
+import com.google.common.primitives.Floats;
+import com.google.common.primitives.Ints;
+import com.google.common.primitives.Longs;
+import com.google.common.primitives.Shorts;
+
+/**
+ * 针对于简单类型的一组操作方法
+ *
+ * <p>
+ * Guava 在 {@code com.google.common.primitive} 包下包含了一组工具类, 用于针对简单对象进行操作
+ * </p>
+ *
+ * <p>
+ * 该组工具类主要是针对于简单对象数组进行操作, 避免因需要集合操作将简单对象放入集合引发的装箱和拆箱动作导致性能损耗
+ * </p>
+ *
+ * <p>
+ * 针对不同的简单类型, Guava 提供了 {@link Bytes}, {@link Shorts}, {@link Ints}, {@link Longs}, {@link Floats},
+ * {@link Doubles}, {@link Chars} 以及 {@link Booleans} 等工具类, 对应不同的简单类型进行操作
+ * </p>
+ */
+class PrimitivesTest {
+    /**
+     * 将简单类型元素包装为 {@link java.util.List List} 集合
+     *
+     * <p>
+     * 通过各工具类的 {@code asList} 方法, 可以将一个简单对象数组 (或简单对象不定参数) 转化为 {@link java.util.List} 集合
+     * </p>
+     */
+    @Test
+    void asList_shouldCollectNumbersToList() {
+        // 将 byte 类型数组转为 List 集合
+        {
+            var list = Bytes.asList((byte) 0x1, (byte) 0x2, (byte) 0x3, (byte) 0x4, (byte) 0x5);
+            then(list).containsExactly((byte) 1, (byte) 2, (byte) 3, (byte) 4, (byte) 5);
+        }
+
+        // 将 short 类型数组转为 List 集合
+        {
+            var list = Shorts.asList((short) 1, (short) 2, (short) 3, (short) 4, (short) 5);
+            then(list).containsExactly((short) 1, (short) 2, (short) 3, (short) 4, (short) 5);
+        }
+
+        // 将 int 类型数组转为 List 集合
+        {
+            var list = Ints.asList(1, 2, 3, 4, 5);
+            then(list).containsExactly(1, 2, 3, 4, 5);
+        }
+
+        // 将 long 类型数组转为 List 集合
+        {
+            var list = Longs.asList(1, 2, 3, 4, 5);
+            then(list).containsExactly(1L, 2L, 3L, 4L, 5L);
+        }
+
+        // 将 float 类型数组转为 List 集合
+        {
+            var list = Floats.asList(1.1f, 1.2f, 1.3f, 1.4f, 1.5f);
+            then(list).containsExactly(1.1f, 1.2f, 1.3f, 1.4f, 1.5f);
+        }
+
+        // 将 double 类型数组转为 List 集合
+        {
+            var list = Doubles.asList(1.1, 1.2, 1.3, 1.4, 1.5);
+            then(list).containsExactly(1.1, 1.2, 1.3, 1.4, 1.5);
+        }
+
+        // 将 boolean 类型数组转为 List 集合
+        {
+            var list = Booleans.asList(true, true, false, true, false);
+            then(list).containsExactly(true, true, false, true, false);
+        }
+
+        // 将 char 类型数组转为 List 集合
+        {
+            var list = Chars.asList('A', 'A', 'B', 'B', 'A');
+            then(list).containsExactly('A', 'A', 'B', 'B', 'A');
+        }
+    }
+
+    /**
+     * 将长度较长类型转为长度较短类型时, 检查数值是否越界
+     *
+     * <p>
+     * 例如: 将一个 {@code long} 类型数值转为 {@code int} 类型时, 如果 {@code long} 类型数值超出了 {@code int} 类型的取值范围,
+     * 则 Java 的强制类型转换会将超出部分丢弃, 导致转换结果错误且不可预期
+     * </p>
+     *
+     * <p>
+     * 正确的做法是, 检查 {@code long} 类型数值是否在 {@link Integer#MIN_VALUE} 和 {@link Integer#MAX_VALUE} 之间, 如果超出,
+     * 则抛出异常, 如果未超出, 则进行转换
+     * </p>
+     *
+     * <p>
+     * {@link Shorts#checkedCast(long)} 和 {@link Ints#checkedCast(long)} 方法即完成上述操作, 前者是将一个整数转为
+     * {@code short} 类型, 后者转为 {@link int} 类型. 如无法完成转换, 则抛出 {@link IllegalArgumentException} 异常
+     * </p>
+     *
+     * <p>
+     * 其它简单类型未提供转换检测的方法, 因为其它类型的应用场景不涉及这类转换操作; 另外, 浮点数的二进制存储和整数不同, 也不涉及此类转换检测
+     * </p>
+     */
+    @Test
+    void checkedCast_shouldConvertLongToIntegerSafely() {
+        // 检查所给整数是否能转化为 short 类型
+        {
+            // 确认超出 short 最大值时, 转换失败
+            thenThrownBy(() -> Shorts.checkedCast((long) Short.MAX_VALUE + 1))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("Out of range");
+
+            // 确认小于 short 最小值时, 转换失败
+            thenThrownBy(() -> Shorts.checkedCast((long) Short.MIN_VALUE - 1))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("Out of range");
+        }
+
+        // 检查所给整数是否能转化为 int 类型
+        {
+            // 确认超出 int 最大值时, 转换失败
+            thenThrownBy(() -> Ints.checkedCast((long) Integer.MAX_VALUE + 1))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("Out of range");
+
+            // 确认小于 int 最小值时, 转换失败
+            thenThrownBy(() -> Ints.checkedCast((long) Integer.MIN_VALUE - 1))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("Out of range");
+        }
+
+        // 检查所给整数是否能转化为 char 类型
+        {
+            // 确认超出 char 最大值时, 转换失败
+            thenThrownBy(() -> Chars.checkedCast((long) Character.MAX_VALUE + 1))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("Out of range");
+
+            // 确认小于 char 最小值时, 转换失败
+            thenThrownBy(() -> Chars.checkedCast((long) Character.MIN_VALUE - 1))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("Out of range");
+        }
+    }
+
+    /**
+     * 将整数转为长度较小的整数, 且限定饱和范围
+     *
+     * <p>
+     * {@link Shorts#saturatedCast(long)} 和 {@link Ints#saturatedCast(long)} 方法在无法完成转换时采取如下策略:
+     * <ul>
+     * <li>
+     * 若所给整数大于 {@code MAX_VALUE}, 则转换后的结果为 {@code MAX_VALUE}
+     * </li>
+     * <li>
+     * 若所给整数小于 {@code MIN_VALUE}, 则转换后的结果为 {@code MIN_VALUE}
+     * </li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * 其它简单类型未提供类型转换的方法, 因为其它类型的应用场景不涉及这类转换操作; 另外, 浮点数的二进制存储和整数不同, 也不涉及此类转换
+     * </p>
+     */
+    @Test
+    void saturatedCast_shouldConvertLongToIntegerSafely() {
+        // 将整数转为 short 类型
+        {
+            // 确认大于 Short.MAX_VALUE 的值转换后等于 Short.MAX_VALUE
+            var val = Shorts.saturatedCast((long) Short.MAX_VALUE + 1);
+            then(val).isEqualTo(Short.MAX_VALUE);
+
+            // 确认小于 Short.MIN_VALUE 的值转换后等于 Short.MIN_VALUE
+            val = Shorts.saturatedCast((long) Short.MIN_VALUE - 1);
+            then(val).isEqualTo(Short.MIN_VALUE);
+        }
+
+        // 将整数转为 int 类型
+        {
+            // 确认大于 Integer.MAX_VALUE 的值转换后等于 Integer.MAX_VALUE
+            var val = Ints.saturatedCast((long) Integer.MAX_VALUE + 1);
+            then(val).isEqualTo(Integer.MAX_VALUE);
+
+            // 确认小于 Integer.MIN_VALUE 的值转换后等于 Integer.MIN_VALUE
+            val = Ints.saturatedCast((long) Integer.MIN_VALUE - 1);
+            then(val).isEqualTo(Integer.MIN_VALUE);
+        }
+
+        // 将整数转为 char 类型
+        {
+            // 确认大于 Character.MAX_VALUE 的值转换后等于 Character.MAX_VALUE
+            var val = Chars.saturatedCast((long) Character.MAX_VALUE + 1);
+            then(val).isEqualTo(Character.MAX_VALUE);
+
+            // 确认小于 Character.MIN_VALUE 的值转换后等于 Character.MIN_VALUE
+            val = Chars.saturatedCast((long) Character.MIN_VALUE - 1);
+            then(val).isEqualTo(Character.MIN_VALUE);
+        }
+    }
+
+    /**
+     * 将字符串转为数值, 且在转换失败后不抛出异常
+     *
+     * <p>
+     * JDK 数值类型的 {@code parse...} 方法用于将字符串转为数值 (整数或浮点数), 且在转换失败后抛出运行时异常
+     * {@link NumberFormatException} (例如 {@link Integer#parseInt(String, int)}). 这类方法返回简单类型对象
+     * </p>
+     *
+     * <p>
+     * Guava 提供了该方面转换不抛出异常的版本, 即 {@code tryParse} 方法, 例如: {@link Ints#tryParse(String, int)}, 如果转换失败,
+     * 则返回 {@code null} 值. 这类方法返回引用类型对象
+     * </p>
+     *
+     * <p>
+     * 所以 Guava 的版本避免了异常捕获的开销, 但引入了对象拆箱的开销, 根据不同情况, 按需使用即可
+     * </p>
+     *
+     * <p>
+     * Guava 只为 4 中简单类型提供了该方法, 分别为: {@link Ints}, {@link Longs}, {@link Floats} 和 {@link Doubles},
+     * 其它类型一般情况下不涉及此类转换 (或可被其它类型转换取代, 例如 {@link Ints#tryParse(String, int)} 可覆盖 {@code short} 类型).
+     * 如需其它类型的转换, 可以使用 JDK 版本, 例如: {@link Boolean#parseBoolean(String)} 方法
+     * </p>
+     */
+    @Test
+    void tryParse_shouldParseStringIntoInteger() {
+        // 将字符串解析为 Integer 类型
+        {
+            // 确认正确字符串的解析结果
+            var val = Ints.tryParse("1010101", 10);
+            then(val).isEqualTo(1010101);
+
+            // 确认错误字符串返回 null 值
+            val = Ints.tryParse("101-101", 10);
+            then(val).isNull();
+        }
+
+        // 将字符串解析为 Long 类型
+        {
+            // 确认正确字符串的解析结果
+            var val = Longs.tryParse("1010101", 10);
+            then(val).isEqualTo(1010101);
+
+            // 确认错误字符串返回 null 值
+            val = Longs.tryParse("101-101", 10);
+            then(val).isNull();
+        }
+
+        // 将字符串解析为 Float 类型
+        {
+            // 确认正确字符串的解析结果
+            var val = Floats.tryParse("1.234");
+            then(val).isEqualTo(1.234f);
+
+            // 确认错误字符串返回 null 值
+            val = Floats.tryParse("101-101");
+            then(val).isNull();
+        }
+
+        // 将字符串解析为 Double 类型
+        {
+            // 确认正确字符串的解析结果
+            var val = Doubles.tryParse("1.234");
+            then(val).isEqualTo(1.234);
+
+            // 确认错误字符串返回 null 值
+            val = Doubles.tryParse("101-101");
+            then(val).isNull();
+        }
+    }
+
+    /**
+     * 从 {@code byte} 数组中创建整数值
+     *
+     * <p>
+     * 整数都是由若干个 {@code byte} 组成 (例如 {@code int} 类型由 4 个 {@code byte} 构成), 所以给定确定数量的 {@code byte},
+     * 即可将它们拼装成对应类型的整数值
+     * </p>
+     *
+     * <p>
+     * Guava 提供 {@code fromBytes} 方法来完成此类操作, 不同简单类型对应的 {@code byte} 数量也不同
+     * </p>
+     *
+     * <p>
+     * 浮点类型的存储方式和整数不同, 且在不同系统上都有所差异, 所以不存在需要将浮点数和 {@code byte} 数组相互转换的情况
+     * </p>
+     */
+    @Test
+    void fromBytes_shouldConvertIntegerValueFromBytes() {
+        // 将 2 个 byte 转为一个 short 数值
+        {
+            // 将 0x12 和 0x34 转为 0x1234
+            var val = Shorts.fromBytes((byte) 0x12, (byte) 0x34);
+            then(val).isEqualTo((short) 0x1234);
+
+            // 将 [0x12, 0x34] 转为 0x1234
+            val = Shorts.fromByteArray(new byte[] { (byte) 0x12, (byte) 0x34 });
+            then(val).isEqualTo((short) 0x1234);
+        }
+
+        // 将 4 个 byte 转为一个 int 数值
+        {
+            // 将 0x12, 0x34, 0x56 和 0x78 转为 0x12345678
+            var val = Ints.fromBytes((byte) 0x12, (byte) 0x34, (byte) 0x56, (byte) 0x78);
+            then(val).isEqualTo(0x12345678);
+
+            // 将 [0x12, 0x34, 0x56, 0x78] 转为 0x12345678
+            val = Ints.fromByteArray(new byte[] { (byte) 0x12, (byte) 0x34, (byte) 0x56, (byte) 0x78 });
+            then(val).isEqualTo(0x12345678);
+        }
+
+        // 将 8 个 byte 转为一个 long 数值
+        {
+            // 将 0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD 和 0xEF 转为 0x1234567890ABCDEF
+            var val = Longs.fromBytes(
+                (byte) 0x12, (byte) 0x34, (byte) 0x56, (byte) 0x78,
+                (byte) 0x90, (byte) 0xAB, (byte) 0xCD, (byte) 0xEF);
+            then(val).isEqualTo(0x1234567890ABCDEFL);
+
+            // 将 [0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF] 转为 0x1234567890ABCDEF
+            val = Longs.fromByteArray(new byte[] {
+                (byte) 0x12, (byte) 0x34, (byte) 0x56, (byte) 0x78,
+                (byte) 0x90, (byte) 0xAB, (byte) 0xCD, (byte) 0xEF
+            });
+            then(val).isEqualTo(0x1234567890ABCDEFL);
+        }
+    }
+
+    /**
+     * 将整数转为对应的 {@code byte} 数组
+     *
+     * <p>
+     * 整数都是由若干个 {@code byte} 组成 (例如 {@code int} 类型由 4 个 {@code byte} 构成), 所以对于给定类型的整数值,
+     * 可以转换为不同长度的 {@code byte} 数组
+     * </p>
+     *
+     * <p>
+     * Guava 提供 {@code toBytes} 方法来完成此类操作, 不同简单类型得到的 {@code byte} 数量也不同
+     * </p>
+     *
+     * <p>
+     * 浮点类型的存储方式和整数不同, 且在不同系统上都有所差异, 所以不存在需要将浮点数和 {@code byte} 数组相互转换的情况
+     * </p>
+     */
+    @Test
+    void toBytes_shouldConvertIntegerValueIntoBytes() {
+        // 将 short 值转为 2 个 byte 的数组
+        {
+            // 将 0x1234 转为 [0x12, 0x34]
+            var bytes = Shorts.toByteArray((short) 0x1234);
+            then(bytes).containsExactly(0x12, 0x34);
+        }
+
+        // 将 int 值转为 4 个 byte 的数组
+        {
+            // 将 0x12, 0x34, 0x56 和 0x78 转为 0x12345678
+            var bytes = Ints.toByteArray(0x12345678);
+            then(bytes).containsExactly(0x12, 0x34, 0x56, 0x78);
+        }
+
+        // 将 long 值转为 8 个 byte 的数组
+        {
+            // 将 0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD 和 0xEF 转为 0x1234567890ABCDEF
+            var bytes = Longs.toByteArray(0x1234567890ABCDEFL);
+            then(bytes).containsExactly(
+                0x12, 0x34, 0x56, 0x78,
+                0x90, 0xAB, 0xCD, 0xEF);
+        }
+    }
+
+    /**
+     * 在简单类型数组中查找指定元素的索引
+     *
+     * <p>
+     * JDK 的集合类型提供了 {@link java.util.List#indexOf(Object) List.indexOf(T)} 和
+     * {@link java.util.List#lastIndexOf(Object) List.lastIndexOf(T)} 方法完成在集合中进行查找, 但对于简单对象数组,
+     * 则难以转化为集合对象, 在转换过程中涉及的装箱操作也会降低执行效率
+     * </p>
+     *
+     * <p>
+     * Guava 提供了 {@code indexOf} 和 {@code lastIndexOf} 可以协助在简单对象数值中执行查询, 可以查询元素的索引以及子数组的索引
+     * </p>
+     */
+    @Test
+    void indexOf_shouldFindElementIndexInArray() {
+        // 在 byte 数组中进行查找
+        {
+            var array = new byte[] { 0x1, 0x2, 0x3, 0x4, 0x5 };
+
+            // 查找 byte 元素的索引
+            var index = Bytes.indexOf(array, (byte) 0x2);
+            then(index).isEqualTo(1);
+
+            // 反向查找 byte 元素的索引
+            index = Bytes.lastIndexOf(array, (byte) 0x4);
+            then(index).isEqualTo(3);
+
+            // 查找 byte 元素数组的索引
+            index = Bytes.indexOf(array, new byte[] { 0x3, 0x4 });
+            then(index).isEqualTo(2);
+        }
+
+        // 在 short 数组中进行查找
+        {
+            var array = new short[] { 1, 2, 3, 4, 5 };
+
+            // 查找 short 元素的索引
+            var index = Shorts.indexOf(array, (short) 2);
+            then(index).isEqualTo(1);
+
+            // 反向查找 short 元素的索引
+            index = Shorts.lastIndexOf(array, (short) 4);
+            then(index).isEqualTo(3);
+
+            // 查找 short 元素数组的索引
+            index = Shorts.indexOf(array, new short[] { 2, 3 });
+            then(index).isEqualTo(1);
+        }
+
+        // 在 int 数组中进行查找
+        {
+            var array = new int[] { 1, 2, 3, 4, 5 };
+
+            // 查找 int 元素的索引
+            var index = Ints.indexOf(array, 2);
+            then(index).isEqualTo(1);
+
+            // 反向查找 int 元素的索引
+            index = Ints.lastIndexOf(array, 4);
+            then(index).isEqualTo(3);
+
+            // 查找 int 元素数组的索引
+            index = Ints.indexOf(array, new int[] { 2, 3 });
+            then(index).isEqualTo(1);
+        }
+
+        // 在 long 数组中进行查找
+        {
+            var array = new long[] { 1, 2, 3, 4, 5 };
+
+            // 查找 long 元素的索引
+            var index = Longs.indexOf(array, 2L);
+            then(index).isEqualTo(1);
+
+            // 反向查找 long 元素的索引
+            index = Longs.lastIndexOf(array, 4L);
+            then(index).isEqualTo(3);
+
+            // 查找 long 元素数组的索引
+            index = Longs.indexOf(array, new long[] { 2, 3 });
+            then(index).isEqualTo(1);
+        }
+
+        // 在 long 数组中进行查找
+        {
+            var array = new float[] { 0.1f, 0.2f, 0.3f, 0.4f, 0.5f };
+
+            // 查找 long 元素的索引
+            var index = Floats.indexOf(array, 0.2f);
+            then(index).isEqualTo(1);
+
+            // 反向查找 long 元素的索引
+            index = Floats.lastIndexOf(array, 0.4f);
+            then(index).isEqualTo(3);
+
+            // 查找 long 元素数组的索引
+            index = Floats.indexOf(array, new float[] { 0.2f, 0.3f });
+            then(index).isEqualTo(1);
+        }
+
+        // 在 double 数组中进行查找
+        {
+            var array = new double[] { 0.1, 0.2, 0.3, 0.4, 0.5 };
+
+            // 查找 double 元素的索引
+            var index = Doubles.indexOf(array, 0.2);
+            then(index).isEqualTo(1);
+
+            // 反向查找 double 元素的索引
+            index = Doubles.lastIndexOf(array, 0.4);
+            then(index).isEqualTo(3);
+
+            // 查找 double 元素数组的索引
+            index = Doubles.indexOf(array, new double[] { 0.2, 0.3 });
+            then(index).isEqualTo(1);
+        }
+
+        // 在 char 数组中进行查找
+        {
+            var array = new char[] { 'A', 'B', 'C', 'D', 'E' };
+
+            // 查找 char 元素的索引
+            var index = Chars.indexOf(array, 'B');
+            then(index).isEqualTo(1);
+
+            // 反向查找 char 元素的索引
+            index = Chars.lastIndexOf(array, 'D');
+            then(index).isEqualTo(3);
+
+            // 查找 char 元素数组的索引
+            index = Chars.indexOf(array, new char[] { 'B', 'C' });
+            then(index).isEqualTo(1);
+        }
+
+        // 在 boolean 数组中进行查找
+        {
+            var array = new boolean[] { true, false, true };
+
+            // 查找 boolean 元素的索引
+            var index = Booleans.indexOf(array, true);
+            then(index).isEqualTo(0);
+
+            // 反向查找 boolean 元素的索引
+            index = Booleans.lastIndexOf(array, true);
+            then(index).isEqualTo(2);
+
+            // 查找 boolean 元素数组的索引
+            index = Booleans.indexOf(array, new boolean[] { false, true });
+            then(index).isEqualTo(1);
+        }
+    }
+
+    /**
+     * 将简单类型数组连接为字符串
+     *
+     * <p>
+     * 通过各工具类的 {@code join} 方法, 可以将一个简单类型数组元素连接为字符串, 类似于 {@link String#join(CharSequence, Iterable)}
+     * 方法, 但后者只接受元素类型为字符串类型的集合参数
+     * </p>
+     */
+    @Test
+    void join_shouldJoinArrayToString() {
+        // 将 short 类型数组连接为字符串
+        {
+            var str = Shorts.join(">>", (short) 1, (short) 2, (short) 3, (short) 4, (short) 5);
+            then(str).isEqualTo("1>>2>>3>>4>>5");
+        }
+
+        // 将 int 类型数组连接为字符串
+        {
+            var str = Ints.join(">>", 1, 2, 3, 4, 5);
+            then(str).isEqualTo("1>>2>>3>>4>>5");
+        }
+
+        // 将 long 类型数组连接为字符串
+        {
+            var str = Longs.join(">>", 1, 2, 3, 4, 5);
+            then(str).isEqualTo("1>>2>>3>>4>>5");
+        }
+
+        // 将 float 类型数组连接为字符串
+        {
+            var str = Floats.join(">>", 0.1f, 0.2f, 0.3f, 0.4f, 0.5f);
+            then(str).isEqualTo("0.1>>0.2>>0.3>>0.4>>0.5");
+        }
+
+        // 将 double 类型数组连接为字符串
+        {
+            var str = Doubles.join(">>", 0.1, 0.2, 0.3, 0.4, 0.5);
+            then(str).isEqualTo("0.1>>0.2>>0.3>>0.4>>0.5");
+        }
+
+        // 将 char 类型数组连接为字符串
+        {
+            var str = Chars.join(">>", 'A', 'B', 'C', 'D', 'E');
+            then(str).isEqualTo("A>>B>>C>>D>>E");
+        }
+    }
+
+    /**
+     * 获取针对于各简单类型的转换器对象, 可以在字符串和简单对象之间进行转换
+     *
+     * <p>
+     * Guava 提供了"双向转换器" {@link com.google.common.base.Converter Converter} 类型,
+     * 而各个工具类都实现了各自对应的简单类型和字符串的转换
+     * </p>
+     *
+     * <p>
+     * 若一个 {@link com.google.common.base.Converter Converter} 对象可以将 A 类型值转为 B 类型, 则
+     * {@link com.google.common.base.Converter#reverse() Converter.reverse()} 方法返回的对象可以将 B 类型值转为 A 类型
+     * </p>
+     *
+     * <p>
+     * Guava 为数值类型工具类提供了这类转换器, 包括: {@link Shorts#stringConverter()}, {@link Ints#stringConverter()},
+     * {@link Longs#stringConverter()}, {@link Floats#stringConverter()} 和 {@link Doubles#stringConverter()} 方法
+     * </p>
+     */
+    @Test
+    void convert_shouldConvertObjectsWorked() {
+        // 获取转换器, 在 short 数值和字符串之间转换
+        {
+            var convert = Shorts.stringConverter();
+
+            // 将字符串转为 short 数值
+            then(convert.convert("10010")).isInstanceOf(Short.class).isEqualTo((short) 10010);
+            // 将集合中的字符串批量转为 short 数值
+            then(convert.convertAll(ImmutableList.of("1", "2"))).containsExactly((short) 1, (short) 2);
+
+            // 获取反向转换器对象, 将 short 数值转为字符串值
+            then(convert.reverse().convert((short) 10010)).isEqualTo("10010");
+        }
+
+        // 获取转换器, 在 int 数值和字符串之间转换
+        {
+            var convert = Ints.stringConverter();
+
+            // 将字符串转为 int 数值
+            then(convert.convert("10010")).isInstanceOf(Integer.class).isEqualTo(10010);
+            // 将集合中的字符串批量转为 int 数值
+            then(convert.convertAll(ImmutableList.of("1", "2"))).containsExactly(1, 2);
+
+            // 获取反向转换器对象, 将 int 数值转为字符串值
+            then(convert.reverse().convert(10010)).isEqualTo("10010");
+        }
+
+        // 获取转换器, 在 long 数值和字符串之间转换
+        {
+            var convert = Longs.stringConverter();
+
+            // 将字符串转为 long 数值
+            then(convert.convert("10010")).isInstanceOf(Long.class).isEqualTo(10010L);
+            // 将集合中的字符串批量转为 long 数值
+            then(convert.convertAll(ImmutableList.of("1", "2"))).containsExactly(1L, 2L);
+
+            // 获取反向转换器对象, 将 long 数值转为字符串值
+            then(convert.reverse().convert(10010L)).isEqualTo("10010");
+        }
+
+        // 获取转换器, 在 float 数值和字符串之间转换
+        {
+            var convert = Floats.stringConverter();
+
+            // 将字符串转为 float 数值
+            then(convert.convert("100.1")).isInstanceOf(Float.class).isEqualTo(100.10f);
+            // 将集合中的字符串批量转为 short 数值
+            then(convert.convertAll(ImmutableList.of("0.1", "0.2"))).containsExactly(0.1f, 0.2f);
+
+            // 获取反向转换器对象, 将 float 数值转为字符串值
+            then(convert.reverse().convert(100.10f)).isEqualTo("100.1");
+        }
+
+        // 获取转换器, 在 double 数值和字符串之间转换
+        {
+            var convert = Doubles.stringConverter();
+
+            // 将字符串转为 double 数值
+            then(convert.convert("100.1")).isInstanceOf(Double.class).isEqualTo(100.10);
+            // 将集合中的字符串批量转为 double 数值
+            then(convert.convertAll(ImmutableList.of("0.1", "0.2"))).containsExactly(0.1, 0.2);
+
+            // 获取反向转换器对象, 将 double 数值转为字符串值
+            then(convert.reverse().convert(100.10)).isEqualTo("100.1");
+        }
+    }
+
+    /**
+     * 将多个简单对象数组连接为一个数组
+     *
+     * <p>
+     * 简单对象工具类的 {@code concat} 方法可以将指定类型的若干简单对象数组连接为一个数组
+     * </p>
+     */
+    @Test
+    void concat_shouldConcatElementsInArraysToOneArray() {
+        // 将多个 byte 数组连接为一个 byte 数组
+        {
+            var array = Bytes.concat(
+                new byte[] { 0x1, 0x2 },
+                new byte[] { 0x3, 0x4 },
+                new byte[] { 0x5 });
+
+            then(array).containsExactly(0x1, 0x2, 0x3, 0x4, 0x5);
+        }
+
+        // 将多个 short 数组连接为一个 short 数组
+        {
+            var array = Shorts.concat(
+                new short[] { 1, 2 },
+                new short[] { 3, 4 },
+                new short[] { 5 });
+
+            then(array).containsExactly(1, 2, 3, 4, 5);
+        }
+
+        // 将多个 int 数组连接为一个 int 数组
+        {
+            var array = Ints.concat(
+                new int[] { 1, 2 },
+                new int[] { 3, 4 },
+                new int[] { 5 });
+
+            then(array).containsExactly(1, 2, 3, 4, 5);
+        }
+
+        // 将多个 long 数组连接为一个 long 数组
+        {
+            var array = Longs.concat(
+                new long[] { 1, 2 },
+                new long[] { 3, 4 },
+                new long[] { 5 });
+
+            then(array).containsExactly(1L, 2L, 3L, 4L, 5L);
+        }
+
+        // 将多个 float 数组连接为一个 float 数组
+        {
+            var array = Floats.concat(
+                new float[] { 0.1f, 0.2f },
+                new float[] { 0.3f, 0.4f },
+                new float[] { 0.5f });
+
+            then(array).containsExactly(0.1f, 0.2f, 0.3f, 0.4f, 0.5f);
+        }
+
+        // 将多个 double 数组连接为一个 double 数组
+        {
+            var array = Doubles.concat(
+                new double[] { 0.1, 0.2 },
+                new double[] { 0.3, 0.4 },
+                new double[] { 0.5 });
+
+            then(array).containsExactly(0.1, 0.2, 0.3, 0.4, 0.5);
+        }
+
+        // 将多个 char 数组连接为一个 char 数组
+        {
+            var array = Chars.concat(
+                new char[] { 'A', 'B' },
+                new char[] { 'C', 'D' },
+                new char[] { 'E' });
+
+            then(array).containsExactly('A', 'B', 'C', 'D', 'E');
+        }
+
+        // 将多个 boolean 数组连接为一个 boolean 数组
+        {
+            var array = Booleans.concat(
+                new boolean[] { true, false },
+                new boolean[] { false, true },
+                new boolean[] { true });
+
+            then(array).containsExactly(true, false, false, true, true);
+        }
+    }
+
+    /**
+     * 在简单对象数组中查找一个值是否存在
+     *
+     * <p>
+     * 简单对象工具类的 {@code contains} 方法用于查询一个值是否在数组中存在, 并返回 {@code true} 或 {@code false}
+     * </p>
+     */
+    @Test
+    void contains_shouldCheckArrayContainsElement() {
+        // 判断指定的 byte 值是否在数组中
+        {
+            then(Bytes.contains(new byte[] { 1, 2 }, (byte) 0)).isFalse();
+            then(Bytes.contains(new byte[] { 1, 2 }, (byte) 1)).isTrue();
+        }
+
+        // 判断指定的 short 值是否在数组中
+        {
+            then(Shorts.contains(new short[] { 1, 2 }, (short) 0)).isFalse();
+            then(Shorts.contains(new short[] { 1, 2 }, (short) 1)).isTrue();
+        }
+
+        // 判断指定的 int 值是否在数组中
+        {
+            then(Ints.contains(new int[] { 1, 2 }, 0)).isFalse();
+            then(Ints.contains(new int[] { 1, 2 }, 1)).isTrue();
+        }
+
+        // 判断指定的 long 值是否在数组中
+        {
+            then(Longs.contains(new long[] { 1, 2 }, 0L)).isFalse();
+            then(Longs.contains(new long[] { 1, 2 }, 1L)).isTrue();
+        }
+
+        // 判断指定的 float 值是否在数组中
+        {
+            then(Floats.contains(new float[] { 0.1f, 0.2f }, 0f)).isFalse();
+            then(Floats.contains(new float[] { 0.1f, 0.2f }, 0.1f)).isTrue();
+        }
+
+        // 判断指定的 double 值是否在数组中
+        {
+            then(Doubles.contains(new double[] { 0.1, 0.2 }, 0)).isFalse();
+            then(Doubles.contains(new double[] { 0.1, 0.2 }, 0.1)).isTrue();
+        }
+
+        // 判断指定的 char 值是否在数组中
+        {
+            then(Chars.contains(new char[] { 'A', 'B' }, 'C')).isFalse();
+            then(Chars.contains(new char[] { 'A', 'B' }, 'A')).isTrue();
+        }
+
+        // 判断指定的 boolean 值是否在数组中
+        {
+            then(Booleans.contains(new boolean[] { true, true }, false)).isFalse();
+            then(Booleans.contains(new boolean[] { true, false }, false)).isTrue();
+        }
+    }
+
+    /**
+     * 从数值数组中找到最大值或最小值
+     *
+     * <p>
+     * 对于表示数值的简单对象, 其工具类的 {@code max} 和 {@code min} 方法用于在数值中找到最大值或最小值, 这些方法包括:
+     * {@link Shorts#max(short...)}/{@link Shorts#min(short...)},
+     * {@link Ints#max(short...)}/{@link Ints#min(short...)},
+     * {@link Longs#max(short...)}/{@link Longs#min(short...)},
+     * {@link Floats#max(short...)}/{@link Floats#min(short...)} 以及
+     * {@link Doubles#max(short...)}/{@link Doubles#min(short...)}
+     * </p>
+     *
+     * <p>
+     * JDK 中提供的方法 ({@link Math#max(int, int)} 和 {@link Math#min(int, int)}) 方法也为各种数值简单类型提供了重载,
+     * 但只能进行两个值的比较, 多个值就得嵌套或循环调用
+     * </p>
+     */
+    @Test
+    void maxMin_shouldFindMaxOrMinValueInArray() {
+        // 在若干 short 值中找到最大/最小值
+        {
+            var max = Shorts.max((short) 1, (short) 2, (short) 3);
+            then(max).isEqualTo((short) 3);
+
+            var min = Shorts.min((short) 1, (short) 2, (short) 3);
+            then(min).isEqualTo((short) 1);
+        }
+
+        // 在若干 int 值中找到最大/最小值
+        {
+            var max = Ints.max(1, 2, 3);
+            then(max).isEqualTo(3);
+
+            var min = Ints.min(1, 2, 3);
+            then(min).isEqualTo(1);
+        }
+
+        // 在若干 long 值中找到最大/最小值
+        {
+            var max = Longs.max(1L, 2L, 3L);
+            then(max).isEqualTo(3L);
+
+            var min = Longs.min(1L, 2L, 3L);
+            then(min).isEqualTo(1);
+        }
+
+        // 在若干 float 值中找到最大/最小值
+        {
+            var max = Floats.max(0.1f, 0.2f, 0.3f);
+            then(max).isEqualTo(0.3f);
+
+            var min = Floats.min(0.1f, 0.2f, 0.3f);
+            then(min).isEqualTo(0.1f);
+        }
+
+        // 在若干 double 值中找到最大/最小值
+        {
+            var max = Doubles.max(0.1, 0.2, 0.3);
+            then(max).isEqualTo(0.3);
+
+            var min = Doubles.min(0.1, 0.2, 0.3);
+            then(min).isEqualTo(0.1);
+        }
+    }
+}
