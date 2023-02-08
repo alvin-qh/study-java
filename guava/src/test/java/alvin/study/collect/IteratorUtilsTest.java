@@ -3,6 +3,8 @@ package alvin.study.collect;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
+import java.util.Iterator;
+
 import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.ImmutableList;
@@ -470,5 +472,29 @@ class IteratorUtilsTest {
         var iterator = Iterators.mergeSorted(ImmutableList.of(list1.iterator(), list2.iterator()), ordering);
         // 确认多个迭代器内容归并到一起且有序
         then(ImmutableList.copyOf(iterator)).containsExactly(10, 9, 8, 7, 6, 5, 4, 3, 2, 1);
+    }
+
+    /**
+     * 确认两个迭代器对象的元素完全相等
+     *
+     * <p>
+     * {@link Iterators#elementsEqual(Iterator, Iterator)} 用于判断两个迭代器包含的元素完全相等, 即: 数量一致,
+     * 且对应位置的元素相等
+     * </p>
+     */
+    @Test
+    void elementsEqual_shouldCheckAllElementsAreEqual() {
+        // 定义两个集合
+        var list1 = ImmutableList.of(1, 2, 3);
+        var list2 = ImmutableList.of(1, 2, 3);
+
+        // 确认两个迭代器对象对应的元素值相等
+        then(Iterators.elementsEqual(list1.iterator(), list2.iterator())).isTrue();
+
+        // 修改其中的一个集合
+        list2 = ImmutableList.<Integer>builder().addAll(list2).add(4).build();
+
+        // 确认两个迭代器对象对应的元素不相等
+        then(Iterators.elementsEqual(list1.iterator(), list2.iterator())).isFalse();
     }
 }

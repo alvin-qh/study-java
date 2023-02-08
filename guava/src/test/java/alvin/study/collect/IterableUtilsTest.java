@@ -504,4 +504,28 @@ class IterableUtilsTest {
         // 确认可迭代对象不为空
         then(Iterables.isEmpty(list)).isFalse();
     }
+
+    /**
+     * 确认两个可迭代对象的元素完全相等
+     *
+     * <p>
+     * {@link Iterables#elementsEqual(Iterable, Iterable)} 用于判断两个可迭代对象包含的元素完全相等, 即: 数量一致,
+     * 且对应位置的元素相等
+     * </p>
+     */
+    @Test
+    void elementsEqual_shouldCheckAllElementsAreEqual() {
+        // 定义两个集合
+        var list1 = ImmutableList.of(1, 2, 3);
+        var list2 = ImmutableList.of(1, 2, 3);
+
+        // 确认两个可迭代对象对应的元素值相等
+        then(Iterables.elementsEqual(list1, list2)).isTrue();
+
+        // 修改其中的一个集合
+        list2 = ImmutableList.<Integer>builder().addAll(list2).add(4).build();
+
+        // 确认两个可迭代对象对应的元素不相等
+        then(Iterables.elementsEqual(list1, list2)).isFalse();
+    }
 }
