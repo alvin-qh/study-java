@@ -875,4 +875,567 @@ class PrimitivesTest {
             then(min).isEqualTo(0.1);
         }
     }
+
+    /**
+     * 将简单对象数组元素进行反转
+     *
+     * <p>
+     * 简单对象工具类的 {@code reverse} 方法可以将一个简单类型数组的元素进行倒置
+     * </p>
+     */
+    @Test
+    void reverse_shouldReverseElementsInArray() {
+        // 将 byte 数组元素进行反转
+        {
+            var array = new byte[] { 0x1, 0x2, 0x3 };
+
+            Bytes.reverse(array);
+            then(array).containsExactly(0x3, 0x2, 0x1);
+        }
+
+        // 将 short 数组元素进行反转
+        {
+            var array = new short[] { 1, 2, 3 };
+
+            Shorts.reverse(array);
+            then(array).containsExactly(3, 2, 1);
+        }
+
+        // 将 int 数组元素进行反转
+        {
+            var array = new int[] { 1, 2, 3 };
+
+            Ints.reverse(array);
+            then(array).containsExactly(3, 2, 1);
+        }
+
+        // 将 long 数组元素进行反转
+        {
+            var array = new long[] { 1, 2, 3 };
+
+            Longs.reverse(array);
+            then(array).containsExactly(3, 2, 1);
+        }
+
+        // 将 float 数组元素进行反转
+        {
+            var array = new float[] { 0.1f, 0.2f, 0.3f };
+
+            Floats.reverse(array);
+            then(array).containsExactly(0.3f, 0.2f, 0.1f);
+        }
+
+        // 将 double 数组元素进行反转
+        {
+            var array = new double[] { 0.1, 0.2, 0.3 };
+
+            Doubles.reverse(array);
+            then(array).containsExactly(0.3, 0.2, 0.1);
+        }
+
+        // 将 char 数组元素进行反转
+        {
+            var array = new char[] { 'A', 'B', 'C' };
+
+            Chars.reverse(array);
+            then(array).containsExactly('C', 'B', 'A');
+        }
+
+        // 将 boolean 数组元素进行反转
+        {
+            var array = new boolean[] { false, true };
+
+            Booleans.reverse(array);
+            then(array).containsExactly(true, false);
+        }
+    }
+
+    /**
+     * 对简单对象数组进行逆序排序 (从大到小)
+     *
+     * <p>
+     * JDK 的 {@link java.util.Arrays Arrays} 工具类提供了 {@link java.util.Arrays#sort(int[]) Arrays.sort(int[])}
+     * 方法以及各种简单对象数组类型的重载, 可以对简单类型数组进行自然序排序 (从小到大); Guava 提供的 {@code sortDescending}
+     * 方法可以进行逆序排序 (从大到小), 作为 JDK 方法的补充
+     * </p>
+     *
+     * <p>
+     * Guava 对常用数值类型提供了逆序排序方法, 包括: {@link Shorts#sortDescending(short[])},
+     * {@link Ints#sortDescending(int[])}, {@link Longs#sortDescending(long[])}, {@link Floats#sortDescending(float[])},
+     * {@link Doubles#sortDescending(double[])} 和 {@link Chars#sortDescending(char[])}, 对使用场景不高的 {@code byte}
+     * 和 {@code boolean} 类型未提供逆序排序方法
+     * </p>
+     */
+    @Test
+    void sortDescending_shouldSortArrayByDescendingOrder() {
+        // 对 short 类型数组进行逆序排序
+        {
+            var array = new short[] { 0x1, 0x3, 0x2 };
+
+            Shorts.sortDescending(array);
+            then(array).containsExactly(0x3, 0x2, 0x1);
+        }
+
+        // 对 int 类型数组进行逆序排序
+        {
+            var array = new int[] { 1, 3, 2 };
+
+            Ints.sortDescending(array);
+            then(array).containsExactly(3, 2, 1);
+        }
+
+        // 对 long 类型数组进行逆序排序
+        {
+            var array = new long[] { 1, 3, 2 };
+
+            Longs.sortDescending(array);
+            then(array).containsExactly(3, 2, 1);
+        }
+
+        // 对 float 类型数组进行逆序排序
+        {
+            var array = new float[] { 0.1f, 0.3f, 0.2f };
+
+            Floats.sortDescending(array);
+            then(array).containsExactly(0.3f, 0.2f, 0.1f);
+        }
+
+        // 对 double 类型数组进行逆序排序
+        {
+            var array = new double[] { 0.1, 0.3, 0.2 };
+
+            Doubles.sortDescending(array);
+            then(array).containsExactly(0.3, 0.2, 0.1);
+        }
+
+        // 对 char 类型数组进行逆序排序
+        {
+            var array = new char[] { 'A', 'C', 'B' };
+
+            Chars.sortDescending(array);
+            then(array).containsExactly('C', 'B', 'A');
+        }
+    }
+
+    /**
+     * 旋转数组元素
+     *
+     * <p>
+     * 该方法相当于 {@link java.util.Collections#rotate(java.util.List, int) Collections.rotate(List, int)}
+     * 的简单类型数组版本
+     * </p>
+     */
+    void rotate_shouldRotateArrayElements() {
+        // todo: 下个版本会增加 Ints.rotate 等方法, 届时增加演示
+    }
+
+    /**
+     * 为数组扩展新的存储空间
+     *
+     * <p>
+     * 简单对象工具类的 {@code ensureCapacity} 方法用于对数组空间进行扩展, 即将产生一个空间更大的新数组, 将原数组的内容复制到新数组,
+     * 其余空间使用 {@code 0} 或 {@code false} 填充
+     * </p>
+     *
+     * <p>
+     * {@code ensureCapacity(array, minLength, padding)}, 第一个参数即原数组; 第二个参数为扩展的最小长度, 如果该值小于等于原数组长度,
+     * 则不对原数组进行扩展, 直接返回原数组引用; 第三个参数可以为 {@code 0}, 也可以为一个增长值. 后两个参数表达的语义为:
+     * 将数组扩长度扩展到 {@code minLength} 大小, 并为之后扩展预留 {@code padding} 个位置. 所以最终返回的数组长度为
+     * {@code minLength + padding}
+     * </p>
+     */
+    @Test
+    void ensureCapacity_shouldGuaranteeTheLengthOfArrayForNewElements() {
+        // 扩展 byte 数组长度
+        {
+            var array = new byte[] { 1, 2, 3, 4, 5 };
+
+            // 设置最小扩展长度和原数组相等, 此时直接返回原数组引用
+            var newArray = Bytes.ensureCapacity(array, array.length, 0);
+            then(newArray).isSameAs(array);
+
+            // 设置最小扩展长度为原数组长度 + 1, 返回新数组比原数组长度 + 1
+            newArray = Bytes.ensureCapacity(array, array.length + 1, 0);
+            then(newArray).hasSize(array.length + 1).contains(array);
+
+            // 设置最小扩展长度为原数组长度 + 1, 且预留 5 个元素空间, 返回新数组比原数组长度 + 6
+            newArray = Bytes.ensureCapacity(array, array.length + 1, 5);
+            then(newArray).hasSize(array.length + 6).contains(array);
+        }
+
+        // 扩展 short 数组长度
+        {
+            var array = new short[] { 1, 2, 3, 4, 5 };
+
+            // 设置最小扩展长度和原数组相等, 此时直接返回原数组引用
+            var newArray = Shorts.ensureCapacity(array, array.length, 0);
+            then(newArray).isSameAs(array);
+
+            // 设置最小扩展长度为原数组长度 + 1, 返回新数组比原数组长度 + 1
+            newArray = Shorts.ensureCapacity(array, array.length + 1, 0);
+            then(newArray).hasSize(array.length + 1).contains(array);
+
+            newArray = Shorts.ensureCapacity(array, array.length + 1, 5);
+            then(newArray).hasSize(array.length + 6).contains(array);
+        }
+
+        // 扩展 int 数组长度
+        {
+            var array = new int[] { 1, 2, 3, 4, 5 };
+
+            // 设置最小扩展长度和原数组相等, 此时直接返回原数组引用
+            var newArray = Ints.ensureCapacity(array, array.length, 0);
+            then(newArray).isSameAs(array);
+
+            // 设置最小扩展长度为原数组长度 + 1, 返回新数组比原数组长度 + 1
+            newArray = Ints.ensureCapacity(array, array.length + 1, 0);
+            then(newArray).hasSize(array.length + 1).contains(array);
+
+            // 设置最小扩展长度为原数组长度 + 1, 且预留 5 个元素空间, 返回新数组比原数组长度 + 6
+            newArray = Ints.ensureCapacity(array, array.length + 1, 5);
+            then(newArray).hasSize(array.length + 6).contains(array);
+        }
+
+        // 扩展 long 数组长度
+        {
+            var array = new long[] { 1, 2, 3, 4, 5 };
+
+            // 设置最小扩展长度和原数组相等, 此时直接返回原数组引用
+            var newArray = Longs.ensureCapacity(array, array.length, 0);
+            then(newArray).isSameAs(array);
+
+            // 设置最小扩展长度为原数组长度 + 1, 返回新数组比原数组长度 + 1
+            newArray = Longs.ensureCapacity(array, array.length + 1, 0);
+            then(newArray).hasSize(array.length + 1).contains(array);
+
+            // 设置最小扩展长度为原数组长度 + 1, 且预留 5 个元素空间, 返回新数组比原数组长度 + 6
+            newArray = Longs.ensureCapacity(array, array.length + 1, 5);
+            then(newArray).hasSize(array.length + 6).contains(array);
+        }
+
+        // 扩展 float 数组长度
+        {
+            var array = new float[] { 0.1f, 0.2f, 0.3f, 0.4f, 0.5f };
+
+            // 设置最小扩展长度和原数组相等, 此时直接返回原数组引用
+            var newArray = Floats.ensureCapacity(array, array.length, 0);
+            then(newArray).isSameAs(array);
+
+            // 设置最小扩展长度为原数组长度 + 1, 返回新数组比原数组长度 + 1
+            newArray = Floats.ensureCapacity(array, array.length + 1, 0);
+            then(newArray).hasSize(array.length + 1).contains(array);
+
+            // 设置最小扩展长度为原数组长度 + 1, 且预留 5 个元素空间, 返回新数组比原数组长度 + 6
+            newArray = Floats.ensureCapacity(array, array.length + 1, 5);
+            then(newArray).hasSize(array.length + 6).contains(array);
+        }
+
+        // 扩展 double 数组长度
+        {
+            var array = new double[] { 0.1, 0.2, 0.3, 0.4, 0.5 };
+
+            // 设置最小扩展长度和原数组相等, 此时直接返回原数组引用
+            var newArray = Doubles.ensureCapacity(array, array.length, 0);
+            then(newArray).isSameAs(array);
+
+            // 设置最小扩展长度为原数组长度 + 1, 返回新数组比原数组长度 + 1
+            newArray = Doubles.ensureCapacity(array, array.length + 1, 0);
+            then(newArray).hasSize(array.length + 1).contains(array);
+
+            // 设置最小扩展长度为原数组长度 + 1, 且预留 5 个元素空间, 返回新数组比原数组长度 + 6
+            newArray = Doubles.ensureCapacity(array, array.length + 1, 5);
+            then(newArray).hasSize(array.length + 6).contains(array);
+        }
+
+        // 扩展 char 数组长度
+        {
+            var array = new char[] { 'A', 'B', 'C' };
+
+            // 设置最小扩展长度和原数组相等, 此时直接返回原数组引用
+            var newArray = Chars.ensureCapacity(array, array.length, 0);
+            then(newArray).isSameAs(array);
+
+            // 设置最小扩展长度为原数组长度 + 1, 返回新数组比原数组长度 + 1
+            newArray = Chars.ensureCapacity(array, array.length + 1, 0);
+            then(newArray).hasSize(array.length + 1).contains(array);
+
+            // 设置最小扩展长度为原数组长度 + 1, 且预留 5 个元素空间, 返回新数组比原数组长度 + 6
+            newArray = Chars.ensureCapacity(array, array.length + 1, 5);
+            then(newArray).hasSize(array.length + 6).contains(array);
+        }
+
+        // 扩展 boolean 数组长度
+        {
+            var array = new boolean[] { true, false, true };
+
+            // 设置最小扩展长度和原数组相等, 此时直接返回原数组引用
+            var newArray = Booleans.ensureCapacity(array, array.length, 0);
+            then(newArray).isSameAs(array);
+
+            // 设置最小扩展长度为原数组长度 + 1, 返回新数组比原数组长度 + 1
+            newArray = Booleans.ensureCapacity(array, array.length + 1, 0);
+            then(newArray).hasSize(array.length + 1).contains(array);
+
+            // 设置最小扩展长度为原数组长度 + 1, 且预留 5 个元素空间, 返回新数组比原数组长度 + 6
+            newArray = Booleans.ensureCapacity(array, array.length + 1, 5);
+            then(newArray).hasSize(array.length + 6).contains(array);
+        }
+    }
+
+    /**
+     * 将变量值修正到指定区间内
+     *
+     * <p>
+     * 简单类型工具类的 {@code constrainToRange} 方法可以将一个变量值进行修正, 让其符合指定区间. 即, 如果所给变量值在区间范围内,
+     * 则返回该变量值; 如果所给变量小于区间下限, 则返回区间下限值; 如果所给变量大于区间上限值, 则返回区间上限值
+     * </p>
+     *
+     * <p>
+     * 区间由后两个参数指定, 为闭区间, 限定了返回值的取值范围
+     * </p>
+     *
+     * <p>
+     * 除 {@link Bytes} 类外, 其它简单类型工具类都包含 {@code constrainToRange} 方法
+     * </p>
+     */
+    @Test
+    void constrainToRange_shouldConstrainValueInRange() {
+        // 获取指定范围内的 short 值
+        {
+            // 在 [1..9] 范围内取值 6, 返回 6
+            var n = Shorts.constrainToRange((short) 6, (short) 1, (short) 9);
+            then(n).isEqualTo((short) 6);
+
+            // 在 [1..9] 范围内取值 0, 返回 1
+            n = Shorts.constrainToRange((short) 0, (short) 1, (short) 9);
+            then(n).isEqualTo((short) 1);
+
+            // 在 [1..9] 范围内取值 10, 返回 9
+            n = Shorts.constrainToRange((short) 10, (short) 1, (short) 9);
+            then(n).isEqualTo((short) 9);
+        }
+
+        // 获取指定范围内的 int 值
+        {
+            // 在 [1..9] 范围内取值 6, 返回 6
+            var n = Ints.constrainToRange(6, 1, 9);
+            then(n).isEqualTo(6);
+
+            // 在 [1..9] 范围内取值 0, 返回 1
+            n = Ints.constrainToRange(0, 1, 9);
+            then(n).isEqualTo(1);
+
+            n = Ints.constrainToRange(10, 1, 9);
+            then(n).isEqualTo(9);
+        }
+
+        // 获取指定范围内的 long 值
+        {
+            // 在 [1..9] 范围内取值 6, 返回 6
+            var n = Longs.constrainToRange(6L, 1L, 9L);
+            then(n).isEqualTo(6L);
+
+            // 在 [1..9] 范围内取值 0, 返回 1
+            n = Longs.constrainToRange(0L, 1L, 9L);
+            then(n).isEqualTo(1L);
+
+            // 在 [1..9] 范围内取值 10, 返回 9
+            n = Longs.constrainToRange(10L, 1L, 9L);
+            then(n).isEqualTo(9L);
+        }
+
+        // 获取指定范围内的 float 值
+        {
+            // 在 [0.1..0.9] 范围内取值 0.6, 返回 0.6
+            var n = Floats.constrainToRange(0.6f, 0.1f, 0.9f);
+            then(n).isEqualTo(0.6f);
+
+            // 在 [0.1..0.9] 范围内取值 0, 返回 0.1
+            n = Floats.constrainToRange(0f, 0.1f, 0.9f);
+            then(n).isEqualTo(0.1f);
+
+            // 在 [0.1..0.9] 范围内取值 1.0, 返回 0.9
+            n = Floats.constrainToRange(1.0f, 0.1f, 0.9f);
+            then(n).isEqualTo(0.9f);
+        }
+
+        // 获取指定范围内的 double 值
+        {
+            // 在 [0.1..0.9] 范围内取值 0.6, 返回 0.6
+            var n = Doubles.constrainToRange(0.6, 0.1, 0.9);
+            then(n).isEqualTo(0.6);
+
+            // 在 [0.1..0.9] 范围内取值 0, 返回 0.1
+            n = Doubles.constrainToRange(0, 0.1, 0.9);
+            then(n).isEqualTo(0.1);
+
+            // 在 [0.1..0.9] 范围内取值 1.0, 返回 0.9
+            n = Doubles.constrainToRange(1.0, 0.1, 0.9);
+            then(n).isEqualTo(0.9);
+        }
+
+        // 获取指定范围内的 char 值
+        {
+            // 在 [B..E] 范围内取值 D, 返回 D
+            var n = Chars.constrainToRange('D', 'B', 'E');
+            then(n).isEqualTo('D');
+
+            // 在 [B..E] 范围内取值 A, 返回 B
+            n = Chars.constrainToRange('A', 'B', 'E');
+            then(n).isEqualTo('B');
+
+            // 在 [B..E] 范围内取值 F, 返回 E
+            n = Chars.constrainToRange('F', 'B', 'E');
+            then(n).isEqualTo('E');
+        }
+    }
+
+    /**
+     * 比较两个简单类型的数组
+     *
+     * <p>
+     * 简单类型工具类的 {@code lexicographicalComparator} 方法返回一个比较器对象, 可以对特定类型的数组进行比较. 比较规则是:
+     * 逐元素进行比较, 每个元素通过字典序进行比较 (即数字按大小比较, 字符按字典顺序进行比较)
+     * </p>
+     *
+     * <p>
+     * 除 {@link Bytes} 类外, 其它简单类型工具类都包含 {@code constrainToRange} 方法
+     * </p>
+     */
+    @Test
+    void lexicographicalComparator_shouldCompareTwoArraysByLexicographicalOrder() {
+        // 对 short 类型数组进行比较
+        {
+            var comparator = Shorts.lexicographicalComparator();
+
+            then(comparator.compare(new short[] { 1, 2, 3 }, new short[] { 1, 2, 3 })).isEqualTo(0);
+            then(comparator.compare(new short[] { 1, 2, 3, 4 }, new short[] { 1, 2, 3 })).isEqualTo(1);
+            then(comparator.compare(new short[] { 1, 2 }, new short[] { 1, 2, 3 })).isEqualTo(-1);
+        }
+
+        // 对 int 类型数组进行比较
+        {
+            var comparator = Ints.lexicographicalComparator();
+
+            then(comparator.compare(new int[] { 1, 2, 3 }, new int[] { 1, 2, 3 })).isEqualTo(0);
+            then(comparator.compare(new int[] { 1, 2, 3, 4 }, new int[] { 1, 2, 3 })).isEqualTo(1);
+            then(comparator.compare(new int[] { 1, 2 }, new int[] { 1, 2, 3 })).isEqualTo(-1);
+        }
+
+        // 对 long 类型数组进行比较
+        {
+            var comparator = Longs.lexicographicalComparator();
+
+            then(comparator.compare(new long[] { 1L, 2L, 3L }, new long[] { 1L, 2L, 3L })).isEqualTo(0);
+            then(comparator.compare(new long[] { 1L, 2L, 3L, 4L }, new long[] { 1L, 2L, 3L })).isEqualTo(1);
+            then(comparator.compare(new long[] { 1L, 2L }, new long[] { 1L, 2L, 3L })).isEqualTo(-1);
+        }
+
+        // 对 float 类型数组进行比较
+        {
+            var comparator = Floats.lexicographicalComparator();
+
+            then(comparator.compare(new float[] { 0.1f, 0.2f, 0.3f }, new float[] { 0.1f, 0.2f, 0.3f })).isEqualTo(0);
+            then(comparator.compare(
+                new float[] { 0.1f, 0.2f, 0.3f, 0.4f },
+                new float[] { 0.1f, 0.2f, 0.3f })).isEqualTo(1);
+            then(comparator.compare(new float[] { 0.1f, 0.2f }, new float[] { 0.1f, 0.2f, 0.3f })).isEqualTo(-1);
+        }
+
+        // 对 double 类型数组进行比较
+        {
+            var comparator = Doubles.lexicographicalComparator();
+
+            then(comparator.compare(new double[] { 0.1, 0.2, 0.3 }, new double[] { 0.1, 0.2, 0.3 })).isEqualTo(0);
+            then(comparator.compare(new double[] { 0.1, 0.2, 0.3, 0.4 }, new double[] { 0.1, 0.2, 0.3 })).isEqualTo(1);
+            then(comparator.compare(new double[] { 0.1, 0.2 }, new double[] { 0.1, 0.2, 0.3 })).isEqualTo(-1);
+        }
+
+        // 对 char 类型数组进行比较
+        {
+            var comparator = Chars.lexicographicalComparator();
+
+            then(comparator.compare(new char[] { 'A', 'B', 'C' }, new char[] { 'A', 'B', 'C' })).isEqualTo(0);
+            then(comparator.compare(new char[] { 'A', 'B', 'C', 'D' }, new char[] { 'A', 'B', 'C' })).isEqualTo(1);
+            then(comparator.compare(new char[] { 'A', 'B' }, new char[] { 'A', 'B', 'C' })).isEqualTo(-1);
+        }
+
+        // 对 boolean 类型数组进行比较
+        {
+            var comparator = Booleans.lexicographicalComparator();
+
+            then(comparator.compare(
+                new boolean[] { true, false, true },
+                new boolean[] { true, false, true })).isEqualTo(0);
+            then(comparator.compare(
+                new boolean[] { true, false, true, false },
+                new boolean[] { true, false, true })).isEqualTo(1);
+            then(comparator.compare(new boolean[] { true, false }, new boolean[] { true, false, true })).isEqualTo(-1);
+        }
+    }
+
+    /**
+     * 将引用类型集合转为简单类型数组
+     *
+     * <p>
+     * 简单类型工具类的 {@code toArray} 方法可以将一个引用类型集合对象转为简单类型数组对象,
+     * 在一个方法内同时完成集合转数组以及集合元素拆箱的工作
+     * </p>
+     *
+     * <p>
+     * 在 Java 中, 集合存储的必须为 {@link Object} 引用类型 (例如: {@code List<Integer>}), 而数组允许存储简单类型
+     * (例如: {@code int[]}), 通过 {@link java.util.List#toArray()} 方法获得的是引用类型数组, 需要逐元素拆箱才能得到简单对象数组,
+     * 该方法简化了这类操作
+     * </p>
+     */
+    @Test
+    void toArray_shouldConvertCollectionToArray() {
+        // 将 Collection<Byte> 转为 byte[]
+        {
+            var array = Bytes.toArray(ImmutableList.of(0x1, 0x2, 0x3));
+            then(array).isInstanceOf(byte[].class).containsExactly(0x1, 0x2, 0x3);
+        }
+
+        // 将 Collection<Sort> 转为 short[]
+        {
+            var array = Shorts.toArray(ImmutableList.of(1, 2, 3));
+            then(array).isInstanceOf(short[].class).containsExactly(1, 2, 3);
+        }
+
+        // 将 Collection<Integer> 转为 int[]
+        {
+            var array = Ints.toArray(ImmutableList.of(1, 2, 3));
+            then(array).isInstanceOf(int[].class).containsExactly(1, 2, 3);
+        }
+
+        // 将 Collection<Long> 转为 long[]
+        {
+            var array = Longs.toArray(ImmutableList.of(1, 2, 3));
+            then(array).isInstanceOf(long[].class).containsExactly(1, 2, 3);
+        }
+
+        // 将 Collection<Float> 转为 float[]
+        {
+            var array = Floats.toArray(ImmutableList.of(0.1, 0.2, 0.3));
+            then(array).isInstanceOf(float[].class).containsExactly(0.1f, 0.2f, 0.3f);
+        }
+
+        // 将 Collection<Double> 转为 double[]
+        {
+            var array = Doubles.toArray(ImmutableList.of(0.1, 0.2, 0.3));
+            then(array).isInstanceOf(double[].class).containsExactly(0.1, 0.2, 0.3);
+        }
+
+        // 将 Collection<Char> 转为 char[]
+        {
+            var array = Chars.toArray(ImmutableList.of('A', 'B', 'C'));
+            then(array).isInstanceOf(char[].class).containsExactly('A', 'B', 'C');
+        }
+
+        // 将 Collection<Boolean> 转为 boolean[]
+        {
+            var array = Booleans.toArray(ImmutableList.of(true, false, true));
+            then(array).isInstanceOf(boolean[].class).containsExactly(true, false, true);
+        }
+    }
 }
