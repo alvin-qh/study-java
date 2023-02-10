@@ -2,6 +2,7 @@ package alvin.study.collect;
 
 import static org.assertj.core.api.Assertions.entry;
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 import java.time.Month;
 import java.util.EnumMap;
@@ -16,9 +17,13 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.base.Equivalence;
 import com.google.common.collect.ContiguousSet;
+import com.google.common.collect.HashBiMap;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Range;
 import com.google.common.primitives.Ints;
 
 /**
@@ -404,5 +409,209 @@ class MapUtilsTest {
         then(map.get("user.name")).isEqualTo("Alvin");
         then(map.get("user.password")).isEqualTo("ok~123");
         then(map.get("user.email")).isEqualTo("alvin.qh@outlook.com");
+    }
+
+    /**
+     * 对 {@code Map} 的键值对进行过滤, 返回过滤后的 {@code Map} 对象
+     *
+     * <p>
+     * {@link Maps#filterEntries(java.util.Map, com.google.common.base.Predicate) Maps.filterEntries(Map, Predicate)}
+     * 方法用于对一个 {@code Map} 对象的键值对 ({@code Entry} 对象) 通过条件函数进行过滤, 并返回包含过滤后键值对的 {@code Map} 对象
+     * </p>
+     *
+     * <p>
+     * 返回结果为 {@link Maps.FilteredEntryMap} 类型对象, 该对象为原 {@code Map} 对象的代理对象, 在获取键值的时候才会执行过滤函数,
+     * 所以如果对原 {@code Map} 对象的键值对进行修改, 可能会影响到过滤结果
+     * </p>
+     */
+    @Test
+    void filterEntries_shouldFilterEntriesByCondition() {
+        var map = Maps.newLinkedHashMap(ImmutableMap.of("A", 100, "B", 200, "C", 300, "D", 400));
+
+        // 保存元音字母的 Set 集合
+        var vowels = ImmutableSet.of("A", "E", "I", "O", "U");
+
+        // 对 Map 对象进行过滤
+        var filteredMap = Maps.filterEntries(map, e -> !vowels.contains(e.getKey()) && e.getValue() / 100 % 2 == 0);
+        // 确认过滤结果
+        then(filteredMap).hasSize(2).containsKeys("B", "D");
+
+        // 修改原 Map 的键值对
+        map.putAll(ImmutableMap.of("E", 500, "F", 600));
+        // 确认过滤结果也跟着发生变化
+        then(filteredMap).hasSize(3).containsKeys("B", "D", "F");
+    }
+
+    /**
+     * 对 {@code Map} 的 Key 进行过滤, 返回过滤后的 {@code Map} 对象
+     *
+     * <p>
+     * {@link Maps#filterKeys(java.util.Map, com.google.common.base.Predicate) Maps.filterKeys(Map, Predicate)}
+     * 方法用于对一个 {@code Map} 对象的 Key 通过条件函数进行过滤, 并返回包含过滤后键值对的 {@code Map} 对象
+     * </p>
+     *
+     * <p>
+     * 返回结果为 {@link Maps.FilteredKeyMap} 类型对象, 该对象为原 {@code Map} 对象的代理对象, 在获取 Key 的时候才会执行过滤函数,
+     * 所以如果对原 {@code Map} 对象的键值对进行修改, 可能会影响到过滤结果
+     * </p>
+     */
+    @Test
+    void filterKeys_shouldFilterKeysByCondition() {
+        var map = Maps.newLinkedHashMap(ImmutableMap.of("A", 100, "B", 200, "C", 300, "D", 400));
+
+        // 保存元音字母的 Set 集合
+        var vowels = ImmutableSet.of("A", "E", "I", "O", "U");
+
+        // 对 Map 对象进行过滤
+        var filteredMap = Maps.filterKeys(map, key -> !vowels.contains(key));
+        // 确认过滤结果
+        then(filteredMap).hasSize(3).containsKeys("B", "C", "D");
+
+        // 修改原 Map 的键值对
+        map.putAll(ImmutableMap.of("E", 500, "F", 600));
+        // 确认过滤结果也跟着发生变化
+        then(filteredMap).hasSize(4).containsKeys("B", "C", "D", "F");
+    }
+
+    /**
+     * 对 {@code Map} 的 Key 进行过滤, 返回过滤后的 {@code Map} 对象
+     *
+     * <p>
+     * {@link Maps#filterValues(java.util.Map, com.google.common.base.Predicate) Maps.filterValues(Map, Predicate)}
+     * 方法用于对一个 {@code Map} 对象的 Value 通过条件函数进行过滤, 并返回包含过滤后键值对的 {@code Map}
+     * 对象
+     * </p>
+     *
+     * <p>
+     * 返回结果为 {@link Maps.FilteredEntryMap} 类型对象, 该对象为原 {@code Map} 对象的代理对象, 在获取 Key 的时候才会执行过滤函数,
+     * 所以如果对原 {@code Map} 对象的键值对进行修改, 可能会影响到过滤结果
+     * </p>
+     */
+    @Test
+    void filterValues_shouldFilterValuesByCondition() {
+        var map = Maps.newLinkedHashMap(ImmutableMap.of("A", 100, "B", 200, "C", 300, "D", 400));
+
+        // 对 Map 对象进行过滤
+        var filteredMap = Maps.filterValues(map, value -> value / 100 % 2 == 0);
+        // 确认过滤结果
+        then(filteredMap).hasSize(2).containsKeys("B", "D");
+
+        // 修改原 Map 的键值对
+        map.putAll(ImmutableMap.of("E", 500, "F", 600));
+        // 确认过滤结果也跟着发生变化
+        then(filteredMap).hasSize(3).containsKeys("B", "D", "F");
+    }
+
+    /**
+     * 获取 Key 在指定范围内的子 {@code Map} 对象
+     *
+     * <p>
+     * {@link Maps#subMap(java.util.NavigableMap, Range) Maps.subMap(NavigableMap, Range)} 根据一个 {@link Range} 对象对
+     * {@code Map} 的 Key 进行过滤, 返回在范围内 Key 的键值对组成的 {@code Map} 对象
+     * </p>
+     */
+    @Test
+    void subMap_shouldGetSubMapByKeyRange() {
+        var map = ImmutableSortedMap.of("A", 100, "B", 200, "C", 300, "D", 400);
+
+        // 获取 Key 位于 [A..D] 范围内的键值对组成的子 Map 对象
+        var subMap = Maps.subMap(map, Range.closed("B", "D"));
+
+        // 确认返回的 Map 对象包含期待的键值对
+        then(subMap).containsExactly(
+            entry("B", 200),
+            entry("C", 300),
+            entry("D", 400));
+    }
+
+    /**
+     * 创建一个不可变的 {@link java.util.Map.Entry Entry} 对象
+     *
+     * <p>
+     * {@link Maps#immutableEntry(Object, Object) Maps#immutableEntry(K, V)} 方法返回一个不可变的
+     * {@link java.util.Map.Entry Entry} 对象, 类似于 {@link java.util.Map#entry(Object, Object)
+     * Map.entry(K, V)} 方法, 只是返回的结果不可变
+     * </p>
+     */
+    @Test
+    void immutableEntry_shouldCreateImmutableEntry() {
+        // 创建一个不可变的 Entry 对象
+        var immutableEntry = Maps.immutableEntry("A", 100);
+
+        // 确认返回的 Entry 对象包含期待的 Key 和 Value
+        then(immutableEntry).extracting("key", "value").contains("A", 100);
+    }
+
+    /**
+     * 将一个 {@link java.util.Map Map} 对象包装为一个不可修改的 {@code Map} 对象
+     *
+     * <p>
+     * {@link Maps#unmodifiableBiMap(com.google.common.collect.BiMap) Maps.unmodifiableBiMap(BiMap)} 可以将一个
+     * {@link com.google.common.collect.BiMap BiMap} 类型对象包装为不可修改的 {@code Map} 对象
+     * </p>
+     *
+     * <p>
+     * {@link Maps#unmodifiableNavigableMap(java.util.NavigableMap) Maps.unmodifiableNavigableMap(NavigableMap)}
+     * 可以将一个 {@link java.util.NavigableMap NavigableMap} 类型对象包装为不可修改的 {@code Map} 对象 (在 JDK 1.8 以上版本,
+     * 请使用 {@link java.util.Collections#unmodifiableNavigableMap(java.util.NavigableMap)
+     * Collections.unmodifiableNavigableMap(NavigableMap)}) 方法)
+     * </p>
+     *
+     * <p>
+     * 以上两个方法作为 {@link java.util.Collections#unmodifiableMap(java.util.Map) Collections.unmodifiableMap(Map)}
+     * 方法的补充
+     * </p>
+     */
+    @Test
+    void unmodifiable_shouldConvertMapToUnmodifiable() {
+        // 包装 BiMap 对象为不可修改对象
+        {
+            // 创建一个 BiMap 对象
+            var map = HashBiMap.create(ImmutableMap.of("A", 100, "B", 200, "C", 300, "D", 400));
+
+            // 将 BiMap 对象包装为不可修改对象
+            var unmodifiedMap = Maps.unmodifiableBiMap(map);
+
+            // 确认包装后的对象和原对象有相同的键值对
+            then(unmodifiedMap).containsExactlyInAnyOrderEntriesOf(map);
+            // 确认包装后的对象不可修改
+            thenThrownBy(() -> unmodifiedMap.put("E", 500)).isInstanceOf(UnsupportedOperationException.class);
+        }
+
+        // 包装 NavigableMap 为不可修改对象
+        {
+            // 创建一个 NavigableMap 对象
+            var map = Maps.newTreeMap(ImmutableSortedMap.of("A", 100, "B", 200, "C", 300, "D", 400));
+
+            // 将 NavigableMap 对象包装为不可修改对象
+            var unmodifiedMap = Maps.unmodifiableNavigableMap(map);
+
+            // 确认包装后的对象和原对象有相同的键值对
+            then(unmodifiedMap).containsExactlyInAnyOrderEntriesOf(map);
+            // 确认包装后的对象不可修改
+            thenThrownBy(() -> unmodifiedMap.put("E", 500)).isInstanceOf(UnsupportedOperationException.class);
+        }
+    }
+
+    /**
+     * 将一个包含 Key 的集合转为 {@code Map} 对象
+     *
+     * <p>
+     * {@link Maps#toMap(Iterable, com.google.common.base.Function) Maps.toMap(Iterable, Function)} 方法可以将一个包含 Key
+     * 的可迭代对象转为 {@code Map} 对象, {@code Map} 的 Value 值由映射函数通过 Key 得到
+     * </p>
+     */
+    @Test
+    void toMap_shouldConvertIterableToMap() {
+        var keys = ImmutableList.of(1, 2, 2, 3);
+
+        // 将 Key 集合转为 Map 对象, Value 通过 Key 转换得到
+        var map = Maps.toMap(keys, key -> String.format("0%d", key));
+
+        // 确认产生的 Map 对象包含期待的键值对
+        then(map).containsExactly(
+            entry(1, "01"),
+            entry(2, "02"),
+            entry(3, "03"));
     }
 }
