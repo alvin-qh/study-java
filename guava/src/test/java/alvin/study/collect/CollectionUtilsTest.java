@@ -23,7 +23,7 @@ import com.google.common.collect.Ordering;
  * 但已经不推荐在 JDK 8 及以上版本使用
  * </p>
  */
-class Collections2Test {
+class CollectionUtilsTest {
     /**
      * 对集合进行过滤, 返回保存过滤结果的集合对象
      *
