@@ -22,11 +22,11 @@ import com.google.common.collect.Range;
 import com.google.common.collect.Sets;
 
 /**
- * 演示 Guava 列表集合工具类
+ * 演示 Guava {@link java.util.Set Set} 集合工具类
  *
  * <p>
- * {@link Lists} 类提供了一系列静态方法用于创建和操作 {@link java.util.ArrayList ArrayList} 和 {@link java.util.LinkedList
- * LinkedList} 类型对象
+ * {@link Sets} 类提供了一系列静态方法用于创建和操作 {@link HashSet}, {@link TreeSet}, {@link LinkedHashSet}, {@link EnumSet},
+ * {@link ConcurrentHashMap.KeySetView} 以及 {@link CopyOnWriteArraySet} 等 {@link java.util.Set Set} 类型集合的方法
  * </p>
  */
 class SetUtilsTest {
@@ -34,14 +34,14 @@ class SetUtilsTest {
      * 创建 {@link java.util.Set Set} 集合对象
      *
      * <p>
-     * 创建 {@link java.util.HashSet HashSet} 集合对象
+     * 创建 {@link HashSet} 集合对象
      * <ul>
      * <li>
      * 通过 {@link {@link Sets#newHashSet()} 方法可以创建一个 {@link HashSet} 集合对象. 该方法有一系列重载, 通过不同类型参数构建
      * {@link HashSet} 集合对象, 包括:
      * <ul>
      * <li>
-     * {@link Sets#newHashSet()}, 构建一个空的 {@link HashSet} 集合对象, 相当于直接执行 {@code new HashSet()}.
+     * {@link Sets#newHashSet()}, 构建一个空的 {@link HashSet} 集合对象, 相当于直接执行 {@link HashSet#HashSet()} 构造器.
      * 注意: 如果只是为了得到一个空集合且不会修改它, 则应该使用 {@link ImmutableSet#of()} 方法, 或在 JDK 9 之后使用
      * {@link java.util.Set#of() Set.of()} 方法
      * </li>
@@ -49,8 +49,7 @@ class SetUtilsTest {
      * {@link Sets#newHashSet(Object...) Sets.newHashSet(T...)}, 通过一系列元素值构建 {@link HashSet} 集合对象
      * </li>
      * <li>
-     * {@link Sets#newHashSet(Iterable) Sets.newHashSet(Iterable)}, 将一个可迭代对象通过迭代获取元素, 构建 {@link HashSet}
-     * 集合对象
+     * {@link Sets#newHashSet(Iterable)}, 将一个可迭代对象通过迭代获取元素, 构建 {@link HashSet} 集合对象
      * </li>
      * <li>
      * {@link Sets#newHashSet(java.util.Iterator) Sets.newHashSet(Iterator)}, 将一个迭代器对象通过迭代获取元素, 构建
@@ -63,8 +62,8 @@ class SetUtilsTest {
      * <ul>
      * <li>
      * {@link Sets#newHashSetWithExpectedSize(int)} 方法用于产生一个空 {@link HashSet} 集合对象, 并设置预期的 {@code capacity}
-     * 属性, 该集合对象可以在元素数量到达预期值前, 避免内存重新分配. 注意, 该方法已标记为过期, 应该直接使用 {@code new HashSet(int)}
-     * 方法, 通过参数设置 {@code capacity} 值
+     * 属性, 该集合对象可以在元素数量到达预期值前, 避免内存重新分配. 注意, 该方法已标记为过期, 应该直接使用 {@link HashSet#HashSet(int)}
+     * 构造方法, 通过参数设置 {@code capacity} 值
      * </li>
      * </ul>
      * </li>
@@ -105,11 +104,11 @@ class SetUtilsTest {
      * </p>
      *
      * <p>
-     * 创建 {@link java.util.concurrent.ConcurrentHashMap.KeySetView ConcurrentHashMap.KeySetView} 集合对象
+     * 创建 {@link ConcurrentHashMap.KeySetView} 集合对象
      * <ul>
      * <li>
-     * {@link java.util.concurrent.ConcurrentHashMap.KeySetView ConcurrentHashMap.KeySetView} 是
-     * {@link java.util.concurrent.ConcurrentHashMap ConcurrentHashMap} 可以看作是 {@code ConcurrentHashSet} 类型
+     * {@link ConcurrentHashMap.KeySetView} 是 {@link ConcurrentHashMap} 的 Key 集合存储类型, 可以看作是
+     * {@code ConcurrentHashSet} 类型
      * </li>
      * <li>
      * {@link Sets#newConcurrentHashSet()} 方法可以创建空 {@code ConcurrentHashSet} 类型集合对象
