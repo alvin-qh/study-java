@@ -34,28 +34,57 @@ import com.google.common.collect.Table;
  * <p>
  * {@link Table} 的主要操作包括:
  * <ul>
+ * <li>
+ * 向表格中添加单元格:
+ * <ul>
  * <li>{@link Table#put(Object, Object, Object)}, 通过行标识和列标识设置一个单元格值</li>
  * <li>{@link Table#putAll(Table)}, 将另一个 {@code Table} 对象的值存储到当前 {@code Table} 对象中</li>
- * <li>---</li>
+ * </ul>
+ * </li>
+ * <li>
+ * 获取表格内容 (包括单元格, 行或列):
+ * <ul>
  * <li>{@link Table#get(Object, Object)}, 通过行标识和列标识获取一个单元格值</li>
  * <li>{@link Table#row(Object)}, 通过行标识获取当前行所有列的 {@code Map<C, V>} 结果</li>
  * <li>{@link Table#column(Object)}, 通过列标识获取当前列所有行的 {@code Map<R, V>} 结果</li>
- * <li>---</li>
+ * </ul>
+ * </li>
+ * <li>
+ * 匹配表格内容:
+ * <ul>
  * <li>{@link Table#contains(Object, Object)}, 通过行标识和列标识, 确认一个单元格是否存在</li>
  * <li>{@link Table#containsRow(Object)}, 通过行标识确认该行是否存在</li>
  * <li>{@link Table#containsColumn(Object)}, 通过列标识确认该列是否存在</li>
  * <li>{@link Table#containsValue(Object)}, 确认 {@code Table} 中是否包含指定值的单元格</li>
- * <li>---</li>
+ * </ul>
+ * </li>
+ * <li>
+ * 行列标识操作:
+ * <ul>
  * <li>{@link Table#rowKeySet()}, 获取表格中所有的行标识</li>
  * <li>{@link Table#columnKeySet()}, 获取表格中所有的列标识</li>
  * <li>{@link Table#cellSet()}, 获取所有单元格组成的集合, 单元格由 {@link Table.Cell} 接口对象表示</li>
- * <li>---</li>
+ * </ul>
+ * </li>
+ * <li>
+ * 行列内容:
+ * <ul>
  * <li>{@link Table#rowMap()}, 得到一个以行标识为 Key, 包含每行所有单元格的 {@code Map} 对象, 类似 {@code Map<R, Map<C, V>>} 类型</li>
  * <li>{@link Table#columnMap()}, 得到一个以列标识为 Key, 包含每列所有单元格的 {@code Map} 对象, 类似 {@code Map<C, Map<R, V>>} 类型</li>
- * <li>---</li>
+ * </ul>
+ * </li>
+ * <li>
+ * 获取全部值:
+ * <ul>
  * <li>{@link Table#values()}, 获取表格中所有单元格值组成的集合</li>
- * <li>---</li>
+ * </ul>
+ * </li>
+ * <li>
+ * 删除表格单元格
+ * <ul>
  * <li>{@link Table#remove(Object, Object)}, 根据行标识和列标识删除一个单元格</li>
+ * </ul>
+ * </li>
  * </ul>
  * </p>
  */
@@ -329,7 +358,8 @@ class TableTest {
      * <p>
      * 注意, 基于数组的 {@link ImmutableTable} 对象一旦实例化后, 不能对其进行任何修改 (包括添加, 删除等), 会导致异常抛出
      * </p>
-sy     */
+     * sy
+     */
     @Test
     void immutableTable_shouldCreateAndUseTable() {
         // 实例化 Builder 对象用于创建不可变 Table 对象
