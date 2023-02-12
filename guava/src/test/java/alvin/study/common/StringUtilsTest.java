@@ -7,9 +7,12 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import com.google.common.base.CaseFormat;
 import com.google.common.base.CharMatcher;
+import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSortedMap;
 
@@ -237,5 +240,161 @@ class StringUtilsTest {
                 .precomputed();
         then(matcher.matchesAllOf("ABCabc")).isTrue();
         then(matcher.matchesAllOf(" A")).isFalse();
+    }
+
+    /**
+     * 使用标准字符集
+     *
+     * <p>
+     * {@link Charsets} 类型包含了各个国家使用的标准字符集对象 ({@link java.nio.charset.Charset Charset} 类型对象)
+     * </p>
+     *
+     * <p>
+     * 如果使用 JDK 7 以上版本, 请使用 {@link java.nio.charset.StandardCharsets StandardCharsets} 类型
+     * </p>
+     */
+    @Test
+    void charsets_shouldUseStandardCharset() {
+        var bytes = "Hello World".getBytes(Charsets.UTF_8);
+        then(bytes).isEqualTo(new byte[] { 72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100 });
+    }
+
+    /**
+     * 对单词进行大小写格式处理
+     *
+     * <p>
+     * {@link CaseFormat} 类包含各种常用单词大小写格式化类, 包括:
+     * <ul>
+     * <li>{@link CaseFormat#LOWER_CAMEL}, 将单词格式化为形如 {@code lowerCamel} 的格式</li>
+     * <li>{@link CaseFormat#LOWER_HYPHEN}, 将单词格式化为形如 {@code lower-camel} 的格式</li>
+     * <li>{@link CaseFormat#LOWER_UNDERSCORE}, 将单词格式化为形如 {@code lower_underscore} 的格式</li>
+     * <li>{@link CaseFormat#UPPER_CAMEL}, 将单词格式化为形如 {@code UpperCamel} 的格式</li>
+     * <li>{@link CaseFormat#UPPER_UNDERSCORE}, 将单词格式化为形如 {@code UPPER_UNDERSCORE} 的格式</li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * 处理的语法为: {@code 原格式.to(新格式, "字符串")}
+     * </p>
+     */
+    @Test
+    void caseFormat_shouldFormatCaseOfWorld() {
+        var word = "helloWorld";
+
+        // LOWER_CAMEL => LOWER_HYPHEN
+        then(CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, word)).isEqualTo("hello-world");
+        // LOWER_CAMEL => LOWER_UNDERSCORE
+        then(CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, word)).isEqualTo("hello_world");
+        // LOWER_CAMEL => UPPER_CAMEL
+        then(CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, word)).isEqualTo("HelloWorld");
+        // LOWER_CAMEL => UPPER_UNDERSCORE
+        then(CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, word)).isEqualTo("HELLO_WORLD");
+        // LOWER_CAMEL => LOWER_CAMEL
+        then(CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_CAMEL, word)).isEqualTo("helloWorld");
+    }
+
+    /**
+     * 获取两个字符串的共同前缀
+     *
+     * <p>
+     * {@link Strings#commonPrefix(CharSequence, CharSequence)} 方法用于查找两个参数共同的前缀, 该方法的返回值要同时满足两个参数的
+     * {@link String#startsWith(String)} 方法
+     * </p>
+     */
+    @Test
+    void commonPrefix_shouldFindCommonPrefixOfTwoStrings() {
+        var s = Strings.commonPrefix("xx-yy-zz", "xx-zz");
+        then(s).isEqualTo("xx-");
+    }
+
+    /**
+     * 获取两个字符串的共同后缀
+     *
+     * <p>
+     * {@link Strings#commonSuffix(CharSequence, CharSequence)} 方法用于查找两个参数共同的后缀, 该方法的返回值要同时满足两个参数的
+     * {@link String#endsWith(String)} 方法
+     * </p>
+     */
+    @Test
+    void commonSuffix_shouldFindCommonSuffixOfTwoStrings() {
+        var s = Strings.commonSuffix("xx-yy-zz", "xx-zz");
+        then(s).isEqualTo("-zz");
+    }
+
+    /**
+     * 检查字符串是否为 {@code null} 或"空字符串"
+     *
+     * <p>
+     * {@link Strings#isNullOrEmpty(String)} 用于判断一个字符串类型变量是否为 {@code null} 或引用了一个"空字符串"
+     * </p>
+     */
+    @Test
+    void emptyToNull_checkStringIfNullOrEmpty() {
+        then(Strings.isNullOrEmpty("")).isTrue();
+        then(Strings.isNullOrEmpty(null)).isTrue();
+        then(Strings.isNullOrEmpty(" ")).isFalse();
+    }
+
+    /**
+     * 为字符串添加前缀字符
+     *
+     * <p>
+     * {@link Strings#padStart(String, int, char)} 方法用于为指定字符串添加前缀字符, 其中:
+     * <ul>
+     * <li>第一个参数表示要添加前缀的字符串</li>
+     * <li>
+     * 第二个参数表示结果字符串的最小长度, 该方法会用前缀字符将所给字符串长度补齐到该最小长度; 若所给字符串长度已经不小于最小长度, 则不进行补齐
+     * </li>
+     * <li>第三个参数表示用于补齐长度的字符</li>
+     * </ul>
+     * </p>
+     */
+    @Test
+    void padStart_addPrefixForString() {
+        // 用 '0' 字符将所给字符串通过前缀补齐到长度为 3
+        var s = Strings.padStart("7", 3, '0');
+        then(s).isEqualTo("007");
+
+        // 用 '0' 字符将所给字符串补齐到长度为 3, 但所给字符串长度已经为 3, 所以不进行补齐
+        s = Strings.padStart("777", 3, '0');
+        then(s).isEqualTo("777");
+    }
+
+    /**
+     * 为字符串添加前缀字符
+     *
+     * <p>
+     * {@link Strings#padStart(String, int, char)} 方法用于为指定字符串添加前缀字符, 其中:
+     * <ul>
+     * <li>第一个参数表示要添加后缀的字符串</li>
+     * <li>
+     * 第二个参数表示结果字符串的最小长度, 该方法会用后缀字符将所给字符串长度补齐到该最小长度; 若所给字符串长度已经不小于最小长度, 则不进行补齐
+     * </li>
+     * <li>第三个参数表示用于补齐长度的字符</li>
+     * </ul>
+     * </p>
+     */
+    @Test
+    void padEnd_addSuffixForString() {
+        // 用 '0' 字符将所给字符串通过后缀补齐到长度为 3
+        var s = Strings.padEnd("7", 3, '0');
+        then(s).isEqualTo("700");
+
+        // 用 '0' 字符将所给字符串补齐到长度为 3, 但所给字符串长度已经为 3, 所以不进行补齐
+        s = Strings.padEnd("777", 3, '0');
+        then(s).isEqualTo("777");
+    }
+
+    /**
+     * 将字符串重复指定次数
+     *
+     * <p>
+     * {@link Strings#repeat(String, int)} 用于将字符串重复指定次数
+     * </p>
+     */
+    @Test
+    void repeat_shouldRepeatStringByGivenCount() {
+        var s = Strings.repeat("ABC", 5);
+        then(s).isEqualTo("ABCABCABCABCABC"); // cspell: disable-line
     }
 }
