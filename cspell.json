@@ -79,6 +79,7 @@
     "graphqls",
     "Guice",
     "hamcrest",
+    "Hasher",
     "HAVAL",
     "Heiti",
     "hikari",
