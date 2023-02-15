@@ -18,7 +18,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.junit.jupiter.api.Test;
 
 import com.google.common.base.Equivalence;
-import com.google.common.base.Functions;
 import com.google.common.collect.ContiguousSet;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.ImmutableList;
@@ -622,7 +621,7 @@ class MapUtilsTest {
     void toImmutableEnumMap_shouldMakeImmutableEnumMapCollectors() {
         // 通过枚举数组产生一个 Stream 对象, 并通过 toImmutableEnumMap 将其转为 ImmutableMap 对象
         var monthMap = Arrays.stream(Month.values())
-                .collect(Maps.toImmutableEnumMap(Functions.identity(), m -> m.name(), (o, n) -> n));
+                .collect(Maps.toImmutableEnumMap(m -> m, m -> m.name(), (o, n) -> n));
 
         // 确认得到的 ImmutableMap 符合预期
         then(monthMap)
