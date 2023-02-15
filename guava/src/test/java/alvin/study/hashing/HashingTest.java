@@ -222,7 +222,7 @@ class HashingTest {
     @Test
     void goodFastHash_shouldCalculateHashCodeWithGoodFastHash() {
         // 获取散列函数
-        var hashFn = Hashing.goodFastHash(64);
+        var hashFn = Hashing.goodFastHash(256);
         // 确认散列函数计算结果的长度
         then(hashFn.bits()).isEqualTo(256);
 
