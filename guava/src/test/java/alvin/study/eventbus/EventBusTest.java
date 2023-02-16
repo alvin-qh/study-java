@@ -2,6 +2,9 @@ package alvin.study.eventbus;
 
 import static org.assertj.core.api.Assertions.entry;
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.awaitility.Awaitility.await;
+
+import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -52,7 +55,7 @@ class EventBusTest {
         // 实例化事件发送方对象
         var repository = new UserRepository();
         // 实例化事件订阅方对象
-        var handler = new UserHandler();
+        var handler = new UserHandler(false);
 
         // 执行 insertUser 方法, 该方法内部会发送 UserEvent 类型事件对象
         var user = new User(1L, "Alvin");
@@ -63,7 +66,48 @@ class EventBusTest {
         // 确认 UserHandler.onUserCreated 方法执行成功
         then(handler.getUserMap()).containsExactly(entry(user.getId(), user));
 
-        // 接触事件订阅
+        // 解除事件订阅
+        handler.unregister();
+    }
+
+    /**
+     * 测试异步订阅和事件处理
+     *
+     * <p>
+     * 本例中发送的事件类型为 {@link UserEvent} 类型对象
+     * </p>
+     *
+     * <p>
+     * 事件订阅在 {@link UserHandler} 类对象中进行, 由 {@link UserHandler#onUserCreated(UserEvent)} 方法处理事件, 为体现异步特点,
+     * 通过 {@code UserHandler(true)} 方式构造对象
+     * </p>
+     *
+     * <p>
+     * 事件发布在 {@link UserRepository#insertUser(User)} 方法中进行
+     * </p>
+     */
+    @Test
+    void async_shouldEventCanBePublishedAndSubscribedByAsync() {
+        // 注册名为 REPO 的异步 EventBus 对象
+        EventBusManager.getInstance().registerAsyncEventBus("REPO");
+
+        // 实例化事件发送方对象
+        var repository = new UserRepository();
+        // 实例化事件订阅方对象
+        var handler = new UserHandler(true);
+
+        // 执行 insertUser 方法, 该方法内部会发送 UserEvent 类型事件对象
+        var user = new User(1L, "Alvin");
+        repository.insertUser(user);
+
+        // 确认 UserRepository.insertUser 方法执行成功
+        then(repository.getUserMap()).containsExactly(entry(user.getId(), user));
+
+        // 等待 UserHandler.onUserCreated 方法在 5 秒内被执行
+        await().atMost(5, TimeUnit.SECONDS)
+                .untilAsserted(() -> then(handler.getUserMap()).containsExactly(entry(user.getId(), user)));
+
+        // 解除事件订阅
         handler.unregister();
     }
 
@@ -106,7 +150,7 @@ class EventBusTest {
         // 实例化事件发送方对象
         var repository = new UserRepository();
         // 实例化事件订阅方对象
-        var handler = new UserHandler();
+        var handler = new UserHandler(false);
 
         // 执行 insertUser 方法, 该方法内部会发送 UserEvent 类型事件对象
         // 本次测试对象的 id 为 0, 会在事件处理内部引发异常, 已测试异常处理
@@ -121,7 +165,7 @@ class EventBusTest {
         // 确认进行了一次异常处理
         then(exceptions).hasSize(1);
 
-        // 接触事件订阅
+        // 解除事件订阅
         handler.unregister();
     }
 }

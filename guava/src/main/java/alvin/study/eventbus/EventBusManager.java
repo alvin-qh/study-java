@@ -48,6 +48,16 @@ public final class EventBusManager {
     }
 
     /**
+     * 通过一个名称标识注册一个 {@link EventBus} 对象
+     *
+     * @param name 标识名称字符串
+     * @return 被注册的 {@link EventBus} 对象
+     */
+    public EventBus registerAsyncEventBus(String name) {
+        return registerAsyncEventBus(name, null);
+    }
+
+    /**
      * 通过一个名称标识注册一个 {@link EventBus} 对象, 并为事件处理设定异常处理对象
      *
      * <p>
