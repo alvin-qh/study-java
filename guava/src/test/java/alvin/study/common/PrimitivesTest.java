@@ -3,6 +3,8 @@ package alvin.study.common;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
+import java.math.BigInteger;
+
 import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.ImmutableList;
@@ -14,6 +16,11 @@ import com.google.common.primitives.Floats;
 import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
 import com.google.common.primitives.Shorts;
+import com.google.common.primitives.UnsignedBytes;
+import com.google.common.primitives.UnsignedInteger;
+import com.google.common.primitives.UnsignedInts;
+import com.google.common.primitives.UnsignedLong;
+import com.google.common.primitives.UnsignedLongs;
 
 /**
  * 针对于简单类型的一组操作方法
@@ -1436,6 +1443,116 @@ class PrimitivesTest {
         {
             var array = Booleans.toArray(ImmutableList.of(true, false, true));
             then(array).isInstanceOf(boolean[].class).containsExactly(true, false, true);
+        }
+    }
+
+    /**
+     * 测试无符号类型
+     *
+     * <p>
+     * Guava 拓展了 Java 的整数类型, 增加了包括 {@link UnsignedInteger} 以及 {@link UnsignedLong} 无符号整数类型以及
+     * {@link UnsignedBytes}, {@link UnsignedInts} 以及 {@link UnsignedLongs} 工具类
+     * </p>
+     *
+     * <p>
+     * 在计算机系统中, 整数符号是通过二进制最高位来表示的, 最高位为 {@code 1} 表示负数; 最高位为 {@code 0} 表示正数, 剩余的位数表示数值
+     * </p>
+     *
+     * <p>
+     * 计算机在内存中使用补码 (反码 + 1) 的形式保存"负数", 以达到通过加法运算器求减法的目标. 例如: {@code byte 2} 的二进制为
+     * {@code 00000010b}, 则 {@code byte -2} 的值为其补码, 即 {@code 11111101b + 1b = 11111110b}
+     * </p>
+     *
+     * <p>
+     * 所谓"无符号", 即不将最高位作为符号位, 将所有的二进制都作为数值, 此时 {@code byte -2} 的值 {@code 11111110b} 表示整数
+     * {@code 254}
+     * </p>
+     *
+     * <p>
+     * 所以无论是有符号整数或是无符号整数, 其二进制表示都是一致的, 例如 {@code byte -1} 转为的无符号为 {@code byte 255}, 二进制都是
+     * {@code 11111111b}, 对无符号整数的"加", "减", "乘", 都可以转为对应的无符号整数进行操作. 但涉及"除", "比较", "指数", "对数"
+     * 等运算, 相同二进制位的无符号和有符号整数, 计算结果不同
+     * </p>
+     *
+     * <p>
+     * 在 JDK 9 之前, Java 并不直接支持无符号类型, 如果要对无符号类型进行运算, 需要自行通过位运算符进行, 例如要将一个 {@code int}
+     * 值 {@code n} 转为无符号类型, 则需要进行 {@code n & 0x00000000FFFFFFFFL} 这类运算将符号位设置为 {@code 0} 并保留有效数字位不变,
+     * 其结果是一个 {@code long} 类型
+     * </p>
+     *
+     * <p>
+     * JDK 9 之后, 增加了类似 {@link Integer#toUnsignedLong(int)}, {@link Integer#toUnsignedString(int)} 以及
+     * {@link Integer#compareUnsigned(int, int)} 方法, 以支持有限的无符号整数操作
+     * </p>
+     *
+     * <p>
+     * Guava 提供了更为完备的无符号整数相关方法, 但由于 Java 的简单类型并不支持无符号整数, 所以无符号整数仍是基于有符号数进程存储的
+     * (基于相同的二进制值), 只是在运算和转换时表现为无符号数
+     * </p>
+     */
+    @Test
+    void unsigned_shouldUseUnsignedPrimitive() {
+        // 测试无符号字节的最大值
+        {
+            var max = UnsignedBytes.MAX_VALUE;
+            then(UnsignedBytes.toInt(max)).isEqualTo(0xFF);
+        }
+
+        // 测试无符号整数的最大值
+        {
+            var max = UnsignedInteger.MAX_VALUE;
+            then(max.longValue()).isEqualTo(0xFFFFFFFFL);
+        }
+
+        // 测试无符号长整数的最大值
+        {
+            var max = UnsignedLong.MAX_VALUE;
+            then(max.bigIntegerValue()).isEqualTo(new BigInteger("FFFFFFFFFFFFFFFF", 16));
+        }
+
+        // 对无符号整数进行比较
+        {
+            var b1 = (byte) 0xF1; // -14
+            var b2 = (byte) 0x0F; // 15
+
+            then(b1 < b2).isTrue();
+
+            // 对应的有符号和无符号数比较结果不同
+            then(UnsignedBytes.compare(b1, b2)).isGreaterThan(0);
+            then(Byte.compareUnsigned(b1, b2)).isGreaterThan(0);
+        }
+
+        // 对无符号整数进行运算
+        {
+            var i1 = -2; // 0XFFFFFFFE, 11111111111111111111111111111110b
+            var i2 = -1; // 0xFFFFFFFF, 11111111111111111111111111111111b
+
+            var u1 = UnsignedInteger.fromIntBits(i1);
+            then(u1.longValue()).isEqualTo(Integer.toUnsignedLong(i1)).isEqualTo(i1 & 0x00000000FFFFFFFFL);
+
+            var u2 = UnsignedInteger.fromIntBits(i2);
+            then(u2.longValue()).isEqualTo(i2 & 0x00000000FFFFFFFFL);
+
+            // 加法运算, 对应的无符号和有符号数运算结果相同
+            // -2 + -1 = 0xFFFFFFFF + 0xFFFFFFFE
+            // = 11111111111111111111111111111110b + 11111111111111111111111111111111b
+            // = 0xFFFFFFFD = 11111111111111111111111111111101b = -3
+            then(u1.plus(u2).intValue()).isEqualTo(-3);
+
+            // 减法运算, 对应的无符号和有符号数运算结果相同
+            // -2 - -1 = 0xFFFFFFFF - 0xFFFFFFFE
+            // = 11111111111111111111111111111110b - 11111111111111111111111111111111b
+            // = 0xFFFFFFFE = 11111111111111111111111111111111b = -1
+            then(u1.minus(u2).intValue()).isEqualTo(-1);
+
+            // 乘法运算, 对应的无符号和有符号数运算结果相同
+            // -2 * -1 = 0xFFFFFFFF * 0xFFFFFFFE
+            // = 11111111111111111111111111111110b * 11111111111111111111111111111111b
+            // = 10b = 2
+            then(u1.times(u2).intValue()).isEqualTo(2);
+
+            // 除法运算中, 对应的无符号和有符号数运算结果不同
+            then(u1.dividedBy(u2).intValue()).isEqualTo(0);
         }
     }
 }
