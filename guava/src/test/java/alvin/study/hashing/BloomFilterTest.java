@@ -9,6 +9,7 @@ import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.hash.BloomFilter;
 
 /**
@@ -119,6 +120,33 @@ class BloomFilterTest {
         }
 
         // 确认恢复的布隆过滤器正确
+        then(filter.mightContain(new Person(2L, "Emma", LocalDate.of(1985, 3, 29), "Shanxi Xi'an"))).isTrue();
+        then(filter.mightContain(new Person(3L, "Emma", LocalDate.of(1985, 3, 29), "Shanxi Xi'an"))).isFalse();
+    }
+
+    /**
+     * 测试将 {@link java.util.stream.Stream Stream} 转为布隆过滤器对象
+     *
+     * <p>
+     * 使用 {@link BloomFilter#toBloomFilter(com.google.common.hash.Funnel, long, double)
+     * BloomFilter.toBloomFilter(Funnel, long, double)} 方法可以通过
+     * {@link java.util.stream.Stream#collect(java.util.stream.Collector) Stream.collect(Collector)} 方法将
+     * {@code Stream} 转为布隆过滤器对象
+     * </p>
+     */
+    @Test
+    void toBloomFilter_shouldCollectStreamToBloomFilter() {
+        // 产生一个目标对象的集合
+        var persons = ImmutableList.of(
+            new Person(1L, "Alvin", LocalDate.of(1981, 3, 17), "Shanxi Xi'an"),
+            new Person(2L, "Emma", LocalDate.of(1985, 3, 29), "Shanxi Xi'an"),
+            new Person(3L, "Lucy", LocalDate.of(1992, 1, 8), "Guangdong Shenzhen"));
+
+        // 通过 Stream 将目标集合转为布隆过滤器对象
+        var filter = persons.stream().collect(
+            BloomFilter.toBloomFilter(Person.makeFunnel(), persons.size(), 0.001));
+
+        // 确认转换的布隆过滤器正确
         then(filter.mightContain(new Person(2L, "Emma", LocalDate.of(1985, 3, 29), "Shanxi Xi'an"))).isTrue();
         then(filter.mightContain(new Person(3L, "Emma", LocalDate.of(1985, 3, 29), "Shanxi Xi'an"))).isFalse();
     }
