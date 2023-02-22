@@ -22,7 +22,7 @@
     <version.junit-pioneer>1.9.1</version.junit-pioneer>
     <version.hamcrest>2.2</version.hamcrest>
     <version.guava>31.1-jre</version.guava>
-    <version.lombok>1.18.24</version.lombok>
+    <version.lombok>1.18.26</version.lombok>
     <version.jakarta-mail>2.0.1</version.jakarta-mail>
     <version.jaxb>4.0.1</version.jaxb>
     <version.auth-jwt>4.2.1</version.auth-jwt>
