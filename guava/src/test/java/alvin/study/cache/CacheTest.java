@@ -3,6 +3,7 @@ package alvin.study.cache;
 import static org.assertj.core.api.Assertions.entry;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.NoSuchElementException;
@@ -15,12 +16,16 @@ import org.junit.jupiter.api.Test;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
+import com.google.common.cache.RemovalCause;
+import com.google.common.cache.RemovalListener;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.MultimapBuilder;
 import com.google.common.hash.BloomFilter;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 
 import alvin.study.cache.model.User;
+import alvin.study.cache.observer.CacheObserver;
 import alvin.study.cache.repository.UserRepository;
 
 /**
@@ -546,7 +551,6 @@ class CacheTest {
      * </p>
      */
     @Test
-    @SuppressWarnings("java:S2925")
     void reference_shouldUseDifferentReferencesInCacheValue() throws InterruptedException {
         // 构建缓存对象, 其被缓存的对象是通过"弱引用"方式存储的
         var cache = CacheBuilder.newBuilder()
@@ -564,14 +568,117 @@ class CacheTest {
         // 接触被缓存对象的引用, 并执行一次 GC
         user = null;
         Runtime.getRuntime().gc();
-        // 等待 GC 执行完毕
-        Thread.sleep(500);
 
-        // 确认 GC 后, 无法再次获取到缓存对象, 已经被自动垃圾回收
-        then(cache.getIfPresent(1L)).isNull();
+        await().atMost(500, TimeUnit.MILLISECONDS).untilAsserted(() -> {
+            // 确认 GC 后, 无法再次获取到缓存对象, 已经被自动垃圾回收
+            then(cache.getIfPresent(1L)).isNull();
+            then(cache.getIfPresent(2L)).isNull();
+
+            then(cache.size()).isEqualTo(0);
+
+        });
+    }
+
+    /**
+     * 测试按时间刷新缓存项
+     *
+     * <p>
+     * 所谓的缓存刷新, 即对于已存在的缓存项, 通过其 Key 值将其 Value 从数据源重新进行加载, 以覆盖原有的缓存项 Value
+     * </p>
+     *
+     * <p>
+     * 通过 {@link CacheBuilder#refreshAfterWrite(long, TimeUnit)} 方法可以指定一个自动刷新的时间, 当缓存项存在时间超过该时间后,
+     * 会自动对缓存项进行刷新
+     * </p>
+     */
+    @Test
+    void refresh_shouldReloadCacheByTimeAfterWrite() throws Exception {
+        repository.insertUser(new User(1L, "Alvin"));
+        repository.insertUser(new User(2L, "Emma"));
+        repository.insertUser(new User(3L, "Lucy"));
+
+        // 构建缓存对象, 设置缓存项删除监听接口对象
+        var cache = CacheBuilder.newBuilder()
+                .refreshAfterWrite(2, TimeUnit.SECONDS)
+                .build(new CacheLoader<Long, User>() {
+                    @Override
+                    public User load(Long key) throws Exception {
+                        return repository.findUserById(key).orElseThrow();
+                    }
+                });
+
+        // 读取 3 次缓存, 这会导致缓存项超出设定大小, 会淘汰一项
+        for (var key : ImmutableList.of(1L, 2L, 3L)) {
+            try {
+                cache.get(key);
+            } catch (Exception ignore) {}
+        }
+
+        repository.updateUser(new User(2L, "Fiona"));
+
+        await().atMost(3, TimeUnit.SECONDS).untilAsserted(
+            () -> then(cache.get(2L)).extracting("id", "name").contains(2L, "Fiona"));
+    }
+
+    /**
+     * 测试通过事件触发刷新缓存项
+     *
+     * <p>
+     * 所谓的缓存刷新, 即对于已存在的缓存项, 通过其 Key 值将其 Value 从数据源重新进行加载, 以覆盖原有的缓存项 Value
+     * </p>
+     *
+     * <p>
+     * 通过 {@link com.google.common.cache.LoadingCache#refresh(Object) LoadingCache.refresh(K)} 方法可以刷新指定 Key
+     * 的缓存项, 这种方法一般用于数据源更新后执行
+     * </p>
+     *
+     * <p>
+     * 为了解除实体对象操作和缓存操作的耦合性, 一般采用观察者模式, 以事件驱动的方式处理缓存, 本例中采用了 Guava 的消息总线订阅
+     * </p>
+     *
+     * <p>
+     * {@link CacheEventBus} 是转为缓存处理设计的消息总线类型, 通过 {@link CacheEventBus#getInstance()} 方法获取其单例对象, 再通过
+     * {@link CacheEventBus#register(CacheObserver)} 方法注册在该消息总线上进行监听的观察者对象
+     * </p>
+     */
+    @Test
+    void refresh_shouldReloadCacheByEvent() throws Exception {
+        repository.insertUser(new User(1L, "Alvin"));
+        repository.insertUser(new User(2L, "Emma"));
+        repository.insertUser(new User(3L, "Lucy"));
+
+        // 构建缓存对象, 设置缓存项删除监听接口对象
+        var cache = CacheBuilder.newBuilder()
+                .build(new CacheLoader<Long, User>() {
+                    @Override
+                    public User load(Long key) throws Exception {
+                        return repository.findUserById(key).orElseThrow();
+                    }
+                });
+
+        // 实例化观察者对象, 监听缓存消息总线
+        CacheEventBus.getInstance().register(new CacheObserver(cache));
+
+        // 读取 3 次缓存, 将实体对象全部加载到缓存中
+        for (var key : ImmutableList.of(1L, 2L, 3L)) {
+            try {
+                cache.get(key);
+            } catch (Exception ignore) {}
+        }
+
+        // 更新实体对象
+        repository.updateUser(new User(2L, "Fiona"));
+        // 确认对应的缓存也通过消息总线得以更新
+        then(cache.get(2L)).extracting("id", "name").contains(2L, "Fiona");
+
+        // 确认缓存中又 3 项
+        then(cache.size()).isEqualTo(3);
+
+        // 删除实体对象
+        repository.deleteUser(2L);
+        // 确认缓存中只剩余 2 项
+        then(cache.size()).isEqualTo(2);
         then(cache.getIfPresent(2L)).isNull();
-
-        then(cache.size()).isEqualTo(0);
     }
 
     /**
@@ -611,8 +718,8 @@ class CacheTest {
 
         // 构建缓存对象, 开启缓存指标记录
         var cache = CacheBuilder.newBuilder()
-                .recordStats()
                 .maximumSize(2)
+                .recordStats()
                 .build(new CacheLoader<Long, User>() {
                     @Override
                     public User load(Long key) throws Exception {
@@ -634,5 +741,93 @@ class CacheTest {
         // 读取数据源 4 次, 成功获取数据 3 次
         // 从缓存中淘汰 1 条数据
         then(formatCacheStat(cache)).isEqualTo("hit rate = 42.9%, load success count = 3, eviction count = 1");
+    }
+
+    /**
+     * 监听缓存项删除操作
+     *
+     * <p>
+     * 通过 {@link CacheBuilder#removalListener(RemovalListener)} 方法可以指定一个监听接口, 用于监听从缓存中删除项目的操作
+     * </p>
+     *
+     * <p>
+     * {@link RemovalListener#onRemoval(com.google.common.cache.RemovalNotification)
+     * RemovalListener.onRemoval(RemovalNotification)} 方法通过 {@link com.google.common.cache.RemovalNotification
+     * RemovalNotification} 类型参数表明被删除的缓存情况, 包括:
+     * <ul>
+     * <li>
+     * {@link com.google.common.cache.RemovalNotification#getKey() RemovalNotification.getKey()} 和
+     * {@link com.google.common.cache.RemovalNotification#getValue() RemovalNotification.getValue()}
+     * 方法可以获取被删除缓存项的键值对
+     * </li>
+     * <li>
+     * {@link com.google.common.cache.RemovalNotification#getCause() RemovalNotification.getCause()}
+     * 方法可以获取该缓存项被删除的原因, 返回一个 {@link RemovalCause} 类型枚举
+     * </li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * {@link RemovalCause} 枚举包括:
+     * <ul>
+     * <li>{@link RemovalCause#SIZE} 该缓存项是因为缓存的数量策略或权重策略被删除</li>
+     * <li>{@link RemovalCause#EXPIRED} 该缓存项是因为缓存的过期策略被删除</li>
+     * <li>{@link RemovalCause#COLLECTED} 该缓存项是因为使用了软引用或弱引用, 因垃圾回收被删除</li>
+     * <li>{@link RemovalCause#REPLACED} 该缓存项是因为其值被更新 (缓存刷新或缓存 Value 被更改) 导致删除</li>
+     * <li>{@link RemovalCause#EXPLICIT} 该缓存项是使用了 {@code invalidate} 系列方法被明确删除</li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * 如果系统架构中使用了多级缓存结构 (例如内存缓存作为一级缓存, Redis 作为二级缓存等), 监控缓存删除可以用于完成这类策略
+     * </p>
+     */
+    @Test
+    void removeListener_shouldWatchCacheElementHasBeenDeleted() {
+        repository.insertUser(new User(1L, "Alvin"));
+        repository.insertUser(new User(2L, "Emma"));
+        repository.insertUser(new User(3L, "Lucy"));
+
+        // 用于保存已删除缓存项的 Multimap 对象
+        var removedItems = MultimapBuilder
+                .hashKeys()
+                .arrayListValues()
+                .<RemovalCause, User>build();
+
+        // 构建缓存对象, 设置缓存项删除监听接口对象
+        var cache = CacheBuilder.newBuilder()
+                .maximumSize(2)
+                .removalListener((RemovalListener<Long, User>) notification -> {
+                    // 确认被删除缓存项的键值对
+                    then(notification.getKey()).isEqualTo(notification.getValue().getId());
+                    // 将被删除的缓存保存
+                    removedItems.put(notification.getCause(), notification.getValue());
+                })
+                .build(new CacheLoader<Long, User>() {
+                    @Override
+                    public User load(Long key) throws Exception {
+                        return repository.findUserById(key).orElseThrow();
+                    }
+                });
+
+        then(removedItems.size()).isEqualTo(0);
+
+        // 读取 3 次缓存, 这会导致缓存项超出设定大小, 会淘汰一项
+        for (var key : ImmutableList.of(1L, 2L, 3L)) {
+            try {
+                cache.get(key);
+            } catch (Exception ignore) {}
+        }
+        // 确认删除了 1 项缓存
+        then(removedItems.size()).isEqualTo(1);
+        // 确定删除项是因为缓存 size 策略导致
+        then(removedItems.get(RemovalCause.SIZE).get(0)).extracting("id", "name").contains(1L, "Alvin");
+
+        // 显式删除一项
+        cache.invalidate(2L);
+        // 确认删除了 2 项缓存
+        then(removedItems.size()).isEqualTo(2);
+        // 确定删除项是因为缓存显式删除导致
+        then(removedItems.get(RemovalCause.EXPLICIT).get(0)).extracting("id", "name").contains(2L, "Emma");
     }
 }
