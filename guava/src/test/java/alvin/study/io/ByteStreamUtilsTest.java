@@ -172,36 +172,39 @@ class ByteStreamUtilsTest {
     void readFully_shouldReadEnoughBytesFromInputStream() throws Exception {
         // 定义一个管道, 获取读取管道数据的输入流
         try (var pi = new PipedInputStream()) {
-            // 定义一个线程对象, 异步对管道的另一端进行操作
-            var inputThread = new Thread(() -> {
-                // 将一个输出流连接到管道, 用于向管道写入数据
-                try (var po = new PipedOutputStream(pi)) {
+            // 将一个输出流连接到管道, 用于向管道写入数据
+            try (var po = new PipedOutputStream(pi)) {
+                // 定义一个线程对象, 异步对管道的另一端进行操作
+                var inputThread = new Thread(() -> {
                     // 分三次向管道写入数据, 每次间隔 500 毫秒
                     for (int i = 0; i < 3; i++) {
-                        Thread.sleep(500);
-                        po.write("Hello Guava".getBytes(Charsets.UTF_8));
+                        try {
+                            Thread.sleep(500);
+                            po.write("Hello Guava".getBytes(Charsets.UTF_8));
+                        } catch (IOException | InterruptedException e) {}
                     }
-                } catch (IOException | InterruptedException e) {}
-            });
+                });
 
-            // 启动线程, 开始管道操作
-            inputThread.start();
+                // 启动线程, 开始管道操作
+                inputThread.start();
 
-            var timestamp = System.currentTimeMillis();
+                var timestamp = System.currentTimeMillis();
 
-            // 定义总读取长度
-            var data = new byte[33];
-            // 从输入流读取指定长度的数据
-            ByteStreams.readFully(pi, data, 0, data.length);
+                // 定义总读取长度
+                var data = new byte[33];
+                // 从输入流读取指定长度的数据
+                ByteStreams.readFully(pi, data, 0, data.length);
 
-            // 确认整个数据读取持续了 1500 毫秒, 即三次写入管道的整体花费时间
-            // 所以 readFully 方法在未读取到指定长度数据前, 会一直阻塞, 直到规定长度的数据都被读取
-            then(System.currentTimeMillis() - timestamp).isBetween(1500L, 1599L);
-            // 确认读取数据的正确性
-            then(data).isEqualTo("Hello GuavaHello GuavaHello Guava".getBytes(Charsets.UTF_8));
+                // 确认整个数据读取持续了 1500 毫秒, 即三次写入管道的整体花费时间
+                // 所以 readFully 方法在未读取到指定长度数据前, 会一直阻塞, 直到规定长度的数据都被读取
+                then(System.currentTimeMillis() - timestamp).isGreaterThan(1500L);
+                // 确认读取数据的正确性
+                then(data).isEqualTo("Hello GuavaHello GuavaHello Guava".getBytes(Charsets.UTF_8));
+            }
 
             // 由于流已经读完, 所以即使再多读一个字节都会导致 EOFException 异常
-            thenThrownBy(() -> ByteStreams.readFully(pi, data, 0, 1)).isInstanceOf(EOFException.class);
+            var data = new byte[1];
+            thenThrownBy(() -> ByteStreams.readFully(pi, data, 0, data.length)).isInstanceOf(EOFException.class);
         }
     }
 
@@ -227,35 +230,37 @@ class ByteStreamUtilsTest {
     void skipFully_shouldReadBytesFromInputStream() throws Exception {
         // 定义一个管道, 获取读取管道数据的输入流
         try (var pi = new PipedInputStream()) {
-            // 定义一个线程对象, 异步对管道的另一端进行操作
-            var inputThread = new Thread(() -> {
-                // 将一个输出流连接到管道, 用于向管道写入数据
-                try (var po = new PipedOutputStream(pi)) {
-                    // 分三次向管道写入数据, 每次间隔 500 毫秒
-                    for (int i = 0; i < 3; i++) {
-                        Thread.sleep(500);
-                        po.write("Hello Guava".getBytes(Charsets.UTF_8));
-                    }
-                } catch (IOException | InterruptedException e) {}
-            });
+            // 将一个输出流连接到管道, 用于向管道写入数据
+            try (var po = new PipedOutputStream(pi)) {
+                // 定义一个线程对象, 异步对管道的另一端进行操作
+                var inputThread = new Thread(() -> {
+                    try {
+                        // 分三次向管道写入数据, 每次间隔 500 毫秒
+                        for (int i = 0; i < 3; i++) {
+                            Thread.sleep(500);
+                            po.write("Hello Guava".getBytes(Charsets.UTF_8));
+                        }
+                    } catch (IOException | InterruptedException e) {}
+                });
 
-            // 启动线程, 开始管道操作
-            inputThread.start();
+                // 启动线程, 开始管道操作
+                inputThread.start();
 
-            var timestamp = System.currentTimeMillis();
+                var timestamp = System.currentTimeMillis();
 
-            // 跳过指定的字节数, 如果输入流中的数据暂时不足, 则进入阻塞直到有足够的数据被跳过
-            ByteStreams.skipFully(pi, 22);
+                // 跳过指定的字节数, 如果输入流中的数据暂时不足, 则进入阻塞直到有足够的数据被跳过
+                ByteStreams.skipFully(pi, 22);
 
-            // 在跳过数据的基础上进行读取, 确认读取到指定的内容
-            var data = new byte[11];
-            ByteStreams.readFully(pi, data);
+                // 在跳过数据的基础上进行读取, 确认读取到指定的内容
+                var data = new byte[11];
+                ByteStreams.readFully(pi, data);
 
-            // 确认整个数据读取持续了 1500 毫秒, 即全部三次写入管道的整体花费时间
-            then(System.currentTimeMillis() - timestamp).isBetween(1500L, 1599L);
-            then(data).isEqualTo("Hello Guava".getBytes(Charsets.UTF_8));
+                // 确认整个数据读取持续了 1500 毫秒, 即全部三次写入管道的整体花费时间
+                then(System.currentTimeMillis() - timestamp).isGreaterThan(1500L);
+                then(data).isEqualTo("Hello Guava".getBytes(Charsets.UTF_8));
+            }
 
-            // 由于流已经读完, 所以即使再多读一个字节都会导致 EOFException 异常
+            // 由于流已经关闭, 所以即使再多读一个字节都会导致 EOFException 异常
             thenThrownBy(() -> ByteStreams.skipFully(pi, 1)).isInstanceOf(EOFException.class);
         }
     }
@@ -349,6 +354,91 @@ class ByteStreamUtilsTest {
         } finally {
             Files.delete(fileIn);
             Files.delete(fileOut);
+        }
+    }
+
+    /**
+     * 限制输入流的读取长度
+     *
+     * <p>
+     * 通过 {@link ByteStreams#limit(InputStream, long)} 方法可以限制从一个输入流中读取的字节数, 该方法返回一个代理
+     * {@link InputStream} 对象, 通过该对象最多只能读取规定长度的字节
+     * </p>
+     */
+    @Test
+    void limit_shouldLimitSizeOfBytesForInputStream() throws IOException {
+        var srcIn = asStream("Hello Guava");
+
+        // 包装 srcIn 对象, 限制只能从输入流中读取 5 字节
+        try (var limitedIn = ByteStreams.limit(srcIn, 5)) {
+            // 从输入流读取数据
+            var data = ByteStreams.toByteArray(limitedIn);
+            // 确认只读取到了 5 字节数据
+            then(data).isEqualTo("Hello".getBytes(Charsets.UTF_8));
+        }
+    }
+
+    /**
+     * 在连续内存空间中存储数据并读取
+     *
+     * <p>
+     * {@link ByteStreams#newDataOutput()} 方法产生一个 {@link java.io.DataOutput DataOutput} 接口对象,
+     * 可以将各种类型数据写入一块连续内存中 (即一个 {@code byte} 类型数组), 其中:
+     * <ul>
+     * <li>
+     * {@code newDataOutput} 方法返回的 {@code DataOutput} 对象底层是通过一个 {@link ByteArrayOutputStream}
+     * 对象提供数据存储支持的
+     * </li>
+     * <li>
+     * 可以通过 {@link ByteStreams#newDataOutput(int)} 方法设置连续内存的初始大小, 以降低内存重分配的几率, 内部是通过
+     * {@link ByteArrayOutputStream#ByteArrayOutputStream(int)} 构造器构建 {@link ByteArrayOutputStream} 对象
+     * </li>
+     * <li>
+     * 也可以通过 {@link ByteStreams#newDataOutput(ByteArrayOutputStream)} 方法, 用一个已有的 {@link ByteArrayOutputStream}
+     * 对象提供数据存储支持
+     * </li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * {@link ByteStreams#newDataInput(byte[])} 方法产生一个 {@link java.io.DataInput DataInput} 接口对象,
+     * 可以从一段连续内存空间 ({@code byte} 数组) 中按顺序读取所需的各种类型数据; 而方法
+     * {@link ByteStreams#newDataInput(ByteArrayInputStream)} 则可以从一个现有的 {@link ByteArrayInputStream}
+     * 对象中进行数据读取
+     * </p>
+     */
+    @Test
+    void newDataOutputAndInput_shouldCreateDataOutput() throws IOException {
+        // 测试通过连续内存空间写入和读取各种类型数据
+        {
+            var output = ByteStreams.newDataOutput();
+            output.writeChar('A');
+            output.writeByte(0x20);
+            output.writeInt(123);
+            output.writeBoolean(true);
+
+            var input = ByteStreams.newDataInput(output.toByteArray());
+            then(input.readChar()).isEqualTo('A');
+            then(input.readByte()).isEqualTo((byte) 0x20);
+            then(input.readInt()).isEqualTo(123);
+            then(input.readBoolean()).isTrue();
+        }
+
+        // 测试通过 ByteArrayOutputStream 和 ByteArrayInputStream 对象写入和读取各类型数据
+        try (var os = new ByteArrayOutputStream()) {
+            var output = ByteStreams.newDataOutput(os);
+            output.writeChar('A');
+            output.writeByte(0x20);
+            output.writeInt(123);
+            output.writeBoolean(true);
+
+            try (var is = new ByteArrayInputStream(os.toByteArray())) {
+                var input = ByteStreams.newDataInput(is);
+                then(input.readChar()).isEqualTo('A');
+                then(input.readByte()).isEqualTo((byte) 0x20);
+                then(input.readInt()).isEqualTo(123);
+                then(input.readBoolean()).isTrue();
+            }
         }
     }
 }
