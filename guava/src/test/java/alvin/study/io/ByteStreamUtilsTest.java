@@ -441,4 +441,35 @@ class ByteStreamUtilsTest {
             }
         }
     }
+
+    /**
+     * 读取并丢弃输入流中的所有数据, 返回读取数据的字节数
+     *
+     * <p>
+     * {@link ByteStreams#exhaust(InputStream)} 方法用于从所给的输入流中读取所有的数据, 但并不对数据进行存储操作, 而是全部丢弃,
+     * 最终返回数据的长度
+     * </p>
+     */
+    @Test
+    void exhaust_shouldReadAndDiscardAllDataFromInputStream() throws IOException {
+        try (var is = asStream("Hello Guava")) {
+            var len = ByteStreams.exhaust(is);
+            then(len).isEqualTo(11);
+        }
+    }
+
+    /**
+     * 创建一个空输出流
+     *
+     * <p>
+     * 通过 {@link ByteStreams#nullOutputStream()} 方法可以产生一个"空"的输出流, 即具备输出流接口的行为, 但并不做实际写入动作
+     * </p>
+     */
+    @Test
+    @SuppressWarnings("java:S2699")
+    void nullOutputStream_shouldReadAndDiscardAllDataFromInputStream() throws IOException {
+        try (var os = ByteStreams.nullOutputStream()) {
+            os.write("Hello Guava".getBytes(Charsets.UTF_8));
+        }
+    }
 }
