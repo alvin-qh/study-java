@@ -1,12 +1,17 @@
 package alvin.study.io;
 
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.awaitility.Awaitility.await;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.PosixFilePermissions;
+import java.time.Instant;
+import java.util.concurrent.TimeUnit;
+
+import javax.sql.DataSource;
 
 import org.junit.jupiter.api.Test;
 
@@ -29,6 +34,11 @@ class ByteSourceTest {
      * 将一个 {@code byte} 数组包装为 {@link ByteSource} 类型对象
      *
      * <p>
+     * 通过 {@link ByteSource#isEmpty()} 方法可以确定对象中是否包含数据, 返回值为 {@code true} 表示一个空的 {@link ByteSource}
+     * 对象
+     * </p>
+     *
+     * <p>
      * 通过 {@link ByteSource#wrap(byte[])} 方法可以将一个 {@code byte} 数组包装为 {@link ByteSource} 类型对象,
      * 通过包装后的对象可以读取到被包装的 {@link byte} 数组内容
      * </p>
@@ -48,6 +58,9 @@ class ByteSourceTest {
         var data = "Hello Guava".getBytes(Charsets.UTF_8);
         // 将 byte 数组包装为 ByteSource 对象
         var source = ByteSource.wrap(data);
+
+        // 确认 ByteSource 中有数据
+        then(source.isEmpty()).isFalse();
 
         // 确认可以获取到 ByteSource 可读取数据长度
         then(source.sizeIfKnown().get()).isEqualTo(11);
@@ -208,5 +221,118 @@ class ByteSourceTest {
         var hash = source.hash(hashFn);
         // 确认散列值计算正确
         then(hash).isEqualTo(hashFn.hashString("Hello Guava", Charsets.UTF_8));
+    }
+
+    /**
+     * 测试将一个 {@link ByteSource} 对象进行分割
+     *
+     * <p>
+     * 通过 {@link ByteSource#slice(long, long)} 方法可以将指定 {@link ByteSource} 的一部分内容分割成为新的 {@link ByteSource}
+     * 对象
+     * </p>
+     */
+    @Test
+    void slice_shouldSplitByteSourceIntoMultiple() throws IOException {
+        var data = "1234567890".getBytes(Charsets.UTF_8);
+        // 将 byte 数组包装为 ByteSource 对象
+        var source = ByteSource.wrap(data);
+
+        // 将 5 个字节之后的内容分割为新的 ByteSource 对象
+        var source1 = source.slice(0, 5);
+        then(source1.sizeIfKnown().get()).isEqualTo(5L);
+
+        // 将后 5 个字节分割为新的 ByteSource 对象
+        var source2 = source.slice(5, Long.MAX_VALUE);
+        then(source2.sizeIfKnown().get()).isEqualTo(5L);
+
+        // 确认分割的 DataSource 内容正确
+        then(source1.read()).isEqualTo("12345".getBytes(Charsets.UTF_8));
+        then(source2.read()).isEqualTo("67890".getBytes(Charsets.UTF_8));
+    }
+
+    /**
+     * 测试创建"空" {@link ByteSource} 对象
+     *
+     * <p>
+     * 通过 {@link ByteSource#empty()} 方法可以创建一个空的 {@link ByteSource}
+     * </p>
+     */
+    @Test
+    void empty_shouldCreateAnEmptyByteSource() throws IOException {
+        var source = ByteSource.empty();
+
+        // 确认 ByteSource 为空
+        then(source.isEmpty()).isTrue();
+        then(source.sizeIfKnown().get()).isZero();
+
+        // 确认读取的数据为空
+        then(source.read()).isEqualTo(new byte[] {});
+    }
+
+    /**
+     * 测试通过 {@link ByteSource} 对象创建 {@link java.io.InputStream InputStream} 对象
+     *
+     * <p>
+     * 通过 {@link ByteSource#openStream()} 方法可以建立一个用于从 {@link ByteSource} 读取数据的 {@link java.io.InputStream
+     * InputStream} 对象
+     * </p>
+     *
+     * <p>
+     * 通过 {@link ByteSource#openBufferedStream()} 方法可以建立一个用于从 {@link ByteSource} 读取数据的
+     * {@link java.io.BufferedInputStream BufferedInputStream} 对象
+     * </p>
+     */
+    @Test
+    void openStream_shouldOpenByteSourceAsInputStream() throws IOException {
+        var data = "Hello Guava".getBytes(Charsets.UTF_8);
+        // 将 byte 数组包装为 ByteSource 对象
+        var source = ByteSource.wrap(data);
+
+        try (var os = source.openStream()) {
+            then(os.readAllBytes()).isEqualTo(data);
+        }
+
+        try (var os = source.openBufferedStream()) {
+            then(os.readAllBytes()).isEqualTo(data);
+        }
+    }
+
+    /**
+     * 测试 {@link CachedUrlLoader} 类, 从网络资源或缓存中读取数据
+     *
+     * <p>
+     * 本例是 {@link DataSource} 类型的典型应用, 即将数据源进行抽象, 以隐藏数据源本身, 以便以一种统一的方式进行数据读取
+     * </p>
+     */
+    @Test
+    void loadHTML_shouldLoadHTMLByCache() throws IOException {
+        // 创建 CacheLoader 对象
+        try (var loader = new CachedUrlLoader()) {
+            // 确认网络资源数据尚未被缓存
+            var mayCache = loader.cacheInfo("https://www.baidu.com");
+            then(mayCache).isEmpty();
+
+            // 读取网络资源数据
+            var dataFromUrl = loader.loadHTML("https://www.baidu.com");
+
+            // 等待缓存完毕
+            await().atMost(2, TimeUnit.SECONDS)
+                    .untilAsserted(() -> then(loader.cacheInfo("https://www.baidu.com")).isPresent());
+
+            // 获取缓存对象
+            var cache = loader.cacheInfo("https://www.baidu.com").get();
+            // 确认缓存文件存在
+            then(cache.getPath()).exists();
+            // 确认缓存有效期正确
+            then(cache.getCreatedAt()).isBefore(Instant.now());
+
+            // 再次读取网络数据, 由于前一次读取已经形成了缓存, 所以本次操作不会访问网络资源, 而是从缓存中直接读取数据
+            var dataFromCache = loader.loadHTML("https://www.baidu.com");
+            then(dataFromUrl).isEqualTo(dataFromCache);
+
+            // 确认缓存的内容和网络读取数据内容一致
+            var fileData = Files.readAllBytes(cache.getPath());
+            then(fileData).isEqualTo(dataFromCache);
+        }
     }
 }
