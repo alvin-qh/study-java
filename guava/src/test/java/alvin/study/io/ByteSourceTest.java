@@ -26,7 +26,13 @@ import com.google.common.primitives.Bytes;
  * 测试通过 {@link ByteSource} 类型读取数据
  *
  * <p>
- * {@link ByteSource} 是 Guava 库提供的针对于文件等
+ * {@link ByteSource} 类型对象是 Guava 针对一系列读取字节的数据源源 (例如文件或网络) 的抽象,
+ * 以保障下游在读取数据时无需关注数据源本身的特点和细节
+ * </p>
+ *
+ * <p>
+ * 可以参考 {@link CachedUrlLoader} 范例, 演示了从网络资源读取数据时, 如何通过 {@link ByteSource}
+ * 类型对象来抽象网络资源和缓存文件资源这两种不同的数据源
  * </p>
  */
 class ByteSourceTest {
@@ -50,7 +56,7 @@ class ByteSourceTest {
      *
      * <p>
      * 通过 {@link ByteSource#size()} 方法先通过 {@link ByteSource#sizeIfKnown()} 方法获取长度, 如果当前 {@link ByteSource}
-     * 类型不支持, 则通过读取读取一次 {@link ByteSource} 中的内容求长度
+     * 类型不支持, 则通过完全读取 {@link ByteSource} 中的内容来求长度
      * </p>
      */
     @Test
@@ -159,7 +165,7 @@ class ByteSourceTest {
         var file = Files.createTempFile("guava", ".tmp", attrs);
 
         try {
-            // 将 Path 对象包装为 Sink 对象
+            // 将 Path 对象包装为 ByteSink 对象
             var sink = MoreFiles.asByteSink(file, StandardOpenOption.WRITE);
 
             // 将 ByteSource 的内容拷贝到 ByteSink 对象
@@ -254,7 +260,7 @@ class ByteSourceTest {
      * 测试创建"空" {@link ByteSource} 对象
      *
      * <p>
-     * 通过 {@link ByteSource#empty()} 方法可以创建一个空的 {@link ByteSource}
+     * 通过 {@link ByteSource#empty()} 方法可以创建一个空的 {@link ByteSource} 对象
      * </p>
      */
     @Test
@@ -288,12 +294,14 @@ class ByteSourceTest {
         // 将 byte 数组包装为 ByteSource 对象
         var source = ByteSource.wrap(data);
 
-        try (var os = source.openStream()) {
-            then(os.readAllBytes()).isEqualTo(data);
+        // 从 ByteBuffer 对象打开一个 InputStream 对象
+        try (var is = source.openStream()) {
+            then(is.readAllBytes()).isEqualTo(data);
         }
 
-        try (var os = source.openBufferedStream()) {
-            then(os.readAllBytes()).isEqualTo(data);
+        // 从 ByteBuffer 对象打开一个 BufferedInputStream 对象
+        try (var is = source.openBufferedStream()) {
+            then(is.readAllBytes()).isEqualTo(data);
         }
     }
 
@@ -334,5 +342,24 @@ class ByteSourceTest {
             var fileData = Files.readAllBytes(cache.getPath());
             then(fileData).isEqualTo(dataFromCache);
         }
+    }
+
+    /**
+     * 将 {@link ByteSource} 类型对象转为 {@link com.google.common.io.CharSource CharSource} 类型对象
+     *
+     * <p>
+     * 通过 {@link ByteSource#asCharSource(java.nio.charset.Charset) ByteSource.asCharSource(Charset)}
+     * 方法可以将一个字节数据源 ({@link ByteSource}) 转为字符数据源 ({@link com.google.common.io.CharSource CharSource}),
+     * 以便直接对数据源存储的字节数据以字符编码进行读取
+     * </p>
+     */
+    @Test
+    void asCharSource_shouldConvertByteSourceToCharSource() throws IOException {
+        var bSource = ByteSource.wrap("Hello Guava".getBytes(Charsets.UTF_8));
+
+        // 将字节数据源转为字符数据源对象
+        var cSource = bSource.asCharSource(Charsets.UTF_8);
+        // 确认从数据源读取到预期的字符串
+        then(cSource.read()).isEqualTo("Hello Guava");
     }
 }
