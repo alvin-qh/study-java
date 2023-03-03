@@ -14,9 +14,11 @@ import org.junit.jupiter.api.Test;
 import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+import com.google.common.io.ByteSource;
 import com.google.common.io.CharSource;
 import com.google.common.io.LineProcessor;
 import com.google.common.io.MoreFiles;
+import com.google.common.io.Resources;
 
 /**
  * 测试通过 {@link CharSource} 类型读取字符内容
@@ -24,6 +26,25 @@ import com.google.common.io.MoreFiles;
  * <p>
  * {@link CharSource} 类型对象是 Guava 针对一系列读取字符的数据源 (例如文件或网络) 的抽象,
  * 以保障下游在读取数据时无需关注数据源本身的特点和细节
+ * </p>
+ *
+ * <p>
+ * Guava 默认提供了三种产生 {@link CharSource} 对象的方法, 分别为:
+ * <ul>
+ * <li>
+ * {@link com.google.common.io.Files#asCharSource(java.io.File, java.nio.charset.Charset) Files.asByteSource(File)} 方法, 用于通过一个
+ * {@link java.io.File File} 对象创建 {@link ByteSource} 对象
+ * </li>
+ * <li>
+ * {@link MoreFiles#asCharSource(java.nio.file.Path, java.nio.charset.Charset, java.nio.file.OpenOption...)
+ * MoreFiles.asByteSource(Path, OpenOption...)} 方法, 用于通过一个 {@link java.nio.file.Path Path} 对象创建
+ * {@link ByteSource} 对象
+ * </li>
+ * <li>
+ * {@link Resources#asCharSource(java.net.URL, java.nio.charset.Charset) Resources.asByteSource(URL)} 方法, 用于通过一个 {@link java.net.URL URL}
+ * 对象创建 {@link ByteSource} 对象
+ * </li>
+ * </ul>
  * </p>
  */
 class CharSourceTest {

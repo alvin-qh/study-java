@@ -20,14 +20,38 @@ import com.google.common.hash.Hashing;
 import com.google.common.io.ByteProcessor;
 import com.google.common.io.ByteSource;
 import com.google.common.io.MoreFiles;
+import com.google.common.io.Resources;
 import com.google.common.primitives.Bytes;
 
 /**
  * 测试通过 {@link ByteSource} 类型读取数据
  *
  * <p>
- * {@link ByteSource} 类型对象是 Guava 针对一系列读取字节的数据源源 (例如文件或网络) 的抽象,
- * 以保障下游在读取数据时无需关注数据源本身的特点和细节
+ * {@link ByteSource} 类型对象是 Guava 针对一系列字节输入设备的抽象 (例如文件或网络), 理论上, 所有可以读取字节数据的源都可以抽象为
+ * {@link ByteSource} 类型对象
+ * </p>
+ *
+ * <p>
+ * Guava 默认提供了四种产生 {@link ByteSource} 对象的方法, 分别为:
+ * <ul>
+ * <li>
+ * {@link com.google.common.io.Files#asByteSource(java.io.File) Files.asByteSource(File)} 方法, 用于通过一个
+ * {@link java.io.File File} 对象创建 {@link ByteSource} 对象
+ * </li>
+ * <li>
+ * {@link MoreFiles#asByteSource(java.nio.file.Path, java.nio.file.OpenOption...)
+ * MoreFiles.asByteSource(Path, OpenOption...)} 方法, 用于通过一个 {@link java.nio.file.Path Path} 对象创建
+ * {@link ByteSource} 对象
+ * </li>
+ * <li>
+ * {@link Resources#asByteSource(java.net.URL) Resources.asByteSource(URL)} 方法, 用于通过一个 {@link java.net.URL URL}
+ * 对象创建 {@link ByteSource} 对象
+ * </li>
+ * <li>
+ * {@link com.google.common.io.CharSource#asByteSource(java.nio.charset.Charset) CharSource.asByteSource(Charset)} 方法,
+ * 用于通过一个 {@link com.google.common.io.CharSource CharSource} 对象创建 {@link ByteSource} 对象
+ * </li>
+ * </ul>
  * </p>
  *
  * <p>
