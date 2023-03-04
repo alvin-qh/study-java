@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
-import com.google.common.io.ByteSource;
 import com.google.common.io.CharSource;
 import com.google.common.io.LineProcessor;
 import com.google.common.io.MoreFiles;
@@ -29,20 +28,24 @@ import com.google.common.io.Resources;
  * </p>
  *
  * <p>
- * Guava 默认提供了三种产生 {@link CharSource} 对象的方法, 分别为:
+ * Guava 默认提供了四种产生 {@link CharSource} 对象的方法, 分别为:
  * <ul>
  * <li>
- * {@link com.google.common.io.Files#asCharSource(java.io.File, java.nio.charset.Charset) Files.asByteSource(File)} 方法, 用于通过一个
- * {@link java.io.File File} 对象创建 {@link ByteSource} 对象
+ * {@link com.google.common.io.Files#asCharSource(java.io.File, java.nio.charset.Charset)
+ * Files.asCharSource(File, Charset)} 方法, 用于通过一个 {@link java.io.File File} 对象创建 {@link CharSource} 对象
  * </li>
  * <li>
  * {@link MoreFiles#asCharSource(java.nio.file.Path, java.nio.charset.Charset, java.nio.file.OpenOption...)
- * MoreFiles.asByteSource(Path, OpenOption...)} 方法, 用于通过一个 {@link java.nio.file.Path Path} 对象创建
- * {@link ByteSource} 对象
+ * MoreFiles.asCharSource(Path, Charset, OpenOption...)} 方法, 用于通过一个 {@link java.nio.file.Path Path} 对象创建
+ * {@link CharSource} 对象
  * </li>
  * <li>
- * {@link Resources#asCharSource(java.net.URL, java.nio.charset.Charset) Resources.asByteSource(URL)} 方法, 用于通过一个 {@link java.net.URL URL}
- * 对象创建 {@link ByteSource} 对象
+ * {@link Resources#asCharSource(java.net.URL, java.nio.charset.Charset) Resources.asCharSource(URL)} 方法, 用于通过一个
+ * {@link java.net.URL URL} 对象创建 {@link CharSource} 对象
+ * </li>
+ * <li>
+ * {@link com.google.common.io.ByteSource#asCharSource(java.nio.charset.Charset) ByteSource.asCharSource(Charset)} 方法,
+ * 将一个 {@code ByteSource} 类型对象包装为 {@code CharSource} 对象
  * </li>
  * </ul>
  * </p>

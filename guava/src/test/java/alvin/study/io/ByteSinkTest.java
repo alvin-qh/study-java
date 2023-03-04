@@ -14,11 +14,11 @@ import com.google.common.base.Charsets;
 import com.google.common.io.MoreFiles;
 
 /**
- * 测试 {@link com.google.common.io.ByteSink ByteSink} 类型用于写入数据
+ * 测试 {@link com.google.common.io.ByteSink ByteSink} 类型用于写入字节数据
  *
  * <p>
  * {@link com.google.common.io.ByteSink ByteSink} 类型相当于一个字节内容输出的抽象, 理论上, 所有可以输出字节数据的目标都可以抽象为
- * {@link com.google.common.io.ByteSink ByteSink} 类型对象
+ * {@code ByteSink} 类型对象
  * </p>
  *
  * <p>
@@ -26,12 +26,11 @@ import com.google.common.io.MoreFiles;
  * <ul>
  * <li>
  * {@link com.google.common.io.Files#asByteSink(java.io.File, com.google.common.io.FileWriteMode...)
- * Files.asByteSink(File, FileWriteMode...)} 方法, 用于通过一个 {@link java.io.File File} 对象创建 {@code ByteSink} 对象
+ * Files.asByteSink(File, FileWriteMode...)} 方法, 用于通过一个 {@code File} 对象创建 {@code ByteSink} 对象
  * </li>
  * <li>
  * {@link MoreFiles#asByteSink(java.nio.file.Path, java.nio.file.OpenOption...)
- * MoreFiles.asByteSink(Path, OpenOption...)} 方法, 用于通过一个 {@link java.nio.file.Path Path} 对象创建 {@code ByteSink}
- * 对象
+ * MoreFiles.asByteSink(Path, OpenOption...)} 方法, 用于通过一个 {@code Path} 对象创建 {@code ByteSink} 对象
  * </li>
  * </ul>
  * </p>
@@ -41,8 +40,8 @@ class ByteSinkTest {
      * 测试字节数据的写入
      *
      * <p>
-     * 通过 {@link com.google.common.io.ByteSink#write(byte[])} 方法可以将字节数据通过指定的
-     * {@link com.google.common.io.ByteSink ByteSink} 对象写入目标中
+     * 通过 {@link com.google.common.io.ByteSink#write(byte[]) ByteSink.write(byte[])} 方法可以将字节数据通过指定的
+     * {@code ByteSink} 对象写入目标中
      * </p>
      */
     @Test
@@ -52,15 +51,14 @@ class ByteSinkTest {
         var path = Files.createTempFile("guava-sink", ".tmp", attrs);
 
         try {
-            // 通过临时文件创建 ByteSink 对象
+            // 通过临时文件创建 ByteSink 和 ByteSource 对象
             var sink = MoreFiles.asByteSink(path, StandardOpenOption.WRITE);
+            var source = MoreFiles.asByteSource(path, StandardOpenOption.READ);
 
             // 通过 ByteSink 对象将数据写入文件
             var data = "Hello Guava".getBytes(Charsets.UTF_8);
             sink.write(data);
 
-            // 通过临时文件创建 ByteSource 对象
-            var source = MoreFiles.asByteSource(path, StandardOpenOption.READ);
             // 确认读取的数据和写入的数据一致
             then(source.read()).isEqualTo(data);
         } finally {
@@ -73,19 +71,19 @@ class ByteSinkTest {
      *
      * <p>
      * 通过 {@link com.google.common.io.ByteSink#writeFrom(java.io.InputStream) ByteSink.writeFrom(InputStream)}
-     * 方法可以将 {@link java.io.InputStream InputStream} 对象中数据写入 {@link com.google.common.io.ByteSink ByteSink}
-     * 对象中
+     * 方法可以从 {@link java.io.InputStream InputStream} 对象中读取数据并写入 {@code ByteSink} 对象中
      * </p>
      */
     @Test
-    void write_shouldWriteIntoByteSinkFromInputStream() throws IOException {
+    void writeFrom_shouldWriteIntoByteSinkFromInputStream() throws IOException {
         // 创建一个临时文件
         var attrs = PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rw-------"));
         var path = Files.createTempFile("guava-sink", ".tmp", attrs);
 
         try {
-            // 通过临时文件创建 ByteSink 对象
+            // 通过临时文件创建 ByteSink 和 ByteSource 对象
             var sink = MoreFiles.asByteSink(path, StandardOpenOption.WRITE);
+            var source = MoreFiles.asByteSource(path, StandardOpenOption.READ);
 
             // 通过 InputStream 对象将数据写入 ByteSink 对象
             var data = "Hello Guava".getBytes(Charsets.UTF_8);
@@ -94,7 +92,6 @@ class ByteSinkTest {
             }
 
             // 确认读取的数据和写入的数据一致
-            var source = MoreFiles.asByteSource(path, StandardOpenOption.READ);
             then(source.read()).isEqualTo(data);
         } finally {
             Files.delete(path);
@@ -102,19 +99,17 @@ class ByteSinkTest {
     }
 
     /**
-     * 测试从 {@link com.google.common.io.ByteSink ByteSink} 对象上打开一个 {@link java.io.OutputStream OutputStream} 对象
+     * 测试从 {@link com.google.common.io.ByteSink ByteSink} 对象上打开一个 {@link java.io.OutputStream OutputStream} 对象,
+     * 用于写入字节数据
      *
      * <p>
      * 通过 {@link com.google.common.io.ByteSink#openStream() ByteSink.openStream()} 方法从
-     * {@link com.google.common.io.ByteSink ByteSink} 对象上打开一个 {@link java.io.OutputStream OutputStream} 对象,
-     * 并通过该 {@code OutputStream} 对象将数据写入 {@link com.google.common.io.ByteSink ByteSink} 中
+     * {@code ByteSink} 对象上打开一个 {@code OutputStream} 对象, 并通过该 {@code OutputStream} 对象进行数据写入
      * </p>
      *
      * <p>
      * 通过 {@link com.google.common.io.ByteSink#openBufferedStream() ByteSink.openBufferedStream()} 方法从
-     * {@link com.google.common.io.ByteSink ByteSink} 对象上打开一个 {@link java.io.BufferedOutputStream
-     * BufferedOutputStream} 对象, 并通过该 {@code BufferedOutputStream} 对象将数据写入
-     * {@link com.google.common.io.ByteSink ByteSink} 中
+     * {@code ByteSink} 对象上打开一个 {@code BufferedOutputStream} 对象, 并通过该 {@code BufferedOutputStream} 对象进行数据写入
      * </p>
      */
     @Test
@@ -124,8 +119,9 @@ class ByteSinkTest {
         var path = Files.createTempFile("guava-sink", ".tmp", attrs);
 
         try {
-            // 通过临时文件创建 ByteSink 对象
+            // 通过临时文件创建 ByteSink 和 ByteSource 对象
             var sink = MoreFiles.asByteSink(path, StandardOpenOption.WRITE);
+            var source = MoreFiles.asByteSource(path, StandardOpenOption.READ);
 
             // 通过 ByteSink 对象获取 OutputStream 对象, 并通过该对象写入数据
             var data = "Hello Guava".getBytes(Charsets.UTF_8);
@@ -134,7 +130,6 @@ class ByteSinkTest {
             }
 
             // 确认读取的数据和写入的数据一致
-            var source = MoreFiles.asByteSource(path, StandardOpenOption.READ);
             then(source.read()).isEqualTo(data);
 
             // 通过 ByteSink 对象获取 BufferedOutputStream 对象, 并通过该对象写入数据
