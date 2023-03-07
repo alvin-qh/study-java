@@ -38,7 +38,7 @@ class QueueUtilsTest {
     }
 
     /**
-     * 创建 {@link java.util.ArrayDeque ArrayDeque} 类型队列
+     * 测试创建 {@link java.util.ArrayDeque ArrayDeque} 循环双端队列
      *
      * <p>
      * 通过 {@link Queues#newArrayDeque()} 方法可以创建一个 {@code ArrayDeque} 类型队列
@@ -92,11 +92,35 @@ class QueueUtilsTest {
         }
     }
 
+    /**
+     * 测试创建 {@link java.util.PriorityQueue PriorityQueue} 优先队列
+     *
+     * <p>
+     * 通过 {@link Queues#newPriorityQueue()} 方法可以创建一个 {@code PriorityQueue} 类型优先队列
+     * </p>
+     *
+     * <p>
+     * 通过 {@link Queues#newPriorityQueue(Iterable)} 方法可以创建一个 {@code PriorityQueue} 类型优先队列并初始化队列元素
+     * </p>
+     *
+     * <p>
+     * {@code PriorityQueue} 优先队列是一个特殊队列, 底层通过"堆"结构实现, 进行出队操作时, 会将队列中优先级最高的元素优先出队
+     * </p>
+     *
+     * <p>
+     * Guava 并未为 {@link java.util.PriorityQueue#PriorityQueue(java.util.Comparator) PriorityQueue(Comparator)}
+     * 构造器提供相应的方法, 所以无法通过 Guava 库对优先队列中的元素设置比较规则, 所以元素类型必须实现
+     * {@link java.util.Comparator Comparator} 接口
+     * </p>
+     */
     @Test
     void newPriorityQueue_shouldCreateNewPriorityQueue() {
+        // 创建优先队列, 通过无序数值初始化队列元素
         var priQue = Queues.newPriorityQueue(createRangedElements(0, 5, true));
 
+        // 进行出队操作
         for (var i = 0; !priQue.isEmpty(); i++) {
+            // 确认出队元素有序, 即优先级高 (较小的) 元素优先出队
             then(priQue.poll()).isEqualTo(i);
         }
     }
