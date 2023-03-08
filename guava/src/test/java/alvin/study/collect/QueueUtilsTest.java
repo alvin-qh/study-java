@@ -19,7 +19,83 @@ import com.google.common.collect.Queues;
  * <p>
  * {@link Queues} 类具备一系列方法, 可以产生各种所需的队列
  * </p>
+ *
+ * <p>
+ * 对于队列, 表示一个实现了 {@link java.util.Queue Queue} 接口的对象, 其中:
+ * <ul>
+ * <li>
+ * 通过 {@link java.util.Queue#offer(Object) Queue.offer(T)} 方法进行入队
+ * </li>
+ * <li>
+ * 通过 {@link java.util.Queue#poll() Queue.poll()} 方法进行出队
+ * </li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * 对于栈, 表示一个实现了 {@link java.util.Stack Stack} 接口的对象, 其中:
+ * <ul>
+ * <li>
+ * 通过 {@link java.util.Stack#push(Object) Stack.push(T)} 方法进行入栈
+ * </li>
+ * <li>
+ * 通过 {@link java.util.Stack#pop() Stack.pop()} 方法进行出栈
+ * </li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * 对于 {@link java.util.Deque} 接口, 表示一个"双端队列", 即同时具备队列和栈的能力, 可以在 FIFO 与 FILO 两种数据进出形式间随意进行处理,
+ * 包括:
+ * <ul>
+ * <li>
+ * 通过 {@link java.util.Deque#push(Object) Deque.push(T)} / {@link java.util.Deque#addFirst(Object) Deque.addFirst(T)}
+ * 这两个类似方法完成入栈 (添加在集合首位) 操作
+ * </li>
+ * <li>
+ * 通过 {@link java.util.Deque#pop() Deque.pop(T)} / {@link java.util.Deque#removeFirst() Deque.removeFirst()}
+ * 这两个类似方法完成出栈 (获取集合首元素并删除) 操作
+ * </li>
+ * <li>
+ * 通过 {@link java.util.Deque#offer(Object) Deque.offer(T)} / {@link java.util.Deque#add(T) Deque.add(T)}
+ * 这两个类似方法完成入队 (添加在集合末尾) 操作
+ * </li>
+ * <li>
+ * 通过 {@link java.util.Deque#poll() Deque.poll()} / {@link java.util.Deque#removeFirst() Deque.removeFirst()}
+ * 这两个类似方法完成出队 (获取集合首元素并删除) 操作
+ * </li>
+ * <li>
+ * 通过 {@link java.util.Deque#peek() Deque.peek()} / {@link java.util.Deque#getFirst() Deque.getFirst()}
+ * 这两个类似方法获取"队首 (栈顶)" 元素
+ * </li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * 对于阻塞队列, 表示一个实现了 {@link java.util.concurrent.BlockingQueue BlockingQueue} 接口的对象, 除了 {@code Queue}
+ * 接口相关的方法外, 还提供了:
+ * <ul>
+ * <li>
+ * 通过 {@link java.util.concurrent.BlockingQueue#offer(Object, long, TimeUnit) BlockingQueue.offer(T, long, TimeUnit)}
+ * 方法进行入队, 并在队列内元素到达上限时阻塞, 直到队列元素被消费, 有空余位置后完成入队
+ * </li>
+ * <li>
+ * 通过 {@link java.util.concurrent.BlockingQueue#take() BlockingQueue.take()} 方法进行出队, 并在队列为空时阻塞,
+ * 直到队列具有可出队的元素. 类似的方法还有 {@link java.util.concurrent.BlockingQueue#poll(long, TimeUnit)},
+ * 可以设置队列为空时出队所阻塞的时间
+ * </li>
+ * <li>
+ * 通过 {@link java.util.concurrent.BlockingQueue#drainTo(java.util.Collection) BlockingQueue.drainTo(Collection)} 方法,
+ * 可以将队列中现有的元素写入一个集合中
+ * </li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * 对于双端阻塞队列, 表示一个实现了 {@link java.util.concurrent.BlockingDeque BlockingDeque} 接口的对象
+ * </p>
  */
+@SuppressWarnings("java:S2925")
 class QueueUtilsTest {
     /**
      * 创建一个值在指定区间内的整数元素列表对象
@@ -60,11 +136,12 @@ class QueueUtilsTest {
             // 创建 ArrayDeque 对象
             var deque = Queues.<Integer>newArrayDeque();
 
+            // 将产生的元素依次入栈
+            createRangedElements(0, 5, false).forEach(v -> deque.push(v));
+
             // 创建一个保存出队结果的 List 集合
             var elements = Lists.<Integer>newArrayList();
 
-            // 将产生的元素依次入栈
-            createRangedElements(0, 5, false).forEach(v -> deque.push(v));
             // 确认可以从栈中获取入栈的元素
             while (!deque.isEmpty()) {
                 elements.add(deque.pop());
@@ -78,11 +155,12 @@ class QueueUtilsTest {
             // 创建 ArrayDeque 对象
             var deque = Queues.<Integer>newArrayDeque();
 
+            // 将产生的元素依次入队
+            createRangedElements(0, 5, false).forEach(v -> deque.offer(v));
+
             // 创建一个保存出队结果的 List 集合
             var elements = Lists.<Integer>newArrayList();
 
-            // 将产生的元素依次入队
-            createRangedElements(0, 5, false).forEach(v -> deque.offer(v));
             // 确认可以从队列中获取入队的元素
             while (!deque.isEmpty()) {
                 elements.add(deque.poll());
@@ -90,6 +168,89 @@ class QueueUtilsTest {
             // 确认从队列中获取元素的顺序
             then(elements).containsExactly(0, 1, 2, 3, 4);
         }
+    }
+
+    /**
+     * 测试创建 {@link java.util.concurrent.ArrayBlockingQueue ArrayBlockingQueue} 阻塞循环双端队列
+     *
+     * <p>
+     * 通过 {@link Queues#newArrayBlockingQueue(int)} 方法可以创建一个 {@code ArrayBlockingQueue} 类型队列,
+     * 并设置该队列可以容纳元素的上限, 该上限值会导致在队列元素数量达到上限值后:
+     * <ul>
+     * <li>
+     * {@link java.util.concurrent.ArrayBlockingQueue#offer(Object) ArrayBlockingQueue.offer(T)} 方法会返回
+     * {@code false}, 表示入队失败
+     * </li>
+     * <li>
+     * {@link java.util.concurrent.ArrayBlockingQueue#offer(Object, long, TimeUnit)
+     * ArrayBlockingQueue.offer(T, long, TimeUnit)} 方法会进入阻塞,直到队列有元素被消费, 方能继续完成入队, 如果超时未完成则返回
+     * {@code false}
+     * </li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * 如果队列为空时, 则会导致:
+     * <ul>
+     * <li>
+     * {@link java.util.concurrent.ArrayBlockingQueue#poll() ArrayBlockingQueue.poll()} 方法返回 {@code null},
+     * 表示队列此时为空
+     * </li>
+     * <li>
+     * {@link java.util.concurrent.ArrayBlockingQueue#poll(long, TimeUnit) ArrayBlockingQueue.poll(long, TimeUint)}
+     * 方法会进入阻塞, 直到队列加入新元素, 方能继续完成出队, 如果超时未完成则返回 {@code null} 值
+     * </li>
+     * <li>
+     * {@link java.util.concurrent.ArrayBlockingQueue#take() ArrayBlockingQueue.take()} 方法会进入持续阻塞, 直到队列加入新元素,
+     * 方能继续完成出队
+     * </li>
+     * </ul>
+     * </p>
+     */
+    @Test
+    void newArrayDeque_shouldCreateArrayBlockingQueue() throws InterruptedException {
+        // 创建 ArrayBlockingQueue 对象, 队列最大容量为 1
+        var deque = Queues.<Integer>newArrayBlockingQueue(1);
+
+        // 创建新线程, 在线程内进行入队操作
+        var thread = new Thread(() -> {
+            var ts = System.currentTimeMillis();
+            // 产生 5 个有序元素, 依次入队
+            for (var e : createRangedElements(0, 5, false)) {
+                try {
+                    // 模拟 IO 延迟, 每 100ms 入队一个元素
+                    Thread.sleep(100);
+                    deque.offer(e, 1, TimeUnit.SECONDS);
+                } catch (InterruptedException ignore) {
+                    break;
+                }
+            }
+            // 入队 5 个元素时间持续至少 1600ms (而非 500ms)
+            // 原因: 1. 队列最大容量只有 1, 所以队列每入队一次, 就必须出队一次, 方能进行下一次入队操作; 2. 出队的速度较慢,
+            // 最终影响了除第一个外的后续元素入队速度
+            then(System.currentTimeMillis() - ts).isGreaterThanOrEqualTo(1600);
+        });
+
+        thread.start();
+
+        // 创建一个保存出队结果的 List 集合
+        var elements = Lists.<Integer>newArrayList();
+
+        var ts = System.currentTimeMillis();
+
+        // 从队列出队 5 个元素
+        while (elements.size() < 5) {
+            elements.add(deque.poll(1, TimeUnit.SECONDS));
+            // 模拟消费延迟, 每 500ms 处理队列中的一项
+            Thread.sleep(500);
+        }
+
+        // 完成 5 个元素出队共计至少 2600ms
+        // 后 4 个元素入队需 2500ms, 第一个元素需 100ms
+        then(System.currentTimeMillis() - ts).isGreaterThanOrEqualTo(2600);
+
+        // 确认从栈中获取元素的顺序
+        then(elements).containsExactly(0, 1, 2, 3, 4);
     }
 
     /**
@@ -125,26 +286,51 @@ class QueueUtilsTest {
         }
     }
 
+    /**
+     * 测试创建 {@link java.util.concurrent.PriorityBlockingQueue PriorityBlockingQueue} 对象
+     *
+     * <p>
+     * 通过 {@link Queues#newPriorityBlockingQueue()} 方法可以创建一个 {@code PriorityBlockingQueue} 类型优先队列
+     * </p>
+     *
+     * <p>
+     * 通过 {@link Queues#newPriorityBlockingQueue(Iterable)} 方法可以创建一个 {@code PriorityBlockingQueue}
+     * 类型优先队列并初始化队列元素
+     * </p>
+     *
+     * <p>
+     * {@code PriorityBlockingQueue} 表示一个按优先级出队的阻塞队列, 其出队优先规则和 {@link java.util.PriorityQueue
+     * PriorityQueue} 保持一致
+     * </p>
+     */
     @Test
-    @SuppressWarnings("java:S2925")
     void newPriorityBlockingQueue_shouldCreatePriorityBlockingQueue() throws InterruptedException {
+        // 创建阻塞优先队列
         var priQue = Queues.<Integer>newPriorityBlockingQueue();
 
+        // 创建线程, 写入阻塞优先队列
         var thread = new Thread(() -> {
             try {
+                // 休眠 1 秒模拟 IO 延迟
                 Thread.sleep(1000);
+                // 向阻塞队列写入一系列无序整数值
                 priQue.addAll(createRangedElements(0, 5, true));
             } catch (InterruptedException e) {}
         });
 
+        // 启动线程, 对队列进行写操作
         thread.start();
 
         var timestamp = System.currentTimeMillis();
+
+        // 等待, 直到可以从队列中读取到内容 (即队列不再为空)
         await().atMost(2, TimeUnit.SECONDS).until(() -> !priQue.isEmpty());
+        // 确认等待的时间不小于 1 秒
         then(System.currentTimeMillis() - timestamp).isGreaterThanOrEqualTo(1000);
 
+        // 确认队列元素按有序 (优先序) 的次序出队
         for (var i = 0; !priQue.isEmpty(); i++) {
-            then(priQue.take()).isEqualTo(i);
+            then(priQue.poll(1, TimeUnit.SECONDS)).isEqualTo(i);
         }
     }
 }
