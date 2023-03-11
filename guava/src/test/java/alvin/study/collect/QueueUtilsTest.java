@@ -3,6 +3,7 @@ package alvin.study.collect;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.awaitility.Awaitility.await;
 
+import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -208,7 +209,7 @@ class QueueUtilsTest {
      * </p>
      */
     @Test
-    void newArrayDeque_shouldCreateArrayBlockingQueue() throws InterruptedException {
+    void newArrayBlockingQueue_shouldCreateArrayBlockingQueue() throws InterruptedException {
         // 创建 ArrayBlockingQueue 对象, 队列最大容量为 1
         var deque = Queues.<Integer>newArrayBlockingQueue(1);
 
@@ -331,6 +332,312 @@ class QueueUtilsTest {
         // 确认队列元素按有序 (优先序) 的次序出队
         for (var i = 0; !priQue.isEmpty(); i++) {
             then(priQue.poll(1, TimeUnit.SECONDS)).isEqualTo(i);
+        }
+    }
+
+    /**
+     * 从 {@link java.util.concurrent.BlockingDeque BlockingDeque} 中将当前元素全部出队, 存入另一个集合对象中
+     *
+     * <p>
+     * 通过 {@link Queues#drain(java.util.concurrent.BlockingQueue, java.util.Collection, int, long, TimeUnit)
+     * Queues.drain(BlockingQueue, Collection, int, long, TimeUnit)} 方法可以将一个阻塞队列中当前存在的元素全部出队,
+     * 并存入给定的一个集合对象中
+     * </p>
+     *
+     * <p>
+     * 该方法类似于 {@link java.util.concurrent.BlockingDeque#drainTo(java.util.Collection, int)
+     * BlockingDeque.drainTo(Collection, int)} 方法, 与之不同的是, 后者只会在调用的那一时刻, 将队列的元素进行出队转存,
+     * 而前者则具有一个超时时间的设定, 可以将队列本身内容和一段时间内入队的元素均进行出队转存
+     * </p>
+     */
+    @Test
+    void drain_shouldDrainedElementsFromBlockingQueue() throws InterruptedException {
+        // 定义一个元素上限为 5 的阻塞循环队列
+        var que = Queues.<Integer>newArrayBlockingQueue(5);
+
+        // 定义用来存储出队元素的集合
+        var elements = Lists.<Integer>newArrayList();
+
+        // 预期在 2 秒内, 将队列出队 5 个元素, 转存入集合
+        // 因为此时队列为空, 也无生产者向队列写入元素, 所以在超时时间到达时, 队列仍为空
+        // 所以确认最终结果为转存了 0 个元素
+        var len = Queues.drain(que, elements, 5, 2, TimeUnit.SECONDS);
+        then(len).isEqualTo(0);
+
+        // 启动一个线程向队列写入元素
+        var thread = new Thread(() -> {
+            try {
+                // 总共向队列写入 5 个元素, 每次写入耗时 500ms
+                for (var v : createRangedElements(0, 5, false)) {
+                    // 模拟 IO 耗时
+                    Thread.sleep(500);
+                    // 元素入队
+                    que.offer(v);
+                }
+            } catch (InterruptedException ignore) {}
+        });
+
+        thread.start();
+
+        // 预期在 2.1 秒内, 将队列出队 5 个元素, 转存入集合
+        // 因为在规定时间内, 生产方最多可以存入 4 个元素
+        // 所以确认最终结果为转存了 4 个元素
+        len = Queues.drain(que, elements, 5, 2100, TimeUnit.MILLISECONDS);
+        then(len).isEqualTo(4);
+        then(elements).containsExactly(0, 1, 2, 3);
+    }
+
+    /**
+     * 从 {@link java.util.concurrent.BlockingDeque BlockingDeque} 中将当前元素全部出队, 存入另一个集合对象中
+     *
+     * <p>
+     * 通过
+     * {@link Queues#drainUninterruptibly(java.util.concurrent.BlockingQueue, java.util.Collection, int, long, TimeUnit)
+     * Queues.drainUninterruptibly(BlockingQueue, Collection, int, long, TimeUnit)} 方法可以将一个阻塞队列中当前存在的元素全部出队,
+     * 并存入给定的一个集合对象中
+     * </p>
+     *
+     * <p>
+     * 该方法类似于 {@link Queues#drain(java.util.concurrent.BlockingQueue, java.util.Collection, int, long, TimeUnit)
+     * Queues.drain(BlockingQueue, Collection, int, long, TimeUnit)} 方法 (参考
+     * {@link #drain_shouldDrainedElementsFromBlockingQueue()} 方法), 和后者不同, {@code drainUninterruptibly}
+     * 方法不会在线程中断时抛出 {@link InterruptedException} 异常, 而是结束转存
+     * </p>
+     */
+    @Test
+    void drainUninterruptibly_shouldDrainedElementsFromBlockingQueue() {
+        // 定义一个元素上限为 5 的阻塞循环队列
+        var que = Queues.<Integer>newArrayBlockingQueue(5);
+
+        // 定义用来存储出队元素的集合
+        var elements = Lists.<Integer>newArrayList();
+
+        // 预期在 2 秒内, 将队列出队 5 个元素, 转存入集合
+        // 因为此时队列为空, 也无生产者向队列写入元素, 所以在超时时间到达时, 队列仍为空
+        // 所以确认最终结果为转存了 0 个元素
+        var len = Queues.drainUninterruptibly(que, elements, 5, 2, TimeUnit.SECONDS);
+        then(len).isEqualTo(0);
+
+        // 启动一个线程向队列写入元素
+        var thread = new Thread(() -> {
+            try {
+                // 总共向队列写入 5 个元素, 每次写入耗时 500ms
+                for (var v : createRangedElements(0, 5, false)) {
+                    // 模拟 IO 耗时
+                    Thread.sleep(500);
+                    // 元素入队
+                    que.offer(v);
+                }
+            } catch (InterruptedException ignore) {}
+        });
+
+        thread.start();
+
+        // 预期在 2.1 秒内, 将队列出队 5 个元素, 转存入集合
+        // 因为在规定时间内, 生产方最多可以存入 4 个元素
+        // 所以确认最终结果为转存了 4 个元素
+        len = Queues.drainUninterruptibly(que, elements, 5, 2100, TimeUnit.MILLISECONDS);
+        then(len).isEqualTo(4);
+        then(elements).containsExactly(0, 1, 2, 3);
+    }
+
+    /**
+     * 创建链式阻塞队列
+     *
+     * <p>
+     * 通过 {@link Queues#newLinkedBlockingQueue()} 方法可以创建一个阻塞式链表队列, 阻塞式队列参考
+     * {@link #newArrayBlockingQueue_shouldCreateArrayBlockingQueue()} 范例
+     * </p>
+     *
+     * <p>
+     * 通过 {@link Queues#newLinkedBlockingDeque()} 方法可以创建一个阻塞式链表双端队列, 双端队列的使用方法参考
+     * {@link #newArrayDeque_shouldCreateArrayDeque()} 范例
+     * </p>
+     *
+     * <p>
+     * 若需要非阻塞式的链表队列, 需使用 {@link Lists#newLinkedList()} 创建双端循环列表对象
+     * </p>
+     */
+    @Test
+    void linkedQueue_shouldCreateLinkedBlockingQueue() throws InterruptedException {
+        // 测试阻塞式链表单端队列
+        {
+            // 定义一个阻塞式链表队列
+            var que = Queues.<Integer>newLinkedBlockingQueue();
+
+            // 启动一个线程向队列写入元素
+            var thread = new Thread(() -> {
+                try {
+                    // 总共向队列写入 5 个元素, 每次写入耗时 500ms
+                    for (var v : createRangedElements(0, 5, false)) {
+                        // 模拟 IO 耗时
+                        Thread.sleep(500);
+                        // 元素入队
+                        que.offer(v);
+                    }
+                } catch (InterruptedException ignore) {}
+            });
+
+            thread.start();
+
+            var ts = System.currentTimeMillis();
+            for (var i = 0; i < 5; i++) {
+                // 确认元素出队
+                then(que.take()).isEqualTo(i);
+            }
+
+            // 确认 5 个元素全部出队需要至少 2.5 秒
+            then(System.currentTimeMillis() - ts).isGreaterThanOrEqualTo(2500);
+        }
+
+        // 测试阻塞式链表双端队列
+        {
+            // 定义一个阻塞式链表队列
+            var deque = Queues.<Integer>newLinkedBlockingDeque();
+
+            // 启动一个线程向队列写入元素
+            var thread = new Thread(() -> {
+                try {
+                    // 总共向队列写入 5 个元素, 每次写入耗时 500ms
+                    for (var v : createRangedElements(0, 5, false)) {
+                        // 模拟 IO 耗时
+                        Thread.sleep(500);
+                        // 元素入栈
+                        deque.push(v);
+                    }
+                } catch (InterruptedException ignore) {}
+            });
+
+            thread.start();
+
+            var ts = System.currentTimeMillis();
+            for (var i = 0; i < 5; i++) {
+                // 确认元素出栈
+                then(deque.take()).isEqualTo(i);
+            }
+
+            // 确认 5 个元素全部出栈需要至少 2.5 秒
+            then(System.currentTimeMillis() - ts).isGreaterThanOrEqualTo(2500);
+        }
+    }
+
+    /**
+     * 创建同步队列
+     *
+     * <p>
+     * 通过 {@link Queues#newSynchronousQueue()} 方法可以创建一个同步队列 ({@link java.util.concurrent.SynchronousQueue
+     * SynchronousQueue} 对象), 通过该队列可以在多个线程之间同步数据
+     * </p>
+     *
+     * <p>
+     * 对于 {@code SynchronousQueue} 类型队列, 虽然实现了 {@link java.util.concurrent.BlockingQueue BlockingQueue} 接口,
+     * 但并不真实的存储元素, 而是像一个通道一样, 生产者线程的入队操作只有同时被消费者线程同步出队, 方能入队成功, 否则会一直阻塞直到超时,
+     * 这样可以让生产者和消费者线程在某个时刻达到完全同步
+     * </p>
+     */
+    @Test
+    void newSynchronousQueue_shouldCreateSynchronousQueue() throws InterruptedException {
+        // 创建一个同步队列
+        var que = Queues.<Integer>newSynchronousQueue();
+
+        // 启动线程
+        new Thread(() -> {
+            try {
+                var ts = System.currentTimeMillis();
+
+                // 总共入队 5 个元素
+                for (var v : createRangedElements(0, 5, false)) {
+                    // 元素入队
+                    then(que.offer(v, 1, TimeUnit.SECONDS)).isTrue();
+                }
+
+                // 确认入队最少消耗 2 秒
+                // 入队花费时间是因为出队速度慢导致
+                then(System.currentTimeMillis() - ts).isGreaterThanOrEqualTo(2000);
+            } catch (InterruptedException ignore) {}
+        }).start();
+
+        var elems = Lists.<Integer>newArrayList();
+
+        // 读取同步队列的内容 (共读取 5 个), 转存到集合中
+        for (var i = 0; i < 5; i++) {
+            elems.add(que.poll(1, TimeUnit.SECONDS));
+            Thread.sleep(500);
+        }
+
+        // 确认出队元素
+        then(elems).containsExactly(0, 1, 2, 3, 4);
+    }
+
+    /**
+     * 将非线程安全队列包装为线程安全队列
+     *
+     * <p>
+     * 通过 {@link Queues#synchronizedQueue(java.util.Queue) Queues.synchronizedQueue(Queue)}
+     * 方法可以将一个非线程安全的队列对象包装为线程安全的队列对象
+     * </p>
+     *
+     * <p>
+     * 通过 {@link Queues#synchronizedDeque(java.util.Deque) Queues.synchronizedDeque(Deque)}
+     * 方法可以将一个非线程安全的双端队列对象包装为线程安全的双端队列对象
+     * </p>
+     *
+     * <p>
+     * 线程安全的双端队列可以在多个线程之间进行操作且不会产生读写问题. 其内部是通过 {@code synchronized(obj)} 关键字来保证同步
+     * </p>
+     */
+    @Test
+    void synchronizedQueue_shouldWrapQueueObjectAsSynchronized() throws InterruptedException {
+        // 将队列对象包装为线程安全的队列对象
+        {
+            var que = Queues.synchronizedQueue(new ArrayDeque<Integer>());
+
+            // 在一个线程中进行入队操作
+            new Thread(() -> {
+                try {
+                    for (var v : createRangedElements(0, 5, false)) {
+                        Thread.sleep(200);
+                        // 元素入队
+                        then(que.offer(v)).isTrue();
+                    }
+                } catch (InterruptedException ignore) {}
+            }).start();
+
+            // 在另一个线程进行出队操作
+            var elems = Lists.<Integer>newArrayList();
+            for (var i = 0; i < 5; i++) {
+                await().atMost(1, TimeUnit.SECONDS).until(() -> !que.isEmpty());
+                elems.add(que.poll());
+            }
+
+            // 确认出队元素
+            then(elems).containsExactly(0, 1, 2, 3, 4);
+        }
+
+        // 将双端队列对象包装为线程安全的双端队列对象
+        {
+            var que = Queues.synchronizedDeque(Lists.<Integer>newLinkedList());
+
+            // 在一个线程中进行入队操作
+            new Thread(() -> {
+                try {
+                    for (var v : createRangedElements(0, 5, false)) {
+                        Thread.sleep(200);
+                        // 元素入队
+                        then(que.offer(v)).isTrue();
+                    }
+                } catch (InterruptedException ignore) {}
+            }).start();
+
+            // 在另一个线程进行出队操作
+            var elems = Lists.<Integer>newArrayList();
+            for (var i = 0; i < 5; i++) {
+                await().atMost(1, TimeUnit.SECONDS).until(() -> !que.isEmpty());
+                elems.add(que.poll());
+            }
+
+            // 确认出队元素
+            then(elems).containsExactly(0, 1, 2, 3, 4);
         }
     }
 }
