@@ -43,7 +43,7 @@ public class CachedUrlLoader implements AutoCloseable {
         = PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rw-------"));
 
     // 定义保存缓存对象的 Map
-    private volatile Map<URI, CacheInfo> cacheMap = new ConcurrentHashMap<>();
+    private Map<URI, CacheInfo> cacheMap = new ConcurrentHashMap<>();
 
     // 定义更新缓存使用的线程池
     private Executor executor = new ThreadPoolExecutor(
