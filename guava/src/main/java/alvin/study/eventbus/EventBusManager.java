@@ -1,9 +1,11 @@
 package alvin.study.eventbus;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -16,12 +18,15 @@ import com.google.common.eventbus.SubscriberExceptionHandler;
 /**
  * 管理 {@link EventBus} 对象的管理器类型
  */
-public final class EventBusManager {
+public final class EventBusManager implements Closeable {
     // 存储默认 EventBus 对象的 Key 名称
     private static final String BUS_NAME_COMMON = UUID.randomUUID().toString();
 
     // 当前类型的单例对象
     private static final EventBusManager INSTANCE = new EventBusManager();
+
+    // 异步线程执行器
+    private ExecutorService executorService = null;
 
     // 存储 EventBus 对象的 Map 对象
     private final Map<String, EventBus> eventBusMap = new ConcurrentHashMap<>();
@@ -48,7 +53,7 @@ public final class EventBusManager {
     }
 
     /**
-     * 通过一个名称标识注册一个 {@link EventBus} 对象
+     * 通过一个名称标识注册一个异步 {@link EventBus} 对象
      *
      * @param name 标识名称字符串
      * @return 被注册的 {@link EventBus} 对象
@@ -83,27 +88,43 @@ public final class EventBusManager {
         });
     }
 
+    /**
+     * 通过一个名称标识注册一个异步 {@link EventBus} 对象, 并为事件处理设定异常处理对象
+     *
+     * <p>
+     * {@link SubscriberExceptionHandler#handleException(Throwable, com.google.common.eventbus.SubscriberExceptionContext)
+     * SubscriberExceptionHandler.handleException(Throwable, SubscriberExceptionContext)}
+     * 方法会对对事件处理过程中产生的异常进行集中处理
+     * </p>
+     *
+     * @param name             标识名称字符串
+     * @param exceptionHandler 事件处理过程产生异常的处理对象
+     * @return 被注册的异步 {@link EventBus} 对象
+     */
     public EventBus registerAsyncEventBus(String name, SubscriberExceptionHandler exceptionHandler) {
         return eventBusMap.compute(name, (n, oldEventBus) -> {
             if (oldEventBus != null) {
                 throw new IllegalArgumentException(String.format("Event bus \"%s\" was exist", n));
             }
             if (exceptionHandler == null) {
-                return new AsyncEventBus(buildExecutor());
+                return new AsyncEventBus(getExecutorService());
             }
 
-            return new AsyncEventBus(buildExecutor(), exceptionHandler);
+            return new AsyncEventBus(getExecutorService(), exceptionHandler);
         });
     }
 
-    private static Executor buildExecutor() {
-        return new ThreadPoolExecutor(
-            1,
-            10,
-            60L,
-            TimeUnit.SECONDS,
-            new SynchronousQueue<>(),
-            new ThreadPoolExecutor.AbortPolicy());
+    private ExecutorService getExecutorService() {
+        if (executorService == null) {
+            executorService = new ThreadPoolExecutor(
+                Runtime.getRuntime().availableProcessors(),
+                Runtime.getRuntime().availableProcessors(),
+                0L,
+                TimeUnit.SECONDS,
+                new SynchronousQueue<>(),
+                new ThreadPoolExecutor.AbortPolicy());
+        }
+        return executorService;
     }
 
     public EventBus getBus(String name) {
@@ -131,6 +152,17 @@ public final class EventBusManager {
     @VisibleForTesting
     EventBus releaseEventBus(String name) {
         return eventBusMap.remove(name);
+    }
+
+    /**
+     * 关闭 EventBus 管理器
+     */
+    @Override
+    public void close() throws IOException {
+        if (executorService != null) {
+            executorService.shutdown();
+            executorService = null;
+        }
     }
 
     /**
