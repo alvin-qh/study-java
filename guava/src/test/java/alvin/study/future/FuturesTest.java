@@ -93,11 +93,11 @@ class FuturesTest {
         // 通过线程池对象创建 ListeningExecutorService 对象
         var listeningDecorator = MoreExecutors.listeningDecorator(executor);
 
-        // 提交计算任务
+        // 为每个异步计算任务添加回调
         IntStream.range(1, 11).forEach(n -> Futures.addCallback(
-            // 提交计算任务
+            // 为计算创建异步任务, 并为该任务设置回调
             listeningDecorator.submit(() -> Fibonacci.calculate(n)),
-            // 设置计算任务处理完成后的回调
+            // 回调函数
             new FutureCallback<Integer>() {
                 /**
                  * 计算任务处理成功后的回调, 将计算结果作为参数传递
@@ -147,11 +147,11 @@ class FuturesTest {
         // 保存计算结果的集合对象
         var numbers = Lists.<Integer>newArrayList();
 
-        // 提交批量计算任务
+        // 为异步任务添加回调函数, 在其任务执行完毕后进行回调
         Futures.addCallback(
-            // 将 ListenableFuture 集合转为单个 ListenableFuture 对象
+            // 将 ListenableFuture 集合转为单个 ListenableFuture 对象, 并为该任务添加回调
             Futures.allAsList(futures),
-            // 设置计算任务处理完成后的回调
+            // 回调函数
             new FutureCallback<List<Integer>>() {
                 /**
                  * 计算任务处理成功后的回调, 将批量任务计算结果的集合作为参数传递
@@ -224,6 +224,33 @@ class FuturesTest {
         then(userRef.get()).extracting("id", "name").contains(1L, "Alvin");
     }
 
+    /**
+     * 创建链式任务
+     *
+     * <p>
+     * 通过 {@link Futures#whenAllSucceed(ListenableFuture...)} 方法可以为一系列异步任务的后续创建链式任务, 该方法返回一个
+     * {@link com.google.common.util.concurrent.Futures.FutureCombiner FutureCombiner} 对象, 当前面那一系列异步任务全部成功后,
+     * 会通过
+     * {@link com.google.common.util.concurrent.Futures.FutureCombiner#call(java.util.concurrent.Callable, java.util.concurrent.Executor)
+     * FutureCombiner.call(Callable, Executor)} 方法或者
+     * {@link com.google.common.util.concurrent.Futures.FutureCombiner#callAsync(com.google.common.util.concurrent.AsyncCallable, java.util.concurrent.Executor)
+     * FutureCombiner.callAsync(AsyncCallable, Executor)} 方法进行回调
+     * </p>
+     *
+     * <p>
+     * {@code call} 方法无法产生链式调用, 只是为之前的一系列异步任务执行成功进行后续处理, 而 {@code callAsync} 方法可以产生链式调用,
+     * 其参数 {@code AsyncCallable} 回调函数返回 {@link ListenableFuture} 类型对象, 可以和之前的一系列异步任务合并为一条调用链
+     * </p>
+     *
+     * <p>
+     * 后面的例子 {@link #transform_shouldTransformFutureResultToAnother()} 中的
+     * {@link Futures#transform(ListenableFuture, com.google.common.base.Function, java.util.concurrent.Executor)
+     * Futures.transform(ListenableFuture, Function, Executor)} 以及
+     * {@link Futures#transformAsync(ListenableFuture, com.google.common.util.concurrent.AsyncFunction, java.util.concurrent.Executor)
+     * Futures.transformAsync(ListenableFuture, AsyncFunction, Executor)} 也能产生类似的链式调用效果, 只不过 {@code transform}
+     * 方法主要是用于转换异步任务结果
+     * </p>
+     */
     @Test
     void whenAllSucceed_shouldExecuteNextTaskAfterTasksSuccessful() {
         // 创建 ListeningExecutorService 对象
@@ -232,26 +259,34 @@ class FuturesTest {
         // 创建服务对象
         var service = new UserFutureService(listeningDecorator);
 
+        // 测试任务的非链式调用: 产生一组创建用户的异步任务, 并在任务成功后, 获取任务结果
         var createdResults = Lists.<User>newArrayList();
         {
             // 产生一个创建用户的异步任务
             var createTask1 = service.createUser(new User(1L, "Alvin"));
             var createTask2 = service.createUser(new User(2L, "Emma"));
 
-            var findTasks = Futures.whenAllSucceed(createTask1, createTask2).call(
+            // 当所有创建用户异步任务执行成功后, 进行回调, 返回该回调的 ListenableFuture 任务对象
+            var createAllTask = Futures.whenAllSucceed(createTask1, createTask2).call(
                 () -> {
+                    // 确认前置任务已经完成
                     then(createTask1.isDone()).isTrue();
                     then(createTask2.isDone()).isTrue();
 
+                    // 返回前置任务的执行结果
                     return ImmutableList.of(createTask1.get(), createTask2.get());
                 },
                 MoreExecutors.directExecutor());
 
+            // 对异步任务添加回调
             Futures.addCallback(
-                findTasks,
+                // 要回调的异步任务
+                createAllTask,
+                // 回调函数
                 new FutureCallback<List<User>>() {
                     @Override
                     public void onSuccess(List<User> result) {
+                        // 将任务执行结果加入集合
                         createdResults.addAll(result);
                     }
 
@@ -261,28 +296,36 @@ class FuturesTest {
                 MoreExecutors.directExecutor());
         }
 
+        // 测试任务的异步链式调用: 产生一组创建用户的异步任务, 并在任务成功后, 链接一组查询用户信息的异步任务
         var findResults = Lists.<User>newArrayList();
         {
             // 产生一个创建用户的异步任务
             var createTask1 = service.createUser(new User(1L, "Alvin"));
             var createTask2 = service.createUser(new User(2L, "Emma"));
 
+            // 当所有创建用户异步任务执行成功后, 进行回调, 返回另一组异步任务的 ListenableFuture 任务对象
             var findTasks = Futures.whenAllSucceed(createTask1, createTask2).callAsync(
                 () -> {
+                    // 确认前置任务已经完成
                     then(createTask1.isDone()).isTrue();
                     then(createTask2.isDone()).isTrue();
 
+                    // 返回由两个查询任务组成的异步任务
                     return Futures.allAsList(
                         service.findUserById(createTask1.get().getId()),
                         service.findUserById(createTask2.get().getId()));
                 },
                 MoreExecutors.directExecutor());
 
+            // 对异步任务添加回调
             Futures.addCallback(
+                // 要回调的异步任务
                 findTasks,
+                // 回调函数
                 new FutureCallback<List<Optional<User>>>() {
                     @Override
                     public void onSuccess(List<Optional<User>> result) {
+                        // 将任务执行结果加入集合
                         result.stream()
                                 .map(Optional::get)
                                 .forEach(findResults::add);
@@ -294,8 +337,10 @@ class FuturesTest {
                 MoreExecutors.directExecutor());
         }
 
+        // 等待异步任务执行完毕
         await().atMost(3, TimeUnit.SECONDS).until(() -> !createdResults.isEmpty() && !findResults.isEmpty());
 
+        // 确认任务执行正确
         then(createdResults).containsAll(findResults)
                 .extracting("id", "name")
                 .contains(tuple(1L, "Alvin"), tuple(2L, "Emma"));
