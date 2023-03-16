@@ -4,8 +4,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
 
 import alvin.study.future.model.User;
 import lombok.SneakyThrows;
@@ -47,10 +50,20 @@ public class UserFutureService {
     public ListenableFuture<User> createUser(User user) {
         return listeningDecorator.submit(() -> {
             delay();
-            userMap.put(user.getId(), user);
-
-            return user;
+            return createUserSync(user);
         });
+    }
+
+    /**
+     * 同步创建用户
+     *
+     * @param user 要创建的实体对象
+     * @return 创建用户的异步任务对象
+     */
+    @VisibleForTesting
+    User createUserSync(User user) {
+        userMap.put(user.getId(), user);
+        return user;
     }
 
     /**
@@ -64,5 +77,22 @@ public class UserFutureService {
             delay();
             return Optional.ofNullable(userMap.get(id));
         });
+    }
+
+    /**
+     * 删除用户
+     *
+     * @param id 用户 {@code id}
+     * @return 被删除用户对象的 {@link Optional} 包装
+     */
+    public ListenableFuture<User> deleteUser(long id) {
+        return Futures.transformAsync(
+            findUserById(id),
+            mayUser -> listeningDecorator.submit(() -> mayUser.map(user -> {
+                delay();
+                userMap.remove(user.getId());
+                return user;
+            }).orElseThrow()),
+            MoreExecutors.directExecutor());
     }
 }

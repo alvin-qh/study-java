@@ -3,9 +3,11 @@ package alvin.study.future;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -471,5 +473,237 @@ class FuturesTest {
         then(foundUsers).containsExactlyElementsOf(asyncFoundUsers)
                 .extracting("id", "name")
                 .contains(tuple(1L, "Alvin"), tuple(2L, "Emma"));
+    }
+
+    /**
+     * 对异常处理的链式调用
+     *
+     * <p>
+     * 通过
+     * {@link Futures#catching(ListenableFuture, Class, com.google.common.base.Function, java.util.concurrent.Executor)
+     * Futures.catching(ListenableFuture, Class, Function, Executor)} 方法可以对一个任务抛出的指定类型异常进行处理
+     * </p>
+     *
+     * <p>
+     * 假设有任务 {@code A}, 则针对 {@code A} 的 {@code catching} 方法会产生链式任务 {@code B}, 且当任务 {@code A}
+     * 确实抛出指定类型异常时, 任务 {@code B} 会执行 {@code catching} 方法指定的回调方法处理异常, 并返回任务 {@code A} 的一个备选结果,
+     * 否则会在任务 {@code A} 执行完毕后结束. 简言之, 任务 {@code B} 相当于是任务 {@code A} + 异常处理两个部分的链式调用
+     * </p>
+     *
+     * <p>
+     * {@link Futures#catchingAsync(ListenableFuture, Class, com.google.common.util.concurrent.AsyncFunction, java.util.concurrent.Executor)
+     * Futures.catchingAsync(ListenableFuture, Class, AsyncFunction, Executor)} 方法则是 {@code catching} 方法的异步版本
+     * </p>
+     */
+    @Test
+    void caching_shouldCacheTaskExceptionAndReturnFallbackValue() {
+        // 创建 ListeningExecutorService 对象
+        var listeningDecorator = MoreExecutors.listeningDecorator(executor);
+
+        // 创建服务对象
+        var service = new UserFutureService(listeningDecorator);
+        // 创建测试实体
+        service.createUserSync(new User(1L, "Alvin"));
+
+        // 任务未抛出异常的情况
+        // 删除 id 为 1 的实体对象, 该对象存在, 所以正确删除, 无异常抛出
+        {
+            // 捕获任务的异常, 对异常进行处理
+            var cachingTask = Futures.catching(
+                // 期待抛出异常的任务 (本例中无异常抛出)
+                service.deleteUser(1L),
+                // 期望处理的异常类型
+                Exception.class,
+                // 异常处理回调函数, 对异常进行处理, 并返回原任务结果的备选值
+                ex -> {
+                    throw new AssertionError("Cannot run here", ex);
+                },
+                // 执行异常处理器的线程执行器对象
+                executor);
+
+            // 保存执行结果的引用对象
+            var userRef = new AtomicReference<User>();
+
+            // 为异常捕获任务添加回调函数
+            // 由于本次 deleteUser 方法返回的任务不会抛出异常, 所以 cachingTask 任务相当于 deleteUser 任务
+            Futures.addCallback(
+                // 要添加回调的任务对象
+                cachingTask,
+                // 回调函数
+                new FutureCallback<User>() {
+                    @Override
+                    public void onSuccess(User result) {
+                        // 保存任务结果
+                        userRef.set(result);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        fail();
+                    }
+                },
+                // 执行回调函数的线程执行器
+                MoreExecutors.directExecutor());
+
+            // 等待任务结果返回
+            await().atMost(3, TimeUnit.SECONDS).until(() -> userRef.get() != null);
+
+            // 确认任务结果正确
+            then(userRef.get()).extracting("id", "name").contains(1L, "Alvin");
+        }
+
+        // 任务抛出异常的情况
+        // 对异常进行处理, 返回原任务的备选结果
+        {
+            // 保存异常的引用对象
+            var exceptionRef = new AtomicReference<Throwable>();
+
+            // 捕获任务的异常, 对异常进行处理
+            var cachingTask = Futures.catching(
+                // 期待抛出异常的任务 (本例中抛出 NoSuchElementException 异常)
+                service.deleteUser(2L),
+                // 期望处理的异常类型
+                Exception.class,
+                // 异常处理回调函数, 对异常进行处理, 并返回原任务结果的备选值
+                ex -> {
+                    // 保存异常对象
+                    exceptionRef.set(ex);
+                    // 返回钱一个任务结果的备选值
+                    return new User(0L, "Nobody");
+                },
+                // 执行异常处理器的线程执行器对象
+                MoreExecutors.directExecutor());
+
+            // 保存执行结果的引用对象
+            var userRef = new AtomicReference<User>();
+
+            // 为异常捕获任务添加回调函数
+            // 由于本次 deleteUser 方法会抛出异常, 所以 cachingTask 任务相当于执行 deleteUser 任务后执行异常处理回调
+            Futures.addCallback(
+                // 要添加回调的任务对象
+                cachingTask,
+                // 回调函数
+                new FutureCallback<User>() {
+                    @Override
+                    public void onSuccess(User result) {
+                        userRef.set(result);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        fail();
+                    }
+                },
+                // 执行回调函数的线程执行器
+                MoreExecutors.directExecutor());
+
+            // 等待任务结果返回
+            await().atMost(3, TimeUnit.SECONDS).until(() -> userRef.get() != null);
+
+            // 确认抛出的异常正确
+            then(exceptionRef.get()).isInstanceOf(NoSuchElementException.class);
+
+            // 确认任务结果正确, 为异常处理回调返回的备选值
+            then(userRef.get()).extracting("id", "name").contains(0L, "Nobody");
+        }
+
+        // 任务抛出异常的情况
+        // 对异常进行处理, 抛出新的异常
+        {
+            // 捕获任务的异常, 对异常进行处理
+            var cachingTask = Futures.catching(
+                // 要添加回调的任务对象
+                service.deleteUser(2L),
+                // 期望处理的异常类型
+                Exception.class,
+                // 异常处理回调函数, 对异常进行处理, 并返回原任务结果的备选值
+                ex -> {
+                    throw new IllegalArgumentException(ex);
+                },
+                // 执行异常处理器的线程执行器对象
+                MoreExecutors.directExecutor());
+
+            // 保存抛出异常的引用对象
+            var exceptionRef = new AtomicReference<Throwable>();
+
+            // 为异常捕获任务添加回调函数
+            // 由于本次 cachingTask 任务抛出了新的异常, 所以 onFailure 方法会被回调
+            Futures.addCallback(
+                // 要添加回调的任务对象
+                cachingTask,
+                // 回调函数
+                new FutureCallback<User>() {
+                    @Override
+                    public void onSuccess(User result) {
+                        fail();
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        exceptionRef.set(t);
+                    }
+                },
+                // 执行回调函数的线程执行器
+                MoreExecutors.directExecutor());
+
+            // 等待任务结果返回
+            await().atMost(3, TimeUnit.SECONDS).until(() -> exceptionRef.get() != null);
+
+            // 确认抛出的异常正确
+            then(exceptionRef.get()).isInstanceOf(IllegalArgumentException.class);
+        }
+
+        // 任务抛出异常的情况
+        // 本例中对异常进行异步处理
+        {
+            // 保存异常的引用对象
+            var exceptionRef = new AtomicReference<Throwable>();
+
+            // 捕获任务的异常, 对异常进行处理
+            var cachingTask = Futures.catchingAsync(
+                // 要添加回调的任务对象
+                service.deleteUser(2L),
+                // 期望处理的异常类型
+                Exception.class,
+                // 异常处理回调函数, 对异常进行处理, 并返回产生原任务结果备选值的异步任务
+                ex -> {
+                    exceptionRef.set(ex);
+                    return Futures.immediateFuture(new User(0L, "Nobody"));
+                },
+                // 执行异常处理器的线程执行器对象
+                MoreExecutors.directExecutor());
+
+            // 保存执行结果的引用对象
+            var userRef = new AtomicReference<User>();
+
+            // 为异常捕获任务添加回调函数
+            // 由于本次 deleteUser 方法会抛出异常, 所以 cachingTask 任务相当于执行 deleteUser 任务后执行异常处理回调
+            Futures.addCallback(
+                // 要添加回调的任务对象
+                cachingTask,
+                // 回调函数
+                new FutureCallback<User>() {
+                    @Override
+                    public void onSuccess(User result) {
+                        userRef.set(result);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        fail();
+                    }
+                },
+                // 执行回调函数的线程执行器
+                MoreExecutors.directExecutor());
+
+            // 等待任务结果返回
+            await().atMost(3, TimeUnit.SECONDS).until(() -> userRef.get() != null);
+
+            // 确认抛出的异常正确
+            then(exceptionRef.get()).isInstanceOf(NoSuchElementException.class);
+
+            // 确认任务结果正确, 为异常处理回调返回的备选值
+            then(userRef.get()).extracting("id", "name").contains(0L, "Nobody");
+        }
     }
 }
