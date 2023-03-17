@@ -713,7 +713,13 @@ class FuturesTest {
      *
      * <p>
      * 通过 {@link Futures#withTimeout(ListenableFuture, long, TimeUnit, java.util.concurrent.ScheduledExecutorService)
-     * Futures.withTimeout(ListenableFuture, long, TimeUnit, ScheduledExecutorService)}
+     * Futures.withTimeout(ListenableFuture, long, TimeUnit, ScheduledExecutorService)} 方法可以为异步任务设置超时时间,
+     * 在超时时间内未完成的任务将被终止
+     * </p>
+     *
+     * <p>
+     * {@code withTimeout} 方法需要通过 {@link ScheduledThreadPoolExecutor} 执行器进行,
+     * 并通过其设置一个定时任务来监控异步任务的执行情况
      * </p>
      */
     @Test
@@ -721,27 +727,34 @@ class FuturesTest {
         // 创建 ScheduledExecutorService 对象
         var scheduledExecutor = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors());
 
-        // 创建
+        // 创建 ListeningExecutorService 对象
         var listeningDecorator = MoreExecutors.listeningDecorator(scheduledExecutor);
 
         // 创建服务对象
         var service = new UserFutureService(listeningDecorator);
 
+        // 测试任务超时终止的情况
         {
+            // 为 createUser 任务设置超时时间
+            // createUser 任务执行需要 1s 以上, 这里的设置会导致该任务执行超时
             var timeoutTask = Futures.withTimeout(
+                // 要监控超时的任务对象
                 service.createUser(new User(1L, "Alvin")),
+                // 任务超时时间设置
                 200, TimeUnit.MILLISECONDS,
+                // 执行超时监控的执行器
                 scheduledExecutor);
 
+            // 保存任务执行中异常的引用对象
             var exceptionRef = new AtomicReference<Throwable>();
 
+            // 为任务添加回调
+            // 由于该任务一定会超时, 所以不会回调 onSuccess, 会在 onFailure 回调中传递 TimeoutException 异常
             Futures.addCallback(
                 timeoutTask,
                 new FutureCallback<>() {
                     @Override
-                    public void onSuccess(User result) {
-                        fail();
-                    }
+                    public void onSuccess(User result) {}
 
                     @Override
                     public void onFailure(Throwable t) {
@@ -750,39 +763,49 @@ class FuturesTest {
                 },
                 MoreExecutors.directExecutor());
 
+            // 等待任务执行完毕
             await().atMost(5, TimeUnit.SECONDS).until(() -> exceptionRef.get() != null);
 
+            // 确认任务执行中抛出 TimeoutException 异常
             then(exceptionRef.get()).isInstanceOf(TimeoutException.class);
         }
 
+        // 测试任务未超时执行完毕的情况
         {
+            // 为 createUser 任务设置超时时间
+            // createUser 任务执行需要 1s 以上, 这里的设置不会导致超时
             var timeoutTask = Futures.withTimeout(
                 service.createUser(new User(1L, "Alvin")),
                 5, TimeUnit.SECONDS,
                 scheduledExecutor);
 
+            // 保存任务执行结果的引用对象
             var userRef = new AtomicReference<User>();
 
+            // 为任务添加回调
+            // 由于该任务不会超时, 所以会回调 onSuccess, 传递任务执行结果
             Futures.addCallback(
                 timeoutTask,
                 new FutureCallback<>() {
                     @Override
                     public void onSuccess(User result) {
+                        // 保存任务执行结果
                         userRef.set(result);
                     }
 
                     @Override
-                    public void onFailure(Throwable t) {
-                        fail();
-                    }
+                    public void onFailure(Throwable t) {}
                 },
                 MoreExecutors.directExecutor());
 
+            // 等待任务执行完毕
             await().atMost(5, TimeUnit.SECONDS).until(() -> userRef.get() != null);
 
+            // 确认获得了正确的任务结果
             then(userRef.get()).extracting("id", "name").contains(1L, "Alvin");
         }
 
+        // 关闭线程执行器
         scheduledExecutor.shutdown();
     }
 }
