@@ -13,8 +13,10 @@ import java.util.Optional;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.IntStream;
 
@@ -100,7 +102,7 @@ class FuturesTest {
             // 为计算创建异步任务, 并为该任务设置回调
             listeningDecorator.submit(() -> Fibonacci.calculate(n)),
             // 回调函数
-            new FutureCallback<Integer>() {
+            new FutureCallback<>() {
                 /**
                  * 计算任务处理成功后的回调, 将计算结果作为参数传递
                  */
@@ -154,7 +156,7 @@ class FuturesTest {
             // 将 ListenableFuture 集合转为单个 ListenableFuture 对象, 并为该任务添加回调
             Futures.allAsList(futures),
             // 回调函数
-            new FutureCallback<List<Integer>>() {
+            new FutureCallback<>() {
                 /**
                  * 计算任务处理成功后的回调, 将批量任务计算结果的集合作为参数传递
                  */
@@ -249,8 +251,7 @@ class FuturesTest {
      * {@link Futures#transform(ListenableFuture, com.google.common.base.Function, java.util.concurrent.Executor)
      * Futures.transform(ListenableFuture, Function, Executor)} 以及
      * {@link Futures#transformAsync(ListenableFuture, com.google.common.util.concurrent.AsyncFunction, java.util.concurrent.Executor)
-     * Futures.transformAsync(ListenableFuture, AsyncFunction, Executor)} 也能产生类似的链式调用效果, 只不过 {@code transform}
-     * 方法主要是用于转换异步任务结果
+     * Futures.transformAsync(ListenableFuture, AsyncFunction, Executor)} 也能产生类似的链式调用效果
      * </p>
      */
     @Test
@@ -285,9 +286,9 @@ class FuturesTest {
                 // 要回调的异步任务
                 createAllTask,
                 // 回调函数
-                new FutureCallback<List<User>>() {
+                new FutureCallback<>() {
                     @Override
-                    public void onSuccess(List<User> result) {
+                    public void onSuccess(ImmutableList<User> result) {
                         // 将任务执行结果加入集合
                         createdResults.addAll(result);
                     }
@@ -324,7 +325,7 @@ class FuturesTest {
                 // 要回调的异步任务
                 findTasks,
                 // 回调函数
-                new FutureCallback<List<Optional<User>>>() {
+                new FutureCallback<>() {
                     @Override
                     public void onSuccess(List<Optional<User>> result) {
                         // 将任务执行结果加入集合
@@ -386,7 +387,7 @@ class FuturesTest {
                 service.createUser(new User(1L, "Alvin")),
                 service.createUser(new User(2L, "Emma"))),
             // 异步执行完毕后的回调, 传递执行结果
-            new FutureCallback<List<User>>() {
+            new FutureCallback<>() {
                 @Override
                 public void onSuccess(List<User> result) {
                     // 保存用户创建任务结果
@@ -423,7 +424,7 @@ class FuturesTest {
             // 添加回调函数, 对链式任务的执行结果进行处理
             Futures.addCallback(
                 findUsersTask,
-                new FutureCallback<List<User>>() {
+                new FutureCallback<>() {
                     @Override
                     public void onSuccess(List<User> result) {
                         // 保存执行结果
@@ -453,7 +454,7 @@ class FuturesTest {
             // 添加回调函数, 对链式任务的执行结果进行处理
             Futures.addCallback(
                 findUsersTask,
-                new FutureCallback<List<User>>() {
+                new FutureCallback<>() {
                     @Override
                     public void onSuccess(List<User> result) {
                         // 保存执行结果
@@ -530,7 +531,7 @@ class FuturesTest {
                 // 要添加回调的任务对象
                 cachingTask,
                 // 回调函数
-                new FutureCallback<User>() {
+                new FutureCallback<>() {
                     @Override
                     public void onSuccess(User result) {
                         // 保存任务结果
@@ -583,7 +584,7 @@ class FuturesTest {
                 // 要添加回调的任务对象
                 cachingTask,
                 // 回调函数
-                new FutureCallback<User>() {
+                new FutureCallback<>() {
                     @Override
                     public void onSuccess(User result) {
                         userRef.set(result);
@@ -632,7 +633,7 @@ class FuturesTest {
                 // 要添加回调的任务对象
                 cachingTask,
                 // 回调函数
-                new FutureCallback<User>() {
+                new FutureCallback<>() {
                     @Override
                     public void onSuccess(User result) {
                         fail();
@@ -682,7 +683,7 @@ class FuturesTest {
                 // 要添加回调的任务对象
                 cachingTask,
                 // 回调函数
-                new FutureCallback<User>() {
+                new FutureCallback<>() {
                     @Override
                     public void onSuccess(User result) {
                         userRef.set(result);
@@ -705,5 +706,83 @@ class FuturesTest {
             // 确认任务结果正确, 为异常处理回调返回的备选值
             then(userRef.get()).extracting("id", "name").contains(0L, "Nobody");
         }
+    }
+
+    /**
+     * 在任务超时后, 终止任务执行
+     *
+     * <p>
+     * 通过 {@link Futures#withTimeout(ListenableFuture, long, TimeUnit, java.util.concurrent.ScheduledExecutorService)
+     * Futures.withTimeout(ListenableFuture, long, TimeUnit, ScheduledExecutorService)}
+     * </p>
+     */
+    @Test
+    void withTimeout_shouldTerminateTaskWhenTimeout() {
+        // 创建 ScheduledExecutorService 对象
+        var scheduledExecutor = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors());
+
+        // 创建
+        var listeningDecorator = MoreExecutors.listeningDecorator(scheduledExecutor);
+
+        // 创建服务对象
+        var service = new UserFutureService(listeningDecorator);
+
+        {
+            var timeoutTask = Futures.withTimeout(
+                service.createUser(new User(1L, "Alvin")),
+                200, TimeUnit.MILLISECONDS,
+                scheduledExecutor);
+
+            var exceptionRef = new AtomicReference<Throwable>();
+
+            Futures.addCallback(
+                timeoutTask,
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(User result) {
+                        fail();
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        exceptionRef.set(t);
+                    }
+                },
+                MoreExecutors.directExecutor());
+
+            await().atMost(5, TimeUnit.SECONDS).until(() -> exceptionRef.get() != null);
+
+            then(exceptionRef.get()).isInstanceOf(TimeoutException.class);
+        }
+
+        {
+            var timeoutTask = Futures.withTimeout(
+                service.createUser(new User(1L, "Alvin")),
+                5, TimeUnit.SECONDS,
+                scheduledExecutor);
+
+            var userRef = new AtomicReference<User>();
+
+            Futures.addCallback(
+                timeoutTask,
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(User result) {
+                        userRef.set(result);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        fail();
+                    }
+                },
+                MoreExecutors.directExecutor());
+
+            await().atMost(5, TimeUnit.SECONDS).until(() -> userRef.get() != null);
+
+            then(userRef.get()).extracting("id", "name").contains(1L, "Alvin");
+        }
+
+        scheduledExecutor.shutdown();
     }
 }
