@@ -2,9 +2,11 @@ package alvin.study.future;
 
 import static org.assertj.core.api.Assertions.tuple;
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -807,5 +809,72 @@ class FuturesTest {
 
         // 关闭线程执行器
         scheduledExecutor.shutdown();
+    }
+
+    /**
+     * 处理抛出 Checked 异常的异步任务
+     *
+     * <p>
+     * 通过 {@link Futures#getChecked(java.util.concurrent.Future, Class, long, TimeUnit)
+     * Futures.getChecked(Future, Class, long, TimeUnit)} 方法可以对一个异步任务进行检查, 如果其执行完毕, 则返回任务结果,
+     * 如果其产生了异常, 则抛出该异常
+     * </p>
+     *
+     * <p>
+     * 不带时间参数的 {@link Futures#getChecked(java.util.concurrent.Future, Class) Futures.getChecked(Future, Class)}
+     * 方法会阻塞线程, 直到异步任务返回结果或抛出异常
+     * </p>
+     *
+     * <p>
+     * 如果异步任务不会产生异常, 或者产生的异常未 {@link RuntimeException}, 则可以通过
+     * {@link Futures#getUnchecked(java.util.concurrent.Future) Futures.getUnchecked(Future)} 方法,
+     * 该方法也是检查一个异步任务, 若其执行完毕, 则返回任务结果, 如果抛出 Unchecked 异常, 则抛出该异常
+     * </p>
+     *
+     * <p>
+     * {@code getChecked} 和 {@code getUnchecked} 方法是幂等的, 即对于同一个异步任务对象多次执行该方法, 其行为一致
+     * </p>
+     */
+    @Test
+    void getChecked_shouldThrowCheckedException() throws ExecutionException {
+        // 创建 ListeningExecutorService 对象
+        var listeningDecorator = MoreExecutors.listeningDecorator(executor);
+
+        // 测试任务未抛出异常时, 返回任务结果
+        {
+            // 定义一个结果为字符串值的任务
+            var future = listeningDecorator.submit(() -> "Success");
+            try {
+                // 检查任务, 如果任务已经执行完毕, 则获取任务结果
+                var result = Futures.getChecked(future, IOException.class, 2, TimeUnit.SECONDS);
+                // 确认任务结果值正确
+                then(result).isEqualTo("Success");
+
+                // 重复检查任务, 获取任务结果
+                result = Futures.getChecked(future, IOException.class);
+                // 确认任务结果值正确
+                then(result).isEqualTo("Success");
+            } catch (IOException e) {
+                fail();
+            }
+        }
+
+        // 测试任务出现异常时, 将该异常进行抛出
+        {
+            // 定义一个抛出异常的任务
+            var future = listeningDecorator.submit(() -> {
+                // 抛出 Checked 异常
+                throw new IOException();
+            });
+            // 检查任务, 如果任务执行完毕且产生了异常, 则抛出该异常
+            thenThrownBy(() -> {
+                Futures.getChecked(future, IOException.class, 2, TimeUnit.SECONDS);
+            }).isInstanceOf(IOException.class);
+
+            // 重复检查任务, 重复抛出异常
+            thenThrownBy(() -> {
+                Futures.getChecked(future, IOException.class);
+            }).isInstanceOf(IOException.class);
+        }
     }
 }
