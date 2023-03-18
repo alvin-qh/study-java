@@ -95,14 +95,6 @@
       <version>${version.javafaker}</version>
       <scope>test</scope>
     </dependency>
-
-    <!-- Awaitility 等待测试库 -->
-    <dependency>
-      <groupId>org.awaitility</groupId>
-      <artifactId>awaitility</artifactId>
-      <version>${version.awaitility}</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>
