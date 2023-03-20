@@ -1,1 +1,6 @@
-// Nothing to add
+/**
+ * 配置依赖
+ */
+dependencies {
+  testImplementation libs.test.junitPioneer
+}

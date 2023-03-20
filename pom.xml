@@ -65,34 +65,35 @@
     <version.maven-jooq>${version.jooq}</version.maven-jooq>
     <version.maven-build-helper>3.3.0</version.maven-build-helper>
     <version.maven-assertj>2.2.0</version.maven-assertj>
+    <version.maven-resources>3.3.0</version.maven-resources>
   </properties>
 
   <!-- 包含子项目所在的路径名 -->
   <modules>
-    <module>testing</module>
-    <module>cli</module>
-    <module>guice</module>
+    <!-- <module>testing</module>htop -->
+    <!-- <module>cli</module> -->
+    <!-- <module>guice</module> -->
     <module>guava</module>
     <module>se</module>
-    <module>security</module>
-    <module>jackson</module>
-    <module>boot-mvc</module>
-    <module>boot-aop</module>
-    <module>boot-spel</module>
-    <module>boot-validator</module>
-    <module>boot-testing</module>
-    <module>boot-jpa</module>
-    <module>boot-mybatis</module>
-    <module>boot-jooq</module>
-    <module>boot-graphql</module>
-    <module>boot-multi-ds</module>
-    <module>boot-dynamic-ds</module>
-    <module>boot-security</module>
-    <module>boot-shiro</module>
-    <module>boot-springdoc</module>
-    <module>cloud-nacos</module>
-    <module>cloud-eureka</module>
-    <module>cloud-gateway</module>
+    <!-- <module>security</module> -->
+    <!-- <module>jackson</module> -->
+    <!-- <module>boot-mvc</module> -->
+    <!-- <module>boot-aop</module> -->
+    <!-- <module>boot-spel</module> -->
+    <!-- <module>boot-validator</module> -->
+    <!-- <module>boot-testing</module> -->
+    <!-- <module>boot-jpa</module> -->
+    <!-- <module>boot-mybatis</module> -->
+    <!-- <module>boot-jooq</module> -->
+    <!-- <module>boot-graphql</module> -->
+    <!-- <module>boot-multi-ds</module> -->
+    <!-- <module>boot-dynamic-ds</module> -->
+    <!-- <module>boot-security</module> -->
+    <!-- <module>boot-shiro</module> -->
+    <!-- <module>boot-springdoc</module> -->
+    <!-- <module>cloud-nacos</module> -->
+    <!-- <module>cloud-eureka</module> -->
+    <!-- <module>cloud-gateway</module> -->
   </modules>
 
   <!-- 依赖声明, 所有子项目可使用声明后的依赖 -->
@@ -245,6 +246,13 @@
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
           <version>${version.maven-build-helper}</version>
+        </plugin>
+
+        <!-- 资源 -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>${version.maven-resources}</version>
         </plugin>
       </plugins>
     </pluginManagement>
