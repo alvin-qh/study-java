@@ -107,7 +107,7 @@ class RuntimeTest {
      * </p>
      */
     @Test
-    @EnabledOnOs({ OS.LINUX })
+    @EnabledOnOs({ OS.MAC, OS.LINUX })
     void loadLibrary_shouldLoadDynamicLibrary() {
         var demo = new JNIDemo();
         then(demo.itoa(123)).isEqualTo("123");

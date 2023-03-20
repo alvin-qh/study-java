@@ -12,12 +12,23 @@ project(jni_demo  # 项目名称
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-set(JNI_H /usr/lib/jvm/java-17-openjdk-amd64/include) # 设置 JNI 路径
+
+# 设置 JNI 路径
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+    set(JNI_H
+        /usr/lib/jvm/java-17-openjdk-amd64/include
+        /usr/lib/jvm/java-17-openjdk-amd64/include/darwin)
+elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
+    set(JNI_H
+        /usr/local/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home/include
+        /usr/local/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home/include/darwin)
+endif()
+
+message("The JNI header path is: ${JNI_H}")
 
 # 包含 JDK 头文件
 include_directories(
     ${JNI_H}
-    ${JNI_H}/linux
 )
 
 # 设置代码集
@@ -27,7 +38,7 @@ set(jni_demo_src
 
 # 设置编译标识
 set(CMAKE_CXX_FLAGS
-    "${CMAKE_CXX_FLAGS} -pthread -fopenmp"
+    "${CMAKE_CXX_FLAGS} -pthread"
 )
 
 # 设置动态库编译, 并设置要编译到动态库中的源码集

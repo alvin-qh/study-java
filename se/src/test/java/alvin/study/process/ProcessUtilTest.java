@@ -25,7 +25,7 @@ class ProcessUtilTest {
     @EnabledOnOs({ OS.MAC, OS.LINUX })
     void exec_shouldStartProcess() throws Exception {
         // 启动进程
-        var process = ProcessUtil.exec("echo", "-e", "Hello World");
+        var process = ProcessUtil.exec("echo", "Hello World");
 
         // 获取进程执行的标准输出内容
         var output = ProcessUtil.fetchOutput(process, 1000);
@@ -35,6 +35,14 @@ class ProcessUtilTest {
 
     /**
      * 测试 {@link ProcessUtil#kill(long, boolean)} 终止指定进程
+     *
+     * <p>
+     * 对于 macOS 系统, 可能需要额外安装 {@code watch} 软件包, 即
+     *
+     * <pre>
+     * brew install watch
+     * </pre>
+     * </p>
      */
     @Test
     @EnabledOnOs({ OS.MAC, OS.LINUX })

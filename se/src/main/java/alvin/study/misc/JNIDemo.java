@@ -11,7 +11,14 @@ public class JNIDemo {
      */
     static {
         try {
-            LoadLibrary.load("libjni_demo_lib.so");
+            var os = System.getProperty("os.name");
+            if (os.contains("Linux")) {
+                LoadLibrary.load("libjni_demo_lib.so");
+            } else if (os.contains("Mac")) {
+                LoadLibrary.load("libjni_demo_lib.dylib");
+            } else {
+                throw new UnsupportedOperationException("Invalid OS");
+            }
         } catch (IOException e) {}
     }
 

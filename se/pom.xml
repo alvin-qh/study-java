@@ -43,6 +43,7 @@
           <encoding>UTF-8</encoding>
           <nonFilteredFileExtensions>
             <nonFilteredFileExtension>so</nonFilteredFileExtension>
+            <nonFilteredFileExtension>dylib</nonFilteredFileExtension>
           </nonFilteredFileExtensions>
         </configuration>
       </plugin>

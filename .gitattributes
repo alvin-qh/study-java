@@ -7,3 +7,4 @@
 *.jpg   binary
 
 *.so    binary
+*.dylib binary
