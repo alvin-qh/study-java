@@ -5,3 +5,5 @@
 *.jar   binary
 *.png   binary
 *.jpg   binary
+
+*.so    binary

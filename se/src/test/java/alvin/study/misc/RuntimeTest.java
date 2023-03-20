@@ -98,4 +98,18 @@ class RuntimeTest {
         var freeMem = runtime.freeMemory();
         then(freeMem).isLessThan(totalMem);
     }
+
+    /**
+     * 测试加载 C++ 动态库
+     *
+     * <p>
+     * 参考 {@link JNIDemo} 类型和 {@link alvin.study.misc.LoadLibrary LoadLibrary} 类型
+     * </p>
+     */
+    @Test
+    @EnabledOnOs({ OS.LINUX })
+    void loadLibrary_shouldLoadDynamicLibrary() {
+        var demo = new JNIDemo();
+        then(demo.itoa(123)).isEqualTo("123");
+    }
 }
