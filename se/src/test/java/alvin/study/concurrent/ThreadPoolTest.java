@@ -10,6 +10,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -137,6 +138,38 @@ class ThreadPoolTest {
                 queue.poll();
                 queue.offer(runnable);
             });
+
+        // 存储线程池对象以便适时关闭
+        executorsHolder = new WeakReference<>(executor);
+        return executor;
+    }
+
+    /**
+     * 创建一个通过 {@link SynchronousQueue} 作为任务队列的线程池
+     *
+     * <p>
+     * {@link SynchronousQueue} 队列不存储实际的元素, 每 {@code offer} 一个元素, 需要立即被 {@code poll} 掉, 否则会失败
+     * </p>
+     *
+     * <p>
+     * 这种特性放在线程池场景中, 即每个任务都必须立即有一个线程对其进行执行, 否则就以拒绝任务来处理
+     * </p>
+     *
+     * @param maxThreads 允许同时运行的最大线程数
+     * @return 线程池执行器对象
+     */
+    private ExecutorService synchronousQueueExecutor(int maxThreads) {
+        // 实例化线程池对象
+        // 核心线程数为 0, 表示如果无任务时, 没有活动线程
+        // maxThreads 表示最大线程数, 当有任务提交, 且线程池中无空闲线程时, 会产生新的线程对齐进行处理, 最多产生 maxThreads 个线程
+        // 产生的线程在 60 秒内可以被后续任务复用, 空闲超过该时间后, 线程销毁
+        // 未设置淘汰策略, 所以线程达到最大限度后, 增加任务会导致异常抛出
+        var executor = new ThreadPoolExecutor(
+            0,
+            maxThreads,
+            60,
+            TimeUnit.SECONDS,
+            new SynchronousQueue<>());
 
         // 存储线程池对象以便适时关闭
         executorsHolder = new WeakReference<>(executor);
@@ -328,5 +361,40 @@ class ThreadPoolTest {
 
         // 确认任务计算结果
         then(result).matches("^[1-2]?\\d-Success-Sleep-1\\d{3}$");
+    }
+
+    /**
+     * 测试以 {@link SynchronousQueue} 为任务队列的线程池
+     */
+    @Test
+    void cachedPool_shouldSubmitTaskIntoThreadPoolWithSynchronousQueue() throws InterruptedException {
+        // 获取最大任务数, 此处为 CPU 逻辑核心数 (Logical Kernel) 的 2 倍
+        var taskCount = Runtime.getRuntime().availableProcessors() * 2;
+
+        // 任务计数器, 计算已完成任务数
+        var resultCount = new AtomicInteger();
+
+        // 保存 FutureTask 的集合对象
+        var tasks = IntStream.range(0, taskCount)
+                .mapToObj(n -> (Callable<String>) () -> {
+                    try {
+                        Thread.sleep(1000L);
+                        return String.format("%d-Success", n);
+                    } finally {
+                        resultCount.incrementAndGet();
+                    }
+                })
+                .toList();
+
+        // 创建线程池执行器对象, 使用 SynchronousQueue 作为任务队列
+        var executor = synchronousQueueExecutor(taskCount);
+        // 执行所有任务
+        var result = executor.invokeAll(tasks, 5, TimeUnit.SECONDS);
+
+        // 等待任务执行完毕
+        await().atMost(2, TimeUnit.SECONDS).until(() -> resultCount.get() == taskCount);
+
+        // 确认任务执行结果
+        then(result).map(Future<String>::get).allMatch(s -> s.matches("^(1|2)?\\d-Success$"));
     }
 }
