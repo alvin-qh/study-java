@@ -23,7 +23,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 /**
- * 集合操作工具类
+ * 集合操作工具类, 用于演示集合的常见操作
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Colls {
