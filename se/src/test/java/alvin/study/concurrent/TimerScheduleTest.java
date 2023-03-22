@@ -36,6 +36,17 @@ import org.junit.jupiter.api.Test;
  * {@link ScheduledThreadPoolExecutor#submit(java.util.concurrent.Callable)
  * ScheduledThreadPoolExecutor.submit(Callable)} 方法的语义未发生变化, 但也可以理解为提交了"延时时间为 {@code 0}"的延时任务
  * </p>
+ *
+ * <p>
+ * 另外, {@link Timer} 类也可以处理定时任务, 且两者具有类似的方法, 和 {@link ScheduledExecutorService} 相比, {@link Timer}
+ * 也是通过延时队列来作为任务队列的, 但后者只启动了一个线程(而不是通过线程池), 所以一旦队列中有某个任务执行时间过久或被阻塞,
+ * 这会影响到之后的所有其它任务
+ * </p>
+ *
+ * <p>
+ * 且 {@link Timer} 类型属于较早期的 API, 使用已经过时的 {@link java.util.Date Date} 和 {@link java.util.Calendar
+ * Calendar} 类型来表示时间
+ * </p>
  */
 @SuppressWarnings("java:S2925")
 class TimerScheduleTest {
@@ -148,10 +159,7 @@ class TimerScheduleTest {
      * </p>
      */
     @Test
-    void scheduleFuture_shouldMakeScheduleForTasks() throws Exception {
-        // 定义表示记录的类型, 记录一个时间戳和任务编号
-        record Record(long timestamp, int no) {}
-
+    void scheduleFuture_shouldScheduleTaskAfterWhile() throws Exception {
         // 创建延时任务线程池
         var executor = createScheduledExecutorService();
 
@@ -159,18 +167,87 @@ class TimerScheduleTest {
         var startedMillis = System.currentTimeMillis();
 
         // 提交 3 个延时任务, 为每个任务设置延时时间, 任务结果为 Record 类型对象
-        var future1 = executor.schedule(() -> new Record(System.currentTimeMillis(), 1), 2000, TimeUnit.MILLISECONDS);
-        var future2 = executor.schedule(() -> new Record(System.currentTimeMillis(), 2), 1000, TimeUnit.MILLISECONDS);
-        var future3 = executor.schedule(() -> new Record(System.currentTimeMillis(), 2), 2100, TimeUnit.MILLISECONDS);
+        var future1 = executor.schedule(() -> System.currentTimeMillis(), 2000, TimeUnit.MILLISECONDS);
+        var future2 = executor.schedule(() -> System.currentTimeMillis(), 1000, TimeUnit.MILLISECONDS);
+        var future3 = executor.schedule(() -> System.currentTimeMillis(), 2100, TimeUnit.MILLISECONDS);
 
         // 确认整体任务执行完毕耗时 2100ms, 即最后一个任务执行的时间
         await().atMost(3, TimeUnit.SECONDS).until(() -> future1.isDone() && future2.isDone() && future3.isDone());
         then(System.currentTimeMillis() - startedMillis).isGreaterThanOrEqualTo(2100).isLessThan(2200);
 
         // 确认每个任务的延时时间, 和设定的延时时间一致
-        then(future1.get().timestamp() - startedMillis).isGreaterThanOrEqualTo(2000).isLessThan(2100);
-        then(future2.get().timestamp() - startedMillis).isGreaterThanOrEqualTo(1000).isLessThan(1100);
-        then(future3.get().timestamp() - startedMillis).isGreaterThanOrEqualTo(2100).isLessThan(2200);
+        then(future1.get() - startedMillis).isGreaterThanOrEqualTo(2000).isLessThan(2100);
+        then(future2.get() - startedMillis).isGreaterThanOrEqualTo(1000).isLessThan(1100);
+        then(future3.get() - startedMillis).isGreaterThanOrEqualTo(2100).isLessThan(2200);
+    }
+
+    /**
+     * 测试设定延时任务
+     *
+     * <p>
+     * 通过 {@link Timer#schedule(TimerTask, long)} 方法可以提交一个延时任务, 最后一个参数用于指定延时时间 (从当前时间起),
+     * 到达指定时间后, 任务才会被执行
+     * </p>
+     *
+     * <p>
+     * {@code schedule} 方法通过一个 {@link TimerTask} 对象执行任务, 当指定时间到达后, {@link TimerTask#run()} 方法会被执行,
+     * 和 {@link java.util.concurrent.ScheduledFuture ScheduledFuture} 类型不同, 需要在 {@link TimerTask}
+     * 中自行处理任务结果和任务状态
+     * </p>
+     */
+    @Test
+    void scheduleFuture_shouldScheduleTaskAfterWhileByTimer() throws Exception {
+        /**
+         * 定义定时器任务类
+         */
+        class RecordTask extends TimerTask {
+            // 记录任务执行时间
+            private long executionTime;
+
+            @Override
+            public void run() {
+                executionTime = System.currentTimeMillis();
+            }
+
+            /**
+             * 返回任务是否完成
+             *
+             * @return 任务是否完成
+             */
+            public boolean isDone() { return executionTime != 0; }
+
+            /**
+             * 获取任务执行时间
+             *
+             * @return 任务何时执行完毕的毫秒数
+             */
+            public long getExecutionTime() { return executionTime; }
+        }
+
+        // 定义定时器对象
+        var timer = new Timer();
+
+        // 记录起始时间
+        var startedMillis = System.currentTimeMillis();
+
+        // 提交 3 个延时任务, 为每个任务设置延时时间, 任务结果为 Record 类型对象
+        var task1 = new RecordTask();
+        timer.schedule(task1, 2000);
+
+        var task2 = new RecordTask();
+        timer.schedule(task2, 1000);
+
+        var task3 = new RecordTask();
+        timer.schedule(task3, 2100);
+
+        // 确认整体任务执行完毕耗时 2100ms, 即最后一个任务执行的时间
+        await().atMost(3, TimeUnit.SECONDS).until(() -> task1.isDone() && task2.isDone() && task3.isDone());
+        then(System.currentTimeMillis() - startedMillis).isGreaterThanOrEqualTo(2100).isLessThan(2200);
+
+        // 确认每个任务的延时时间, 和设定的延时时间一致
+        then(task1.getExecutionTime() - startedMillis).isGreaterThanOrEqualTo(2000).isLessThan(2100);
+        then(task2.getExecutionTime() - startedMillis).isGreaterThanOrEqualTo(1000).isLessThan(1100);
+        then(task3.getExecutionTime() - startedMillis).isGreaterThanOrEqualTo(2100).isLessThan(2200);
     }
 
     /**
@@ -178,23 +255,18 @@ class TimerScheduleTest {
      *
      * <p>
      * 通过 {@link ScheduledExecutorService#scheduleAtFixedRate(Runnable, long, long, TimeUnit)}
-     * 方法可以按一个固定的频率重复执行某个任务, 其中:
-     * <ul>
-     * <li>
-     * 第二个参数为第一次执行任务的延迟时间
-     * </li>
-     * <li>
-     * 第三个参数为后续每次任务执行的间隔时间
-     * </li>
-     * </ul>
+     * 方法可以按一个固定的频率重复执行某个任务, 后三个参数用于表示任务第一次执行的延迟时间和之后每次执行的间隔时间
      * </p>
      *
      * <p>
-     * {@code scheduleAtFixedRate} 方法在每个规定的间隔时间后一定会执行任务, 无论前一个任务是否执行完毕
+     * {@code scheduleAtFixedRate} 以第一次任务执行时间作为后续任务执行的基准, 即经过 {@code delay} 参数延迟后的时间,
+     * 但由于每次任务执行后才会追加下一次任务, 所以某次任务的阻塞仍有可能会影响下次任务 (例如阻塞时间超过了 {@code period})
+     * 参数设定的间隔时间, 但下一次任务会尽可能的快速执行以弥补耽搁的时间, 所以从宏观上看, {@code scheduleAtFixedRate}
+     * 方法仍可以认为是基于固定频率的
      * </p>
      */
     @Test
-    void scheduleAtFixedRate_shouldRunTaskByFixRate() {
+    void scheduleAtFixedRate_shouldScheduleTaskWithFixedRate() {
         // 创建延时任务线程池
         var executor = createScheduledExecutorService();
 
@@ -209,9 +281,6 @@ class TimerScheduleTest {
             // 记录执行时间
             () -> {
                 records.add(System.currentTimeMillis());
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {}
             },
             // 设置执行延迟时间和重复执行频率
             1, 2, TimeUnit.SECONDS);
@@ -225,29 +294,139 @@ class TimerScheduleTest {
 
         // 确认每次任务执行间隔时间
         then(records).map(n -> (n - startedMillis) / 1000).containsExactly(1L, 3L, 5L);
-
-        then(future.isCancelled()).isTrue();
     }
 
+    /**
+     * 按固定频率重复执行任务
+     *
+     * <p>
+     * 通过 {@link Timer#scheduleAtFixedRate(TimerTask, long, long)} 方法可以按一个固定的频率重复执行某个任务, 后两个参数分别表示:
+     * 任务第一次执行的延迟时间以及之后每次任务执行的间隔时间
+     * </p>
+     *
+     * <p>
+     * {@code scheduleAtFixedRate} 以第一次任务执行时间作为后续任务执行的基准, 即经过 {@code delay} 参数延迟后的时间,
+     * 但由于每次任务执行后才会追加下一次任务, 所以某次任务的阻塞仍有可能会影响下次任务 (例如阻塞时间超过了 {@code period})
+     * 参数设定的间隔时间, 但下一次任务会尽可能的快速执行以弥补耽搁的时间, 所以从宏观上看, {@code scheduleAtFixedRate}
+     * 方法仍可以认为是基于固定频率的
+     * </p>
+     */
     @Test
-    void ss2() {
+    void scheduleAtFixedRate_shouldScheduleTaskWithFixedRateByTimer() {
+        // 实例化 Timer 对象
         var timer = new Timer();
 
+        // 记录任务执行时间的集合
         var records = new ArrayList<Long>();
 
+        // 实例化任务对象
         var task = new TimerTask() {
             @Override
             public void run() {
+                // 记录执行时间
                 records.add(System.currentTimeMillis());
             }
         };
 
+        // 记录程序执行的起始时间
         var startedMillis = System.currentTimeMillis();
 
-        timer.schedule(task, 2000);
+        // 开始执行任务, 第一次 1s 后执行, 之后每 2s 重复执行一次
+        timer.scheduleAtFixedRate(task, 1000, 2000);
 
-        await().atMost(2100, TimeUnit.MILLISECONDS).until(() -> !records.isEmpty());
+        // 等待执行 3 次后, 取消任务执行
+        await().atMost(5500, TimeUnit.MILLISECONDS).untilAsserted(() -> then(records).hasSize(3));
+        timer.cancel();
 
-        then(records).map(n -> (n - startedMillis) / 1000).containsExactly(2L);
+        // 确认每次任务的时间间隔
+        then(records).map(n -> (n - startedMillis) / 1000).containsExactly(1L, 3L, 5L);
+    }
+
+    /**
+     * 按固定间隔时间重复执行任务
+     *
+     * <p>
+     * 通过 {@link ScheduledExecutorService#scheduleWithFixedDelay(Runnable, long, long, TimeUnit)}
+     * 方法可以按一个固定的频率重复执行某个任务, 后三个参数用于表示任务第一次执行的延迟时间和之后每次执行的间隔时间
+     * </p>
+     *
+     * <p>
+     * {@code scheduleWithFixedDelay} 是以上一次任务执行时间来计算下一次任务执行的时间的, 即 {@code delay}
+     * 参数表示的是两次任务的间隔时间, 所以如果一次任务的执行时间超过了 {@code delay} 参数, 则后续的任务都会受到影响
+     * </p>
+     */
+    @Test
+    void scheduleWithFixedDelay_shouldRunTaskWithFixedDelay() {
+        // 创建延时任务线程池
+        var executor = createScheduledExecutorService();
+
+        // 记录起始时间
+        var startedMillis = System.currentTimeMillis();
+
+        // 记录每次任务执行时间的集合
+        var records = new ArrayList<Long>();
+
+        // 启动一个固定频率的定时器任务
+        var future = executor.scheduleWithFixedDelay(
+            // 记录执行时间
+            () -> {
+                records.add(System.currentTimeMillis());
+            },
+            // 设置执行延迟时间和重复执行频率
+            1, 2, TimeUnit.SECONDS);
+
+        // 等待定时器执行 3 次以后, 取消定时器
+        await().atMost(6, TimeUnit.SECONDS).untilAsserted(() -> then(records).hasSize(3));
+        future.cancel(false);
+
+        // 确认 3 此任务共耗时 5s (第一次间隔 1s, 后两次均间隔 2s, 共 5s)
+        then(System.currentTimeMillis() - startedMillis).isGreaterThanOrEqualTo(5000).isLessThan(5300);
+
+        // 确认每次任务执行间隔时间
+        then(records).map(n -> (n - startedMillis) / 1000).containsExactly(1L, 3L, 5L);
+    }
+
+    /**
+     * 按固定间隔时间重复执行任务
+     *
+     * <p>
+     * 通过 {@link Timer#schedule(TimerTask, long, long)} 方法可以按一个固定的频率重复执行某个任务,
+     * 后两个参数用于表示任务第一次执行的延迟时间和之后每次执行的间隔时间
+     * </p>
+     *
+     * <p>
+     * {@code schedule} 是以上一次任务执行时间来计算下一次任务执行的时间的, 即 {@code delay} 参数表示的是两次任务的间隔时间,
+     * 所以如果一次任务的执行时间超过了 {@code delay} 参数, 则后续的任务都会受到影响
+     * </p>
+     */
+    @Test
+    void schedule_shouldScheduleTaskWithFixedDelayByTimer() {
+        // 实例化 Timer 对象
+        var timer = new Timer();
+
+        // 记录任务执行时间的集合
+        var records = new ArrayList<Long>();
+
+        // 实例化任务对象
+        var task = new TimerTask() {
+            @Override
+            public void run() {
+                // 记录执行时间
+                records.add(System.currentTimeMillis());
+            }
+        };
+
+        // 记录程序执行的起始时间
+        var startedMillis = System.currentTimeMillis();
+
+        // 开始执行任务, 第一次 1s 后执行, 之后每 2s 重复执行一次
+        timer.schedule(task, 1000, 2000);
+
+        // 等待执行 3 次后, 取消任务执行
+        await().atMost(5500, TimeUnit.MILLISECONDS).untilAsserted(() -> then(records).hasSize(3));
+        timer.cancel();
+
+        // 确认每次任务的时间间隔
+        then(records).map(n -> (n - startedMillis) / 1000).containsExactly(1L, 3L, 5L);
     }
 }
