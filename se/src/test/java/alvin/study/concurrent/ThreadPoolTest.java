@@ -4,6 +4,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 import static org.awaitility.Awaitility.await;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Callable;
@@ -18,8 +19,6 @@ import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-
-import com.google.common.collect.Lists;
 
 /**
  * 线程池测试
@@ -80,7 +79,7 @@ import com.google.common.collect.Lists;
 @SuppressWarnings("java:S2925")
 class ThreadPoolTest {
     // 保存线程执行器对象的集合, 用于在测试结束后进行关闭
-    private WeakReference<ExecutorService> executorsHolder;
+    private WeakReference<ExecutorService> executorHolder;
 
     /**
      * 通过阻塞队列创建线程池
@@ -140,7 +139,7 @@ class ThreadPoolTest {
             });
 
         // 存储线程池对象以便适时关闭
-        executorsHolder = new WeakReference<>(executor);
+        executorHolder = new WeakReference<>(executor);
         return executor;
     }
 
@@ -172,7 +171,7 @@ class ThreadPoolTest {
             new SynchronousQueue<>());
 
         // 存储线程池对象以便适时关闭
-        executorsHolder = new WeakReference<>(executor);
+        executorHolder = new WeakReference<>(executor);
         return executor;
     }
 
@@ -182,7 +181,7 @@ class ThreadPoolTest {
     @AfterEach
     void afterEach() {
         // 获取线程池对象
-        var executor = executorsHolder == null ? null : executorsHolder.get();
+        var executor = executorHolder == null ? null : executorHolder.get();
         if (executor != null) {
             // 关闭线程池
             executor.shutdown();
@@ -248,7 +247,7 @@ class ThreadPoolTest {
     @Test
     void multiFutureTasks_shouldSubmitMultiTasks() {
         // 保存 FutureTask 的集合对象
-        var tasks = Lists.<Future<Integer>>newArrayList();
+        var tasks = new ArrayList<Future<Integer>>();
 
         // 任务计数器, 计算已完成任务数
         var resultCount = new AtomicInteger();

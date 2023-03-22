@@ -4,6 +4,9 @@ import static org.assertj.core.api.BDDAssertions.then;
 import static org.awaitility.Awaitility.await;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
@@ -35,7 +38,7 @@ import org.junit.jupiter.api.Test;
  * </p>
  */
 @SuppressWarnings("java:S2925")
-class ScheduleTest {
+class TimerScheduleTest {
     // 延时任务执行器对象
     private WeakReference<ExecutorService> executorHolder;
 
@@ -44,8 +47,10 @@ class ScheduleTest {
      */
     @AfterEach
     void afterEach() {
-        var executor = executorHolder.get();
+        // 获取线程池对象
+        var executor = executorHolder == null ? null : executorHolder.get();
         if (executor != null) {
+            // 关闭线程池
             executor.shutdown();
         }
     }
@@ -166,5 +171,83 @@ class ScheduleTest {
         then(future1.get().timestamp() - startedMillis).isGreaterThanOrEqualTo(2000).isLessThan(2100);
         then(future2.get().timestamp() - startedMillis).isGreaterThanOrEqualTo(1000).isLessThan(1100);
         then(future3.get().timestamp() - startedMillis).isGreaterThanOrEqualTo(2100).isLessThan(2200);
+    }
+
+    /**
+     * 按固定频率重复执行任务
+     *
+     * <p>
+     * 通过 {@link ScheduledExecutorService#scheduleAtFixedRate(Runnable, long, long, TimeUnit)}
+     * 方法可以按一个固定的频率重复执行某个任务, 其中:
+     * <ul>
+     * <li>
+     * 第二个参数为第一次执行任务的延迟时间
+     * </li>
+     * <li>
+     * 第三个参数为后续每次任务执行的间隔时间
+     * </li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * {@code scheduleAtFixedRate} 方法在每个规定的间隔时间后一定会执行任务, 无论前一个任务是否执行完毕
+     * </p>
+     */
+    @Test
+    void scheduleAtFixedRate_shouldRunTaskByFixRate() {
+        // 创建延时任务线程池
+        var executor = createScheduledExecutorService();
+
+        // 记录起始时间
+        var startedMillis = System.currentTimeMillis();
+
+        // 记录每次任务执行时间的集合
+        var records = new ArrayList<Long>();
+
+        // 启动一个固定频率的定时器任务
+        var future = executor.scheduleAtFixedRate(
+            // 记录执行时间
+            () -> {
+                records.add(System.currentTimeMillis());
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {}
+            },
+            // 设置执行延迟时间和重复执行频率
+            1, 2, TimeUnit.SECONDS);
+
+        // 等待定时器执行 3 次以后, 取消定时器
+        await().atMost(6, TimeUnit.SECONDS).untilAsserted(() -> then(records).hasSize(3));
+        future.cancel(false);
+
+        // 确认 3 此任务共耗时 5s (第一次间隔 1s, 后两次均间隔 2s, 共 5s)
+        then(System.currentTimeMillis() - startedMillis).isGreaterThanOrEqualTo(5000).isLessThan(5300);
+
+        // 确认每次任务执行间隔时间
+        then(records).map(n -> (n - startedMillis) / 1000).containsExactly(1L, 3L, 5L);
+
+        then(future.isCancelled()).isTrue();
+    }
+
+    @Test
+    void ss2() {
+        var timer = new Timer();
+
+        var records = new ArrayList<Long>();
+
+        var task = new TimerTask() {
+            @Override
+            public void run() {
+                records.add(System.currentTimeMillis());
+            }
+        };
+
+        var startedMillis = System.currentTimeMillis();
+
+        timer.schedule(task, 2000);
+
+        await().atMost(2100, TimeUnit.MILLISECONDS).until(() -> !records.isEmpty());
+
+        then(records).map(n -> (n - startedMillis) / 1000).containsExactly(2L);
     }
 }
