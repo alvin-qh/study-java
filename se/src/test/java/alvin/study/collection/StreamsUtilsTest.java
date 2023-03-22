@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 /**
  * 测试 {@link Streams} 工具类
  */
-class StreamsTest {
+class StreamsUtilsTest {
     /**
      * 测试 {@link Streams#stream(Object...)} 方法
      */
@@ -77,7 +77,7 @@ class StreamsTest {
         then(results).containsExactly("0", "1", "2", "3", "4");
 
         // 确认过滤 null 的结果
-        results = Streams.range(5, StreamsTest::filterOdd, true);
+        results = Streams.range(5, StreamsUtilsTest::filterOdd, true);
         then(results).containsExactly("1", "3");
     }
 
@@ -92,7 +92,7 @@ class StreamsTest {
         then(results).containsExactly("1", "2", "3", "4");
 
         // 确认过滤 null 的结果
-        results = Streams.range(1, 5, StreamsTest::filterOdd, true);
+        results = Streams.range(1, 5, StreamsUtilsTest::filterOdd, true);
         then(results).containsExactly("1", "3");
     }
 
@@ -110,7 +110,7 @@ class StreamsTest {
         then(results).containsExactly("1", "2", "3", "4");
 
         // 确认过滤 null 的结果
-        results = Streams.toList(coll.stream(), StreamsTest::filterOdd, true);
+        results = Streams.toList(coll.stream(), StreamsUtilsTest::filterOdd, true);
         then(results).containsExactly("1", "3");
     }
 
@@ -128,7 +128,7 @@ class StreamsTest {
         then(results).containsExactly("1", "2", "3", "4");
 
         // 确认过滤 null 的结果
-        results = Streams.toSet(coll.stream(), StreamsTest::filterOdd, true);
+        results = Streams.toSet(coll.stream(), StreamsUtilsTest::filterOdd, true);
         then(results).containsExactly("1", "3");
     }
 
@@ -155,7 +155,7 @@ class StreamsTest {
             entry("4", "4:4"));
 
         // 确认过滤 null 的结果
-        results = Streams.toMap(coll.stream(), StreamsTest::filterOdd, n -> String.format("%d:%d", n, n), true);
+        results = Streams.toMap(coll.stream(), StreamsUtilsTest::filterOdd, n -> String.format("%d:%d", n, n), true);
         then(results).containsExactly(entry("1", "1:1"), entry("3", "3:3"));
     }
 
@@ -177,7 +177,7 @@ class StreamsTest {
             entry("4", 4));
 
         // 确认过滤 null 的结果
-        results = Streams.toMap(coll.stream(), StreamsTest::filterOdd, true);
+        results = Streams.toMap(coll.stream(), StreamsUtilsTest::filterOdd, true);
         then(results).containsExactly(entry("1", 1), entry("3", 3));
     }
 
