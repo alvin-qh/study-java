@@ -3,6 +3,17 @@ package alvin.study.collection;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * 表示一对值的类型
+ *
+ * <p>
+ * 该类型包含两个值 {@code left} 和 {@code right}
+ * </p>
+ *
+ * <p>
+ * 该类型从 {@link Map.Entry} 类型继承, 所以也可以作为 {@link Map} 对象的键值对对象
+ * </p>
+ */
 public final class Pair<K, V> implements Map.Entry<K, V> {
     private final K left;
     private V right;
