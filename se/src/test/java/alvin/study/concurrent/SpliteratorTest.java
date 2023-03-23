@@ -5,6 +5,7 @@ import static org.awaitility.Awaitility.await;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Spliterator;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -12,6 +13,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -23,7 +26,12 @@ import org.junit.jupiter.api.Test;
  * 测试 {@link Spliterator} 对象, 即可分割迭代器对象
  *
  * <p>
- * Splittable Iterator, 是 Java 为并发应用程序设计的
+ * Splittable Iterator, 是 Java 为并发应用程序设计的特殊迭代器, 可以将一个集合 (或 {@link Stream}) 分割为多份, 在不同的线程中进行处理
+ * </p>
+ *
+ * <p>
+ * 通过 {@link java.util.Collection#spliterator()} 方法或 {@link Stream#spliterator()} 方法可以从一个集合或 {@link Stream}
+ * 对象中获取 {@link Spliterator} 对象
  * </p>
  */
 @SuppressWarnings("java:S2925")
@@ -81,7 +89,12 @@ class SpliteratorTest {
      * 获取 {@link Spliterator} 对象中待处理的元素个数
      *
      * <p>
-     * 通过 {@link Spliterator#estimateSize()} 方法可以获取对象中待处理的元素个数
+     * 通过 {@link Spliterator#estimateSize()} 方法可以获取对象中待处理的元素个数, 如果返回 {@link Long#MAX_VALUE} 表示该
+     * {@link Spliterator} 对象的剩余元素数量未知
+     * </p>
+     *
+     * <p>
+     * 要求 {@link Spliterator#characteristics()} 结果中包含 {@link Spliterator#SIZED} 特性, 否则返回 {@link Long#MAX_VALUE}
      * </p>
      *
      * <p>
@@ -100,9 +113,101 @@ class SpliteratorTest {
 
         // 将 Spliterator 对象分割为两部分
         var part2 = part1.trySplit();
+        // 确认可以获取元素个数
+        then(part2.hasCharacteristics(Spliterator.SIZED)).isTrue();
         // 确认每部分元素个数为分割前元素个数的 1/2
         then(part1.estimateSize()).isEqualTo(5);
         then(part2.estimateSize()).isEqualTo(5);
+    }
+
+    /**
+     * 获取 {@link Spliterator} 对象中元素剩余元素的确切值
+     *
+     * <p>
+     * 可通过 {@link Spliterator#getExactSizeIfKnown()} 方法获取 {@link Spliterator} 对象中剩余元素的个数
+     * </p>
+     *
+     * <p>
+     * 默认实现下, 如果 {@link Spliterator#characteristics()} 方法的结果中包含 {@link Spliterator#SIZED} 特性, 则返回
+     * 和 {@link Spliterator#estimateSize()} 方法一致的结果, 否则返回 {@code -1} 表示 {@link Spliterator} 中包含元素个数未知
+     * </p>
+     */
+    @Test
+    void getExactSizeIfKnown_shouldGetExactSizeIfKnown() {
+        // 通过 List 对象创建 Spliterator 对象
+        var sp = IntStream.range(0, 10).boxed().toList().spliterator();
+
+        // 确认 getExactSizeIfKnown 方法的结果和 estimateSize 一致
+        then(sp.getExactSizeIfKnown()).isEqualTo(sp.estimateSize()).isEqualTo(10);
+
+        // 处理掉一个元素
+        sp.tryAdvance(n -> {});
+        // 确认 getExactSizeIfKnown 方法的结果和 estimateSize 一致
+        then(sp.getExactSizeIfKnown()).isEqualTo(sp.estimateSize()).isEqualTo(9);
+    }
+
+    /**
+     * 访问 {@link Spliterator} 对象中的元素
+     *
+     * <p>
+     * 通过 {@link Spliterator#tryAdvance(java.util.function.Consumer) Spliterator.tryAdvance(Consumer)}
+     * 方法可以将 {@link Spliterator} 对象中的下一个元素作为参数传递给指定的 {@code Consumer} 对象, 以对该元素进行访问
+     * </p>
+     *
+     * <p>
+     * {@code tryAdvance} 一次处理一个元素, 并返回 {@code true} 表示本次有元素被处理, 或者 {@code false} 表示 {@link Spliterator}
+     * 对象中已经不包含剩余元素
+     * </p>
+     */
+    @Test
+    void tryAdvance_shouldProcessAnElement() {
+        // 通过 List 对象创建 Spliterator 对象
+        var sp = IntStream.range(0, 10).boxed().toList().spliterator();
+
+        // 保存结果的集合对象
+        var results = new ArrayList<Integer>();
+
+        // 获取剩余元素的数量
+        var size = sp.estimateSize();
+
+        // 逐个处理剩余元素, 直到无剩余元素
+        while (sp.tryAdvance(n -> results.add(n))) {
+            // 确认每完成一次处理后, 剩余元素数量减一
+            then(sp.estimateSize()).isEqualTo(--size);
+        }
+
+        // 确认元素处理结果
+        then(results).containsExactly(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+    }
+
+    /**
+     * 遍历 {@link Spliterator} 对象中的元素
+     *
+     * <p>
+     * 通过 {@link Spliterator#forEachRemaining(java.util.function.Consumer) Spliterator.forEachRemaining(Consumer)}
+     * 方法可以将 {@link Spliterator} 对象中的剩余元素逐一传递给指定的 {@code Consumer} 对象, 从而达到对剩余元素遍历的效果
+     * </p>
+     *
+     * <p>
+     * {@code forEachRemaining} 方法相当于重复执行 {@link Spliterator#tryAdvance(Consumer)} 方法直到返回 {@code false}
+     * </p>
+     */
+    @Test
+    void forEachRemaining_shouldTraversingAllRemainedElements() {
+        // 通过 List 对象创建 Spliterator 对象
+        var sp = IntStream.range(0, 10).boxed().toList().spliterator();
+
+        // 保存结果的集合对象
+        var results = new ArrayList<Integer>();
+
+        // 对剩余元素进行遍历
+        sp.forEachRemaining(n -> results.add(n));
+
+        // 确认遍历完成后无剩余元素
+        then(sp.estimateSize()).isEqualTo(0);
+
+        // 确认元素遍历结果
+        then(results).containsExactly(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
 
     /**
@@ -115,19 +220,32 @@ class SpliteratorTest {
      */
     @Test
     void trySplit_shouldSplitCollectionIntoSlice() throws InterruptedException {
-        //
+        // 通过 List 对象创建 Spliterator 对象
         var part1 = IntStream.range(0, 10).boxed().toList().spliterator();
+        // 确认未分割的 Spliterator 对象剩余元素数为集合全部元素
         then(part1.estimateSize()).isEqualTo(10);
 
+        // 将 Spliterator 对象分割为两部分
         var part2 = part1.trySplit();
+        // 确认分割后各 Spliterator 对象包含原 1/2 个元素
         then(part1.estimateSize()).isEqualTo(5);
         then(part2.estimateSize()).isEqualTo(5);
 
+        // 确认分割后的两部分合并在一起为原本集合的全部元素
         then(toList(part1, part2)).containsExactlyInAnyOrder(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
 
     /**
      * 将多个 {@link Spliterator} 对象合并到一个 {@link List} 集合对象中
+     *
+     * <p>
+     * 通过 {@link StreamSupport#stream(Spliterator, boolean)} 方法可以将一个 {@link Spliterator} 对象转为
+     * {@link Stream} 类型对象, 其中包含了 {@link Spliterator} 对象中剩余的元素
+     * </p>
+     *
+     * <p>
+     * {@link StreamSupport#stream(Spliterator, boolean)} 方法和 {@link Stream#spliterator()} 方法相互为逆操作
+     * </p>
      *
      * @param <T>          集合元素类型
      * @param spliterators 多个 {@link Spliterator} 对象
@@ -230,5 +348,28 @@ class SpliteratorTest {
             701, 709, 719, 727, 733, 739, 743, 751, 757, 761, 769, 773, 787, 797,
             809, 811, 821, 823, 827, 829, 839, 853, 857, 859, 863, 877, 881, 883, 887,
             907, 911, 919, 929, 937, 941, 947, 953, 967, 971, 977, 983, 991, 997);
+    }
+
+    /**
+     * 针对于简单类型的 {@link Spliterator}
+     *
+     * <p>
+     * 类似于 {@code Iterator}, 通过 {@link IntStream}, {@link java.util.stream.LongStream LongStream},
+     * {@link java.util.stream.DoubleStream DoubleStream} 等简单类型流对象的 {@code spliterator()} 方法,
+     * 也可以产生对应的 {@link Spliterator.OfInt}, {@link Spliterator.OfLong} 和 {@link Spliterator.OfDouble} 类型对象,
+     * 可以理解为是针对简单类型的 {@link Spliterator} 对象
+     * </p>
+     *
+     * <p>
+     * 使用这些针对于简单类型的 {@link Spliterator}, 目的是减少在运算过程中频繁的装箱和拆箱操作, 对于大量的简单类型数据,
+     * 可以用类似方法进行处理
+     * </p>
+     */
+    @Test
+    void primitive_shouldCreatePrimitiveSpliterator() {
+        var sp = Arrays.stream(new int[] { 1, 2, 3 }).spliterator();
+
+        sp.tryAdvance((IntConsumer) n -> then(n).isEqualTo(1));
+        sp.forEachRemaining((IntConsumer) n -> then(n).isIn(2, 3));
     }
 }
