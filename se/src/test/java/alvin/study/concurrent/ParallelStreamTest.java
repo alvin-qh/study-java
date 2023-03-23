@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
  * </p>
  */
 @SuppressWarnings("java:S2925")
-class ParalleStreamTest {
+class ParallelStreamTest {
     /**
      * 通过并发 {@link java.util.stream.Stream Stream} 处理集合数据
      */
