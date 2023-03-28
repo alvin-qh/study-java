@@ -2,12 +2,16 @@ package alvin.study.concurrent;
 
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Spliterator;
+import java.util.Spliterator.OfDouble;
+import java.util.Spliterator.OfInt;
+import java.util.Spliterator.OfLong;
 import java.util.Spliterators;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutionException;
@@ -15,12 +19,15 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.function.DoubleConsumer;
 import java.util.function.IntConsumer;
+import java.util.function.LongConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -33,6 +40,23 @@ import org.junit.jupiter.api.Test;
  * <p>
  * 通过 {@link java.util.Collection#spliterator()} 方法或 {@link Stream#spliterator()} 方法可以从一个集合或 {@link Stream}
  * 对象中获取 {@link Spliterator} 对象
+ * </p>
+ *
+ * <p>
+ * 和 {@link java.util.Iterator Iterator} 类似, {@link Spliterator} 对象也支持"快速失败"特性, 即在使用
+ * {@link Spliterator#tryAdvance(Consumer)} 方法或 {@link Spliterator#forEachRemaining(Consumer)} 方法时,
+ * 如果同时修改了集合本身, 则会抛出 {@link java.util.ConcurrentModificationException ConcurrentModificationException} 异常.
+ * 本身支持并发访问的集合除外
+ * </p>
+ *
+ * <p>
+ * 所以 {@link Spliterator} 对象不是线程安全的, 无法在多个线程之间使用, 但通过 {@link Spliterator#trySplit()} 方法分隔为多个
+ * {@link Spliterator} 对象后, 每个线程可以独立访问一个 {@link Spliterator} 对象
+ * </p>
+ *
+ * <p>
+ * 另外, 大多数情况下, {@link Spliterator} 是延迟绑定 (<i>late-binding</i>), 即在通过 {@link Spliterator} 对象访问,
+ * 遍历或拆分集合元素时, 才会真实的绑定数据源 (集合) 对象. 除非 {@link Spliterator} 对象是通过 {@code Iterator} 对象产生的
  * </p>
  */
 @SuppressWarnings("java:S2925")
@@ -62,7 +86,7 @@ class SpliteratorTest {
     @Test
     void characteristics_shouldGetCharacteristicsOfSpliterator() {
         // 测试基于 List 的 Spliterator 对象的特性
-        var listSp = IntStream.range(0, 10).boxed().spliterator();
+        var listSp = IntStream.range(0, 10).boxed().toList().spliterator();
         then(listSp.hasCharacteristics(Spliterator.SIZED)).isTrue();
         then(listSp.hasCharacteristics(Spliterator.ORDERED)).isTrue();
         then(listSp.hasCharacteristics(Spliterator.SUBSIZED)).isTrue();
@@ -256,7 +280,7 @@ class SpliteratorTest {
     private static <T> List<T> toList(Spliterator<T>... spliterators) {
         var result = new ArrayList<T>();
         for (var sp : spliterators) {
-            StreamSupport.stream(sp, false).forEach(result::add);
+            sp.forEachRemaining(result::add);
         }
         return result;
     }
@@ -358,24 +382,20 @@ class SpliteratorTest {
      * 类似于 {@code Iterator}, 自 JDK 1.8 之后, 也提供了针对于简单类型的 {@link Spliterator} 类型对象
      * <ul>
      * <li>
-     * {@link java.util.Spliterator.OfInt OfInt}, 通过 {@link java.util.Spliterator.OfInt#tryAdvance(IntConsumer)
-     * OfInt.tryAdvance(IntConsumer)} 方法对下一个 {@code int} 值进行处理, 通过
-     * {@link java.util.Spliterator.OfInt#forEachRemaining(IntConsumer) OfInt.forEachRemaining(IntConsumer)}
-     * 方法对 {@link Spliterator} 中的 {@code int} 值进行遍历
+     * {@link OfInt} 类型, 通过 {@link OfInt#tryAdvance(IntConsumer)} 方法对 {@link Spliterator} 中的下一个 {@code int}
+     * 值进行处理; 通过 {@link OfInt#forEachRemaining(IntConsumer)} 方法对 {@link Spliterator} 中的剩余 {@code int} 值进行遍历
      * </li>
      * <li>
-     * {@link java.util.Spliterator.OfLong OfLong}, 通过
-     * {@link java.util.Spliterator.OfLong#tryAdvance(java.util.function.LongConsumer) OfLong.tryAdvance(LongConsumer)}
-     * 方法对下一个 {@code long} 值进行处理, 通过
-     * {@link java.util.Spliterator.OfLong#forEachRemaining(java.util.function.LongConsumer)
-     * OfLong.forEachRemaining(LongConsumer)} 方法对 {@link Spliterator} 中的 {@code long} 值进行遍历
+     * {@link OfLong} 类型, 通过 {@link OfLong#tryAdvance(java.util.function.LongConsumer) OfLong.tryAdvance(LongConsumer)}
+     * 方法对 {@link Spliterator} 中的下一个 {@code long} 值进行处理, 通过
+     * {@link OfLong#forEachRemaining(java.util.function.LongConsumer) OfLong.forEachRemaining(LongConsumer)} 方法对
+     * {@link Spliterator} 中的剩余 {@code long} 值进行遍历
      * </li>
      * <li>
-     * {@link java.util.Spliterator.OfDouble OfDouble}, 通过
-     * {@link java.util.Spliterator.OfDouble#tryAdvance(java.util.function.DoubleConsumer)
-     * OfDouble.tryAdvance(DoubleConsumer)} 方法对下一个 {@code double} 值进行处理, 通过
-     * {@link java.util.Spliterator.OfDouble#forEachRemaining(java.util.function.DoubleConsumer)
-     * OfDouble.forEachRemaining(DoubleConsumer)} 方法对 {@link Spliterator} 中的 {@code double} 值进行遍历
+     * {@link OfDouble} 类型, 通过 {@link OfDouble#tryAdvance(java.util.function.DoubleConsumer)
+     * OfDouble.tryAdvance(DoubleConsumer)} 方法对 {@link Spliterator} 中的下一个 {@code double} 值进行处理, 通过
+     * {@link OfDouble#forEachRemaining(java.util.function.DoubleConsumer) OfDouble.forEachRemaining(DoubleConsumer)}
+     * 方法对 {@link Spliterator} 中的剩余 {@code double} 值进行遍历
      * </li>
      * </ul>
      * 使用这些针对于简单类型的 {@link Spliterator}, 目的是减少在运算过程中频繁的装箱和拆箱操作, 对于大量的简单类型数据,
@@ -390,32 +410,216 @@ class SpliteratorTest {
         sp.forEachRemaining((IntConsumer) n -> then(n).isIn(2, 3));
     }
 
-    @Test
-    void ss() {
-        {
-            var sp = Spliterators.<Integer>emptySpliterator();
-            then(sp.estimateSize()).isEqualTo(0);
+    /**
+     * 测试 {@link Spliterators} 工具类
+     *
+     * <p>
+     * {@link Spliterators} 工具类提供了一系列方法, 可以在一些特殊场合更为方便的产生 {@link Spliterator} 对象
+     * </p>
+     */
+    @Nested
+    @SuppressWarnings("java:S5961")
+    class SpliteratorsTest {
+        /**
+         * 产生不包含任何元素的空 {@link Spliterator} 对象
+         *
+         * <p>
+         * 通过 {@link Spliterators#emptySpliterator()} 方法可以创建一个空 {@link Spliterator} 对象, 即:
+         * <ul>
+         * <li>
+         * {@link Spliterator#estimateSize()} 和 {@link Spliterator#getExactSizeIfKnown()} 方法返回 {@code 0}
+         * </li>
+         * <li>
+         * {@link Spliterator#tryAdvance(Consumer)} 和 {@link Spliterator#forEachRemaining(Consumer)} 方法不会执行回调
+         * </li>
+         * <li>
+         * {@link Spliterator#trySplit()} 方法返回 {@code null}, 表示无法被再次分割
+         * </li>
+         * <li>
+         * 空 {@link Spliterator} 对象仅具备 {@link Spliterator#SIZED} 和 {@link Spliterator#SUBSIZED} 特性
+         * </li>
+         * </ul>
+         * </p>
+         *
+         * <p>
+         * 另外, 通过 {@link Spliterators#emptyIntSpliterator()}, {@link Spliterators#emptyLongSpliterator()} 和
+         * {@link Spliterators#emptyDoubleSpliterator()} 方法可以获取到简单类型的"空" {@link Spliterator} 对象
+         * </p>
+         */
+        @Test
+        void emptySpliterator_shouldCreateSpliterator() {
+            // 测试泛型的空 Spliterator 对象
+            {
+                var sp = Spliterators.<String>emptySpliterator();
+
+                then(sp.estimateSize()).isEqualTo(0);
+                then(sp.getExactSizeIfKnown()).isEqualTo(0);
+
+                then(sp.tryAdvance(n -> fail())).isFalse();
+                sp.forEachRemaining(n -> fail());
+
+                then(sp.trySplit()).isNull();
+                then(sp.characteristics()).isEqualTo(Spliterator.SIZED | Spliterator.SUBSIZED);
+            }
+
+            // 测试 int 类型的空 Spliterator 对象
+            {
+                var sp = Spliterators.emptyIntSpliterator();
+
+                then(sp.estimateSize()).isEqualTo(0);
+
+                then(sp.estimateSize()).isEqualTo(0);
+                then(sp.getExactSizeIfKnown()).isEqualTo(0);
+
+                then(sp.tryAdvance((IntConsumer) n -> fail())).isFalse();
+                sp.forEachRemaining((IntConsumer) n -> fail());
+
+                then(sp.trySplit()).isNull();
+                then(sp.characteristics()).isEqualTo(Spliterator.SIZED | Spliterator.SUBSIZED);
+            }
+
+            // 测试 long 类型的空 Spliterator 对象
+            {
+                var sp = Spliterators.emptyLongSpliterator();
+
+                then(sp.estimateSize()).isEqualTo(0);
+
+                then(sp.estimateSize()).isEqualTo(0);
+                then(sp.getExactSizeIfKnown()).isEqualTo(0);
+
+                then(sp.tryAdvance((LongConsumer) n -> fail())).isFalse();
+                sp.forEachRemaining((LongConsumer) n -> fail());
+
+                then(sp.trySplit()).isNull();
+                then(sp.characteristics()).isEqualTo(Spliterator.SIZED | Spliterator.SUBSIZED);
+            }
+
+            // 测试 double 类型的空 Spliterator 对象
+            {
+                var sp = Spliterators.emptyDoubleSpliterator();
+
+                then(sp.estimateSize()).isEqualTo(0);
+
+                then(sp.estimateSize()).isEqualTo(0);
+                then(sp.getExactSizeIfKnown()).isEqualTo(0);
+
+                then(sp.tryAdvance((DoubleConsumer) n -> fail())).isFalse();
+                sp.forEachRemaining((DoubleConsumer) n -> fail());
+
+                then(sp.trySplit()).isNull();
+                then(sp.characteristics()).isEqualTo(Spliterator.SIZED | Spliterator.SUBSIZED);
+            }
         }
 
-        {
-            var sp = Spliterators.spliterator(new String[] { "A", "B", "C", "D", "E" }, Spliterator.SORTED);
-            then(sp.characteristics()).isEqualTo(Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.SORTED);
+        /**
+         * 将数组包装为 {@link Spliterator} 对象
+         *
+         * <p>
+         * 通过 {@link Spliterators#spliterator(Object[], int)} 方法可以创建一个基于指定数组的 {@link Spliterator} 对象,
+         * 且其具备 {@link Spliterator#SIZED} 和 {@link Spliterator#SUBSIZED} 特性
+         * </p>
+         *
+         * <p>
+         * 另外, {@code spliterator} 方法还具有一组重载, 用于针对简单类型数组, 包括: {@code int[]}, {@code long[]} 以及
+         * {@code double[]} 类型
+         * </p>
+         */
+        @Test
+        void spliterator_shouldCreateSpliteratorFromArray() {
+            // 基于引用类型数组创建 Spliterator 对象
+            {
+                // 基于数组创建 Spliterator 对象, 并附加 SORTED 属性
+                var sp = Spliterators.spliterator(new String[] { "A", "B", "C", "D", "E" }, Spliterator.SORTED);
+
+                // 确认产生的 Spliterator 对象具备除附加的 SORTED 属性外, 还包括 SIZED 和 SUBSIZED 属性
+                then(sp.characteristics()).isEqualTo(Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.SORTED);
+                then(sp.estimateSize()).isEqualTo(5);
+            }
+
+            // 基于 int[] 类型数组创建 Spliterator 对象
+            {
+                // 基于数组创建 Spliterator 对象, 并附加 SORTED 属性
+                var sp = Spliterators.spliterator(new int[] { 1, 2, 3, 4, 5 }, Spliterator.SORTED);
+
+                // 确认产生的 Spliterator 对象具备除附加的 SORTED 属性外, 还包括 SIZED 和 SUBSIZED 属性
+                then(sp.characteristics()).isEqualTo(Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.SORTED);
+                // 确认产生的 Spliterator 对象为 Spliterator.OfInt 类型
+                then(sp).isInstanceOf(OfInt.class);
+                then(sp.estimateSize()).isEqualTo(5);
+            }
+
+            // 基于 long[] 类型数组创建 Spliterator 对象
+            {
+                // 基于数组创建 Spliterator 对象, 并附加 SORTED 属性
+                var sp = Spliterators.spliterator(new long[] { 1, 2, 3, 4, 5 }, Spliterator.SORTED);
+
+                // 确认产生的 Spliterator 对象具备除附加的 SORTED 属性外, 还包括 SIZED 和 SUBSIZED 属性
+                then(sp.characteristics()).isEqualTo(Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.SORTED);
+                // 确认产生的 Spliterator 对象为 Spliterator.OfLong 类型
+                then(sp).isInstanceOf(OfLong.class);
+                then(sp.estimateSize()).isEqualTo(5);
+            }
+
+            // 基于 double[] 类型数组创建 Spliterator 对象
+            {
+                // 基于数组创建 Spliterator 对象, 并附加 SORTED 属性
+                var sp = Spliterators.spliterator(new double[] { 1.1, 1.2, 1.3, 1.4, 1.5 }, Spliterator.SORTED);
+
+                // 确认产生的 Spliterator 对象具备除附加的 SORTED 属性外, 还包括 SIZED 和 SUBSIZED 属性
+                then(sp.characteristics()).isEqualTo(Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.SORTED);
+                // 确认产生的 Spliterator 对象为 Spliterator.OfDouble 类型
+                then(sp).isInstanceOf(OfDouble.class);
+                then(sp.estimateSize()).isEqualTo(5);
+            }
         }
 
-        {
-            var iter = IntStream.range(0, 100).boxed().iterator();
+        /**
+         * 将 {@link java.util.Iterator Iterator} 对象转为 {@link Spliterator} 对象
+         *
+         * <p>
+         * 通过 {@link Spliterators#spliteratorUnknownSize(java.util.Iterator, int)} 方法可以将一个
+         * {@link java.util.Iterator Iterator} 对象转为 {@link Spliterator} 而无需知道确切的元素个数
+         * </p>
+         *
+         * <p>
+         * 将 {@code Iterator} 对象转为 {@link Spliterator} 对象时, 不会使用"延迟绑定"方式 (<i>late-binding</i>),
+         * 因为其已经直接绑定到了 {@code Iterator} 对象本身, 所以对 {@code Iterator} 对象的操作也会影响到 {@link Spliterator} 对象
+         * </p>
+         *
+         * <p>
+         * 将 {@code Iterator} 对象转为的 {@link Spliterator} 对象支持有限的分割能力, 即在使用 {@link Spliterator#trySplit()}
+         * 方法时, 分割的结果可能会不符合预期
+         * </p>
+         */
+        @Test
+        void spliteratorUnknownSize_shouldConvertIteratorToSpliterator() {
+            // 产生一个迭代器对象
+            var iter = IntStream.range(0, 10).boxed().iterator();
 
+            // 将迭代器转为 Spliterator 对象, 并附加 SORTED 特性
             var sp = Spliterators.spliteratorUnknownSize(iter, Spliterator.SORTED);
+            // 确认得到的 Spliterator 对象具备指定的特性
             then(sp.characteristics()).isEqualTo(Spliterator.SORTED);
+            // 该 Spliterator 对象无确定长度, 即长度未知
             then(sp.getExactSizeIfKnown()).isEqualTo(-1);
+            // 确认 Spliterator 对象包含指定的元素
+            then(toList(sp)).containsExactly(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
-            var sp1 = sp;
-            var sp2 = sp.trySplit();
+            // 重新产生一个迭代器对象
+            iter = IntStream.range(0, 10).boxed().iterator();
+            // 将迭代器对象转为 Spliterator 对象
+            var sp1 = Spliterators.spliteratorUnknownSize(iter, 0);
+            // 对得到的 Spliterator 对象进行分割
+            var sp2 = sp1.trySplit();
 
+            // 确认分割后的第一部分无内容
             then(sp1.getExactSizeIfKnown()).isEqualTo(-1);
-            sp1.forEachRemaining(n -> then(n).isEqualTo(0));
+            then(toList(sp1)).isEmpty();
 
-            then(sp2.getExactSizeIfKnown()).isEqualTo(100);
+            // 确认分割后的另一部分具备确定长度, 可继续分隔
+            then(sp2.getExactSizeIfKnown()).isEqualTo(10);
+            then(sp2.characteristics()).isEqualTo(Spliterator.SIZED | Spliterator.SUBSIZED);
+            then(toList(sp2)).containsExactly(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
         }
     }
 }

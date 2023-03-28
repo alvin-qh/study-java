@@ -16,6 +16,15 @@ import org.junit.jupiter.api.Test;
  * 任何一个可迭代集合 {@link Iterable} 对象都具备 {@link Iterable#iterator()} 方法, 返回一个 {@link java.util.Iterator Iterator}
  * 类型对象, 通过该对象可对集合进行逐元素迭代
  * </p>
+ *
+ * <p>
+ * 迭代器具备一种称为"快速失败"的特性, 即迭代器在迭代过程中, 一旦被迭代的集合被修改, 则迭代器立即抛出
+ * {@link java.util.ConcurrentModificationException ConcurrentModificationException} 异常, 除非集合对象本身支持"并发访问",
+ * 包括: {@link java.util.concurrent.CopyOnWriteArrayList CopyOnWriteArrayList},
+ * {@link java.util.concurrent.ConcurrentHashMap ConcurrentHashMap}, {@link java.util.concurrent.LinkedBlockingQueue
+ * LinkedBlockingQueue}, {@link java.util.concurrent.PriorityBlockingQueue PriorityBlockingQueue},
+ * {@link java.util.concurrent.ConcurrentLinkedQueue ConcurrentLinkedQueue} 等
+ * </p>
  */
 class IteratorTest {
     /**
