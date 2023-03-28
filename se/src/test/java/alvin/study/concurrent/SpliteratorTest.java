@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -276,7 +277,7 @@ class SpliteratorTest {
             processorCount,
             0,
             TimeUnit.NANOSECONDS,
-            new ArrayBlockingQueue<>(1000));
+            new ArrayBlockingQueue<>(260));
 
         // 设置要计算的数据
         var data = IntStream.range(3, 1000).boxed().toList();
@@ -354,13 +355,29 @@ class SpliteratorTest {
      * 针对于简单类型的 {@link Spliterator}
      *
      * <p>
-     * 类似于 {@code Iterator}, 通过 {@link IntStream}, {@link java.util.stream.LongStream LongStream},
-     * {@link java.util.stream.DoubleStream DoubleStream} 等简单类型流对象的 {@code spliterator()} 方法,
-     * 也可以产生对应的 {@link Spliterator.OfInt}, {@link Spliterator.OfLong} 和 {@link Spliterator.OfDouble} 类型对象,
-     * 可以理解为是针对简单类型的 {@link Spliterator} 对象
-     * </p>
-     *
-     * <p>
+     * 类似于 {@code Iterator}, 自 JDK 1.8 之后, 也提供了针对于简单类型的 {@link Spliterator} 类型对象
+     * <ul>
+     * <li>
+     * {@link java.util.Spliterator.OfInt OfInt}, 通过 {@link java.util.Spliterator.OfInt#tryAdvance(IntConsumer)
+     * OfInt.tryAdvance(IntConsumer)} 方法对下一个 {@code int} 值进行处理, 通过
+     * {@link java.util.Spliterator.OfInt#forEachRemaining(IntConsumer) OfInt.forEachRemaining(IntConsumer)}
+     * 方法对 {@link Spliterator} 中的 {@code int} 值进行遍历
+     * </li>
+     * <li>
+     * {@link java.util.Spliterator.OfLong OfLong}, 通过
+     * {@link java.util.Spliterator.OfLong#tryAdvance(java.util.function.LongConsumer) OfLong.tryAdvance(LongConsumer)}
+     * 方法对下一个 {@code long} 值进行处理, 通过
+     * {@link java.util.Spliterator.OfLong#forEachRemaining(java.util.function.LongConsumer)
+     * OfLong.forEachRemaining(LongConsumer)} 方法对 {@link Spliterator} 中的 {@code long} 值进行遍历
+     * </li>
+     * <li>
+     * {@link java.util.Spliterator.OfDouble OfDouble}, 通过
+     * {@link java.util.Spliterator.OfDouble#tryAdvance(java.util.function.DoubleConsumer)
+     * OfDouble.tryAdvance(DoubleConsumer)} 方法对下一个 {@code double} 值进行处理, 通过
+     * {@link java.util.Spliterator.OfDouble#forEachRemaining(java.util.function.DoubleConsumer)
+     * OfDouble.forEachRemaining(DoubleConsumer)} 方法对 {@link Spliterator} 中的 {@code double} 值进行遍历
+     * </li>
+     * </ul>
      * 使用这些针对于简单类型的 {@link Spliterator}, 目的是减少在运算过程中频繁的装箱和拆箱操作, 对于大量的简单类型数据,
      * 可以用类似方法进行处理
      * </p>
@@ -371,5 +388,34 @@ class SpliteratorTest {
 
         sp.tryAdvance((IntConsumer) n -> then(n).isEqualTo(1));
         sp.forEachRemaining((IntConsumer) n -> then(n).isIn(2, 3));
+    }
+
+    @Test
+    void ss() {
+        {
+            var sp = Spliterators.<Integer>emptySpliterator();
+            then(sp.estimateSize()).isEqualTo(0);
+        }
+
+        {
+            var sp = Spliterators.spliterator(new String[] { "A", "B", "C", "D", "E" }, Spliterator.SORTED);
+            then(sp.characteristics()).isEqualTo(Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.SORTED);
+        }
+
+        {
+            var iter = IntStream.range(0, 100).boxed().iterator();
+
+            var sp = Spliterators.spliteratorUnknownSize(iter, Spliterator.SORTED);
+            then(sp.characteristics()).isEqualTo(Spliterator.SORTED);
+            then(sp.getExactSizeIfKnown()).isEqualTo(-1);
+
+            var sp1 = sp;
+            var sp2 = sp.trySplit();
+
+            then(sp1.getExactSizeIfKnown()).isEqualTo(-1);
+            sp1.forEachRemaining(n -> then(n).isEqualTo(0));
+
+            then(sp2.getExactSizeIfKnown()).isEqualTo(100);
+        }
     }
 }

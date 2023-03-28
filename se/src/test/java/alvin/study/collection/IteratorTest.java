@@ -43,6 +43,8 @@ class IteratorTest {
      * OfLong.forEachRemaining(DoubleConsumer)} 方法对集合中的 {@code double} 值进行遍历
      * </li>
      * </ul>
+     * 使用这些针对于简单类型的 {@link java.util.Iterator Iterator}, 目的是减少在运算过程中频繁的装箱和拆箱操作, 对于大量的简单类型数据,
+     * 可以用类似方法进行处理
      * </p>
      */
     @Test
