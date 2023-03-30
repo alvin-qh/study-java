@@ -571,6 +571,16 @@ class SpliteratorTest {
                 then(sp).isInstanceOf(OfDouble.class);
                 then(sp.estimateSize()).isEqualTo(5);
             }
+
+            // 基于 List<T> 类型数组创建 Spliterator 对象
+            {
+                // 基于数组创建 Spliterator 对象, 并不附加属性
+                var sp = Spliterators.spliterator(List.of("A", "B", "C", "D", "E"), 0);
+
+                // 确认产生的 Spliterator 对象具备 SIZED 和 SUBSIZED 属性
+                then(sp.characteristics()).isEqualTo(Spliterator.SIZED | Spliterator.SUBSIZED);
+                then(sp.estimateSize()).isEqualTo(5);
+            }
         }
 
         /**

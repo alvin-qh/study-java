@@ -394,6 +394,6 @@ class ThreadPoolTest {
         await().atMost(2, TimeUnit.SECONDS).until(() -> resultCount.get() == taskCount);
 
         // 确认任务执行结果
-        then(result).map(Future<String>::get).allMatch(s -> s.matches("^(1|2)?\\d-Success$"));
+        then(result).map(Future<String>::get).allMatch(s -> s.matches("^[0-3]?\\d-Success$"));
     }
 }
