@@ -4,6 +4,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 import static org.awaitility.Awaitility.await;
 
 import java.util.List;
+import java.util.concurrent.CountedCompleter;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinPool.ForkJoinWorkerThreadFactory;
 import java.util.concurrent.ForkJoinWorkerThread;
@@ -163,7 +164,7 @@ class ForkJoinTest {
      * </p>
      */
     @Test
-    void forkJoinPool_shouldCreateForkJoinThreadPoolAndSubmitTasks() throws Exception {
+    void forkAndJoin_shouldCreateForkJoinThreadPoolAndSubmitTasks() throws Exception {
         // 经过计算的数字总和, 最终应该为 10000, 即所有要计算的数字
         var computedNums = new AtomicInteger();
 
@@ -207,7 +208,7 @@ class ForkJoinTest {
                     // 记录已计算的数值数量
                     computedNums.addAndGet(size);
 
-                    // 计算 start 和 end 区间内
+                    // 计算 start 和 end 区间内的偶数值
                     return IntStream.range(start, end + 1)
                             .filter(value -> value % 2 == 0)
                             .boxed()
@@ -248,19 +249,181 @@ class ForkJoinTest {
             60,
             TimeUnit.SECONDS);
 
+        try {
+            // 提交计算任务, 计算 1~10000 之间的所有偶数
+            var task = pool.submit(new EvenTask(1, 10000));
+
+            // 等待所有数值均已被计算过
+            await().atMost(2, TimeUnit.SECONDS).untilAsserted(() -> then(computedNums.get()).isEqualTo(10000));
+
+            // 确定任务已结束
+            then(task.isDone()).isTrue();
+
+            // 确认计算结果为 5000 个数值, 且均为偶数
+            then(task.get()).hasSize(5000).allMatch(n -> n % 2 == 0);
+
+            // 确认共产生了 7711 个任务
+            then(forkCount.get()).isEqualTo(7711);
+        } finally {
+            pool.shutdown();
+        }
+    }
+
+    /**
+     * 通过 {@link CountedCompleter} 类型避免 Join 动作
+     *
+     * <p>
+     * {@link CountedCompleter} 类型也是 {@link java.util.concurrent.ForkJoinTask ForkJoinTask} 类型的子类型, 同样用于作为
+     * {@link ForkJoinPool} 线程池的任务对象
+     * </p>
+     *
+     * <p>
+     * 和 {@link RecursiveTask} 以及 {@link java.util.concurrent.RecursiveAction RecursiveAction} 类型不同,
+     * {@link CountedCompleter} 取消了 Join 操作, 从而避免了父任务需要等待子任务结束的损耗, 从而能够让线程更有效地投入到计算工作中,
+     * {@link CountedCompleter} 避免 Join 操作的方法是使用计数器, 在 Fork 前增加计数器, 在子任务完成计算后减少计数器,
+     * 从而达到标记一个任务在执行中或者完成的目标
+     * <ul>
+     * <li>
+     * {@link CountedCompleter} 对象内部保持一个"父任务" {@link CountedCompleter} 的引用, 所以第一个 {@link CountedCompleter}
+     * 任务对象的"父任务"引用为 {@code null}, 称为 root 任务, 其 Fork 出的子任务以及子任务 Fork 出的任务均存储其"父任务"的引用,
+     * 从而组成了一个<b>树形结构</b>, 树根为第一个任务, 子节点为每个"父任务" Fork 出的子任务
+     * </li>
+     * <li>
+     * 通过 {@link CountedCompleter#addToPendingCount(int)} 方法, 在 Fork 子任务前增加计数器, Fork 几个子任务则增加对应的数值
+     * </li>
+     * <li>
+     * 通过 {@link CountedCompleter#tryComplete()} 方法用于尝试结束根任务, 其做法是: 沿着当前任务对象向根任务位置进行遍历,
+     * 如果遍历过程中有任务的计数器为 0 (表示其子任务已完成), 则调用 {@link CountedCompleter#onCompletion(CountedCompleter)}
+     * 进行回调, 表示某个任务完成; 否则将该任务的计数器减 1; 如果当前任务为根任务 (无父任务) 且计数器为 0, 则令根任务结束, 表示全部任务结束.
+     * 简言之, 就是从当前任务向根任务遍历, 遇到计数器为 0 的 (已完成), 则调用 {@code onCompletion} 方法, 遇到第一个计数器不为 0 的,
+     * 对计数器减 1 并结束遍历, 遇到根任务且计数器为 0, 则所有任务结束
+     * </li>
+     * <li>
+     * {@link CountedCompleter#propagateCompletion()} 方法相当于不会调用
+     * {@link CountedCompleter#onCompletion(CountedCompleter)} 回调方法的 {@link CountedCompleter#tryComplete()} 方法
+     * </li>
+     * <li>
+     * 通过 {@link CountedCompleter#quietlyComplete()} 方法将结束当前任务, 且不会触发
+     * {@link CountedCompleter#onCompletion(CountedCompleter)} 回调方法
+     * </li>
+     * <li>
+     * 通过 {@link CountedCompleter#quietlyCompleteRoot()} 方法相当于在"根任务"上执行 {@link CountedCompleter#quietlyComplete()}
+     * 方法
+     * </li>
+     * <li>
+     * 通过 {@link CountedCompleter#helpComplete(int)} 方法, 如果当前任务未完成 ,尝试去执行,并处理至多给定数量的其他未处理任务,
+     * 且对这些未处理任务来说, 当前任务处于它们的完成路径上 (即这些任务是 completer 链的前置任务), 实现特殊的工作窃取
+     * </li>
+     * <li>
+     * 通过 {@link CountedCompleter#complete(Object)} 方法设置任务结果并结束当前任务, 且如果当前任务有父任务, 则调用其
+     * {@code tryComplete} 方法
+     * </li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * 整个过程, 就是通过在 Fork 任务后, 增加父任务的计数器, 在任务完成时, 减少父任务计数器, 并由此标记根任务是否结束,
+     * 从而避免了 Fork 子任务后需要 Join 等待子任务结束, 从而避免等待而耗费线程资源
+     * </p>
+     *
+     * <p>
+     * 本例中重新完成 {@link #forkAndJoin_shouldCreateForkJoinThreadPoolAndSubmitTasks()} 中的测试, 求 1~10000 之间的所有偶数,
+     * 且通过 {@link CountedCompleter} 来避免 Fork 后的 Join 行为
+     * </p>
+     */
+    @Test
+    void countedCompleter_shouldMarkTaskAsCompletedWithCounter() throws Exception {
+        /**
+         * 计算任务类, 从 {@link CountedCompleter} 类继承, 任务结果为 {@code List<Integer>} 类型值
+         */
+        class EvenTask extends CountedCompleter<List<Integer>> {
+            // 要计算数值的起始值
+            private final int start;
+
+            // 要计算数值的结束值, 本例中要计算 start ~ end 区间内所有数值中包含的偶数结果
+            private final int end;
+
+            // 保持任务的计算结果
+            private List<Integer> result;
+
+            // 保持当前任务 fork 出的两个子任务引用
+            private EvenTask t1;
+            private EvenTask t2;
+
+            /**
+             * 构造器, 设置父任务引用以及当前任务计算区间范围
+             *
+             * @param parent 父任务引用
+             * @param start  计算任务区间范围起始值
+             * @param end    计算任务区间范围结束值
+             */
+            public EvenTask(CountedCompleter<List<Integer>> parent, int start, int end) {
+                super(parent);
+                this.start = start;
+                this.end = end;
+            }
+
+            /**
+             * 执行计算过程
+             */
+            @Override
+            public void compute() {
+                // 记录本次要计算的数值数量
+                var size = end + 1 - start;
+
+                // 如果要计算的数值小于 5, 则开始计算
+                if (size < 5) {
+                    setRawResult(
+                        IntStream.range(start, end + 1)
+                                .filter(value -> value % 2 == 0)
+                                .boxed()
+                                .toList());
+                } else {
+                    // 计算中间值, 通过中间值将要计算的数值分为两部分
+                    var mid = (start + end) / 2;
+
+                    // 增加任务计数器, 表示当前任务要分裂出 2 个子任务
+                    addToPendingCount(2);
+
+                    // 构建分支 1, 计算前一半数值, 并执行分支, 保存子任务引用
+                    t1 = (EvenTask) new EvenTask(this, start, mid).fork();
+
+                    // 构建分支 2, 计算后一半数值, 并执行分支, 保存子任务引用
+                    t2 = (EvenTask) new EvenTask(this, mid + 1, end).fork();
+                }
+
+                // 当前任务结束, 尝试结束根任务
+                tryComplete();
+            }
+
+            /**
+             * 当前任务结束后调用, 合并子任务执行完毕后的结果
+             *
+             * @param caller 调用该方法的 {@link CountedCompleter} 对象, 即某个子任务 (或当前任务) 在执行 {@code tryComplete}
+             *               方法时, 会调用父任务 (或自身) 的 {@code onCompletion} 方法, {@code caller} 参数即表示调用该方法的那个对象
+             */
+            @Override
+            public void onCompletion(CountedCompleter<?> caller) {
+                // 本例中, 只有子任务执行完毕, 调用父任务 (即 caller 不是当前任务) 时, 方需执行, 因为本方法要合并的结果存储于子任务中
+                if (caller != this && result == null) {
+                    setRawResult(Stream.concat(t1.getRawResult().stream(), t2.getRawResult().stream()).toList());
+                }
+            }
+
+            @Override
+            public List<Integer> getRawResult() { return result == null ? List.of() : result; }
+
+            @Override
+            protected void setRawResult(List<Integer> result) { this.result = result; }
+        }
+
         // 提交计算任务, 计算 1~10000 之间的所有偶数
-        var task = pool.submit(new EvenTask(1, 10000));
+        var task = ForkJoinPool.commonPool().submit(new EvenTask(null, 1, 10000));
 
         // 等待所有数值均已被计算过
-        await().atMost(2, TimeUnit.SECONDS).untilAsserted(() -> then(computedNums.get()).isEqualTo(10000));
-
-        // 确定任务已结束
-        then(task.isDone()).isTrue();
+        await().atMost(12, TimeUnit.SECONDS).until(() -> task.isDone());
 
         // 确认计算结果为 5000 个数值, 且均为偶数
         then(task.get()).hasSize(5000).allMatch(n -> n % 2 == 0);
-
-        // 确认共产生了 7711 个任务
-        then(forkCount.get()).isEqualTo(7711);
     }
 }
