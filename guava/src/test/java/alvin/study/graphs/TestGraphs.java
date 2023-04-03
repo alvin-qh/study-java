@@ -60,6 +60,8 @@ class TestGraphs {
                 .nodeOrder(order)
                 .<Integer>build();
 
+        then(graph.isDirected()).isFalse();
+
         // 为无向图添加边
         for (var edge : edges) {
             graph.putEdge(edge[0], edge[1]);
@@ -83,6 +85,8 @@ class TestGraphs {
                 // 设置节点迭代顺序
                 .nodeOrder(order)
                 .<Integer>build();
+
+        then(graph.isDirected()).isTrue();
 
         // 为有向图添加边
         for (var edge : edges) {
@@ -116,7 +120,6 @@ class TestGraphs {
     void build_shouldBuildUndirectedGraphs() {
         // 构建无向图
         var graph = buildUndirected(ElementOrder.insertion());
-        then(graph.isDirected()).isFalse();
 
         // 确认无向图包含的节点
         then(graph.nodes()).containsExactlyInAnyOrder(1, 2, 3, 4, 5, 7, 8, 6, 9);
@@ -181,7 +184,6 @@ class TestGraphs {
     void build_shouldBuildDirectedGraphs() {
         // 构建有向图
         var graph = buildDirected(ElementOrder.insertion());
-        then(graph.isDirected()).isTrue();
 
         // 确认有向图包含的节点
         then(graph.nodes()).containsExactlyInAnyOrder(1, 2, 3, 4, 5, 7, 8, 6, 9);
@@ -306,5 +308,42 @@ class TestGraphs {
 
         nodes = graph.predecessors(9);
         then(nodes).containsExactlyInAnyOrder(8);
+    }
+
+    /**
+     * 获取无向图中任意两个节点是否联通
+     *
+     * <p>
+     * 通过 {@link MutableGraph#hasEdgeConnecting(Object, Object) MutableGraph.hasEdgeConnecting(T, T)}
+     * 方法可以判断两个节点是否联通, 如果联通则返回 {@code true}
+     * </p>
+     *
+     * <p>
+     * 对于无向图的任意两个节点 {@code A} 和 {@code B}, 如果有 {@code A → B} 的联通成立, 则一定有 {@code B → A} 的联通成立
+     * </p>
+     */
+    @Test
+    void hasEdgeConnecting_shouldCheckedIfHasConnectedEdgeBetweenTwoUndirectedNodes() {
+        var graph = buildUndirected(ElementOrder.insertion());
+
+        var connected = graph.hasEdgeConnecting(2, 5);
+        then(connected).isTrue();
+
+        connected = graph.hasEdgeConnecting(5, 2);
+        then(connected).isTrue();
+    }
+
+    /**
+     * 获取有向图中任意两个节点是否联通
+     */
+    @Test
+    void hasEdgeConnecting_shouldCheckedIfHasConnectedEdgeBetweenTwoDirectedNodes() {
+        var graph = buildDirected(ElementOrder.insertion());
+
+        var connected = graph.hasEdgeConnecting(2, 5);
+        then(connected).isTrue();
+
+        connected = graph.hasEdgeConnecting(5, 2);
+        then(connected).isFalse();
     }
 }
