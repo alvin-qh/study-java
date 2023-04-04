@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.graph.ElementOrder;
 import com.google.common.graph.EndpointPair;
-import com.google.common.graph.Graphs;
 import com.google.common.graph.MutableGraph;
 
 /**
@@ -204,13 +203,31 @@ class TestDirectedGraphs {
         }
     }
 
+    /**
+     * 删除指定的节点
+     *
+     * <p>
+     * 通过 {@link MutableGraph#removeNode(Object) MutableGraph.removeNode(T)} 方法可以从有向图中删除一个节点
+     * </p>
+     *
+     * <p>
+     * 当删除节点后, 由该节点组成的边也将不复存在
+     * </p>
+     */
     @Test
-    void degree_shouldGetNodeDegreesOfDirectedGraphs() {
+    void removeNode_shouldRemoveNodeFromDirectedGraph() {
         var graph = datasource.buildDirected(ElementOrder.insertion());
 
-        for (var node : graph.nodes()) {
-            var reachableNodes = Graphs.reachableNodes(graph, node);
-            System.out.println(reachableNodes);
+        // 删除节点
+        then(graph.removeNode(8)).isTrue();
+
+        // 确认有向图中该节点已经被删除
+        then(graph.nodes()).doesNotContain(8);
+
+        // 确认有向图中不包含包含已删除节点的边
+        for (var edge : graph.edges()) {
+            then(edge.nodeU()).isNotEqualTo(8);
+            then(edge.nodeV()).isNotEqualTo(8);
         }
     }
 }
