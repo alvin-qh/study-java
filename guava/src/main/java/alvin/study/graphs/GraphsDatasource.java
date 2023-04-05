@@ -150,8 +150,9 @@ public class GraphsDatasource<N, E> {
      *
      * @param directed          {@code true} 表示要创建"有向图", 否则创建"无向图"
      * @param nodeOrder         设置"节点"的迭代顺序, 即 {@link MutableGraph#nodes()} 返回的集合元素顺序, 参见
-     *                          {@link ElementOrder} 接口类型
-     * @param incidentEdgeOrder 设置图对象中"边"迭代顺序
+     *                          {@link ElementOrder} 接口类型, 默认为 {@link ElementOrder#unordered()}
+     * @param incidentEdgeOrder 设置图对象中"边"迭代顺序, 只能取值为 {@link ElementOrder#unordered()} (默认值) 以及
+     *                          {@link ElementOrder#stable()}
      * @return {@link MutableGraph} 对象, 表示一个图对象 (包括"有向图"和"无向图")
      */
     public MutableGraph<N> buildGraph(
@@ -177,9 +178,10 @@ public class GraphsDatasource<N, E> {
      * 创建具备"边权重"的图对象
      *
      * @param directed          {@code true} 表示要创建"有向图", 否则创建"无向图"
-     * @param nodeOrder         设置"节点"的遍历顺序, 即 {@link MutableGraph#nodes()} 返回的集合元素顺序, 参见
-     *                          {@link ElementOrder} 接口类型
-     * @param incidentEdgeOrder 设置图对象中"边"迭代顺序
+     * @param nodeOrder         设置"节点"的迭代顺序, 即 {@link MutableGraph#nodes()} 返回的集合元素顺序, 参见
+     *                          {@link ElementOrder} 接口类型, 默认为 {@link ElementOrder#unordered()}
+     * @param incidentEdgeOrder 设置图对象中"边"迭代顺序, 只能取值为 {@link ElementOrder#unordered()} (默认值) 以及
+     *                          {@link ElementOrder#stable()}
      * @return {@link MutableValueGraph} 对象, 表示一个具有边权重的图对象 (包括"有向图"和"无向图")
      */
     public MutableValueGraph<N, E> buildValueGraph(
