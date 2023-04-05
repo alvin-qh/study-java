@@ -2,6 +2,8 @@ package alvin.study.graphs;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import com.google.common.graph.ElementOrder;
@@ -229,5 +231,28 @@ class TestDirectedGraphs {
             then(edge.nodeU()).isNotEqualTo(8);
             then(edge.nodeV()).isNotEqualTo(8);
         }
+    }
+
+    /**
+     * 获取有向图中任意两节点之间的路径
+     *
+     * <p>
+     * 通过 {@link GraphPath#getPaths(Object, Object) GraphPath.getPaths(T, T)} 方法可以计算所给的两个节点之间可连通的路径
+     * </p>
+     *
+     * <p>
+     * 对于有向图来说, 路径只能向一个方向寻找, 不存在反向路径
+     * </p>
+     */
+    @Test
+    void getPaths_shouldGetPathsBetweenTwoNodesOfDirectedGraph() {
+        var graph = datasource.buildDirected(ElementOrder.insertion());
+
+        var graphPath = new GraphPath<>(graph);
+        var paths = graphPath.getPaths(1, 8);
+        then(paths).containsExactlyInAnyOrder(
+            List.of(1, 2, 3, 8),
+            List.of(1, 2, 4, 8),
+            List.of(1, 2, 7, 8));
     }
 }
