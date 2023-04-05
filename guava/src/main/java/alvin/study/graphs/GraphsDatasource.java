@@ -1,29 +1,125 @@
 package alvin.study.graphs;
 
-import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.google.common.graph.ElementOrder;
 import com.google.common.graph.EndpointPair;
 import com.google.common.graph.GraphBuilder;
 import com.google.common.graph.MutableGraph;
+import com.google.common.graph.MutableNetwork;
+import com.google.common.graph.MutableValueGraph;
+import com.google.common.graph.NetworkBuilder;
+import com.google.common.graph.ValueGraphBuilder;
 
 /**
  * "图"结构数据源, 用于测试 {@link MutableGraph} 类型
  */
-public class GraphsDatasource<T> {
+public class GraphsDatasource<N, E> {
+    /**
+     * 定义"图"的"边"数据的类型
+     *
+     * <p>
+     * 每个"边"数据由两个节点值及边权重值组成
+     * </p>
+     *
+     * <p>
+     * 对于构建无权重图 ({@link com.google.common.graph.Graph Graph}) 类型来说, 只有两个节点值有效, 边权重值的类型总是为
+     * {@link Void} 且其值为 {@code null}
+     * </p>
+     *
+     * <p>
+     * 对于构建有权重图 ({@link com.google.common.graph.ValueGraph ValueGraph}) 和网络
+     * ({@link com.google.common.graph.Network Network}) 来说, 需要同时包括两个节点值和边权重值
+     * </p>
+     */
+    public static class Edge<N, E> {
+        // 节点 1
+        private final N node1;
+        // 节点 2
+        private final N node2;
+        // 节点值
+        private final E weight;
+
+        /**
+         * 构造器, 用于构造一个边数据对象
+         *
+         * @param node1 节点 1 对象引用
+         * @param node2 节点 2 对象引用
+         * @param value 节点值对象引用
+         */
+        private Edge(N node1, N node2, E weight) {
+            this.node1 = node1;
+            this.node2 = node2;
+            this.weight = weight;
+        }
+
+        /**
+         * 获取边中节点 1 的值
+         *
+         * @return 节点 1 的值
+         */
+        public N node1() {
+            return node1;
+        }
+
+        /**
+         * 获取边中节点 2 的值
+         *
+         * @return 节点 2 的值
+         */
+        public N node2() {
+            return node2;
+        }
+
+        /**
+         * 获取边的权重值
+         *
+         * @return 边的权重值
+         */
+        public E weight() {
+            return weight;
+        }
+
+        /**
+         * 通过两个节点值来构建边数据对象
+         *
+         * @param <N>   节点值类型
+         * @param node1 节点 1 的值
+         * @param node2 节点 2 的值
+         * @return 边数据对象
+         */
+        public static <N> Edge<N, Void> of(N node1, N node2) {
+            return new Edge<>(node1, node2, null);
+        }
+
+        /**
+         * 通过两个节点值来构建边数据对象
+         *
+         * @param <N>    节点值类型
+         * @param <E>    边权重值类型
+         * @param node1  节点 1 的值
+         * @param node2  节点 2 的值
+         * @param weight 边权重值
+         * @return 边数据对象
+         */
+        public static <N, E> Edge<N, E> of(N node1, N node2, E value) {
+            return new Edge<>(node1, node2, value);
+        }
+    }
+
     // 保存"边"的集合
-    private final List<T[]> edges;
+    private final List<Edge<N, E>> edges;
 
     /**
      * 构造器, 通过"边"集合构造对象
      *
      * @param edges "边"集合
      */
-    public GraphsDatasource(List<T[]> edges) {
+    public GraphsDatasource(List<Edge<N, E>> edges) {
         this.edges = List.copyOf(edges);
     }
 
@@ -33,56 +129,66 @@ public class GraphsDatasource<T> {
      * @param edges edges "边"参数数组
      */
     @SafeVarargs
-    public GraphsDatasource(T[]... edges) {
+    public GraphsDatasource(Edge<N, E>... edges) {
         this.edges = List.of(edges);
     }
 
     /**
-     * 构建无向图
+     * 构建图对象
      *
      * <p>
+     * 本方法通过 {@code directed} 参数是否为 {@code true} 指定创建"有向图"或"无向图", 其中:
+     * <ul>
+     * <li>
+     * 有向图的边由 {@link EndpointPair.Ordered} 类型对象表示, 在该类型中, {@code A → B} 和 {@code B → A} 被认为不相等
+     * </li>
+     * <li>
      * 无向图的边由 {@link EndpointPair.Unordered} 类型对象表示, 在该类型中, {@code A → B} 和 {@code B → A} 被认为是相等的
+     * </li>
+     * </ul>
      * </p>
      *
-     * @param order 设置节点的遍历顺序, 即 {@link MutableGraph#nodes()} 返回的集合元素顺序, 参见 {@link ElementOrder} 接口类型
-     * @return {@link MutableGraph} 对象, 表示一个无向图
+     * @param directed  {@code true} 表示要创建"有向图", 否则创建"无向图"
+     * @param nodeOrder 设置节点的遍历顺序, 即 {@link MutableGraph#nodes()} 返回的集合元素顺序, 参见 {@link ElementOrder} 接口类型
+     * @return {@link MutableGraph} 对象, 表示一个图对象 (包括"有向图"和"无向图")
      */
-    public MutableGraph<T> buildUndirected(ElementOrder<T> order) {
+    public MutableGraph<N> buildGraph(boolean directed, ElementOrder<N> nodeOrder) {
         // 创建无向图
-        var graph = GraphBuilder.undirected()
+        var graph = (directed ? GraphBuilder.directed() : GraphBuilder.undirected())
                 // 设置节点迭代顺序
-                .nodeOrder(order)
-                .<T>build();
+                .nodeOrder(nodeOrder)
+                .<N>build();
 
         // 为无向图添加边
         for (var edge : edges) {
-            graph.putEdge(edge[0], edge[1]);
+            graph.putEdge(edge.node1(), edge.node2());
         }
         return graph;
     }
 
-    /**
-     * 构建有向图
-     *
-     * <p>
-     * 有向图的边由 {@link EndpointPair.Ordered} 类型对象表示, 在该类型中, {@code A → B} 和 {@code B → A} 被认为不相等
-     * </p>
-     *
-     * @param order 设置节点的遍历顺序, 即 {@link MutableGraph#nodes()} 返回的集合元素顺序, 参见 {@link ElementOrder} 接口类型
-     * @return {@link MutableGraph} 对象, 表示一个有向图
-     */
-    public MutableGraph<T> buildDirected(ElementOrder<T> order) {
-        // 创建有向图
-        var graph = GraphBuilder.directed()
-                // 设置节点迭代顺序
-                .nodeOrder(order)
-                .<T>build();
+    public MutableValueGraph<N, E> buildValueGraph(
+            boolean directed,
+            ElementOrder<N> nodeOrder,
+            ElementOrder<N> edgeOrder) {
+        var graph = (directed ? ValueGraphBuilder.directed() : ValueGraphBuilder.undirected())
+                .nodeOrder(nodeOrder)
+                .incidentEdgeOrder(edgeOrder)
+                .<N, E>build();
 
-        // 为有向图添加边
         for (var edge : edges) {
-            graph.putEdge(edge[0], edge[1]);
+            graph.putEdgeValue(edge.node1(), edge.node2(), edge.weight());
         }
         return graph;
+    }
+
+    public MutableNetwork<N, E> buildNetwork(boolean directed) {
+        var network = (directed ? NetworkBuilder.directed() : NetworkBuilder.undirected())
+                .<N, E>build();
+
+        for (var edge : edges) {
+            network.addEdge(edge.node1(), edge.node2(), edge.weight());
+        }
+        return network;
     }
 
     /**
@@ -90,8 +196,8 @@ public class GraphsDatasource<T> {
      *
      * @return 原数据中的节点集合
      */
-    public Set<T> nodes() {
-        return edges.stream().flatMap(Arrays::stream).collect(Collectors.toSet());
+    public Set<N> nodes() {
+        return edges.stream().flatMap(e -> Stream.of(e.node1(), e.node2())).collect(Collectors.toSet());
     }
 
     /**
@@ -100,9 +206,9 @@ public class GraphsDatasource<T> {
      * @param inverse 反转"边"中的"原"和"目标"节点, 即 {@code nodeU} 和 {@code nodeV} 节点
      * @return 原数据中的"边"集合
      */
-    public List<EndpointPair<T>> orderedEdges(boolean inverse) {
-        var stream = inverse ? edges.stream().map(edge -> EndpointPair.ordered(edge[1], edge[0]))
-                             : edges.stream().map(edge -> EndpointPair.ordered(edge[0], edge[1]));
+    public List<EndpointPair<N>> orderedEdges(boolean inverse) {
+        var stream = inverse ? edges.stream().map(e -> EndpointPair.ordered(e.node2(), e.node1()))
+                             : edges.stream().map(e -> EndpointPair.ordered(e.node1(), e.node2()));
         return stream.toList();
     }
 
@@ -112,9 +218,9 @@ public class GraphsDatasource<T> {
      * @param inverse 反转"边"中的"原"和"目标"节点, 即 {@code nodeU} 和 {@code nodeV} 节点
      * @return 原数据中的"边"集合
      */
-    public List<EndpointPair<T>> unOrderedEdges(boolean inverse) {
-        var stream = inverse ? edges.stream().map(edge -> EndpointPair.unordered(edge[1], edge[0]))
-                             : edges.stream().map(edge -> EndpointPair.unordered(edge[0], edge[1]));
+    public List<EndpointPair<N>> unOrderedEdges(boolean inverse) {
+        var stream = inverse ? edges.stream().map(e -> EndpointPair.unordered(e.node2(), e.node1()))
+                             : edges.stream().map(e -> EndpointPair.unordered(e.node1(), e.node2()));
         return stream.toList();
     }
 
@@ -128,16 +234,16 @@ public class GraphsDatasource<T> {
      * @param node 指定节点值
      * @return 指定节点相邻节点值的集合
      */
-    public Set<T> neighbors(T node) {
-        var result = new LinkedHashSet<T>();
+    public Set<N> neighbors(N node) {
+        var result = new LinkedHashSet<N>();
 
         // 遍历原数据中的所有边
         for (var edge : edges) {
             // 如果所给节点和边中的某个节点相等, 则记录另一个节点为相邻节点
-            if (edge[1] == node) {
-                result.add(edge[0]);
-            } else if (edge[0] == node) {
-                result.add(edge[1]);
+            if (edge.node2().equals(node)) {
+                result.add(edge.node1());
+            } else if (edge.node1().equals(node)) {
+                result.add(edge.node2());
             }
         }
         return result;
@@ -153,12 +259,12 @@ public class GraphsDatasource<T> {
      * @param node 指定节点值
      * @return 指定节点相邻节点值的集合
      */
-    public Set<T> preNeighbors(T node) {
-        var result = new LinkedHashSet<T>();
+    public Set<N> preNeighbors(N node) {
+        var result = new LinkedHashSet<N>();
 
         for (var edge : edges) {
-            if (edge[1] == node) {
-                result.add(edge[0]);
+            if (edge.node2.equals(node)) {
+                result.add(edge.node1());
             }
         }
         return result;
@@ -174,12 +280,12 @@ public class GraphsDatasource<T> {
      * @param node 指定节点值
      * @return 指定节点相邻节点值的集合
      */
-    public Set<T> postNeighbors(T node) {
-        var result = new LinkedHashSet<T>();
+    public Set<N> postNeighbors(N node) {
+        var result = new LinkedHashSet<N>();
 
         for (var edge : edges) {
-            if (edge[0] == node) {
-                result.add(edge[1]);
+            if (edge.node1().equals(node)) {
+                result.add(edge.node2());
             }
         }
         return result;
