@@ -148,15 +148,22 @@ public class GraphsDatasource<N, E> {
      * </ul>
      * </p>
      *
-     * @param directed  {@code true} 表示要创建"有向图", 否则创建"无向图"
-     * @param nodeOrder 设置节点的遍历顺序, 即 {@link MutableGraph#nodes()} 返回的集合元素顺序, 参见 {@link ElementOrder} 接口类型
+     * @param directed          {@code true} 表示要创建"有向图", 否则创建"无向图"
+     * @param nodeOrder         设置"节点"的迭代顺序, 即 {@link MutableGraph#nodes()} 返回的集合元素顺序, 参见
+     *                          {@link ElementOrder} 接口类型
+     * @param incidentEdgeOrder 设置图对象中"边"迭代顺序
      * @return {@link MutableGraph} 对象, 表示一个图对象 (包括"有向图"和"无向图")
      */
-    public MutableGraph<N> buildGraph(boolean directed, ElementOrder<N> nodeOrder) {
+    public MutableGraph<N> buildGraph(
+            boolean directed,
+            ElementOrder<N> nodeOrder,
+            ElementOrder<N> incidentEdgeOrder) {
         // 创建无向图
         var graph = (directed ? GraphBuilder.directed() : GraphBuilder.undirected())
-                // 设置节点迭代顺序
+                // 设置"节点"迭代顺序
                 .nodeOrder(nodeOrder)
+                // 设置"边"的迭代顺序
+                .incidentEdgeOrder(incidentEdgeOrder)
                 .<N>build();
 
         // 为无向图添加边
@@ -166,13 +173,22 @@ public class GraphsDatasource<N, E> {
         return graph;
     }
 
+    /**
+     * 创建具备"边权重"的图对象
+     *
+     * @param directed          {@code true} 表示要创建"有向图", 否则创建"无向图"
+     * @param nodeOrder         设置"节点"的遍历顺序, 即 {@link MutableGraph#nodes()} 返回的集合元素顺序, 参见
+     *                          {@link ElementOrder} 接口类型
+     * @param incidentEdgeOrder 设置图对象中"边"迭代顺序
+     * @return {@link MutableValueGraph} 对象, 表示一个具有边权重的图对象 (包括"有向图"和"无向图")
+     */
     public MutableValueGraph<N, E> buildValueGraph(
             boolean directed,
             ElementOrder<N> nodeOrder,
-            ElementOrder<N> edgeOrder) {
+            ElementOrder<N> incidentEdgeOrder) {
         var graph = (directed ? ValueGraphBuilder.directed() : ValueGraphBuilder.undirected())
                 .nodeOrder(nodeOrder)
-                .incidentEdgeOrder(edgeOrder)
+                .incidentEdgeOrder(incidentEdgeOrder)
                 .<N, E>build();
 
         for (var edge : edges) {
@@ -181,8 +197,13 @@ public class GraphsDatasource<N, E> {
         return graph;
     }
 
-    public MutableNetwork<N, E> buildNetwork(boolean directed) {
+    public MutableNetwork<N, E> buildNetwork(
+            boolean directed,
+            ElementOrder<N> nodeOrder,
+            ElementOrder<E> edgeOrder) {
         var network = (directed ? NetworkBuilder.directed() : NetworkBuilder.undirected())
+                .nodeOrder(nodeOrder)
+                .edgeOrder(edgeOrder)
                 .<N, E>build();
 
         for (var edge : edges) {

@@ -57,7 +57,7 @@ class TestGraphs {
         @Test
         void build_shouldBuildDirectedGraphs() {
             // 构建有向图
-            var graph = datasource.buildGraph(true, ElementOrder.insertion());
+            var graph = datasource.buildGraph(true, ElementOrder.insertion(), ElementOrder.insertion());
 
             // 确认有向图包含的节点
             then(graph.nodes()).containsExactlyInAnyOrderElementsOf(datasource.nodes());
@@ -86,7 +86,7 @@ class TestGraphs {
         @Test
         void hasEdgeConnecting_shouldCheckedIfHasConnectedEdgeBetweenTwoDirectedNodes() {
             // 构建有向图
-            var graph = datasource.buildGraph(true, ElementOrder.insertion());
+            var graph = datasource.buildGraph(true, ElementOrder.insertion(), ElementOrder.insertion());
 
             // 确认具有边的两个节点是连通的
             var connected = graph.hasEdgeConnecting(2, 5);
@@ -115,7 +115,7 @@ class TestGraphs {
         @Test
         void predecessors_shouldGetPredecessorsNodesOfDirectedGraph() {
             // 构建有向图
-            var graph = datasource.buildGraph(true, ElementOrder.insertion());
+            var graph = datasource.buildGraph(true, ElementOrder.insertion(), ElementOrder.insertion());
 
             // 确认有向图中各个节点的前趋节点
             for (var node : graph.nodes()) {
@@ -138,7 +138,7 @@ class TestGraphs {
         @Test
         void successors_shouldGetSuccessorsNodesOfDirectedGraph() {
             // 构建有向图
-            var graph = datasource.buildGraph(true, ElementOrder.insertion());
+            var graph = datasource.buildGraph(true, ElementOrder.insertion(), ElementOrder.insertion());
 
             // 确认有向图中各个节点的后继节点
             for (var node : graph.nodes()) {
@@ -161,7 +161,7 @@ class TestGraphs {
         @Test
         void adjacentNodes_shouldGetAdjacentNodesOfDirectedGraph() {
             // 构建有向图
-            var graph = datasource.buildGraph(true, ElementOrder.insertion());
+            var graph = datasource.buildGraph(true, ElementOrder.insertion(), ElementOrder.insertion());
 
             // 获取有向图中各个节点的邻接节点, 确认由其前趋和后继节点组成
             for (var node : graph.nodes()) {
@@ -193,7 +193,7 @@ class TestGraphs {
         @Test
         void degree_shouldGetNodeDegreesOfDirectedGraph() {
             // 构建有向图
-            var graph = datasource.buildGraph(true, ElementOrder.insertion());
+            var graph = datasource.buildGraph(true, ElementOrder.insertion(), ElementOrder.insertion());
 
             // 获取各个节点的"度" (包括"入度", "出度")
             for (var node : graph.nodes()) {
@@ -217,7 +217,7 @@ class TestGraphs {
         @Test
         void removeNode_shouldRemoveNodeFromDirectedGraph() {
             // 构建有向图
-            var graph = datasource.buildGraph(true, ElementOrder.insertion());
+            var graph = datasource.buildGraph(true, ElementOrder.insertion(), ElementOrder.insertion());
 
             // 删除节点
             then(graph.removeNode(8)).isTrue();
@@ -246,10 +246,13 @@ class TestGraphs {
         @Test
         void getPaths_shouldGetPathsBetweenTwoNodesOfDirectedGraph() {
             // 构建有向图
-            var graph = datasource.buildGraph(true, ElementOrder.insertion());
+            var graph = datasource.buildGraph(true, ElementOrder.insertion(), ElementOrder.insertion());
 
+            // 实例化 GraphPath 对象
             var graphPath = new GraphPath<>(graph);
+            // 计算两个节点间的路径
             var paths = graphPath.getPaths(1, 8);
+            // 确认节点间路径结果
             then(paths).containsExactlyInAnyOrder(
                 List.of(1, 2, 3, 8),
                 List.of(1, 2, 4, 8),
@@ -283,7 +286,7 @@ class TestGraphs {
         @Test
         void build_shouldBuildUndirectedGraphs() {
             // 构建无向图
-            var graph = datasource.buildGraph(false, ElementOrder.insertion());
+            var graph = datasource.buildGraph(false, ElementOrder.insertion(), ElementOrder.insertion());
 
             // 确认无向图包含的节点
             then(graph.nodes()).containsExactlyInAnyOrderElementsOf(datasource.nodes());
@@ -309,7 +312,7 @@ class TestGraphs {
         @Test
         void hasEdgeConnecting_shouldCheckedIfHasConnectedEdgeBetweenTwoUndirectedNodes() {
             // 构建无向图
-            var graph = datasource.buildGraph(false, ElementOrder.insertion());
+            var graph = datasource.buildGraph(false, ElementOrder.insertion(), ElementOrder.insertion());
 
             // 确认具有边的两个节点是连通的
             var connected = graph.hasEdgeConnecting(2, 5);
@@ -338,7 +341,7 @@ class TestGraphs {
         @Test
         void predecessors_shouldGetPredecessorsNodesOfUndirectedGraph() {
             // 构建无向图
-            var graph = datasource.buildGraph(false, ElementOrder.insertion());
+            var graph = datasource.buildGraph(false, ElementOrder.insertion(), ElementOrder.insertion());
 
             // 确认有向图中各个节点的前趋节点
             for (var node : graph.nodes()) {
@@ -361,7 +364,7 @@ class TestGraphs {
         @Test
         void successors_shouldGetSuccessorsNodesOfUndirectedGraph() {
             // 构建无向图
-            var graph = datasource.buildGraph(false, ElementOrder.insertion());
+            var graph = datasource.buildGraph(false, ElementOrder.insertion(), ElementOrder.insertion());
 
             // 确认有向图中各个节点的前趋节点
             for (var node : graph.nodes()) {
@@ -384,7 +387,7 @@ class TestGraphs {
         @Test
         void adjacentNodes_shouldGetAdjacentNodesOfUndirectedGraph() {
             // 构建无向图
-            var graph = datasource.buildGraph(false, ElementOrder.insertion());
+            var graph = datasource.buildGraph(false, ElementOrder.insertion(), ElementOrder.insertion());
 
             // 确认有向图中各个节点的前趋节点
             for (var node : graph.nodes()) {
@@ -420,7 +423,7 @@ class TestGraphs {
         @Test
         void degree_shouldGetNodeDegreeOfUndirectedGraph() {
             // 构建无向图
-            var graph = datasource.buildGraph(false, ElementOrder.insertion());
+            var graph = datasource.buildGraph(false, ElementOrder.insertion(), ElementOrder.insertion());
 
             // 获取各个节点的"度" (包括"入度", "出度")
             for (var node : graph.nodes()) {
@@ -444,7 +447,7 @@ class TestGraphs {
         @Test
         void removeNode_shouldRemoveNodeFromDirectedGraph() {
             // 构建无向图
-            var graph = datasource.buildGraph(false, ElementOrder.insertion());
+            var graph = datasource.buildGraph(false, ElementOrder.insertion(), ElementOrder.insertion());
 
             // 删除节点
             then(graph.removeNode(8)).isTrue();
@@ -473,10 +476,13 @@ class TestGraphs {
         @Test
         void getPaths_shouldGetPathsBetweenTwoNodesOfUndirectedGraph() {
             // 构建无向图
-            var graph = datasource.buildGraph(false, ElementOrder.insertion());
+            var graph = datasource.buildGraph(false, ElementOrder.insertion(), ElementOrder.insertion());
 
+            // 实例化 GraphPath 对象, 用于计算路径
             var graphPath = new GraphPath<>(graph);
+            // 获取指定的两个节点之间的路径
             var paths = graphPath.getPaths(1, 8);
+            // 确认节点间的路径
             then(paths).containsExactlyInAnyOrder(
                 List.of(1, 9, 8),
                 List.of(1, 2, 3, 8),
