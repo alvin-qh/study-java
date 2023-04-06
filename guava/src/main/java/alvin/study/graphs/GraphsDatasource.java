@@ -153,18 +153,22 @@ public class GraphsDatasource<N, E> {
      *                          {@link ElementOrder} 接口类型, 默认为 {@link ElementOrder#unordered()}
      * @param incidentEdgeOrder 设置图对象中"边"迭代顺序, 只能取值为 {@link ElementOrder#unordered()} (默认值) 以及
      *                          {@link ElementOrder#stable()}
+     * @param allowsSelfLoops   是否允许节点自环
      * @return {@link MutableGraph} 对象, 表示一个图对象 (包括"有向图"和"无向图")
      */
     public MutableGraph<N> buildGraph(
             boolean directed,
             ElementOrder<N> nodeOrder,
-            ElementOrder<N> incidentEdgeOrder) {
+            ElementOrder<N> incidentEdgeOrder,
+            boolean allowsSelfLoops) {
         // 创建无向图
         var graph = (directed ? GraphBuilder.directed() : GraphBuilder.undirected())
                 // 设置"节点"迭代顺序
                 .nodeOrder(nodeOrder)
                 // 设置"边"的迭代顺序
                 .incidentEdgeOrder(incidentEdgeOrder)
+                // 是否允许产生节点自环
+                .allowsSelfLoops(allowsSelfLoops)
                 .<N>build();
 
         // 为无向图添加边
@@ -172,6 +176,35 @@ public class GraphsDatasource<N, E> {
             graph.putEdge(edge.node1(), edge.node2());
         }
         return graph;
+    }
+
+    /**
+     * 构建图对象
+     *
+     * <p>
+     * 本方法通过 {@code directed} 参数是否为 {@code true} 指定创建"有向图"或"无向图", 其中:
+     * <ul>
+     * <li>
+     * 有向图的边由 {@link EndpointPair.Ordered} 类型对象表示, 在该类型中, {@code A → B} 和 {@code B → A} 被认为不相等
+     * </li>
+     * <li>
+     * 无向图的边由 {@link EndpointPair.Unordered} 类型对象表示, 在该类型中, {@code A → B} 和 {@code B → A} 被认为是相等的
+     * </li>
+     * </ul>
+     * </p>
+     *
+     * @param directed          {@code true} 表示要创建"有向图", 否则创建"无向图"
+     * @param nodeOrder         设置"节点"的迭代顺序, 即 {@link MutableGraph#nodes()} 返回的集合元素顺序, 参见
+     *                          {@link ElementOrder} 接口类型, 默认为 {@link ElementOrder#unordered()}
+     * @param incidentEdgeOrder 设置图对象中"边"迭代顺序, 只能取值为 {@link ElementOrder#unordered()} (默认值) 以及
+     *                          {@link ElementOrder#stable()}
+     * @return {@link MutableGraph} 对象, 表示一个图对象 (包括"有向图"和"无向图")
+     */
+    public MutableGraph<N> buildGraph(
+            boolean directed,
+            ElementOrder<N> nodeOrder,
+            ElementOrder<N> incidentEdgeOrder) {
+        return buildGraph(directed, nodeOrder, incidentEdgeOrder, false);
     }
 
     /**

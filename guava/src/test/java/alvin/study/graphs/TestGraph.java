@@ -13,7 +13,10 @@ import com.google.common.graph.MutableGraph;
 
 import alvin.study.graphs.GraphsDatasource.Edge;
 
-class TestGraphs {
+/**
+ * 测试图数据结构类型, 包括"有向图"和"无向图"
+ */
+class TestGraph {
     // 边集合列表, 图的每个边由相连的两个节点组成
     private GraphsDatasource<Integer, ?> datasource = new GraphsDatasource<>(
         Edge.of(1, 2),
