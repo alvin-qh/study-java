@@ -41,28 +41,49 @@ class TestTraverser {
      * </p>
      *
      * <p>
+     * {@link Traverser#breadthFirst(Object)} 方法对图进行"广度优先遍历" (BFS), 遍历结果为: 按照节点的后继分层遍历.
+     * {@link Traverser#breadthFirst(Iterable)} 方法可以设置一组遍历的起始节点
+     * </p>
+     *
+     * <p>
+     * {@link Traverser#depthFirstPreOrder(Object)} 方法对图进行"正序深度优先遍历" (DFS), 遍历结果为: 先沿着一条路径遍历其上所有节点,
+     * 之后以同样方法访问其它路径上的节点. {@link Traverser#depthFirstPreOrder(Iterable)} 方法可以设置一组遍历的起始节点
+     * </p>
+     *
+     * <p>
+     * {@link Traverser#depthFirstPostOrder(Object)} 方法对图进行"逆序深度优先遍历" (DFS), 遍历结果为:
+     * 先沿着一条路径到达该路径上最后一个节点, 逆序访问直到返回起始节点, 之后以同样方法访问其它路径上的节点.
+     * {@link Traverser#depthFirstPostOrder(Iterable)} 方法可以设置一组遍历的起始节点
+     * </p>
+     *
+     * <p>
      * 本例中使用如下无向图演示图的遍历
      * <img src="assets/undirected.png" />
      * </p>
      */
     @Test
-    void s() {
+    void traverser_shouldTraversalFromGivenNodeInGraph() {
+        // 创建一个无向图
         var graph = datasource.buildGraph(false, ElementOrder.insertion(), ElementOrder.stable());
 
+        // 实例化图遍历器对象
         var traverser = Traverser.forGraph(graph);
 
+        // 测试广度优先遍历
         var bfs = traverser.breadthFirst(1);
         then(bfs).containsExactly(1, 2, 9, 3, 4, 5, 7, 8, 6);
 
         bfs = traverser.breadthFirst(List.of(1, 9));
         then(bfs).containsExactly(1, 9, 2, 8, 3, 4, 5, 7, 6);
 
+        // 测试正序深度优先遍历
         var dfs = traverser.depthFirstPreOrder(1);
         then(dfs).containsExactly(1, 2, 3, 8, 4, 5, 6, 7, 9);
 
         dfs = traverser.depthFirstPreOrder(List.of(1, 9));
         then(dfs).containsExactly(1, 2, 3, 8, 4, 5, 6, 7, 9);
 
+        // 测试逆序深度优先遍历
         dfs = traverser.depthFirstPostOrder(1);
         then(dfs).containsExactly(7, 6, 5, 4, 9, 8, 3, 2, 1);
 
