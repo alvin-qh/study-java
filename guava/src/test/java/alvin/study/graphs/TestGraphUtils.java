@@ -181,7 +181,7 @@ class TestGraphUtils {
         var edges = new LinkedHashSet<>(closureGraph.edges());
         edges.removeAll(graph.edges());
 
-        // 确认传递闭包中具有所有可连通节点的直接连接边
+        // 确认传递闭包中具有所有sud可连通节点的直接连接边
         then(edges).containsExactlyInAnyOrder(
             EndpointPair.ordered(1, 1),
             EndpointPair.ordered(1, 3),
@@ -250,5 +250,31 @@ class TestGraphUtils {
             EndpointPair.ordered(9, 7),
             EndpointPair.ordered(9, 8),
             EndpointPair.ordered(9, 6));
+    }
+
+    /**
+     * 获取有向图的"反转图"
+     *
+     * <p>
+     * 通过 {@link Graphs#transpose(com.google.common.graph.Graph) Graphs.transpose(Graph)}
+     * 方法可以获取指定图的反转图结果
+     * </p>
+     *
+     * <p>
+     * 所谓"反转图", 即和原图具有相同的节点和边, 只是每个边的顶点进行了对调
+     * </p>
+     */
+    @Test
+    void transpose_shouldTransposeAGraph() {
+        // 构建一个有向图
+        var graph = datasource.buildGraph(true, ElementOrder.insertion(), ElementOrder.stable());
+
+        // 对图中的边进行反转
+        var transGraph = Graphs.transpose(graph);
+
+        // 确认转换得到的图节点和原图一致
+        then(transGraph.nodes()).containsExactlyInAnyOrderElementsOf(graph.nodes());
+        // 确认转换得到的图边和原图相反
+        then(transGraph.edges()).containsExactlyInAnyOrderElementsOf(datasource.orderedEdges(true));
     }
 }
