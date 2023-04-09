@@ -261,6 +261,22 @@ class TestValueGraph {
                 List.of(1, 2, 4, 8),
                 List.of(1, 2, 7, 8));
         }
+
+        @Test
+        void getShortestPath_shouldGetShortestPathOfDirectedGraph() {
+            // 构建有向图
+            var graph = datasource.buildGraph(true, ElementOrder.insertion(), ElementOrder.stable());
+
+            // 实例化 GraphPath 对象
+            var graphPath = new GraphPath<>(graph);
+            // 计算两个节点间的路径
+            var paths = graphPath.getPaths(1, 8);
+            // 确认节点间路径结果
+            then(paths).containsExactlyInAnyOrder(
+                List.of(1, 2, 3, 8),
+                List.of(1, 2, 4, 8),
+                List.of(1, 2, 7, 8));
+        }
     }
 
     @Nested

@@ -8,7 +8,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Stream;
 
+import com.google.common.collect.Queues;
 import com.google.common.graph.Graph;
+import com.google.common.graph.ValueGraph;
+import com.google.common.graph.ValueGraphBuilder;
 
 /**
  * 计算图路径的类型
@@ -17,16 +20,16 @@ import com.google.common.graph.Graph;
  * 本类型用于计算 {@link Graph} 类型中任意两个节点之间的路径
  * </p>
  */
-public class GraphPath<T> {
+public class GraphPath<N> {
     //
-    private final Graph<T> graph;
+    private final Graph<N> graph;
 
     /**
      * 构造器, 设置 {@link Graph} 对象参数
      *
      * @param graph {@link Graph} 对象参数
      */
-    public GraphPath(Graph<T> graph) {
+    public GraphPath(Graph<N> graph) {
         this.graph = graph;
     }
 
@@ -46,22 +49,22 @@ public class GraphPath<T> {
      * @param toNode   终止节点
      * @return 包含路径的集合
      */
-    public List<List<T>> getPaths(T fromNode, T toNode) {
+    public List<List<N>> getPaths(N fromNode, N toNode) {
         // 定义 BFS 算法所需的队列
-        var que = new ArrayDeque<T>();
+        var que = new ArrayDeque<N>();
         // 将起始节点入队
         que.offer(fromNode);
 
         // 定义记录路径计算过程的 Map 对象, 其中 Key 为所存路径的最后一个节点, Value 为存储的路径
-        var pathMap = new HashMap<T, List<T>>();
+        var pathMap = new HashMap<N, List<N>>();
         // 存储第路径的第一个节点
         pathMap.put(fromNode, List.of(fromNode));
 
         // 保存路径结果的集合
-        var results = new ArrayList<List<T>>();
+        var results = new ArrayList<List<N>>();
 
         // 保存已访问节点, 已访问的节点将不再访问, 防止进入循环访问
-        var visited = new HashSet<T>();
+        var visited = new HashSet<N>();
         // 向已访问节点列表中增加起始节点, 表示该节点已被访问
         visited.add(fromNode);
 
@@ -97,5 +100,24 @@ public class GraphPath<T> {
         }
 
         return Collections.unmodifiableList(results);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<N> getShortestPath(N fromNode, N toNode) {
+        if (!(graph instanceof ValueGraph)) {
+            throw new IllegalStateException();
+        }
+
+        var valueGraph = (ValueGraph<N, ?>) graph;
+
+        var que = Queues.<N>newArrayDeque();
+        que.offer(fromNode);
+
+        while (!que.isEmpty()) {
+            var node = que.poll();
+            for (var subNode : valueGraph.successors(node)) {
+                
+            }
+        }
     }
 }
