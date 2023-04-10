@@ -34,8 +34,15 @@ class TestGraph {
         Edge.of(8, 9),
         Edge.of(9, 1));
 
+    /**
+     * 测试有向图
+     *
+     * <p>
+     * 本例中的有向图为 <img src="assets/directed.png"/>
+     * </p>
+     */
     @Nested
-    class TestDirected {
+    class TestDirectedGraph {
         /**
          * 测试构建有向图
          *
@@ -261,8 +268,15 @@ class TestGraph {
         }
     }
 
+    /**
+     * 测试有向图
+     *
+     * <p>
+     * 本例中的有向图为 <img src="assets/undirected.png"/>
+     * </p>
+     */
     @Nested
-    class TestUndirected {
+    class TestUndirectedGraph {
         /**
          * 测试构建无向图
          *

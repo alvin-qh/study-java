@@ -32,6 +32,13 @@ class TestValueGraph {
         Edge.of(8, 9, 2),
         Edge.of(9, 1, 3));
 
+    /**
+     * 测试具有"边权重值"的有向图
+     *
+     * <p>
+     * 本例中的有向图为 <img src="assets/directed_valued.png"/>
+     * </p>
+     */
     @Nested
     class TestDirected {
         /**
@@ -262,6 +269,13 @@ class TestValueGraph {
         }
     }
 
+    /**
+     * 测试具有"边权重值"的无向图
+     *
+     * <p>
+     * 本例中的有向图为 <img src="assets/undirected_valued.png"/>
+     * </p>
+     */
     @Nested
     class TestUndirected {
         /**
