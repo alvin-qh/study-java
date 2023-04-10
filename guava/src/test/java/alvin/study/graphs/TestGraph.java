@@ -58,7 +58,7 @@ class TestGraph {
          * </p>
          */
         @Test
-        void build_shouldBuildDirectedGraphs() {
+        void build_shouldBuildDirectedGraph() {
             // 构建有向图
             var graph = datasource.buildGraph(true, ElementOrder.insertion(), ElementOrder.stable());
 
@@ -87,7 +87,7 @@ class TestGraph {
          * </p>
          */
         @Test
-        void hasEdgeConnecting_shouldCheckedIfHasConnectedEdgeBetweenTwoDirectedNodes() {
+        void hasEdgeConnecting_shouldCheckIfHasEdgeBetweenTwoNodesInDirectedGraph() {
             // 构建有向图
             var graph = datasource.buildGraph(true, ElementOrder.insertion(), ElementOrder.stable());
 
@@ -285,7 +285,7 @@ class TestGraph {
          * </p>
          */
         @Test
-        void build_shouldBuildUndirectedGraphs() {
+        void build_shouldBuildUndirectedGraph() {
             // 构建无向图
             var graph = datasource.buildGraph(false, ElementOrder.insertion(), ElementOrder.stable());
 
@@ -311,7 +311,7 @@ class TestGraph {
          * </p>
          */
         @Test
-        void hasEdgeConnecting_shouldCheckedIfHasConnectedEdgeBetweenTwoUndirectedNodes() {
+        void hasEdgeConnecting_shouldCheckIfHasEdgeBetweenTwoNodesInUndirectedGraph() {
             // 构建无向图
             var graph = datasource.buildGraph(false, ElementOrder.insertion(), ElementOrder.stable());
 

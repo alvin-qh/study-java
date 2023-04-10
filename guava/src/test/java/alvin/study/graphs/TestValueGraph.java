@@ -56,7 +56,7 @@ class TestValueGraph {
          * </p>
          */
         @Test
-        void build_shouldBuildDirectedGraphs() {
+        void build_shouldBuildDirectedValueGraph() {
             // 构建有向图
             var graph = datasource.buildValueGraph(true, ElementOrder.insertion(), ElementOrder.stable());
 
@@ -85,7 +85,7 @@ class TestValueGraph {
          * </p>
          */
         @Test
-        void hasEdgeConnecting_shouldCheckedIfHasConnectedEdgeBetweenTwoDirectedNodes() {
+        void hasEdgeConnecting_shouldCheckIfHasEdgeBetweenTwoNodesInDirectedValueGraph() {
             // 构建有向图
             var graph = datasource.buildValueGraph(true, ElementOrder.insertion(), ElementOrder.stable());
 
@@ -114,7 +114,7 @@ class TestValueGraph {
          * </p>
          */
         @Test
-        void predecessors_shouldGetPredecessorsNodesOfDirectedGraph() {
+        void predecessors_shouldGetPredecessorsNodesOfDirectedValueGraph() {
             // 构建有向图
             var graph = datasource.buildValueGraph(true, ElementOrder.insertion(), ElementOrder.stable());
 
@@ -137,7 +137,7 @@ class TestValueGraph {
          * </p>
          */
         @Test
-        void successors_shouldGetSuccessorsNodesOfDirectedGraph() {
+        void successors_shouldGetSuccessorsNodesOfDirectedValueGraph() {
             // 构建有向图
             var graph = datasource.buildValueGraph(true, ElementOrder.insertion(), ElementOrder.stable());
 
@@ -160,7 +160,7 @@ class TestValueGraph {
          * </p>
          */
         @Test
-        void adjacentNodes_shouldGetAdjacentNodesOfDirectedGraph() {
+        void adjacentNodes_shouldGetAdjacentNodesOfDirectedValueGraph() {
             // 构建有向图
             var graph = datasource.buildValueGraph(true, ElementOrder.insertion(), ElementOrder.stable());
 
@@ -192,7 +192,7 @@ class TestValueGraph {
          * </p>
          */
         @Test
-        void degree_shouldGetNodeDegreesOfDirectedGraph() {
+        void degree_shouldGetNodeDegreesOfDirectedValueGraph() {
             // 构建有向图
             var graph = datasource.buildValueGraph(true, ElementOrder.insertion(), ElementOrder.stable());
 
@@ -216,7 +216,7 @@ class TestValueGraph {
          * </p>
          */
         @Test
-        void removeNode_shouldRemoveNodeFromDirectedGraph() {
+        void removeNode_shouldRemoveNodeFromDirectedValueGraph() {
             // 构建有向图
             var graph = datasource.buildValueGraph(true, ElementOrder.insertion(), ElementOrder.stable());
 
@@ -245,7 +245,7 @@ class TestValueGraph {
          * </p>
          */
         @Test
-        void getPaths_shouldGetShortestPathsBetweenTwoNodesOfDirectedGraph() {
+        void getPaths_shouldGetShortestPathsBetweenTwoNodesOfDirectedValueGraph() {
             // 构建无向图
             var graph = datasource.buildValueGraph(true, ElementOrder.insertion(), ElementOrder.stable());
 
@@ -286,9 +286,9 @@ class TestValueGraph {
          * </p>
          */
         @Test
-        void build_shouldBuildUndirectedGraphs() {
+        void build_shouldBuildUndirectedValueGraph() {
             // 构建无向图
-            var graph = datasource.buildGraph(false, ElementOrder.insertion(), ElementOrder.stable());
+            var graph = datasource.buildValueGraph(false, ElementOrder.insertion(), ElementOrder.stable());
 
             // 确认无向图包含的节点
             then(graph.nodes()).containsExactlyInAnyOrderElementsOf(datasource.nodes());
@@ -312,9 +312,9 @@ class TestValueGraph {
          * </p>
          */
         @Test
-        void hasEdgeConnecting_shouldCheckedIfHasConnectedEdgeBetweenTwoUndirectedNodes() {
+        void hasEdgeConnecting_shouldCheckIfHasEdgeBetweenTwoNodesInUndirectedValueGraph() {
             // 构建无向图
-            var graph = datasource.buildGraph(false, ElementOrder.insertion(), ElementOrder.stable());
+            var graph = datasource.buildValueGraph(false, ElementOrder.insertion(), ElementOrder.stable());
 
             // 确认具有边的两个节点是连通的
             var connected = graph.hasEdgeConnecting(2, 5);
@@ -341,9 +341,9 @@ class TestValueGraph {
          * </p>
          */
         @Test
-        void predecessors_shouldGetPredecessorsNodesOfUndirectedGraph() {
+        void predecessors_shouldGetPredecessorsNodesOfUndirectedValueGraph() {
             // 构建无向图
-            var graph = datasource.buildGraph(false, ElementOrder.insertion(), ElementOrder.stable());
+            var graph = datasource.buildValueGraph(false, ElementOrder.insertion(), ElementOrder.stable());
 
             // 确认有向图中各个节点的前趋节点
             for (var node : graph.nodes()) {
@@ -364,9 +364,9 @@ class TestValueGraph {
          * </p>
          */
         @Test
-        void successors_shouldGetSuccessorsNodesOfUndirectedGraph() {
+        void successors_shouldGetSuccessorsNodesOfUndirectedValueGraph() {
             // 构建无向图
-            var graph = datasource.buildGraph(false, ElementOrder.insertion(), ElementOrder.stable());
+            var graph = datasource.buildValueGraph(false, ElementOrder.insertion(), ElementOrder.stable());
 
             // 确认有向图中各个节点的前趋节点
             for (var node : graph.nodes()) {
@@ -387,9 +387,9 @@ class TestValueGraph {
          * </p>
          */
         @Test
-        void adjacentNodes_shouldGetAdjacentNodesOfUndirectedGraph() {
+        void adjacentNodes_shouldGetAdjacentNodesOfUndirectedValueGraph() {
             // 构建无向图
-            var graph = datasource.buildGraph(false, ElementOrder.insertion(), ElementOrder.stable());
+            var graph = datasource.buildValueGraph(false, ElementOrder.insertion(), ElementOrder.stable());
 
             // 确认有向图中各个节点的前趋节点
             for (var node : graph.nodes()) {
@@ -423,9 +423,9 @@ class TestValueGraph {
          * </p>
          */
         @Test
-        void degree_shouldGetNodeDegreeOfUndirectedGraph() {
+        void degree_shouldGetNodeDegreeOfUndirectedValueGraph() {
             // 构建无向图
-            var graph = datasource.buildGraph(false, ElementOrder.insertion(), ElementOrder.stable());
+            var graph = datasource.buildValueGraph(false, ElementOrder.insertion(), ElementOrder.stable());
 
             // 获取各个节点的"度" (包括"入度", "出度")
             for (var node : graph.nodes()) {
@@ -447,9 +447,9 @@ class TestValueGraph {
          * </p>
          */
         @Test
-        void removeNode_shouldRemoveNodeFromDirectedGraph() {
+        void removeNode_shouldRemoveNodeFromDirectedValueGraph() {
             // 构建无向图
-            var graph = datasource.buildGraph(false, ElementOrder.insertion(), ElementOrder.stable());
+            var graph = datasource.buildValueGraph(false, ElementOrder.insertion(), ElementOrder.stable());
 
             // 删除节点
             then(graph.removeNode(8)).isTrue();
@@ -476,7 +476,7 @@ class TestValueGraph {
          * </p>
          */
         @Test
-        void getPaths_shouldGetShortestPathsBetweenTwoNodesOfUndirectedGraph() {
+        void getPaths_shouldGetShortestPathsBetweenTwoNodesOfUndirectedValueGraph() {
             // 构建无向图
             var graph = datasource.buildValueGraph(false, ElementOrder.insertion(), ElementOrder.stable());
 
