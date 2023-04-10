@@ -2,8 +2,6 @@ package alvin.study.graphs;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
-import java.util.List;
-
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -32,7 +30,7 @@ class TestValueGraph {
         Edge.of(6, 7, 5),
         Edge.of(7, 8, 3),
         Edge.of(8, 9, 2),
-        Edge.of(9, 1, 6));
+        Edge.of(9, 1, 3));
 
     @Nested
     class TestDirected {
@@ -236,46 +234,31 @@ class TestValueGraph {
         }
 
         /**
-         * 获取有向图中任意两节点之间的路径
+         * 获取无向图中任意两节点之间的路径
          *
          * <p>
          * 通过 {@link GraphPath#getPaths(Object, Object) GraphPath.getPaths(T, T)} 方法可以计算所给的两个节点之间可连通的路径
          * </p>
          *
          * <p>
-         * 对于有向图来说, 路径只能向一个方向寻找, 不存在反向路径
+         * 对于无向图来说, 路径可以向两个方向查询, 即一个节点的正反两边都可以形成联通的路径
          * </p>
          */
         @Test
-        void getPaths_shouldGetPathsBetweenTwoNodesOfDirectedGraph() {
-            // 构建有向图
-            var graph = datasource.buildGraph(true, ElementOrder.insertion(), ElementOrder.stable());
+        void getPaths_shouldGetShortestPathsBetweenTwoNodesOfDirectedGraph() {
+            // 构建无向图
+            var graph = datasource.buildValueGraph(true, ElementOrder.insertion(), ElementOrder.stable());
 
-            // 实例化 GraphPath 对象
-            var graphPath = new GraphPath<>(graph);
-            // 计算两个节点间的路径
-            var paths = graphPath.getPaths(1, 8);
-            // 确认节点间路径结果
-            then(paths).containsExactlyInAnyOrder(
-                List.of(1, 2, 3, 8),
-                List.of(1, 2, 4, 8),
-                List.of(1, 2, 7, 8));
-        }
+            // 获取指定的两个节点之间的路径
+            var mayPathValue = GraphPaths.getShortestPath(graph, 1, 8, n -> n.intValue());
+            // 确认节点间的路径
+            then(mayPathValue).isPresent();
 
-        @Test
-        void getShortestPath_shouldGetShortestPathOfDirectedGraph() {
-            // 构建有向图
-            var graph = datasource.buildGraph(true, ElementOrder.insertion(), ElementOrder.stable());
+            var distance = mayPathValue.get().getDistance();
+            then(distance).isEqualTo(6);
 
-            // 实例化 GraphPath 对象
-            var graphPath = new GraphPath<>(graph);
-            // 计算两个节点间的路径
-            var paths = graphPath.getPaths(1, 8);
-            // 确认节点间路径结果
-            then(paths).containsExactlyInAnyOrder(
-                List.of(1, 2, 3, 8),
-                List.of(1, 2, 4, 8),
-                List.of(1, 2, 7, 8));
+            var path = mayPathValue.get().getPath();
+            then(path).containsExactly(1, 2, 3, 8);
         }
     }
 
@@ -493,20 +476,20 @@ class TestValueGraph {
          * </p>
          */
         @Test
-        void getPaths_shouldGetPathsBetweenTwoNodesOfUndirectedGraph() {
+        void getPaths_shouldGetShortestPathsBetweenTwoNodesOfUndirectedGraph() {
             // 构建无向图
-            var graph = datasource.buildGraph(false, ElementOrder.insertion(), ElementOrder.stable());
+            var graph = datasource.buildValueGraph(false, ElementOrder.insertion(), ElementOrder.stable());
 
-            // 实例化 GraphPath 对象, 用于计算路径
-            var graphPath = new GraphPath<>(graph);
             // 获取指定的两个节点之间的路径
-            var paths = graphPath.getPaths(1, 8);
+            var mayPathValue = GraphPaths.getShortestPath(graph, 1, 8, n -> n.intValue());
             // 确认节点间的路径
-            then(paths).containsExactlyInAnyOrder(
-                List.of(1, 9, 8),
-                List.of(1, 2, 3, 8),
-                List.of(1, 2, 4, 8),
-                List.of(1, 2, 7, 8));
+            then(mayPathValue).isPresent();
+
+            var distance = mayPathValue.get().getDistance();
+            then(distance).isEqualTo(5);
+
+            var path = mayPathValue.get().getPath();
+            then(path).containsExactly(1, 9, 8);
         }
     }
 }

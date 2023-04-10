@@ -251,10 +251,8 @@ class TestGraph {
             // 构建有向图
             var graph = datasource.buildGraph(true, ElementOrder.insertion(), ElementOrder.stable());
 
-            // 实例化 GraphPath 对象
-            var graphPath = new GraphPath<>(graph);
             // 计算两个节点间的路径
-            var paths = graphPath.getPaths(1, 8);
+            var paths = GraphPaths.getPaths(graph, 1, 8);
             // 确认节点间路径结果
             then(paths).containsExactlyInAnyOrder(
                 List.of(1, 2, 3, 8),
@@ -481,10 +479,8 @@ class TestGraph {
             // 构建无向图
             var graph = datasource.buildGraph(false, ElementOrder.insertion(), ElementOrder.stable());
 
-            // 实例化 GraphPath 对象, 用于计算路径
-            var graphPath = new GraphPath<>(graph);
             // 获取指定的两个节点之间的路径
-            var paths = graphPath.getPaths(1, 8);
+            var paths = GraphPaths.getPaths(graph, 1, 8);
             // 确认节点间的路径
             then(paths).containsExactlyInAnyOrder(
                 List.of(1, 9, 8),
