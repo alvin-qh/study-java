@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import com.google.common.graph.ElementOrder;
-import com.google.common.graph.EndpointPair;
-import com.google.common.graph.MutableGraph;
 
 import alvin.study.graphs.GraphsDatasource.Edge;
 
@@ -16,6 +14,7 @@ import alvin.study.graphs.GraphsDatasource.Edge;
  */
 class TestValueGraph {
     // 边集合列表, 图的每个边由相连的两个节点组成
+    // 本例中, 节点由整数值表示, 边的权重值也有整数值表示
     private GraphsDatasource<Integer, Integer> datasource = new GraphsDatasource<>(
         Edge.of(1, 2, 1),
         Edge.of(2, 3, 3),
@@ -45,21 +44,17 @@ class TestValueGraph {
          * 测试构建有向图
          *
          * <p>
-         * 通过 {@link #buildDirected(ElementOrder)} 方法可以构建一个表示有向图的 {@link MutableGraph} 对象
+         * 有向图的边是通过 {@link com.google.common.graph.EndpointPair.Ordered EndpointPair.Ordered} 类型对象表示, 通过
+         * {@link com.google.common.graph.EndpointPair#ordered(Object, Object) EndpointPair.ordered(N, N)} 方法创建
          * </p>
          *
          * <p>
-         * 有向图的边是通过 {@link EndpointPair.Ordered} 类型对象表示, 通过 {@link EndpointPair#ordered(Object, Object)
-         * EndpointPair.ordered(T, T)} 方法创建
+         * 通过 {@link com.google.common.graph.ValueGraph#nodes() ValueGraph.nodes()} 方法可以获取图的节点对象集合
          * </p>
          *
          * <p>
-         * 通过 {@link MutableGraph#nodes()} 方法可以获取图的节点对象集合
-         * </p>
-         *
-         * <p>
-         * 通过 {@link MutableGraph#edges()} 方法可以获取无向图的边对象集合, 是一个元素类型为 {@link EndpointPair.Ordered} 的
-         * {@code Set} 集合
+         * 通过 {@link com.google.common.graph.ValueGraph#edges() ValueGraph.edges()} 方法可以获取无向图的边对象集合,
+         * 是一个元素类型为 {@link com.google.common.graph.EndpointPair.Ordered EndpointPair.Ordered} 的 {@code Set} 集合
          * </p>
          */
         @Test
@@ -83,8 +78,8 @@ class TestValueGraph {
          * 获取有向图中任意两个节点是否连通
          *
          * <p>
-         * 通过 {@link MutableGraph#hasEdgeConnecting(Object, Object) MutableGraph.hasEdgeConnecting(T, T)}
-         * 方法可以判断两个节点是否连通, 如果连通则返回 {@code true}
+         * 通过 {@link com.google.common.graph.ValueGraph#hasEdgeConnecting(Object, Object)
+         * ValueGraph.hasEdgeConnecting(N, N)} 方法可以判断两个节点是否连通, 如果连通则返回 {@code true}
          * </p>
          *
          * <p>
@@ -113,7 +108,8 @@ class TestValueGraph {
          * 获取有向图中某个节点的前趋节点列表
          *
          * <p>
-         * 通过 {@link MutableGraph#predecessors(Object) MutableGraph.predecessors(T)} 方法可以获取由指定某个节点的前趋节点组成的集合
+         * 通过 {@link com.google.common.graph.ValueGraph#predecessors(Object) ValueGraph.predecessors(N)}
+         * 方法可以获取由指定某个节点的前趋节点组成的集合
          * </p>
          *
          * <p>
@@ -136,7 +132,8 @@ class TestValueGraph {
          * 获取有向图中某个节点的后继节点列表
          *
          * <p>
-         * 通过 {@link MutableGraph#successors(Object) MutableGraph.successors(T)} 方法可以获取由指定某个节点的后继节点组成的集合
+         * 通过 {@link com.google.common.graph.ValueGraph#successors(Object) ValueGraph.successors(N)}
+         * 方法可以获取由指定某个节点的后继节点组成的集合
          * </p>
          *
          * <p>
@@ -159,7 +156,8 @@ class TestValueGraph {
          * 获取有向图中指定节点的邻接节点
          *
          * <p>
-         * 通过 {@link MutableGraph#adjacentNodes(Object) MutableGraph.adjacentNodes(T)} 方法可以获取指定某个节点的邻接节点
+         * 通过 {@link com.google.common.graph.ValueGraph#adjacentNodes(Object) ValueGraph.adjacentNodes(N)}
+         * 方法可以获取指定某个节点的邻接节点
          * </p>
          *
          * <p>
@@ -187,15 +185,15 @@ class TestValueGraph {
          * </p>
          *
          * <p>
-         * 通过 {@link MutableGraph#inDegree(Object) MutableGraph.inDegree(T)} 方法可以获得指定节点的"入度"
+         * 通过 {@link com.google.common.graph.ValueGraph#inDegree(Object) ValueGraph.inDegree(N)} 方法可以获得指定节点的"入度"
          * </p>
          *
          * <p>
-         * 通过 {@link MutableGraph#outDegree(Object) MutableGraph.outDegree(T)} 可以获得指定节点的"出度"
+         * 通过 {@link com.google.common.graph.ValueGraph#outDegree(Object) ValueGraph.outDegree(N)} 可以获得指定节点的"出度"
          * </p>
          *
          * <p>
-         * 通过 {@link MutableGraph#degree(Object) MutableGraph.degree(T)} 可以获得指定节点的"度"
+         * 通过 {@link com.google.common.graph.ValueGraph#degree(Object) ValueGraph.degree(N)} 可以获得指定节点的"度"
          * </p>
          */
         @Test
@@ -215,7 +213,8 @@ class TestValueGraph {
          * 删除指定的节点
          *
          * <p>
-         * 通过 {@link MutableGraph#removeNode(Object) MutableGraph.removeNode(T)} 方法可以从有向图中删除一个节点
+         * 通过 {@link com.google.common.graph.MutableValueGraph#removeNode(Object) MutableValueGraph.removeNode(N)}
+         * 方法可以从有向图中删除一个节点
          * </p>
          *
          * <p>
@@ -244,7 +243,9 @@ class TestValueGraph {
          * 获取无向图中任意两节点之间的路径
          *
          * <p>
-         * 通过 {@link GraphPath#getPaths(Object, Object) GraphPath.getPaths(T, T)} 方法可以计算所给的两个节点之间可连通的路径
+         * 通过
+         * {@link GraphPaths#getShortestPath(com.google.common.graph.ValueGraph, Object, Object, java.util.function.ToIntFunction)
+         * GraphPath.getShortestPath(ValueGraph, N, N, ToIntFunction)} 方法可以计算所给的两个节点之间可连通的路径
          * </p>
          *
          * <p>
@@ -282,21 +283,17 @@ class TestValueGraph {
          * 测试构建无向图
          *
          * <p>
-         * 通过 {@link #buildUndirected(ElementOrder)} 方法可以构建一个表示无向图的 {@link MutableGraph} 对象
+         * 无向图的边是通过 {@link com.google.common.graph.EndpointPair.Unordered EndpointPair.Unordered} 类型对象表示, 通过
+         * {@link com.google.common.graph.EndpointPair#unordered(Object, Object) EndpointPair.unordered(N, N)} 方法创建
          * </p>
          *
          * <p>
-         * 无向图的边是通过 {@link EndpointPair.Unordered} 类型对象表示, 通过 {@link EndpointPair#unordered(Object, Object)
-         * EndpointPair.unordered(T, T)} 方法创建
+         * 通过 {@link com.google.common.graph.ValueGraph#nodes() ValueGraph.nodes()} 方法可以获取图的节点对象集合
          * </p>
          *
          * <p>
-         * 通过 {@link MutableGraph#nodes()} 方法可以获取图的节点对象集合
-         * </p>
-         *
-         * <p>
-         * 通过 {@link MutableGraph#edges()} 方法可以获取无向图的边对象集合, 是一个元素类型为 {@link EndpointPair.Unordered} 的
-         * {@code Set} 集合
+         * 通过 {@link com.google.common.graph.ValueGraph#edges() ValueGraph.edges()} 方法可以获取无向图的边对象集合,
+         * 是一个元素类型为 {@link com.google.common.graph.EndpointPair.Unordered EndpointPair.Unordered} 的 {@code Set} 集合
          * </p>
          */
         @Test
@@ -317,8 +314,8 @@ class TestValueGraph {
          * 获取无向图中任意两个节点是否连通
          *
          * <p>
-         * 通过 {@link MutableGraph#hasEdgeConnecting(Object, Object) MutableGraph.hasEdgeConnecting(T, T)}
-         * 方法可以判断两个节点是否连通, 如果连通则返回 {@code true}
+         * 通过 {@link com.google.common.graph.ValueGraph#hasEdgeConnecting(Object, Object)
+         * ValueGraph.hasEdgeConnecting(N, N)} 方法可以判断两个节点是否连通, 如果连通则返回 {@code true}
          * </p>
          *
          * <p>
@@ -347,7 +344,8 @@ class TestValueGraph {
          * 获取无向图中某个节点的前趋节点列表
          *
          * <p>
-         * 通过 {@link MutableGraph#predecessors(Object) MutableGraph.predecessors(T)} 方法可以获取由指定某个节点的前趋节点组成的集合
+         * 通过 {@link com.google.common.graph.ValueGraph#predecessors(Object) ValueGraph.predecessors(N)}
+         * 方法可以获取由指定某个节点的前趋节点组成的集合
          * </p>
          *
          * <p>
@@ -370,7 +368,8 @@ class TestValueGraph {
          * 获取无向图中某个节点的后继节点列表
          *
          * <p>
-         * 通过 {@link MutableGraph#successors(Object) MutableGraph.successors(T)} 方法可以获取由指定某个节点的后继节点组成的集合
+         * 通过 {@link com.google.common.graph.ValueGraph#successors(Object) ValueGraph.successors(N)}
+         * 方法可以获取由指定某个节点的后继节点组成的集合
          * </p>
          *
          * <p>
@@ -393,7 +392,8 @@ class TestValueGraph {
          * 获取无向图中指定节点的邻接节点
          *
          * <p>
-         * 通过 {@link MutableGraph#adjacentNodes(Object) MutableGraph.adjacentNodes(T)} 方法可以获取指定某个节点的邻接节点
+         * 通过 {@link com.google.common.graph.ValueGraph#adjacentNodes(Object) ValueGraph.adjacentNodes(N)}
+         * 方法可以获取指定某个节点的邻接节点
          * </p>
          *
          * <p>
@@ -421,15 +421,15 @@ class TestValueGraph {
          * </p>
          *
          * <p>
-         * 通过 {@link MutableGraph#inDegree(Object) MutableGraph.inDegree(T)} 方法可以获得指定节点的"入度"
+         * 通过 {@link com.google.common.graph.ValueGraph#inDegree(Object) ValueGraph.inDegree(N)} 方法可以获得指定节点的"入度"
          * </p>
          *
          * <p>
-         * 通过 {@link MutableGraph#outDegree(Object) MutableGraph.outDegree(T)} 可以获得指定节点的"出度"
+         * 通过 {@link com.google.common.graph.ValueGraph#outDegree(Object) ValueGraph.outDegree(N)} 可以获得指定节点的"出度"
          * </p>
          *
          * <p>
-         * 通过 {@link MutableGraph#degree(Object) MutableGraph.degree(T)} 可以获得指定节点的"度"
+         * 通过 {@link com.google.common.graph.ValueGraph#degree(Object) ValueGraph.degree(N)} 可以获得指定节点的"度"
          * </p>
          *
          * <p>
@@ -453,7 +453,8 @@ class TestValueGraph {
          * 删除指定的节点
          *
          * <p>
-         * 通过 {@link MutableGraph#removeNode(Object) MutableGraph.removeNode(T)} 方法可以从有向图中删除一个节点
+         * 通过 {@link com.google.common.graph.MutableValueGraph#removeNode(Object) MutableValueGraph.removeNode(N)}
+         * 方法可以从有向图中删除一个节点
          * </p>
          *
          * <p>
@@ -482,7 +483,9 @@ class TestValueGraph {
          * 获取无向图中任意两节点之间的路径
          *
          * <p>
-         * 通过 {@link GraphPath#getPaths(Object, Object) GraphPath.getPaths(T, T)} 方法可以计算所给的两个节点之间可连通的路径
+         * 通过
+         * {@link GraphPaths#getShortestPath(com.google.common.graph.ValueGraph, Object, Object, java.util.function.ToIntFunction)
+         * GraphPaths.getShortestPath(ValueGraph, N, N, ToIntFunction)} 方法可以计算所给的两个节点之间可连通的路径
          * </p>
          *
          * <p>
