@@ -1,11 +1,13 @@
 package alvin.study.graphs;
 
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import com.google.common.graph.ElementOrder;
+import com.google.common.graph.EndpointPair;
 
 import alvin.study.graphs.GraphsDatasource.Edge;
 
@@ -93,7 +95,7 @@ class TestNetwork {
          * </p>
          */
         @Test
-        void adjacentEdges_shouldGetAdjacentEdgesBetweenTwoNodes() {
+        void adjacentEdges_shouldGetAdjacentEdgesBetweenTwoNodesInDirectedNetwork() {
             // 构建有向网络
             var network = datasource.buildNetwork(true, ElementOrder.insertion(), ElementOrder.insertion());
 
@@ -102,6 +104,120 @@ class TestNetwork {
 
             // 确认指定边的邻接边集合
             then(adjacentEdges).containsExactly("1-2", "2-7", "2-4", "2-5", "3-8");
+
+            // 在 2, 3 节点间在加入一条平行边
+            network.addEdge(2, 3, "2-3a");
+
+            // 获取指定边的"邻接边"对象集合
+            adjacentEdges = network.adjacentEdges("2-3");
+
+            // 确认之前添加的平行边也被查询到
+            then(adjacentEdges).containsExactly("1-2", "2-4", "2-5", "2-7", "2-3a", "3-8");
+        }
+
+        /**
+         * 获取两个节点之间的连接边对象集合
+         *
+         * <p>
+         * 通过 {@link com.google.common.graph.Network#edgeConnecting(Object, Object) Network.edgeConnecting(N, N)}
+         * 方法可以获取网络中两个节点之间的边对象
+         * </p>
+         */
+        @Test
+        void edgesConnecting_shouldGetConnectingEdgesBetweenTwoNodesInDirectedNetwork() {
+            // 构建有向网络
+            var network = datasource.buildNetwork(true, ElementOrder.insertion(), ElementOrder.insertion());
+
+            // 获取两个节点间的连接边, 此时能获取一个边对象
+            var edges = network.edgesConnecting(2, 3);
+            then(edges).containsExactly("2-3");
+
+            // 在相同的两个节点间再增加一个连接边对象
+            network.addEdge(2, 3, "2-3a");
+
+            // 重新获取两个节点间的连接边, 此时可以获取两个边对象
+            edges = network.edgesConnecting(2, 3);
+            then(edges).containsExactly("2-3", "2-3a");
+        }
+
+        /**
+         * 获取两个节点见的"唯一"的边对象
+         *
+         * <p>
+         * 通过 {@link com.google.common.graph.Network#edgeConnectingOrNull(Object, Object)
+         * Network.edgeConnectingOrNull(N, N)} 方法可以获取两个节点间的"唯一边对象"
+         * </p>
+         *
+         * <p>
+         * 所谓"唯一边对象", 即作为参数的两个节点间只能有一个"边对象", 如果有多个平行边对象, 则调用该方法会抛出异常
+         * </p>
+         */
+        @Test
+        void edgeConnectingOrNull_shouldGetSingleConnectingEdgeBetweenTwoNodesInDirectedNetwork() {
+            // 构建有向网络
+            var network = datasource.buildNetwork(true, ElementOrder.insertion(), ElementOrder.insertion());
+
+            // 获取两个节点间的边对象
+            var edge = network.edgeConnectingOrNull(2, 3);
+            then(edge).isEqualTo("2-3");
+
+            // 在两个节点间增加新的边对象, 确认再次获取边对象会抛出异常
+            network.addEdge(2, 3, "2-3a");
+            thenThrownBy(() -> network.edgeConnectingOrNull(2, 3)).isInstanceOf(IllegalArgumentException.class);
+        }
+
+        /**
+         * 获取网络中指定节点的邻接边
+         *
+         * <p>
+         * 通过 {@link com.google.common.graph.Network#incidentEdges(Object) Network.incidentEdges(N)}
+         * 方法可以获取网络中和指定节点相关的"邻接边"对象集合
+         * </p>
+         *
+         * <p>
+         * 所谓"邻接边", 即以指定节点为起点 (或终点) 的点之间的边对象
+         * </p>
+         */
+        @Test
+        void incidentEdges_shouldGetIncidentEdgesByNodeInDirectedNetwork() {
+            // 构建有向网络
+            var network = datasource.buildNetwork(true, ElementOrder.insertion(), ElementOrder.insertion());
+
+            // 获取指定节点的邻接边
+            var edges = network.incidentEdges(2);
+            then(edges).containsExactly("1-2", "2-3", "2-7", "2-4", "2-5");
+
+            // 添加一条平行边
+            network.addEdge(2, 3, "2-3a");
+
+            // 再次获取相同节点的邻接边, 确认新加入的边对象被查询到
+            edges = network.incidentEdges(2);
+            then(edges).containsExactly("1-2", "2-3", "2-4", "2-5", "2-7", "2-3a");
+        }
+
+        /**
+         * 获取网络中指定边的邻接节点
+         *
+         * <p>
+         * 通过 {@link com.google.common.graph.Network#incidentNodes(Object) Network.incidentNodes(E)}
+         * 方法可以根据所给的边对象, 获取该边的两个连接节点
+         * </p>
+         */
+        @Test
+        void incidentNodes_shouldGetIncidentNodesByEdgeInDirectedNetwork() {
+            // 构建有向网络
+            var network = datasource.buildNetwork(true, ElementOrder.insertion(), ElementOrder.insertion());
+
+            // 获取指定边的邻接节点
+            var nodes = network.incidentNodes("2-3");
+            then(nodes).isEqualTo(EndpointPair.ordered(2, 3));
+
+            // 在节点间增加一个新的平行边对象
+            network.addEdge(2, 3, "2-3a");
+
+            // 通过新加入的边对象, 获取其邻接节点
+            nodes = network.incidentNodes("2-3a");
+            then(nodes).isEqualTo(EndpointPair.ordered(2, 3));
         }
     }
 
@@ -158,7 +274,7 @@ class TestNetwork {
          * </p>
          */
         @Test
-        void adjacentEdges_shouldGetAdjacentEdgesBetweenTwoNodes() {
+        void adjacentEdges_shouldGetAdjacentEdgesBetweenTwoNodesInUndirectedNetwork() {
             // 构建无向网络
             var network = datasource.buildNetwork(false, ElementOrder.insertion(), ElementOrder.insertion());
 
@@ -167,6 +283,120 @@ class TestNetwork {
 
             // 确认指定边的邻接边集合
             then(adjacentEdges).containsExactly("3-8", "2-4", "2-5", "2-7", "1-2");
+
+            // 在 2, 3 节点间在加入一条平行边
+            network.addEdge(2, 3, "2-3a");
+
+            // 获取指定边的"邻接边"对象集合
+            adjacentEdges = network.adjacentEdges("2-3");
+
+            // 确认之前添加的平行边也被查询到
+            then(adjacentEdges).containsExactly("3-8", "2-3a", "2-4", "2-5", "2-7", "1-2");
+        }
+
+        /**
+         * 获取两个节点之间的连接边对象集合
+         *
+         * <p>
+         * 通过 {@link com.google.common.graph.Network#edgeConnecting(Object, Object) Network.edgeConnecting(N, N)}
+         * 方法可以获取网络中两个节点之间的边对象
+         * </p>
+         */
+        @Test
+        void edgesConnecting_shouldGetConnectingEdgesBetweenTwoNodesInUndirectedNetwork() {
+            // 构建有向网络
+            var network = datasource.buildNetwork(false, ElementOrder.insertion(), ElementOrder.insertion());
+
+            // 获取两个节点间的连接边, 此时能获取一个边对象
+            var edges = network.edgesConnecting(2, 3);
+            then(edges).containsExactly("2-3");
+
+            // 在相同的两个节点间再增加一个连接边对象
+            network.addEdge(2, 3, "2-3a");
+
+            // 重新获取两个节点间的连接边, 此时可以获取两个边对象
+            edges = network.edgesConnecting(2, 3);
+            then(edges).containsExactly("2-3", "2-3a");
+        }
+
+        /**
+         * 获取两个节点见的"唯一"的边对象
+         *
+         * <p>
+         * 通过 {@link com.google.common.graph.Network#edgeConnectingOrNull(Object, Object)
+         * Network.edgeConnectingOrNull(N, N)} 方法可以获取两个节点间的"唯一边对象"
+         * </p>
+         *
+         * <p>
+         * 所谓"唯一边对象", 即作为参数的两个节点间只能有一个"边对象", 如果有多个平行边对象, 则调用该方法会抛出异常
+         * </p>
+         */
+        @Test
+        void edgeConnectingOrNull_shouldGetSingleConnectingEdgeBetweenTwoNodesInUndirectedNetwork() {
+            // 构建有向网络
+            var network = datasource.buildNetwork(false, ElementOrder.insertion(), ElementOrder.insertion());
+
+            // 获取两个节点间的边对象
+            var edge = network.edgeConnectingOrNull(2, 3);
+            then(edge).isEqualTo("2-3");
+
+            // 在两个节点间增加新的边对象, 确认再次获取边对象会抛出异常
+            network.addEdge(2, 3, "2-3a");
+            thenThrownBy(() -> network.edgeConnectingOrNull(2, 3)).isInstanceOf(IllegalArgumentException.class);
+        }
+
+        /**
+         * 获取网络中指定节点的邻接边
+         *
+         * <p>
+         * 通过 {@link com.google.common.graph.Network#incidentEdges(Object) Network.incidentEdges(N)}
+         * 方法可以获取网络中和指定节点相关的"邻接边"对象集合
+         * </p>
+         *
+         * <p>
+         * 所谓"邻接边", 即以指定节点为起点 (或终点) 的点之间的边对象
+         * </p>
+         */
+        @Test
+        void incidentEdges_shouldGetIncidentEdgesByNodeInUndirectedNetwork() {
+            // 构建有向网络
+            var network = datasource.buildNetwork(false, ElementOrder.insertion(), ElementOrder.insertion());
+
+            // 获取指定节点的邻接边
+            var edges = network.incidentEdges(2);
+            then(edges).containsExactly("2-3", "2-4", "2-5", "2-7", "1-2");
+
+            // 添加一条平行边
+            network.addEdge(2, 3, "2-3a");
+
+            // 再次获取相同节点的邻接边, 确认新加入的边对象被查询到
+            edges = network.incidentEdges(2);
+            then(edges).containsExactly("2-3", "2-4", "2-5", "2-7", "1-2", "2-3a");
+        }
+
+        /**
+         * 获取网络中指定边的邻接节点
+         *
+         * <p>
+         * 通过 {@link com.google.common.graph.Network#incidentNodes(Object) Network.incidentNodes(E)}
+         * 方法可以根据所给的边对象, 获取该边的两个连接节点
+         * </p>
+         */
+        @Test
+        void incidentNodes_shouldGetIncidentNodesByEdgeInUndirectedNetwork() {
+            // 构建有向网络
+            var network = datasource.buildNetwork(false, ElementOrder.insertion(), ElementOrder.insertion());
+
+            // 获取指定边的邻接节点
+            var nodes = network.incidentNodes("2-3");
+            then(nodes).isEqualTo(EndpointPair.unordered(2, 3));
+
+            // 在节点间增加一个新的平行边对象
+            network.addEdge(2, 3, "2-3a");
+
+            // 通过新加入的边对象, 获取其邻接节点
+            nodes = network.incidentNodes("2-3a");
+            then(nodes).isEqualTo(EndpointPair.unordered(2, 3));
         }
     }
 }
