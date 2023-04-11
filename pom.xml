@@ -70,11 +70,11 @@
 
   <!-- 包含子项目所在的路径名 -->
   <modules>
+    <module>se</module>
     <!-- <module>testing</module>htop -->
     <!-- <module>cli</module> -->
     <!-- <module>guice</module> -->
     <module>guava</module>
-    <module>se</module>
     <!-- <module>security</module> -->
     <!-- <module>jackson</module> -->
     <!-- <module>boot-mvc</module> -->
