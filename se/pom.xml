@@ -32,6 +32,25 @@
       <version>${version.javafaker}</version>
       <scope>test</scope>
     </dependency>
+
+    <!-- H2 DB 驱动依赖 -->
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+    </dependency>
+
+    <!-- 数据库 Migration 依赖 -->
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+    </dependency>
+
+    <!-- HikariCP 数据源 -->
+    <dependency>
+      <groupId>com.zaxxer</groupId>
+      <artifactId>HikariCP</artifactId>
+      <version>${version.hikari-cp}</version>
+    </dependency>
   </dependencies>
 
   <build>

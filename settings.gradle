@@ -5,7 +5,7 @@ include(
   // "testing",
   // "cli",
   // "guice",
-  "guava",
+  // "guava",
   // "security",
   // "jackson",
   // "boot-mvc",

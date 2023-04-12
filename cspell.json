@@ -135,6 +135,7 @@
     "Mockito",
     "modelmapper",
     "Morty",
+    "mptt",
     "Multibinder",
     "multibindings",
     "multimap",

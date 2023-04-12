@@ -43,6 +43,7 @@
     <version.slf4j>2.0.4</version.slf4j>
     <version.jooq>3.17.5</version.jooq>
     <version.mybatis-plus>3.5.2</version.mybatis-plus>
+    <version.hikari-cp>5.0.1</version.hikari-cp>
     <version.modelmapper>3.1.0</version.modelmapper>
     <version.p6spy>3.9.1</version.p6spy>
     <version.kickstart-graphql>14.0.0</version.kickstart-graphql>
@@ -74,7 +75,7 @@
     <!-- <module>testing</module>htop -->
     <!-- <module>cli</module> -->
     <!-- <module>guice</module> -->
-    <module>guava</module>
+    <!-- <module>guava</module> -->
     <!-- <module>security</module> -->
     <!-- <module>jackson</module> -->
     <!-- <module>boot-mvc</module> -->
