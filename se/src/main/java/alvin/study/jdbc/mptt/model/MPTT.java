@@ -1,13 +1,20 @@
 package alvin.study.jdbc.mptt.model;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class MPTT {
-    private Long id;
+    private long id;
     private String name;
-    private Integer lft;
-    private Integer rht;
+    private long pid;
+    private long lft;
+    private long rht;
+
+    public MPTT(String name) {
+        this.name = name;
+    }
 }
