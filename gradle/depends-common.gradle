@@ -94,6 +94,11 @@ ext {
         annotation: [
           "javax.annotation:javax.annotation-api:${VER_JAVAX_ANNOTATION}"
         ]
+      ],
+
+      // HikariCP 数据源依赖
+      hikariCp: [
+        "com.zaxxer:HikariCP:${VER_HIKARI_CP}"
       ]
     ],
 

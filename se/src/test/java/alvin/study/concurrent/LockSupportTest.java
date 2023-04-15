@@ -90,7 +90,7 @@ class LockSupportTest {
     void parkUntil_shouldSuspendThreadToSpecifiedTime() throws InterruptedException {
         var thread = new Thread(() -> {
             // 设置当前时间 2s 后为阻塞结束时间
-            var deadline = Instant.now().plus(1, ChronoUnit.SECONDS).toEpochMilli();
+            var deadline = Instant.now().plus(2, ChronoUnit.SECONDS).toEpochMilli();
 
             // 阻塞当前线程直到指定的结束时间
             LockSupport.parkUntil(deadline);
@@ -102,8 +102,8 @@ class LockSupportTest {
         thread.start();
         thread.join();
 
-        // 确认线程整个执行时间为 1s
-        then(toSeconds(System.nanoTime() - startNanos)).isEqualTo(1L);
+        // 确认线程整个执行时间为 2s
+        then(toSeconds(System.nanoTime() - startNanos)).isEqualTo(2L);
     }
 
     /**
