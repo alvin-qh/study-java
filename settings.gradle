@@ -8,6 +8,7 @@ include(
   // "guava",
   // "security",
   // "jackson",
+  "async",
   // "boot-mvc",
   // "boot-aop",
   // "boot-spel",

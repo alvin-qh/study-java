@@ -46,6 +46,7 @@
     <version.hikari-cp>5.0.1</version.hikari-cp>
     <version.modelmapper>3.1.0</version.modelmapper>
     <version.p6spy>3.9.1</version.p6spy>
+    <version.akka>2.8.0</version.akka>
     <version.kickstart-graphql>14.0.0</version.kickstart-graphql>
     <version.kickstart-graphiql>11.1.0</version.kickstart-graphiql>
     <version.spring-security-test>6.0.0</version.spring-security-test>
@@ -78,6 +79,7 @@
     <!-- <module>guava</module> -->
     <!-- <module>security</module> -->
     <!-- <module>jackson</module> -->
+    <module>async</module>
     <!-- <module>boot-mvc</module> -->
     <!-- <module>boot-aop</module> -->
     <!-- <module>boot-spel</module> -->

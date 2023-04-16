@@ -298,16 +298,14 @@ class ThreadPoolTest {
 
         // 保存 FutureTask 的集合对象
         var tasks = IntStream.range(1, 21)
-                .mapToObj(n -> {
-                    return (Callable<Integer>) () -> {
-                        try {
-                            // 执行计算
-                            return Fibonacci.calculate(n + 1);
-                        } finally {
-                            // 增加任务计数器
-                            resultCount.incrementAndGet();
-                        }
-                    };
+                .mapToObj(n -> (Callable<Integer>) () -> {
+                    try {
+                        // 执行计算
+                        return Fibonacci.calculate(n + 1);
+                    } finally {
+                        // 增加任务计数器
+                        resultCount.incrementAndGet();
+                    }
                 })
                 .toList();
 
