@@ -3,18 +3,19 @@ package alvin.study.concurrent;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.awaitility.Awaitility.await;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.DelayQueue;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+
+import alvin.study.concurrent.delay.DelayedValue;
+import alvin.study.concurrent.util.ExecutorCreator;
 
 /**
  * 测试延时任务
@@ -50,30 +51,14 @@ import org.junit.jupiter.api.Test;
  */
 @SuppressWarnings("java:S2925")
 class TimerScheduleTest {
-    // 延时任务执行器对象
-    private WeakReference<ExecutorService> executorHolder;
+    private ExecutorCreator executorCreator = new ExecutorCreator();
 
     /**
      * 每次测试结束后执行, 用于关闭线程池
      */
     @AfterEach
     void afterEach() {
-        // 获取线程池对象
-        var executor = executorHolder == null ? null : executorHolder.get();
-        if (executor != null) {
-            // 关闭线程池
-            executor.shutdown();
-        }
-    }
-
-    private ScheduledExecutorService createScheduledExecutorService() {
-        // 获取当前 CPU 的逻辑内核数 (Logical Kernel)
-        var maxThreads = Runtime.getRuntime().availableProcessors();
-
-        // 实例化延迟任务线程池对象
-        var executor = new ScheduledThreadPoolExecutor(maxThreads);
-        executorHolder = new WeakReference<>(executor);
-        return executor;
+        executorCreator.close();
     }
 
     /**
@@ -161,7 +146,7 @@ class TimerScheduleTest {
     @Test
     void scheduleFuture_shouldScheduleTaskAfterWhile() throws Exception {
         // 创建延时任务线程池
-        var executor = createScheduledExecutorService();
+        var executor = executorCreator.scheduledExecutor(0);
 
         // 记录起始时间
         var startedMillis = System.currentTimeMillis();
@@ -268,7 +253,7 @@ class TimerScheduleTest {
     @Test
     void scheduleAtFixedRate_shouldScheduleTaskWithFixedRate() {
         // 创建延时任务线程池
-        var executor = createScheduledExecutorService();
+        var executor = executorCreator.scheduledExecutor(0);
 
         // 记录起始时间
         var startedMillis = System.currentTimeMillis();
@@ -358,7 +343,7 @@ class TimerScheduleTest {
     @Test
     void scheduleWithFixedDelay_shouldRunTaskWithFixedDelay() {
         // 创建延时任务线程池
-        var executor = createScheduledExecutorService();
+        var executor = executorCreator.scheduledExecutor(0);
 
         // 记录起始时间
         var startedMillis = System.currentTimeMillis();

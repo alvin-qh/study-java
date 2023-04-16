@@ -1,4 +1,4 @@
-package alvin.study.concurrent;
+package alvin.study.concurrent.delay;
 
 import java.time.Instant;
 import java.util.concurrent.DelayQueue;
@@ -25,8 +25,10 @@ import java.util.concurrent.TimeUnit;
 public class DelayedValue<T> implements Delayed {
     // 队列元素值
     private final T value;
+
     // 队列元素的创建时间
     private final Instant createdAt;
+
     // 该队列元素的延迟时间
     private final long delayMillis;
 
@@ -64,8 +66,10 @@ public class DelayedValue<T> implements Delayed {
     public long getDelay(TimeUnit unit) {
         // 计算要延迟到的时间毫秒值
         var delayedTo = createdAt.toEpochMilli() + delayMillis;
+
         // 计算当前时间毫秒值
         var now = Instant.now().toEpochMilli();
+
         // 返回剩余的延迟时间
         return unit.convert(delayedTo - now, TimeUnit.MILLISECONDS);
     }

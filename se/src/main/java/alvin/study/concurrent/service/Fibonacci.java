@@ -1,11 +1,13 @@
-package alvin.study.concurrent;
+package alvin.study.concurrent.service;
+
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 /**
  * 测试异步任务的斐波那契计算类
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Fibonacci {
-    private Fibonacci() {}
-
     /**
      * 计算斐波那契数列
      *

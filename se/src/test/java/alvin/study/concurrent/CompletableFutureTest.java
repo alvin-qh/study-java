@@ -3,6 +3,7 @@ package alvin.study.concurrent;
 import static org.assertj.core.api.BDDAssertions.then;
 
 import java.lang.ref.WeakReference;
+import java.util.Optional;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -12,8 +13,26 @@ import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
-import alvin.study.concurrent.BlockedService.Model;
+import alvin.study.concurrent.service.BlockedService;
+import alvin.study.concurrent.service.BlockedService.Model;
 
+/**
+ * 通过 {@link CompletableFuture} 简化异步代码编写
+ *
+ * <p>
+ * 和通过 {@link java.util.concurrent.ExecutorService#submit(java.util.concurrent.Callable)
+ * ExecutorService.submit(Callable)} 方法相比, {@link CompletableFuture} 类型具备更简单有效的异步调用方法, 包括:
+ * <ul>
+ * <li>
+ * 异步的链式调用
+ * </li>
+ * <li>
+ * 异步执行完毕后的回调通知
+ * </li>
+ * </ul>
+ * 通过 {@link CompletableFuture} 方法可以最大限度的避免"线程阻塞", 即在连续
+ * </p>
+ */
 class CompletableFutureTest {
     // 保存线程执行器对象的集合, 用于在测试结束后进行关闭
     private WeakReference<ExecutorService> executorHolder;
@@ -170,15 +189,17 @@ class CompletableFutureTest {
                     }, executor);
 
             // 获取异步执行方法的返回值, 并确认返回值正确
-            var model = future.get(3, TimeUnit.SECONDS);
-            then(model).isPresent().get().extracting("id", "name").containsExactly(1L, "Alvin");
+            var mayModel = future.get(3, TimeUnit.SECONDS);
+            then(mayModel).isPresent().get().extracting("id", "name").containsExactly(1L, "Alvin");
 
             then(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - start)).isEqualTo(2L);
         }
     }
 
     @Test
-    void whenComplete_should() {
+    void whenComplete_should() throws Exception {
+        var event = new Object();
+
         {
             var service = new BlockedService();
 
@@ -186,12 +207,61 @@ class CompletableFutureTest {
 
             // 在末尾加上 whenComplete 调用
             var future = CompletableFuture
-                    .runAsync(() -> service.createModel(new Model(1L, "Alvin")))
-                    .thenApplyAsync(ignore -> service.loadModel(1L), null)
-                    .whenComplete((mayModel, throwable) -> {
+                    .supplyAsync(() -> service.createModel(new Model(1L, "Alvin")))
+                    .thenApplyAsync(created -> {
+                        then(created).isTrue();
+                        return service.loadModel(1L);
+                    })
+                    .whenComplete((mayModel, ex) -> {
+                        then(mayModel).isPresent().get().extracting("id", "name").containsExactly(1L, "Alvin");
+                        then(ex).isNull();
 
+                        synchronized (event) {
+                            event.notify();
+                        }
                     });
+
+            synchronized (event) {
+                event.wait();
+            }
+
+            var mayModel = future.getNow(Optional.empty());
+            then(mayModel).isPresent().get().extracting("id", "name").containsExactly(1L, "Alvin");
+
+            then(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - start)).isEqualTo(2L);
+        }
+
+        {
+            var service = new BlockedService();
+
+            var executor = arrayBlockingQueueExecutor(20);
+
+            var start = System.currentTimeMillis();
+
+            // 在末尾加上 whenComplete 调用
+            var future = CompletableFuture
+                    .supplyAsync(() -> service.createModel(new Model(1L, "Alvin")))
+                    .thenApplyAsync(created -> {
+                        then(created).isTrue();
+                        return service.loadModel(1L);
+                    }, executor)
+                    .whenComplete((mayModel, ex) -> {
+                        then(mayModel).isPresent().get().extracting("id", "name").containsExactly(1L, "Alvin");
+                        then(ex).isNull();
+
+                        synchronized (event) {
+                            event.notify();
+                        }
+                    });
+
+            synchronized (event) {
+                event.wait();
+            }
+
+            var mayModel = future.getNow(Optional.empty());
+            then(mayModel).isPresent().get().extracting("id", "name").containsExactly(1L, "Alvin");
+
+            then(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - start)).isEqualTo(2L);
         }
     }
-
 }

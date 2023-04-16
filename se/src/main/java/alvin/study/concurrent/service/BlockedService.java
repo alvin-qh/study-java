@@ -1,17 +1,17 @@
-package alvin.study.concurrent;
+package alvin.study.concurrent.service;
 
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
+@NoArgsConstructor
 public class BlockedService {
     public record Model(long id, String name) {}
 
     private Map<Long, Model> modelMap = new ConcurrentHashMap<>();
-
-    public BlockedService() {}
 
     @SafeVarargs
     public BlockedService(Model... initModels) {
