@@ -9,6 +9,8 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.LockSupport;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -442,12 +444,59 @@ class CompletableFutureTest {
                         }
                     });
 
-        // 确认异步调用整体结束, 且持续 1s 左右 (完成两部分调用)
+        // 确认异步调用整体结束, 且持续 1s 左右 (完成两部分并发调用)
         future.get(1100, TimeUnit.MILLISECONDS);
 
         // 确认和并的结果符合预期
         then(results).extracting("id", "name").containsExactlyInAnyOrder(
             tuple(1L, "Alvin"),
             tuple(2L, "Emma"));
+    }
+
+    /**
+     * 从两个异步任务中获取执行速度较快的那一个的结果, 并放弃另一个
+     *
+     * <p>
+     * 通过 {@link CompletableFuture#acceptEither(java.util.concurrent.CompletionStage, java.util.function.Consumer)
+     * CompletableFuture.acceptEither(CompletionStage, Consumer)} 方法用于从当前异步任务和另一个异步任务中竞争结果,
+     * 执行较快的那个异步任务的结果会传递给回调, 另一个异步任务则被放弃
+     * </p>
+     *
+     * <p>
+     * 注意, 因为是两个异步任务竞争, 所以两个异步任务的返回结果类型必须相同
+     * </p>
+     *
+     * <p>
+     * 同样的, 通过具有 {@code Async} 后缀的方法, 可以使用 Fork/Join 公共线程池以及自定义线程池
+     * </p>
+     */
+    @Test
+    void acceptEither_shouldGetResultBetweenTwoTasksWhichReturnedFirst() throws Exception {
+        var service = new BlockedService(
+            new Model(1L, "Alvin"),
+            new Model(2L, "Emma"));
+
+        // 保存结果的引用对象
+        var result = new AtomicReference<Model>();
+
+        // 执行异步任务
+        var future = CompletableFuture
+                // 第一部分异步调用, 耗时 2s 左右
+                .supplyAsync(() -> {
+                    LockSupport.parkNanos(TimeUnit.SECONDS.toNanos(1));
+                    return service.loadModel(1L);
+                })
+                // 在第一部分调用的基础上执行第二部分调用, 并合并两部分调用结果
+                .acceptEither(
+                    // 第二部分异步调用, 耗时 1s 左右
+                    CompletableFuture.supplyAsync(() -> service.loadModel(2L)),
+                    // 回调, 参数为两个异步任务的竞争结果, 为耗时 1s 左右的那个
+                    opt -> opt.ifPresent(m -> result.set(m)));
+
+        // 确认异步调用整体结束, 且持续 2s 左右 (完成两部分并发调用, 以耗时最长的任务为准)
+        future.get(2100, TimeUnit.MILLISECONDS);
+
+        // 确认和并的结果符合预期, 为耗时较少的那个任务的结果
+        then(result.get()).extracting("id", "name").contains(2L, "Emma");
     }
 }
