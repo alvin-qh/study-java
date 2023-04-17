@@ -77,18 +77,13 @@ class CompletableFutureTest {
     void supplyAsync_shouldExecuteAsyncMethodAndGetResultByCommonPool() throws Exception {
         var service = new BlockedService(new Model(1L, "Alvin"));
 
-        // 记录程序执行开始时间
-        var start = System.currentTimeMillis();
-
         // 异步执行方法
         var future = CompletableFuture.supplyAsync(() -> service.loadModel(1L));
 
         // 获取异步执行方法的返回值, 并确认返回值正确
-        var model = future.get(2, TimeUnit.SECONDS);
+        // 异步任务使用约 1s 执行完毕返回结果
+        var model = future.get(1100, TimeUnit.MILLISECONDS);
         then(model).isPresent().get().extracting("id", "name").containsExactly(1L, "Alvin");
-
-        // 确认整个异步方法执行时间
-        then(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - start)).isEqualTo(1L);
     }
 
     /**
@@ -118,18 +113,13 @@ class CompletableFutureTest {
         // 创建线程池执行器对象
         var executor = executorCreator.arrayBlockingQueueExecutor(20);
 
-        // 记录程序执行开始时间
-        var start = System.currentTimeMillis();
-
         // 异步执行方法
         var future = CompletableFuture.supplyAsync(() -> service.loadModel(1L), executor);
 
         // 获取异步执行方法的返回值, 并确认返回值正确
-        var model = future.get(2, TimeUnit.SECONDS);
+        // 异步任务使用约 1s 执行完毕返回结果
+        var model = future.get(1100, TimeUnit.MILLISECONDS);
         then(model).isPresent().get().extracting("id", "name").containsExactly(1L, "Alvin");
-
-        // 确认整个异步方法执行时间
-        then(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - start)).isEqualTo(1L);
     }
 
     /**
@@ -175,9 +165,6 @@ class CompletableFutureTest {
     void thenApply_shouldExecuteAsyncMethodInChain() throws Exception {
         var service = new BlockedService();
 
-        // 记录程序执行开始时间
-        var start = System.currentTimeMillis();
-
         // 链式调用执行异步任务, 返回的结果表示最后一个异步任务执行情况
         var future = CompletableFuture
                 // 执行第一个任务
@@ -192,11 +179,9 @@ class CompletableFutureTest {
                 });
 
         // 获取异步执行方法的返回值, 并确认返回值正确
-        var model = future.get(3, TimeUnit.SECONDS);
+        // 异步任务使用约 2s 执行完毕返回结果 (两个链式任务)
+        var model = future.get(2100, TimeUnit.MILLISECONDS);
         then(model).isPresent().get().extracting("id", "name").containsExactly(1L, "Alvin");
-
-        // 确认整个异步方法执行时间
-        then(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - start)).isEqualTo(2L);
     }
 
     /**
@@ -265,12 +250,12 @@ class CompletableFutureTest {
         // 确认任务结果正确
         then(mayModel).isPresent().get().extracting("id", "name").containsExactly(1L, "Alvin");
 
-        // 确认任务执行时间
+        // 确认异步任务使用约 2s 执行完毕返回结果 (两个链式任务)
         then(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - start)).isEqualTo(2L);
     }
 
     /**
-     * 合并多个异步任务以求并行执行
+     * 令多个异步任务并行执行, 并合并执行结果
      *
      * <p>
      * 通过 {@link CompletableFuture#thenCombine(java.util.concurrent.CompletionStage, java.util.function.BiFunction)
@@ -290,6 +275,11 @@ class CompletableFutureTest {
      * <p>
      * 本例中演示了一个 Map/Reduce 方式的流程, 即将要查询的参数转化为异步任务, 并行执行, 在依次将每一次任务的结果进行合并, 得到最终结果
      * </p>
+     *
+     * <p>
+     * 本例可以通过一个小技巧, 即: {@link CompletableFuture#completedFuture(Object) CompletableFuture.completedFuture(T)}
+     * 方法产生一个"已完成" 且 "返回值已确定" 的异步任务对象, 从而和其它正常的异步任务发生合并调用或链式调用
+     * </p>
      */
     @Test
     void thenCombine_shouldCombineMultipleAsyncTasksWorkAtSameTime() throws Exception {
@@ -298,10 +288,8 @@ class CompletableFutureTest {
             new Model(2L, "Emma"),
             new Model(3L, "Lucy"));
 
+        // 定义参数集合
         var args = List.of(1L, 2L, 3L);
-
-        // 记录程序执行开始时间
-        var start = System.currentTimeMillis();
 
         /**
          * 下面这段代码具有相同的逻辑
@@ -333,22 +321,94 @@ class CompletableFutureTest {
                 // 根据后一个参数产生一个异步任务
                 CompletableFuture.supplyAsync(() -> service.loadModel(arg)),
                 // 定义异步任务完成后结果如何合并, 即前一个任务的结果 List 集合和后一个任务的结果 Optional<Model> 进行合并
-                (l, opt) -> {
+                (models, opt) -> {
                     if (opt.isPresent()) {
-                        l.add(opt.get());
+                        models.add(opt.get());
                     }
-                    return l;
+                    return models;
                 }),
-            (a, b) -> b);
+            // 如何合并每次 reduce 产生的结果, 因为 reduce 是发生在一个集合对象上, 所以 r1, r2 表示同一个对象, 无需合并
+            (r1, r2) -> r2);
 
         // 获取一组异步任务的执行结果, 并确认结果正确
-        var result = future.get(3, TimeUnit.SECONDS);
+        // 异步任务使用约 1s 执行完毕返回结果 (3 个并行任务, 每个任务需 1s)
+        var result = future.get(1100, TimeUnit.MILLISECONDS);
         then(result).extracting("id", "name").containsExactlyInAnyOrder(
             tuple(1L, "Alvin"),
             tuple(2L, "Emma"),
             tuple(3L, "Lucy"));
+    }
 
-        // 确认任务执行时间, 所有任务都是同时执行
-        then(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - start)).isEqualTo(1L);
+    /**
+     * 令多个异步任务串行执行, 并合并执行结果
+     *
+     * <p>
+     * 通过 {@link CompletableFuture#thenCompose(java.util.function.Function) CompletableFuture.thenCompose(Function)}
+     * 可以基于
+     * </p>
+     *
+     * <p>
+     * 同样的,
+     * {@link CompletableFuture#thenCombineAsync(java.util.concurrent.CompletionStage, java.util.function.BiFunction)
+     * CompletableFuture.thenCombineAsync(CompletionStage, BiFunction)} 和
+     * {@link CompletableFuture#thenCombineAsync(java.util.concurrent.CompletionStage, java.util.function.BiFunction, java.util.concurrent.Executor)
+     * CompletableFuture.thenCombineAsync(CompletionStage, BiFunction, Executor)} 方法可以用来决定异步方法所执行线程池
+     * (Fork/Join 公共线程池或自定义线程池)
+     * </p>
+     *
+     * <p>
+     * 本例中演示了一个 Map/Reduce 方式的流程, 即将要查询的参数转化为异步任务, 并行执行, 在依次将每一次任务的结果进行合并, 得到最终结果
+     * </p>
+     *
+     * <p>
+     * 本例可以通过一个小技巧, 即: {@link CompletableFuture#completedFuture(Object) CompletableFuture.completedFuture(T)}
+     * 方法产生一个"已完成" 且 "返回值已确定" 的异步任务对象, 从而和其它正常的异步任务发生合并调用或链式调用
+     * </p>
+     */
+    @Test
+    void thenCompose_shouldExecuteAsyncTaskOneByOneAndCombineTheResult() throws Exception {
+        var service = new BlockedService(
+            new Model(1L, "Alvin"),
+            new Model(2L, "Emma"),
+            new Model(3L, "Lucy"));
+
+        // 定义参数集合
+        var args = List.of(1L, 2L, 3L);
+
+        /**
+         * 下面这段代码具有相同的逻辑
+         *
+         * <pre>
+         * var future = CompletableFuture.completedFuture(new ArrayList<Model>());
+         *
+         * for (var arg : args) {
+         *     future = future.thenCompose(l -> CompletableFuture.supplyAsync(() -> {
+         *         service.loadModel(arg).ifPresent(l::add);
+         *         return l;
+         *     }));
+         * }
+         * </pre>
+         */
+        // 遍历参数集合, 并使用 reduce 进行任务合并
+        var future = args.stream().reduce(
+            // 定义第一个异步任务, 已完成且返回 List 集合
+            CompletableFuture.completedFuture(new ArrayList<Model>()),
+            // 在前一个异步任务完成的结果上, 产生下一个异步任务
+            (fc, arg) -> fc.thenCompose(
+                models -> CompletableFuture.supplyAsync(() -> {
+                    // 将执行结果和上一个异步任务的结果合并
+                    service.loadModel(arg).ifPresent(models::add);
+                    return models;
+                })),
+            // 如何合并每次 reduce 产生的结果, 因为 reduce 是发生在一个集合对象上, 所以 r1, r2 表示同一个对象, 无需合并
+            (r1, r2) -> r2);
+
+        // 获取一组异步任务的执行结果, 并确认结果正确
+        // 异步任务使用约 3s 执行完毕返回结果 (3 个串行任务, 每个任务需 1s)
+        var result = future.get(3100, TimeUnit.MILLISECONDS);
+        then(result).extracting("id", "name").containsExactlyInAnyOrder(
+            tuple(1L, "Alvin"),
+            tuple(2L, "Emma"),
+            tuple(3L, "Lucy"));
     }
 }
