@@ -15,6 +15,9 @@ import java.util.concurrent.TimeUnit;
  * {@link ExecutorService} 对象创建器
  */
 public final class ExecutorCreator implements AutoCloseable {
+    // 允许的最大线程数
+    private static final int MAX_THREAD_COUNT = 1024;
+
     // 记录已创建的 ExecutorService 对象的集合
     private List<WeakReference<ExecutorService>> executorRefs;
 
@@ -83,6 +86,10 @@ public final class ExecutorCreator implements AutoCloseable {
      * @return 线程池执行器对象
      */
     public ExecutorService arrayBlockingQueueExecutor(int queueSize) {
+        if (queueSize <= 0) {
+            throw new IllegalArgumentException("queueSize must great than 0");
+        }
+
         // 获取当前系统的 CPU 逻辑核心数 (Logical Kernel)
         var maxThread = Runtime.getRuntime().availableProcessors();
 
@@ -123,8 +130,7 @@ public final class ExecutorCreator implements AutoCloseable {
      */
     public ExecutorService synchronousQueueExecutor(int maxThreads) {
         if (maxThreads <= 0) {
-            // 获取当前 CPU 的逻辑内核数 (Logical Kernel)
-            maxThreads = Runtime.getRuntime().availableProcessors();
+            maxThreads = MAX_THREAD_COUNT;
         }
 
         // 实例化线程池对象

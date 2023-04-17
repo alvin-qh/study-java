@@ -10,7 +10,7 @@ import java.util.concurrent.locks.LockSupport;
 import org.junit.jupiter.api.Test;
 
 /**
- *
+ * 演示通过 {@link LockSupport} 类型执行更加底层的缩操作
  */
 @SuppressWarnings("java:S2925")
 class LockSupportTest {

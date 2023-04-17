@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
 /**
- * 演示 Fork/Join 线程池
+ * 演示  Fork/Join线程池
  *
  * <p>
  * Fork/Join 框架由 {@link ForkJoinPool} 线程池类型, {@link java.util.concurrent.ForkJoinTask ForkJoinTask} 任务类型以及

@@ -266,11 +266,11 @@ class ThreadPoolTest {
      */
     @Test
     void cachedPool_shouldSubmitTaskIntoThreadPoolWithSynchronousQueue() throws InterruptedException {
-        // 获取最大任务数, 此处为 CPU 逻辑核心数 (Logical Kernel) 的 2 倍
-        var taskCount = Runtime.getRuntime().availableProcessors() * 2;
-
         // 任务计数器, 计算已完成任务数
         var resultCount = new AtomicInteger();
+
+        // 任务总数量
+        var taskCount = 30;
 
         // 保存 FutureTask 的集合对象
         var tasks = IntStream.range(0, taskCount)
@@ -285,7 +285,7 @@ class ThreadPoolTest {
                 .toList();
 
         // 创建线程池执行器对象, 使用 SynchronousQueue 作为任务队列
-        var executor = executorCreator.synchronousQueueExecutor(taskCount);
+        var executor = executorCreator.synchronousQueueExecutor(0);
         // 执行所有任务
         var result = executor.invokeAll(tasks, 5, TimeUnit.SECONDS);
 
