@@ -1,7 +1,10 @@
 package alvin.study.concurrent;
 
+import static org.assertj.core.api.Assertions.tuple;
 import static org.assertj.core.api.BDDAssertions.then;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Semaphore;
@@ -29,6 +32,11 @@ import alvin.study.concurrent.util.ExecutorCreator;
  * </li>
  * </ul>
  * 通过 {@link CompletableFuture} 方法可以最大限度的避免"线程阻塞", 即在连续
+ * </p>
+ *
+ * <p>
+ * {@link CompletableFuture} 类型同时实现了 {@link java.util.concurrent.Future Future} 接口和
+ * {@link java.util.concurrent.CompletionStage CompletionStage} 接口, 前者提供了异步任务的状态, 后者提供了异步任务链式调用的能力
  * </p>
  */
 class CompletableFutureTest {
@@ -259,5 +267,88 @@ class CompletableFutureTest {
 
         // 确认任务执行时间
         then(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - start)).isEqualTo(2L);
+    }
+
+    /**
+     * 合并多个异步任务以求并行执行
+     *
+     * <p>
+     * 通过 {@link CompletableFuture#thenCombine(java.util.concurrent.CompletionStage, java.util.function.BiFunction)
+     * CompletableFuture.thenCombine(CompletionStage, BiFunction)} 方法可以对两个异步任务进行合并, 以便让这两个任务并行执行,
+     * 并对任务结束返回的结果进行归并操作, 返回表示归并结果的 {@link CompletableFuture} 对象
+     * </p>
+     *
+     * <p>
+     * 同样的,
+     * {@link CompletableFuture#thenCombineAsync(java.util.concurrent.CompletionStage, java.util.function.BiFunction)
+     * CompletableFuture.thenCombineAsync(CompletionStage, BiFunction)} 和
+     * {@link CompletableFuture#thenCombineAsync(java.util.concurrent.CompletionStage, java.util.function.BiFunction, java.util.concurrent.Executor)
+     * CompletableFuture.thenCombineAsync(CompletionStage, BiFunction, Executor)} 方法可以用来决定异步方法所执行线程池
+     * (Fork/Join 公共线程池或自定义线程池)
+     * </p>
+     *
+     * <p>
+     * 本例中演示了一个 Map/Reduce 方式的流程, 即将要查询的参数转化为异步任务, 并行执行, 在依次将每一次任务的结果进行合并, 得到最终结果
+     * </p>
+     */
+    @Test
+    void thenCombine_shouldCombineMultipleAsyncTasksWorkAtSameTime() throws Exception {
+        var service = new BlockedService(
+            new Model(1L, "Alvin"),
+            new Model(2L, "Emma"),
+            new Model(3L, "Lucy"));
+
+        var args = List.of(1L, 2L, 3L);
+
+        // 记录程序执行开始时间
+        var start = System.currentTimeMillis();
+
+        /**
+         * 下面这段代码具有相同的逻辑
+         *
+         * <pre>
+         * // 定义第一个异步任务, 表示一个已完成且返回 List 集合的任务
+         * var future = CompletableFuture.completedFuture(new ArrayList<Model>());
+         *
+         * // 遍历参数集合元素
+         * for (var arg : args) {
+         *     // 通过下一个参数产生异步任务, 并和前一个任务合并
+         *     future = future.thenCombine(
+         *         CompletableFuture.supplyAsync(() -> service.loadModel(arg)),
+         *         (l, opt) -> {
+         *             // 合并异步任务执行完毕后的结果, 即前一个任务的结果 List 集合和后一个任务的结果 Optional<Model> 进行合并
+         *             if (opt.isPresent()) {
+         *                 l.add(opt.get());
+         *             }
+         *         });
+         * }
+         * </pre>
+         */
+        // 遍历参数集合, 并使用 reduce 进行任务合并
+        var future = args.stream().reduce(
+            // 定义第一个异步任务, 已完成且返回 List 集合
+            CompletableFuture.completedFuture(new ArrayList<Model>()),
+            // 将前一个任务与通过后一个集合元素产生的异步任务进行合并
+            (fc, arg) -> fc.thenCombine(
+                // 根据后一个参数产生一个异步任务
+                CompletableFuture.supplyAsync(() -> service.loadModel(arg)),
+                // 定义异步任务完成后结果如何合并, 即前一个任务的结果 List 集合和后一个任务的结果 Optional<Model> 进行合并
+                (l, opt) -> {
+                    if (opt.isPresent()) {
+                        l.add(opt.get());
+                    }
+                    return l;
+                }),
+            (a, b) -> b);
+
+        // 获取一组异步任务的执行结果, 并确认结果正确
+        var result = future.get(3, TimeUnit.SECONDS);
+        then(result).extracting("id", "name").containsExactlyInAnyOrder(
+            tuple(1L, "Alvin"),
+            tuple(2L, "Emma"),
+            tuple(3L, "Lucy"));
+
+        // 确认任务执行时间, 所有任务都是同时执行
+        then(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - start)).isEqualTo(1L);
     }
 }
