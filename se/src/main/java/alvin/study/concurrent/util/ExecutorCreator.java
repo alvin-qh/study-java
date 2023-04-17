@@ -125,7 +125,7 @@ public final class ExecutorCreator implements AutoCloseable {
      * 这种特性放在线程池场景中, 即每个任务都必须立即有一个线程对其进行执行, 否则就以拒绝任务来处理
      * </p>
      *
-     * @param maxThreads 允许同时运行的最大线程数
+     * @param maxThreads 允许同时运行的最大线程数, 如果为 {@code 0}, 则使用默认线程数
      * @return 线程池执行器对象
      */
     public ExecutorService synchronousQueueExecutor(int maxThreads) {
@@ -150,6 +150,12 @@ public final class ExecutorCreator implements AutoCloseable {
         return executor;
     }
 
+    /**
+     * 创建一个用于执行延时异步任务的线程池执行器对象
+     *
+     * @param maxThreads 最大线程数, 如果为 {@code 0}, 则使用默认线程数
+     * @return 用于执行延时异步任务的线程池执行器对象
+     */
     public ScheduledExecutorService scheduledExecutor(int maxThreads) {
         if (maxThreads <= 0) {
             // 获取当前 CPU 的逻辑内核数 (Logical Kernel)
@@ -159,6 +165,7 @@ public final class ExecutorCreator implements AutoCloseable {
         // 实例化延迟任务线程池对象
         var executor = new ScheduledThreadPoolExecutor(maxThreads);
 
+        // 存储线程池对象以便适时关闭
         recordHistory(executor);
         return executor;
     }
