@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.LockSupport;
 
@@ -79,7 +80,7 @@ class CompletableFutureTest {
     void supplyAsync_shouldExecuteAsyncMethodAndGetResultByCommonPool() throws Exception {
         var service = new BlockedService(new Model(1L, "Alvin"));
 
-        // 异步执行方法
+        // 启动异步任务
         var future = CompletableFuture.supplyAsync(() -> service.loadModel(1L));
 
         // 获取异步执行方法的返回值, 并确认返回值正确
@@ -115,13 +116,114 @@ class CompletableFutureTest {
         // 创建线程池执行器对象
         var executor = executorCreator.arrayBlockingQueueExecutor(20);
 
-        // 异步执行方法
+        // 启动异步任务
         var future = CompletableFuture.supplyAsync(() -> service.loadModel(1L), executor);
 
         // 获取异步执行方法的返回值, 并确认返回值正确
         // 异步任务使用约 1s 执行完毕返回结果
         var model = future.get(1100, TimeUnit.MILLISECONDS);
         then(model).isPresent().get().extracting("id", "name").containsExactly(1L, "Alvin");
+    }
+
+    /**
+     * 获取异步任务的结果
+     *
+     * <p>
+     * 通过 {@link CompletableFuture#getNow(Object) CompletableFuture.getNow(T)} 方法可以从异步任务对象中获取执行结果,
+     * 如果异步任务已经结束, 则结果立即被返回, 如果异步任务尚未结束, 则返回由参数指定的缺省值
+     * </p>
+     *
+     * <p>
+     * 而 {@link CompletableFuture#get()} 方法会阻塞当前线程, 直到异步任务执行完毕返回结果
+     * </p>
+     *
+     * <p>
+     * 可以通过 {@link CompletableFuture#get(long, TimeUnit)} 方法设置等待时间, 如果在此时间内异步任务执行完毕, 则返回其结果,
+     * 否则抛出 {@link TimeoutException} 异常
+     * </p>
+     */
+    @Test
+    void getResult_shouldGetResultOfAsyncTask() throws Exception {
+        var service = new BlockedService(new Model(1L, "Alvin"));
+
+        // 不等待, 立即获取结果
+        {
+            var start = System.currentTimeMillis();
+
+            // 启动异步任务
+            var future = CompletableFuture.supplyAsync(() -> service.loadModel(1L));
+
+            // 立即获取结果, 并指定缺省值
+            var result = future.getNow(Optional.empty());
+
+            // 确认此时任务尚未结束, 结果为缺省值
+            then(result).isEmpty();
+            // 确认获取结果未经过等待
+            then(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - start)).isEqualTo(0);
+        }
+
+        // 等待指定时间后获取结果
+        {
+            var start = System.currentTimeMillis();
+
+            // 启动异步任务
+            var future = CompletableFuture.supplyAsync(() -> service.loadModel(1L));
+
+            // 等待任务, 如果任务在 2s 内结束, 则获取结果, 否则抛出 TimeoutException 异常
+            var result = future.get(2, TimeUnit.SECONDS);
+
+            // 确认 2s 内任务已经完成, 结果为预期结果
+            then(result).isPresent().get().extracting("id", "name").containsExactly(1L, "Alvin");
+            // 确认整个任务耗时 1s 左右
+            then(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - start)).isEqualTo(1);
+
+            // 在已经完成的任务上再次尝试立即获取结果, 这次结果立即被获取到
+            result = future.getNow(Optional.empty());
+            then(result).isPresent().get().extracting("id", "name").containsExactly(1L, "Alvin");
+        }
+
+        // 一直等待, 直到任务执行完毕, 获取结果
+        {
+            var start = System.currentTimeMillis();
+
+            // 启动异步任务
+            var future = CompletableFuture.supplyAsync(() -> service.loadModel(1L));
+
+            // 等待任务, 直到结束, 获取结果
+            var result = future.get();
+
+            // 确认结果为预期结果
+            then(result).isPresent().get().extracting("id", "name").containsExactly(1L, "Alvin");
+            // 确认整个任务耗时 1s 左右
+            then(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - start)).isEqualTo(1);
+
+            // 在已经完成的任务上再次尝试立即获取结果, 这次结果立即被获取到
+            result = future.getNow(Optional.empty());
+            then(result).isPresent().get().extracting("id", "name").containsExactly(1L, "Alvin");
+        }
+    }
+
+    @Test
+    void complete_shouldGetResultOfAsyncTask() throws Exception {
+        var service = new BlockedService(new Model(1L, "Alvin"));
+
+        // 结束
+        {
+
+        }
+
+        var start = System.currentTimeMillis();
+
+        // 启动异步任务
+        var future = CompletableFuture.supplyAsync(() -> service.loadModel(1L));
+
+        var result = future.complete
+        then(result).isEmpty();
+        then(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - start)).isEqualTo(0);
+
+        result = future.get();
+        then(result).isPresent().get().extracting("id", "name").containsExactly(1L, "Alvin");
+        then(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - start)).isEqualTo(1);
     }
 
     /**
@@ -322,9 +424,7 @@ class CompletableFutureTest {
                 CompletableFuture.supplyAsync(() -> service.loadModel(arg)),
                 // 定义异步任务完成后结果如何合并, 即前一个任务的结果 List 集合和后一个任务的结果 Optional<Model> 进行合并
                 (models, opt) -> {
-                    if (opt.isPresent()) {
-                        models.add(opt.get());
-                    }
+                    opt.ifPresent(models::add);
                     return models;
                 }),
             // 如何合并每次 reduce 产生的结果, 因为 reduce 是发生在一个集合对象上, 所以 r1, r2 表示同一个对象, 无需合并
