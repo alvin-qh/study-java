@@ -20,16 +20,20 @@ public class BlockedService {
     // 模型类型
     public record Model(long id, String name) {}
 
+    // 每次操作需要等待的时间, 单位毫秒
+    private static final long DELAY_MILLS = 1000;
+
     // 保存 id 和模型对象对应关系的 Map 对象
     private Map<Long, Model> modelMap = new ConcurrentHashMap<>();
 
     /**
      * 构造器, 通过模型对象数组进行初始化
      *
+     * @param delayMills 等待时间
      * @param initModels 模型对象数组, 其元素作为当前对象的初始存储内容
      */
     @SafeVarargs
-    public BlockedService(Model... initModels) {
+    public BlockedService(long delayMills, Model... initModels) {
         Arrays.stream(initModels).forEach(m -> modelMap.put(m.id(), m));
     }
 
@@ -65,7 +69,7 @@ public class BlockedService {
      * 令当前线程阻塞 1s, 以模拟 IO 延迟等阻塞情况
      */
     @SneakyThrows
-    private static void delay() {
-        Thread.sleep(1000);
+    private void delay() {
+        Thread.sleep(DELAY_MILLS);
     }
 }

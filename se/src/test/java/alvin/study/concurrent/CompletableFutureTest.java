@@ -2,16 +2,22 @@ package alvin.study.concurrent;
 
 import static org.assertj.core.api.Assertions.tuple;
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.LockSupport;
+import java.util.stream.LongStream;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -78,7 +84,7 @@ class CompletableFutureTest {
      */
     @Test
     void supplyAsync_shouldExecuteAsyncMethodAndGetResultByCommonPool() throws Exception {
-        var service = new BlockedService(new Model(1L, "Alvin"));
+        var service = new BlockedService(1000, new Model(1L, "Alvin"));
 
         // 启动异步任务
         var future = CompletableFuture.supplyAsync(() -> service.loadModel(1L));
@@ -111,7 +117,7 @@ class CompletableFutureTest {
      */
     @Test
     void supplyAsync_shouldExecuteAsyncMethodAndGetResultByCustomPool() throws Exception {
-        var service = new BlockedService(new Model(1L, "Alvin"));
+        var service = new BlockedService(1000, new Model(1L, "Alvin"));
 
         // 创建线程池执行器对象
         var executor = executorCreator.arrayBlockingQueueExecutor(20);
@@ -144,7 +150,7 @@ class CompletableFutureTest {
      */
     @Test
     void getResult_shouldGetResultOfAsyncTask() throws Exception {
-        var service = new BlockedService(new Model(1L, "Alvin"));
+        var service = new BlockedService(1000, new Model(1L, "Alvin"));
 
         // 不等待, 立即获取结果
         {
@@ -203,27 +209,133 @@ class CompletableFutureTest {
         }
     }
 
+    /**
+     * 结束任务
+     *
+     * <p>
+     * 通过 {@link CompletableFuture#complete(Object) CompletableFuture.complete(T)} 方法可以立即结束当前异步任务. 如果执行
+     * {@code complete} 方法前任务已结束, 则正常返回任务结果, 反之以 {@code complete} 方法的参数作为该任务的结果
+     * </p>
+     *
+     * <p>
+     * 通过 {@link CompletableFuture#completeAsync(java.util.function.Supplier) CompletableFuture.completeAsync(Supplier)}
+     * 方法可以为当前任务增加一个异步回调, 如果该回调执行完成前任务已结束, 则正常返回任务结果, 否则以该回调的结果为任务结果并结束任务.
+     * {@code completeAsync} 方法也可以通过第二个参数指定一个自定义线程池
+     * </p>
+     *
+     * <p>
+     * 通过 {@link CompletableFuture#completeOnTimeout(Object, long, TimeUnit)
+     * CompletableFuture.completeOnTimeout(T, long, TimeUnit)} 方法可以为当前任务增加一个延时异步回调, 在指定的时间内, 如果任务结束,
+     * 则正常返回任务结果, 否则执行该回调, 并以回调结果作为任务结果, 结束异步任务
+     * </p>
+     *
+     * <p>
+     * 通过 {@link CompletableFuture#completeExceptionally(Throwable)} 方法可以设置一个异常对象, 当调用此方法时任务尚未结束,
+     * 则结束当前异步任务, 之后在执行 {@link CompletableFuture#get()} 方法时会抛出设定的异常
+     * </p>
+     *
+     * <p>
+     * 注意, 以上方法都有一个"时序"问题, 即"原异步任务执行状态", 如果原异步任务已经执行完毕, 则这些方法都无法起到作用, 只有原异步任务处于
+     * {@code PENDING} 状态时, 才会结束该任务并设置任务结果 (或异常)
+     * </p>
+     */
     @Test
     void complete_shouldGetResultOfAsyncTask() throws Exception {
-        var service = new BlockedService(new Model(1L, "Alvin"));
+        var service = new BlockedService(1000, new Model(1L, "Alvin"));
 
-        // 结束
+        // 立即结束尚未结束的异步任务, 并设置任务结果值
         {
+            var start = System.currentTimeMillis();
 
+            // 启动异步任务
+            var future = CompletableFuture.supplyAsync(() -> service.loadModel(1L));
+
+            // 如果任务尚未结束, 则结束任务, 并设置任务结果
+            var completed = future.complete(Optional.empty());
+
+            // 确认任务已经结束
+            then(completed).isTrue();
+            then(future.isDone()).isTrue();
+
+            // 获取任务结果, 确认是设置的结果而非任务本身执行的返回值
+            var result = future.get();
+            then(result).isEmpty();
+
+            // 确认任务到结束为消耗原本时间, 即因为 complete 方法的调用导致任务提前结束
+            then(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - start)).isEqualTo(0);
         }
 
-        var start = System.currentTimeMillis();
+        // 通过一个异步回调, 设置
+        {
+            var start = System.currentTimeMillis();
 
-        // 启动异步任务
-        var future = CompletableFuture.supplyAsync(() -> service.loadModel(1L));
+            // 启动异步任务
+            var future = CompletableFuture.supplyAsync(() -> service.loadModel(1L));
 
-        var result = future.complete
-        then(result).isEmpty();
-        then(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - start)).isEqualTo(0);
+            // 为任务添加一个异步 complete 回调, 如果该回调执行完成任务仍未结束, 则以该回调的返回值作为任务结果并结束任务
+            // 这里整个任务执行完成需 1s, 所以 complete 回调会率先完成, 将 Optional.empty() 作为任务结果并提前结束任务
+            future = future.completeAsync(() -> Optional.empty());
 
-        result = future.get();
-        then(result).isPresent().get().extracting("id", "name").containsExactly(1L, "Alvin");
-        then(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - start)).isEqualTo(1);
+            // 确认任务结果为 Optional.empty()
+            var result = future.get();
+            then(result).isEmpty();
+
+            // 确认任务到结束为消耗原本时间, 即因为 complete 方法的调用导致任务提前结束
+            then(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - start)).isEqualTo(0);
+        }
+
+        {
+            var start = System.currentTimeMillis();
+
+            // 启动异步任务
+            var future = CompletableFuture.supplyAsync(() -> service.loadModel(1L));
+
+            // 为任务添加一个异步 complete 回调, 在此, complete 回调执行所需的时间超出任务执行完毕所需的时间, 所以任务正常执行, 返回结果
+            future = future.completeAsync(() -> {
+                LockSupport.parkNanos(TimeUnit.MILLISECONDS.toNanos(1200));
+                return Optional.empty();
+            });
+
+            // 确认任务符合预期
+            var result = future.get();
+            then(result).isPresent().get().extracting("id", "name").containsExactly(1L, "Alvin");
+
+            // 确认整个任务耗时 1s 左右, 为原本异步任务的正常执行时间
+            then(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - start)).isEqualTo(1);
+        }
+
+        {
+            // 启动异步任务
+            var future = CompletableFuture.supplyAsync(() -> service.loadModel(1L));
+
+            // 为任务添加一个异步 complete 回调, 在此, complete 回调执行所需的时间超出任务执行完毕所需的时间, 所以任务正常执行, 返回结果
+            future = future.completeOnTimeout(Optional.empty(), 800, TimeUnit.MILLISECONDS);
+
+            // 确认任务符合预期
+            var result = future.get();
+            then(result).isEmpty();
+        }
+
+        {
+            // 启动异步任务
+            var future = CompletableFuture.supplyAsync(() -> service.loadModel(1L));
+
+            // 设置一个异常, 并结束当前任务
+            var completed = future.completeExceptionally(new IllegalStateException("Timeout"));
+
+            // 确认任务已结束
+            then(completed).isTrue();
+            then(future).isDone();
+
+            // 确认任务是以"抛出异常"方式结束的
+            then(future.isCompletedExceptionally());
+
+            // 确认获取任务结果时会抛出指定异常
+            thenThrownBy(() -> future.get())
+                    .isInstanceOf(ExecutionException.class)
+                    .hasCauseInstanceOf(IllegalStateException.class)
+                    .hasMessageContaining("Timeout");
+        }
     }
 
     /**
@@ -270,7 +382,7 @@ class CompletableFutureTest {
      */
     @Test
     void thenApply_shouldExecuteAsyncMethodInChain() throws Exception {
-        var service = new BlockedService();
+        var service = new BlockedService(1000);
 
         // 链式调用执行异步任务, 返回的结果表示最后一个异步任务执行情况
         var future = CompletableFuture
@@ -313,7 +425,7 @@ class CompletableFutureTest {
      */
     @Test
     void whenComplete_shouldCallbackWhenAsyncTaskWasCompleted() throws Exception {
-        var service = new BlockedService();
+        var service = new BlockedService(1000);
 
         // 记录程序执行开始时间
         var start = System.currentTimeMillis();
@@ -386,6 +498,7 @@ class CompletableFutureTest {
     @Test
     void thenCombine_shouldCombineMultipleAsyncTasksWorkAtSameTime() throws Exception {
         var service = new BlockedService(
+            1000,
             new Model(1L, "Alvin"),
             new Model(2L, "Emma"),
             new Model(3L, "Lucy"));
@@ -458,6 +571,7 @@ class CompletableFutureTest {
     @Test
     void thenCompose_shouldExecuteAsyncTaskOneByOneAndCombineTheResult() throws Exception {
         var service = new BlockedService(
+            1000,
             new Model(1L, "Alvin"),
             new Model(2L, "Emma"),
             new Model(3L, "Lucy"));
@@ -522,6 +636,7 @@ class CompletableFutureTest {
     @Test
     void thenAcceptBoth_shouldAcceptCurrentAndOtherAsyncMethods() throws Exception {
         var service = new BlockedService(
+            1000,
             new Model(1L, "Alvin"),
             new Model(2L, "Emma"));
 
@@ -573,6 +688,7 @@ class CompletableFutureTest {
     @Test
     void acceptEither_shouldGetResultBetweenTwoTasksWhichReturnedFirst() throws Exception {
         var service = new BlockedService(
+            1000,
             new Model(1L, "Alvin"),
             new Model(2L, "Emma"));
 
@@ -598,5 +714,199 @@ class CompletableFutureTest {
 
         // 确认和并的结果符合预期, 为耗时较少的那个任务的结果
         then(result.get()).extracting("id", "name").contains(2L, "Emma");
+    }
+
+    /**
+     * 获取异步任务的执行状态
+     *
+     * <p>
+     * 本例以一个 DAG 任务图来构建任务关系, 并展示各个异步任务的状态, 整个任务图如下:
+     * </p>
+     *
+     * <p>
+     * <img src="assets/completable_future_dag.png"/>, 其中:
+     *
+     * <ul>
+     * <li>
+     * F0 任务作为所有任务的起点, 其作用是产生一系列随机数据 (模拟从网络抓取数据包)
+     * </li>
+     * <li>
+     * F0 执行完毕后, 接着执行 F1-1 和 F2-1 两个任务 (并发执行), F1-1 会将 F0 产生数据中 id 为偶数的部分分离出来, 而 F2-1 会将 F0
+     * 产生数据中 id 为奇数的部分分离出来
+     * </li>
+     * <li>
+     * F1-2 会在 F1-1 结束后运行, 将 F1-1 分离出的那部分数据进程存储, 每存储一条数据需要 10ms 延时, 所以 F1-2
+     * 相当于是若干并发任务组合在一起, 每个任务存储一条数据; 类似的, F2-1 也是完成同样的工作
+     * </li>
+     * <li>
+     * F3-1 任务是当 F1-2 和 F2-2 两个任务执行完毕后, 对执行结果的归并
+     * </li>
+     * <li>
+     * F3-2 任务是将 F3-1 归并出来的结果, 将数据从数据源中再读取出来
+     * </li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * 本例中会调用 {@link BlockedService#saveModel(Model)} 和 {@link BlockedService#loadModel(long)} 方法, 该方法会阻塞约
+     * 1s 时间, 如果 1000 个对象逐一进行一次读写操作, 则总体会耗时 1 * 1000 * 2 约 2000s; 本例中将所有的写操作和读操作并发执行,
+     * 所以整体耗时 2s 就可以完成 (其中 1s 完成所有的写操作, 之后在通过 1s 完成所有的读操作), 加上其它任务的损耗, 约 2.2s
+     * 内即可以完成所有操作
+     * </p>
+     *
+     * <p>
+     * 本例中计算任务不多, 线程主要损耗来自于阻塞等待, 可以看作是 IO 密集型任务, 所以使用
+     * {@link ExecutorCreator#synchronousQueueExecutor(int)} 方法来创建线程池, 即用大量线程执行任务以应对线程阻塞情况, 提高并发性能
+     * </p>
+     */
+    @Test
+    void status_shouldGetStatusOfAsyncTask() throws Exception {
+        var service = new BlockedService(1000);
+
+        // 创建线程池对象, 使用大量线程保证并发性, 即每个任务均有一个线程来执行 (IO 密集型)
+        var executor = executorCreator.synchronousQueueExecutor(0);
+
+        // 根任务: 产生一系列随机数据, 模拟从网络抓取数据的情形
+        var f0 = CompletableFuture.supplyAsync(() -> {
+            try {
+                // 等待通知, 启动任务
+                synchronized (service) {
+                    service.wait();
+                }
+                // 生成 1000 个数据
+                return generateModels(1000);
+            } catch (InterruptedException ignore) {
+                return List.<Model>of();
+            }
+        },
+            executor);
+
+        // 任务 1.1: 筛选 id 为偶数的任务
+        var f1_1 = f0.thenComposeAsync(
+            models -> CompletableFuture.supplyAsync(() -> models.stream().filter(m -> m.id() % 2 == 0).toList()),
+            executor);
+
+        // 任务 1.2: 存储 id 为偶数的任务
+        var f1_2 = f1_1.thenComposeAsync(models -> saveModels(service, models, executor), executor);
+
+        // 任务 2.1: 筛选 id 为奇数的任务
+        var f2_1 = f0.thenComposeAsync(
+            models -> CompletableFuture.supplyAsync(() -> models.stream().filter(m -> m.id() % 2 != 0).toList()),
+            executor);
+
+        // 任务 2.2: 存储 id 为奇数的任务
+        var f2_2 = f2_1.thenComposeAsync(models -> saveModels(service, models, executor), executor);
+
+        // 任务 3: 合并两部分 id
+        var f3_1 = f1_2.thenCombineAsync(
+            f2_2,
+            (ids1, ids2) -> Stream.concat(ids1.stream(), ids2.stream()).sorted().toList(),
+            executor);
+
+        // 任务 3.2: 根据 id 读取数据
+        var f3_2 = f3_1.thenComposeAsync(ids -> loadModels(service, ids, executor), executor);
+
+        // 确认各个任务所被依赖的任务个数
+        then(f0.getNumberOfDependents()).isEqualTo(2);
+        then(f1_1.getNumberOfDependents()).isEqualTo(1);
+        then(f1_2.getNumberOfDependents()).isEqualTo(1);
+        then(f2_1.getNumberOfDependents()).isEqualTo(1);
+        then(f2_2.getNumberOfDependents()).isEqualTo(1);
+        then(f3_1.getNumberOfDependents()).isEqualTo(1);
+        then(f3_2.getNumberOfDependents()).isEqualTo(0);
+
+        // 发出通知, 令 T0 任务开始执行
+        synchronized (service) {
+            service.notify();
+        }
+
+        // 获取最后一个任务的结果, 当该任务完成后, 之前的所有任务均已完成
+        // 整个任务耗时约 2s, 即所有的对象存储和读取均为并发执行
+        var results = f3_2.get(2200, TimeUnit.MILLISECONDS);
+
+        // 确认各个任务的状态, 都已经结束
+        then(f0.isDone()).isTrue();
+        then(f1_1.isDone()).isTrue();
+        then(f1_2.isDone()).isTrue();
+        then(f2_1.isDone()).isTrue();
+        then(f2_2.isDone()).isTrue();
+        then(f3_1.isDone()).isTrue();
+        then(f3_2.isDone()).isTrue();
+
+        // 确认任务执行结果
+        then(results).hasSize(1000).containsAnyElementsOf(f0.get());
+    }
+
+    /**
+     * 产生 {@code count} 个 {@link Model} 对象组成的 {@link List} 集合
+     *
+     * @param count {@link List} 集合中 {@link Model} 元素的个数
+     * @return 包含指定数量 {@link Model} 对象的 {@link List} 集合
+     */
+    private List<Model> generateModels(int count) {
+        var rand = new Random();
+
+        return LongStream
+                // 产生 [1..count] 区间内的整数值
+                .range(1, count + 1)
+                // 将产生的整数值装箱
+                .boxed()
+                // 打乱顺序
+                .sorted((l, r) -> rand.nextInt(-1, 1))
+                // 将每个整数值转为 Model 类型对象
+                .map(id -> new Model(id, String.format("Name-%d", id)))
+                .toList();
+    }
+
+    /**
+     * 将 {@link Model} 对象进行保存
+     *
+     * @param service 用于保存 {@link Model} 对象的服务类对象
+     * @param models  {@link Model} 对象集合
+     * @return 异步任务对象, 执行结果为已保存对象的 id 集合
+     */
+    private CompletableFuture<List<Long>> saveModels(BlockedService service, List<Model> models, Executor executor) {
+        // 将模型对象集合转为存储模型对象的任务
+        return models.stream().reduce(
+            // 用于合并之后任务的异步任务
+            CompletableFuture.completedFuture(new ArrayList<Long>()),
+            // 将任务和前一个任务进行合并
+            (fc, model) -> fc.thenCombineAsync(
+                // 存储一个模型对象的异步任务
+                CompletableFuture.supplyAsync(() -> service.saveModel(model), executor),
+                // 执行完毕后, 和前一个任务结果进行合并
+                (results, success) -> {
+                    if (success) {
+                        results.add(model.id());
+                    }
+                    return results;
+                },
+                executor),
+            (a, b) -> b);
+    }
+
+    /**
+     * 根据 id 集合读取对应的 {@link Model} 对象集合
+     *
+     * @param service 用于读取 {@link Model} 对象的服务类对象
+     * @param ids     id 值集合
+     * @return 异步任务对象, 执行结果读取到的所有 {@link Model} 对象集合
+     */
+    private CompletableFuture<List<Model>> loadModels(BlockedService service, List<Long> ids, Executor executor) {
+        // 将 id 集合转为读取模型对象的任务
+        return ids.stream().reduce(
+            // 用于合并之后任务的异步任务
+            CompletableFuture.completedFuture(new ArrayList<Model>()),
+            // 将任务和前一个任务进行合并
+            (fc, id) -> fc.thenCombineAsync(
+                // 根据 id 读取一个模型对象的任务
+                CompletableFuture.supplyAsync(() -> service.loadModel(id), executor),
+                // 执行完毕后, 和前一个任务结果进行合并
+                (models, opt) -> {
+                    opt.ifPresent(m -> models.add(m));
+                    return models;
+                },
+                executor),
+            (a, b) -> b);
     }
 }
