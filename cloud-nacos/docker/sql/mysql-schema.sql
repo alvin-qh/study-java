@@ -106,12 +106,12 @@ CREATE TABLE `config_tags_relation` (
 
 CREATE TABLE `group_capacity` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `group_id` varchar(128) NOT NULL DEFAULT '' COMMENT 'Group ID，空字符表示整个集群',
-  `quota` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '配额，0表示使用默认值',
+  `group_id` varchar(128) NOT NULL DEFAULT '' COMMENT 'Group ID, 空字符表示整个集群',
+  `quota` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '配额, 0表示使用默认值',
   `usage` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '使用量',
-  `max_size` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '单个配置大小上限，单位为字节，0表示使用默认值',
-  `max_aggr_count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '聚合子配置最大个数，，0表示使用默认值',
-  `max_aggr_size` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '单个聚合数据的子配置大小上限，单位为字节，0表示使用默认值',
+  `max_size` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '单个配置大小上限, 单位为字节, 0表示使用默认值',
+  `max_aggr_count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '聚合子配置最大个数, , 0表示使用默认值',
+  `max_aggr_size` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '单个聚合数据的子配置大小上限, 单位为字节, 0表示使用默认值',
   `max_history_count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最大变更历史数量',
   `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
@@ -143,11 +143,11 @@ CREATE TABLE `his_config_info` (
 CREATE TABLE `tenant_capacity` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `tenant_id` varchar(128) NOT NULL DEFAULT '' COMMENT 'Tenant ID',
-  `quota` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '配额，0表示使用默认值',
+  `quota` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '配额, 0表示使用默认值',
   `usage` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '使用量',
-  `max_size` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '单个配置大小上限，单位为字节，0表示使用默认值',
+  `max_size` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '单个配置大小上限, 单位为字节, 0表示使用默认值',
   `max_aggr_count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '聚合子配置最大个数',
-  `max_aggr_size` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '单个聚合数据的子配置大小上限，单位为字节，0表示使用默认值',
+  `max_aggr_size` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '单个聚合数据的子配置大小上限, 单位为字节, 0表示使用默认值',
   `max_history_count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最大变更历史数量',
   `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
@@ -193,4 +193,7 @@ INSERT INTO roles (username, role) VALUES ('nacos', 'ROLE_ADMIN');
 
 -- 创建数据库用户
 CREATE USER 'nacos'@'%' IDENTIFIED WITH mysql_native_password BY 'nacos';
-GRANT ALL PRIVILEGES ON nacos_config.* to 'nacos'@'%' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON `nacos_config`.* to 'nacos'@'%';
+
+-- 为容器健康检查创建用户, 本地访问, 无权限, 无密码
+CREATE USER 'health'@'localhost' IDENTIFIED WITH mysql_native_password BY '';
