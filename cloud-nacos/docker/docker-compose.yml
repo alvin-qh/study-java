@@ -25,11 +25,7 @@ services:
     networks:
       - nacos_network
     healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "mysqladmin ping -uhealth | grep -q 'alive'"
-        ]
+      test: ["CMD-SHELL", "mysqladmin ping -uhealth | grep -q 'alive'"]
       interval: 30s
       timeout: 30s
       retries: 5
@@ -63,7 +59,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "curl -fs localhost:8848/nacos/actuator/prometheus"
+          "curl -fs localhost:8848/nacos/actuator/prometheus &> /dev/null 2>&1 || exit 1",
         ]
       interval: 30s
       timeout: 30s
@@ -95,7 +91,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "curl -fs localhost:8848/nacos/actuator/prometheus"
+          "curl -fs localhost:8848/nacos/actuator/prometheus &> /dev/null 2>&1 || exit 1",
         ]
       interval: 30s
       timeout: 30s
@@ -127,7 +123,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "curl -fs localhost:8848/nacos/actuator/prometheus"
+          "curl -fs localhost:8848/nacos/actuator/prometheus &> /dev/null 2>&1 || exit 1",
         ]
       interval: 30s
       timeout: 30s
@@ -161,7 +157,11 @@ services:
           memory: 16M
     restart: always
     healthcheck:
-      test: [ "CMD-SHELL", "curl -fs localhost:8090/stub_status" ]
+      test:
+        [
+          "CMD-SHELL",
+          "curl -fs localhost:8090/stub_status &> /dev/null 2>&1 || exit 1",
+        ]
       interval: 30s
       timeout: 30s
       retries: 5
