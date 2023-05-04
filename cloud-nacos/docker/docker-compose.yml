@@ -1,4 +1,5 @@
 version: "3.9"
+
 services:
   percona:
     # nacos 配置存储数据库
@@ -17,8 +18,8 @@ services:
     env_file:
       - ./env/percona.env
     volumes:
-      - ./conf/percona.cnf:/etc/my.cnf.d/percona.cnf
-      - ./sql:/docker-entrypoint-initdb.d # 设置初始化 sql 脚本的路径
+      - ./conf/percona.cnf:/etc/my.cnf.d/percona.cnf:ro # 配置文件
+      - ./sql/mysql-schema.sql:/docker-entrypoint-initdb.d/mysql-schema.sql:ro # 设置初始化 sql 脚本的路径
       - ./percona_logs:/var/log/mysql
       - percona_data:/var/lib/mysql
     networks:
@@ -27,9 +28,9 @@ services:
       test:
         [
           "CMD-SHELL",
-          "mysqladmin ping -uhealth | grep \"alive\""
+          "mysqladmin ping -uhealth | grep -q 'alive'"
         ]
-      interval: 1m
+      interval: 30s
       timeout: 30s
       retries: 5
       start_period: 10s
@@ -62,9 +63,9 @@ services:
       test:
         [
           "CMD-SHELL",
-          "curl -f localhost:8848/nacos/actuator/prometheus"
+          "curl -fs localhost:8848/nacos/actuator/prometheus"
         ]
-      interval: 1m
+      interval: 30s
       timeout: 30s
       retries: 5
       start_period: 10s
@@ -94,9 +95,9 @@ services:
       test:
         [
           "CMD-SHELL",
-          "curl -f localhost:8848/nacos/actuator/prometheus"
+          "curl -fs localhost:8848/nacos/actuator/prometheus"
         ]
-      interval: 1m
+      interval: 30s
       timeout: 30s
       retries: 5
       start_period: 10s
@@ -126,9 +127,9 @@ services:
       test:
         [
           "CMD-SHELL",
-          "curl -f localhost:8848/nacos/actuator/prometheus"
+          "curl -fs localhost:8848/nacos/actuator/prometheus"
         ]
-      interval: 1m
+      interval: 30s
       timeout: 30s
       retries: 5
       start_period: 10s
@@ -160,8 +161,8 @@ services:
           memory: 16M
     restart: always
     healthcheck:
-      test: [ "CMD-SHELL", "curl -f localhost:8090/stub_status" ]
-      interval: 1s
+      test: [ "CMD-SHELL", "curl -fs localhost:8090/stub_status" ]
+      interval: 30s
       timeout: 30s
       retries: 5
       start_period: 10s

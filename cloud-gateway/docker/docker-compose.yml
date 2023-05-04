@@ -1,4 +1,5 @@
 version: "3.9"
+
 services:
   # 启动 nacos 实例
   nacos:
