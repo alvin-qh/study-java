@@ -7,18 +7,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;
 
 /**
- * 测试 {@link SlidingWindowRateLimiter} 类型, 通过滑动窗口限流类型
+ * 测试 {@link SlidingWindowRateLimiter} 类型, 通过滑动窗口进行限流
  */
 public class SlidingWindowRateLimiterTest extends RateLimiterTest {
     /**
-     * 测试 {@link SlidingWindowRateLimiter#tryAcquire(int)} 方法, 通过固定窗口进行限流
+     * 测试 {@link SlidingWindowRateLimiter#tryAcquire(int)} 方法, 通过滑动窗口进行限流
      *
      * <p>
      * 本次测试参数值为 {@code 1} 的情况
      * </p>
      */
     @Test
-    void testTryAcquire_shouldLimitByFixWindowOneByOne() {
+    void testTryAcquire_shouldLimitOneByOne() {
         // 实例化滑动窗口限流对象, 时间窗口 1s, 分 10 个块 (即每个块 100ms), 窗口中限制 50 次请求
         var limiter = new SlidingWindowRateLimiter(1000, 10, 50);
 
@@ -46,15 +46,15 @@ public class SlidingWindowRateLimiterTest extends RateLimiterTest {
     }
 
     /**
-     * 测试 {@link SlidingWindowRateLimiter#tryAcquire(int)} 方法, 通过固定窗口进行限流
+     * 测试 {@link SlidingWindowRateLimiter#tryAcquire(int)} 方法, 通过滑动窗口进行限流
      *
      * <p>
      * 本次测试参数值大于 {@code 1} 的情况
      * </p>
      */
     @Test
-    void testTryAcquire_shouldLimitByFixWindowByBatch() {
-        // 实例化固定窗口限流对象, 时间窗口 1s, 限制 50 次请求
+    void testTryAcquire_shouldLimitByBatch() {
+        // 实例化滑动窗口限流对象, 时间窗口 1s, 分 10 个块 (即每个块 100ms), 窗口中限制 50 次请求
         var limiter = new SlidingWindowRateLimiter(1000, 10, 50);
 
         // 先请求 30 次调用, 在限流次数范围内, 返回允许

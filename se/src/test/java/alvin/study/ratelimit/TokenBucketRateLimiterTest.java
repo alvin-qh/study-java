@@ -7,11 +7,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;
 
 /**
- * 测试 {@link FixedWindowRateLimit} 类型, 通过固定窗口限流类型
+ * 测试 {@link TokenBucketRateLimiter} 类型, 通过令牌桶进行限流
  */
-class FixedWindowRateLimiterTest extends RateLimiterTest {
+class TokenBucketRateLimiterTest extends RateLimiterTest {
     /**
-     * 测试 {@link FixedWindowRateLimit#tryAcquire(int)} 方法, 通过固定窗口进行限流
+     * 测试 {@link TokenBucketRateLimiter#tryAcquire(int)} 方法, 通过令牌桶进行限流
      *
      * <p>
      * 本次测试参数值为 {@code 1} 的情况
@@ -19,8 +19,8 @@ class FixedWindowRateLimiterTest extends RateLimiterTest {
      */
     @Test
     void testTryAcquire_shouldLimitOneByOne() {
-        // 实例化固定窗口限流对象, 时间窗口 1s, 限制 50 次请求
-        var limiter = new FixedWindowRateLimiter(1000, 50);
+        // 实例化令牌桶进行限流对象, 桶容量 50, 每秒创建 50 个令牌
+        var limiter = new TokenBucketRateLimiter(50, 50);
 
         // 记录通过限流的调用次数
         var executeCount = new AtomicInteger();
@@ -46,7 +46,7 @@ class FixedWindowRateLimiterTest extends RateLimiterTest {
     }
 
     /**
-     * 测试 {@link FixedWindowRateLimit#tryAcquire(int)} 方法, 通过固定窗口进行限流
+     * 测试 {@link SlidingWindowRateLimiter#tryAcquire(int)} 方法, 通过令牌桶进行限流
      *
      * <p>
      * 本次测试参数值大于 {@code 1} 的情况
@@ -54,8 +54,8 @@ class FixedWindowRateLimiterTest extends RateLimiterTest {
      */
     @Test
     void testTryAcquire_shouldLimitByBatch() {
-        // 实例化固定窗口限流对象, 时间窗口 1s, 限制 50 次请求
-        var limiter = new FixedWindowRateLimiter(1000, 50);
+        // 实例化令牌桶进行限流对象, 桶容量 50, 每秒创建 50 个令牌
+        var limiter = new TokenBucketRateLimiter(50, 50);
 
         // 先请求 30 次调用, 在限流次数范围内, 返回允许
         var r = limiter.tryAcquire(30);
