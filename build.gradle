@@ -1,3 +1,10 @@
+// plugins {
+//   id 'org.springframework.boot' version "${VER_SPRING_BOOT2}" apply false
+//   id "org.springframework.boot" version "${VER_SPRING_BOOT3}" apply false
+//   id "io.spring.dependency-management" version "${VER_GRADLE_SPRING_DEPENDENCY_MANAGEMENT}" apply false
+//   id "org.flywaydb.flyway" version "${VER_FLYWAY}" apply false
+// }
+
 apply from: "${rootDir}/gradle/depends-common.gradle"
 
 allprojects {
@@ -50,16 +57,17 @@ allprojects {
 }
 
 subprojects {
-  tasks.withType(JavaCompile) {
+  compileJava {
     options.encoding = "UTF-8"
+    options.annotationProcessorPath = configurations.annotationProcessor
 
-    // 增加编译参数, 以支持编译后仍能通过反射获取参数名, 也可以通过 options.compilerArgs << "-parameters" 语法
-    options.compilerArgs.addAll(["-parameters"])
+    // 增加编译参数, 以支持编译后仍能通过反射获取参数名, 也可以通过 options.compilerArgs.addAll(["-parameters"]) 语法
+    options.compilerArgs << "-parameters"
   }
 
-  // tasks.withType(Test) {
-  //   maxParallelForks = Runtime.runtime.availableProcessors()
-  // }
+  tasks.withType(Test) {
+    // maxParallelForks = Runtime.runtime.availableProcessors()
+  }
 
   dependencies {
     implementation libs.main.common
@@ -69,9 +77,5 @@ subprojects {
     testImplementation libs.test.common
     testCompileOnly compiles.test.common
     testAnnotationProcessor annotations.test.common
-  }
-
-  compileJava {
-    options.annotationProcessorPath = configurations.annotationProcessor
   }
 }
