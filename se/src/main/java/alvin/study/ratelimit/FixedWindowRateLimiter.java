@@ -71,7 +71,6 @@ public class FixedWindowRateLimiter implements RateLimiter {
         // 计算窗口内调用次数是否超出上限
         if (count + permits - 1 >= threshold) {
             return false;
-
         }
 
         count += permits;

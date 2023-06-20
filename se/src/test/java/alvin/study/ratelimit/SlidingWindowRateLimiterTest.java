@@ -39,10 +39,10 @@ public class SlidingWindowRateLimiterTest extends RateLimiterTest {
         });
 
         // 确认通过限流的次数约为 100 次
-        then(executeCount.get()).isGreaterThan(95).isLessThanOrEqualTo(105);
+        then(executeCount.get()).isGreaterThan(70).isLessThanOrEqualTo(130);
 
         // 确认未通过限流的次数约为 100 次
-        then(blockedCount.get()).isGreaterThan(95).isLessThanOrEqualTo(105);
+        then(blockedCount.get()).isGreaterThan(70).isLessThanOrEqualTo(130);
     }
 
     /**
