@@ -1,7 +1,5 @@
-<project
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>alvin.study</groupId>
   <artifactId>study-java</artifactId>
@@ -40,13 +38,15 @@
     <version.javafaker>1.0.2</version.javafaker>
     <version.testng>7.6.1</version.testng>
     <version.awaitility>4.2.0</version.awaitility>
-    <version.slf4j>2.0.4</version.slf4j>
+    <version.log4j2>2.20.0</version.log4j2>
+    <version.slf4j>2.0.7</version.slf4j>
     <version.jooq>3.17.5</version.jooq>
     <version.mybatis-plus>3.5.2</version.mybatis-plus>
     <version.hikari-cp>5.0.1</version.hikari-cp>
     <version.modelmapper>3.1.0</version.modelmapper>
     <version.p6spy>3.9.1</version.p6spy>
     <version.akka>2.8.0</version.akka>
+    <version.jetty>11.0.15</version.jetty>
     <version.kickstart-graphql>14.0.0</version.kickstart-graphql>
     <version.kickstart-graphiql>11.1.0</version.kickstart-graphiql>
     <version.spring-security-test>6.0.0</version.spring-security-test>
@@ -54,6 +54,8 @@
     <version.springdoc>1.6.13</version.springdoc>
     <version.spirng-cloud>2021.0.5</version.spirng-cloud>
     <version.alibaba-clould>2021.0.4.0</version.alibaba-clould>
+
+    <version.servlet-api>6.0.0</version.servlet-api>
 
     <!-- 定义插件版本 -->
     <version.maven-compiler>3.11.0</version.maven-compiler>
@@ -79,7 +81,8 @@
     <!-- <module>guava</module> -->
     <!-- <module>security</module> -->
     <!-- <module>jackson</module> -->
-    <module>async</module>
+    <!-- <module>async</module> -->
+    <module>socketio</module>
     <!-- <module>boot-mvc</module> -->
     <!-- <module>boot-aop</module> -->
     <!-- <module>boot-spel</module> -->

@@ -8,6 +8,7 @@ include(
   // "guava",
   // "security",
   // "jackson",
+  "socketio",
   // "async",
   // "boot-mvc",
   // "boot-aop",
