@@ -1,19 +1,18 @@
 <project
   xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>study-java-spring-boot3</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
   <name>${project.artifactId}</name>
+  <artifactId>study-java-spring-boot3</artifactId>
+  <packaging>pom</packaging>
 
   <!-- 从根项目 pom.xml 继承 -->
   <parent>
     <groupId>alvin.study</groupId>
     <artifactId>study-java</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <relativePath>pom.xml</relativePath>
+    <relativePath>./pom.xml</relativePath>
   </parent>
 
   <dependencyManagement>
@@ -53,7 +52,6 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>${version.slf4j}</version>
     </dependency>
 
     <!-- Spring Boot Test Starter 依赖 -->
@@ -96,8 +94,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>17</source>
-          <target>17</target>
+          <source>${jdk-version}</source>
+          <target>${jdk-version}</target>
           <compilerArgs>
             <!-- 编译时保留参数名 -->
             <arg>-parameters</arg>
@@ -112,7 +110,7 @@
             <path>
               <groupId>org.springframework.boot</groupId>
               <artifactId>spring-boot-configuration-processor</artifactId>
-              <version>${version.spring-boot}</version>
+              <version>${version.spring-boot2}</version>
             </path>
           </annotationProcessorPaths>
         </configuration>
