@@ -20,7 +20,7 @@ public class Migration {
         Flyway.configure()
                 .dataSource(dataSource)
                 .baselineOnMigrate(true)
-                .locations("classpath:/migration")
+                .locations("classpath:migration")
                 .table("schema_version")
                 .load()
                 .migrate();

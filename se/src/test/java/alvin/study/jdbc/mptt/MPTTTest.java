@@ -69,7 +69,6 @@ abstract class MPTTTest extends JDBCTest {
      * 根据表示根节点的 {@link TreeNode} 对象, 在数据表中创建符合 MPTT 规范的记录
      *
      * @param root 表示根节点的 {@link TreeNode} 对象
-     * @throws SQLException
      */
     protected void createMptt(TreeNode root) throws SQLException {
         getConnectionManager().beginTransaction();

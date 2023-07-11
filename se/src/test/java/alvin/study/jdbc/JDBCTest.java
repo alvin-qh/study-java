@@ -23,7 +23,7 @@ public abstract class JDBCTest {
     private static DataSource dataSource;
 
     // 数据库连接管理对象
-    private ConnectionManager connectionManager = new ConnectionManager();
+    private final ConnectionManager connectionManager = new ConnectionManager();
 
     /**
      * 在所有测试执行前执行, 初始化数据源并合并创建数据表
@@ -37,8 +37,9 @@ public abstract class JDBCTest {
                 .password("password")
                 .build();
 
-        // 通过脚步创建数据表
+        // 通过脚本创建数据表
         new Migration(dataSource).migrate();
+
     }
 
     /**

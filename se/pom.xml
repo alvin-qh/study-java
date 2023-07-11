@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>study-java-se</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
   <name>${project.artifactId}</name>
+  <packaging>jar</packaging>
 
   <!-- 从根项目 pom.xml 继承 -->
   <parent>
@@ -14,57 +14,61 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
+  <dependencyManagement>
+    <dependencies>
+      <!-- Java Mail 依赖 -->
+      <dependency>
+        <groupId>com.sun.mail</groupId>
+        <artifactId>jakarta.mail</artifactId>
+        <version>${version.jakarta-mail}</version>
+      </dependency>
+
+      <!-- H2 DB 驱动依赖 -->
+      <dependency>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
+        <version>${version.h2}</version>
+      </dependency>
+
+      <!-- HikariCP 数据源 -->
+      <dependency>
+        <groupId>com.zaxxer</groupId>
+        <artifactId>HikariCP</artifactId>
+        <version>${version.hikari-cp}</version>
+      </dependency>
+
+      <!-- Java Faker 依赖 -->
+      <dependency>
+        <groupId>com.github.javafaker</groupId>
+        <artifactId>javafaker</artifactId>
+        <version>${version.javafaker}</version>
+        <scope>test</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <!-- 配置依赖 -->
   <dependencies>
-    <!-- Java Mail 依赖 -->
     <dependency>
       <groupId>com.sun.mail</groupId>
       <artifactId>jakarta.mail</artifactId>
-      <version>${version.jakarta-mail}</version>
     </dependency>
-
-    <!-- Java Faker 依赖 -->
-    <dependency>
-      <groupId>com.github.javafaker</groupId>
-      <artifactId>javafaker</artifactId>
-      <version>${version.javafaker}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <!-- H2 DB 驱动依赖 -->
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
     </dependency>
-
-    <!-- 数据库 Migration 依赖 -->
     <dependency>
       <groupId>org.flywaydb</groupId>
       <artifactId>flyway-core</artifactId>
     </dependency>
-
-    <!-- HikariCP 数据源 -->
     <dependency>
       <groupId>com.zaxxer</groupId>
       <artifactId>HikariCP</artifactId>
-      <version>${version.hikari-cp}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.javafaker</groupId>
+      <artifactId>javafaker</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <!-- 资源插件 -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <configuration>
-          <encoding>UTF-8</encoding>
-          <nonFilteredFileExtensions>
-            <nonFilteredFileExtension>so</nonFilteredFileExtension>
-            <nonFilteredFileExtension>dylib</nonFilteredFileExtension>
-          </nonFilteredFileExtensions>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 </project>

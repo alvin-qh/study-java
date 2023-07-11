@@ -4,7 +4,6 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>study-java-spring-boot2</artifactId>
-  <version>${revision}</version>
   <packaging>pom</packaging>
   <name>${project.artifactId}</name>
 
@@ -12,7 +11,7 @@
   <parent>
     <groupId>alvin.study</groupId>
     <artifactId>study-java</artifactId>
-    <version>${revision}</version>
+    <version>1.0-SNAPSHOT</version>
     <relativePath>./pom.xml</relativePath>
   </parent>
 
@@ -102,10 +101,12 @@
             <path>
               <groupId>org.projectlombok</groupId>
               <artifactId>lombok</artifactId>
+              <version>${version.lombok}</version>
             </path>
             <path>
               <groupId>org.springframework.boot</groupId>
               <artifactId>spring-boot-configuration-processor</artifactId>
+              <version>${version.spring-boot2}</version>
             </path>
           </annotationProcessorPaths>
         </configuration>
@@ -118,14 +119,6 @@
         <configuration>
           <mainClass>alvin.study.Main</mainClass>
         </configuration>
-        <executions>
-          <execution>
-            <id>build-info</id>
-            <goals>
-              <goal>build-info</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>
