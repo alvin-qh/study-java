@@ -1,8 +1,8 @@
 package alvin.study.annotation;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 用于测试注解的类型
@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
  * {@link AnnotationUtil#getMethodAnnotation(Class, String, Class)} 方法获取到
  * </p>
  */
+@SuppressWarnings("unused")
 @A("TypeAnnotation")
 class AnnotationDemo {
     /**
@@ -33,8 +34,9 @@ class AnnotationDemo {
     /**
      * 测试在方法上设置注解
      */
-    @C({ "MethodAnnotation-B1", "MethodAnnotation-B2" })
-    public void method() {}
+    @C({"MethodAnnotation-B1", "MethodAnnotation-B2"})
+    public void method() {
+    }
 }
 
 /**
@@ -81,7 +83,7 @@ class AnnotationTest {
      * </p>
      */
     @Test
-    void getMethodAnnotation_shouldGetAnnotationsOnMethod() throws Exception {
+    void getMethodAnnotation_shouldGetAnnotationsOnMethod() {
         var annos = AnnotationUtil.getMethodAnnotation(AnnotationDemo.class, "method", C.class);
 
         var anno = annos.get(0);

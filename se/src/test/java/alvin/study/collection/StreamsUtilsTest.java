@@ -1,11 +1,12 @@
 package alvin.study.collection;
 
-import static org.assertj.core.api.Assertions.entry;
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.entry;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link Streams} 工具类
@@ -193,11 +194,11 @@ class StreamsUtilsTest {
             Colls.list(null, 7, 8, 9));
 
         // 将一个嵌套集合的 stream 平铺, 确认平铺结果
-        var results = Streams.flatList(coll.stream(), l -> l.stream(), false);
+        var results = Streams.flatList(coll.stream(), Collection::stream, false);
         then(results).containsExactly(1, 2, null, 4, 5, null, 7, 8, 9);
 
         // 将一个 Stream 对象平铺, 并过滤掉 null 的部分, 确认平铺结果
-        results = Streams.flatList(coll.stream(), l -> l.stream(), true);
+        results = Streams.flatList(coll.stream(), Collection::stream, true);
         then(results).containsExactly(1, 2, 4, 5, 7, 8, 9);
     }
 }

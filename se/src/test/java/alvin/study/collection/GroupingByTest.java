@@ -1,6 +1,11 @@
 package alvin.study.collection;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import com.github.javafaker.Faker;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.assertj.core.api.Condition;
+import org.assertj.core.api.InstanceOfAssertFactories;
+import org.junit.jupiter.api.Test;
 
 import java.io.Serializable;
 import java.util.Comparator;
@@ -13,14 +18,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.assertj.core.api.Condition;
-import org.assertj.core.api.InstanceOfAssertFactories;
-import org.junit.jupiter.api.Test;
-
-import com.github.javafaker.Faker;
-
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 博客帖子分类枚举
@@ -28,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 enum BlogPostType {
     NEWS,
     REVIEW,
-    GUIDE;
+    GUIDE
 }
 
 /**
@@ -49,7 +47,8 @@ class BlogPost implements Serializable {
      * @param type  帖子类型
      * @param likes 点赞数
      */
-    record TypeAndLikeKey(BlogPostType type, int likes) {}
+    record TypeAndLikeKey(BlogPostType type, int likes) {
+    }
 
     /**
      * 保存多聚合结果的记录属性
@@ -58,7 +57,8 @@ class BlogPost implements Serializable {
      * @param titles    标题集合
      * @param likeStats 点赞数统计信息
      */
-    record PostCountTitlesLikesStats(long postCount, String titles, IntSummaryStatistics likeStats) {}
+    record PostCountTitlesLikesStats(long postCount, String titles, IntSummaryStatistics likeStats) {
+    }
 
     /**
      * 保存标题和点赞数聚合结果
@@ -67,7 +67,8 @@ class BlogPost implements Serializable {
      * @param titles            帖子标题聚合
      * @param boundedSumOfLikes 点赞数聚合
      */
-    record TitlesBoundedSumOfLikes(long postCount, String titles, int boundedSumOfLikes) {}
+    record TitlesBoundedSumOfLikes(long postCount, String titles, int boundedSumOfLikes) {
+    }
 }
 
 /**
@@ -90,13 +91,8 @@ class GroupingByTest {
      * @return 伪造的 {@link BlogPost} 对象集合
      */
     private static List<BlogPost> makeTestingData(Map<BlogPostType, Integer> requiredCounts) {
-        /**
-         * 记录 likes 数值的辅助类
-         *
-         * <p>
-         * 为了让测试数据中的点赞数符合预期, 需要通过本类对象获取生成点赞数, 生成规则是: 按顺序返回 {@code [1..3)} 之间的点赞数
-         * </p>
-         */
+        // 记录 likes 数值的辅助类
+        // 为了让测试数据中的点赞数符合预期, 需要通过本类对象获取生成点赞数, 生成规则是: 按顺序返回 {@code [1..3)} 之间的点赞数
         class LikeHolder {
             // 点赞数
             private int likes;
@@ -133,18 +129,18 @@ class GroupingByTest {
 
         // 按每个类型要求的帖子数量产生测试数据
         return requiredCounts.entrySet()
-                .stream()
-                .flatMap(e -> IntStream.range(0, e.getValue())
-                        .mapToObj(n -> new BlogPost(
-                            faker.funnyName().name(),
-                            faker.name().fullName(),
-                            e.getKey(),
-                            likeHolder.getLikes(),
-                            IntStream.range(0, n + 1)  // 第几个帖子就有几条回复
-                                    .mapToObj(ignore -> faker.regexify(
-                                        "[A-Za-z\\-,. ]{20,50}"))
-                                    .toList())))
-                .toList();
+            .stream()
+            .flatMap(e -> IntStream.range(0, e.getValue())
+                .mapToObj(n -> new BlogPost(
+                    faker.funnyName().name(),
+                    faker.name().fullName(),
+                    e.getKey(),
+                    likeHolder.getLikes(),
+                    IntStream.range(0, n + 1)  // 第几个帖子就有几条回复
+                        .mapToObj(ignore -> faker.regexify(
+                            "[A-Za-z\\-,. ]{20,50}"))
+                        .toList())))
+            .toList();
     }
 
     /**
@@ -263,14 +259,14 @@ class GroupingByTest {
 
         // 确认每个分组都以 Set 集合存储
         then(results)
-                .extractingByKey(BlogPostType.NEWS)
-                .asInstanceOf(InstanceOfAssertFactories.collection(Set.class)).hasSize(10);
+            .extractingByKey(BlogPostType.NEWS)
+            .asInstanceOf(InstanceOfAssertFactories.collection(Set.class)).hasSize(10);
         then(results)
-                .extractingByKey(BlogPostType.REVIEW)
-                .asInstanceOf(InstanceOfAssertFactories.collection(Set.class)).hasSize(5);
+            .extractingByKey(BlogPostType.REVIEW)
+            .asInstanceOf(InstanceOfAssertFactories.collection(Set.class)).hasSize(5);
         then(results)
-                .extractingByKey(BlogPostType.GUIDE)
-                .asInstanceOf(InstanceOfAssertFactories.collection(Set.class)).hasSize(8);
+            .extractingByKey(BlogPostType.GUIDE)
+            .asInstanceOf(InstanceOfAssertFactories.collection(Set.class)).hasSize(8);
     }
 
     /**
@@ -304,17 +300,17 @@ class GroupingByTest {
 
         // 确认每个分组下仍是一个分组的 Map 集合
         then(results)
-                .extractingByKey(BlogPostType.NEWS)
-                .asInstanceOf(InstanceOfAssertFactories.MAP)
-                .containsOnlyKeys(1, 2);
+            .extractingByKey(BlogPostType.NEWS)
+            .asInstanceOf(InstanceOfAssertFactories.MAP)
+            .containsOnlyKeys(1, 2);
         then(results)
-                .extractingByKey(BlogPostType.REVIEW)
-                .asInstanceOf(InstanceOfAssertFactories.MAP)
-                .containsOnlyKeys(1, 2);
+            .extractingByKey(BlogPostType.REVIEW)
+            .asInstanceOf(InstanceOfAssertFactories.MAP)
+            .containsOnlyKeys(1, 2);
         then(results)
-                .extractingByKey(BlogPostType.GUIDE)
-                .asInstanceOf(InstanceOfAssertFactories.MAP)
-                .containsOnlyKeys(1, 2);
+            .extractingByKey(BlogPostType.GUIDE)
+            .asInstanceOf(InstanceOfAssertFactories.MAP)
+            .containsOnlyKeys(1, 2);
     }
 
     /**
@@ -490,9 +486,7 @@ class GroupingByTest {
         // 确认分组数量
         then(results).hasSize(3);
 
-        /**
-         * 定义 {@link Condition} 类型用于对统计结果进行断言
-         */
+        // 定义 {@link Condition} 类型用于对统计结果进行断言
         @RequiredArgsConstructor
         class SummaryCondition extends Condition<IntSummaryStatistics> {
             private final long count;
@@ -504,10 +498,10 @@ class GroupingByTest {
             @Override
             public boolean matches(IntSummaryStatistics value) {
                 return value.getCount() == count
-                       && value.getAverage() == avg
-                       && value.getSum() == sum
-                       && value.getMax() == max
-                       && value.getMin() == min;
+                    && value.getAverage() == avg
+                    && value.getSum() == sum
+                    && value.getMax() == max
+                    && value.getMin() == min;
             }
         }
 
@@ -543,8 +537,8 @@ class GroupingByTest {
                 list -> {
                     // 将分组中所有帖子的标题连接成一个
                     var titles = list.stream()
-                            .map(BlogPost::getTitle)
-                            .collect(Collectors.joining(":"));
+                        .map(BlogPost::getTitle)
+                        .collect(Collectors.joining(":"));
 
                     // 将分组中所有帖子的点赞数进行统计
                     var summary = list.stream().collect(Collectors.summarizingInt(BlogPost::getLikes));
@@ -558,14 +552,14 @@ class GroupingByTest {
 
         // 确认每个分组得到的统计指标
         then(results)
-                .extractingByKey(BlogPostType.NEWS)
-                .matches(stats -> stats.postCount() == 10L && stats.likeStats().getAverage() == 1.5);
+            .extractingByKey(BlogPostType.NEWS)
+            .matches(stats -> stats.postCount() == 10L && stats.likeStats().getAverage() == 1.5);
         then(results)
-                .extractingByKey(BlogPostType.REVIEW)
-                .matches(stats -> stats.postCount() == 5L && stats.likeStats().getAverage() == 1.4);
+            .extractingByKey(BlogPostType.REVIEW)
+            .matches(stats -> stats.postCount() == 5L && stats.likeStats().getAverage() == 1.4);
         then(results)
-                .extractingByKey(BlogPostType.GUIDE)
-                .matches(stats -> stats.postCount() == 8L && stats.likeStats().getAverage() == 1.5);
+            .extractingByKey(BlogPostType.GUIDE)
+            .matches(stats -> stats.postCount() == 8L && stats.likeStats().getAverage() == 1.5);
     }
 
     /**
@@ -612,14 +606,14 @@ class GroupingByTest {
 
         // 确认每个分组得到的统计指标
         then(results)
-                .extractingByKey(BlogPostType.NEWS)
-                .matches(stats -> stats.postCount() == 10L && stats.boundedSumOfLikes() == 15);
+            .extractingByKey(BlogPostType.NEWS)
+            .matches(stats -> stats.postCount() == 10L && stats.boundedSumOfLikes() == 15);
         then(results)
-                .extractingByKey(BlogPostType.REVIEW)
-                .matches(stats -> stats.postCount() == 5L && stats.boundedSumOfLikes() == 7);
+            .extractingByKey(BlogPostType.REVIEW)
+            .matches(stats -> stats.postCount() == 5L && stats.boundedSumOfLikes() == 7);
         then(results)
-                .extractingByKey(BlogPostType.GUIDE)
-                .matches(stats -> stats.postCount() == 8L && stats.boundedSumOfLikes() == 12);
+            .extractingByKey(BlogPostType.GUIDE)
+            .matches(stats -> stats.postCount() == 8L && stats.boundedSumOfLikes() == 12);
     }
 
     /**
@@ -653,17 +647,17 @@ class GroupingByTest {
 
         // 确认每个分组得到的字符串连接结构
         then(results)
-                .extractingByKey(BlogPostType.NEWS)
-                .asString()
-                .matches("^Post Titles: \\[([\\w\\s\\.']+,?){10}\\]$");
+            .extractingByKey(BlogPostType.NEWS)
+            .asString()
+            .matches("^Post Titles: \\[([\\w\\s.']+,?){10}]$");
         then(results)
-                .extractingByKey(BlogPostType.REVIEW)
-                .asString()
-                .matches("^Post Titles: \\[([\\w\\s\\.']+,?){5}\\]$");
+            .extractingByKey(BlogPostType.REVIEW)
+            .asString()
+            .matches("^Post Titles: \\[([\\w\\s.']+,?){5}]$");
         then(results)
-                .extractingByKey(BlogPostType.GUIDE)
-                .asString()
-                .matches("^Post Titles: \\[([\\w\\s\\.']+,?){8}\\]$");
+            .extractingByKey(BlogPostType.GUIDE)
+            .asString()
+            .matches("^Post Titles: \\[([\\w\\s.']+,?){8}]$");
     }
 
     /**

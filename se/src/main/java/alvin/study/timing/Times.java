@@ -1,5 +1,9 @@
 package alvin.study.timing;
 
+import com.google.common.annotations.VisibleForTesting;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -9,11 +13,6 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
-
-import com.google.common.annotations.VisibleForTesting;
-
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 
 /**
  * 日期时间转换工具类
@@ -194,13 +193,13 @@ public final class Times {
      * 2021-09-11T00:00:00.000+00:00[UTC] =>
      * 2021-09-11T08:00:00.000+08:00[Asia/Shanghai]
      * </pre>
-     *
+     * <p>
      * 转换前后, 时区发生了变更, 且时间增加了 8 小时, 但时间的绝对值不变
      * </p>
      *
      * @param zoned  {@link ZonedDateTime} 对象
      * @param zoneId 新时区对象
-     * @return 更换时区后的 {@link Zone}
+     * @return 更换时区后的 {@link ZonedDateTime} 对象
      */
     public static ZonedDateTime changeZone(ZonedDateTime zoned, ZoneId zoneId) {
         return zoned.withZoneSameInstant(zoneId);
@@ -216,13 +215,13 @@ public final class Times {
      * 2021-09-11T00:00:00.000+00:00[UTC] =>
      * 2021-09-11T00:00:00.000+08:00[Asia/Shanghai]
      * </pre>
-     *
+     * <p>
      * 转换前后, 时区发生了变更, 且时间的绝对值增加了 8 小时, 也发生了变化
      * </p>
      *
      * @param zoned  {@link ZonedDateTime} 对象
      * @param zoneId 新时区对象
-     * @return
+     * @return 更换时区后的时间对象
      */
     public static ZonedDateTime replaceZone(ZonedDateTime zoned, ZoneId zoneId) {
         return zoned.withZoneSameLocal(zoneId);
@@ -253,5 +252,7 @@ public final class Times {
      * </p>
      */
     @VisibleForTesting
-    static void setClock(Clock clock) { Times.clock = clock; }
+    static void setClock(Clock clock) {
+        Times.clock = clock;
+    }
 }

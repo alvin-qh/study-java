@@ -6,10 +6,10 @@
 
 ```java
 module blog {
-  exports edu.alvin;  // 从当前模块导出的包名称
-  exports ...
+    exports edu.alvin;  // 从当前模块导出的包名称
+    exports ...
 
-  requires cms;       // 当前模块必要的包名称
+    requires cms;       // 当前模块必要的包名称
 }
 ```
 

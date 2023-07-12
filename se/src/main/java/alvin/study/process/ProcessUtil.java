@@ -1,5 +1,12 @@
 package alvin.study.process;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,11 +17,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 /**
  * 进程工具类
@@ -30,7 +32,7 @@ public final class ProcessUtil {
      * <pre>
      * echo -e Hello World
      * </pre>
-     *
+     * <p>
      * 可以写作
      *
      * <pre>
@@ -79,7 +81,8 @@ public final class ProcessUtil {
                     }
                     sb.append(new String(buf, 0, n));
                 }
-            } catch (IOException ignore) {}
+            } catch (IOException ignore) {
+            }
         });
 
         // 启动线程
@@ -141,7 +144,7 @@ public final class ProcessUtil {
     public static List<ProcessInfo> allProcesses(Predicate<ProcessInfo> condition) {
         var stream = ProcessHandle.allProcesses().map(ProcessInfo::of);
         if (condition != null) {
-            stream = stream.filter(condition::test);
+            stream = stream.filter(condition);
         }
         return stream.toList();
     }
@@ -151,7 +154,8 @@ public final class ProcessUtil {
      *
      * @return 当前进程信息对象
      */
-    public static ProcessInfo current() {
+    @Contract(" -> new")
+    public static @NotNull ProcessInfo current() {
         return ProcessInfo.of(ProcessHandle.current());
     }
 
@@ -165,15 +169,14 @@ public final class ProcessUtil {
     public static List<ProcessInfo> children(long pid, Predicate<ProcessInfo> condition) {
         // 根据进程 id 查询进程信息
         var stream = ProcessHandle.of(pid)
-                // 如果进程存在, 则进一步查询子进程
-                .map(ProcessHandle::children)
-                .orElse(Stream.empty())
-                // 子进程对象转换为目标对象
-                .map(ProcessInfo::of);
+            // 如果进程存在, 则进一步查询子进程
+            .map(ProcessHandle::children).orElse(Stream.empty())
+            // 子进程对象转换为目标对象
+            .map(ProcessInfo::of);
 
         if (condition != null) {
             // 如果具备过滤条件, 则对子进程进行过滤
-            stream = stream.filter(condition::test);
+            stream = stream.filter(condition);
         }
         return stream.toList();
     }
@@ -239,7 +242,8 @@ public final class ProcessUtil {
          * @param handle {@link ProcessHandle} 对象
          * @return 转换后的当前类型对象
          */
-        private static ProcessInfo of(ProcessHandle handle) {
+        @Contract("_ -> new")
+        private static @NotNull ProcessInfo of(@NotNull ProcessHandle handle) {
             return new ProcessInfo(
                 handle.pid(),
                 handle.isAlive(),
@@ -247,7 +251,8 @@ public final class ProcessUtil {
                 handle.info().command().orElse(""),
                 handle.info().arguments().orElse(null),
                 handle.info().startInstant().orElse(null),
-                handle.info().totalCpuDuration().orElse(null));
+                handle.info().totalCpuDuration().orElse(null)
+            );
         }
     }
 }

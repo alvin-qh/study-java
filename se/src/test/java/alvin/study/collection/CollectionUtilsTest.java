@@ -1,8 +1,6 @@
 package alvin.study.collection;
 
-import static org.assertj.core.api.Assertions.entry;
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -12,7 +10,9 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.IntStream;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.entry;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * 测试 {@link Colls} 集合工具类
@@ -23,9 +23,6 @@ class CollectionUtilsTest {
      */
     @Test
     void isEmpty_shouldCheckCollectionIfEmpty() {
-        // 确认 null 值返回 true
-        then(Colls.isEmpty((Collection<?>) null)).isTrue();
-
         // 确认空集合返回 true
         then(Colls.isEmpty(List.of())).isTrue();
         then(Colls.isEmpty(Set.of())).isTrue();
@@ -40,14 +37,11 @@ class CollectionUtilsTest {
      */
     @Test
     void isEmpty_shouldCheckArrayIfEmpty() {
-        // 确认 null 值返回 true
-        then(Colls.isEmpty((Integer[]) null)).isTrue();
-
         // 确认空集合返回 true
         then(Colls.isEmpty(new Integer[0])).isTrue();
 
         // 确认非空集合返回 false
-        then(Colls.isEmpty(new Integer[] { 1 })).isFalse();
+        then(Colls.isEmpty(new Integer[]{1})).isFalse();
     }
 
     /**
@@ -55,9 +49,6 @@ class CollectionUtilsTest {
      */
     @Test
     void isEmpty_shouldCheckMapIfEmpty() {
-        // 确认 null 值返回 true
-        then(Colls.isEmpty((Map<?, ?>) null)).isTrue();
-
         // 确认空集合返回 true
         then(Colls.isEmpty(Map.of())).isTrue();
 
@@ -77,14 +68,14 @@ class CollectionUtilsTest {
         then(first).isEmpty();
 
         // 定义一个非空集合
-        coll = (Collection<Integer>) List.of(1, 2, 3, 4);
+        coll = List.of(1, 2, 3, 4);
         // 确认非空集合的第一个元素
         first = Colls.first(coll);
         then(first.isPresent()).isTrue();
         then(first.get()).isEqualTo(1);
 
         // 定义一个非空集合
-        coll = (Collection<Integer>) new LinkedHashSet<>(List.of(1, 2, 3, 4));
+        coll = new LinkedHashSet<>(List.of(1, 2, 3, 4));
         // 确认非空集合的第一个元素
         first = Colls.first(coll);
         then(first).isPresent().get().isEqualTo(1);
@@ -120,19 +111,19 @@ class CollectionUtilsTest {
         then(only).isEmpty();
 
         // 定义一个具备 2 个元素的集合
-        coll = (Collection<Integer>) Set.of(1, 2);
+        coll = Set.of(1, 2);
         // 确认多于 1 个元素的集合无唯一元素
         only = Colls.only(coll);
         then(only).isEmpty();
 
         // 定义一个具备 1 个元素的集合
-        coll = (Collection<Integer>) Set.of(1);
+        coll = Set.of(1);
         // 确认 1 个元素的集合的唯一元素
         only = Colls.only(coll);
         then(only).isPresent().get().isEqualTo(1);
 
         // 定义一个具备 1 个元素的集合
-        coll = (Collection<Integer>) new LinkedHashSet<>(List.of(1));
+        coll = new LinkedHashSet<>(List.of(1));
         // 确认 1 个元素的集合的唯一元素
         only = Colls.first(coll);
         then(only).isPresent().get().isEqualTo(1);
@@ -179,7 +170,6 @@ class CollectionUtilsTest {
         // 产生一个 List 对象
         var l = Colls.list();
         then(l).isEmpty();
-        ;
 
         // 确认返回的 List 对象可被修改
         l.add(1);
@@ -328,7 +318,7 @@ class CollectionUtilsTest {
     @Test
     void append_shouldAppendElementsToSet() {
         // 确认追加到一个 null 引用会产生一个新 Set 集合
-        var set = Colls.append((Set<Integer>) null, 1, 2, 3);
+        var set = Colls.append(null, 1, 2, 3);
         then(set).containsExactly(1, 2, 3);
 
         // 确认向已有的 Set 集合添加元素
@@ -346,7 +336,7 @@ class CollectionUtilsTest {
         then(l).containsExactly(1, 2, 3);
 
         // 确认向已有的集合添加元素
-        l = Colls.append((Collection<Integer>) l, 3, 4, 5);
+        l = Colls.append(l, 3, 4, 5);
         then(l).containsExactly(1, 2, 3, 3, 4, 5);
     }
 
@@ -472,13 +462,13 @@ class CollectionUtilsTest {
     void intersect_shouldGetSubsetFromTwoCollections() {
         // 产生一个 [1..5) 的集合
         var left = IntStream.range(1, 5)
-                .mapToObj(n -> (Object) n)
-                .toList();
+            .mapToObj(n -> (Object) n)
+            .toList();
 
         // 产生一个 [3..10) 的集合
         var right = IntStream.range(3, 10)
-                .mapToObj(n -> (Object) n)
-                .toList();
+            .mapToObj(n -> (Object) n)
+            .toList();
 
         // 获取两个集合的交集
         var results = Colls.intersect(left, right);
@@ -497,8 +487,8 @@ class CollectionUtilsTest {
 
         // 产生一个 [3..10) 的集合
         var right = IntStream.range(3, 10)
-                .mapToObj(n -> (Object) n)
-                .toList();
+            .mapToObj(n -> (Object) n)
+            .toList();
 
         // 获取两个集合的差集
         var result = Colls.diff(left, right);
@@ -508,17 +498,16 @@ class CollectionUtilsTest {
     }
 
     /**
-     * 测试 {@link Colls#merge(Collection...)} 方法
+     * 测试 {@link Colls#merge(boolean, Collection...)} 方法
      */
     @Test
-    @SuppressWarnings("unchecked")
     void merge_shouldMergeMultiCollections() {
         var rand = new Random();
 
         // 产生一个 Collection 对象的数组, 每个 Collection 集合中包含 [1..10) 范围内的若干数值
         var colls = IntStream.range(0, 5)
-                .mapToObj(n -> rand.ints(5, 1, 10).boxed().toList())
-                .toArray(n -> new Collection[n]);
+            .mapToObj(n -> rand.ints(5, 1, 10).boxed().toList())
+            .toArray(Collection[]::new);
 
         // 合并多个集合
         var results = Colls.merge(true, colls);

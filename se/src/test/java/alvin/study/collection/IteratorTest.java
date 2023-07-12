@@ -1,13 +1,13 @@
 package alvin.study.collection;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 import java.util.function.DoubleConsumer;
 import java.util.function.IntConsumer;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试集合迭代器对象

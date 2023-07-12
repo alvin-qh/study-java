@@ -1,8 +1,5 @@
 package alvin.study.mail;
 
-import java.util.Date;
-import java.util.Properties;
-
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
@@ -13,10 +10,15 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Date;
+import java.util.Properties;
 
 /**
  * 通过 {@code jakarta} ({@code javax}) 邮件 API 发送邮件
  */
+@SuppressWarnings("unused")
 public class SimpleMailClientBuilder {
     // 指定 SSL Socket 工厂类
     private static final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
@@ -27,9 +29,14 @@ public class SimpleMailClientBuilder {
     private static boolean debug = true;
 
     // smtp 服务器地址
-    private String smtpHost;
+    private final String smtpHost;
     // smtp 服务器端口
-    private int smtpPort;
+    private final int smtpPort;
+    // 邮件服务登录账号
+    private final String account;
+    // 邮件服务登录密码
+    private final String password;
+
     // 是否启用身份认证
     private boolean auth = true;
     // 是否需要回执
@@ -38,10 +45,6 @@ public class SimpleMailClientBuilder {
     private boolean startTlsEnable = true;
     // 使用邮件服务的协议
     private String protocol = "smtp";
-    // 邮件服务登录账号
-    private String account;
-    // 邮件服务登录密码
-    private String password;
 
     /**
      * 构造器, 初始化邮件客户端
@@ -105,12 +108,7 @@ public class SimpleMailClientBuilder {
     /**
      * 创建邮件发送客户端对象
      *
-     * @param from    发送方邮件地址
-     * @param to      接收方邮件地址
-     * @param subject 邮件标题
-     * @param content 邮件正文
      * @return {@link MailClient} 邮件发送客户端对象
-     * 
      * @throws MessagingException 邮件发送异常
      */
     public MailClient build() throws MessagingException {
@@ -167,9 +165,9 @@ public class SimpleMailClientBuilder {
      * 本方法返回一个 {@link Properties} 对象, 包含了要创建的邮件客户端相关的配置属性
      * </p>
      *
-     * @return
+     * @return 邮件配置属性
      */
-    private Properties makeProperties() {
+    private @NotNull Properties makeProperties() {
         var props = new Properties();
         props.put("mail.smtp.starttls.enable", startTlsEnable);
         props.put("mail.smtp.host", smtpHost);
@@ -189,12 +187,16 @@ public class SimpleMailClientBuilder {
      *
      * @param debug {@code true} 表示开启 debug 模式
      */
-    public static void setDebug(boolean debug) { SimpleMailClientBuilder.debug = debug; }
+    public static void setDebug(boolean debug) {
+        SimpleMailClientBuilder.debug = debug;
+    }
 
     /**
      * 获取 debug 模式的状态
      *
      * @return {@code true} 表示开启 debug 模式
      */
-    public static boolean isDebug() { return debug; }
+    public static boolean isDebug() {
+        return debug;
+    }
 }

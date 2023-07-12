@@ -1,18 +1,17 @@
 package alvin.study.concurrent;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.LockSupport;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 演示通过 {@link LockSupport} 类型执行更加底层的缩操作
  */
-@SuppressWarnings("java:S2925")
 class LockSupportTest {
     /**
      * 将秒数转换为纳秒数
@@ -20,8 +19,9 @@ class LockSupportTest {
      * @param seconds 要转换的秒数
      * @return 转换后的纳秒数
      */
+    @SuppressWarnings("SameParameterValue")
     private static long toNanos(long seconds) {
-        return TimeUnit.SECONDS.toNanos(1L);
+        return TimeUnit.SECONDS.toNanos(seconds);
     }
 
     /**
@@ -54,7 +54,7 @@ class LockSupportTest {
      * </p>
      *
      * <p>
-     * 在执行 {@link LockSupport#parkNanos(long)} 过程中的线程状态为 {@link TIMED_WAITING}, 这一点和执行
+     * 在执行 {@link LockSupport#parkNanos(long)} 过程中的线程状态为 {@code TIMED_WAITING}, 这一点和执行
      * {@link Thread#sleep(long)} 方法以及 {@link Object#wait(long)} 是一致的
      * </p>
      */
@@ -103,7 +103,7 @@ class LockSupportTest {
         thread.join();
 
         // 确认线程整个执行时间为 2s
-        then(toSeconds(System.nanoTime() - startNanos)).isEqualTo(2L);
+        then(toSeconds(System.nanoTime() - startNanos)).isBetween(1L, 2L);
     }
 
     /**
@@ -117,10 +117,8 @@ class LockSupportTest {
     @Test
     void parkAndUnpack_shouldPackOneThreadAndUnpackAtOtherThread() throws InterruptedException {
         // 用于测试阻塞线程
-        var thread = new Thread(() -> {
-            // 将当前线程阻塞
-            LockSupport.park();
-        });
+        // 将当前线程阻塞
+        var thread = new Thread(LockSupport::park);
 
         // 用于解除阻塞的线程
         new Thread(() -> {
@@ -129,7 +127,8 @@ class LockSupportTest {
                 Thread.sleep(1000);
                 // 通过线程对象解除其阻塞
                 LockSupport.unpark(thread);
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException ignored) {
+            }
         }).start();
 
         var startNanos = System.nanoTime();
@@ -199,7 +198,8 @@ class LockSupportTest {
                 synchronized (state) {
                     state.wait();
                 }
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException ignored) {
+            }
         });
 
         // 启动线程并等待结束

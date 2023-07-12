@@ -1,12 +1,11 @@
 package alvin.study.binary;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import com.google.common.base.Charsets;
+import org.junit.jupiter.api.Test;
 
 import java.util.zip.CRC32;
 
-import org.junit.jupiter.api.Test;
-
-import com.google.common.base.Charsets;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link CRC32} 类型, 验证 CRC32 验证码计算

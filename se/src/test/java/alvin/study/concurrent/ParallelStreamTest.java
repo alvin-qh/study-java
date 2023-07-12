@@ -33,15 +33,13 @@ class ParallelStreamTest {
      */
     @Test
     void parallelStream_shouldCalculateByParallelStream() {
-        /**
-         * 用于保存数据和线程 ID 的类型
-         */
+        // 用于保存数据和线程 ID 的类型
         class Record {
             // 处理该对象的线程 ID
             long threadId;
 
             // 该对象的值
-            int value;
+            final int value;
 
             public Record(int value) {
                 this.value = value;
@@ -50,8 +48,8 @@ class ParallelStreamTest {
 
         // 生成 10 个 Record 对象
         var records = IntStream.range(0, 10)
-                .mapToObj(n -> new Record(n))
-                .toList();
+            .mapToObj(Record::new)
+            .toList();
 
         // 记录起始时间
         var ts = System.currentTimeMillis();
@@ -68,7 +66,8 @@ class ParallelStreamTest {
                     r.threadId = Thread.currentThread().getId();
                     return true;
                 }
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException ignored) {
+            }
             return false;
         }).toList();
 

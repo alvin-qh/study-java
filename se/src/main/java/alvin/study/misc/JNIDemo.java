@@ -6,9 +6,7 @@ import java.io.IOException;
  * 演示如何通过 JNI 加载 C++ 库
  */
 public class JNIDemo {
-    /**
-     * 加载 libjni_demo_lib.so 动态库
-     */
+    // 加载 libjni_demo_lib.so 动态库
     static {
         try {
             var os = System.getProperty("os.name");
@@ -19,7 +17,8 @@ public class JNIDemo {
             } else {
                 throw new UnsupportedOperationException("Invalid OS");
             }
-        } catch (IOException e) {}
+        } catch (IOException ignored) {
+        }
     }
 
     /**

@@ -1,12 +1,10 @@
 package alvin.study.binary;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
+import alvin.study.binary.CRC16.AlgorithmMode;
+import com.google.common.base.Charsets;
 import org.junit.jupiter.api.Test;
 
-import com.google.common.base.Charsets;
-
-import alvin.study.binary.CRC16.AlgorithmMode;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link CRC16} 类型, 验证 CRC16 验证码计算

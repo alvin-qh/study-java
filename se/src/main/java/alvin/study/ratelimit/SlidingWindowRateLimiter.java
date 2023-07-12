@@ -2,6 +2,7 @@ package alvin.study.ratelimit;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 滑动窗口限流
@@ -27,7 +28,7 @@ import java.util.Deque;
  * 如果未达到限流上限, 则记录本次处理, 即本次处理的时间如果落在一个块中, 则为该块增加调用次数记录, 否则添加一个新的块;
  * </li>
  * </ol>
- *
+ * <p>
  * 整个过程如下图所示:
  * </p>
  *
@@ -46,8 +47,9 @@ public class SlidingWindowRateLimiter implements RateLimiter {
     private static class Window {
         // 块的起始时间
         private final long startTime;
+
         // 块内的调用次数
-        private volatile int count;
+        private final AtomicInteger count;
 
         /**
          * 构造器, 构造一个块
@@ -57,19 +59,18 @@ public class SlidingWindowRateLimiter implements RateLimiter {
          */
         public Window(long startTime, int count) {
             this.startTime = startTime;
-            this.count = count;
+            this.count = new AtomicInteger(count);
         }
 
         /**
          * 为当前块增加调用次数
          *
          * @param n 调用次数
-         * @return 该块的总调用次数
+         * @return 增加后的结果
          */
-        @SuppressWarnings("java:S3078")
+        @SuppressWarnings("UnusedReturnValue")
         public int add(int n) {
-            count += n;
-            return count;
+            return count.addAndGet(n);
         }
 
         /**
@@ -77,14 +78,18 @@ public class SlidingWindowRateLimiter implements RateLimiter {
          *
          * @return 块起始时间
          */
-        public long getStartTime() { return startTime; }
+        public long getStartTime() {
+            return startTime;
+        }
 
         /**
          * 获取块中记录的调用次数
          *
          * @return 块中记录的调用次数
          */
-        public int getCount() { return count; }
+        public int getCount() {
+            return count.get();
+        }
     }
 
     // 总窗口大小, 单位毫秒

@@ -19,7 +19,7 @@ package alvin.study.ratelimit;
  * 如果还在之前的时间窗口, 则查看已经访问的次数是否超出限制 ({@code threshold})
  * </li>
  * </ol>
- *
+ * <p>
  * 整个过程如下图所示:
  * </p>
  *

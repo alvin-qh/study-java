@@ -1,7 +1,6 @@
 package alvin.study.concurrent;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.awaitility.Awaitility.await;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.concurrent.CountedCompleter;
@@ -14,7 +13,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.awaitility.Awaitility.await;
 
 /**
  * 演示  Fork/Join线程池
@@ -171,9 +171,7 @@ class ForkJoinTest {
         // 所有 fork 出任务的总和 (包括第一个任务)
         var forkCount = new AtomicInteger();
 
-        /**
-         * 计算任务类, 从 {@link RecursiveTask} 类继承, 表示任务具备 {@code List<Integer>} 类型返回值
-         */
+        // 计算任务类, 从 {@link RecursiveTask} 类继承, 表示任务具备 {@code List<Integer>} 类型返回值
         class EvenTask extends RecursiveTask<List<Integer>> {
             // 要计算数值的起始值
             private final int start;
@@ -210,9 +208,9 @@ class ForkJoinTest {
 
                     // 计算 start 和 end 区间内的偶数值
                     return IntStream.range(start, end + 1)
-                            .filter(value -> value % 2 == 0)
-                            .boxed()
-                            .toList();
+                        .filter(value -> value % 2 == 0)
+                        .boxed()
+                        .toList();
                 }
 
                 // 计算中间值, 通过中间值将要计算的数值分为两部分
@@ -333,9 +331,7 @@ class ForkJoinTest {
      */
     @Test
     void countedCompleter_shouldMarkTaskAsCompletedWithCounter() throws Exception {
-        /**
-         * 计算任务类, 从 {@link CountedCompleter} 类继承, 任务结果为 {@code List<Integer>} 类型值
-         */
+        // 计算任务类, 从 {@link CountedCompleter} 类继承, 任务结果为 {@code List<Integer>} 类型值
         class EvenTask extends CountedCompleter<List<Integer>> {
             // 要计算数值的起始值
             private final int start;
@@ -375,9 +371,9 @@ class ForkJoinTest {
                 if (size < 5) {
                     setRawResult(
                         IntStream.range(start, end + 1)
-                                .filter(value -> value % 2 == 0)
-                                .boxed()
-                                .toList());
+                            .filter(value -> value % 2 == 0)
+                            .boxed()
+                            .toList());
                 } else {
                     // 计算中间值, 通过中间值将要计算的数值分为两部分
                     var mid = (start + end) / 2;
@@ -411,17 +407,21 @@ class ForkJoinTest {
             }
 
             @Override
-            public List<Integer> getRawResult() { return result == null ? List.of() : result; }
+            public List<Integer> getRawResult() {
+                return result == null ? List.of() : result;
+            }
 
             @Override
-            protected void setRawResult(List<Integer> result) { this.result = result; }
+            protected void setRawResult(List<Integer> result) {
+                this.result = result;
+            }
         }
 
         // 提交计算任务, 计算 1~10000 之间的所有偶数
         var task = ForkJoinPool.commonPool().submit(new EvenTask(null, 1, 10000));
 
         // 等待所有数值均已被计算过
-        await().atMost(12, TimeUnit.SECONDS).until(() -> task.isDone());
+        await().atMost(12, TimeUnit.SECONDS).until(task::isDone);
 
         // 确认计算结果为 5000 个数值, 且均为偶数
         then(task.get()).hasSize(5000).allMatch(n -> n % 2 == 0);

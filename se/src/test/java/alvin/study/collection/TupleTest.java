@@ -30,6 +30,6 @@ class TupleTest {
         var tuple = Tuple.of(1, 2, 3, 4, 5);
 
         then(tuple.get(2)).isEqualTo(3);
-        then(tuple.containsAll(List.of(3, 4, 5)));
+        then(tuple.containsAll(List.of(3, 4, 5))).isTrue();
     }
 }

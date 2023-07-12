@@ -1,18 +1,21 @@
 package alvin.study.misc;
 
+import com.google.common.base.Strings;
+import com.google.common.io.ByteStreams;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import com.google.common.base.Strings;
-import com.google.common.io.ByteStreams;
-
 /**
  * 从资源中释放动态库并进行加载
  */
 public final class LoadLibrary {
-    private LoadLibrary() {}
+    private LoadLibrary() {
+    }
 
     /**
      * 从资源中释放动态库, 并加载
@@ -45,6 +48,9 @@ public final class LoadLibrary {
                 try (var os = new FileOutputStream(dst, false)) {
                     // 动态库资源存储在 resources/native 下
                     try (var is = LoadLibrary.class.getResourceAsStream("/native/" + resource)) {
+                        if (is == null) {
+                            throw new NullPointerException("is");
+                        }
                         ByteStreams.copy(is, os);
                     }
                 }
@@ -61,7 +67,8 @@ public final class LoadLibrary {
      *
      * @return 表示临时文件夹路径的 {@link File} 对象
      */
-    private static File findTempDir() throws IOException {
+    @Contract(" -> new")
+    private static @NotNull File findTempDir() throws IOException {
         // 获取临时路径字符串
         var tempDirName = System.getProperty("java.io.tmpdir");
         if (Strings.isNullOrEmpty(tempDirName)) {
