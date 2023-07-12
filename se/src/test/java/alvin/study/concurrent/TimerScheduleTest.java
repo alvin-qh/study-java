@@ -1,7 +1,9 @@
 package alvin.study.concurrent;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.awaitility.Awaitility.await;
+import alvin.study.concurrent.delay.DelayedValue;
+import alvin.study.concurrent.util.ExecutorCreator;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -11,11 +13,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-
-import alvin.study.concurrent.delay.DelayedValue;
-import alvin.study.concurrent.util.ExecutorCreator;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.awaitility.Awaitility.await;
 
 /**
  * 测试延时任务
@@ -49,9 +48,8 @@ import alvin.study.concurrent.util.ExecutorCreator;
  * Calendar} 类型来表示时间
  * </p>
  */
-@SuppressWarnings("java:S2925")
 class TimerScheduleTest {
-    private ExecutorCreator executorCreator = new ExecutorCreator();
+    private final ExecutorCreator executorCreator = new ExecutorCreator();
 
     /**
      * 每次测试结束后执行, 用于关闭线程池
@@ -77,7 +75,7 @@ class TimerScheduleTest {
      * 当其返回值小于等于 {@code 0} 后, 方可从队列中取出
      * </li>
      * <li>
-     * {@link java.util.concurrent.Delayed#compareTo(java.util.concurrent.Delayed)
+     * {@link java.util.concurrent.Delayed#compareTo(Object)}
      * Delayed.compareTo(Delayed)} 方法比较两个队列元素, 用于确定元素在队列中的"优先级", 比较结果越小的元素具有越高的出队优先级
      * </li>
      * </ul>
@@ -152,9 +150,9 @@ class TimerScheduleTest {
         var startedMillis = System.currentTimeMillis();
 
         // 提交 3 个延时任务, 为每个任务设置延时时间, 任务结果为 Record 类型对象
-        var future1 = executor.schedule(() -> System.currentTimeMillis(), 2000, TimeUnit.MILLISECONDS);
-        var future2 = executor.schedule(() -> System.currentTimeMillis(), 1000, TimeUnit.MILLISECONDS);
-        var future3 = executor.schedule(() -> System.currentTimeMillis(), 2100, TimeUnit.MILLISECONDS);
+        var future1 = executor.schedule(System::currentTimeMillis, 2000, TimeUnit.MILLISECONDS);
+        var future2 = executor.schedule(System::currentTimeMillis, 1000, TimeUnit.MILLISECONDS);
+        var future3 = executor.schedule(System::currentTimeMillis, 2100, TimeUnit.MILLISECONDS);
 
         // 确认整体任务执行完毕耗时 2100ms, 即最后一个任务执行的时间
         await().atMost(3, TimeUnit.SECONDS).until(() -> future1.isDone() && future2.isDone() && future3.isDone());
@@ -181,10 +179,8 @@ class TimerScheduleTest {
      * </p>
      */
     @Test
-    void scheduleFuture_shouldScheduleTaskAfterWhileByTimer() throws Exception {
-        /**
-         * 定义定时器任务类
-         */
+    void scheduleFuture_shouldScheduleTaskAfterWhileByTimer() {
+        // 定义定时器任务类
         class RecordTask extends TimerTask {
             // 记录任务执行时间
             private long executionTime;
@@ -199,14 +195,18 @@ class TimerScheduleTest {
              *
              * @return 任务是否完成
              */
-            public boolean isDone() { return executionTime != 0; }
+            public boolean isDone() {
+                return executionTime != 0;
+            }
 
             /**
              * 获取任务执行时间
              *
              * @return 任务何时执行完毕的毫秒数
              */
-            public long getExecutionTime() { return executionTime; }
+            public long getExecutionTime() {
+                return executionTime;
+            }
         }
 
         // 定义定时器对象
@@ -264,9 +264,7 @@ class TimerScheduleTest {
         // 启动一个固定频率的定时器任务
         var future = executor.scheduleAtFixedRate(
             // 记录执行时间
-            () -> {
-                records.add(System.currentTimeMillis());
-            },
+            () -> records.add(System.currentTimeMillis()),
             // 设置执行延迟时间和重复执行频率
             1, 2, TimeUnit.SECONDS);
 
@@ -354,9 +352,7 @@ class TimerScheduleTest {
         // 启动一个固定频率的定时器任务
         var future = executor.scheduleWithFixedDelay(
             // 记录执行时间
-            () -> {
-                records.add(System.currentTimeMillis());
-            },
+            () -> records.add(System.currentTimeMillis()),
             // 设置执行延迟时间和重复执行频率
             1, 2, TimeUnit.SECONDS);
 

@@ -1,15 +1,15 @@
 package alvin.study.misc;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.awaitility.Awaitility.await;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledOnOs;
-import org.junit.jupiter.api.condition.OS;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.awaitility.Awaitility.await;
 
 /**
  * 测试 {@link Runtime} 类型对象
@@ -54,10 +54,10 @@ class RuntimeTest {
      * </p>
      */
     @Test
-    @EnabledOnOs({ OS.MAC, OS.LINUX })
+    @EnabledOnOs({OS.MAC, OS.LINUX})
     void exec_shouldStartNewProcessByCommandLine() throws Exception {
         // 通过命令行 echo Hello Java 启动 echo 进程
-        var process = runtime.exec(new String[] { "echo", "Hello Java" });
+        var process = runtime.exec(new String[]{"echo", "Hello Java"});
 
         // 通过 Reader 读取进程的标准输出
         try (var reader = process.inputReader(StandardCharsets.UTF_8)) {
@@ -107,7 +107,7 @@ class RuntimeTest {
      * </p>
      */
     @Test
-    @EnabledOnOs({ OS.MAC, OS.LINUX })
+    @EnabledOnOs({OS.MAC, OS.LINUX})
     void loadLibrary_shouldLoadDynamicLibrary() {
         var demo = new JNIDemo();
         then(demo.itoa(123)).isEqualTo("123");

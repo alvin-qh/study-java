@@ -20,7 +20,6 @@ class MailClientTest {
      */
     @Test
     @Disabled
-    @SuppressWarnings({ "java:S1607", "java:S2699" })
     void send_shouldSendMailByMailClient() throws Exception {
         // 创建邮件发送客户端对象
         var client = new SimpleMailClientBuilder("smtp.163.com", 994, "quhao317@163.com", "****").build();

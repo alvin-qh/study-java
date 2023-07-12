@@ -1,8 +1,7 @@
 package alvin.study.concurrent;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.awaitility.Awaitility.await;
-import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -27,8 +26,9 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * 测试 {@link Spliterator} 对象, 即可分割迭代器对象
@@ -59,7 +59,6 @@ import org.junit.jupiter.api.Test;
  * 遍历或拆分集合元素时, 才会真实的绑定数据源 (集合) 对象. 除非 {@link Spliterator} 对象是通过 {@code Iterator} 对象产生的
  * </p>
  */
-@SuppressWarnings("java:S2925")
 class SpliteratorTest {
     /**
      * 获取 {@link Spliterator} 类型对象的特性
@@ -166,7 +165,8 @@ class SpliteratorTest {
         then(sp.getExactSizeIfKnown()).isEqualTo(sp.estimateSize()).isEqualTo(10);
 
         // 处理掉一个元素
-        sp.tryAdvance(n -> {});
+        sp.tryAdvance(n -> {
+        });
         // 确认 getExactSizeIfKnown 方法的结果和 estimateSize 一致
         then(sp.getExactSizeIfKnown()).isEqualTo(sp.estimateSize()).isEqualTo(9);
     }
@@ -196,7 +196,7 @@ class SpliteratorTest {
         var size = sp.estimateSize();
 
         // 逐个处理剩余元素, 直到无剩余元素
-        while (sp.tryAdvance(n -> results.add(n))) {
+        while (sp.tryAdvance(results::add)) {
             // 确认每完成一次处理后, 剩余元素数量减一
             then(sp.estimateSize()).isEqualTo(--size);
         }
@@ -226,7 +226,7 @@ class SpliteratorTest {
         var results = new ArrayList<Integer>();
 
         // 对剩余元素进行遍历
-        sp.forEachRemaining(n -> results.add(n));
+        sp.forEachRemaining(results::add);
 
         // 确认遍历完成后无剩余元素
         then(sp.estimateSize()).isEqualTo(0);
@@ -244,7 +244,7 @@ class SpliteratorTest {
      * </p>
      */
     @Test
-    void trySplit_shouldSplitCollectionIntoSlice() throws InterruptedException {
+    void trySplit_shouldSplitCollectionIntoSlice() {
         // 通过 List 对象创建 Spliterator 对象
         var part1 = IntStream.range(0, 10).boxed().toList().spliterator();
         // 确认未分割的 Spliterator 对象剩余元素数为集合全部元素
@@ -341,7 +341,7 @@ class SpliteratorTest {
         then(tasks).hasSize(256);
 
         // 等待所有的任务都结束
-        await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> then(tasks).allMatch(t -> t.isDone()));
+        await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> then(tasks).allMatch(Future::isDone));
 
         // 将结果合并到一个集合中
         var result = tasks.stream().flatMap(t -> {
@@ -404,7 +404,7 @@ class SpliteratorTest {
      */
     @Test
     void primitive_shouldCreatePrimitiveSpliterator() {
-        var sp = Arrays.stream(new int[] { 1, 2, 3 }).spliterator();
+        var sp = Arrays.stream(new int[]{1, 2, 3}).spliterator();
 
         sp.tryAdvance((IntConsumer) n -> then(n).isEqualTo(1));
         sp.forEachRemaining((IntConsumer) n -> then(n).isIn(2, 3));
@@ -529,7 +529,7 @@ class SpliteratorTest {
             // 基于引用类型数组创建 Spliterator 对象
             {
                 // 基于数组创建 Spliterator 对象, 并附加 SORTED 属性
-                var sp = Spliterators.spliterator(new String[] { "A", "B", "C", "D", "E" }, Spliterator.SORTED);
+                var sp = Spliterators.spliterator(new String[]{"A", "B", "C", "D", "E"}, Spliterator.SORTED);
 
                 // 确认产生的 Spliterator 对象具备除附加的 SORTED 属性外, 还包括 SIZED 和 SUBSIZED 属性
                 then(sp.characteristics()).isEqualTo(Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.SORTED);
@@ -539,7 +539,7 @@ class SpliteratorTest {
             // 基于 int[] 类型数组创建 Spliterator 对象
             {
                 // 基于数组创建 Spliterator 对象, 并附加 SORTED 属性
-                var sp = Spliterators.spliterator(new int[] { 1, 2, 3, 4, 5 }, Spliterator.SORTED);
+                var sp = Spliterators.spliterator(new int[]{1, 2, 3, 4, 5}, Spliterator.SORTED);
 
                 // 确认产生的 Spliterator 对象具备除附加的 SORTED 属性外, 还包括 SIZED 和 SUBSIZED 属性
                 then(sp.characteristics()).isEqualTo(Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.SORTED);
@@ -551,7 +551,7 @@ class SpliteratorTest {
             // 基于 long[] 类型数组创建 Spliterator 对象
             {
                 // 基于数组创建 Spliterator 对象, 并附加 SORTED 属性
-                var sp = Spliterators.spliterator(new long[] { 1, 2, 3, 4, 5 }, Spliterator.SORTED);
+                var sp = Spliterators.spliterator(new long[]{1, 2, 3, 4, 5}, Spliterator.SORTED);
 
                 // 确认产生的 Spliterator 对象具备除附加的 SORTED 属性外, 还包括 SIZED 和 SUBSIZED 属性
                 then(sp.characteristics()).isEqualTo(Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.SORTED);
@@ -563,7 +563,7 @@ class SpliteratorTest {
             // 基于 double[] 类型数组创建 Spliterator 对象
             {
                 // 基于数组创建 Spliterator 对象, 并附加 SORTED 属性
-                var sp = Spliterators.spliterator(new double[] { 1.1, 1.2, 1.3, 1.4, 1.5 }, Spliterator.SORTED);
+                var sp = Spliterators.spliterator(new double[]{1.1, 1.2, 1.3, 1.4, 1.5}, Spliterator.SORTED);
 
                 // 确认产生的 Spliterator 对象具备除附加的 SORTED 属性外, 还包括 SIZED 和 SUBSIZED 属性
                 then(sp.characteristics()).isEqualTo(Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.SORTED);

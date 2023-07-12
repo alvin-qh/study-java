@@ -30,7 +30,7 @@ abstract class MPTTTest extends JDBCTest {
         var conn = getConnectionManager().get();
 
         // 对测试用数据表进行清空操作
-        try (var stat = conn.prepareStatement("truncate table mptt")) {
+        try (var stat = conn.prepareStatement("truncate table `mptt`")) {
             stat.executeUpdate();
         }
     }
@@ -76,11 +76,11 @@ abstract class MPTTTest extends JDBCTest {
         try {
             // 创建保存树节点和数据表记录 ID 对应关系的 Map 对象
             // 存储根节点对象, 并保存根节点和数据表 ID 的关系
-            var recordIdMap = new HashMap<TreeNode, Long>(
+            var recordIdMap = new HashMap<>(
                 Map.of(root, repository.createAsRoot(new MPTT(root.value())).getId()));
 
             // 构建用于深度优先遍历的栈对象, 并存储根节点
-            var stack = new ArrayDeque<TreeNode>(List.of(root));
+            var stack = new ArrayDeque<>(List.of(root));
 
             // 通过栈进行深度优先遍历
             while (!stack.isEmpty()) {

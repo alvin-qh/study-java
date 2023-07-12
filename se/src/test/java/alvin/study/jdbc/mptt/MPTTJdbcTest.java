@@ -51,7 +51,7 @@ class MPTTJdbcTest extends MPTTTest {
         createMptt(buildTree());
 
         // 查询一条记录作为父节点记录
-        var parent = repository.findByName("Fruit").get();
+        var parent = repository.findByName("Fruit").orElseThrow();
 
         // 根据父节点记录查询其子节点记录
         var children = repository.findChildren(parent);
@@ -73,8 +73,8 @@ class MPTTJdbcTest extends MPTTTest {
         createMptt(buildTree());
 
         // 选择两个节点
-        var start = repository.findByName("Food").get();
-        var end = repository.findByName("Banana").get();
+        var start = repository.findByName("Food").orElseThrow();
+        var end = repository.findByName("Banana").orElseThrow();
 
         // 获取所选节点的之间的路径
         var path = repository.findPath(start, end);
@@ -87,8 +87,8 @@ class MPTTJdbcTest extends MPTTTest {
                     tuple(7L, "Banana", 4L, 8L, 9L));
 
         // 重新选择两个节点
-        start = repository.findByName("Fruit").get();
-        end = repository.findByName("Pork").get();
+        start = repository.findByName("Fruit").orElseThrow();
+        end = repository.findByName("Pork").orElseThrow();
 
         // 获取所选节点的之间的路径
         path = repository.findPath(start, end);
@@ -124,7 +124,7 @@ class MPTTJdbcTest extends MPTTTest {
         createMptt(buildTree());
 
         // 查询一条记录作为父节点
-        var parent = repository.findByName("Fruit").get();
+        var parent = repository.findByName("Fruit").orElseThrow();
 
         // 查询父节点记录的直属子节点记录集合
         var children = repository.findImmediateChildren(parent.getId());
@@ -144,7 +144,7 @@ class MPTTJdbcTest extends MPTTTest {
         createMptt(buildTree());
 
         // 获取一个节点作为兄弟节点
-        var sibling = repository.findByName("Yellow").get();
+        var sibling = repository.findByName("Yellow").orElseThrow();
 
         getConnectionManager().beginTransaction();
         try {

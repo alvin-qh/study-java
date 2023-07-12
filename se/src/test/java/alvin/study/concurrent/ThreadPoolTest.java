@@ -1,7 +1,9 @@
 package alvin.study.concurrent;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.awaitility.Awaitility.await;
+import alvin.study.concurrent.service.Fibonacci;
+import alvin.study.concurrent.util.ExecutorCreator;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -15,11 +17,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-
-import alvin.study.concurrent.service.Fibonacci;
-import alvin.study.concurrent.util.ExecutorCreator;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.awaitility.Awaitility.await;
 
 /**
  * 线程池测试
@@ -77,9 +76,8 @@ import alvin.study.concurrent.util.ExecutorCreator;
  * {@link FutureTask} 类型是 {@link Future} 接口的一个实现, 其同时也实现了 {@link Runnable} 接口
  * </p>
  */
-@SuppressWarnings("java:S2925")
 class ThreadPoolTest {
-    private ExecutorCreator executorCreator = new ExecutorCreator();
+    private final ExecutorCreator executorCreator = new ExecutorCreator();
 
     /**
      * 在每个测试之后执行, 关闭线程池
@@ -179,7 +177,7 @@ class ThreadPoolTest {
         then(tasks).allMatch(Future::isDone);
 
         // 确认任务计算结果
-        then(tasks).map(Future<Integer>::get).containsExactly(1, 2, 3, 5, 8, 13, 21,
+        then(tasks).map(Future::get).containsExactly(1, 2, 3, 5, 8, 13, 21,
             34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946);
     }
 
@@ -199,16 +197,16 @@ class ThreadPoolTest {
 
         // 保存 FutureTask 的集合对象
         var tasks = IntStream.range(1, 21)
-                .mapToObj(n -> (Callable<Integer>) () -> {
-                    try {
-                        // 执行计算
-                        return Fibonacci.calculate(n + 1);
-                    } finally {
-                        // 增加任务计数器
-                        resultCount.incrementAndGet();
-                    }
-                })
-                .toList();
+            .mapToObj(n -> (Callable<Integer>) () -> {
+                try {
+                    // 执行计算
+                    return Fibonacci.calculate(n + 1);
+                } finally {
+                    // 增加任务计数器
+                    resultCount.incrementAndGet();
+                }
+            })
+            .toList();
 
         // 创建线程池执行器对象
         var executor = executorCreator.arrayBlockingQueueExecutor(20);
@@ -222,7 +220,7 @@ class ThreadPoolTest {
         then(futures).allMatch(Future::isDone);
 
         // 确认任务计算结果
-        then(futures).map(Future<Integer>::get).containsExactly(1, 2, 3, 5, 8, 13, 21,
+        then(futures).map(Future::get).containsExactly(1, 2, 3, 5, 8, 13, 21,
             34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946);
     }
 
@@ -245,12 +243,12 @@ class ThreadPoolTest {
 
         // 保存 FutureTask 的集合对象
         var tasks = IntStream.range(1, 21)
-                .mapToObj(n -> (Callable<String>) () -> {
-                    var sleepMillis = rand.nextInt(2000) + 1000;
-                    Thread.sleep(sleepMillis);
-                    return String.format("%d-Success-Sleep-%d", n, sleepMillis);
-                })
-                .toList();
+            .mapToObj(n -> (Callable<String>) () -> {
+                var sleepMillis = rand.nextInt(2000) + 1000;
+                Thread.sleep(sleepMillis);
+                return String.format("%d-Success-Sleep-%d", n, sleepMillis);
+            })
+            .toList();
 
         // 创建线程池执行器对象
         var executor = executorCreator.arrayBlockingQueueExecutor(20);
@@ -274,15 +272,15 @@ class ThreadPoolTest {
 
         // 保存 FutureTask 的集合对象
         var tasks = IntStream.range(0, taskCount)
-                .mapToObj(n -> (Callable<String>) () -> {
-                    try {
-                        Thread.sleep(1000L);
-                        return String.format("%d-Success", n);
-                    } finally {
-                        resultCount.incrementAndGet();
-                    }
-                })
-                .toList();
+            .mapToObj(n -> (Callable<String>) () -> {
+                try {
+                    Thread.sleep(1000L);
+                    return String.format("%d-Success", n);
+                } finally {
+                    resultCount.incrementAndGet();
+                }
+            })
+            .toList();
 
         // 创建线程池执行器对象, 使用 SynchronousQueue 作为任务队列
         var executor = executorCreator.synchronousQueueExecutor(0);
@@ -293,6 +291,6 @@ class ThreadPoolTest {
         await().atMost(2, TimeUnit.SECONDS).until(() -> resultCount.get() == taskCount);
 
         // 确认任务执行结果
-        then(result).map(Future<String>::get).allMatch(s -> s.matches("^[0-3]?\\d-Success$"));
+        then(result).map(Future::get).allMatch(s -> s.matches("^[0-3]?\\d-Success$"));
     }
 }

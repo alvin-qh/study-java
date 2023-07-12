@@ -7,11 +7,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;
 
 /**
- * 测试 {@link FixedWindowRateLimit} 类型, 通过固定窗口限流类型
+ * 测试 {@link FixedWindowRateLimiter} 类型, 通过固定窗口限流类型
  */
 class FixedWindowRateLimiterTest extends RateLimiterTest {
     /**
-     * 测试 {@link FixedWindowRateLimit#tryAcquire(int)} 方法, 通过固定窗口进行限流
+     * 测试 {@link FixedWindowRateLimiter#tryAcquire(int)} 方法, 通过固定窗口进行限流
      *
      * <p>
      * 本次测试参数值为 {@code 1} 的情况
@@ -46,7 +46,7 @@ class FixedWindowRateLimiterTest extends RateLimiterTest {
     }
 
     /**
-     * 测试 {@link FixedWindowRateLimit#tryAcquire(int)} 方法, 通过固定窗口进行限流
+     * 测试 {@link FixedWindowRateLimiter#tryAcquire(int)} 方法, 通过固定窗口进行限流
      *
      * <p>
      * 本次测试参数值大于 {@code 1} 的情况

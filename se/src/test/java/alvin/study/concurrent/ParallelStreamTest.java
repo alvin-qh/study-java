@@ -26,7 +26,6 @@ import org.junit.jupiter.api.Test;
  * 并发 {@code Stream} 的缺点在于开发者无法控制并发数量 (线程数), 这会导致不可预期资源占用, 从而影响其它并行任务的执行
  * </p>
  */
-@SuppressWarnings("java:S2925")
 class ParallelStreamTest {
     /**
      * 通过并发 {@link java.util.stream.Stream Stream} 处理集合数据
