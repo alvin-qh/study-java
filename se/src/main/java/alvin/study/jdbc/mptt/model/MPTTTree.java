@@ -1,5 +1,9 @@
 package alvin.study.jdbc.mptt.model;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -58,7 +62,9 @@ public class MPTTTree implements Iterable<MPTT> {
          *
          * @return 当前节点的子节点集合
          */
-        public List<Node> getChildren() { return children == null ? List.of() : children; }
+        public List<Node> getChildren() {
+            return children == null ? List.of() : children;
+        }
     }
 
     // 根节点对象
@@ -83,7 +89,9 @@ public class MPTTTree implements Iterable<MPTT> {
      *
      * @return 根节点对象
      */
-    public MPTT getRoot() { return root.value; }
+    public MPTT getRoot() {
+        return root.value;
+    }
 
     /**
      * 通过子节点值, 获取父节点值
@@ -116,10 +124,10 @@ public class MPTTTree implements Iterable<MPTT> {
      */
     public Iterator<MPTT> bfsIterator() {
         // 创建用于广度优先遍历的队列, 并将根节点入队
-        var queue = new ArrayDeque<Node>(List.of(root));
+        var queue = new ArrayDeque<>(List.of(root));
 
         // 返回迭代器对象
-        return new Iterator<MPTT>() {
+        return new Iterator<>() {
             /**
              * 是否可以继续迭代
              *
@@ -159,14 +167,15 @@ public class MPTTTree implements Iterable<MPTT> {
      * @param vals {@link MPTT} 类型对象集合
      * @return {@link MPTTTree} 类型对象
      */
-    public static MPTTTree build(List<MPTT> vals) {
+    @Contract("_ -> new")
+    public static @NotNull MPTTTree build(@NotNull List<MPTT> vals) {
         // 将 vals 参数中的元素进行排序
         // 根据对象的 lft 字段排序, 结果为上级节点在前, 下级节点在后
         // 并且将所有的 MPTT 对象包装为 Node 对象
         var nodes = vals.stream().sorted((l, r) -> (int) (l.getLft() - r.getLft())).map(Node::new).toList();
 
         // 定义用于查找父节点的栈
-        var stack = new ArrayDeque<Node>(List.of(nodes.get(0)));
+        var stack = new ArrayDeque<>(List.of(nodes.get(0)));
 
         // 定义 MPTT => Node 对应关系的
         var nodeMap = new HashMap<MPTT, Node>();
@@ -198,7 +207,7 @@ public class MPTTTree implements Iterable<MPTT> {
      * @param val   当前节点的 {@link MPTT} 对象值
      * @return {@link MPTT} 对象对应对象的父节点对象
      */
-    private static Node findParent(ArrayDeque<Node> stack, MPTT val) {
+    private static @Nullable Node findParent(@NotNull ArrayDeque<Node> stack, MPTT val) {
         // 按照栈的顺序查找已经访问过的节点
         // 因为遍历 MPTT 记录的顺序时按照 lft 节点排序结果进行的, 所以子节点一定会在父节点之后
         while (!stack.isEmpty()) {

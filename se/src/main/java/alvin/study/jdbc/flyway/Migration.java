@@ -1,10 +1,9 @@
 package alvin.study.jdbc.flyway;
 
-import javax.sql.DataSource;
-
+import lombok.RequiredArgsConstructor;
 import org.flywaydb.core.Flyway;
 
-import lombok.RequiredArgsConstructor;
+import javax.sql.DataSource;
 
 /**
  * 手动进行数据库 migrate 操作
@@ -18,11 +17,11 @@ public class Migration {
      */
     public void migrate() {
         Flyway.configure()
-                .dataSource(dataSource)
-                .baselineOnMigrate(true)
-                .locations("classpath:migration")
-                .table("schema_version")
-                .load()
-                .migrate();
+            .dataSource(dataSource)
+            .baselineOnMigrate(true)
+            .locations("classpath:migration")
+            .table("schema_version")
+            .load()
+            .migrate();
     }
 }

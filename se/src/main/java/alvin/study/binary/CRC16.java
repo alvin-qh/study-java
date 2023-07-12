@@ -14,6 +14,7 @@ import java.util.function.BiFunction;
  * 进行处理
  * </p>
  */
+@SuppressWarnings("unused")
 public final class CRC16 {
     // @formatter:off
     private static final int[] TABLE = {
@@ -53,7 +54,7 @@ public final class CRC16 {
     // @formatter:on
 
     // 计算方法
-    private AlgorithmMode mode;
+    private final AlgorithmMode mode;
 
     // 保存中间结果
     private int code;
@@ -191,7 +192,7 @@ public final class CRC16 {
          * 查表法
          *
          * <p>
-         * 查表法调用 {@link #tableLookup(int, byte)} 方法进行计算
+         * 查表法调用 {@link AlgorithmMode#tableLookup(Integer, Byte)} 方法进行计算
          * </p>
          */
         TABLE_LOOKUP(AlgorithmMode::tableLookup),
@@ -200,17 +201,18 @@ public final class CRC16 {
          * 异或运算法
          *
          * <p>
-         * 异或法调用 {@link #xor(int, byte)} 方法进行计算
+         * 异或法调用 {@link AlgorithmMode#xor(Integer, Byte)} 方法进行计算
          * </p>
          */
         XOR(AlgorithmMode::xor);
 
         // 计算 crc 值的函数对象
-        private BiFunction<Integer, Byte, Integer> func;
+        private final BiFunction<Integer, Byte, Integer> func;
 
         /**
+         * 构造器, 设置计算用的函数
          *
-         * @param func
+         * @param func 计算函数
          */
         AlgorithmMode(BiFunction<Integer, Byte, Integer> func) {
             this.func = func;

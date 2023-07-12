@@ -1,5 +1,7 @@
 package alvin.study.concurrent.util;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
@@ -85,7 +87,7 @@ public final class ExecutorCreator implements AutoCloseable {
      * @param queueSize 任务队列的长度
      * @return 线程池执行器对象
      */
-    public ExecutorService arrayBlockingQueueExecutor(int queueSize) {
+    public @NotNull ExecutorService arrayBlockingQueueExecutor(int queueSize) {
         if (queueSize <= 0) {
             throw new IllegalArgumentException("queueSize must great than 0");
         }
@@ -106,6 +108,7 @@ public final class ExecutorCreator implements AutoCloseable {
             (runnable, exec) -> {
                 var queue = exec.getQueue();
                 queue.poll();
+                // noinspection ResultOfMethodCallIgnored
                 queue.offer(runnable);
             });
 
@@ -128,7 +131,7 @@ public final class ExecutorCreator implements AutoCloseable {
      * @param maxThreads 允许同时运行的最大线程数, 如果为 {@code 0}, 则使用默认线程数
      * @return 线程池执行器对象
      */
-    public ExecutorService synchronousQueueExecutor(int maxThreads) {
+    public @NotNull ExecutorService synchronousQueueExecutor(int maxThreads) {
         if (maxThreads <= 0) {
             maxThreads = MAX_THREAD_COUNT;
         }
@@ -156,7 +159,7 @@ public final class ExecutorCreator implements AutoCloseable {
      * @param maxThreads 最大线程数, 如果为 {@code 0}, 则使用默认线程数
      * @return 用于执行延时异步任务的线程池执行器对象
      */
-    public ScheduledExecutorService scheduledExecutor(int maxThreads) {
+    public @NotNull ScheduledExecutorService scheduledExecutor(int maxThreads) {
         if (maxThreads <= 0) {
             // 获取当前 CPU 的逻辑内核数 (Logical Kernel)
             maxThreads = Runtime.getRuntime().availableProcessors();

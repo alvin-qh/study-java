@@ -1,9 +1,8 @@
 package alvin.study.jdbc.datasource;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import javax.sql.DataSource;
 
 /**
  * 连接管理器类型, 基于线程本地存储管理数据库连接
@@ -16,16 +15,13 @@ public class ConnectionManager implements AutoCloseable {
      * 初始化
      *
      * @param dataSource 数据源对象
-     * @return 当前线程中的数据库连接对象
      */
-    public Connection initialize(DataSource dataSource) throws SQLException {
+    public void initialize(DataSource dataSource) throws SQLException {
         // 从数据源中获取一个连接对象
         var conn = dataSource.getConnection();
 
         // 将连接对象存入当前线程的本地存储中
         CONN_LOCAL.set(conn);
-
-        return conn;
     }
 
     /**

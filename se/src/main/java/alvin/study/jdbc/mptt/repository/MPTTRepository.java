@@ -1,5 +1,10 @@
 package alvin.study.jdbc.mptt.repository;
 
+import alvin.study.jdbc.datasource.ConnectionManager;
+import alvin.study.jdbc.mptt.model.MPTT;
+import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,10 +12,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import alvin.study.jdbc.datasource.ConnectionManager;
-import alvin.study.jdbc.mptt.model.MPTT;
-import lombok.RequiredArgsConstructor;
 
 /**
  * 对 MPTT 表进行增删改查操作的持久化类
@@ -26,7 +27,7 @@ public class MPTTRepository {
      * @param rs {@link java.sql.ResultSet ResultSet} 结果集对象
      * @return {@link MPTT} 类型对象集合
      */
-    private List<MPTT> resultSetToList(ResultSet rs) throws SQLException {
+    private List<MPTT> resultSetToList(@NotNull ResultSet rs) throws SQLException {
         // 对于空结果集, 返回空集合
         if (!rs.next()) {
             return List.of();
@@ -57,7 +58,7 @@ public class MPTTRepository {
         var conn = connectionManager.get();
 
         // 执行查询语句
-        try (var stat = conn.prepareStatement("select id, name, pid, lft, rht from mptt where id = ?")) {
+        try (var stat = conn.prepareStatement("SELECT `id`, `name`, `pid`, `lft`, `rht` FROM `mptt` WHERE `id` = ?")) {
             stat.setLong(1, id);
 
             try (var rs = stat.executeQuery()) {
@@ -78,7 +79,7 @@ public class MPTTRepository {
         var conn = connectionManager.get();
 
         // 执行查询语句
-        try (var stat = conn.prepareStatement("select id, name, pid, lft, rht from mptt where name = ?")) {
+        try (var stat = conn.prepareStatement("SELECT `id`, `name`, `pid`, `lft`, `rht` FROM `mptt` WHERE `name` = ?")) {
             stat.setString(1, name);
 
             try (var rs = stat.executeQuery()) {
@@ -94,10 +95,10 @@ public class MPTTRepository {
      * @param conn 数据库连接对象
      * @param mptt {@link MPTT} 类型实体对象
      */
-    private void insert(Connection conn, MPTT mptt) throws SQLException {
+    private void insert(Connection conn, @NotNull MPTT mptt) throws SQLException {
         // 执行插入语句, 要求返回新纪录的自增 ID
         try (var stat = conn.prepareStatement(
-            "insert into mptt (name, pid, lft, rht) values (?, ?, ?, ?)",
+            "INSERT INTO `mptt` (`name`, `pid`, `lft`, `rht`) VALUES (?, ?, ?, ?)",
             Statement.RETURN_GENERATED_KEYS)) {
             stat.setString(1, mptt.getName());
             stat.setLong(2, mptt.getPid());
@@ -178,13 +179,13 @@ public class MPTTRepository {
         var parent = findById(parentId).orElseThrow();
 
         // 将父节点记录之后的节点 lft 全部 +2
-        try (var stat = conn.prepareStatement("update mptt m set m.lft = m.lft + 2 where m.lft > ?")) {
+        try (var stat = conn.prepareStatement("UPDATE `mptt` SET `lft` = `lft` + 2 WHERE `lft` > ?")) {
             stat.setLong(1, parent.getLft());
             stat.executeUpdate();
         }
 
         // 将父节点记录之后的节点 rht 全部 +2
-        try (var stat = conn.prepareStatement("update mptt m set m.rht = m.rht + 2 where m.rht > ?")) {
+        try (var stat = conn.prepareStatement("UPDATE `mptt` SET `rht` = `rht` + 2 WHERE `rht` > ?")) {
             stat.setLong(1, parent.getLft());
             stat.executeUpdate();
         }
@@ -229,21 +230,20 @@ public class MPTTRepository {
      * </pre>
      * </p>
      *
-     * @param mptt     {@link MPTT} 实体对象
-     * @param parentId 父节点记录 ID
-     * @return {@link MPTT} 实体对象
+     * @param mptt      {@link MPTT} 实体对象
+     * @param siblingId 父节点记录 ID
      */
     public void createAsSibling(MPTT mptt, long siblingId) throws SQLException {
         var conn = connectionManager.get();
 
         var sibling = findById(siblingId).orElseThrow();
 
-        try (var stat = conn.prepareStatement("update mptt m set m.lft = m.lft + 2 where m.lft > ?")) {
+        try (var stat = conn.prepareStatement("UPDATE `mptt` SET `lft` = `lft` + 2 WHERE `lft` > ?")) {
             stat.setLong(1, sibling.getRht());
             stat.executeUpdate();
         }
 
-        try (var stat = conn.prepareStatement("update mptt m set m.rht = m.rht + 2 where m.rht > ?")) {
+        try (var stat = conn.prepareStatement("UPDATE `mptt` SET `rht` = `rht` + 2 WHERE `rht` > ?")) {
             stat.setLong(1, sibling.getRht());
             stat.executeUpdate();
         }
@@ -272,7 +272,7 @@ public class MPTTRepository {
 
         // 查询父节点记录的子节点记录集合
         try (var stat = conn.prepareStatement(
-            "select id, name, pid, lft, rht from mptt where lft > ? and rht < ? order by lft")) {
+            "SELECT `id`, `name`, `pid`, `lft`, `rht` FROM `mptt` WHERE `lft` > ? AND `rht` < ? ORDER BY `lft`")) {
             stat.setLong(1, parent.getLft());
             stat.setLong(2, parent.getRht());
 
@@ -300,7 +300,8 @@ public class MPTTRepository {
 
         // 查询路径节点记录集合
         try (var stat = conn.prepareStatement(
-            "select id, name, pid, lft, rht from mptt where lft between ? and ? and rht between ? and ? order by lft")) {
+            "SELECT `id`, `name`, `pid`, `lft`, `rht` FROM `mptt` " +
+                "WHERE `lft` BETWEEN ? AND ? AND `rht` BETWEEN ? AND ? ORDER BY `lft`")) {
             stat.setLong(1, first.getLft());
             stat.setLong(2, last.getLft());
             stat.setLong(3, last.getRht());
@@ -327,7 +328,7 @@ public class MPTTRepository {
 
         // 查询叶子节点记录集合
         try (var stat = conn.prepareStatement(
-            "select id, name, pid, lft, rht from mptt where rht - lft = 1 order by lft")) {
+            "SELECT `id`, `name`, `pid`, `lft`, `rht` FROM `mptt` WHERE `rht` - `lft` = 1 ORDER BY `lft`")) {
 
             try (var rs = stat.executeQuery()) {
                 return resultSetToList(rs);
@@ -351,7 +352,7 @@ public class MPTTRepository {
 
         // 查询直属子节点记录
         try (var stat = conn.prepareStatement(
-            "select id, name, pid, lft, rht from mptt where pid = ? order by lft")) {
+            "SELECT `id`, `name`, `pid`, `lft`, `rht` FROM `mptt` WHERE `pid` = ? ORDER BY `lft`")) {
 
             stat.setLong(1, parentId);
             try (var rs = stat.executeQuery()) {
@@ -370,7 +371,8 @@ public class MPTTRepository {
         var conn = connectionManager.get();
 
         // 执行查询语句
-        try (var stat = conn.prepareStatement("select id, name, pid, lft, rht from mptt order by lft")) {
+        try (var stat = conn.prepareStatement(
+            "SELECT `id`, `name`, `pid`, `lft`, `rht` FROM `mptt` ORDER BY `lft`")) {
             try (var rs = stat.executeQuery()) {
                 return resultSetToList(rs);
             }

@@ -1,5 +1,10 @@
 package alvin.study.collection;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -16,9 +21,6 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Streams {
     /**
@@ -28,8 +30,9 @@ public final class Streams {
      * @param elem 不定参数
      * @return 由 {@code elem} 组成的 {@link Stream} 对象
      */
+    @Contract(pure = true)
     @SafeVarargs
-    public static <T> Stream<T> stream(T... elem) {
+    public static <T> @NotNull Stream<T> stream(T... elem) {
         return Arrays.stream(elem);
     }
 
@@ -38,7 +41,7 @@ public final class Streams {
      *
      * @param <T>      集合元素对象
      * @param iterable 可迭代对象
-     * @return 参数 {@link iterable} 形成的 {@link Stream} 对象
+     * @return 参数 {@code iterable} 形成的 {@link Stream} 对象
      */
     static <T> Stream<T> stream(Iterable<T> iterable) {
         if (iterable == null) {
@@ -53,7 +56,7 @@ public final class Streams {
      * @param <T>      集合元素对象
      * @param iterable 可迭代对象
      * @param omitNull 是否过滤 {@code null} 元素
-     * @return 参数 {@link iterable} 形成的 {@link Stream} 对象
+     * @return 参数 {@code iterable} 形成的 {@link Stream} 对象
      */
     public static <T> Stream<T> stream(Iterable<T> iterable, boolean omitNull) {
         if (omitNull) {
@@ -139,7 +142,7 @@ public final class Streams {
      * @return {@code stream} 参数转换的 {@link List} 对象
      */
     public static <T, R> List<R> toList(
-            Stream<? extends T> stream, Function<? super T, ? extends R> mapper, boolean omitNull) {
+        Stream<? extends T> stream, Function<? super T, ? extends R> mapper, boolean omitNull) {
         var mappedStream = stream.<R>map(mapper);
         if (omitNull) {
             mappedStream = mappedStream.filter(Objects::nonNull);
@@ -152,14 +155,14 @@ public final class Streams {
      *
      * @param <T> 元素类型
      * @return 能够将 {@link Stream} 对象转为 {@link LinkedHashSet} 对象的 {@link Collector}
-     *         对象
+     * 对象
      */
-    private static <T> Collector<T, ?, Set<T>> toLinkedSet() {
+    private static <T> @NotNull Collector<T, ?, Set<T>> toLinkedSet() {
         return Collector.of(
             // 集合对象创建函数
             LinkedHashSet::new,
             // 元素添加函数
-            (set, val) -> set.add(val),
+            Set::add,
             // 集合合并函数
             (left, right) -> {
                 left.addAll(right);
@@ -178,7 +181,7 @@ public final class Streams {
      * @return {@code stream} 转换得到的 {@link Set} 对象
      */
     public static <T, R> Set<R> toSet(
-            Stream<? extends T> stream, Function<? super T, ? extends R> mapper, boolean omitNull) {
+        @NotNull Stream<? extends T> stream, Function<? super T, ? extends R> mapper, boolean omitNull) {
         var rs = stream.map(mapper);
         if (omitNull) {
             rs = rs.filter(Objects::nonNull);
@@ -191,12 +194,12 @@ public final class Streams {
      *
      * @param <T> 元素类型
      * @return 能够将 {@link Stream} 对象转为 {@link LinkedHashMap} 对象的 {@link Collector}
-     *         对象
+     * 对象
      */
-    private static <T, K, U> Collector<T, ?, Map<K, U>> toLinkedMap(
-            Function<? super T, ? extends K> keyMapper,
-            Function<? super T, ? extends U> valueMapper,
-            boolean omitKeyNull) {
+    private static <T, K, U> @NotNull Collector<T, ?, Map<K, U>> toLinkedMap(
+        Function<? super T, ? extends K> keyMapper,
+        Function<? super T, ? extends U> valueMapper,
+        boolean omitKeyNull) {
         return Collector.of(
             // 集合对象创建函数
             LinkedHashMap::new,
@@ -228,10 +231,10 @@ public final class Streams {
      * @return {@link Map} 对象
      */
     public static <K, V, U> Map<K, V> toMap(
-            Stream<? extends U> stream,
-            Function<? super U, ? extends K> keyMapper,
-            Function<? super U, ? extends V> valueMapper,
-            boolean omitKeyNull) {
+        @NotNull Stream<? extends U> stream,
+        Function<? super U, ? extends K> keyMapper,
+        Function<? super U, ? extends V> valueMapper,
+        boolean omitKeyNull) {
         return stream.collect(toLinkedMap(keyMapper, valueMapper, omitKeyNull));
     }
 
@@ -247,9 +250,9 @@ public final class Streams {
      * @return {@link Map} 对象
      */
     public static <K, V> Map<K, V> toMap(
-            Stream<? extends V> stream,
-            Function<? super V, ? extends K> keyMapper,
-            boolean omitKeyNull) {
+        Stream<? extends V> stream,
+        Function<? super V, ? extends K> keyMapper,
+        boolean omitKeyNull) {
         return toMap(stream, keyMapper, Function.identity(), omitKeyNull);
     }
 
@@ -264,9 +267,9 @@ public final class Streams {
      * @return 转换后的 {@link List} 对象
      */
     public static <T, R> List<T> flatList(
-            Stream<? extends R> stream,
-            Function<? super R, Stream<? extends T>> mapper,
-            boolean omitNull) {
+        @NotNull Stream<? extends R> stream,
+        Function<? super R, Stream<? extends T>> mapper,
+        boolean omitNull) {
         var rs = stream.flatMap(mapper);
         if (omitNull) {
             rs = rs.filter(Objects::nonNull);
@@ -285,9 +288,9 @@ public final class Streams {
      * @return 转换后的 {@link Set} 对象
      */
     public static <T, R> Set<T> flatSet(
-            Stream<? extends R> stream,
-            Function<? super R, Stream<? extends T>> mapper,
-            boolean omitNull) {
+        @NotNull Stream<? extends R> stream,
+        Function<? super R, Stream<? extends T>> mapper,
+        boolean omitNull) {
         var rs = stream.flatMap(mapper);
         if (omitNull) {
             rs = rs.filter(Objects::nonNull);

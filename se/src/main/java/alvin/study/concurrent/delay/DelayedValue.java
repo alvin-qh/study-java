@@ -1,5 +1,7 @@
 package alvin.study.concurrent.delay;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.time.Instant;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.Delayed;
@@ -16,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  * 当其返回值小于等于 {@code 0} 后, 方可从队列中取出
  * </li>
  * <li>
- * {@link java.util.concurrent.Delayed#compareTo(java.util.concurrent.Delayed)
+ * {@link java.util.concurrent.Delayed#compareTo(Object)}
  * Delayed.compareTo(Delayed)} 方法比较两个队列元素, 用于确定元素在队列中的"优先级", 比较结果越小的元素具有越高的出队优先级
  * </li>
  * </ul>
@@ -39,7 +41,7 @@ public class DelayedValue<T> implements Delayed {
      * @param delay 元素延迟时间
      * @param unit  延迟时间的单位
      */
-    public DelayedValue(T value, long delay, TimeUnit unit) {
+    public DelayedValue(T value, long delay, @NotNull TimeUnit unit) {
         this.value = value;
         // 记录当前对象创建时间
         this.createdAt = Instant.now();
@@ -52,10 +54,12 @@ public class DelayedValue<T> implements Delayed {
      *
      * @return 元素值
      */
-    public T getValue() { return value; }
+    public T getValue() {
+        return value;
+    }
 
     @Override
-    public int compareTo(Delayed o) {
+    public int compareTo(@NotNull Delayed o) {
         if (this == o) {
             return 0;
         }
@@ -63,7 +67,7 @@ public class DelayedValue<T> implements Delayed {
     }
 
     @Override
-    public long getDelay(TimeUnit unit) {
+    public long getDelay(@NotNull TimeUnit unit) {
         // 计算要延迟到的时间毫秒值
         var delayedTo = createdAt.toEpochMilli() + delayMillis;
 

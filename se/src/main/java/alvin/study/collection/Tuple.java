@@ -1,11 +1,15 @@
 package alvin.study.collection;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public final class Tuple<E> implements Iterable<E> {
-    private List<E> elements;
+    private final List<E> elements;
 
     private Tuple(E[] elements) {
         this.elements = List.of(elements);
@@ -19,6 +23,7 @@ public final class Tuple<E> implements Iterable<E> {
         return elements.get(index);
     }
 
+    @NotNull
     @Override
     public Iterator<E> iterator() {
         return elements.iterator();
@@ -28,21 +33,29 @@ public final class Tuple<E> implements Iterable<E> {
         return elements.size();
     }
 
-    public boolean isEmpty() { return elements.isEmpty(); }
+    public boolean isEmpty() {
+        return elements.isEmpty();
+    }
 
+    @SuppressWarnings("SuspiciousMethodCalls")
     public boolean contains(Object o) {
         return elements.contains(o);
     }
 
-    public Object[] toArray() {
+    @Contract(pure = true)
+    public Object @NotNull [] toArray() {
         return elements.toArray();
     }
 
-    public <T> T[] toArray(T[] a) {
+    public <T> T @NotNull [] toArray(T[] a) {
         return elements.toArray(a);
     }
 
-    public boolean containsAll(Collection<?> c) {
+    @SuppressWarnings("SlowListContainsAll")
+    public boolean containsAll(Collection<E> c) {
+        if (c == null) {
+            c = List.of();
+        }
         return elements.containsAll(c);
     }
 
@@ -50,12 +63,14 @@ public final class Tuple<E> implements Iterable<E> {
         return elements;
     }
 
+    @Contract(value = "_ -> new", pure = true)
     @SafeVarargs
-    public static <T> Tuple<T> of(T... elements) {
+    public static <T> @NotNull Tuple<T> of(T... elements) {
         return new Tuple<>(elements);
     }
 
-    public static <T> Tuple<T> of(Collection<T> elements) {
+    @Contract("_ -> new")
+    public static <T> @NotNull Tuple<T> of(Collection<T> elements) {
         return new Tuple<>(elements);
     }
 }

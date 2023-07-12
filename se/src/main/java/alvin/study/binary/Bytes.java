@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
  * 通过该工具类可以方便的进行字节串的各类操作
  * </p>
  */
+@SuppressWarnings("unused")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Bytes {
     /**
@@ -95,7 +96,6 @@ public final class Bytes {
      * @param bytes   要填充的字节数组
      * @return 填充后的数组
      */
-    @SafeVarargs
     public static byte[] fill(byte[] dist, int distPos, byte... bytes) {
         // 将要填充的字节内容复制到目标数组的指定位置上
         return copy(dist, distPos, bytes, 0, bytes.length);
@@ -261,9 +261,8 @@ public final class Bytes {
      * @param subs   一组字节数组
      * @return 拼装后的字节数组
      */
-    @SafeVarargs
     public static byte[] concat(byte[] dist, int offset, byte[]... subs) {
-        if (subs == null || subs.length == 0) {
+        if (subs == null) {
             return dist;
         }
 
@@ -283,7 +282,6 @@ public final class Bytes {
      * @param values 字节数组, 会被追加到目标数组末尾
      * @return 追加后的结果
      */
-    @SafeVarargs
     public static byte[] append(byte[] dist, byte... values) {
         var offset = 0;
         if (dist != null) {
@@ -499,13 +497,13 @@ public final class Bytes {
     @SuppressWarnings("java:S107")
     public static long toLong(byte b1, byte b2, byte b3, byte b4, byte b5, byte b6, byte b7, byte b8) {
         return (((long) b1 << 56) & 0xFF00000000000000L)
-               | (((long) b2 << 48) & 0xFF000000000000L)
-               | (((long) b3 << 40) & 0xFF0000000000L)
-               | (((long) b4 << 32) & 0xFF00000000L)
-               | (((long) b5 << 24) & 0xFF000000L)
-               | (((long) b6 << 16) & 0xFF0000L)
-               | (((long) b7 << 8) & 0xFF00L)
-               | (b8 & 0xFFL);
+            | (((long) b2 << 48) & 0xFF000000000000L)
+            | (((long) b3 << 40) & 0xFF0000000000L)
+            | (((long) b4 << 32) & 0xFF00000000L)
+            | (((long) b5 << 24) & 0xFF000000L)
+            | (((long) b6 << 16) & 0xFF0000L)
+            | (((long) b7 << 8) & 0xFF00L)
+            | (b8 & 0xFFL);
     }
 
     /**

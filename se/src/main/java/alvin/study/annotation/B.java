@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
  * </p>
  */
 @Documented
-@Target({ ElementType.FIELD })
+@Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface B {
     /**

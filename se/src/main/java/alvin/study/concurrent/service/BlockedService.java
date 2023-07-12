@@ -1,12 +1,13 @@
 package alvin.study.concurrent.service;
 
+import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-
-import lombok.NoArgsConstructor;
-import lombok.SneakyThrows;
 
 /**
  * 用于测试异步调用的服务类
@@ -18,22 +19,21 @@ import lombok.SneakyThrows;
 @NoArgsConstructor
 public class BlockedService {
     // 模型类型
-    public record Model(long id, String name) {}
+    public record Model(long id, String name) {
+    }
 
     // 每次操作需要等待的时间, 单位毫秒
     private static final long DELAY_MILLS = 1000;
 
     // 保存 id 和模型对象对应关系的 Map 对象
-    private Map<Long, Model> modelMap = new ConcurrentHashMap<>();
+    private final Map<Long, Model> modelMap = new ConcurrentHashMap<>();
 
     /**
      * 构造器, 通过模型对象数组进行初始化
      *
-     * @param delayMills 等待时间
      * @param initModels 模型对象数组, 其元素作为当前对象的初始存储内容
      */
-    @SafeVarargs
-    public BlockedService(long delayMills, Model... initModels) {
+    public BlockedService(Model... initModels) {
         Arrays.stream(initModels).forEach(m -> modelMap.put(m.id(), m));
     }
 
@@ -43,7 +43,7 @@ public class BlockedService {
      * @param model 要保存的模型对象
      * @return 是否保存成功
      */
-    public boolean saveModel(Model model) {
+    public boolean saveModel(@NotNull Model model) {
         delay();
 
         if (modelMap.containsKey(model.id())) {

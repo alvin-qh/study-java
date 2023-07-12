@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
  * </p>
  */
 @Documented
-@Target({ ElementType.METHOD })
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface C {
     /**

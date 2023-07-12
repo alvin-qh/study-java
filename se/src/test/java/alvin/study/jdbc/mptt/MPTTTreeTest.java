@@ -1,7 +1,8 @@
 package alvin.study.jdbc.mptt;
 
-import static org.assertj.core.api.Assertions.tuple;
-import static org.assertj.core.api.BDDAssertions.then;
+import alvin.study.jdbc.mptt.model.MPTT;
+import alvin.study.jdbc.mptt.model.MPTTTree;
+import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 import java.util.ArrayDeque;
@@ -9,10 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
-import org.junit.jupiter.api.Test;
-
-import alvin.study.jdbc.mptt.model.MPTT;
-import alvin.study.jdbc.mptt.model.MPTTTree;
+import static org.assertj.core.api.Assertions.tuple;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试通过 {@link MPTTTree} 类型来处理数据记录, 将数据整理为一颗树
@@ -67,7 +66,7 @@ class MPTTTreeTest extends MPTTTest {
         var results = new ArrayList<MPTT>();
 
         // 创建用于深度优先遍历的栈, 并将根节点入栈
-        var stack = new ArrayDeque<MPTT>(List.of(tree.getRoot()));
+        var stack = new ArrayDeque<>(List.of(tree.getRoot()));
         // 通过栈遍历节点
         while (!stack.isEmpty()) {
             // 弹出栈顶元素

@@ -1,13 +1,16 @@
 package alvin.study.binary;
 
-import static java.lang.Character.digit;
-
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
+import static java.lang.Character.digit;
 
 /**
  * 二进制转 16 进制字符串工具类
  */
+@SuppressWarnings("unused")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Hex {
     private static final char[] HEX_DIGITS = "0123456789ABCDEF".toCharArray();
@@ -20,7 +23,7 @@ public final class Hex {
      * @param length 需转换的字符串长度, 即从 {@code offset} 开始计算的长度, 必须为 2 的倍数
      * @return 转换后的 {@code byte} 数组
      */
-    public static byte[] toBytes(String s, int offset, int length) {
+    public static byte @NotNull [] toBytes(String s, int offset, int length) {
         if (length <= 0) {
             throw new IllegalArgumentException("length");
         }
@@ -54,7 +57,7 @@ public final class Hex {
      * @param offset 字符串偏移量, 从该位置开始计算, 到字符串末尾结束
      * @return 转换后的 {@code byte} 数组
      */
-    public static byte[] toBytes(String s, int offset) {
+    public static byte @NotNull [] toBytes(String s, int offset) {
         return toBytes(s, offset, s.length() - offset);
     }
 
@@ -64,7 +67,7 @@ public final class Hex {
      * @param s 16 进展字符串
      * @return 转换后的 {@code byte} 数组
      */
-    public static byte[] toBytes(String s) {
+    public static byte @NotNull [] toBytes(String s) {
         return toBytes(s, 0, s.length());
     }
 
@@ -76,7 +79,8 @@ public final class Hex {
      * @param length 长度, 即从偏移量开始, 要转换的 {@code byte} 个数
      * @return 转换后的字符串
      */
-    public static String toString(byte[] data, int offset, int length) {
+    @Contract("_, _, _ -> new")
+    public static @NotNull String toString(byte @NotNull [] data, int offset, int length) {
         // 计算结束下标值
         var lastIndex = Math.min(offset + length, data.length);
         // 重新计算可转换的长度
@@ -212,7 +216,7 @@ public final class Hex {
      * ^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^
      *  行偏移量               每行数据的 16 进制字符串                   原始字符
      * </pre>
-     *
+     * <p>
      * 对于非可见字符, 则使用 {@code '.'} 字符替代
      * </p>
      *
@@ -235,7 +239,7 @@ public final class Hex {
      * ^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^
      *  行偏移量               每行数据的 16 进制字符串                   原始字符
      * </pre>
-     *
+     * <p>
      * 对于非可见字符, 则使用 {@code '.'} 字符替代
      * </p>
      *
@@ -243,7 +247,7 @@ public final class Hex {
      * @param offset 数组偏移量, 即从该位置开始转换
      * @return 内存转储字符串
      */
-    public static String dump(byte[] data, int offset) {
+    public static @NotNull String dump(byte[] data, int offset) {
         return dump(data, offset, data.length - offset);
     }
 
@@ -259,7 +263,7 @@ public final class Hex {
      * ^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^
      *  行偏移量               每行数据的 16 进制字符串                   原始字符
      * </pre>
-     *
+     * <p>
      * 对于非可见字符, 则使用 {@code '.'} 字符替代
      * </p>
      *
@@ -269,7 +273,7 @@ public final class Hex {
      * @return 内存转储字符串
      */
     @SuppressWarnings("java:S3776")
-    public static String dump(byte[] data, int offset, int length) {
+    public static @NotNull String dump(byte[] data, int offset, int length) {
         if (data == null || data.length == 0) {
             return "";
         }
@@ -317,8 +321,8 @@ public final class Hex {
             // 写入 byte 值对应的 16 进制字符
             var b = data[offset + i];
             result.append(' ')
-                    .append(HEX_DIGITS[(b >>> 4) & 0xF])
-                    .append(HEX_DIGITS[b & 0xF]);
+                .append(HEX_DIGITS[(b >>> 4) & 0xF])
+                .append(HEX_DIGITS[b & 0xF]);
 
             // 将字符放入行
             line[lineIndex++] = b;

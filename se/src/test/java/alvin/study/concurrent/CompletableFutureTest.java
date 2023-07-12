@@ -84,7 +84,7 @@ class CompletableFutureTest {
      */
     @Test
     void supplyAsync_shouldExecuteAsyncMethodAndGetResultByCommonPool() throws Exception {
-        var service = new BlockedService(1000, new Model(1L, "Alvin"));
+        var service = new BlockedService(new Model(1L, "Alvin"));
 
         // 启动异步任务
         var future = CompletableFuture.supplyAsync(() -> service.loadModel(1L));
@@ -117,7 +117,7 @@ class CompletableFutureTest {
      */
     @Test
     void supplyAsync_shouldExecuteAsyncMethodAndGetResultByCustomPool() throws Exception {
-        var service = new BlockedService(1000, new Model(1L, "Alvin"));
+        var service = new BlockedService(new Model(1L, "Alvin"));
 
         // 创建线程池执行器对象
         var executor = executorCreator.arrayBlockingQueueExecutor(20);
@@ -150,7 +150,7 @@ class CompletableFutureTest {
      */
     @Test
     void getResult_shouldGetResultOfAsyncTask() throws Exception {
-        var service = new BlockedService(1000, new Model(1L, "Alvin"));
+        var service = new BlockedService(new Model(1L, "Alvin"));
 
         // 不等待, 立即获取结果
         {
@@ -241,7 +241,7 @@ class CompletableFutureTest {
      */
     @Test
     void complete_shouldGetResultOfAsyncTask() throws Exception {
-        var service = new BlockedService(1000, new Model(1L, "Alvin"));
+        var service = new BlockedService(new Model(1L, "Alvin"));
 
         // 立即结束尚未结束的异步任务, 并设置任务结果值
         {
@@ -382,7 +382,7 @@ class CompletableFutureTest {
      */
     @Test
     void thenApply_shouldExecuteAsyncMethodInChain() throws Exception {
-        var service = new BlockedService(1000);
+        var service = new BlockedService();
 
         // 链式调用执行异步任务, 返回的结果表示最后一个异步任务执行情况
         var future = CompletableFuture
@@ -425,7 +425,7 @@ class CompletableFutureTest {
      */
     @Test
     void whenComplete_shouldCallbackWhenAsyncTaskWasCompleted() throws Exception {
-        var service = new BlockedService(1000);
+        var service = new BlockedService();
 
         // 记录程序执行开始时间
         var start = System.currentTimeMillis();
@@ -498,8 +498,7 @@ class CompletableFutureTest {
     @Test
     void thenCombine_shouldCombineMultipleAsyncTasksWorkAtSameTime() throws Exception {
         var service = new BlockedService(
-            1000,
-            new Model(1L, "Alvin"),
+                new Model(1L, "Alvin"),
             new Model(2L, "Emma"),
             new Model(3L, "Lucy"));
 
@@ -571,8 +570,7 @@ class CompletableFutureTest {
     @Test
     void thenCompose_shouldExecuteAsyncTaskOneByOneAndCombineTheResult() throws Exception {
         var service = new BlockedService(
-            1000,
-            new Model(1L, "Alvin"),
+                new Model(1L, "Alvin"),
             new Model(2L, "Emma"),
             new Model(3L, "Lucy"));
 
@@ -636,8 +634,7 @@ class CompletableFutureTest {
     @Test
     void thenAcceptBoth_shouldAcceptCurrentAndOtherAsyncMethods() throws Exception {
         var service = new BlockedService(
-            1000,
-            new Model(1L, "Alvin"),
+                new Model(1L, "Alvin"),
             new Model(2L, "Emma"));
 
         // 保存结果的集合对象
@@ -688,8 +685,7 @@ class CompletableFutureTest {
     @Test
     void acceptEither_shouldGetResultBetweenTwoTasksWhichReturnedFirst() throws Exception {
         var service = new BlockedService(
-            1000,
-            new Model(1L, "Alvin"),
+                new Model(1L, "Alvin"),
             new Model(2L, "Emma"));
 
         // 保存结果的引用对象
@@ -761,7 +757,7 @@ class CompletableFutureTest {
      */
     @Test
     void status_shouldGetStatusOfAsyncTask() throws Exception {
-        var service = new BlockedService(1000);
+        var service = new BlockedService();
 
         // 创建线程池对象, 使用大量线程保证并发性, 即每个任务均有一个线程来执行 (IO 密集型)
         var executor = executorCreator.synchronousQueueExecutor(0);

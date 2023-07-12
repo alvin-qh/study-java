@@ -1,5 +1,8 @@
 package alvin.study.collection;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Map;
 import java.util.Objects;
 
@@ -23,19 +26,28 @@ public final class Pair<K, V> implements Map.Entry<K, V> {
         this.right = right;
     }
 
-    public static <K, V> Pair<K, V> of(K left, V right) {
+    @Contract(value = "_, _ -> new", pure = true)
+    public static <K, V> @NotNull Pair<K, V> of(K left, V right) {
         return new Pair<>(left, right);
     }
 
-    public K getLeft() { return getKey(); }
+    public K getLeft() {
+        return getKey();
+    }
 
-    public V getRight() { return getValue(); }
+    public V getRight() {
+        return getValue();
+    }
 
     @Override
-    public K getKey() { return left; }
+    public K getKey() {
+        return left;
+    }
 
     @Override
-    public V getValue() { return right; }
+    public V getValue() {
+        return right;
+    }
 
     @Override
     public V setValue(V value) {

@@ -1,19 +1,16 @@
 package alvin.study.jdbc;
 
-import java.sql.SQLException;
-
-import javax.sql.DataSource;
-
+import alvin.study.jdbc.datasource.ConnectionManager;
+import alvin.study.jdbc.datasource.DataSourceBuilder;
+import alvin.study.jdbc.flyway.Migration;
+import com.zaxxer.hikari.HikariDataSource;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
-import com.zaxxer.hikari.HikariDataSource;
-
-import alvin.study.jdbc.datasource.ConnectionManager;
-import alvin.study.jdbc.datasource.DataSourceBuilder;
-import alvin.study.jdbc.flyway.Migration;
+import javax.sql.DataSource;
+import java.sql.SQLException;
 
 /**
  * JDBC 测试超类类型
@@ -32,10 +29,10 @@ public abstract class JDBCTest {
     static void beforeAll() {
         // 创建数据源对象
         dataSource = DataSourceBuilder.newBuilder()
-                .url("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL;NON_KEYWORDS=USER")
-                .username("dev")
-                .password("password")
-                .build();
+            .url("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL;NON_KEYWORDS=USER")
+            .username("dev")
+            .password("password")
+            .build();
 
         // 通过脚本创建数据表
         new Migration(dataSource).migrate();
@@ -69,5 +66,7 @@ public abstract class JDBCTest {
         connectionManager.close();
     }
 
-    public ConnectionManager getConnectionManager() { return connectionManager; }
+    public ConnectionManager getConnectionManager() {
+        return connectionManager;
+    }
 }
