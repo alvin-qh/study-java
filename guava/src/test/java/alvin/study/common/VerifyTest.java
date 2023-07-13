@@ -1,11 +1,10 @@
 package alvin.study.common;
 
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
-
-import org.junit.jupiter.api.Test;
-
 import com.google.common.base.Verify;
 import com.google.common.base.VerifyException;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 /**
  * 测试运行时条件检验方法
@@ -15,6 +14,7 @@ import com.google.common.base.VerifyException;
  * {@code false} 则抛出 {@link VerifyException} 异常
  * </p>
  */
+@SuppressWarnings({"ConstantValue", "DataFlowIssue"})
 class VerifyTest {
     /**
      * 对条件表达式进行检验
@@ -40,7 +40,7 @@ class VerifyTest {
 
         // 条件表达式为 false 时, 检验失败 抛出异常且定义异常信息
         thenThrownBy(() -> Verify.verify(a > 10, "a must great than %s", 10))
-                .isInstanceOf(VerifyException.class)
-                .hasMessage("a must great than %s", 10);
+            .isInstanceOf(VerifyException.class)
+            .hasMessage("a must great than %s", 10);
     }
 }

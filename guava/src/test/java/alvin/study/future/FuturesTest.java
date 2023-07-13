@@ -1,16 +1,21 @@
 package alvin.study.future;
 
-import static org.assertj.core.api.Assertions.tuple;
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
-import static org.awaitility.Awaitility.await;
-import static org.junit.jupiter.api.Assertions.fail;
+import alvin.study.future.model.User;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.MoreExecutors;
+import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutionException;
@@ -22,18 +27,11 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.IntStream;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.MoreExecutors;
-
-import alvin.study.future.model.User;
+import static org.assertj.core.api.Assertions.tuple;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * 测试 Guava 中的多任务组件库
@@ -118,7 +116,7 @@ class FuturesTest {
                  * 计算任务处理失败后的回调, 将计算过程中产生的异常作为参数传递
                  */
                 @Override
-                public void onFailure(Throwable t) {
+                public void onFailure(@NotNull Throwable t) {
                     throw new IllegalStateException("Cannot calculate fibonacci value", t);
                 }
             },
@@ -126,7 +124,7 @@ class FuturesTest {
             MoreExecutors.directExecutor()));
 
         // 等待所有任务执行完毕
-        await().atMost(2, TimeUnit.SECONDS).until(() -> !Arrays.stream(results).anyMatch(n -> n == 0));
+        await().atMost(2, TimeUnit.SECONDS).until(() -> Arrays.stream(results).noneMatch(n -> n == 0));
 
         // 确认结果正确
         then(results).containsExactly(1, 1, 2, 3, 5, 8, 13, 21, 34, 55);
@@ -141,14 +139,14 @@ class FuturesTest {
      * </p>
      */
     @Test
-    void submit_shouldSubmitTaskBatched() throws InterruptedException {
+    void submit_shouldSubmitTaskBatched() {
         // 创建 ListeningExecutorService 对象
         var listeningDecorator = MoreExecutors.listeningDecorator(executor);
 
         // 将要计算的参数转为 ListenableFuture 类型对象集合
         var futures = IntStream.range(1, 11)
-                .mapToObj(n -> listeningDecorator.submit(() -> Fibonacci.calculate(n)))
-                .toList();
+            .mapToObj(n -> listeningDecorator.submit(() -> Fibonacci.calculate(n)))
+            .toList();
 
         // 保存计算结果的集合对象
         var numbers = Lists.<Integer>newArrayList();
@@ -172,7 +170,7 @@ class FuturesTest {
                  * 计算任务处理失败后的回调, 将计算过程中产生的异常作为参数传递
                  */
                 @Override
-                public void onFailure(Throwable t) {
+                public void onFailure(@NotNull Throwable t) {
                     throw new UnsupportedOperationException("Unimplemented method 'onFailure'");
                 }
             },
@@ -218,7 +216,8 @@ class FuturesTest {
                 try {
                     // 保存异步任务执行结果
                     userRef.set(createTask.get());
-                } catch (InterruptedException | ExecutionException e) {}
+                } catch (InterruptedException | ExecutionException ignored) {
+                }
             },
             // 设定异步任务的线程执行器
             MoreExecutors.directExecutor());
@@ -296,7 +295,8 @@ class FuturesTest {
                     }
 
                     @Override
-                    public void onFailure(Throwable t) {}
+                    public void onFailure(@NotNull Throwable t) {
+                    }
                 },
                 MoreExecutors.directExecutor());
         }
@@ -317,8 +317,8 @@ class FuturesTest {
 
                     // 返回由两个查询任务组成的异步任务
                     return Futures.allAsList(
-                        service.findUserById(createTask1.get().getId()),
-                        service.findUserById(createTask2.get().getId()));
+                        service.findUserById(createTask1.get().id()),
+                        service.findUserById(createTask2.get().id()));
                 },
                 MoreExecutors.directExecutor());
 
@@ -332,12 +332,14 @@ class FuturesTest {
                     public void onSuccess(List<Optional<User>> result) {
                         // 将任务执行结果加入集合
                         result.stream()
-                                .map(Optional::get)
-                                .forEach(findResults::add);
+                            .filter(Optional::isPresent)
+                            .map(Optional::get)
+                            .forEach(findResults::add);
                     }
 
                     @Override
-                    public void onFailure(Throwable t) {}
+                    public void onFailure(@NotNull Throwable t) {
+                    }
                 },
                 MoreExecutors.directExecutor());
         }
@@ -347,8 +349,8 @@ class FuturesTest {
 
         // 确认任务执行正确
         then(createdResults).containsAll(findResults)
-                .extracting("id", "name")
-                .contains(tuple(1L, "Alvin"), tuple(2L, "Emma"));
+            .extracting("id", "name")
+            .contains(tuple(1L, "Alvin"), tuple(2L, "Emma"));
     }
 
     /**
@@ -373,7 +375,7 @@ class FuturesTest {
      * </p>
      */
     @Test
-    void transform_shouldTransformFutureResultToAnother() throws ExecutionException {
+    void transform_shouldTransformFutureResultToAnother() {
         // 创建 ListeningExecutorService 对象
         var listeningDecorator = MoreExecutors.listeningDecorator(executor);
 
@@ -397,7 +399,8 @@ class FuturesTest {
                 }
 
                 @Override
-                public void onFailure(Throwable t) {}
+                public void onFailure(@NotNull Throwable t) {
+                }
             },
             // 结果回调所在的线程执行器
             MoreExecutors.directExecutor());
@@ -407,8 +410,8 @@ class FuturesTest {
 
         // 确认用户创建结果正确
         then(createdUsers)
-                .extracting("id", "name")
-                .contains(tuple(1L, "Alvin"), tuple(2L, "Emma"));
+            .extracting("id", "name")
+            .contains(tuple(1L, "Alvin"), tuple(2L, "Emma"));
 
         // 测试 transform 方法对异步任务结果进行转化
         // 保存异步任务结果的集合
@@ -419,7 +422,10 @@ class FuturesTest {
                 // 合并两个查询任务为一个异步任务
                 Futures.allAsList(service.findUserById(1L), service.findUserById(2L)),
                 // 通过一个 Function 对象对合并查询任务结果进行转换, 该函数返回转换结果
-                opts -> opts.stream().map(Optional::get).filter(Objects::nonNull).toList(),
+                opts -> opts.stream()
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .toList(),
                 // 执行转换任务的线程执行器
                 MoreExecutors.directExecutor());
 
@@ -434,7 +440,8 @@ class FuturesTest {
                     }
 
                     @Override
-                    public void onFailure(Throwable t) {}
+                    public void onFailure(@NotNull Throwable t) {
+                    }
                 },
                 // 执行结果回调任务的线程执行器
                 MoreExecutors.directExecutor());
@@ -449,7 +456,10 @@ class FuturesTest {
                 Futures.allAsList(service.findUserById(1L), service.findUserById(2L)),
                 // 通过一个 AsyncFunction 对象对合并查询任务结果进行转换, 该函数返回转换的 ListenableFuture 异步任务对象
                 input -> listeningDecorator.submit(
-                    () -> input.stream().map(Optional::get).filter(Objects::nonNull).toList()),
+                    () -> input.stream()
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
+                        .toList()),
                 // 执行转换任务的线程执行器
                 MoreExecutors.directExecutor());
 
@@ -464,7 +474,8 @@ class FuturesTest {
                     }
 
                     @Override
-                    public void onFailure(Throwable t) {}
+                    public void onFailure(@NotNull Throwable t) {
+                    }
                 },
                 MoreExecutors.directExecutor());
         }
@@ -474,8 +485,8 @@ class FuturesTest {
 
         // 确认两种方法返回的结果一致
         then(foundUsers).containsExactlyElementsOf(asyncFoundUsers)
-                .extracting("id", "name")
-                .contains(tuple(1L, "Alvin"), tuple(2L, "Emma"));
+            .extracting("id", "name")
+            .contains(tuple(1L, "Alvin"), tuple(2L, "Emma"));
     }
 
     /**
@@ -541,7 +552,7 @@ class FuturesTest {
                     }
 
                     @Override
-                    public void onFailure(Throwable t) {
+                    public void onFailure(@NotNull Throwable t) {
                         fail();
                     }
                 },
@@ -593,7 +604,7 @@ class FuturesTest {
                     }
 
                     @Override
-                    public void onFailure(Throwable t) {
+                    public void onFailure(@NotNull Throwable t) {
                         fail();
                     }
                 },
@@ -642,7 +653,7 @@ class FuturesTest {
                     }
 
                     @Override
-                    public void onFailure(Throwable t) {
+                    public void onFailure(@NotNull Throwable t) {
                         exceptionRef.set(t);
                     }
                 },
@@ -692,7 +703,7 @@ class FuturesTest {
                     }
 
                     @Override
-                    public void onFailure(Throwable t) {
+                    public void onFailure(@NotNull Throwable t) {
                         fail();
                     }
                 },
@@ -756,10 +767,11 @@ class FuturesTest {
                 timeoutTask,
                 new FutureCallback<>() {
                     @Override
-                    public void onSuccess(User result) {}
+                    public void onSuccess(User result) {
+                    }
 
                     @Override
-                    public void onFailure(Throwable t) {
+                    public void onFailure(@NotNull Throwable t) {
                         exceptionRef.set(t);
                     }
                 },
@@ -796,7 +808,8 @@ class FuturesTest {
                     }
 
                     @Override
-                    public void onFailure(Throwable t) {}
+                    public void onFailure(@NotNull Throwable t) {
+                    }
                 },
                 MoreExecutors.directExecutor());
 
@@ -836,7 +849,7 @@ class FuturesTest {
      * </p>
      */
     @Test
-    void getChecked_shouldThrowCheckedException() throws ExecutionException {
+    void getChecked_shouldThrowCheckedException() {
         // 创建 ListeningExecutorService 对象
         var listeningDecorator = MoreExecutors.listeningDecorator(executor);
 
@@ -867,14 +880,12 @@ class FuturesTest {
                 throw new IOException();
             });
             // 检查任务, 如果任务执行完毕且产生了异常, 则抛出该异常
-            thenThrownBy(() -> {
-                Futures.getChecked(future, IOException.class, 2, TimeUnit.SECONDS);
-            }).isInstanceOf(IOException.class);
+            thenThrownBy(() -> Futures.getChecked(future, IOException.class, 2, TimeUnit.SECONDS))
+                .isInstanceOf(IOException.class);
 
             // 重复检查任务, 重复抛出异常
-            thenThrownBy(() -> {
-                Futures.getChecked(future, IOException.class);
-            }).isInstanceOf(IOException.class);
+            thenThrownBy(() -> Futures.getChecked(future, IOException.class))
+                .isInstanceOf(IOException.class);
         }
     }
 }

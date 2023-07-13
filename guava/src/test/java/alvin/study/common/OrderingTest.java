@@ -1,15 +1,15 @@
 package alvin.study.common;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import java.util.Collections;
-import java.util.List;
-
-import org.junit.jupiter.api.Test;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
+import org.junit.jupiter.api.Test;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试排序对象
@@ -20,6 +20,7 @@ import com.google.common.collect.Ordering;
  * 进行排序, 也可以通过 {@link Ordering#isOrdered(Iterable)} 方法验证集合是否有序
  * </p>
  */
+@SuppressWarnings("Java8ListSort")
 class OrderingTest {
     /**
      * 测试自然序的排序对象
@@ -248,7 +249,7 @@ class OrderingTest {
         then(ordering.max(10, 20)).isEqualTo(10);
 
         // 定义一个基于集合顺序的排序对象
-        ordering = Ordering.<Integer>explicit(ImmutableList.of(20, 10, 15));
+        ordering = Ordering.explicit(ImmutableList.of(20, 10, 15));
 
         // 通过定义的排序对象对从指定的几个值中找到最小值
         then(ordering.min(10, 15, 20)).isEqualTo(20);
@@ -358,7 +359,7 @@ class OrderingTest {
         // 设定两级排序规则
         // 所谓两级排序规则, 即在第一级排序规则的作用下, 如果两个元素相等, 则使用第二级排序规则进行排序
         // 第一级排序按元素值的余数排序 (逆序), 第二级排序按元素值的大小排序 (自然序)
-        var ordering = Ordering.<Integer>from((l, r) -> r % 2 - l % 2).compound((l, r) -> l - r);
+        var ordering = Ordering.<Integer>from((l, r) -> r % 2 - l % 2).compound(Comparator.comparingInt((Integer l) -> l));
 
         // 对集合进行排序
         var list = Lists.newArrayList(2, 1, 3, 5, 4);
@@ -381,7 +382,7 @@ class OrderingTest {
         // 设定多级排序规则 (两级排序, 规则和前一个例子一致)
         var ordering = Ordering.<Integer>compound(ImmutableList.of(
             (l, r) -> r % 2 - l % 2,
-            (l, r) -> l - r));
+            Comparator.comparingInt(l -> l)));
 
         // 对集合进行排序
         var list = Lists.newArrayList(2, 1, 3, 5, 4);

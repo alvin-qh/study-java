@@ -1,13 +1,13 @@
 package alvin.study.cache;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import alvin.study.cache.observer.CacheObserver;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.SubscriberExceptionContext;
 import com.google.common.eventbus.SubscriberExceptionHandler;
+import org.jetbrains.annotations.NotNull;
 
-import alvin.study.cache.observer.CacheObserver;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * 缓存消息总线类
@@ -40,7 +40,7 @@ public final class CacheEventBus implements SubscriberExceptionHandler {
      * </p>
      */
     @Override
-    public void handleException(Throwable ex, SubscriberExceptionContext ctx) {
+    public void handleException(@NotNull Throwable ex, @NotNull SubscriberExceptionContext ctx) {
         // 对 RuntimeException 类型异常继续向上传递
         if (ex instanceof RuntimeException rex) {
             throw rex;
@@ -78,5 +78,7 @@ public final class CacheEventBus implements SubscriberExceptionHandler {
      *
      * @return 当前类型的单例对象
      */
-    public static CacheEventBus getInstance() { return INSTANCE; }
+    public static CacheEventBus getInstance() {
+        return INSTANCE;
+    }
 }

@@ -1,18 +1,19 @@
 package alvin.study.graphs;
 
-import java.util.ArrayDeque;
-import java.util.List;
-import java.util.Optional;
-import java.util.PriorityQueue;
-import java.util.function.ToIntFunction;
-import java.util.stream.Stream;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.MultimapBuilder;
 import com.google.common.collect.Sets;
 import com.google.common.graph.Graph;
 import com.google.common.graph.ValueGraph;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayDeque;
+import java.util.List;
+import java.util.Optional;
+import java.util.PriorityQueue;
+import java.util.function.ToIntFunction;
+import java.util.stream.Stream;
 
 /**
  * 计算图路径的类型
@@ -22,7 +23,8 @@ import com.google.common.graph.ValueGraph;
  * </p>
  */
 public final class GraphPaths {
-    private GraphPaths() {}
+    private GraphPaths() {
+    }
 
     /**
      * 获取 {@link Graph} 图对象中两点之间的路径
@@ -41,7 +43,7 @@ public final class GraphPaths {
      * @param toNode   终止节点
      * @return 包含路径的集合
      */
-    public static <N> List<List<N>> getPaths(Graph<N> graph, N fromNode, N toNode) {
+    public static <N> @NotNull List<List<N>> getPaths(Graph<N> graph, N fromNode, N toNode) {
         // 定义 BFS 算法所需的队列
         // 并将起始节点入队
         var que = new ArrayDeque<N>();
@@ -71,25 +73,25 @@ public final class GraphPaths {
 
             // 遍历该节点的后继节点
             graph.successors(node)
-                    .stream()
-                    // 过滤掉已经访问过的节点
-                    .filter(s -> !visited.contains(s))
-                    // 对后继节点进行处理
-                    .forEach(s -> {
-                        if (s.equals(toNode)) {
-                            // 如果该节点已经为最终节点, 则记录一条路径
-                            results.add(Stream.concat(path.stream(), Stream.of(s)).toList());
-                        } else {
-                            // 记录从起始节点到该后继节点的路径
-                            // 记录到当前节点的路径
-                            pathMap.putAll(s, path);
-                            // 添加到后继节点的路径
-                            pathMap.put(s, s);
+                .stream()
+                // 过滤掉已经访问过的节点
+                .filter(s -> !visited.contains(s))
+                // 对后继节点进行处理
+                .forEach(s -> {
+                    if (s.equals(toNode)) {
+                        // 如果该节点已经为最终节点, 则记录一条路径
+                        results.add(Stream.concat(path.stream(), Stream.of(s)).toList());
+                    } else {
+                        // 记录从起始节点到该后继节点的路径
+                        // 记录到当前节点的路径
+                        pathMap.putAll(s, path);
+                        // 添加到后继节点的路径
+                        pathMap.put(s, s);
 
-                            // 将该后继节点入队, 以便后续继续访问其后继节点
-                            que.offer(s);
-                        }
-                    });
+                        // 将该后继节点入队, 以便后续继续访问其后继节点
+                        que.offer(s);
+                    }
+                });
 
             // 将该节点加入已访问节点中
             visited.add(node);
@@ -113,7 +115,7 @@ public final class GraphPaths {
         private int distance = Integer.MAX_VALUE;
 
         @Override
-        public int compareTo(PathValue<N> o) {
+        public int compareTo(@NotNull PathValue<N> o) {
             return Integer.compare(distance, o.distance);
         }
 
@@ -122,14 +124,18 @@ public final class GraphPaths {
          *
          * @return 保存路径的集合, 如果为空, 表示路径不存在
          */
-        public List<N> getPath() { return path == null ? List.of() : path; }
+        public List<N> getPath() {
+            return path == null ? List.of() : path;
+        }
 
         /**
          * 获取路径距离
          *
          * @return 路径的距离
          */
-        public int getDistance() { return distance; }
+        public int getDistance() {
+            return distance;
+        }
 
         /**
          * 设置路径
@@ -199,10 +205,13 @@ public final class GraphPaths {
      * @param toNode     终止节点
      * @param distanceFn 将"边"权重值转换为"距离值"的函数对象
      * @return {@link Optional} 类型对象, 如果为空, 表示给定的两个节点间不连通; 否则包含一个 {@link PathValue} 类型对象,
-     *         记录了路径和路径距离
+     * 记录了路径和路径距离
      */
     public static <N, E> Optional<PathValue<N>> getShortestPath(
-            ValueGraph<N, E> graph, N fromNode, N toNode, ToIntFunction<E> distanceFn) {
+        @NotNull ValueGraph<N, E> graph,
+        N fromNode,
+        N toNode,
+        ToIntFunction<E> distanceFn) {
         // 记录节点和路径值关系的 Map 对象
         var nodeMap = Maps.<N, PathValue<N>>newHashMap();
 
@@ -235,29 +244,29 @@ public final class GraphPaths {
 
             // 遍历当前节点的后继节点
             graph.successors(topNode)
-                    .stream()
-                    // 过滤掉已经访问过的节点
-                    .filter(s -> !visited.contains(s))
-                    // 获取该后继节点的边权重值, 并对该节点进行处理
-                    .forEach(s -> graph.edgeValue(topNode, s).ifPresent(v -> {
-                        // 将边权重值转化为距离值
-                        var edgeDistance = distanceFn.applyAsInt(v);
-                        // 获取后继节点的路径值
-                        var successorValue = nodeMap.get(s);
+                .stream()
+                // 过滤掉已经访问过的节点
+                .filter(s -> !visited.contains(s))
+                // 获取该后继节点的边权重值, 并对该节点进行处理
+                .forEach(s -> graph.edgeValue(topNode, s).ifPresent(v -> {
+                    // 将边权重值转化为距离值
+                    var edgeDistance = distanceFn.applyAsInt(v);
+                    // 获取后继节点的路径值
+                    var successorValue = nodeMap.get(s);
 
-                        // 判断当前节点到后继节点形成的路径距离是否小于该后继节点已经获得的路径距离
-                        if (topNodeValue.getDistance() + edgeDistance < successorValue.getDistance()) {
-                            // 形成新的路径, 及到当前节点的路径加上当前节点, 为到该后继节点的路径
-                            var path = Lists.newLinkedList(topNodeValue.getPath());
-                            path.add(topNode);
+                    // 判断当前节点到后继节点形成的路径距离是否小于该后继节点已经获得的路径距离
+                    if (topNodeValue.getDistance() + edgeDistance < successorValue.getDistance()) {
+                        // 形成新的路径, 及到当前节点的路径加上当前节点, 为到该后继节点的路径
+                        var path = Lists.newLinkedList(topNodeValue.getPath());
+                        path.add(topNode);
 
-                            // 修改后继节点的路径值, 包括路径和距离
-                            successorValue.reset(path, topNodeValue.getDistance() + edgeDistance);
-                        }
+                        // 修改后继节点的路径值, 包括路径和距离
+                        successorValue.reset(path, topNodeValue.getDistance() + edgeDistance);
+                    }
 
-                        // 将该后继节点入队
-                        queue.offer(s);
-                    }));
+                    // 将该后继节点入队
+                    queue.offer(s);
+                }));
 
             // 将当前节点存入已访问集合中
             visited.add(topNode);

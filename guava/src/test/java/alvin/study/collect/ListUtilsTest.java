@@ -1,16 +1,15 @@
 package alvin.study.collect;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import com.google.common.collect.ContiguousSet;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.junit.jupiter.api.Test;
-
-import com.google.common.collect.ContiguousSet;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 演示 Guava 列表集合工具类
@@ -19,6 +18,7 @@ import com.google.common.collect.Lists;
  * {@link Lists} 类提供了一系列静态方法用于创建和操作 {@link ArrayList} 和 {@link LinkedList} 类型对象
  * </p>
  */
+@SuppressWarnings("StaticPseudoFunctionalStyleMethod")
 class ListUtilsTest {
     /**
      * 通过指定元素和数组创建 {@link java.util.List List} 集合对象
@@ -39,11 +39,11 @@ class ListUtilsTest {
     @Test
     void asList_shouldCreateListObject() {
         {
-            var list = Lists.asList(1, new Integer[] { 2, 3, 4 });
+            var list = Lists.asList(1, new Integer[]{2, 3, 4});
             then(list).containsExactly(1, 2, 3, 4);
         }
         {
-            var list = Lists.asList(1, 2, new Integer[] { 3, 4 });
+            var list = Lists.asList(1, 2, new Integer[]{3, 4});
             then(list).containsExactly(1, 2, 3, 4);
         }
     }
@@ -295,7 +295,7 @@ class ListUtilsTest {
      * </p>
      */
     @Test
-    void partition​_shouldSplitListIntoSlices() {
+    void partition_shouldSplitListIntoSlices() {
         // 产生一个元素值为 0~9 的列表集合
         var list = ContiguousSet.closedOpen(0, 10).asList();
 
@@ -319,7 +319,7 @@ class ListUtilsTest {
      *
      * <p>
      * 注意: 如果参数类型是 {@link ImmutableList}, 则返回 {@link ImmutableList#reverse()} 方法的返回值, 否则返回一个
-     * {@link Lists.ReverseList} 类型结果. {@code ReverseList} 类型并不产生新的集合, 只是将对原 {@code List}
+     * {@code Lists.ReverseList} 类型结果. {@code ReverseList} 类型并不产生新的集合, 只是将对原 {@code List}
      * 对象的访问调转了一个方向, 例如下标和迭代器. 所以对原 {@code List} 集合的改变仍会影响到反转后的 {@code List} 对象
      * </p>
      */
@@ -344,7 +344,7 @@ class ListUtilsTest {
      *
      * <p>
      * {@link Lists#transform(java.util.List, com.google.common.base.Function) Lists.transform(List, Function)}
-     * 方法方法返回一个 {@link Lists.TransformingRandomAccessList} 或 {@link Lists.TransformingSequentialList} 类型对象,
+     * 方法方法返回一个 {@code Lists.TransformingRandomAccessList} 或 {@code Lists.TransformingSequentialList} 类型对象,
      * 存储转换后的元素集合
      * </p>
      *

@@ -37,7 +37,7 @@ public class Person {
      * @return {@link Funnel} 接口对象
      */
     public static Funnel<Person> makeFunnel() {
-        return (Funnel<Person>) (person, into) -> into
+        return (person, into) -> into
                 .putLong(person.getId())
                 .putString(person.getName(), StandardCharsets.UTF_8)
                 .putString(person.getBirthday().toString(), StandardCharsets.UTF_8)

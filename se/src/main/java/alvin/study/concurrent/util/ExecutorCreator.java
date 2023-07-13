@@ -108,7 +108,6 @@ public final class ExecutorCreator implements AutoCloseable {
             (runnable, exec) -> {
                 var queue = exec.getQueue();
                 queue.poll();
-                // noinspection ResultOfMethodCallIgnored
                 queue.offer(runnable);
             });
 

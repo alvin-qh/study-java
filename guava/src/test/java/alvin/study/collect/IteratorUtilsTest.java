@@ -1,16 +1,15 @@
 package alvin.study.collect;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
-
-import java.util.Iterator;
-
-import org.junit.jupiter.api.Test;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
+import org.junit.jupiter.api.Test;
+
+import java.util.Iterator;
+
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 /**
  * 测试 {@link Iterators} 工具类
@@ -19,6 +18,7 @@ import com.google.common.collect.Ordering;
  * {@link Iterators} 工具类提供了一组对 {@link java.util.Iterator Iterator} 迭代器对象进行操作的辅助方法
  * </p>
  */
+@SuppressWarnings({"Guava", "OptionalGetWithoutIsPresent"})
 class IteratorUtilsTest {
     /**
      * 将一个迭代器对象内的元素添加到另一个集合中
@@ -134,6 +134,7 @@ class IteratorUtilsTest {
             // 确认迭代完成后, 对应集合内容被清空
             then(list).isEmpty();
         }
+
         {
             // 定义不可变集合对象
             var list = ImmutableList.of(1, 2, 3, 4, 5);
@@ -353,6 +354,7 @@ class IteratorUtilsTest {
             element = Iterators.getOnlyElement(list.iterator(), null);
             then(element).isNull();
         }
+
         {
             // 创建一个非空且元素数量多于 1 的集合
             var list = ImmutableList.of(1, 2, 3);
@@ -371,8 +373,9 @@ class IteratorUtilsTest {
 
             // 因迭代器包含多个元素, 获取唯一元素时抛出异常
             thenThrownBy(() -> Iterators.getOnlyElement(list.iterator(), null))
-                    .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(IllegalArgumentException.class);
         }
+
         {
             // 定义一个只有单一元素的集合
             var list = ImmutableList.of(1);
@@ -454,7 +457,7 @@ class IteratorUtilsTest {
      * </p>
      *
      * <p>
-     * 注意: {@link mergeSorted} 方法本身不对输入的迭代器排序, 所以要保证输入的每个迭代器内部有序, 且排序规则要和后面进行归并排序的规则
+     * 注意: {@code mergeSorted} 方法本身不对输入的迭代器排序, 所以要保证输入的每个迭代器内部有序, 且排序规则要和后面进行归并排序的规则
      * 保持一致
      * </p>
      */

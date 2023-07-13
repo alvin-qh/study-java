@@ -1,12 +1,5 @@
 package alvin.study.common;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
-
-import java.math.BigInteger;
-
-import org.junit.jupiter.api.Test;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Booleans;
 import com.google.common.primitives.Bytes;
@@ -21,6 +14,13 @@ import com.google.common.primitives.UnsignedInteger;
 import com.google.common.primitives.UnsignedInts;
 import com.google.common.primitives.UnsignedLong;
 import com.google.common.primitives.UnsignedLongs;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import java.math.BigInteger;
+
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 /**
  * 针对于简单类型的一组操作方法
@@ -38,6 +38,7 @@ import com.google.common.primitives.UnsignedLongs;
  * {@link Doubles}, {@link Chars} 以及 {@link Booleans} 等工具类, 对应不同的简单类型进行操作
  * </p>
  */
+@SuppressWarnings({"unused", "EqualsWithItself", "ConstantValue"})
 class PrimitivesTest {
     /**
      * 将简单类型元素包装为 {@link java.util.List List} 集合
@@ -125,39 +126,39 @@ class PrimitivesTest {
         {
             // 确认超出 short 最大值时, 转换失败
             thenThrownBy(() -> Shorts.checkedCast((long) Short.MAX_VALUE + 1))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("Out of range");
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Out of range");
 
             // 确认小于 short 最小值时, 转换失败
             thenThrownBy(() -> Shorts.checkedCast((long) Short.MIN_VALUE - 1))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("Out of range");
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Out of range");
         }
 
         // 检查所给整数是否能转化为 int 类型
         {
             // 确认超出 int 最大值时, 转换失败
             thenThrownBy(() -> Ints.checkedCast((long) Integer.MAX_VALUE + 1))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("Out of range");
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Out of range");
 
             // 确认小于 int 最小值时, 转换失败
             thenThrownBy(() -> Ints.checkedCast((long) Integer.MIN_VALUE - 1))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("Out of range");
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Out of range");
         }
 
         // 检查所给整数是否能转化为 char 类型
         {
             // 确认超出 char 最大值时, 转换失败
             thenThrownBy(() -> Chars.checkedCast((long) Character.MAX_VALUE + 1))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("Out of range");
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Out of range");
 
             // 确认小于 char 最小值时, 转换失败
             thenThrownBy(() -> Chars.checkedCast((long) Character.MIN_VALUE - 1))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("Out of range");
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Out of range");
         }
     }
 
@@ -311,7 +312,7 @@ class PrimitivesTest {
             then(val).isEqualTo((short) 0x1234);
 
             // 将 [0x12, 0x34] 转为 0x1234
-            val = Shorts.fromByteArray(new byte[] { (byte) 0x12, (byte) 0x34 });
+            val = Shorts.fromByteArray(new byte[]{(byte) 0x12, (byte) 0x34});
             then(val).isEqualTo((short) 0x1234);
         }
 
@@ -322,7 +323,7 @@ class PrimitivesTest {
             then(val).isEqualTo(0x12345678);
 
             // 将 [0x12, 0x34, 0x56, 0x78] 转为 0x12345678
-            val = Ints.fromByteArray(new byte[] { (byte) 0x12, (byte) 0x34, (byte) 0x56, (byte) 0x78 });
+            val = Ints.fromByteArray(new byte[]{(byte) 0x12, (byte) 0x34, (byte) 0x56, (byte) 0x78});
             then(val).isEqualTo(0x12345678);
         }
 
@@ -335,7 +336,7 @@ class PrimitivesTest {
             then(val).isEqualTo(0x1234567890ABCDEFL);
 
             // 将 [0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF] 转为 0x1234567890ABCDEF
-            val = Longs.fromByteArray(new byte[] {
+            val = Longs.fromByteArray(new byte[]{
                 (byte) 0x12, (byte) 0x34, (byte) 0x56, (byte) 0x78,
                 (byte) 0x90, (byte) 0xAB, (byte) 0xCD, (byte) 0xEF
             });
@@ -402,7 +403,7 @@ class PrimitivesTest {
     void indexOf_shouldFindElementIndexInArray() {
         // 在 byte 数组中进行查找
         {
-            var array = new byte[] { 0x1, 0x2, 0x3, 0x4, 0x5 };
+            var array = new byte[]{0x1, 0x2, 0x3, 0x4, 0x5};
 
             // 查找 byte 元素的索引
             var index = Bytes.indexOf(array, (byte) 0x2);
@@ -413,13 +414,13 @@ class PrimitivesTest {
             then(index).isEqualTo(3);
 
             // 查找 byte 元素数组的索引
-            index = Bytes.indexOf(array, new byte[] { 0x3, 0x4 });
+            index = Bytes.indexOf(array, new byte[]{0x3, 0x4});
             then(index).isEqualTo(2);
         }
 
         // 在 short 数组中进行查找
         {
-            var array = new short[] { 1, 2, 3, 4, 5 };
+            var array = new short[]{1, 2, 3, 4, 5};
 
             // 查找 short 元素的索引
             var index = Shorts.indexOf(array, (short) 2);
@@ -430,13 +431,13 @@ class PrimitivesTest {
             then(index).isEqualTo(3);
 
             // 查找 short 元素数组的索引
-            index = Shorts.indexOf(array, new short[] { 2, 3 });
+            index = Shorts.indexOf(array, new short[]{2, 3});
             then(index).isEqualTo(1);
         }
 
         // 在 int 数组中进行查找
         {
-            var array = new int[] { 1, 2, 3, 4, 5 };
+            var array = new int[]{1, 2, 3, 4, 5};
 
             // 查找 int 元素的索引
             var index = Ints.indexOf(array, 2);
@@ -447,13 +448,13 @@ class PrimitivesTest {
             then(index).isEqualTo(3);
 
             // 查找 int 元素数组的索引
-            index = Ints.indexOf(array, new int[] { 2, 3 });
+            index = Ints.indexOf(array, new int[]{2, 3});
             then(index).isEqualTo(1);
         }
 
         // 在 long 数组中进行查找
         {
-            var array = new long[] { 1, 2, 3, 4, 5 };
+            var array = new long[]{1, 2, 3, 4, 5};
 
             // 查找 long 元素的索引
             var index = Longs.indexOf(array, 2L);
@@ -464,13 +465,13 @@ class PrimitivesTest {
             then(index).isEqualTo(3);
 
             // 查找 long 元素数组的索引
-            index = Longs.indexOf(array, new long[] { 2, 3 });
+            index = Longs.indexOf(array, new long[]{2, 3});
             then(index).isEqualTo(1);
         }
 
         // 在 long 数组中进行查找
         {
-            var array = new float[] { 0.1f, 0.2f, 0.3f, 0.4f, 0.5f };
+            var array = new float[]{0.1f, 0.2f, 0.3f, 0.4f, 0.5f};
 
             // 查找 long 元素的索引
             var index = Floats.indexOf(array, 0.2f);
@@ -481,13 +482,13 @@ class PrimitivesTest {
             then(index).isEqualTo(3);
 
             // 查找 long 元素数组的索引
-            index = Floats.indexOf(array, new float[] { 0.2f, 0.3f });
+            index = Floats.indexOf(array, new float[]{0.2f, 0.3f});
             then(index).isEqualTo(1);
         }
 
         // 在 double 数组中进行查找
         {
-            var array = new double[] { 0.1, 0.2, 0.3, 0.4, 0.5 };
+            var array = new double[]{0.1, 0.2, 0.3, 0.4, 0.5};
 
             // 查找 double 元素的索引
             var index = Doubles.indexOf(array, 0.2);
@@ -498,13 +499,13 @@ class PrimitivesTest {
             then(index).isEqualTo(3);
 
             // 查找 double 元素数组的索引
-            index = Doubles.indexOf(array, new double[] { 0.2, 0.3 });
+            index = Doubles.indexOf(array, new double[]{0.2, 0.3});
             then(index).isEqualTo(1);
         }
 
         // 在 char 数组中进行查找
         {
-            var array = new char[] { 'A', 'B', 'C', 'D', 'E' };
+            var array = new char[]{'A', 'B', 'C', 'D', 'E'};
 
             // 查找 char 元素的索引
             var index = Chars.indexOf(array, 'B');
@@ -515,13 +516,13 @@ class PrimitivesTest {
             then(index).isEqualTo(3);
 
             // 查找 char 元素数组的索引
-            index = Chars.indexOf(array, new char[] { 'B', 'C' });
+            index = Chars.indexOf(array, new char[]{'B', 'C'});
             then(index).isEqualTo(1);
         }
 
         // 在 boolean 数组中进行查找
         {
-            var array = new boolean[] { true, false, true };
+            var array = new boolean[]{true, false, true};
 
             // 查找 boolean 元素的索引
             var index = Booleans.indexOf(array, true);
@@ -532,7 +533,7 @@ class PrimitivesTest {
             then(index).isEqualTo(2);
 
             // 查找 boolean 元素数组的索引
-            index = Booleans.indexOf(array, new boolean[] { false, true });
+            index = Booleans.indexOf(array, new boolean[]{false, true});
             then(index).isEqualTo(1);
         }
     }
@@ -682,9 +683,9 @@ class PrimitivesTest {
         // 将多个 byte 数组连接为一个 byte 数组
         {
             var array = Bytes.concat(
-                new byte[] { 0x1, 0x2 },
-                new byte[] { 0x3, 0x4 },
-                new byte[] { 0x5 });
+                new byte[]{0x1, 0x2},
+                new byte[]{0x3, 0x4},
+                new byte[]{0x5});
 
             then(array).containsExactly(0x1, 0x2, 0x3, 0x4, 0x5);
         }
@@ -692,9 +693,9 @@ class PrimitivesTest {
         // 将多个 short 数组连接为一个 short 数组
         {
             var array = Shorts.concat(
-                new short[] { 1, 2 },
-                new short[] { 3, 4 },
-                new short[] { 5 });
+                new short[]{1, 2},
+                new short[]{3, 4},
+                new short[]{5});
 
             then(array).containsExactly(1, 2, 3, 4, 5);
         }
@@ -702,9 +703,9 @@ class PrimitivesTest {
         // 将多个 int 数组连接为一个 int 数组
         {
             var array = Ints.concat(
-                new int[] { 1, 2 },
-                new int[] { 3, 4 },
-                new int[] { 5 });
+                new int[]{1, 2},
+                new int[]{3, 4},
+                new int[]{5});
 
             then(array).containsExactly(1, 2, 3, 4, 5);
         }
@@ -712,9 +713,9 @@ class PrimitivesTest {
         // 将多个 long 数组连接为一个 long 数组
         {
             var array = Longs.concat(
-                new long[] { 1, 2 },
-                new long[] { 3, 4 },
-                new long[] { 5 });
+                new long[]{1, 2},
+                new long[]{3, 4},
+                new long[]{5});
 
             then(array).containsExactly(1L, 2L, 3L, 4L, 5L);
         }
@@ -722,9 +723,9 @@ class PrimitivesTest {
         // 将多个 float 数组连接为一个 float 数组
         {
             var array = Floats.concat(
-                new float[] { 0.1f, 0.2f },
-                new float[] { 0.3f, 0.4f },
-                new float[] { 0.5f });
+                new float[]{0.1f, 0.2f},
+                new float[]{0.3f, 0.4f},
+                new float[]{0.5f});
 
             then(array).containsExactly(0.1f, 0.2f, 0.3f, 0.4f, 0.5f);
         }
@@ -732,9 +733,9 @@ class PrimitivesTest {
         // 将多个 double 数组连接为一个 double 数组
         {
             var array = Doubles.concat(
-                new double[] { 0.1, 0.2 },
-                new double[] { 0.3, 0.4 },
-                new double[] { 0.5 });
+                new double[]{0.1, 0.2},
+                new double[]{0.3, 0.4},
+                new double[]{0.5});
 
             then(array).containsExactly(0.1, 0.2, 0.3, 0.4, 0.5);
         }
@@ -742,9 +743,9 @@ class PrimitivesTest {
         // 将多个 char 数组连接为一个 char 数组
         {
             var array = Chars.concat(
-                new char[] { 'A', 'B' },
-                new char[] { 'C', 'D' },
-                new char[] { 'E' });
+                new char[]{'A', 'B'},
+                new char[]{'C', 'D'},
+                new char[]{'E'});
 
             then(array).containsExactly('A', 'B', 'C', 'D', 'E');
         }
@@ -752,9 +753,9 @@ class PrimitivesTest {
         // 将多个 boolean 数组连接为一个 boolean 数组
         {
             var array = Booleans.concat(
-                new boolean[] { true, false },
-                new boolean[] { false, true },
-                new boolean[] { true });
+                new boolean[]{true, false},
+                new boolean[]{false, true},
+                new boolean[]{true});
 
             then(array).containsExactly(true, false, false, true, true);
         }
@@ -771,50 +772,50 @@ class PrimitivesTest {
     void contains_shouldCheckArrayContainsElement() {
         // 判断指定的 byte 值是否在数组中
         {
-            then(Bytes.contains(new byte[] { 1, 2 }, (byte) 0)).isFalse();
-            then(Bytes.contains(new byte[] { 1, 2 }, (byte) 1)).isTrue();
+            then(Bytes.contains(new byte[]{1, 2}, (byte) 0)).isFalse();
+            then(Bytes.contains(new byte[]{1, 2}, (byte) 1)).isTrue();
         }
 
         // 判断指定的 short 值是否在数组中
         {
-            then(Shorts.contains(new short[] { 1, 2 }, (short) 0)).isFalse();
-            then(Shorts.contains(new short[] { 1, 2 }, (short) 1)).isTrue();
+            then(Shorts.contains(new short[]{1, 2}, (short) 0)).isFalse();
+            then(Shorts.contains(new short[]{1, 2}, (short) 1)).isTrue();
         }
 
         // 判断指定的 int 值是否在数组中
         {
-            then(Ints.contains(new int[] { 1, 2 }, 0)).isFalse();
-            then(Ints.contains(new int[] { 1, 2 }, 1)).isTrue();
+            then(Ints.contains(new int[]{1, 2}, 0)).isFalse();
+            then(Ints.contains(new int[]{1, 2}, 1)).isTrue();
         }
 
         // 判断指定的 long 值是否在数组中
         {
-            then(Longs.contains(new long[] { 1, 2 }, 0L)).isFalse();
-            then(Longs.contains(new long[] { 1, 2 }, 1L)).isTrue();
+            then(Longs.contains(new long[]{1, 2}, 0L)).isFalse();
+            then(Longs.contains(new long[]{1, 2}, 1L)).isTrue();
         }
 
         // 判断指定的 float 值是否在数组中
         {
-            then(Floats.contains(new float[] { 0.1f, 0.2f }, 0f)).isFalse();
-            then(Floats.contains(new float[] { 0.1f, 0.2f }, 0.1f)).isTrue();
+            then(Floats.contains(new float[]{0.1f, 0.2f}, 0f)).isFalse();
+            then(Floats.contains(new float[]{0.1f, 0.2f}, 0.1f)).isTrue();
         }
 
         // 判断指定的 double 值是否在数组中
         {
-            then(Doubles.contains(new double[] { 0.1, 0.2 }, 0)).isFalse();
-            then(Doubles.contains(new double[] { 0.1, 0.2 }, 0.1)).isTrue();
+            then(Doubles.contains(new double[]{0.1, 0.2}, 0)).isFalse();
+            then(Doubles.contains(new double[]{0.1, 0.2}, 0.1)).isTrue();
         }
 
         // 判断指定的 char 值是否在数组中
         {
-            then(Chars.contains(new char[] { 'A', 'B' }, 'C')).isFalse();
-            then(Chars.contains(new char[] { 'A', 'B' }, 'A')).isTrue();
+            then(Chars.contains(new char[]{'A', 'B'}, 'C')).isFalse();
+            then(Chars.contains(new char[]{'A', 'B'}, 'A')).isTrue();
         }
 
         // 判断指定的 boolean 值是否在数组中
         {
-            then(Booleans.contains(new boolean[] { true, true }, false)).isFalse();
-            then(Booleans.contains(new boolean[] { true, false }, false)).isTrue();
+            then(Booleans.contains(new boolean[]{true, true}, false)).isFalse();
+            then(Booleans.contains(new boolean[]{true, false}, false)).isTrue();
         }
     }
 
@@ -824,10 +825,10 @@ class PrimitivesTest {
      * <p>
      * 对于表示数值的简单对象, 其工具类的 {@code max} 和 {@code min} 方法用于在数值中找到最大值或最小值, 这些方法包括:
      * {@link Shorts#max(short...)}/{@link Shorts#min(short...)},
-     * {@link Ints#max(short...)}/{@link Ints#min(short...)},
-     * {@link Longs#max(short...)}/{@link Longs#min(short...)},
-     * {@link Floats#max(short...)}/{@link Floats#min(short...)} 以及
-     * {@link Doubles#max(short...)}/{@link Doubles#min(short...)}
+     * {@link Ints#max(int...)}/{@link Ints#min(int...)},
+     * {@link Longs#max(long...)}/{@link Longs#min(long...)},
+     * {@link Floats#max(float...)}/{@link Floats#min(float...)} 以及
+     * {@link Doubles#max(double...)}/{@link Doubles#min(double...)}
      * </p>
      *
      * <p>
@@ -894,7 +895,7 @@ class PrimitivesTest {
     void reverse_shouldReverseElementsInArray() {
         // 将 byte 数组元素进行反转
         {
-            var array = new byte[] { 0x1, 0x2, 0x3 };
+            var array = new byte[]{0x1, 0x2, 0x3};
 
             Bytes.reverse(array);
             then(array).containsExactly(0x3, 0x2, 0x1);
@@ -902,7 +903,7 @@ class PrimitivesTest {
 
         // 将 short 数组元素进行反转
         {
-            var array = new short[] { 1, 2, 3 };
+            var array = new short[]{1, 2, 3};
 
             Shorts.reverse(array);
             then(array).containsExactly(3, 2, 1);
@@ -910,7 +911,7 @@ class PrimitivesTest {
 
         // 将 int 数组元素进行反转
         {
-            var array = new int[] { 1, 2, 3 };
+            var array = new int[]{1, 2, 3};
 
             Ints.reverse(array);
             then(array).containsExactly(3, 2, 1);
@@ -918,7 +919,7 @@ class PrimitivesTest {
 
         // 将 long 数组元素进行反转
         {
-            var array = new long[] { 1, 2, 3 };
+            var array = new long[]{1, 2, 3};
 
             Longs.reverse(array);
             then(array).containsExactly(3, 2, 1);
@@ -926,7 +927,7 @@ class PrimitivesTest {
 
         // 将 float 数组元素进行反转
         {
-            var array = new float[] { 0.1f, 0.2f, 0.3f };
+            var array = new float[]{0.1f, 0.2f, 0.3f};
 
             Floats.reverse(array);
             then(array).containsExactly(0.3f, 0.2f, 0.1f);
@@ -934,7 +935,7 @@ class PrimitivesTest {
 
         // 将 double 数组元素进行反转
         {
-            var array = new double[] { 0.1, 0.2, 0.3 };
+            var array = new double[]{0.1, 0.2, 0.3};
 
             Doubles.reverse(array);
             then(array).containsExactly(0.3, 0.2, 0.1);
@@ -942,7 +943,7 @@ class PrimitivesTest {
 
         // 将 char 数组元素进行反转
         {
-            var array = new char[] { 'A', 'B', 'C' };
+            var array = new char[]{'A', 'B', 'C'};
 
             Chars.reverse(array);
             then(array).containsExactly('C', 'B', 'A');
@@ -950,7 +951,7 @@ class PrimitivesTest {
 
         // 将 boolean 数组元素进行反转
         {
-            var array = new boolean[] { false, true };
+            var array = new boolean[]{false, true};
 
             Booleans.reverse(array);
             then(array).containsExactly(true, false);
@@ -977,7 +978,7 @@ class PrimitivesTest {
     void sortDescending_shouldSortArrayByDescendingOrder() {
         // 对 short 类型数组进行逆序排序
         {
-            var array = new short[] { 0x1, 0x3, 0x2 };
+            var array = new short[]{0x1, 0x3, 0x2};
 
             Shorts.sortDescending(array);
             then(array).containsExactly(0x3, 0x2, 0x1);
@@ -985,7 +986,7 @@ class PrimitivesTest {
 
         // 对 int 类型数组进行逆序排序
         {
-            var array = new int[] { 1, 3, 2 };
+            var array = new int[]{1, 3, 2};
 
             Ints.sortDescending(array);
             then(array).containsExactly(3, 2, 1);
@@ -993,7 +994,7 @@ class PrimitivesTest {
 
         // 对 long 类型数组进行逆序排序
         {
-            var array = new long[] { 1, 3, 2 };
+            var array = new long[]{1, 3, 2};
 
             Longs.sortDescending(array);
             then(array).containsExactly(3, 2, 1);
@@ -1001,7 +1002,7 @@ class PrimitivesTest {
 
         // 对 float 类型数组进行逆序排序
         {
-            var array = new float[] { 0.1f, 0.3f, 0.2f };
+            var array = new float[]{0.1f, 0.3f, 0.2f};
 
             Floats.sortDescending(array);
             then(array).containsExactly(0.3f, 0.2f, 0.1f);
@@ -1009,7 +1010,7 @@ class PrimitivesTest {
 
         // 对 double 类型数组进行逆序排序
         {
-            var array = new double[] { 0.1, 0.3, 0.2 };
+            var array = new double[]{0.1, 0.3, 0.2};
 
             Doubles.sortDescending(array);
             then(array).containsExactly(0.3, 0.2, 0.1);
@@ -1017,7 +1018,7 @@ class PrimitivesTest {
 
         // 对 char 类型数组进行逆序排序
         {
-            var array = new char[] { 'A', 'C', 'B' };
+            var array = new char[]{'A', 'C', 'B'};
 
             Chars.sortDescending(array);
             then(array).containsExactly('C', 'B', 'A');
@@ -1032,6 +1033,7 @@ class PrimitivesTest {
      * 的简单类型数组版本
      * </p>
      */
+    @Disabled
     void rotate_shouldRotateArrayElements() {
         // todo: 下个版本会增加 Ints.rotate 等方法, 届时增加演示
     }
@@ -1055,7 +1057,7 @@ class PrimitivesTest {
     void ensureCapacity_shouldGuaranteeTheLengthOfArrayForNewElements() {
         // 扩展 byte 数组长度
         {
-            var array = new byte[] { 1, 2, 3, 4, 5 };
+            var array = new byte[]{1, 2, 3, 4, 5};
 
             // 设置最小扩展长度和原数组相等, 此时直接返回原数组引用
             var newArray = Bytes.ensureCapacity(array, array.length, 0);
@@ -1072,7 +1074,7 @@ class PrimitivesTest {
 
         // 扩展 short 数组长度
         {
-            var array = new short[] { 1, 2, 3, 4, 5 };
+            var array = new short[]{1, 2, 3, 4, 5};
 
             // 设置最小扩展长度和原数组相等, 此时直接返回原数组引用
             var newArray = Shorts.ensureCapacity(array, array.length, 0);
@@ -1088,7 +1090,7 @@ class PrimitivesTest {
 
         // 扩展 int 数组长度
         {
-            var array = new int[] { 1, 2, 3, 4, 5 };
+            var array = new int[]{1, 2, 3, 4, 5};
 
             // 设置最小扩展长度和原数组相等, 此时直接返回原数组引用
             var newArray = Ints.ensureCapacity(array, array.length, 0);
@@ -1105,7 +1107,7 @@ class PrimitivesTest {
 
         // 扩展 long 数组长度
         {
-            var array = new long[] { 1, 2, 3, 4, 5 };
+            var array = new long[]{1, 2, 3, 4, 5};
 
             // 设置最小扩展长度和原数组相等, 此时直接返回原数组引用
             var newArray = Longs.ensureCapacity(array, array.length, 0);
@@ -1122,7 +1124,7 @@ class PrimitivesTest {
 
         // 扩展 float 数组长度
         {
-            var array = new float[] { 0.1f, 0.2f, 0.3f, 0.4f, 0.5f };
+            var array = new float[]{0.1f, 0.2f, 0.3f, 0.4f, 0.5f};
 
             // 设置最小扩展长度和原数组相等, 此时直接返回原数组引用
             var newArray = Floats.ensureCapacity(array, array.length, 0);
@@ -1139,7 +1141,7 @@ class PrimitivesTest {
 
         // 扩展 double 数组长度
         {
-            var array = new double[] { 0.1, 0.2, 0.3, 0.4, 0.5 };
+            var array = new double[]{0.1, 0.2, 0.3, 0.4, 0.5};
 
             // 设置最小扩展长度和原数组相等, 此时直接返回原数组引用
             var newArray = Doubles.ensureCapacity(array, array.length, 0);
@@ -1156,7 +1158,7 @@ class PrimitivesTest {
 
         // 扩展 char 数组长度
         {
-            var array = new char[] { 'A', 'B', 'C' };
+            var array = new char[]{'A', 'B', 'C'};
 
             // 设置最小扩展长度和原数组相等, 此时直接返回原数组引用
             var newArray = Chars.ensureCapacity(array, array.length, 0);
@@ -1173,7 +1175,7 @@ class PrimitivesTest {
 
         // 扩展 boolean 数组长度
         {
-            var array = new boolean[] { true, false, true };
+            var array = new boolean[]{true, false, true};
 
             // 设置最小扩展长度和原数组相等, 此时直接返回原数组引用
             var newArray = Booleans.ensureCapacity(array, array.length, 0);
@@ -1315,56 +1317,56 @@ class PrimitivesTest {
         {
             var comparator = Shorts.lexicographicalComparator();
 
-            then(comparator.compare(new short[] { 1, 2, 3 }, new short[] { 1, 2, 3 })).isEqualTo(0);
-            then(comparator.compare(new short[] { 1, 2, 3, 4 }, new short[] { 1, 2, 3 })).isEqualTo(1);
-            then(comparator.compare(new short[] { 1, 2 }, new short[] { 1, 2, 3 })).isEqualTo(-1);
+            then(comparator.compare(new short[]{1, 2, 3}, new short[]{1, 2, 3})).isEqualTo(0);
+            then(comparator.compare(new short[]{1, 2, 3, 4}, new short[]{1, 2, 3})).isEqualTo(1);
+            then(comparator.compare(new short[]{1, 2}, new short[]{1, 2, 3})).isEqualTo(-1);
         }
 
         // 对 int 类型数组进行比较
         {
             var comparator = Ints.lexicographicalComparator();
 
-            then(comparator.compare(new int[] { 1, 2, 3 }, new int[] { 1, 2, 3 })).isEqualTo(0);
-            then(comparator.compare(new int[] { 1, 2, 3, 4 }, new int[] { 1, 2, 3 })).isEqualTo(1);
-            then(comparator.compare(new int[] { 1, 2 }, new int[] { 1, 2, 3 })).isEqualTo(-1);
+            then(comparator.compare(new int[]{1, 2, 3}, new int[]{1, 2, 3})).isEqualTo(0);
+            then(comparator.compare(new int[]{1, 2, 3, 4}, new int[]{1, 2, 3})).isEqualTo(1);
+            then(comparator.compare(new int[]{1, 2}, new int[]{1, 2, 3})).isEqualTo(-1);
         }
 
         // 对 long 类型数组进行比较
         {
             var comparator = Longs.lexicographicalComparator();
 
-            then(comparator.compare(new long[] { 1L, 2L, 3L }, new long[] { 1L, 2L, 3L })).isEqualTo(0);
-            then(comparator.compare(new long[] { 1L, 2L, 3L, 4L }, new long[] { 1L, 2L, 3L })).isEqualTo(1);
-            then(comparator.compare(new long[] { 1L, 2L }, new long[] { 1L, 2L, 3L })).isEqualTo(-1);
+            then(comparator.compare(new long[]{1L, 2L, 3L}, new long[]{1L, 2L, 3L})).isEqualTo(0);
+            then(comparator.compare(new long[]{1L, 2L, 3L, 4L}, new long[]{1L, 2L, 3L})).isEqualTo(1);
+            then(comparator.compare(new long[]{1L, 2L}, new long[]{1L, 2L, 3L})).isEqualTo(-1);
         }
 
         // 对 float 类型数组进行比较
         {
             var comparator = Floats.lexicographicalComparator();
 
-            then(comparator.compare(new float[] { 0.1f, 0.2f, 0.3f }, new float[] { 0.1f, 0.2f, 0.3f })).isEqualTo(0);
+            then(comparator.compare(new float[]{0.1f, 0.2f, 0.3f}, new float[]{0.1f, 0.2f, 0.3f})).isEqualTo(0);
             then(comparator.compare(
-                new float[] { 0.1f, 0.2f, 0.3f, 0.4f },
-                new float[] { 0.1f, 0.2f, 0.3f })).isEqualTo(1);
-            then(comparator.compare(new float[] { 0.1f, 0.2f }, new float[] { 0.1f, 0.2f, 0.3f })).isEqualTo(-1);
+                new float[]{0.1f, 0.2f, 0.3f, 0.4f},
+                new float[]{0.1f, 0.2f, 0.3f})).isEqualTo(1);
+            then(comparator.compare(new float[]{0.1f, 0.2f}, new float[]{0.1f, 0.2f, 0.3f})).isEqualTo(-1);
         }
 
         // 对 double 类型数组进行比较
         {
             var comparator = Doubles.lexicographicalComparator();
 
-            then(comparator.compare(new double[] { 0.1, 0.2, 0.3 }, new double[] { 0.1, 0.2, 0.3 })).isEqualTo(0);
-            then(comparator.compare(new double[] { 0.1, 0.2, 0.3, 0.4 }, new double[] { 0.1, 0.2, 0.3 })).isEqualTo(1);
-            then(comparator.compare(new double[] { 0.1, 0.2 }, new double[] { 0.1, 0.2, 0.3 })).isEqualTo(-1);
+            then(comparator.compare(new double[]{0.1, 0.2, 0.3}, new double[]{0.1, 0.2, 0.3})).isEqualTo(0);
+            then(comparator.compare(new double[]{0.1, 0.2, 0.3, 0.4}, new double[]{0.1, 0.2, 0.3})).isEqualTo(1);
+            then(comparator.compare(new double[]{0.1, 0.2}, new double[]{0.1, 0.2, 0.3})).isEqualTo(-1);
         }
 
         // 对 char 类型数组进行比较
         {
             var comparator = Chars.lexicographicalComparator();
 
-            then(comparator.compare(new char[] { 'A', 'B', 'C' }, new char[] { 'A', 'B', 'C' })).isEqualTo(0);
-            then(comparator.compare(new char[] { 'A', 'B', 'C', 'D' }, new char[] { 'A', 'B', 'C' })).isEqualTo(1);
-            then(comparator.compare(new char[] { 'A', 'B' }, new char[] { 'A', 'B', 'C' })).isEqualTo(-1);
+            then(comparator.compare(new char[]{'A', 'B', 'C'}, new char[]{'A', 'B', 'C'})).isEqualTo(0);
+            then(comparator.compare(new char[]{'A', 'B', 'C', 'D'}, new char[]{'A', 'B', 'C'})).isEqualTo(1);
+            then(comparator.compare(new char[]{'A', 'B'}, new char[]{'A', 'B', 'C'})).isEqualTo(-1);
         }
 
         // 对 boolean 类型数组进行比较
@@ -1372,12 +1374,12 @@ class PrimitivesTest {
             var comparator = Booleans.lexicographicalComparator();
 
             then(comparator.compare(
-                new boolean[] { true, false, true },
-                new boolean[] { true, false, true })).isEqualTo(0);
+                new boolean[]{true, false, true},
+                new boolean[]{true, false, true})).isEqualTo(0);
             then(comparator.compare(
-                new boolean[] { true, false, true, false },
-                new boolean[] { true, false, true })).isEqualTo(1);
-            then(comparator.compare(new boolean[] { true, false }, new boolean[] { true, false, true })).isEqualTo(-1);
+                new boolean[]{true, false, true, false},
+                new boolean[]{true, false, true})).isEqualTo(1);
+            then(comparator.compare(new boolean[]{true, false}, new boolean[]{true, false, true})).isEqualTo(-1);
         }
     }
 
@@ -1524,7 +1526,7 @@ class PrimitivesTest {
 
         // 对无符号整数进行运算
         {
-            var i1 = -2; // 0XFFFFFFFE, 11111111111111111111111111111110b
+            var i1 = -2; // 0xFFFFFFFE, 11111111111111111111111111111110b
             var i2 = -1; // 0xFFFFFFFF, 11111111111111111111111111111111b
 
             var u1 = UnsignedInteger.fromIntBits(i1);

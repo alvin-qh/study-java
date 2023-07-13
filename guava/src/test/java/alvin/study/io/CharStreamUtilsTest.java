@@ -1,6 +1,12 @@
 package alvin.study.io;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import com.google.common.base.Charsets;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
+import com.google.common.io.CharStreams;
+import com.google.common.io.LineProcessor;
+import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -11,13 +17,7 @@ import java.io.Reader;
 import java.nio.CharBuffer;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
-
-import com.google.common.base.Charsets;
-import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
-import com.google.common.io.CharStreams;
-import com.google.common.io.LineProcessor;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link CharStreams} 工具类
@@ -96,7 +96,7 @@ class CharStreamUtilsTest {
                 private final List<String> lines = Lists.newArrayList();
 
                 @Override
-                public boolean processLine(String line) throws IOException {
+                public boolean processLine(@NotNull String line) {
                     // 将读取的结果进行保存
                     return lines.add(line);
                 }
@@ -142,7 +142,6 @@ class CharStreamUtilsTest {
      * </p>
      */
     @Test
-    @SuppressWarnings("java:S2699")
     void nullWriter_shouldCreateWriterForWriteNothing() throws IOException {
         try (var writer = CharStreams.nullWriter()) {
             writer.write("Hello Guava");
@@ -183,7 +182,6 @@ class CharStreamUtilsTest {
      * </p>
      */
     @Test
-    @SuppressWarnings("java:S2925")
     void skipFully_shouldSkipCharactersFromReadable() throws IOException {
         // 定义一个管道, 获取读取管道数据的输入流
         try (var pi = new PipedInputStream()) {
@@ -197,7 +195,7 @@ class CharStreamUtilsTest {
                             Thread.sleep(500);
                             po.write("Hello Guava".getBytes(Charsets.UTF_8));
                         }
-                    } catch (IOException | InterruptedException e) {}
+                    } catch (IOException | InterruptedException ignored) {}
                 });
 
                 // 启动线程, 开始管道操作

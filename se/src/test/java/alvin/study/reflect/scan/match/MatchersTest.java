@@ -1,12 +1,12 @@
 package alvin.study.reflect.scan.match;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link Matchers.AnnotatedWith AnnotatedWith} 和
@@ -18,7 +18,8 @@ import org.junit.jupiter.api.Test;
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@interface TestAnnotation {}
+@interface TestAnnotation {
+}
 
 /**
  * 测试类型
@@ -34,6 +35,7 @@ class TestClass {
      */
     @Override
     @TestAnnotation
+    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     public boolean equals(Object obj) {
         return true;
     }
@@ -51,7 +53,8 @@ class TestClass {
  * 用于测试 {@link Matchers.SubclassesOf} 匹配器
  * </p>
  */
-class TestSubClass extends TestClass {}
+class TestSubClass extends TestClass {
+}
 
 /**
  * 测试 {@link Matchers} 类型, 检验各个 {@link Matcher} 实现类

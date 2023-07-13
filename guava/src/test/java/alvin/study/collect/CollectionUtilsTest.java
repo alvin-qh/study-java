@@ -1,15 +1,14 @@
 package alvin.study.collect;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import java.util.Comparator;
-
-import org.junit.jupiter.api.Test;
-
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
+import org.junit.jupiter.api.Test;
+
+import java.util.Comparator;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * {@link Collections2} 类型是 Guava 对 {@link java.util.Collections} 工具类的补充
@@ -29,7 +28,7 @@ class CollectionUtilsTest {
      *
      * <p>
      * {@link Collections2#filter(java.util.Collection, com.google.common.base.Predicate)
-     * Collections2.filter(Collection, Predicate)} 方法返回一个 {@link Collections2.FilteredCollection} 类型对象,
+     * Collections2.filter(Collection, Predicate)} 方法返回一个 {@code Collections2.FilteredCollection} 类型对象,
      * 该对象代理了原集合对象, 在获取元素时根据过滤条件返回符合条件的结果, 所以如果原集合发生变化, 可能会导致过滤结果也发生变化
      * </p>
      */
@@ -53,7 +52,7 @@ class CollectionUtilsTest {
      *
      * <p>
      * {@link Collections2#permutations(java.util.Collection) Collections2.permutations(Collection)} 方法返回一个
-     * {@link Collections2.PermutationCollection} 类型对象,
+     * {@code Collections2.PermutationCollection} 类型对象,
      * 该对象代理了原集合对象, 在获取元素时根据过滤条件返回符合条件的结果, 所以如果原集合发生变化, 可能会导致过滤结果也发生变化
      * </p>
      *
@@ -62,11 +61,11 @@ class CollectionUtilsTest {
      * <ol>
      * <li>
      * {@link Collections2#permutations(java.util.Collection) Collections2.permutations(Collection)} 方法返回
-     * {@link Collections2.PermutationCollection} 类型对象, 该对象通过 {@link Collections2.PermutationIterator}
+     * {@code Collections2.PermutationCollection} 类型对象, 该对象通过 {@code Collections2.PermutationIterator}
      * 类型迭代器来产生集合元素的各种排列组合, 迭代器每次迭代返回一个 {@code List<T>} 集合, 表示一种排列组合
      * </li>
      * <li>
-     * {@link Collections2.PermutationIterator} 迭代器每次迭代, 交换集合中两个位置位置的元素, 以产生一种排列组合,
+     * {@code Collections2.PermutationIterator} 迭代器每次迭代, 交换集合中两个位置位置的元素, 以产生一种排列组合,
      * 通过一组标记记录交换的下标情况, 最终产生所有排列组合
      * </li>
      * </ol>
@@ -133,7 +132,7 @@ class CollectionUtilsTest {
      * </p>
      *
      * <p>
-     * 该方法返回结果为 {@link Collections2.TransformedCollection} 类型, 是一个原集合对象的代理对象,
+     * 该方法返回结果为 {@code Collections2.TransformedCollection} 类型, 是一个原集合对象的代理对象,
      * 在获取元素时才会对原集合元素进行转换处理, 所以对于原集合的修改, 可能会引起结果集合的变化
      * </p>
      */

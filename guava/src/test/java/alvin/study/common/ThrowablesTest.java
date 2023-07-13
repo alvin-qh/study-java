@@ -1,15 +1,15 @@
 package alvin.study.common;
 
+import com.google.common.base.Preconditions;
+import com.google.common.base.Throwables;
+import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.util.Objects;
+
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.api.BDDAssertions.thenCode;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
-
-import java.io.IOException;
-
-import org.junit.jupiter.api.Test;
-
-import com.google.common.base.Preconditions;
-import com.google.common.base.Throwables;
 
 /**
  * 测试异常处理辅助类
@@ -59,11 +59,11 @@ class ThrowablesTest {
 
         // 对于类型不匹配的情况, 不抛出异常
         thenCode(() -> Throwables.throwIfInstanceOf(exception, NullPointerException.class))
-                .doesNotThrowAnyException();
+            .doesNotThrowAnyException();
 
         // 抛出指定类型异常, 最终抛出 exp 为 IOException 类型
         thenThrownBy(() -> Throwables.throwIfInstanceOf(exception, IOException.class))
-                .isInstanceOf(IOException.class);
+            .isInstanceOf(IOException.class);
     }
 
     /**
@@ -142,10 +142,12 @@ class ThrowablesTest {
      * @return {@code raiseType} 参数指定类型的异常对象
      */
     Throwable makeException(
-            Class<? extends Throwable> rootType,
-            Class<? extends Throwable> passingType,
-            Class<? extends Throwable> raiseType) {
-        Throwable result = null;
+        Class<? extends Throwable> rootType,
+        Class<? extends Throwable> passingType,
+        Class<? extends Throwable> raiseType) {
+
+        Throwable result;
+
         // 抛出一个异常链
         try {
             try {
@@ -207,16 +209,16 @@ class ThrowablesTest {
         then(cause).isInstanceOf(IOException.class).hasMessage("PASSING");
 
         // 获取上一步返回值的异常原因, 应为 IllegalArgumentException 类型, 确认可以正确获取到
-        cause = Throwables.getCauseAs(cause, IllegalArgumentException.class);
+        cause = Throwables.getCauseAs(Objects.requireNonNull(cause), IllegalArgumentException.class);
         then(cause).isInstanceOf(IllegalArgumentException.class).hasMessage("ROOT");
 
         // 确认上一步返回值无异常原因
-        cause = Throwables.getCauseAs(cause, Exception.class);
+        cause = Throwables.getCauseAs(Objects.requireNonNull(cause), Exception.class);
         then(cause).isNull();
 
         // 如果期待的类型和实际异常原因类型不符, 则抛出类型转换失败异常
         thenThrownBy(() -> Throwables.getCauseAs(exception, IllegalStateException.class))
-                .isInstanceOf(ClassCastException.class);
+            .isInstanceOf(ClassCastException.class);
     }
 
     /**
@@ -264,8 +266,8 @@ class ThrowablesTest {
         // 将异常堆栈转化为字符串形式
         var stack = Throwables.getStackTraceAsString(exception);
         then(stack)
-                .contains("java.lang.IllegalArgumentException")
-                .contains("java.io.IOException")
-                .contains("java.lang.IllegalStateException");
+            .contains("java.lang.IllegalArgumentException")
+            .contains("java.io.IOException")
+            .contains("java.lang.IllegalStateException");
     }
 }

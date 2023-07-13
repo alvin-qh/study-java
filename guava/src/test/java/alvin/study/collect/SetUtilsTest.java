@@ -1,6 +1,12 @@
 package alvin.study.collect;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import com.google.common.collect.ContiguousSet;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Range;
+import com.google.common.collect.Sets;
+import org.junit.jupiter.api.Test;
 
 import java.time.Month;
 import java.util.Collections;
@@ -12,14 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.Test;
-
-import com.google.common.collect.ContiguousSet;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Range;
-import com.google.common.collect.Sets;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 演示 Guava {@link java.util.Set Set} 集合工具类
@@ -29,6 +28,7 @@ import com.google.common.collect.Sets;
  * {@link ConcurrentHashMap.KeySetView} 以及 {@link CopyOnWriteArraySet} 等 {@link java.util.Set Set} 类型集合的方法
  * </p>
  */
+@SuppressWarnings({"OverwrittenKey", "StringOperationCanBeSimplified"})
 class SetUtilsTest {
     /**
      * 创建 {@link java.util.Set Set} 集合对象
@@ -180,24 +180,28 @@ class SetUtilsTest {
             // 确认集合类型并确认集合为空
             then(set).isInstanceOf(HashSet.class).isEmpty();
         }
+
         {
             // 通过元素值创建集合
             var set = Sets.newHashSet(1, 2, 3, 4);
             // 确认集合中的元素值
             then(set).isInstanceOf(HashSet.class).containsExactlyInAnyOrder(1, 2, 3, 4);
         }
+
         {
             // 通过一个迭代器对象创建集合
             var set = Sets.newHashSet(iterable.iterator());
             // 确认集合包含的元素和迭代器对象一致
             then(set).isInstanceOf(HashSet.class).containsExactlyInAnyOrderElementsOf(iterable);
         }
+
         {
             // 通过一个可迭代对象创建集合
             var set = Sets.newHashSet(iterable);
             // 确认集合包含的元素和可迭代对象包含的元素一致
             then(set).isInstanceOf(HashSet.class).containsExactlyInAnyOrderElementsOf(iterable);
         }
+
         {
             var set = Sets.newHashSetWithExpectedSize(10);
             set.addAll(iterable);
@@ -210,10 +214,12 @@ class SetUtilsTest {
             var set = Sets.newLinkedHashSet();
             then(set).isInstanceOf(LinkedHashSet.class).isEmpty();
         }
+
         {
             var set = Sets.newLinkedHashSet(iterable);
             then(set).isInstanceOf(LinkedHashSet.class).containsExactlyElementsOf(iterable);
         }
+
         {
             var set = Sets.newLinkedHashSetWithExpectedSize(10);
             set.addAll(iterable);
@@ -228,12 +234,14 @@ class SetUtilsTest {
             // 确认对象类型和集合为空
             then(set).isInstanceOf(TreeSet.class).isEmpty();
         }
+
         {
             // 通过一个可迭代对象创建 TreeSet 集合
             var set = Sets.newTreeSet(iterable);
             // 确认集合元素
             then(set).isInstanceOf(TreeSet.class).containsExactlyElementsOf(iterable);
         }
+
         {
             // 创建一个空的 TreeSet 集合, 并设置元素比较函数
             var set = Sets.<Integer>newTreeSet((l, r) -> r - l);
@@ -265,6 +273,7 @@ class SetUtilsTest {
             // 确认对象类型
             then(set).isInstanceOf(CopyOnWriteArraySet.class).isEmpty();
         }
+
         {
             // 创建空集合对象
             var set = Sets.newCopyOnWriteArraySet(iterable);
@@ -289,6 +298,7 @@ class SetUtilsTest {
             // 确认最终集合只包含一个元素 A
             then(set).containsOnly("A");
         }
+
         {
             // 创建集合对象
             var set = Sets.newIdentityHashSet();
@@ -493,10 +503,10 @@ class SetUtilsTest {
     void subSet_shouldGetSubSetInGivenRange() {
         // 创建一个元素为 'A'~'Z' 的 TreeSet 集合, 且不包含 'E' 和 'G' 两个元素
         var set = ContiguousSet.closed('A', 'Z')
-                .stream()
-                .map(n -> (char) (n.intValue()))
-                .filter(c -> c != 'G' && c != 'E')
-                .collect(Collectors.toCollection(TreeSet::new));
+            .stream()
+            .map(n -> (char) (n.intValue()))
+            .filter(c -> c != 'G' && c != 'E')
+            .collect(Collectors.toCollection(TreeSet::new));
 
         // 从集合中获取范围为 'D'~'H' 的元素值
         var subSet = Sets.subSet(set, Range.closed('D', 'H'));
@@ -516,14 +526,14 @@ class SetUtilsTest {
     void filter_shouldFilterElements() {
         // 创建一个元素为 'A'~'Z' 的 TreeSet 集合
         var set = ContiguousSet.closed('A', 'Z')
-                .stream()
-                .map(n -> (char) (n.intValue()))
-                .collect(Collectors.toCollection(TreeSet::new));
+            .stream()
+            .map(n -> (char) (n.intValue()))
+            .collect(Collectors.toCollection(TreeSet::new));
 
         // 过滤掉集合中所有的元音字母, 并返回过滤后的结果
         var filteredSet = Sets.filter(set, c -> switch (c) {
-        case 'A', 'E', 'I', 'O', 'U' -> false;
-        default -> true;
+            case 'A', 'E', 'I', 'O', 'U' -> false;
+            default -> true;
         });
 
         // 确认结果集合中不包含元音字母元素

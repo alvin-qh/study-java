@@ -1,22 +1,20 @@
 package alvin.study.graphs;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import alvin.study.graphs.GraphsDatasource.Edge;
+import com.google.common.graph.ElementOrder;
+import com.google.common.graph.Traverser;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
-
-import com.google.common.graph.ElementOrder;
-import com.google.common.graph.Traverser;
-
-import alvin.study.graphs.GraphsDatasource.Edge;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试图的遍历
  */
 class TestTraverser {
     // 边集合列表, 图的每个边由相连的两个节点组成
-    private GraphsDatasource<Integer, ?> datasource = new GraphsDatasource<>(
+    private final GraphsDatasource<Integer, ?> datasource = new GraphsDatasource<>(
         Edge.of(1, 2),
         Edge.of(2, 3),
         Edge.of(2, 4),

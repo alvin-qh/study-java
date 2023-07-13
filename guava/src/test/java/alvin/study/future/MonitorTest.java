@@ -1,11 +1,10 @@
 package alvin.study.future;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
+import com.google.common.util.concurrent.Monitor;
 import org.junit.jupiter.api.Test;
 import org.junitpioneer.jupiter.RetryingTest;
 
-import com.google.common.util.concurrent.Monitor;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试通过 {@link Monitor} 类型对象进行并发控制
@@ -48,7 +47,7 @@ class MonitorTest {
         group.joinAll(10);
 
         // 确认最终计数结果和计算次数有差异
-        then(counter.getCount()).isLessThan(100 * 1000);
+        then(counter.getCount()).hasValueLessThan(100 * 1000);
     }
 
     /**

@@ -1,12 +1,5 @@
 package alvin.study.common;
 
-import static org.assertj.core.api.Assertions.entry;
-import static org.assertj.core.api.BDDAssertions.then;
-
-import java.util.List;
-
-import org.junit.jupiter.api.Test;
-
 import com.google.common.base.CaseFormat;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Charsets;
@@ -15,10 +8,17 @@ import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSortedMap;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.entry;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 演示字符串操作工具类
  */
+@SuppressWarnings("ConstantValue")
 class StringUtilsTest {
     /**
      * 测试将对象数组 (或集合) 连接为字符串
@@ -57,15 +57,15 @@ class StringUtilsTest {
         then(s).isEqualTo("A>>B>>C");
 
         // 通过 >> 连接符连接数组中的所有元素
-        s = Joiner.on(">>").join(new String[] { "A", "B", "C" });
+        s = Joiner.on(">>").join(new String[]{"A", "B", "C"});
         then(s).isEqualTo("A>>B>>C");
 
         // 在连接过程中, 忽略所有为 null 的元素
-        s = Joiner.on(">>").skipNulls().join(new String[] { "A", "B", null, "C" });
+        s = Joiner.on(">>").skipNulls().join(new String[]{"A", "B", null, "C"});
         then(s).isEqualTo("A>>B>>C");
 
         // 在连接过程中, 将值为 null 的元素替换为给定的字符串
-        s = Joiner.on(">>").useForNull("null").join(new String[] { "A", "B", null, "C" });
+        s = Joiner.on(">>").useForNull("null").join(new String[]{"A", "B", null, "C"});
         then(s).isEqualTo("A>>B>>null>>C");
 
         // 在连接过程中, 将值为 null 的元素替换为给定的字符串
@@ -235,9 +235,9 @@ class StringUtilsTest {
         // negate 表示和前一个匹配器不匹配
         // precomputed 表示优化组合关系
         matcher = CharMatcher.inRange('A', 'C')
-                .or(CharMatcher.inRange('a', 'c'))
-                .and(CharMatcher.whitespace().negate())
-                .precomputed();
+            .or(CharMatcher.inRange('a', 'c'))
+            .and(CharMatcher.whitespace().negate())
+            .precomputed();
         then(matcher.matchesAllOf("ABCabc")).isTrue();
         then(matcher.matchesAllOf(" A")).isFalse();
     }
@@ -256,7 +256,7 @@ class StringUtilsTest {
     @Test
     void charsets_shouldUseStandardCharset() {
         var bytes = "Hello World".getBytes(Charsets.UTF_8);
-        then(bytes).isEqualTo(new byte[] { 72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100 });
+        then(bytes).isEqualTo(new byte[]{72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100});
     }
 
     /**

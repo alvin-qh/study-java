@@ -1,17 +1,17 @@
 package alvin.study.cache.repository;
 
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-
-import com.google.common.cache.LoadingCache;
-import com.google.common.hash.BloomFilter;
-
 import alvin.study.cache.CacheEventBus;
 import alvin.study.cache.event.UserDeleteEvent;
 import alvin.study.cache.event.UserUpdateEvent;
 import alvin.study.cache.model.User;
+import com.google.common.cache.LoadingCache;
+import com.google.common.hash.BloomFilter;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 用于 {@link User} 对象的持久化类型
@@ -42,8 +42,8 @@ public class UserRepository {
      *
      * @param user {@link User} 对象
      */
-    public void insertUser(User user) {
-        userStorage.compute(user.getId(), (key, value) -> {
+    public void insertUser(@NotNull User user) {
+        userStorage.compute(user.id(), (key, value) -> {
             if (value != null) {
                 throw new IllegalArgumentException("id %d already exists");
             }
@@ -60,8 +60,8 @@ public class UserRepository {
      *
      * @param user {@link User} 对象
      */
-    public void updateUser(User user) {
-        userStorage.compute(user.getId(), (key, value) -> {
+    public void updateUser(@NotNull User user) {
+        userStorage.compute(user.id(), (key, value) -> {
             if (value == null) {
                 throw new IllegalArgumentException("id %d not exists");
             }
@@ -97,8 +97,8 @@ public class UserRepository {
      */
     public BloomFilter<Long> toBloomFilter(long expectedInsertions) {
         return userStorage.values()
-                .stream()
-                .map(User::getId)
-                .collect(BloomFilter.toBloomFilter((id, into) -> into.putLong(id), expectedInsertions, 0.001));
+            .stream()
+            .map(User::id)
+            .collect(BloomFilter.toBloomFilter((id, into) -> into.putLong(id), expectedInsertions, 0.001));
     }
 }

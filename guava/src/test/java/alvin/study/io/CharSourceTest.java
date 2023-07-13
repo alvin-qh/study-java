@@ -1,6 +1,14 @@
 package alvin.study.io;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import com.google.common.base.Charsets;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
+import com.google.common.io.CharSource;
+import com.google.common.io.LineProcessor;
+import com.google.common.io.MoreFiles;
+import com.google.common.io.Resources;
+import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.CharBuffer;
@@ -9,15 +17,7 @@ import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
-
-import com.google.common.base.Charsets;
-import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
-import com.google.common.io.CharSource;
-import com.google.common.io.LineProcessor;
-import com.google.common.io.MoreFiles;
-import com.google.common.io.Resources;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试通过 {@link CharSource} 类型读取字符内容
@@ -86,7 +86,7 @@ class CharSourceTest {
         then(source.length()).isEqualTo(11);
 
         // 确认可以获取到 CharSource 中字符序列的长度
-        then(source.lengthIfKnown().get()).isEqualTo(11);
+        then(source.lengthIfKnown().orNull()).isEqualTo(11);
     }
 
     /**
@@ -138,7 +138,7 @@ class CharSourceTest {
             private final List<String> lines = Lists.newArrayList();
 
             @Override
-            public boolean processLine(String line) throws IOException {
+            public boolean processLine(@NotNull String line) {
                 // 将 CharSource 中读取到的行字符串进行保存
                 return lines.add(line);
             }
@@ -250,7 +250,7 @@ class CharSourceTest {
 
         // 确认 CharSource 为空
         then(source.isEmpty()).isTrue();
-        then(source.lengthIfKnown().get()).isZero();
+        then(source.lengthIfKnown().orNull()).isZero();
 
         // 确认读取的数据为空
         then(source.read()).isEmpty();

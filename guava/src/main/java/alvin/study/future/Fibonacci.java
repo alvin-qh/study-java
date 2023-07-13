@@ -4,7 +4,8 @@ package alvin.study.future;
  * 测试异步任务的斐波那契计算类
  */
 public final class Fibonacci {
-    private Fibonacci() {}
+    private Fibonacci() {
+    }
 
     /**
      * 计算斐波那契数列

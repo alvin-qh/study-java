@@ -1,14 +1,13 @@
 package alvin.study.collect;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
-
-import org.junit.jupiter.api.Test;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 /**
  * 测试 {@link Iterables} 工具类
@@ -17,6 +16,7 @@ import com.google.common.collect.Ordering;
  * {@link Iterables} 工具类提供了一组对 {@link Iterable} 可迭代接口对象进行操作的辅助方法
  * </p>
  */
+@SuppressWarnings({"StaticPseudoFunctionalStyleMethod", "Guava", "OptionalGetWithoutIsPresent"})
 class IterableUtilsTest {
     /**
      * 将一个可迭代对象内的元素添加到另一个集合中
@@ -348,6 +348,7 @@ class IterableUtilsTest {
             element = Iterables.getOnlyElement(list, null);
             then(element).isNull();
         }
+
         {
             // 创建一个非空且元素数量多于 1 的集合
             var list = ImmutableList.of(1, 2, 3);
@@ -366,8 +367,9 @@ class IterableUtilsTest {
 
             // 因可迭代对象包含多个元素, 获取唯一元素时抛出异常
             thenThrownBy(() -> Iterables.getOnlyElement(list, null))
-                    .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(IllegalArgumentException.class);
         }
+
         {
             // 定义一个只有单一元素的集合
             var singleToneList = ImmutableList.of(1);
@@ -465,7 +467,7 @@ class IterableUtilsTest {
      * </p>
      *
      * <p>
-     * 注意: {@link mergeSorted} 方法本身不对输入的可迭代对象排序, 所以要保证输入的每个可迭代对象内部元素有序, 且排序规则要和后面进行归并
+     * 注意: {@code mergeSorted} 方法本身不对输入的可迭代对象排序, 所以要保证输入的每个可迭代对象内部元素有序, 且排序规则要和后面进行归并
      * 排序的规则保持一致
      * </p>
      */

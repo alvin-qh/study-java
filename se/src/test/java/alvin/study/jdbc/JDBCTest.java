@@ -37,6 +37,7 @@ public abstract class JDBCTest {
         // 通过脚本创建数据表
         new Migration(dataSource).migrate();
 
+
     }
 
     /**

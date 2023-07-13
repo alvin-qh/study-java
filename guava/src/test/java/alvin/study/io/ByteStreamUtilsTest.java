@@ -1,7 +1,13 @@
 package alvin.study.io;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+import com.google.common.base.Charsets;
+import com.google.common.base.Preconditions;
+import com.google.common.io.ByteProcessor;
+import com.google.common.io.ByteStreams;
+import lombok.SneakyThrows;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -17,15 +23,8 @@ import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Arrays;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.junit.jupiter.api.Test;
-
-import com.google.common.base.Charsets;
-import com.google.common.base.Preconditions;
-import com.google.common.io.ByteProcessor;
-import com.google.common.io.ByteStreams;
-
-import lombok.SneakyThrows;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 /**
  * 测试 {@link ByteStreams} 工具类
@@ -127,7 +126,7 @@ class ByteStreamUtilsTest {
                 private final ByteArrayOutputStream bio = new ByteArrayOutputStream();
 
                 @Override
-                public boolean processBytes(byte[] buf, int off, int len) throws IOException {
+                public boolean processBytes(byte @NotNull [] buf, int off, int len) {
                     // 将输入的数据存储输出字节流对象中
                     bio.write(buf, off, len);
                     return true;
@@ -168,7 +167,6 @@ class ByteStreamUtilsTest {
      * </p>
      */
     @Test
-    @SuppressWarnings("java:S2925")
     void readFully_shouldReadEnoughBytesFromInputStream() throws Exception {
         // 定义一个管道, 获取读取管道数据的输入流
         try (var pi = new PipedInputStream()) {
@@ -181,7 +179,8 @@ class ByteStreamUtilsTest {
                         try {
                             Thread.sleep(500);
                             po.write("Hello Guava".getBytes(Charsets.UTF_8));
-                        } catch (IOException | InterruptedException e) {}
+                        } catch (IOException | InterruptedException ignored) {
+                        }
                     }
                 });
 
@@ -212,7 +211,7 @@ class ByteStreamUtilsTest {
      * 跳过输入流中指定长度的字节数
      *
      * <p>
-     * {@link ByteStreams#skipFully(InputStream, int)} 方法用于跳过输入流指定长度的数据, 相当于从流中读取了指定长度的数据且丢弃
+     * {@link ByteStreams#skipFully(InputStream, long)} 方法用于跳过输入流指定长度的数据, 相当于从流中读取了指定长度的数据且丢弃
      * </p>
      *
      * <p>
@@ -221,12 +220,11 @@ class ByteStreamUtilsTest {
      * </p>
      *
      * <p>
-     * {@link ByteStreams#skipFully(InputStream, int)} 方法和
+     * {@link ByteStreams#skipFully(InputStream, long)} 方法和
      * {@link java.io.DataInputStream#skipNBytes(long) DataInputStream.skipNBytes(long)} 方法作用一致
      * </p>
      */
     @Test
-    @SuppressWarnings("java:S2925")
     void skipFully_shouldReadBytesFromInputStream() throws Exception {
         // 定义一个管道, 获取读取管道数据的输入流
         try (var pi = new PipedInputStream()) {
@@ -240,7 +238,8 @@ class ByteStreamUtilsTest {
                             Thread.sleep(500);
                             po.write("Hello Guava".getBytes(Charsets.UTF_8));
                         }
-                    } catch (IOException | InterruptedException e) {}
+                    } catch (IOException | InterruptedException ignored) {
+                    }
                 });
 
                 // 启动线程, 开始管道操作
@@ -321,8 +320,8 @@ class ByteStreamUtilsTest {
      * 为了简单起见, 本例通过 {@link Files#newByteChannel(java.nio.file.Path, java.nio.file.OpenOption...)
      * Files.newByteChannel(Path, OpenOption...)} 方法从文件中创建 {@link java.nio.channels.SeekableByteChannel
      * SeekableByteChannel} 对象, 该对象可以表示 {@code ReadableByteChannel} 或 {@code WritableByteChannel}, 主要看
-     * {@code newByteChannel} 方法的 {@code OpenOption} 参数是 {@link StandardOpenOption.READ} 还是
-     * {@link StandardOpenOption.WRITE}
+     * {@code newByteChannel} 方法的 {@code OpenOption} 参数是 {@link StandardOpenOption#READ} 还是
+     * {@link StandardOpenOption#WRITE}
      * </p>
      */
     @Test
@@ -466,7 +465,6 @@ class ByteStreamUtilsTest {
      * </p>
      */
     @Test
-    @SuppressWarnings("java:S2699")
     void nullOutputStream_shouldReadAndDiscardAllDataFromInputStream() throws IOException {
         try (var os = ByteStreams.nullOutputStream()) {
             os.write("Hello Guava".getBytes(Charsets.UTF_8));

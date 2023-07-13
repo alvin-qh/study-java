@@ -1,15 +1,14 @@
 package alvin.study.graphs;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import java.util.List;
-
+import alvin.study.graphs.GraphsDatasource.Edge;
+import com.google.common.graph.ElementOrder;
+import com.google.common.graph.Graph;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import com.google.common.graph.ElementOrder;
+import java.util.List;
 
-import alvin.study.graphs.GraphsDatasource.Edge;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试图数据结构类型, 包括"有向图"和"无向图"
@@ -17,7 +16,7 @@ import alvin.study.graphs.GraphsDatasource.Edge;
 class TestGraph {
     // 边集合列表, 图的每个边由相连的两个节点组成
     // 本例中, 节点由整数值表示
-    private GraphsDatasource<Integer, ?> datasource = new GraphsDatasource<>(
+    private final GraphsDatasource<Integer, ?> datasource = new GraphsDatasource<>(
         Edge.of(1, 2),
         Edge.of(2, 3),
         Edge.of(2, 4),
@@ -46,7 +45,7 @@ class TestGraph {
          * 测试构建有向图
          *
          * <p>
-         * 有向图的边是通过 {@link com.google.common.graph.EndpointPair.Ordered EndpointPair.Ordered} 类型对象表示, 通过
+         * 有向图的边是通过 {@code EndpointPair.Ordered} 类型对象表示, 通过
          * {@link com.google.common.graph.EndpointPair#ordered(Object, Object) EndpointPair.ordered(N, N)} 方法创建
          * </p>
          *
@@ -56,7 +55,7 @@ class TestGraph {
          *
          * <p>
          * 通过 {@link com.google.common.graph.Graph#edges() Graph.edges()} 方法可以获取无向图的边对象集合, 是一个元素类型为
-         * {@link com.google.common.graph.EndpointPair.Ordered EndpointPair.Ordered} 的 {@code Set} 集合
+         * {@code EndpointPair.Ordered} 的 {@code Set} 集合
          * </p>
          */
         @Test
@@ -245,7 +244,8 @@ class TestGraph {
          * 获取有向图中任意两节点之间的路径
          *
          * <p>
-         * 通过 {@link GraphPaths#getPaths(Object, Object) GraphPath.getPaths(N, N)} 方法可以计算所给的两个节点之间可连通的路径
+         * 通过 {@link GraphPaths#getPaths(Graph, Object, Object) GraphPath.getPaths(N, N)}
+         * 方法可以计算所给的两个节点之间可连通的路径
          * </p>
          *
          * <p>
@@ -280,7 +280,7 @@ class TestGraph {
          * 测试构建无向图
          *
          * <p>
-         * 无向图的边是通过 {@link com.google.common.graph.EndpointPair.Unordered EndpointPair.Unordered} 类型对象表示, 通过
+         * 无向图的边是通过 {@code EndpointPair.Unordered} 类型对象表示, 通过
          * {@link com.google.common.graph.EndpointPair#unordered(Object, Object) EndpointPair.unordered(N, N)} 方法创建
          * </p>
          *
@@ -290,7 +290,7 @@ class TestGraph {
          *
          * <p>
          * 通过 {@link com.google.common.graph.Graph#edges() Graph.edges()} 方法可以获取无向图的边对象集合, 是一个元素类型为
-         * {@link com.google.common.graph.EndpointPair.Unordered EndpointPair.Unordered} 的 {@code Set} 集合
+         * {@code EndpointPair.Unordered} 的 {@code Set} 集合
          * </p>
          */
         @Test
@@ -480,7 +480,8 @@ class TestGraph {
          * 获取无向图中任意两节点之间的路径
          *
          * <p>
-         * 通过 {@link GraphPaths#getPaths(Object, Object) GraphPaths.getPaths(N, N)} 方法可以计算所给的两个节点之间可连通的路径
+         * 通过 {@link GraphPaths#getPaths(Graph, Object, Object) GraphPaths.getPaths(N, N)}
+         * 方法可以计算所给的两个节点之间可连通的路径
          * </p>
          *
          * <p>

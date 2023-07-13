@@ -1,16 +1,15 @@
 package alvin.study.collect;
 
-import static org.assertj.core.api.Assertions.tuple;
-import static org.assertj.core.api.BDDAssertions.entry;
-import static org.assertj.core.api.BDDAssertions.then;
-
-import java.util.Collections;
-
-import org.junit.jupiter.api.Test;
-
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.MultimapBuilder;
+import org.junit.jupiter.api.Test;
+
+import java.util.Collections;
+
+import static org.assertj.core.api.Assertions.tuple;
+import static org.assertj.core.api.BDDAssertions.entry;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 演示可以存储多个值的 {@link java.util.Set Set} 和 {@link com.google.common.collect.Multimap Multimap} 集合
@@ -151,7 +150,7 @@ class MultiCollectionTest {
         // 获取集合中存储的 Entry 对象, 并确认每个 Entry 对象符合预期
         var entrySet = mulSet.entrySet();
         then(entrySet).extracting("element", "count")
-                .containsExactly(tuple("A", 2), tuple("B", 3), tuple("C", 1));
+            .containsExactly(tuple("A", 2), tuple("B", 3), tuple("C", 1));
 
         // 为指定元素增加数量 1
         mulSet.add("C", 2);

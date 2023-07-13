@@ -1,22 +1,20 @@
 package alvin.study.future;
 
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-
+import alvin.study.future.model.User;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
-
-import alvin.study.future.model.User;
 import lombok.SneakyThrows;
+
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 用于演示异步任务的用户相关服务类
  */
-@SuppressWarnings("java:S2142")
 public class UserFutureService {
     // 保存用户对象的 Map
     private final Map<Long, User> userMap = new ConcurrentHashMap<>();
@@ -62,7 +60,7 @@ public class UserFutureService {
      */
     @VisibleForTesting
     User createUserSync(User user) {
-        userMap.put(user.getId(), user);
+        userMap.put(user.id(), user);
         return user;
     }
 
@@ -94,9 +92,10 @@ public class UserFutureService {
             // 查询完成后的回调, 基于查询任务的结果, 创建删除用户任务
             mayUser -> listeningDecorator.submit(() -> mayUser.map(user -> {
                 delay();
-                userMap.remove(user.getId());
+                userMap.remove(user.id());
                 return user;
             }).orElseThrow()),
-            MoreExecutors.directExecutor());
+            MoreExecutors.directExecutor()
+        );
     }
 }

@@ -1,10 +1,10 @@
 package alvin.study.reflect.generic;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link TypeDefinition} 类型, 获取泛型参数类型
@@ -21,7 +21,8 @@ class TypeDefinitionTest {
     @Test
     void genericArgumentType_shouldGetGenericType() {
         // 实例化具备泛型类型参数的对象
-        var def = new TypeDefinition<List<String>>() {};
+        var def = new TypeDefinition<List<String>>() {
+        };
 
         // 确认获取泛型参数类型名正确
         then(def.getTypeName()).isEqualTo("java.util.List<java.lang.String>");
@@ -31,7 +32,7 @@ class TypeDefinitionTest {
 
         // 确认获取泛型参数类型的泛型参数正确
         then(def.getActualTypeArguments())
-                .hasSize(1)
-                .containsExactly(String.class);
+            .hasSize(1)
+            .containsExactly(String.class);
     }
 }

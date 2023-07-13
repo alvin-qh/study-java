@@ -1,13 +1,12 @@
 package alvin.study.collect;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
-
-import org.junit.jupiter.api.Test;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 /**
  * 演示不变集合的使用
@@ -34,7 +33,7 @@ import com.google.common.collect.Sets;
  * JDK 9 以后, JDK 本身提供了 {@link java.util.List#of(Object) List.of(T...)} 方法, 可以取代 Guava 库的使用
  * </p>
  */
-@SuppressWarnings("deprecation")
+@SuppressWarnings({"deprecation", "DataFlowIssue"})
 class ImmutableListTest {
     /**
      * 通过指定元素构建不变集合
@@ -114,9 +113,9 @@ class ImmutableListTest {
     void builder_shouldCreateImmutableListByBuilder() {
         // 创建 Builder 对象, 逐步添加元素, 构建不变集合对象
         var list = ImmutableList.builder()
-                .add(1, 2, 3)
-                .addAll(Sets.newHashSet(4, 5, 6))
-                .build();
+            .add(1, 2, 3)
+            .addAll(Sets.newHashSet(4, 5, 6))
+            .build();
 
         then(list).containsExactly(1, 2, 3, 4, 5, 6);
     }
@@ -137,16 +136,16 @@ class ImmutableListTest {
     void builder_shouldCreateImmutableListByBuilderWithCapacity() {
         // 预期 5 个元素, 实际添加元素个数 <= 5, 构建不变集合
         var list = ImmutableList.builderWithExpectedSize(5)
-                .add(1, 2, 3)
-                .addAll(Sets.newHashSet(4, 5))
-                .build();
+            .add(1, 2, 3)
+            .addAll(Sets.newHashSet(4, 5))
+            .build();
         then(list).containsExactly(1, 2, 3, 4, 5);
 
         // 预期 5 个元素, 实际添加元素个数 > 5, 构建不变集合
         list = ImmutableList.builderWithExpectedSize(5)
-                .add(1, 2, 3)
-                .addAll(Sets.newHashSet(4, 5, 6))
-                .build();
+            .add(1, 2, 3)
+            .addAll(Sets.newHashSet(4, 5, 6))
+            .build();
         then(list).containsExactly(1, 2, 3, 4, 5, 6);
     }
 }

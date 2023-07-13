@@ -1,8 +1,17 @@
 package alvin.study.collect;
 
-import static org.assertj.core.api.Assertions.entry;
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+import com.google.common.base.Equivalence;
+import com.google.common.collect.ContiguousSet;
+import com.google.common.collect.HashBiMap;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableSortedMap;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Range;
+import com.google.common.primitives.Ints;
+import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Test;
 
 import java.time.Month;
 import java.util.Arrays;
@@ -15,18 +24,9 @@ import java.util.Properties;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.junit.jupiter.api.Test;
-
-import com.google.common.base.Equivalence;
-import com.google.common.collect.ContiguousSet;
-import com.google.common.collect.HashBiMap;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.ImmutableSortedMap;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Range;
-import com.google.common.primitives.Ints;
+import static org.assertj.core.api.Assertions.entry;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 /**
  * 演示 Guava {@link Map} 对象工具类
@@ -36,6 +36,7 @@ import com.google.common.primitives.Ints;
  * 以及 {@link ConcurrentHashMap} 等 {@link Map} 类型对象的方法
  * </p>
  */
+@SuppressWarnings("StringOperationCanBeSimplified")
 class MapUtilsTest {
     /**
      * 通过一个 Key 集合创建 {@link Map} 对象
@@ -45,6 +46,7 @@ class MapUtilsTest {
      * {@link java.util.Set Set} 集合以及一个映射函数创建 {@link Map} 对象, 该 {@link Map} 对象的 Value 值是通过 Key 值映射得到的
      * </p>
      */
+    @Test
     void asMap_shouldBuildMapByKeyAndMappingFunction() {
         var keys = ContiguousSet.closedOpen(0, 10);
 
@@ -53,7 +55,7 @@ class MapUtilsTest {
 
         // 确认得到的 Map 对象符合预期
         then(map).containsExactly(
-            entry(0, "01"),
+            entry(0, "00"),
             entry(1, "01"),
             entry(2, "02"),
             entry(3, "03"),
@@ -73,6 +75,7 @@ class MapUtilsTest {
      * Value 的可迭代对象以及一个映射函数创建 {@link Map} 对象, 该 {@link Map} 对象的 Key 值是通过 Value 值映射得到的
      * </p>
      */
+    @Test
     void uniqueIndex_shouldBuildMapByValueAndMappingFunction() {
         var values = ContiguousSet.closedOpen(0, 10).asList();
 
@@ -81,7 +84,7 @@ class MapUtilsTest {
 
         // 确认得到的 Map 对象符合预期
         then(map).containsExactly(
-            entry("01", 0),
+            entry("00", 0),
             entry("01", 1),
             entry("02", 2),
             entry("03", 3),
@@ -205,13 +208,13 @@ class MapUtilsTest {
             then(map).isInstanceOf(HashMap.class).isEmpty();
 
             // 通过现有的 Map 对象构建 HashMap 对象
-            map = Maps.<String, Integer>newHashMap(ImmutableMap.of("A", 1, "B", 2));
+            map = Maps.newHashMap(ImmutableMap.of("A", 1, "B", 2));
             then(map).isInstanceOf(HashMap.class).containsExactly(
                 entry("A", 1),
                 entry("B", 2));
 
             // 通过一个预期的键值对数量值构建 HashMap 对象
-            map = Maps.<String, Integer>newHashMapWithExpectedSize(2);
+            map = Maps.newHashMapWithExpectedSize(2);
             map.putAll(ImmutableMap.of("A", 1, "B", 2));
             then(map).isInstanceOf(HashMap.class).containsExactly(
                 entry("A", 1),
@@ -225,13 +228,13 @@ class MapUtilsTest {
             then(map).isInstanceOf(LinkedHashMap.class).isEmpty();
 
             // 通过现有的 Map 对象构建 LinkedHashMap 对象
-            map = Maps.<String, Integer>newLinkedHashMap(ImmutableMap.of("A", 1, "B", 2));
+            map = Maps.newLinkedHashMap(ImmutableMap.of("A", 1, "B", 2));
             then(map).isInstanceOf(LinkedHashMap.class).containsExactly(
                 entry("A", 1),
                 entry("B", 2));
 
             // 通过一个预期的键值对数量值构建 LinkedHashMap 对象
-            map = Maps.<String, Integer>newLinkedHashMapWithExpectedSize(2);
+            map = Maps.newLinkedHashMapWithExpectedSize(2);
             map.putAll(ImmutableMap.of("A", 1, "B", 2));
             then(map).isInstanceOf(LinkedHashMap.class).containsExactly(
                 entry("A", 1),
@@ -245,7 +248,7 @@ class MapUtilsTest {
             then(map).isInstanceOf(TreeMap.class).isEmpty();
 
             // 通过现有的 Map 对象构建 TreeMap 对象
-            map = Maps.<String, Integer>newTreeMap(ImmutableSortedMap.of("A", 1, "B", 2));
+            map = Maps.newTreeMap(ImmutableSortedMap.of("A", 1, "B", 2));
             then(map).isInstanceOf(TreeMap.class).containsExactly(
                 entry("A", 1),
                 entry("B", 2));
@@ -265,7 +268,7 @@ class MapUtilsTest {
             then(map).isInstanceOf(EnumMap.class).isEmpty();
 
             // 通过一个现有的 Key 为枚举类型的 Map 对象构建 EnumMap 对象
-            map = Maps.<Month, String>newEnumMap(ImmutableMap.of(
+            map = Maps.newEnumMap(ImmutableMap.of(
                 Month.JANUARY, "01",
                 Month.FEBRUARY, "02",
                 Month.MARCH, "03"));
@@ -344,14 +347,14 @@ class MapUtilsTest {
         var map2 = ImmutableMap.of("A", 100, "B", 201, "D", 400);
 
         // 对两个 Map 对象进行比较, 得到 MapDifference 类型对象
-        var difference = Maps.difference(map1, map2, new Equivalence<Integer>() {
+        var difference = Maps.difference(map1, map2, new Equivalence<>() {
             /**
              * 比较两个参数值是否相同
              *
              * @return {@code true} 表示 {@code a} 和 {@code b} 参数相同
              */
             @Override
-            protected boolean doEquivalent(Integer a, Integer b) {
+            protected boolean doEquivalent(@NotNull Integer a, @NotNull Integer b) {
                 return a.intValue() == b.intValue();
             }
 
@@ -361,7 +364,7 @@ class MapUtilsTest {
              * @return 给定 {@code t} 参数的 Hash 值
              */
             @Override
-            protected int doHash(Integer t) {
+            protected int doHash(@NotNull Integer t) {
                 return Ints.hashCode(t);
             }
         });
@@ -421,7 +424,7 @@ class MapUtilsTest {
      * </p>
      *
      * <p>
-     * 返回结果为 {@link Maps.FilteredEntryMap} 类型对象, 该对象为原 {@link Map} 对象的代理对象, 在获取键值的时候才会执行过滤函数,
+     * 返回结果为 {@code Maps.FilteredEntryMap} 类型对象, 该对象为原 {@link Map} 对象的代理对象, 在获取键值的时候才会执行过滤函数,
      * 所以如果对原 {@link Map} 对象的键值对进行修改, 可能会影响到过滤结果
      * </p>
      */
@@ -452,7 +455,7 @@ class MapUtilsTest {
      * </p>
      *
      * <p>
-     * 返回结果为 {@link Maps.FilteredKeyMap} 类型对象, 该对象为原 {@link Map} 对象的代理对象, 在获取 Key 的时候才会执行过滤函数,
+     * 返回结果为 {@code Maps.FilteredKeyMap} 类型对象, 该对象为原 {@link Map} 对象的代理对象, 在获取 Key 的时候才会执行过滤函数,
      * 所以如果对原 {@link Map} 对象的键值对进行修改, 可能会影响到过滤结果
      * </p>
      */
@@ -484,7 +487,7 @@ class MapUtilsTest {
      * </p>
      *
      * <p>
-     * 返回结果为 {@link Maps.FilteredEntryMap} 类型对象, 该对象为原 {@link Map} 对象的代理对象, 在获取 Key 的时候才会执行过滤函数,
+     * 返回结果为 {@code Maps.FilteredEntryMap} 类型对象, 该对象为原 {@link Map} 对象的代理对象, 在获取 Key 的时候才会执行过滤函数,
      * 所以如果对原 {@link Map} 对象的键值对进行修改, 可能会影响到过滤结果
      * </p>
      */
@@ -621,13 +624,13 @@ class MapUtilsTest {
     void toImmutableEnumMap_shouldMakeImmutableEnumMapCollectors() {
         // 通过枚举数组产生一个 Stream 对象, 并通过 toImmutableEnumMap 将其转为 ImmutableMap 对象
         var monthMap = Arrays.stream(Month.values())
-                .collect(Maps.toImmutableEnumMap(m -> m, m -> m.name(), (o, n) -> n));
+            .collect(Maps.toImmutableEnumMap(m -> m, Enum::name, (o, n) -> n));
 
         // 确认得到的 ImmutableMap 符合预期
         then(monthMap)
-                .isInstanceOf(ImmutableMap.class)
-                .containsKeys(Month.values())
-                .containsValues(Arrays.stream(Month.values()).map(Month::name).toArray(len -> new String[len]));
+            .isInstanceOf(ImmutableMap.class)
+            .containsKeys(Month.values())
+            .containsValues(Arrays.stream(Month.values()).map(Month::name).toArray(String[]::new));
     }
 
     /**
@@ -649,7 +652,7 @@ class MapUtilsTest {
     @Test
     void synchronized_shouldWrapSynchronizedMap() {
         {
-            var map = HashBiMap.<String, Integer>create(ImmutableMap.of("A", 100));
+            var map = HashBiMap.create(ImmutableMap.of("A", 100));
 
             var syncMap = Maps.synchronizedBiMap(map);
             then(syncMap).containsExactly(entry("A", 100));
@@ -673,7 +676,7 @@ class MapUtilsTest {
      * </p>
      *
      * <p>
-     * 返回结果是一个 {@link Maps.TransformedEntriesMap} 类型的对象, 该对象是对原 {@link Map} 对象的一个代理, 所以对原 {@link Map}
+     * 返回结果是一个 {@code Maps.TransformedEntriesMap} 类型的对象, 该对象是对原 {@link Map} 对象的一个代理, 所以对原 {@link Map}
      * 对象进行的修改, 有可能会导致转换结果的改变
      * </p>
      */
@@ -703,7 +706,7 @@ class MapUtilsTest {
      * 通过一个转换函数, 将 {@link Map} 集合中键值对的 Value 进行转换, 返回一个新 {@link Map} 对象
      *
      * <p>
-     * 返回结果是一个 {@link Maps.TransformedEntriesMap} 类型的对象, 该对象是对原 {@link Map} 对象的一个代理, 所以对原 {@link Map}
+     * 返回结果是一个 {@code Maps.TransformedEntriesMap} 类型的对象, 该对象是对原 {@link Map} 对象的一个代理, 所以对原 {@link Map}
      * 对象进行的修改, 有可能会导致转换结果的改变
      * </p>
      */

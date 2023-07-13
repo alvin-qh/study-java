@@ -1,18 +1,17 @@
 package alvin.study.collect;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.awaitility.Awaitility.await;
+import com.google.common.collect.ContiguousSet;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Queues;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.jupiter.api.Test;
-
-import com.google.common.collect.ContiguousSet;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Queues;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.awaitility.Awaitility.await;
 
 /**
  * 测试 Guava 队列工具类
@@ -58,7 +57,7 @@ import com.google.common.collect.Queues;
  * 这两个类似方法完成出栈 (获取集合首元素并删除) 操作
  * </li>
  * <li>
- * 通过 {@link java.util.Deque#offer(Object) Deque.offer(T)} / {@link java.util.Deque#add(T) Deque.add(T)}
+ * 通过 {@link java.util.Deque#offer(Object) Deque.offer(T)} / {@link java.util.Deque#add(Object) Deque.add(T)}
  * 这两个类似方法完成入队 (添加在集合末尾) 操作
  * </li>
  * <li>
@@ -96,7 +95,6 @@ import com.google.common.collect.Queues;
  * 对于双端阻塞队列, 表示一个实现了 {@link java.util.concurrent.BlockingDeque BlockingDeque} 接口的对象
  * </p>
  */
-@SuppressWarnings("java:S2925")
 class QueueUtilsTest {
     /**
      * 创建一个值在指定区间内的整数元素列表对象
@@ -138,7 +136,7 @@ class QueueUtilsTest {
             var deque = Queues.<Integer>newArrayDeque();
 
             // 将产生的元素依次入栈
-            createRangedElements(0, 5, false).forEach(v -> deque.push(v));
+            createRangedElements(0, 5, false).forEach(deque::push);
 
             // 创建一个保存出队结果的 List 集合
             var elements = Lists.<Integer>newArrayList();
@@ -157,7 +155,7 @@ class QueueUtilsTest {
             var deque = Queues.<Integer>newArrayDeque();
 
             // 将产生的元素依次入队
-            createRangedElements(0, 5, false).forEach(v -> deque.offer(v));
+            createRangedElements(0, 5, false).forEach(deque::offer);
 
             // 创建一个保存出队结果的 List 集合
             var elements = Lists.<Integer>newArrayList();
@@ -316,7 +314,8 @@ class QueueUtilsTest {
                 Thread.sleep(1000);
                 // 向阻塞队列写入一系列无序整数值
                 priQue.addAll(createRangedElements(0, 5, true));
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException ignored) {
+            }
         });
 
         // 启动线程, 对队列进行写操作
@@ -374,7 +373,8 @@ class QueueUtilsTest {
                     // 元素入队
                     que.offer(v);
                 }
-            } catch (InterruptedException ignore) {}
+            } catch (InterruptedException ignore) {
+            }
         });
 
         thread.start();
@@ -400,12 +400,12 @@ class QueueUtilsTest {
      * <p>
      * 该方法类似于 {@link Queues#drain(java.util.concurrent.BlockingQueue, java.util.Collection, int, long, TimeUnit)
      * Queues.drain(BlockingQueue, Collection, int, long, TimeUnit)} 方法 (参考
-     * {@link #drain_shouldDrainedElementsFromBlockingQueue()} 方法), 和后者不同, {@code drainUninterruptibly}
+     * {@link #drain_shouldDrainedElementsFromBlockingQueue()} 方法), 和后者不同, {@code drainUninterruptedly}
      * 方法不会在线程中断时抛出 {@link InterruptedException} 异常, 而是结束转存
      * </p>
      */
     @Test
-    void drainUninterruptibly_shouldDrainedElementsFromBlockingQueue() {
+    void drainUninterruptedly_shouldDrainedElementsFromBlockingQueue() {
         // 定义一个元素上限为 5 的阻塞循环队列
         var que = Queues.<Integer>newArrayBlockingQueue(5);
 
@@ -428,7 +428,8 @@ class QueueUtilsTest {
                     // 元素入队
                     que.offer(v);
                 }
-            } catch (InterruptedException ignore) {}
+            } catch (InterruptedException ignore) {
+            }
         });
 
         thread.start();
@@ -475,7 +476,8 @@ class QueueUtilsTest {
                         // 元素入队
                         que.offer(v);
                     }
-                } catch (InterruptedException ignore) {}
+                } catch (InterruptedException ignore) {
+                }
             });
 
             thread.start();
@@ -505,7 +507,8 @@ class QueueUtilsTest {
                         // 元素入栈
                         deque.push(v);
                     }
-                } catch (InterruptedException ignore) {}
+                } catch (InterruptedException ignore) {
+                }
             });
 
             thread.start();
@@ -554,7 +557,8 @@ class QueueUtilsTest {
                 // 确认入队最少消耗 2 秒
                 // 入队花费时间是因为出队速度慢导致
                 then(System.currentTimeMillis() - ts).isGreaterThanOrEqualTo(2000);
-            } catch (InterruptedException ignore) {}
+            } catch (InterruptedException ignore) {
+            }
         }).start();
 
         var elems = Lists.<Integer>newArrayList();
@@ -587,7 +591,7 @@ class QueueUtilsTest {
      * </p>
      */
     @Test
-    void synchronizedQueue_shouldWrapQueueObjectAsSynchronized() throws InterruptedException {
+    void synchronizedQueue_shouldWrapQueueObjectAsSynchronized() {
         // 将队列对象包装为线程安全的队列对象
         {
             var que = Queues.synchronizedQueue(new ArrayDeque<Integer>());
@@ -600,7 +604,8 @@ class QueueUtilsTest {
                         // 元素入队
                         then(que.offer(v)).isTrue();
                     }
-                } catch (InterruptedException ignore) {}
+                } catch (InterruptedException ignore) {
+                }
             }).start();
 
             // 在另一个线程进行出队操作
@@ -626,7 +631,8 @@ class QueueUtilsTest {
                         // 元素入队
                         then(que.offer(v)).isTrue();
                     }
-                } catch (InterruptedException ignore) {}
+                } catch (InterruptedException ignore) {
+                }
             }).start();
 
             // 在另一个线程进行出队操作

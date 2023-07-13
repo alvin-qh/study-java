@@ -1,5 +1,13 @@
 package alvin.study.io;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Preconditions;
+import com.google.common.io.ByteSource;
+import com.google.common.io.MoreFiles;
+import com.google.common.io.Resources;
+import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
@@ -18,14 +26,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Preconditions;
-import com.google.common.io.ByteSource;
-import com.google.common.io.MoreFiles;
-import com.google.common.io.Resources;
-
-import lombok.Getter;
-
 /**
  * 演示通过 {@link ByteSource} 从网络或者缓存文件中读取数据
  *
@@ -37,6 +37,7 @@ import lombok.Getter;
  * @see Resources#asByteSource(java.net.URL) Resources.asByteSource(URL)
  * @see MoreFiles#asByteSource(Path, java.nio.file.OpenOption...) MoreFiles.asByteSource(Path, OpenOption...)
  */
+@SuppressWarnings("unused")
 public class CachedUrlLoader implements AutoCloseable {
     // 定义一个当前用户可读写的文件权限集
     private static final FileAttribute<Set<PosixFilePermission>> FILE_ATTR_RW
@@ -46,7 +47,7 @@ public class CachedUrlLoader implements AutoCloseable {
     private Map<URI, CacheInfo> cacheMap = new ConcurrentHashMap<>();
 
     // 定义更新缓存使用的线程池
-    private Executor executor = new ThreadPoolExecutor(
+    private final Executor executor = new ThreadPoolExecutor(
         1,
         10,
         60L,
@@ -60,7 +61,7 @@ public class CachedUrlLoader implements AutoCloseable {
      * @param uri 资源 {@link URI} 对象
      * @return 从网络资源 (或缓存中) 获取到的数据
      */
-    private byte[] loadResource(URI uri) throws IOException {
+    private byte @NotNull [] loadResource(URI uri) throws IOException {
         final ByteSource res;
 
         // 获取缓存对象
@@ -103,7 +104,8 @@ public class CachedUrlLoader implements AutoCloseable {
                     if (cache != null) {
                         Files.delete(cache.getPath());
                     }
-                } catch (IOException e) {}
+                } catch (IOException ignored) {
+                }
             }
         });
     }
@@ -159,7 +161,8 @@ public class CachedUrlLoader implements AutoCloseable {
             localCacheMap.forEach((uri, info) -> {
                 try {
                     Files.delete(info.getPath());
-                } catch (IOException e) {}
+                } catch (IOException ignored) {
+                }
             });
             // 情况缓存 Map 对象
             localCacheMap.clear();
@@ -224,7 +227,7 @@ public class CachedUrlLoader implements AutoCloseable {
          * @param unit 缓存有效时间单位
          * @return {@code false} 表示缓存已过期
          */
-        public boolean isExpired(long val, TimeUnit unit) {
+        public boolean isExpired(long val, @NotNull TimeUnit unit) {
             return Instant.now().isAfter(createdAt.plus(val, unit.toChronoUnit()));
         }
     }

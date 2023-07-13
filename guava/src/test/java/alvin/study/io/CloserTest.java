@@ -1,15 +1,14 @@
 package alvin.study.io;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import com.google.common.base.Charsets;
+import com.google.common.io.Closer;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import org.junit.jupiter.api.Test;
-
-import com.google.common.base.Charsets;
-import com.google.common.io.Closer;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 Guava 的流关闭器
@@ -25,8 +24,7 @@ import com.google.common.io.Closer;
  * 当代码执行过程中出现异常, 需要通过 {@link Closer#rethrow(Throwable) Closer.rethrow(Throwable)} 方法对异常进行抛出处理,
  * 抛出方式参见 {@link com.google.common.base.Throwables#propagateIfPossible(Throwable, Class)
  * Throwables.propagateIfPossible(Throwable, Class)} 方法以及
- * {@link alvin.study.common.ThrowablesTest#propagateIfPossible_shouldThrowSpecifiedExceptionOrUncheckedException()
- * ThrowablesTest.propagateIfPossible_shouldThrowSpecifiedExceptionOrUncheckedException()} 演示方法
+ * {@code ThrowablesTest.propagateIfPossible_shouldThrowSpecifiedExceptionOrUncheckedException()} 演示方法
  * </li>
  * </ul>
  * </p>

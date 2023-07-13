@@ -1,17 +1,15 @@
 package alvin.study.graphs;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import alvin.study.graphs.GraphsDatasource.Edge;
+import com.google.common.graph.ElementOrder;
+import com.google.common.graph.EndpointPair;
+import com.google.common.graph.Graphs;
+import org.junit.jupiter.api.Test;
 
 import java.util.LinkedHashSet;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
-
-import com.google.common.graph.ElementOrder;
-import com.google.common.graph.EndpointPair;
-import com.google.common.graph.Graphs;
-
-import alvin.study.graphs.GraphsDatasource.Edge;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link Graphs} 工具类, 用于对"图"对象进行对应操作
@@ -22,7 +20,7 @@ import alvin.study.graphs.GraphsDatasource.Edge;
  */
 class TestGraphUtils {
     // 边集合列表, 图的每个边由相连的两个节点组成
-    private GraphsDatasource<Integer, ?> datasource = new GraphsDatasource<>(
+    private final GraphsDatasource<Integer, ?> datasource = new GraphsDatasource<>(
         Edge.of(1, 2),
         Edge.of(2, 3),
         Edge.of(2, 4),

@@ -1,15 +1,13 @@
 package alvin.study.graphs;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
-
+import alvin.study.graphs.GraphsDatasource.Edge;
+import com.google.common.graph.ElementOrder;
+import com.google.common.graph.EndpointPair;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import com.google.common.graph.ElementOrder;
-import com.google.common.graph.EndpointPair;
-
-import alvin.study.graphs.GraphsDatasource.Edge;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 /**
  * 测试网络类型
@@ -26,7 +24,7 @@ import alvin.study.graphs.GraphsDatasource.Edge;
 class TestNetwork {
     // 边集合列表, 图的每个边由相连的两个节点组成, 注意三元组的最后一个值是表示边的对象, 而不是边权重值
     // 本例中, 节点由整数值表示, 边由字符串类型表示
-    private GraphsDatasource<Integer, String> datasource = new GraphsDatasource<>(
+    private final GraphsDatasource<Integer, String> datasource = new GraphsDatasource<>(
         Edge.of(1, 2, "1-2"),
         Edge.of(2, 3, "2-3"),
         Edge.of(2, 4, "2-4"),

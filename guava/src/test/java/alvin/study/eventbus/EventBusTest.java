@@ -131,7 +131,7 @@ class EventBusTest {
         // 注册名为 REPO 的 EventBus 对象, 并设置异常处理对象
         EventBusManager.getInstance().registerEventBus("REPO", (ex, c) -> {
             // 记录进入了异常处理程序
-            exceptions.add(exceptions);
+            exceptions.add(ex);
 
             // 确认处理的事件对象类型
             then(c.getEvent()).isInstanceOf(UserEvent.class);

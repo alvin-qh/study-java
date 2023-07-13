@@ -1,11 +1,11 @@
 package alvin.study.cache.observer;
 
-import com.google.common.cache.LoadingCache;
-import com.google.common.eventbus.Subscribe;
-
 import alvin.study.cache.event.UserDeleteEvent;
 import alvin.study.cache.event.UserUpdateEvent;
 import alvin.study.cache.model.User;
+import com.google.common.cache.LoadingCache;
+import com.google.common.eventbus.Subscribe;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * 用于缓存处理的观察者类
@@ -20,6 +20,7 @@ import alvin.study.cache.model.User;
  * 实体被删除后的缓存处理工作
  * </p>
  */
+@SuppressWarnings("unused")
 public class CacheObserver {
     // 缓存对象
     private final LoadingCache<Long, User> cache;
@@ -43,9 +44,9 @@ public class CacheObserver {
      * @param event {@link UserUpdateEvent} 事件对象, 表示一个 {@link User} 实体被更新
      */
     @Subscribe
-    public void onUserUpdated(UserUpdateEvent event) {
+    public void onUserUpdated(@NotNull UserUpdateEvent event) {
         var user = event.getEntry();
-        cache.refresh(user.getId());
+        cache.refresh(user.id());
     }
 
     /**
@@ -58,8 +59,8 @@ public class CacheObserver {
      * @param event {@link UserDeleteEvent} 事件对象, 表示一个 {@link User} 实体被删除
      */
     @Subscribe
-    public void onUserDeleted(UserDeleteEvent event) {
+    public void onUserDeleted(@NotNull UserDeleteEvent event) {
         var user = event.getEntry();
-        cache.invalidate(user.getId());
+        cache.invalidate(user.id());
     }
 }

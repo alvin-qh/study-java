@@ -1,16 +1,15 @@
 package alvin.study.hashing;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import java.time.LocalDate;
-import java.util.Collections;
-
-import org.junit.jupiter.api.Test;
-
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+import java.util.Collections;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试散列计算工具类
@@ -110,11 +109,11 @@ class HashingTest {
 
         // 获取一个 Hasher 对象, 用于将数据分段计算, 最后得到整体数据的散列值
         hashCode = hashFn.newHasher()
-                .putLong(person.getId())
-                .putString(person.getName(), Charsets.UTF_8)
-                .putString(person.getBirthday().toString(), Charsets.UTF_8)
-                .putString(person.getLocation(), Charsets.UTF_8)
-                .hash();
+            .putLong(person.getId())
+            .putString(person.getName(), Charsets.UTF_8)
+            .putString(person.getBirthday().toString(), Charsets.UTF_8)
+            .putString(person.getLocation(), Charsets.UTF_8)
+            .hash();
         then(hashCode).hasToString("ccac6eea503e5c4ffba468e927a25365");
     }
 
@@ -396,7 +395,8 @@ class HashingTest {
      *
      * <p>
      * SipHash24 的 {@code 24} 表示算法的压缩轮次为 {@code 2}, 终结轮次为 {@code 4}, 即算法不同阶段的迭代次数, {@code 24}
-     * 的组合具备强 PRF (伪随机数) 定义, 具备较高的安全性, 参考 {@link https://en.wikipedia.org/wiki/SipHash}
+     * 的组合具备强 PRF (伪随机数) 定义, 具备较高的安全性, 参考
+     * <a href="https://en.wikipedia.org/wiki/SipHash">https://en.wikipedia.org/wiki/SipHash</a>
      * </p>
      *
      * <p>
@@ -531,8 +531,10 @@ class HashingTest {
      * </p>
      *
      * <p>
-     * 一致性哈希的定义参考: {@link https://en.wikipedia.org/wiki/Consistent_hashing}; 具体算法参考:
-     * {@link https://www.codeproject.com/Articles/56138/Consistent-hashing}
+     * 一致性哈希的定义参考:
+     * <a href="https://en.wikipedia.org/wiki/Consistent_hashing">https://en.wikipedia.org/wiki/Consistent_hashing</a>;
+     * 具体算法参考:
+     * <a href="https://www.codeproject.com/Articles/56138/Consistent-hashing">https://www.codeproject.com/Articles/56138/Consistent-hashing</a>
      * </p>
      */
     @Test
@@ -564,7 +566,7 @@ class HashingTest {
 
         // 在桶数量为 12 时计算散列集合值每项的映射值
         buckets = 12;
-        nodes2 = Lists.<Integer>newArrayList();
+        nodes2 = Lists.newArrayList();
         for (var hashCode : hashCodes) {
             nodes2.add(Hashing.consistentHash(hashCode, buckets));
         }

@@ -1,17 +1,16 @@
 package alvin.study.collect;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import java.util.stream.IntStream;
-
-import org.junit.jupiter.api.Test;
-
 import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.ImmutableRangeSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Range;
 import com.google.common.collect.RangeSet;
 import com.google.common.collect.TreeRangeSet;
+import org.junit.jupiter.api.Test;
+
+import java.util.stream.IntStream;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * {@link RangeSet} 相当于是多个区间的组合
@@ -443,10 +442,10 @@ class RangeSetTest {
 
         // 创建第二个集合对象
         var rangeSet2 = ImmutableRangeSet.<Integer>builder()
-                .add(Range.open(5, 15))
-                .add(Range.closed(30, 40))
-                .add(Range.closedOpen(50, 100))
-                .build();
+            .add(Range.open(5, 15))
+            .add(Range.closed(30, 40))
+            .add(Range.closedOpen(50, 100))
+            .build();
 
         // 求两个集合的并集
         var unionRangeSet = rangeSet1.union(rangeSet2);
@@ -456,7 +455,7 @@ class RangeSetTest {
             Range.closed(50, 100));
 
         // 确认 union 和 addAll 方法的行为类似
-        var rangeSet = TreeRangeSet.<Integer>create(rangeSet1);
+        var rangeSet = TreeRangeSet.create(rangeSet1);
         rangeSet.addAll(rangeSet2);
         then(rangeSet.asRanges()).containsExactly(
             Range.closedOpen(1, 20),
@@ -489,10 +488,10 @@ class RangeSetTest {
 
         // 创建第二个集合对象
         var rangeSet2 = ImmutableRangeSet.<Integer>builder()
-                .add(Range.open(5, 15))
-                .add(Range.closed(30, 40))
-                .add(Range.closedOpen(50, 100))
-                .build();
+            .add(Range.open(5, 15))
+            .add(Range.closed(30, 40))
+            .add(Range.closedOpen(50, 100))
+            .build();
 
         // 求两个集合的差集
         var dffRangeSet = rangeSet1.difference(rangeSet2);
@@ -502,7 +501,7 @@ class RangeSetTest {
             Range.closed(100, 100));
 
         // 确认 difference 和 removeAll 方法的行为类似
-        var rangeSet = TreeRangeSet.<Integer>create(rangeSet1);
+        var rangeSet = TreeRangeSet.create(rangeSet1);
         rangeSet.removeAll(rangeSet2);
         then(rangeSet.asRanges()).containsExactly(
             Range.closed(1, 5),
@@ -535,10 +534,10 @@ class RangeSetTest {
 
         // 创建第二个集合对象
         var rangeSet2 = ImmutableRangeSet.<Integer>builder()
-                .add(Range.open(5, 15))
-                .add(Range.closed(30, 40))
-                .add(Range.closedOpen(50, 100))
-                .build();
+            .add(Range.open(5, 15))
+            .add(Range.closed(30, 40))
+            .add(Range.closedOpen(50, 100))
+            .build();
 
         // 求两个集合的交集
         var dffRangeSet = rangeSet1.intersection(rangeSet2);
@@ -547,7 +546,7 @@ class RangeSetTest {
             Range.open(50, 100));
 
         // 确认 intersection 和 removeAll(rangeSet.complement()) 方法的行为类似
-        var rangeSet = TreeRangeSet.<Integer>create(rangeSet1);
+        var rangeSet = TreeRangeSet.create(rangeSet1);
         rangeSet.removeAll(rangeSet2.complement());
         then(dffRangeSet.asRanges()).containsExactly(
             Range.open(5, 15),

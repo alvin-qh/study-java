@@ -1,6 +1,8 @@
 package alvin.study.timing;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -13,9 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link Times} 类型, 进行各类时间计算
@@ -111,7 +111,7 @@ class TimesTest {
         var cal = Calendar.getInstance();
         cal.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
         // 注意, 月份必须从 0 开始, 0 表示 1 月份, 所以 8 表示 9 月
-        cal.set(2021, 8, 11, 8, 0, 0);
+        cal.set(2021, Calendar.SEPTEMBER, 11, 8, 0, 0);
         cal.set(Calendar.MILLISECOND, 0);
 
         // 将 Date 对象转为 UTC 时间
@@ -162,7 +162,7 @@ class TimesTest {
         var cal = Calendar.getInstance();
         cal.setTimeZone(TimeZone.getTimeZone("UTC"));
         // 注意, 月份必须从 0 开始, 0 表示 1 月份, 所以 8 表示 9 月
-        cal.set(2021, 8, 11, 0, 0, 0);
+        cal.set(2021, Calendar.SEPTEMBER, 11, 0, 0, 0);
         cal.set(Calendar.MILLISECOND, 0);
 
         // 将 Date 时间以东八区时区转为时区时间
@@ -207,7 +207,7 @@ class TimesTest {
         var cal = Calendar.getInstance();
         cal.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
         // 注意, 月份必须从 0 开始, 0 表示 1 月份, 所以 8 表示 9 月
-        cal.set(2021, 8, 11, 0, 0, 0); // month start from 0 in Date
+        cal.set(2021, Calendar.SEPTEMBER, 11, 0, 0, 0); // month start from 0 in Date
         cal.set(Calendar.MILLISECOND, 0);
 
         // 从 Date 对象获取时区信息

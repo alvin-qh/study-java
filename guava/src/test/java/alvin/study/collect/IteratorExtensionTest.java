@@ -3,6 +3,7 @@ package alvin.study.collect;
 import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Iterator;
+import java.util.Objects;
 
 import org.junit.jupiter.api.Test;
 
@@ -30,17 +31,17 @@ class IteratorExtensionTest {
      *
      * <p>
      * 通过 {@link AbstractIterator} 类型扩展 {@link java.util.Iterator Iterator}, 只需重写一个
-     * {@link AbstractIterator#computeNext()} 方法即可
+     * {@code AbstractIterator.computeNext()} 方法即可
      * </p>
      *
      * <p>
      * {@link AbstractIterator#next()} 方法和 {@link AbstractIterator#hasNext()} 方法均会调用
-     * {@link AbstractIterator#computeNext()} 方法, 如果迭代器有下一个元素, 则 {@link AbstractIterator#computeNext()} 方法
-     * 返回元素值, 否则返回 {@link AbstractIterator#endOfData()} 结果表示迭代完成
+     * {@code AbstractIterator.computeNext()} 方法, 如果迭代器有下一个元素, 则 {@code AbstractIterator.computeNext()} 方法
+     * 返回元素值, 否则返回 {@code AbstractIterator.endOfData()} 结果表示迭代完成
      * </p>
      *
      * <p>
-     * 本例演示了通过代理 {@link java.util.Iterator} 类型对象, 产生一个会过滤掉偶数元素的迭代器对象
+     * 本例演示了通过代理 {@link java.util.Iterator Iterator} 类型对象, 产生一个会过滤掉偶数元素的迭代器对象
      * </p>
      */
     @Test
@@ -67,7 +68,7 @@ class IteratorExtensionTest {
 
                 // 获取下一个元素
                 var elem = delegate.next();
-                while (elem % 2 == 0) {
+                while (Objects.requireNonNull(elem) % 2 == 0) {
                     // 如果元素是偶数, 则继续迭代, 直到得到一个奇数或者迭代结束
                     elem = delegate.hasNext() ? delegate.next() : endOfData();
                 }

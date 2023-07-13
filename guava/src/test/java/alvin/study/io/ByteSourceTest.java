@@ -1,8 +1,16 @@
 package alvin.study.io;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.awaitility.Awaitility.await;
+import com.google.common.base.Charsets;
+import com.google.common.hash.Hashing;
+import com.google.common.io.ByteProcessor;
+import com.google.common.io.ByteSource;
+import com.google.common.io.MoreFiles;
+import com.google.common.io.Resources;
+import com.google.common.primitives.Bytes;
+import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Test;
 
+import javax.sql.DataSource;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,17 +19,8 @@ import java.nio.file.attribute.PosixFilePermissions;
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;
 
-import javax.sql.DataSource;
-
-import org.junit.jupiter.api.Test;
-
-import com.google.common.base.Charsets;
-import com.google.common.hash.Hashing;
-import com.google.common.io.ByteProcessor;
-import com.google.common.io.ByteSource;
-import com.google.common.io.MoreFiles;
-import com.google.common.io.Resources;
-import com.google.common.primitives.Bytes;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.awaitility.Awaitility.await;
 
 /**
  * 测试通过 {@link ByteSource} 类型读取数据
@@ -59,6 +58,7 @@ import com.google.common.primitives.Bytes;
  * 类型对象来抽象网络资源和缓存文件资源这两种不同的数据源
  * </p>
  */
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 class ByteSourceTest {
     /**
      * 将一个 {@code byte} 数组包装为 {@link ByteSource} 类型对象
@@ -93,7 +93,7 @@ class ByteSourceTest {
         then(source.isEmpty()).isFalse();
 
         // 确认可以获取到 ByteSource 可读取数据长度
-        then(source.sizeIfKnown().get()).isEqualTo(11);
+        then(source.sizeIfKnown().orNull()).isEqualTo(11);
 
         // 确认可以获取到 ByteSource 可读取数据长度
         then(source.size()).isEqualTo(11);
@@ -126,7 +126,7 @@ class ByteSourceTest {
             private final ByteArrayOutputStream os = new ByteArrayOutputStream();
 
             @Override
-            public boolean processBytes(byte[] buf, int off, int len) throws IOException {
+            public boolean processBytes(byte @NotNull [] buf, int off, int len) {
                 // 将每次读取的内容存入 OutputStream 对象
                 os.write(buf, off, len);
                 return true;
@@ -137,7 +137,7 @@ class ByteSourceTest {
                 try {
                     try (os) {
                         // 将 OutputStream 内容转为字符串返回
-                        return new String(os.toByteArray(), Charsets.UTF_8);
+                        return os.toString(Charsets.UTF_8);
                     }
                 } catch (Exception e) {
                     throw new IllegalStateException(e);
@@ -296,7 +296,7 @@ class ByteSourceTest {
         then(source.sizeIfKnown().get()).isZero();
 
         // 确认读取的数据为空
-        then(source.read()).isEqualTo(new byte[] {});
+        then(source.read()).isEqualTo(new byte[]{});
     }
 
     /**
@@ -349,7 +349,7 @@ class ByteSourceTest {
 
             // 等待缓存完毕
             await().atMost(2, TimeUnit.SECONDS)
-                    .untilAsserted(() -> then(loader.cacheInfo("https://www.baidu.com")).isPresent());
+                .untilAsserted(() -> then(loader.cacheInfo("https://www.baidu.com")).isPresent());
 
             // 获取缓存对象
             var cache = loader.cacheInfo("https://www.baidu.com").get();

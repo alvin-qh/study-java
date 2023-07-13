@@ -1,14 +1,13 @@
 package alvin.study.eventbus.repository;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import com.google.common.eventbus.EventBus;
-
 import alvin.study.eventbus.EventBusManager;
 import alvin.study.eventbus.event.Event.Action;
 import alvin.study.eventbus.event.UserEvent;
 import alvin.study.eventbus.model.User;
+import com.google.common.eventbus.EventBus;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * {@link User} 类型对象持久化类
@@ -46,5 +45,7 @@ public class UserRepository {
      *
      * @return 存储 {@link User} 对象的 {@link java.util.Map Map} 对象
      */
-    public Map<Long, User> getUserMap() { return userMap; }
+    public Map<Long, User> getUserMap() {
+        return userMap;
+    }
 }

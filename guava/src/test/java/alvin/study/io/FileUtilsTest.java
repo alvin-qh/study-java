@@ -1,6 +1,11 @@
 package alvin.study.io;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import com.google.common.base.Charsets;
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
+import com.google.common.io.Files;
+import com.google.common.io.MoreFiles;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,13 +14,7 @@ import java.nio.channels.FileChannel.MapMode;
 import java.nio.file.Path;
 import java.nio.file.attribute.PosixFilePermissions;
 
-import org.junit.jupiter.api.Test;
-
-import com.google.common.base.Charsets;
-import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
-import com.google.common.io.Files;
-import com.google.common.io.MoreFiles;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试文件工具类
@@ -446,7 +445,7 @@ class FileUtilsTest {
         var parent = Path.of("test");
 
         // 定义要在父目录中创建的子目录和文件
-        var paths = new Path[] {
+        var paths = new Path[]{
             parent.resolve("1.txt"),
             parent.resolve("2.txt"),
             parent.resolve("3.txt"),
@@ -469,7 +468,7 @@ class FileUtilsTest {
             }
 
             // 列举目录中的所有文件和子目录
-            var files = MoreFiles.listFiles(Path.of("test"));
+            var files = MoreFiles.listFiles(parent);
             // 确认结果符合预期
             then(files).hasSize(paths.length).contains(paths);
         } finally {

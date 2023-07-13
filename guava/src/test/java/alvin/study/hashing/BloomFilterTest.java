@@ -75,7 +75,7 @@ class BloomFilterTest {
     @Test
     void mightContain_checkIfRecordExist() {
         // 创建布隆过滤器对象, 预计存储 10000 条记录, 错误率 1/1000
-        var filter = BloomFilter.<Person>create(Person.makeFunnel(), 10000, 0.001);
+        var filter = BloomFilter.create(Person.makeFunnel(), 10000, 0.001);
 
         // 标记已存在的记录
         filter.put(new Person(1L, "Alvin", LocalDate.of(1981, 3, 17), "Shanxi Xi'an"));
@@ -99,7 +99,7 @@ class BloomFilterTest {
      */
     @Test
     void persist_shouldSaveAndReadBloomFilterInIOStream() throws IOException {
-        var filter = BloomFilter.<Person>create(Person.makeFunnel(), 10000, 0.001);
+        var filter = BloomFilter.create(Person.makeFunnel(), 10000, 0.001);
 
         filter.put(new Person(1L, "Alvin", LocalDate.of(1981, 3, 17), "Shanxi Xi'an"));
         filter.put(new Person(2L, "Emma", LocalDate.of(1985, 3, 29), "Shanxi Xi'an"));

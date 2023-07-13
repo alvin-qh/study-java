@@ -1,13 +1,11 @@
 package alvin.study.graphs;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
+import alvin.study.graphs.GraphsDatasource.Edge;
+import com.google.common.graph.ElementOrder;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import com.google.common.graph.ElementOrder;
-
-import alvin.study.graphs.GraphsDatasource.Edge;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试图数据结构类型, 包括"有向图"和"无向图"
@@ -15,7 +13,7 @@ import alvin.study.graphs.GraphsDatasource.Edge;
 class TestValueGraph {
     // 边集合列表, 图的每个边由相连的两个节点组成
     // 本例中, 节点由整数值表示, 边的权重值也有整数值表示
-    private GraphsDatasource<Integer, Integer> datasource = new GraphsDatasource<>(
+    private final GraphsDatasource<Integer, Integer> datasource = new GraphsDatasource<>(
         Edge.of(1, 2, 1),
         Edge.of(2, 3, 3),
         Edge.of(2, 4, 5),
@@ -44,7 +42,7 @@ class TestValueGraph {
          * 测试构建有向图
          *
          * <p>
-         * 有向图的边是通过 {@link com.google.common.graph.EndpointPair.Ordered EndpointPair.Ordered} 类型对象表示, 通过
+         * 有向图的边是通过 {@code EndpointPair.Ordered} 类型对象表示, 通过
          * {@link com.google.common.graph.EndpointPair#ordered(Object, Object) EndpointPair.ordered(N, N)} 方法创建
          * </p>
          *
@@ -54,7 +52,7 @@ class TestValueGraph {
          *
          * <p>
          * 通过 {@link com.google.common.graph.ValueGraph#edges() ValueGraph.edges()} 方法可以获取无向图的边对象集合,
-         * 是一个元素类型为 {@link com.google.common.graph.EndpointPair.Ordered EndpointPair.Ordered} 的 {@code Set} 集合
+         * 是一个元素类型为 {@code EndpointPair.Ordered} 的 {@code Set} 集合
          * </p>
          */
         @Test
@@ -258,7 +256,7 @@ class TestValueGraph {
             var graph = datasource.buildValueGraph(true, ElementOrder.insertion(), ElementOrder.stable());
 
             // 获取指定的两个节点之间的路径
-            var mayPathValue = GraphPaths.getShortestPath(graph, 1, 8, n -> n.intValue());
+            var mayPathValue = GraphPaths.getShortestPath(graph, 1, 8, n -> n);
             // 确认节点间的路径
             then(mayPathValue).isPresent();
 
@@ -283,7 +281,7 @@ class TestValueGraph {
          * 测试构建无向图
          *
          * <p>
-         * 无向图的边是通过 {@link com.google.common.graph.EndpointPair.Unordered EndpointPair.Unordered} 类型对象表示, 通过
+         * 无向图的边是通过 {@code EndpointPair.Unordered} 类型对象表示, 通过
          * {@link com.google.common.graph.EndpointPair#unordered(Object, Object) EndpointPair.unordered(N, N)} 方法创建
          * </p>
          *
@@ -293,7 +291,7 @@ class TestValueGraph {
          *
          * <p>
          * 通过 {@link com.google.common.graph.ValueGraph#edges() ValueGraph.edges()} 方法可以获取无向图的边对象集合,
-         * 是一个元素类型为 {@link com.google.common.graph.EndpointPair.Unordered EndpointPair.Unordered} 的 {@code Set} 集合
+         * 是一个元素类型为 {@code EndpointPair.Unordered} 的 {@code Set} 集合
          * </p>
          */
         @Test
@@ -498,7 +496,7 @@ class TestValueGraph {
             var graph = datasource.buildValueGraph(false, ElementOrder.insertion(), ElementOrder.stable());
 
             // 获取指定的两个节点之间的路径
-            var mayPathValue = GraphPaths.getShortestPath(graph, 1, 8, n -> n.intValue());
+            var mayPathValue = GraphPaths.getShortestPath(graph, 1, 8, n -> n);
             // 确认节点间的路径
             then(mayPathValue).isPresent();
 

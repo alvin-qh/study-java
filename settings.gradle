@@ -1,14 +1,14 @@
 rootProject.name = "study-java"
 
 include(
-  "se",
+  // "se",
   // "testing",
   // "cli",
   // "guice",
   // "guava",
   // "security",
   // "jackson",
-  "socketio",
+  // "socketio",
   // "async",
   // "boot-mvc",
   // "boot-aop",

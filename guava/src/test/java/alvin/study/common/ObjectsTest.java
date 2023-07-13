@@ -1,16 +1,15 @@
 package alvin.study.common;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
-
-import java.util.Comparator;
-
-import org.junit.jupiter.api.Test;
-
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
+import org.junit.jupiter.api.Test;
+
+import java.util.Comparator;
+
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 /**
  * 演示对象操作工具类
@@ -49,6 +48,7 @@ import com.google.common.collect.Ordering;
  * {@link java.util.Comparator} 对象或 {@link Ordering} 对象指定比较规则
  * </p>
  */
+@SuppressWarnings("ConstantValue")
 class ObjectsTest {
     /**
      * 判断两个对象是否相等
@@ -130,16 +130,16 @@ class ObjectsTest {
         var obj2 = new Object();
 
         // 确认第一个参数不为 null, 则返回第一个参数值
-        then(MoreObjects.firstNonNull(obj1, (Object) null)).isSameAs(obj1);
+        then(MoreObjects.firstNonNull(obj1, null)).isSameAs(obj1);
         then(MoreObjects.firstNonNull(obj1, obj2)).isSameAs(obj1);
 
         // 确认如果第一个参数为 null, 则返回第二个参数值
-        then(MoreObjects.firstNonNull((Object) null, obj2)).isSameAs(obj2);
+        then(MoreObjects.firstNonNull(null, obj2)).isSameAs(obj2);
 
         // 确认如果两个参数均为 null, 则抛出异常
-        thenThrownBy(() -> MoreObjects.firstNonNull((Object) null, (Object) null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("Both parameters are null");
+        thenThrownBy(() -> MoreObjects.firstNonNull(null, null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("Both parameters are null");
     }
 
     /**
@@ -162,23 +162,23 @@ class ObjectsTest {
 
         // 通过对象参数产生一个字符串
         var s = MoreObjects.toStringHelper(obj)
-                .add("name", "Alvin")
-                .addValue(obj)
-                .toString();
+            .add("name", "Alvin")
+            .addValue(obj)
+            .toString();
         then(s).isEqualTo("Integer{name=Alvin, 100}");
 
         // 通过类型参数产生一个字符串
         s = MoreObjects.toStringHelper(Integer.class)
-                .add("name", "Alvin")
-                .addValue(obj)
-                .toString();
+            .add("name", "Alvin")
+            .addValue(obj)
+            .toString();
         then(s).isEqualTo("Integer{name=Alvin, 100}");
 
         // 通过字符串参数产生一个字符串
         s = MoreObjects.toStringHelper("Integer")
-                .add("name", "Alvin")
-                .addValue(obj)
-                .toString();
+            .add("name", "Alvin")
+            .addValue(obj)
+            .toString();
         then(s).isEqualTo("Integer{name=Alvin, 100}");
     }
 
@@ -213,9 +213,9 @@ class ObjectsTest {
 
         // 定义两级比较条件, 因为 obj1 和 obj2 相等, 所以结果为 obj2 和 obj3 的比较结果
         var r = ComparisonChain.start()
-                .compare(obj1, obj2)
-                .compare(obj2, obj3, Ordering.explicit(obj3, obj2))
-                .result();
+            .compare(obj1, obj2)
+            .compare(obj2, obj3, Ordering.explicit(obj3, obj2))
+            .result();
 
         // 确认最终结果为 obj2 和 obj3 比较的结果
         then(r).isEqualTo(1);

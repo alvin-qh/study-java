@@ -1,20 +1,20 @@
 package alvin.study.collect;
 
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
+import com.google.common.collect.ForwardingMap;
+import com.google.common.collect.ForwardingMapEntry;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
-import com.google.common.collect.ForwardingMap;
-import com.google.common.collect.ForwardingMapEntry;
-
 /**
  * 代理 {@link LinkedHashMap} 类型的类型
  */
-@SuppressWarnings("java:S2160")
 public class IdMap extends ForwardingMap<Long, String> {
     /**
      * 代理 {@link Map.Entry} 类型
@@ -38,7 +38,7 @@ public class IdMap extends ForwardingMap<Long, String> {
          * @return {@link Map.Entry} 类型对象
          */
         @Override
-        protected Entry<Long, String> delegate() {
+        protected @NotNull Entry<Long, String> delegate() {
             return delegatedEntry;
         }
 
@@ -67,7 +67,7 @@ public class IdMap extends ForwardingMap<Long, String> {
      * @return 被代理的 {@link List} 类型对象
      */
     @Override
-    protected Map<Long, String> delegate() {
+    protected @NotNull Map<Long, String> delegate() {
         return delegatedMap;
     }
 
@@ -94,12 +94,11 @@ public class IdMap extends ForwardingMap<Long, String> {
     /**
      * 重写 {@link Map#putAll(Map)} 方法
      *
-     * @param element 要添加的元素
-     * @return 如果添加成功则返回 {@code true}, 反之返回 {@code false}
+     * @param map 要添加的元素
      * @throws IllegalArgumentException 如果 {@code collection} 参数中包含值为空字符串或 {@code null} 的元素 时, 抛出该异常
      */
     @Override
-    public void putAll(Map<? extends Long, ? extends String> map) {
+    public void putAll(@NotNull Map<? extends Long, ? extends String> map) {
         Preconditions.checkNotNull(map).forEach((key, value) -> {
             Preconditions.checkNotNull(key);
             if (Strings.isNullOrEmpty(value)) {
@@ -122,7 +121,7 @@ public class IdMap extends ForwardingMap<Long, String> {
     @Override
     public Set<Entry<Long, String>> entrySet() {
         return delegatedMap.entrySet().stream()
-                .map(IdMapEntry::new)
-                .collect(Collectors.toSet());
+            .map(IdMapEntry::new)
+            .collect(Collectors.toSet());
     }
 }

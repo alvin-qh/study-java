@@ -1,18 +1,8 @@
 package alvin.study.cache;
 
-import static org.assertj.core.api.Assertions.entry;
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
-import static org.awaitility.Awaitility.await;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-
-import org.junit.jupiter.api.Test;
-
+import alvin.study.cache.model.User;
+import alvin.study.cache.observer.CacheObserver;
+import alvin.study.cache.repository.UserRepository;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -23,10 +13,20 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.MultimapBuilder;
 import com.google.common.hash.BloomFilter;
 import com.google.common.util.concurrent.UncheckedExecutionException;
+import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Test;
 
-import alvin.study.cache.model.User;
-import alvin.study.cache.observer.CacheObserver;
-import alvin.study.cache.repository.UserRepository;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
+import static org.assertj.core.api.Assertions.entry;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * 测试 Guava 的缓存类
@@ -83,21 +83,21 @@ class CacheTest {
         var user2 = new User(2L, "Emma");
 
         // 缓存一个对象
-        cache.put(user1.getId(), user1);
+        cache.put(user1.id(), user1);
         // 确认此时缓存的大小为 1
         then(cache.size()).isEqualTo(1);
 
         // 确认可以根据 Key 获取对应的缓存对象
-        var user = cache.getIfPresent(user1.getId());
+        var user = cache.getIfPresent(user1.id());
         then(user).isSameAs(user1);
 
         // 确认根据无效的 Key 获取的结果为 null 值
-        user = cache.getIfPresent(user2.getId());
+        user = cache.getIfPresent(user2.id());
         then(user).isNull();
 
         // 确认根据一系列 Key 批量获取缓存的对象, 只有存在的 Key 对应的缓存对象被返回
         var users = cache.getAllPresent(ImmutableList.of(1L, 2L));
-        then(users).containsExactly(entry(user1.getId(), user1));
+        then(users).containsExactly(entry(user1.id(), user1));
 
         // 清空所有缓存对象
         cache.invalidateAll();
@@ -105,15 +105,15 @@ class CacheTest {
 
         // 确认批量缓存了键值对
         cache.putAll(ImmutableMap.of(
-            user1.getId(), user1,
-            user2.getId(), user2));
+            user1.id(), user1,
+            user2.id(), user2));
         then(cache.size()).isEqualTo(2);
 
         // 确认根据批量的 Key 获取缓存对象集合
-        users = cache.getAllPresent(ImmutableList.of(user1.getId(), user2.getId()));
+        users = cache.getAllPresent(ImmutableList.of(user1.id(), user2.id()));
         then(users).containsExactly(
-            entry(user1.getId(), user1),
-            entry(user2.getId(), user2));
+            entry(user1.id(), user1),
+            entry(user2.id(), user2));
 
         try {
             // 确认通过回调函数, 对不存在的 Key 产生新的缓存对象
@@ -174,7 +174,7 @@ class CacheTest {
         // 构建缓存对象, 并指定 load 方法如何从数据源读取对象
         var cache = CacheBuilder.newBuilder().build(new CacheLoader<Long, User>() {
             @Override
-            public User load(Long key) throws Exception {
+            public @NotNull User load(@NotNull Long key) {
                 // 从数据源读取对象, 并在无法读取结果时抛出异常
                 return repository.findUserById(key).orElseThrow();
             }
@@ -204,8 +204,8 @@ class CacheTest {
 
         // 如果 Key 无法获取到指定数据, 确认会捕获到 UncheckedExecutionException 异常, 且是由于 NoSuchElementException 导致的异常
         thenThrownBy(() -> cache.get(3L))
-                .isInstanceOf(UncheckedExecutionException.class)
-                .hasCauseExactlyInstanceOf(NoSuchElementException.class);
+            .isInstanceOf(UncheckedExecutionException.class)
+            .hasCauseExactlyInstanceOf(NoSuchElementException.class);
 
         // 直接添加一个需缓存对象, 并确认可以正常从缓存中读取
         cache.put(3L, new User(3L, "Lucy"));
@@ -233,8 +233,8 @@ class CacheTest {
         // 构建缓存对象, 并指定 load 方法如何从数据源读取对象
         // 设定最大的缓存对象数为 3
         var cache = CacheBuilder.newBuilder()
-                .maximumSize(3)
-                .build();
+            .maximumSize(3)
+            .build();
         // 确认此时缓存内容为空
         then(cache.size()).isEqualTo(0);
 
@@ -276,9 +276,9 @@ class CacheTest {
         // 设定对象权重值为该对象的 id 属性值
         // 设定最大权重和为 8
         var cache = CacheBuilder.newBuilder()
-                .maximumWeight(8L)
-                .weigher((Long key, User val) -> val.getId().intValue())
-                .build();
+            .maximumWeight(8L)
+            .weigher((Long key, User val) -> val.id().intValue())
+            .build();
         // 确认此时缓存内容为空
         then(cache.size()).isEqualTo(0);
 
@@ -320,13 +320,12 @@ class CacheTest {
      * </p>
      */
     @Test
-    @SuppressWarnings("java:S2925")
     void time_shouldCacheElementEvictionByCreatedTime() throws Exception {
         // 构建缓存对象, 并指定 load 方法如何从数据源读取对象
         // 设定每个被缓存对象的过期时间为 2 秒
         var cache = CacheBuilder.newBuilder()
-                .expireAfterWrite(2, TimeUnit.SECONDS)
-                .build();
+            .expireAfterWrite(2, TimeUnit.SECONDS)
+            .build();
         // 确认此时缓存内容为空
         then(cache.size()).isEqualTo(0);
 
@@ -364,13 +363,12 @@ class CacheTest {
      * </p>
      */
     @Test
-    @SuppressWarnings("java:S2925")
     void time_shouldCacheElementEvictionByAccessedTime() throws Exception {
         // 构建缓存对象, 并指定 load 方法如何从数据源读取对象
         // 设定每个被缓存对象的过期时间为 2 秒
         var cache = CacheBuilder.newBuilder()
-                .expireAfterAccess(2, TimeUnit.SECONDS)
-                .build();
+            .expireAfterAccess(2, TimeUnit.SECONDS)
+            .build();
         // 确认此时缓存内容为空
         then(cache.size()).isEqualTo(0);
 
@@ -432,12 +430,12 @@ class CacheTest {
 
         // 以 Optional 类型为缓存的对象类型, 从数据源返回 Optional 类型对象
         var cache = CacheBuilder.newBuilder()
-                .build(new CacheLoader<Long, Optional<User>>() {
-                    @Override
-                    public Optional<User> load(Long key) throws Exception {
-                        return repository.findUserById(key);
-                    }
-                });
+            .build(new CacheLoader<Long, Optional<User>>() {
+                @Override
+                public @NotNull Optional<User> load(@NotNull Long key) {
+                    return repository.findUserById(key);
+                }
+            });
 
         try {
             // 通过有效的 Key 获取, 此时从数据源读取对象, 并缓存其 Optional 包装对象
@@ -481,21 +479,21 @@ class CacheTest {
 
         // 构建缓存对象, 数据加载对象中使用布隆过滤器
         var cache = CacheBuilder.newBuilder()
-                .build(new CacheLoader<Long, User>() {
-                    // 创建布隆过滤器对象, 对全体 User 对象的 id 进行散列
-                    private final BloomFilter<Long> bloomFilter = repository.toBloomFilter(1000);
+            .build(new CacheLoader<Long, User>() {
+                // 创建布隆过滤器对象, 对全体 User 对象的 id 进行散列
+                private final BloomFilter<Long> bloomFilter = repository.toBloomFilter(1000);
 
-                    @Override
-                    public User load(Long key) throws Exception {
-                        // 通过布隆过滤器确认数据是否存在
-                        if (!bloomFilter.mightContain(key)) {
-                            // 数据不存在的清空
-                            throw new NoSuchElementException();
-                        }
-                        // 数据存在的情况, 从数据源加载数据到缓存
-                        return repository.findUserById(key).orElseThrow();
+                @Override
+                public @NotNull User load(@NotNull Long key) {
+                    // 通过布隆过滤器确认数据是否存在
+                    if (!bloomFilter.mightContain(key)) {
+                        // 数据不存在的清空
+                        throw new NoSuchElementException();
                     }
-                });
+                    // 数据存在的情况, 从数据源加载数据到缓存
+                    return repository.findUserById(key).orElseThrow();
+                }
+            });
 
         // 从缓存中读取数据
         try {
@@ -514,8 +512,8 @@ class CacheTest {
 
         // 对于不存在的对象, 会被布隆过滤器过滤掉, 抛出异常
         thenThrownBy(() -> cache.get(3L))
-                .isInstanceOf(UncheckedExecutionException.class)
-                .hasCauseExactlyInstanceOf(NoSuchElementException.class);
+            .isInstanceOf(UncheckedExecutionException.class)
+            .hasCauseExactlyInstanceOf(NoSuchElementException.class);
 
         // 确认最终缓存了 2 个对象
         then(cache.size()).isEqualTo(2);
@@ -551,11 +549,11 @@ class CacheTest {
      * </p>
      */
     @Test
-    void reference_shouldUseDifferentReferencesInCacheValue() throws InterruptedException {
+    void reference_shouldUseDifferentReferencesInCacheValue() {
         // 构建缓存对象, 其被缓存的对象是通过"弱引用"方式存储的
         var cache = CacheBuilder.newBuilder()
-                .weakValues()
-                .build();
+            .weakValues()
+            .build();
 
         // 在缓存中存储 2 个对象
         cache.put(1L, new User(1L, "Alvin"));
@@ -565,7 +563,8 @@ class CacheTest {
         var user = cache.getIfPresent(1L);
         then(user).extracting("id", "name").contains(1L, "Alvin");
 
-        // 接触被缓存对象的引用, 并执行一次 GC
+        // 解除被缓存对象的引用, 并执行一次 GC
+        // noinspection UnusedAssignment
         user = null;
         Runtime.getRuntime().gc();
 
@@ -592,26 +591,27 @@ class CacheTest {
      * </p>
      */
     @Test
-    void refresh_shouldReloadCacheByTimeAfterWrite() throws Exception {
+    void refresh_shouldReloadCacheByTimeAfterWrite() {
         repository.insertUser(new User(1L, "Alvin"));
         repository.insertUser(new User(2L, "Emma"));
         repository.insertUser(new User(3L, "Lucy"));
 
         // 构建缓存对象, 设置缓存项删除监听接口对象
         var cache = CacheBuilder.newBuilder()
-                .refreshAfterWrite(2, TimeUnit.SECONDS)
-                .build(new CacheLoader<Long, User>() {
-                    @Override
-                    public User load(Long key) throws Exception {
-                        return repository.findUserById(key).orElseThrow();
-                    }
-                });
+            .refreshAfterWrite(2, TimeUnit.SECONDS)
+            .build(new CacheLoader<Long, User>() {
+                @Override
+                public @NotNull User load(@NotNull Long key) {
+                    return repository.findUserById(key).orElseThrow();
+                }
+            });
 
         // 读取 3 次缓存, 这会导致缓存项超出设定大小, 会淘汰一项
         for (var key : ImmutableList.of(1L, 2L, 3L)) {
             try {
                 cache.get(key);
-            } catch (Exception ignore) {}
+            } catch (Exception ignore) {
+            }
         }
 
         repository.updateUser(new User(2L, "Fiona"));
@@ -649,12 +649,12 @@ class CacheTest {
 
         // 构建缓存对象, 设置缓存项删除监听接口对象
         var cache = CacheBuilder.newBuilder()
-                .build(new CacheLoader<Long, User>() {
-                    @Override
-                    public User load(Long key) throws Exception {
-                        return repository.findUserById(key).orElseThrow();
-                    }
-                });
+            .build(new CacheLoader<Long, User>() {
+                @Override
+                public @NotNull User load(@NotNull Long key) {
+                    return repository.findUserById(key).orElseThrow();
+                }
+            });
 
         // 实例化观察者对象, 监听缓存消息总线
         CacheEventBus.getInstance().register(new CacheObserver(cache));
@@ -663,7 +663,8 @@ class CacheTest {
         for (var key : ImmutableList.of(1L, 2L, 3L)) {
             try {
                 cache.get(key);
-            } catch (Exception ignore) {}
+            } catch (Exception ignore) {
+            }
         }
 
         // 更新实体对象
@@ -718,14 +719,14 @@ class CacheTest {
 
         // 构建缓存对象, 开启缓存指标记录
         var cache = CacheBuilder.newBuilder()
-                .maximumSize(2)
-                .recordStats()
-                .build(new CacheLoader<Long, User>() {
-                    @Override
-                    public User load(Long key) throws Exception {
-                        return repository.findUserById(key).orElseThrow();
-                    }
-                });
+            .maximumSize(2)
+            .recordStats()
+            .build(new CacheLoader<Long, User>() {
+                @Override
+                public @NotNull User load(@NotNull Long key) {
+                    return repository.findUserById(key).orElseThrow();
+                }
+            });
 
         // 查看初始状态指标, 此时缓存命中率为 1, 没有从数据源读取缓存数据, 也没有淘汰缓存数据
         then(formatCacheStat(cache)).isEqualTo("hit rate = 100.0%, load success count = 0, eviction count = 0");
@@ -734,7 +735,8 @@ class CacheTest {
         for (var key : ImmutableList.of(1L, 1L, 1L, 2L, 2L, 3L, 4L)) {
             try {
                 cache.get(key);
-            } catch (Exception ignore) {}
+            } catch (Exception ignore) {
+            }
         }
 
         // 总共从缓存中读取 7 次, 其中 3 次是直接从缓存中得到, 命中率为 42.9%
@@ -790,25 +792,25 @@ class CacheTest {
 
         // 用于保存已删除缓存项的 Multimap 对象
         var removedItems = MultimapBuilder
-                .hashKeys()
-                .arrayListValues()
-                .<RemovalCause, User>build();
+            .hashKeys()
+            .arrayListValues()
+            .<RemovalCause, User>build();
 
         // 构建缓存对象, 设置缓存项删除监听接口对象
         var cache = CacheBuilder.newBuilder()
-                .maximumSize(2)
-                .removalListener((RemovalListener<Long, User>) notification -> {
-                    // 确认被删除缓存项的键值对
-                    then(notification.getKey()).isEqualTo(notification.getValue().getId());
-                    // 将被删除的缓存保存
-                    removedItems.put(notification.getCause(), notification.getValue());
-                })
-                .build(new CacheLoader<Long, User>() {
-                    @Override
-                    public User load(Long key) throws Exception {
-                        return repository.findUserById(key).orElseThrow();
-                    }
-                });
+            .maximumSize(2)
+            .removalListener((RemovalListener<Long, User>) notification -> {
+                // 确认被删除缓存项的键值对
+                then(notification.getKey()).isEqualTo(Objects.requireNonNull(notification.getValue()).id());
+                // 将被删除的缓存保存
+                removedItems.put(notification.getCause(), notification.getValue());
+            })
+            .build(new CacheLoader<Long, User>() {
+                @Override
+                public @NotNull User load(@NotNull Long key) {
+                    return repository.findUserById(key).orElseThrow();
+                }
+            });
 
         then(removedItems.size()).isEqualTo(0);
 
@@ -816,7 +818,8 @@ class CacheTest {
         for (var key : ImmutableList.of(1L, 2L, 3L)) {
             try {
                 cache.get(key);
-            } catch (Exception ignore) {}
+            } catch (Exception ignore) {
+            }
         }
         // 确认删除了 1 项缓存
         then(removedItems.size()).isEqualTo(1);

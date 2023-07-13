@@ -1,7 +1,11 @@
 package alvin.study.eventbus;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.eventbus.AsyncEventBus;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.SubscriberExceptionHandler;
+
 import java.io.Closeable;
-import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -10,14 +14,10 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.eventbus.AsyncEventBus;
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.SubscriberExceptionHandler;
-
 /**
  * 管理 {@link EventBus} 对象的管理器类型
  */
+@SuppressWarnings("UnusedReturnValue")
 public final class EventBusManager implements Closeable {
     // 存储默认 EventBus 对象的 Key 名称
     private static final String BUS_NAME_COMMON = UUID.randomUUID().toString();
@@ -158,7 +158,7 @@ public final class EventBusManager implements Closeable {
      * 关闭 EventBus 管理器
      */
     @Override
-    public void close() throws IOException {
+    public void close() {
         if (executorService != null) {
             executorService.shutdown();
             executorService = null;
@@ -170,5 +170,7 @@ public final class EventBusManager implements Closeable {
      *
      * @return 单例 {@link EventBusManager} 类型对象
      */
-    public static EventBusManager getInstance() { return INSTANCE; }
+    public static EventBusManager getInstance() {
+        return INSTANCE;
+    }
 }

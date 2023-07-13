@@ -1,15 +1,14 @@
 package alvin.study.common;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
-import static org.junit.jupiter.api.Assertions.fail;
+import com.google.common.base.Optional;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Set;
 
-import org.junit.jupiter.api.Test;
-
-import com.google.common.base.Optional;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 /**
  * 演示 {@link Optional} 的使用
@@ -23,6 +22,14 @@ import com.google.common.base.Optional;
  * {@link java.util.Optional} 工具类
  * </p>
  */
+@SuppressWarnings({
+    "Guava",
+    "ConstantValue",
+    "DataFlowIssue",
+    "Convert2MethodRef",
+    "ExcessiveLambdaUsage",
+    "OptionalGetWithoutIsPresent"
+})
 class OptionalTest {
     /**
      * 将一个非 {@code null} 对象包装为 {@link Optional} 对象
@@ -53,7 +60,7 @@ class OptionalTest {
         then(opt.get()).isSameAs(obj);
 
         // 如果参数为 null, 则抛出异常
-        thenThrownBy(() -> Optional.of((Object) null)).isInstanceOf(NullPointerException.class);
+        thenThrownBy(() -> Optional.of(null)).isInstanceOf(NullPointerException.class);
     }
 
     /**
@@ -95,7 +102,7 @@ class OptionalTest {
     @Test
     void fromNullable_shouldWrapNullableReference() {
         // 通过一个 null 引用构建 Optional 对象
-        var opt = Optional.fromNullable((Object) null);
+        var opt = Optional.fromNullable(null);
 
         // 确认 Optional 对象包含了 null 引用
         then(opt.isPresent()).isFalse();
@@ -158,11 +165,11 @@ class OptionalTest {
         // 通过 ifPresentOrElse 方法根据 Optional 对象中存储引用的情况执行不同的 Lambda 表达式
         opt.toJavaUtil().ifPresentOrElse(
             val -> then(val).isEqualTo(100),
-            () -> fail());
+            Assertions::fail);
 
         // 将 Guava Optional 对象转为 Java Optional 对象
         // 通过将 Optional 对象转为 Stream 对象, 利用 Stream 对象的能力完成后续操作
-        opt.toJavaUtil().stream().forEach(val -> then(val).isEqualTo(100));
+        opt.toJavaUtil().ifPresent(val -> then(val).isEqualTo(100));
     }
 
     /**
