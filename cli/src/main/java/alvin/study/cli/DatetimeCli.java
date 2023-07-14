@@ -1,12 +1,12 @@
 package alvin.study.cli;
 
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
+
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.concurrent.Callable;
-
-import picocli.CommandLine.Command;
-import picocli.CommandLine.Option;
 
 /**
  * 通过类型定义一个命令
@@ -51,8 +51,8 @@ import picocli.CommandLine.Option;
  * </pre>
  * </p>
  */
+@SuppressWarnings("unused")
 @Command(name = "datetime", mixinStandardHelpOptions = true, version = "datetime 1.0", description = "Show datetime")
-@SuppressWarnings("java:S106")
 public final class DatetimeCli implements Callable<Integer> {
     // 定义获取当前时间的 Clock 对象
     private static Clock clock = Clock.systemDefaultZone();
@@ -72,11 +72,11 @@ public final class DatetimeCli implements Callable<Integer> {
      * {@code description} 属性表示选项的描述
      * </li>
      * </ul>
-     *
+     * <p>
      * 其余属性参考 {@link Option @Option} 注解
      * </p>
      */
-    @Option(names = { "-d", "--date" }, description = "Show the date of today")
+    @Option(names = {"-d", "--date"}, description = "Show the date of today")
     private boolean date;
 
     /**
@@ -94,11 +94,11 @@ public final class DatetimeCli implements Callable<Integer> {
      * {@code description} 属性表示选项的描述
      * </li>
      * </ul>
-     *
+     * <p>
      * 其余属性参考 {@link Option @Option} 注解
      * </p>
      */
-    @Option(names = { "-t", "--time" }, description = "Show the time of now")
+    @Option(names = {"-t", "--time"}, description = "Show the time of now")
     private boolean time;
 
     /**
@@ -111,17 +111,17 @@ public final class DatetimeCli implements Callable<Integer> {
      * @return 进程返回值
      */
     @Override
-    public Integer call() throws Exception {
+    public Integer call() {
         // 判断 --date 和 --time 选项是否设置
         if (this.date || this.time) {
             if (this.date) {
                 // 设置 --date 选项, 输出当前日期
-                System.out.println("Date: " + LocalDate.now(clock).toString());
+                System.out.println("Date: " + LocalDate.now(clock));
             }
 
             if (this.time) {
                 // 设置 --time 选项, 输出当前时间
-                System.out.println("Time: " + LocalTime.now(clock).toString());
+                System.out.println("Time: " + LocalTime.now(clock));
             }
         } else {
             // 未设置任何选项, 输出错误信息
@@ -141,5 +141,7 @@ public final class DatetimeCli implements Callable<Integer> {
      *
      * @param clock {@link Clock} 类型对象
      */
-    public static void setClock(Clock clock) { DatetimeCli.clock = clock; }
+    public static void setClock(Clock clock) {
+        DatetimeCli.clock = clock;
+    }
 }

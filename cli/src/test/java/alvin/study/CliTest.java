@@ -1,7 +1,10 @@
 package alvin.study;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.BDDAssertions.then;
+import alvin.study.cli.DatetimeCli;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import picocli.CommandLine;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -9,12 +12,8 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import alvin.study.cli.DatetimeCli;
-import picocli.CommandLine;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试命令行

@@ -1,8 +1,5 @@
 package alvin.study;
 
-import java.util.ArrayList;
-import java.util.concurrent.Callable;
-
 import alvin.study.cli.DatetimeCli;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -12,13 +9,16 @@ import picocli.CommandLine.Help.ColorScheme;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
+import java.util.ArrayList;
+import java.util.concurrent.Callable;
+
 /**
  * 命令行的入口类
  */
 @Command(name = "cli", description = "Demo of java cli command")
-@SuppressWarnings("java:S106")
+@SuppressWarnings({"FieldMayBeFinal"})
 public class Main implements Callable<Integer> {
-    @Option(names = { "-p", "--plain" }, description = "If show text as plain text")
+    @Option(names = {"-p", "--plain"}, description = "If show text as plain text")
     private boolean plain = false;
 
     /**
@@ -27,7 +27,7 @@ public class Main implements Callable<Integer> {
      * @return 进程返回值
      */
     @Override
-    public Integer call() throws Exception {
+    public Integer call() {
         if (plain) {
             // 输出一段带格式的说明文本
             System.out.println("""
@@ -101,7 +101,7 @@ public class Main implements Callable<Integer> {
      * <pre>
      * java -jar cli.jar echo -cRed Hello World
      * </pre>
-     *
+     * <p>
      * 其中, {@code Hello World} 即 {@code echo} 命令的参数, 由于中间有空格, 所以转递到程序中是一个
      * {@code String[]} 类型, 即 {@code ["Hello", "World"]}
      * </p>
@@ -119,11 +119,11 @@ public class Main implements Callable<Integer> {
      * @param text      要输出的文本字符串, 如果该参数
      */
     @Command(name = "echo", mixinStandardHelpOptions = true, version = "echo 1.0", description = "Output string")
-    void echo(@Option(names = { "-e", "--err" }, description = "If output text into System.err stream") boolean err,
-            @Option(names = { "-c", "--color" }, description = "Set the font color") String color,
-            @Option(names = { "-b", "--bold" }, description = "Set the font bolder") boolean bold,
-            @Option(names = { "-u", "--underline" }, description = "Set font with underline") boolean underline,
-            @Parameters String[] text) {
+    void echo(@Option(names = {"-e", "--err"}, description = "If output text into System.err stream") boolean err,
+              @Option(names = {"-c", "--color"}, description = "Set the font color") String color,
+              @Option(names = {"-b", "--bold"}, description = "Set the font bolder") boolean bold,
+              @Option(names = {"-u", "--underline"}, description = "Set font with underline") boolean underline,
+              @Parameters String[] text) {
         // 按照 color, bold, underline 的顺序组成格式参数
         var formatter = new ArrayList<String>();
         if (bold) {
@@ -177,20 +177,22 @@ public class Main implements Callable<Integer> {
     public static void main(String[] args) {
         // 创建色彩配置
         var colorSchema = new ColorScheme.Builder().ansi(Ansi.ON)
-                .commands(Style.bold, Style.underline)
-                .options(Style.fg_yellow)
-                .parameters(Style.fg_yellow)
-                .optionParams(Style.italic)
-                .errors(Style.fg_red, Style.bold)
-                .stackTraces(Style.italic)
-                .build();
+            .commands(Style.bold, Style.underline)
+            .options(Style.fg_yellow)
+            .parameters(Style.fg_yellow)
+            .optionParams(Style.italic)
+            .errors(Style.fg_red, Style.bold)
+            .stackTraces(Style.italic)
+            .build();
 
         // 添加 Main 类为根命令 (会自动添加 echo 为子命令) 以及 DatetimeCli 为子命令
-        var exitCode = new CommandLine(new Main()).setColorScheme(colorSchema)
-                // 添加子命令对象
-                .addSubcommand(new DatetimeCli())
-                // 执行命令行命令
-                .execute(args);
+        var exitCode = new CommandLine(new Main())
+            .setColorScheme(colorSchema)
+            // 添加子命令对象
+            .addSubcommand(new DatetimeCli())
+            // 执行命令行命令
+            .execute(args);
+
         // 以命令返回值作为进程返回值
         System.exit(exitCode);
     }
