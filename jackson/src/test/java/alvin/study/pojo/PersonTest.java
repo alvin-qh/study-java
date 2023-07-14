@@ -1,13 +1,12 @@
 package alvin.study.pojo;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import alvin.study.decode.Decoder;
+import alvin.study.encode.Encoder;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-import org.junit.jupiter.api.Test;
-
-import alvin.study.decode.Decoder;
-import alvin.study.encode.Encoder;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link Person} 类型的 JSON 序列化以及反序列化操作
@@ -24,10 +23,10 @@ import alvin.study.encode.Encoder;
 class PersonTest {
     // 要序列化的对象
     private static final Person OBJECT = new Person(
-        1L,
-        "Alvin.Qu",
-        "M",
-        LocalDate.of(1981, 3, 17));
+            1L,
+            "Alvin.Qu",
+            "M",
+            LocalDate.of(1981, 3, 17));
 
     // 期待的序列化结果
     private static final String JSON = "{\"id\":1,\"name\":\"Alvin.Qu\",\"gender\":\"M\",\"birthday\":\"1981-03-17\"}";

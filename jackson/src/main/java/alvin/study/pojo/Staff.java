@@ -1,10 +1,9 @@
 package alvin.study.pojo;
 
+import alvin.study.pojo.common.SimpleDate;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
-
-import alvin.study.pojo.common.SimpleDate;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -41,13 +40,13 @@ import lombok.ToString;
  * }
  * </pre>
  * </p>
- *
+ * <p>
  * 必须在配置 {@link com.fasterxml.jackson.databind.ObjectMapper ObjectMapper} 对象时, 指定
  * {@code mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true)} 和
  * {@code mapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE)}, 才能正确的序列化和反序列化
  */
 @Getter
-@ToString(callSuper = false)
+@ToString
 @EqualsAndHashCode(callSuper = false)
 public class Staff {
     private Long id;
@@ -70,7 +69,8 @@ public class Staff {
      * 由于 Jackson 是通过反射方式调用该构造器, 所以该构造器可以设置为任意访问修饰符
      * </p>
      */
-    Staff() {}
+    Staff() {
+    }
 
     /**
      * 该构造器用于正常途径构造一个 POJO 对象

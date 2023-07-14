@@ -1,25 +1,23 @@
 package alvin.study.pojo;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-
-import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-
+import alvin.study.pojo.view.InternalView;
+import alvin.study.pojo.view.PublicView;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.google.common.base.Strings;
-
-import alvin.study.pojo.view.InternalView;
-import alvin.study.pojo.view.PublicView;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.ToString;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 /**
  * 通过视图控制 JSON 序列化结果
@@ -41,7 +39,7 @@ import lombok.ToString;
  * </p>
  */
 @Getter
-@ToString(callSuper = false)
+@ToString
 @EqualsAndHashCode(callSuper = false)
 public class User {
     // 用于加密 mobile 的密钥
@@ -67,7 +65,7 @@ public class User {
      */
     @JsonCreator
     @SneakyThrows
-    @SuppressWarnings({ "java:S6437", "java:S3329" })
+    @SuppressWarnings({"java:S6437", "java:S3329"})
     public User(
             @JsonProperty("id") Long id,
             @JsonProperty("username") String username,
@@ -100,7 +98,6 @@ public class User {
     @JsonView(PublicView.class)
     @JsonGetter("encodedMobile")
     @SneakyThrows
-    @SuppressWarnings({ "java:S6437", "java:S3329" })
     public String getEncodedMobile() {
         var secretKey = new SecretKeySpec(SECRET_KEY, "AES");
 
@@ -118,5 +115,7 @@ public class User {
      */
     @JsonView(InternalView.class)
     @JsonGetter("mobile")
-    public String getMobile() { return this.mobile; }
+    public String getMobile() {
+        return this.mobile;
+    }
 }

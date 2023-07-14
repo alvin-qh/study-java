@@ -1,16 +1,15 @@
 package alvin.study.pojo;
 
-import java.time.LocalDate;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+
+import java.time.LocalDate;
 
 /**
  * 本例演示了在 POJO 类中, 通过 {@link JsonGetter @JsonGetter} 注解添加 JSON 字段.
@@ -27,9 +26,9 @@ import lombok.ToString;
  * </p>
  */
 @Getter
-@ToString(callSuper = false)
+@ToString
 @EqualsAndHashCode(callSuper = false)
-@JsonIgnoreProperties(value = { "firstName", "lastName" }, ignoreUnknown = true)
+@JsonIgnoreProperties(value = {"firstName", "lastName"}, ignoreUnknown = true)
 public class Person {
     private final Long id;
     private final String firstName;
@@ -63,7 +62,7 @@ public class Person {
      * @return 分隔后的名称
      */
     private String[] splitName(String name) {
-        var r = new String[] { "", "" };
+        var r = new String[]{"", ""};
         // 将名字通过 "." 字符分割为两部分
         var s = name.split("\\.", 2);
         if (s != null) {
@@ -86,5 +85,7 @@ public class Person {
      * </p>
      */
     @JsonGetter("name")
-    public String getName() { return String.format("%s.%s", this.firstName, this.lastName); }
+    public String getName() {
+        return String.format("%s.%s", this.firstName, this.lastName);
+    }
 }

@@ -1,14 +1,13 @@
 package alvin.study.pojo;
 
-import java.time.Instant;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+
+import java.time.Instant;
 
 /**
  * 本例演示了如何使用 {@link JsonCreator @JsonCreator} 注解设置反序列化入口.
@@ -20,7 +19,7 @@ import lombok.ToString;
  * </p>
  */
 @Getter
-@ToString(callSuper = false)
+@ToString
 @JsonRootName("product")
 @EqualsAndHashCode(callSuper = false)
 public class Product {

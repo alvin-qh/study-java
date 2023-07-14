@@ -1,13 +1,12 @@
 package alvin.study.pojo;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import alvin.study.decode.Decoder;
+import alvin.study.encode.Encoder;
+import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 
-import org.junit.jupiter.api.Test;
-
-import alvin.study.decode.Decoder;
-import alvin.study.encode.Encoder;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link Product} 类型的 JSON 序列化以及反序列化操作
@@ -24,14 +23,14 @@ import alvin.study.encode.Encoder;
 class ProductTest {
     // 要序列化的对象
     private static final Product OBJECT = new Product(
-        1L,
-        "Computer",
-        "S001",
-        Instant.parse("2022-03-17T13:20:00Z"));
+            1L,
+            "Computer",
+            "S001",
+            Instant.parse("2022-03-17T13:20:00Z"));
 
     // 期待的序列化结果, 注意 root 属性
     private static final String JSON
-        = "{\"product\":{\"id\":1,\"name\":\"Computer\",\"serialNo\":\"S001\",\"date\":\"2022-03-17T13:20:00Z\"}}";
+            = "{\"product\":{\"id\":1,\"name\":\"Computer\",\"serialNo\":\"S001\",\"date\":\"2022-03-17T13:20:00Z\"}}";
 
     /**
      * 测试 {@link Encoder#toJson(Object)} 方法

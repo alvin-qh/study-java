@@ -1,10 +1,9 @@
 package alvin.study.pojo;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
+import alvin.study.encode.Encoder;
 import org.junit.jupiter.api.Test;
 
-import alvin.study.encode.Encoder;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link Name} 类型的 JSON 序列化以及反序列化操作
@@ -19,7 +18,7 @@ class NameTest {
 
     // 定义未通过过滤器时期待的 JSON 字符串
     private static final String JSON_NO_FILTER
-        = "{\"fullName\":\"Alvin·Qu\",\"firstName\":\"Alvin\",\"lastName\":\"Qu\",\"middot\":\"·\"}";
+            = "{\"fullName\":\"Alvin·Qu\",\"firstName\":\"Alvin\",\"lastName\":\"Qu\",\"middot\":\"·\"}";
 
     // 定义通过过滤器时期待的 JSON 字符串
     private static final String JSON_FILTERED = "{\"fullName\":\"Alvin·Qu\"}";

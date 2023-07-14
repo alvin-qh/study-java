@@ -1,7 +1,5 @@
 package alvin.study.decode;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -12,6 +10,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
+
+import java.util.List;
 
 /**
  * 将 JSON 字符串生成为对象的解码器类
@@ -35,11 +35,13 @@ public class Decoder {
      * @param unwrapRootValue JSON 中是否具备根属性
      * @return {@link ObjectMapper} 对象
      */
-    private static final ObjectMapper buildObjectMapper(boolean unwrapRootValue) {
-        var builder = JsonMapper.builder()
+    private static ObjectMapper buildObjectMapper(boolean unwrapRootValue) {
+        var builder = JsonMapper
+                .builder()
                 .addModules(
-                    new JavaTimeModule(),
-                    new ParameterNamesModule(Mode.PROPERTIES))
+                        new JavaTimeModule(),
+                        new ParameterNamesModule(Mode.PROPERTIES)
+                )
                 .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
                 .disable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
                 // 允许注释 (非标准)
@@ -94,9 +96,10 @@ public class Decoder {
     }
 
     /**
+     * 创建一个 {@link List} 类型的 {@link JavaType} 对象
      *
-     * @param elementType
-     * @return
+     * @param elementType {@link List} 集合的元素类型
+     * @return {@link List} 类型的 {@link JavaType} 对象
      */
     public JavaType createListJavaType(Class<?> elementType) {
         return mapper.getTypeFactory().constructCollectionType(List.class, elementType);

@@ -1,16 +1,15 @@
 package alvin.study.pojo;
 
-import java.util.regex.Pattern;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+
+import java.util.regex.Pattern;
 
 /**
  * 本例演示了 JSON 字段过滤器, 即通过 {@link JsonFilter @JsonFilter} 注解指定过滤器, 控制 POJO 类到 JSON 转换的字段.
@@ -22,7 +21,7 @@ import lombok.ToString;
  * </p>
  */
 @Getter
-@ToString(callSuper = false)
+@ToString
 @JsonFilter("non-names")
 @EqualsAndHashCode(callSuper = false)
 public class Name {
@@ -73,7 +72,7 @@ public class Name {
      * @return 数组, 为 {@code [firstName, middot, lastName]} 组成
      */
     private static String[] splitFullName(String fullName) {
-        var result = new String[] { "", "", "" };
+        var result = new String[]{"", "", ""};
 
         var m = NAME_PATTERN.matcher(fullName.trim());
         if (m.find()) {
@@ -91,5 +90,7 @@ public class Name {
      * @return 通过 {@code firstName}, {@code middot} 以及 {@code lastName} 组合而成的全名
      */
     @JsonGetter("fullName")
-    public String getFullName() { return String.format("%s%s%s", firstName, middot, lastName); }
+    public String getFullName() {
+        return String.format("%s%s%s", firstName, middot, lastName);
+    }
 }
