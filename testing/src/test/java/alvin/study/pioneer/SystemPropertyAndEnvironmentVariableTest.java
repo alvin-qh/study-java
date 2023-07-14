@@ -1,7 +1,5 @@
 package alvin.study.pioneer;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
 import org.junit.jupiter.api.Test;
 import org.junitpioneer.jupiter.ClearEnvironmentVariable;
 import org.junitpioneer.jupiter.ClearEnvironmentVariable.ClearEnvironmentVariables;
@@ -11,6 +9,8 @@ import org.junitpioneer.jupiter.SetEnvironmentVariable;
 import org.junitpioneer.jupiter.SetEnvironmentVariable.SetEnvironmentVariables;
 import org.junitpioneer.jupiter.SetSystemProperty;
 import org.junitpioneer.jupiter.SetSystemProperty.SetSystemProperties;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 在测试过程中设置系统属性和环境变量
@@ -55,7 +55,9 @@ import org.junitpioneer.jupiter.SetSystemProperty.SetSystemProperties;
  * org.junit.jupiter.api.extension.ExtensionConfigurationException:
  * Cannot access Java runtime internals to modify environment variables.
  * Have a look at the documentation for possible solutions:
+ * <a href="https://junit-pioneer.org/docs/environment-variables/#warnings-for-reflective-access">
  * https://junit-pioneer.org/docs/environment-variables/#warnings-for-reflective-access
+ * </a>
  * </div>
  *
  * <div>
@@ -90,23 +92,21 @@ import org.junitpioneer.jupiter.SetSystemProperty.SetSystemProperties;
  * 对于 MAVEN 工具, 需修改 {@code pom.xml} 文件, 为 {@code maven-surefire-plugin} 插件增加 {@code <argLine>} 节点
  *
  * <pre>
- * {@code
  * // 修改 pom.xml 文件, 修改如下内容
- * <build>
- *   <plugins>
- *     <plugin>
- *       <groupId>org.apache.maven.plugins</groupId>
- *       <artifactId>maven-surefire-plugin</artifactId>
- *       <configuration>
- *         <argLine>
+ * &lt;build&gt;
+ *   &lt;plugins&gt;
+ *     &lt;plugin&gt;
+ *       &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+ *       &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+ *       &lt;configuration&gt;
+ *         &lt;argLine&gt;
  *           --add-opens="java.base/java.util=ALL-UNNAMED"
  *           --add-opens="java.base/java.lang=ALL-UNNAMED"
- *         </argLine>
- *       </configuration>
- *     </plugin>
- *   </plugins>
- * </build>
- * }
+ *         &lt;/argLine&gt;
+ *       &lt;/configuration&gt;
+ *     &lt;/plugin&gt;
+ *   &lt;/plugins&gt;
+ * &lt;/build&gt;
  * </pre>
  *
  * </li>
@@ -123,7 +123,7 @@ import org.junitpioneer.jupiter.SetSystemProperty.SetSystemProperties;
  *
  * </li>
  * </ul>
- *
+ * <p>
  * 至此, 可以确保通过测试
  * </p>
  */
@@ -161,10 +161,7 @@ class SystemPropertyAndEnvironmentVariableTest {
      * 测试通过 {@link ClearSystemProperties @ClearSystemProperties} 注解批量删除指定的系统属性
      */
     @Test
-    @ClearSystemProperties(value = {
-        @ClearSystemProperty(key = "os.name"),
-        @ClearSystemProperty(key = "user.name")
-    })
+    @ClearSystemProperties(value = {@ClearSystemProperty(key = "os.name"), @ClearSystemProperty(key = "user.name")})
     void clearSystemProperties_shouldValuesAreNull() {
         // 确认多个系统属性不存在
         then(System.getProperty("os.name")).isNull();
@@ -175,10 +172,7 @@ class SystemPropertyAndEnvironmentVariableTest {
      * 测试通过 {@link SetSystemProperties @SetSystemProperties} 注解批量设置新的系统属性值
      */
     @Test
-    @SetSystemProperties(value = {
-        @SetSystemProperty(key = "os.name", value = "macOS"),
-        @SetSystemProperty(key = "user.name", value = "Alvin")
-    })
+    @SetSystemProperties(value = {@SetSystemProperty(key = "os.name", value = "macOS"), @SetSystemProperty(key = "user.name", value = "Alvin")})
     void setSystemProperties_shouldSetNewValues() {
         // 确认多个系统属性值为新设置的值
         then(System.getProperty("os.name")).isEqualTo("macOS");
@@ -218,10 +212,7 @@ class SystemPropertyAndEnvironmentVariableTest {
      * 测试通过 {@link ClearEnvironmentVariables @ClearEnvironmentVariables} 注解批量删除指定环境变量值
      */
     @Test
-    @ClearEnvironmentVariables({
-        @ClearEnvironmentVariable(key = "PATH"),
-        @ClearEnvironmentVariable(key = "HOME")
-    })
+    @ClearEnvironmentVariables({@ClearEnvironmentVariable(key = "PATH"), @ClearEnvironmentVariable(key = "HOME")})
     void clearEnvironmentVariables_shouldValuesAreNull() {
         // 确认指定的环境变量不存在
         then(System.getenv("PATH")).isNull();
@@ -232,10 +223,7 @@ class SystemPropertyAndEnvironmentVariableTest {
      * 测试通过 {@link SetEnvironmentVariables @SetEnvironmentVariables} 注解批量设置新的环境变量值
      */
     @Test
-    @SetEnvironmentVariables({
-        @SetEnvironmentVariable(key = "PATH", value = "/opt/jvm/jdk-17"),
-        @SetEnvironmentVariable(key = "HOME", value = "/home/alvin")
-    })
+    @SetEnvironmentVariables({@SetEnvironmentVariable(key = "PATH", value = "/opt/jvm/jdk-17"), @SetEnvironmentVariable(key = "HOME", value = "/home/alvin")})
     void setEnvironmentVariables_shouldSetNewValues() {
         // 确认环境变量为新设置的值
         then(System.getenv("PATH")).isEqualTo("/opt/jvm/jdk-17");

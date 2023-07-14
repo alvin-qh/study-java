@@ -1,24 +1,21 @@
 package alvin.study.mock;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.Optional;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import alvin.study.controller.UserController;
 import alvin.study.model.User;
 import alvin.study.service.UserService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.Optional;
+
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * 使用 {@link org.mockito.Mockito Mockito} API 模仿对象
  */
 class MockApiTest {
-    // 注入服务类对象
-    private UserService userService;
 
     // 注入控制器对象
     private UserController userController;
@@ -33,7 +30,8 @@ class MockApiTest {
     @BeforeEach
     void beforeEach() {
         // 产生一个模仿对象
-        userService = mock(UserService.class);
+        // 注入服务类对象
+        var userService = mock(UserService.class);
 
         // 设置仿冒对象的行为
         when(userService.findByName("Alvin")).thenReturn(Optional.of(new User(1, "Alvin")));

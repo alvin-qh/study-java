@@ -1,12 +1,11 @@
 package alvin.study.hamcrest.matcher;
 
-import static org.hamcrest.Matchers.not;
-
+import com.google.common.base.Strings;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
-import com.google.common.base.Strings;
+import static org.hamcrest.Matchers.not;
 
 /**
  * 匹配一个值是否表示"真"的概念
@@ -38,7 +37,8 @@ public class IsTruly<T> extends BaseMatcher<T> {
     /**
      * 构造器, 禁用 {@code new} 操作符产生对象
      */
-    protected IsTruly() {}
+    protected IsTruly() {
+    }
 
     /**
      * 进行匹配操作

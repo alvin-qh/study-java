@@ -1,14 +1,14 @@
 package alvin.study.pioneer;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import java.util.Locale;
-import java.util.TimeZone;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIf;
 import org.junitpioneer.jupiter.DefaultLocale;
 import org.junitpioneer.jupiter.DefaultTimeZone;
+
+import java.util.Locale;
+import java.util.TimeZone;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试通过 Pioneer 库对测试方法指定默认的国际化和时区标识
@@ -48,7 +48,7 @@ class LocaleAndTimeZoneTest {
      * 测试指定默认的国际化标识
      *
      * <p>
-     * 通过 {@link DefaultLocale @DefaultLocale} 注解的 {@code country}, {@code language} 以及 {@link variant} 属性为测试
+     * 通过 {@link DefaultLocale @DefaultLocale} 注解的 {@code country}, {@code language} 以及 {@code variant} 属性为测试
      * 方法设置默认的国际化标识
      * </p>
      *
@@ -63,10 +63,10 @@ class LocaleAndTimeZoneTest {
     void locale_shouldSetDefaultLocaleByProperties() {
         then(Locale.getDefault()).isEqualTo(
             new Locale.Builder()
-                    .setRegion("cn")
-                    .setLanguage("zh")
-                    .setVariant("chinese")
-                    .build());
+                .setRegion("cn")
+                .setLanguage("zh")
+                .setVariant("chinese")
+                .build());
     }
 
     /**

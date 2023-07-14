@@ -1,12 +1,13 @@
 package alvin.study.junit;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.EnumSet;
-import java.util.stream.Stream;
-
+import alvin.study.junit.parameterized.BlankStringsArgumentsProvider;
+import alvin.study.junit.parameterized.SlashyDateConverter;
+import alvin.study.junit.parameterized.UserAggregator;
+import alvin.study.junit.parameterized.VariableSource;
+import alvin.study.model.User;
+import alvin.study.service.NumberService;
+import com.google.common.base.Strings;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.aggregator.AggregateWith;
@@ -22,14 +23,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import com.google.common.base.Strings;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.EnumSet;
+import java.util.stream.Stream;
 
-import alvin.study.junit.parameterized.BlankStringsArgumentsProvider;
-import alvin.study.junit.parameterized.SlashyDateConverter;
-import alvin.study.junit.parameterized.UserAggregator;
-import alvin.study.junit.parameterized.VariableSource;
-import alvin.study.model.User;
-import alvin.study.service.NumberService;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 参数化测试
@@ -51,11 +50,12 @@ import alvin.study.service.NumberService;
  * <li>{@code float} 属性, 指定一组 {@code float} 类型值</li>
  * <li>{@code double} 属性, 指定一组 {@code double} 类型值</li>
  * <li>{@code char} 属性, 指定一组 {@code char} 类型值</li>
- * <li>{@link String} 属性, 指定一组 {@link link} 类型值</li>
+ * <li>{@link String} 属性, 指定一组 {@link String} 类型值</li>
  * <li>{@link Class} 属性, 指定一组 {@link Class} 类型值</li>
  * </ul>
  * </p>
  */
+@SuppressWarnings("JUnitMalformedDeclaration")
 class ParameterizeTest {
     /**
      * 对 {@link NumberService#isOdd(int)} 方法进行测试
@@ -71,7 +71,7 @@ class ParameterizeTest {
      *
      * @param input 假设的一组整数测试值
      */
-    @ValueSource(ints = { 1, 3, 5, -3, 15, Integer.MAX_VALUE })
+    @ValueSource(ints = {1, 3, 5, -3, 15, Integer.MAX_VALUE})
     @ParameterizedTest
     void valueSource_shouldReturnTrueForOddNumbers(int input) {
         then(NumberService.isOdd(input)).isTrue();
@@ -90,7 +90,7 @@ class ParameterizeTest {
      *
      * @param input 假设的一组字符串测试值
      */
-    @ValueSource(strings = { "" })
+    @ValueSource(strings = {""})
     @NullAndEmptySource
     @ParameterizedTest
     void valueSource_shouldReturnTrueForNullOrBlankStrings(String input) {
@@ -106,9 +106,9 @@ class ParameterizeTest {
      * 属性进行操作的模式; 每个枚举值会通过 {@code input} 参数传递给测试方法
      * </p>
      *
-     * @param input 假设的一组枚举测试值
+     * @param month 假设的一组枚举测试值
      */
-    @EnumSource(value = Month.class, names = { "APRIL", "JUNE", "SEPTEMBER", "NOVEMBER" }, mode = Mode.INCLUDE)
+    @EnumSource(value = Month.class, names = {"APRIL", "JUNE", "SEPTEMBER", "NOVEMBER"}, mode = Mode.INCLUDE)
     @ParameterizedTest
     void enumSource_shouldMonthsWith30DaysLong(Month month) {
         // 确认假设的月份天数均为 30 天 (非闰年情况)
@@ -128,7 +128,7 @@ class ParameterizeTest {
      * 本例中产生的假设枚举值的名称需要以 {@code "BER"} 结尾
      * </p>
      *
-     * @param input 假设的一组枚举测试值
+     * @param month 假设的一组枚举测试值
      */
     @EnumSource(value = Month.class, names = ".+?BER", mode = Mode.MATCH_ANY)
     @ParameterizedTest
@@ -152,7 +152,7 @@ class ParameterizeTest {
      * @param input    csv 中第一列数据
      * @param expected csv 中第二列数据
      */
-    @CsvSource(value = { "test,TEST", "tEst,TEST", "Java,JAVA" }, delimiter = ',')
+    @CsvSource(value = {"test,TEST", "tEst,TEST", "Java,JAVA"}, delimiter = ',')
     @ParameterizedTest
     void csvSource_shouldGenerateTheExpectedUppercaseValue(String input, String expected) {
         var actual = input.toUpperCase();
@@ -259,7 +259,7 @@ class ParameterizeTest {
      * 定义一个成员字段, 作为假设值, 通过 {@link VariableSource @VariableSource} 注解进行使用
      */
     @SuppressWarnings("unused")
-    private static Stream<Arguments> variableSourceArguments = Stream.of(
+    private static final Stream<Arguments> variableSourceArguments = Stream.of(
         Arguments.of(null, true),
         Arguments.of("", true),
         Arguments.of("not blank", false));
@@ -271,7 +271,7 @@ class ParameterizeTest {
      * 该方法本质上仍是通过 {@link ArgumentsSource @ArgumentsSource} 注解结合
      * {@link org.junit.jupiter.params.provider.ArgumentsProvider ArgumentsProvider}
      * 完成参数的定义和传递, 参考:
-     * {@link #shouldReturnTrueForNullOrBlankStringsArgProvider(String)} 方法
+     * {@link #argumentsSource_shouldReturnTrueForNullOrBlankStringsArgProvider(String)} 方法
      * </p>
      *
      * <p>
@@ -311,7 +311,7 @@ class ParameterizeTest {
      * @param input    csv 第一列数据, 表示月份
      * @param expected csv 第二列数据, 表示期待的月份天数
      */
-    @CsvSource({ "JANUARY,31", "OCTOBER,31", "APRIL,30", "JUNE,30", "SEPTEMBER,30", "NOVEMBER,30" })
+    @CsvSource({"JANUARY,31", "OCTOBER,31", "APRIL,30", "JUNE,30", "SEPTEMBER,30", "NOVEMBER,30"})
     @ParameterizedTest
     void csvSource_shouldConvertStringToEnumAndNumber(Month input, int expected) {
         then(input.length(false)).isEqualTo(expected);
@@ -332,11 +332,11 @@ class ParameterizeTest {
      * @param input    转换后的日期类型
      * @param expected 期待的年份值
      */
-    @CsvSource({ "2018/12/25,2018", "2019/02/11,2019" })
+    @CsvSource({"2018/12/25,2018", "2019/02/11,2019"})
     @ParameterizedTest
     void csvSource_shouldConvertSlashyDateToLocalDate(
-            @ConvertWith(SlashyDateConverter.class) LocalDate input,
-            int expected) {
+        @ConvertWith(SlashyDateConverter.class) LocalDate input,
+        int expected) {
         then(input.getYear()).isEqualTo(expected);
     }
 
@@ -352,7 +352,7 @@ class ParameterizeTest {
      * 通过 {@link ArgumentsAccessor#get(int)} 可以获取第 n 列的字符串数据
      * </li>
      * <li>
-     * 通过 {@link ArgumentsAccessor#getXXXX(int)} 可以获取第 n 列的指定类型数据, {@code XXXX}
+     * 通过 {@code ArgumentsAccessor.getXXXX(int)} 可以获取第 n 列的指定类型数据, {@code XXXX}
      * 可以为 {@link String}, {@link Byte}, {@link Short}, {@link Integer},
      * {@link Long}, {@link Boolean} 等
      * </li>
@@ -362,7 +362,7 @@ class ParameterizeTest {
      *
      * @param accessor {@link ArgumentsAccessor} 类型参数
      */
-    @CsvSource({ "1,Alvin,1-Alvin", "2,Emma,2-Emma", "3,Arthur,3-Arthur", "4,Lily,4-Lily", "5,Jimmy,5-Jimmy" })
+    @CsvSource({"1,Alvin,1-Alvin", "2,Emma,2-Emma", "3,Arthur,3-Arthur", "4,Lily,4-Lily", "5,Jimmy,5-Jimmy"})
     @ParameterizedTest
     void csvSource_shouldGetParameterByArgumentsAccessor(ArgumentsAccessor accessor) {
         var id = accessor.getInteger(0);
@@ -388,11 +388,11 @@ class ParameterizeTest {
      * @param user     通过 {@link UserAggregator} 类型转换得到的参数, 使用了 csv 的前两列数据
      * @param accessor 通过 {@link ArgumentsAccessor} 类型获取第三列数据作为参数
      */
-    @CsvSource({ "1,Alvin,1-Alvin", "2,Emma,2-Emma", "3,Arthur,3-Arthur", "4,Lily,4-Lily", "5,Jimmy,5-Jimmy" })
+    @CsvSource({"1,Alvin,1-Alvin", "2,Emma,2-Emma", "3,Arthur,3-Arthur", "4,Lily,4-Lily", "5,Jimmy,5-Jimmy"})
     @ParameterizedTest
     void csvSource_shouldGetParameterByAggregator(
-            @AggregateWith(UserAggregator.class) User user,
-            ArgumentsAccessor accessor) {
+        @AggregateWith(UserAggregator.class) User user,
+        ArgumentsAccessor accessor) {
         // 获取 csv 的第三列数据
         var expected = accessor.getString(2);
         then(user).hasToString(expected);
@@ -419,8 +419,8 @@ class ParameterizeTest {
      * </ul>
      * </p>
      *
-     * @param input
-     * @param expected
+     * @param input    {@code methodSource_shouldDisplayName} 方法返回值的第一个参数序列
+     * @param expected {@code methodSource_shouldDisplayName} 方法返回值的第二个参数序列
      */
     @MethodSource
     @ParameterizedTest(name = "{index}: {0} test completed")
@@ -433,7 +433,7 @@ class ParameterizeTest {
      *
      * @return 传递给 {@link #methodSource_shouldDisplayName(char, int)} 方法的参数值
      */
-    private static Stream<Arguments> methodSource_shouldDisplayName() {
+    private static @NotNull Stream<Arguments> methodSource_shouldDisplayName() {
         return Stream.of(
             Arguments.of('A', 65),
             Arguments.of('B', 66),

@@ -1,5 +1,15 @@
 package alvin.study.junit;
 
+import alvin.study.model.User;
+import lombok.SneakyThrows;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.time.Duration;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -16,20 +26,10 @@ import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.time.Duration;
-import java.util.List;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-import alvin.study.model.User;
-import lombok.SneakyThrows;
-
 /**
  * 测试 junit 框架的断言方法
  */
+@SuppressWarnings({"EmptyTryBlock", "SimplifiableAssertion", "ConstantValue"})
 class AssertionTest {
     /**
      * 演示输出"断言信息"
@@ -64,7 +64,7 @@ class AssertionTest {
      */
     @Test
     void fail_shouldFailedTestProcess() {
-        try (var out = new ByteArrayOutputStream()) {
+        try (var ignored = new ByteArrayOutputStream()) {
             // do io operation
         } catch (IOException e) {
             fail("cannot perform here");
@@ -80,7 +80,6 @@ class AssertionTest {
      * </p>
      */
     @Test
-    @SuppressWarnings("java:S5785")
     void trueOrFalse_shouldAssertCondition() {
         var n = 0;
 
@@ -141,8 +140,8 @@ class AssertionTest {
      */
     @Test
     void equalsOrNot_shouldAssertArrayOrIterableEquals() {
-        var nums = new Integer[] { 1, 2, 3 };
-        assertArrayEquals(new Integer[] { 1, 2, 3 }, nums);
+        var nums = new Integer[]{1, 2, 3};
+        assertArrayEquals(new Integer[]{1, 2, 3}, nums);
 
         var chars = List.of('A', 'B', 'C');
         assertIterableEquals(List.of('A', 'B', 'C'), chars);
@@ -203,10 +202,9 @@ class AssertionTest {
      *
      * @param <E>           异常类型
      * @param exceptionType 要抛出异常的 {@link Class} 类型, {@code null} 表示不抛出异常
-     * @throws E 抛出的异常类型
      */
     @SneakyThrows
-    private <E extends Throwable> void throwException(Class<E> exceptionType) throws E {
+    private <E extends Throwable> void throwException(Class<E> exceptionType) {
         if (exceptionType != null) {
             throw exceptionType.getDeclaredConstructor().newInstance();
         }
@@ -223,7 +221,6 @@ class AssertionTest {
      * </p>
      */
     @Test
-    @SuppressWarnings("java:S2925")
     void timeout_shouldAssertProcessTimeout() {
         // 断言执行时间是否在 100ms 以内
         assertTimeout(Duration.ofMillis(100), () -> Thread.sleep(90));
@@ -255,11 +252,11 @@ class AssertionTest {
      * </p>
      */
     @Test
-    @SuppressWarnings("java:S5785")
     void all_shouldAssertAllConditions() {
         var user = new User(1, "Alvin");
         assertAll(
             () -> assertTrue(user.getId() == 1),
-            () -> assertEquals("Alvin", user.getName()));
+            () -> assertEquals("Alvin", user.getName())
+        );
     }
 }

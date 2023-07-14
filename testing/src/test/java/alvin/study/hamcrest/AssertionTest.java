@@ -1,5 +1,17 @@
 package alvin.study.hamcrest;
 
+import alvin.study.model.User;
+import alvin.study.service.UserService;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+
 import static alvin.study.hamcrest.matcher.IsPresent.notPresent;
 import static alvin.study.hamcrest.matcher.IsPresent.present;
 import static alvin.study.hamcrest.matcher.IsPresent.presentThen;
@@ -40,22 +52,10 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.sameInstance;
 import static org.hamcrest.Matchers.startsWith;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import alvin.study.model.User;
-import alvin.study.service.UserService;
-
 /**
  * 测试 hamcrest 框架提供的断言方法
  */
+@SuppressWarnings({"UnnecessaryBoxing", "StringOperationCanBeSimplified"})
 @ExtendWith(MockitoExtension.class)
 class AssertionTest {
     // mock 一个服务对象
@@ -310,29 +310,29 @@ class AssertionTest {
     @Test
     void arrays_shouldAssertArrayIfMatchedMatchers() {
         // 判断一个数组是否和指定的元素值匹配
-        assertThat(new Integer[] { 1, 2, 3 }, is(arrayContaining(1, 2, 3)));
+        assertThat(new Integer[]{1, 2, 3}, is(arrayContaining(1, 2, 3)));
         // 判断一个数组是否和指定的匹配器匹配
-        assertThat(new Integer[] { 1, 2, 3 }, is(array(equalTo(1), equalTo(2), equalTo(3))));
+        assertThat(new Integer[]{1, 2, 3}, is(array(equalTo(1), equalTo(2), equalTo(3))));
         // 判断一个数组是否和指定的匹配器匹配
-        assertThat(new Integer[] { 1, 2, 3 }, is(arrayContaining(equalTo(1), equalTo(2), equalTo(3))));
+        assertThat(new Integer[]{1, 2, 3}, is(arrayContaining(equalTo(1), equalTo(2), equalTo(3))));
 
         // 判断一个数组是否和指定的元素值匹配 (忽略元素顺序)
-        assertThat(new Integer[] { 1, 2, 3 }, is(arrayContainingInAnyOrder(3, 2, 1)));
+        assertThat(new Integer[]{1, 2, 3}, is(arrayContainingInAnyOrder(3, 2, 1)));
         // 判断一个数组是否和指定的匹配器匹配 (忽略匹配器顺序)
-        assertThat(new Integer[] { 1, 2, 3 }, is(arrayContainingInAnyOrder(equalTo(2), equalTo(1), equalTo(3))));
+        assertThat(new Integer[]{1, 2, 3}, is(arrayContainingInAnyOrder(equalTo(2), equalTo(1), equalTo(3))));
 
         // 判断一个数组元素数量是否匹配
-        assertThat(new Integer[] { 1, 2, 3 }, is(arrayWithSize(equalTo(3))));
+        assertThat(new Integer[]{1, 2, 3}, is(arrayWithSize(equalTo(3))));
 
         // 判断一个数组是否为空
-        assertThat(new Integer[] {}, is(emptyArray()));
+        assertThat(new Integer[]{}, is(emptyArray()));
         // 判断一个数组是否不为空
-        assertThat(new Integer[] { 1, 2, 3 }, not(emptyArray()));
+        assertThat(new Integer[]{1, 2, 3}, not(emptyArray()));
 
         // 判断一个数组是否包含指定元素
-        assertThat(new Integer[] { 1, 2, 3 }, is(hasItemInArray(2)));
+        assertThat(new Integer[]{1, 2, 3}, is(hasItemInArray(2)));
         // 判断一个数组的元素是否匹配指定的匹配器
-        assertThat(new Integer[] { 1, 2, 3 }, is(hasItemInArray(greaterThan(2))));
+        assertThat(new Integer[]{1, 2, 3}, is(hasItemInArray(greaterThan(2))));
     }
 
     /**
@@ -451,9 +451,13 @@ class AssertionTest {
         assertThat(Map.of("A", 1, "B", 2), is(hasEntry("A", 1)));
 
         // 通过 allOf 匹配器对多个键值对进行匹配
-        assertThat(Map.of("A", 1, "B", 2, "C", 3), is(allOf(
-            hasEntry("A", 1),
-            hasEntry("B", 2))));
+        assertThat(
+            Map.of("A", 1, "B", 2, "C", 3),
+            is(allOf(
+                hasEntry("A", 1),
+                hasEntry("B", 2)
+            ))
+        );
     }
 
     /**
@@ -502,8 +506,11 @@ class AssertionTest {
         // 匹配一个 Optional 对象是否包含内容
         assertThat(Optional.of(new Object()), is(present()));
         assertThat(Optional.empty(), is(notPresent()));
-        assertThat(Optional.of(new User(1, "Alvin")), is(presentThen(
-            objectOf(User::getId, is(equalTo(1))),
-            objectOf(User::getName, is(equalTo("Alvin"))))));
+        assertThat(
+            Optional.of(new User(1, "Alvin")),
+            is(presentThen(
+                objectOf(User::getId, is(equalTo(1))),
+                objectOf(User::getName, is(equalTo("Alvin")))))
+        );
     }
 }

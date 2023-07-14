@@ -1,12 +1,11 @@
 package alvin.study.assertj.custom;
 
-import java.util.function.Consumer;
-
+import alvin.study.model.User;
 import org.assertj.core.api.AbstractSoftAssertions;
 import org.assertj.core.api.SoftAssertionsProvider;
 import org.assertj.core.api.StandardSoftAssertionsProvider;
 
-import alvin.study.model.User;
+import java.util.function.Consumer;
 
 /**
  * 定义 Softly 断言入口类

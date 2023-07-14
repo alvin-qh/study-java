@@ -1,10 +1,9 @@
 package alvin.study.junit;
 
+import alvin.study.junit.tag.ImportantTagTest;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
-
-import alvin.study.junit.tag.ImportantTagTest;
 
 /**
  * 演示在测试中使用 Tag
@@ -23,22 +22,20 @@ import alvin.study.junit.tag.ImportantTagTest;
  * 在 Maven Surefire 插件中使用
  *
  * <pre>
- * {@code
- * <build>
- *   <plugins>
- *     <plugin>
- *       <artifactId>maven-surefire-plugin</artifactId>
- *       <version>x.x.x</version>
- *       <configuration>
- *         <!-- 要执行的 Tag -->
- *         <groups>tag_test</groups>
- *         <!-- 不执行的 Tag -->
- *         <excludedGroups>common_test</excludedGroups>
- *       </configuration>
- *     </plugin>
- *   </plugins>
- * </build>
- * }
+ * &lt;build&gt;
+ *   &lt;plugins&gt;
+ *     &lt;plugin&gt;
+ *       &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+ *       &lt;version&gt;x.x.x&lt;/version&gt;
+ *       &lt;configuration&gt;
+ *         &lt;!-- 要执行的 Tag --&gt;
+ *         &lt;groups&gt;tag_test&lt;/groups&gt;
+ *         &lt;!-- 不执行的 Tag --&gt;
+ *         &lt;excludedGroups&gt;common_test&lt;/excludedGroups&gt;
+ *       &lt;/configuration&gt;
+ *     &lt;/plugin&gt;
+ *   &lt;/plugins&gt;
+ * &lt;/build&gt;
  * </pre>
  * </p>
  *
@@ -59,7 +56,7 @@ import alvin.study.junit.tag.ImportantTagTest;
  * 在 Test Suite 中使用
  *
  * <pre>
- * @Suite
+ * &#064;Suite
  * &#64;SelectPackages("alvin.study")
  * &#64;IncludeTags("production")
  * class TestSuite {}
@@ -86,14 +83,16 @@ import alvin.study.junit.tag.ImportantTagTest;
  * 也可以通过注解简化测试标签, 参考 {@link ImportantTagTest @ImportantTagTest} 注解
  * </p>
  */
-@Tags({ @Tag("tag_test"), @Tag("common_test") })
+@Tags({
+    @Tag("tag_test"),
+    @Tag("common_test")
+})
 class TagUsageTest {
     /**
      * 通过标记指定要执行的测试
      */
     @Test
     @Tag("important")
-    @SuppressWarnings("java:S2699")
     void useTag_shouldIncludeImportantTagForTest() {
         System.out.println("important test tag included");
     }
@@ -103,7 +102,6 @@ class TagUsageTest {
      */
     @Test
     @Tag("optional")
-    @SuppressWarnings("java:S2699")
     void useTag_shouldIncludeOptionalTagForTest() {
         System.out.println("optional test tag included");
     }

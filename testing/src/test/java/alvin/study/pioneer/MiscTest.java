@@ -1,10 +1,5 @@
 package alvin.study.pioneer;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.util.List;
-import java.util.ServiceLoader;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junitpioneer.jupiter.ExpectedToFail;
@@ -14,6 +9,11 @@ import org.junitpioneer.jupiter.IssueTestSuite;
 import org.junitpioneer.jupiter.ReportEntry;
 import org.junitpioneer.jupiter.ReportEntry.PublishCondition;
 import org.junitpioneer.jupiter.Stopwatch;
+
+import java.util.List;
+import java.util.ServiceLoader;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * 定义一个简单的 {@link IssueProcessor} 接口实现类, 用于显示本次测试相关 {@link Issue @Issue} 注解标识的 issues 代码,
@@ -37,7 +37,7 @@ class SimpleIssueProcessor implements IssueProcessor {
 /**
  * 测试 Pioneer 库的其它功能
  */
-@SuppressWarnings({ "java:S2699", "java:S2925" })
+@SuppressWarnings({"java:S2699", "java:S2925"})
 class MiscTest {
     @BeforeAll
     static void beforeAll() {
@@ -73,7 +73,8 @@ class MiscTest {
      */
     @Test
     @ReportEntry(key = "test-reporting", value = "The test reporting output demo", when = PublishCondition.ALWAYS)
-    void reporting_shouldReportTestUseCertainKeyAndValue() {}
+    void reporting_shouldReportTestUseCertainKeyAndValue() {
+    }
 
     /**
      * 通过 {@link Issue @Issue} 注解在测试报告中包含一个 issues 代码, 以表示此测试方法是针对某个具体的缺陷
@@ -84,7 +85,8 @@ class MiscTest {
      */
     @Test
     @Issue("ERR-1001")
-    void issue_shouldReportIssueCode() {}
+    void issue_shouldReportIssueCode() {
+    }
 
     /**
      * {@link ExpectedToFail @ExpectedToFail} 注解表示该测试方法有失败的预期, 即使失败了也不要在结果中显示

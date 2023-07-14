@@ -1,15 +1,14 @@
 package alvin.study.mock;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.mockito.Mockito.when;
-
+import alvin.study.model.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import alvin.study.model.User;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.mockito.Mockito.when;
 
 /**
  * 演示 {@link Spy @Spy} 和 {@link Mock @Mock} 注解的异同

@@ -1,5 +1,12 @@
 package alvin.study.testng;
 
+import org.testng.annotations.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotEquals;
@@ -11,13 +18,6 @@ import static org.testng.Assert.assertThrows;
 import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.fail;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-
-import org.testng.annotations.Test;
-
 /**
  * 测试 TestNG 的断言库
  *
@@ -25,6 +25,7 @@ import org.testng.annotations.Test;
  * TestNG 是一个和 JUnit 相似的测试框架, 适用范围也较为广泛
  * </p>
  */
+@SuppressWarnings({"SimplifiableAssertion", "ConstantValue", "unused", "EmptyTryBlock", "ReassignedVariable"})
 class AssertionTest {
     /**
      * 测试 TestNG 的断言
@@ -103,10 +104,10 @@ class AssertionTest {
      */
     @Test
     void equal_shouldAssertArrayEqual() {
-        var nums = new Integer[] { 1, 2, 3 };
+        var nums = new Integer[]{1, 2, 3};
 
-        assertEquals(nums, new Integer[] { 1, 2, 3 });
-        assertNotEquals(nums, new Integer[] { 1, 2, 3, 4 });
+        assertEquals(nums, new Integer[]{1, 2, 3});
+        assertNotEquals(nums, new Integer[]{1, 2, 3, 4});
     }
 
     /**

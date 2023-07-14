@@ -1,16 +1,16 @@
 package alvin.study.pioneer;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
-
 import org.junit.jupiter.api.Test;
 import org.junitpioneer.jupiter.StdErr;
 import org.junitpioneer.jupiter.StdIn;
 import org.junitpioneer.jupiter.StdIo;
 import org.junitpioneer.jupiter.StdOut;
+
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 替换 {@link System#in} 和 {@link System#out}, 用于测试标准输入输出
@@ -52,14 +52,15 @@ class StandardIoTest {
         // 通过 StdOut 对象读取输出的内容
         var lines = out.capturedLines();
         // 确认读取的输出内容符合预期
-        then(lines).hasSize(2)
-                .containsExactly("Hello, Pioneer.", "The System.out changed");
+        then(lines)
+            .hasSize(2)
+            .containsExactly("Hello, Pioneer.", "The System.out changed");
     }
 
     /**
      * 测试通过 {@link StdIo @StdIo} 注解替换 {@link System#err} 对象
      *
-     * @param out {@link StdErr} 对象, 用于读取 {@link System#err} 输出的内容
+     * @param err {@link StdErr} 对象, 用于读取 {@link System#err} 输出的内容
      */
     @Test
     @StdIo
@@ -71,7 +72,7 @@ class StandardIoTest {
         var lines = err.capturedLines();
         // 确认读取的输出内容符合预期
         then(lines).hasSize(2)
-                .containsExactly("Hello, Pioneer.", "The System.out changed");
+            .containsExactly("Hello, Pioneer.", "The System.out changed");
     }
 
     /**
@@ -80,7 +81,7 @@ class StandardIoTest {
      * @param in {@link StdIn} 对象, 用于读取 {@link System#in} 输入的内容
      */
     @Test
-    @StdIo({ "Hello", "World" })
+    @StdIo({"Hello", "World"})
     void stdin_shouldSetContentIntoOutputStream(StdIn in) throws Exception {
         var lines = new ArrayList<String>();
 
@@ -90,7 +91,8 @@ class StandardIoTest {
                 // 按行读取输入内容
                 lines.add(scanner.nextLine());
             }
-        } catch (NoSuchElementException e) {}
+        } catch (NoSuchElementException e) {
+        }
 
         // 确认输入内容符合预期
         then(lines).containsExactly("Hello", "World");

@@ -1,12 +1,11 @@
 package alvin.study.assertj;
 
-import static alvin.study.assertion.Assertions.assertThat;
-import static alvin.study.assertion.BddAssertions.then;
-
-import org.junit.jupiter.api.Test;
-
 import alvin.study.assertion.SoftAssertions;
 import alvin.study.model.User;
+import org.junit.jupiter.api.Test;
+
+import static alvin.study.assertion.Assertions.assertThat;
+import static alvin.study.assertion.BddAssertions.then;
 
 /**
  * 测试自动生成的断言类
@@ -18,7 +17,7 @@ import alvin.study.model.User;
  * </p>
  */
 class AutoGenerationAssertionTest {
-    private static User user = new User(1001, "Alvin");
+    private static final User user = new User(1001, "Alvin");
 
     /**
      * 测试标准格式测试, 即通过 {@code assertThat} 开始的测试

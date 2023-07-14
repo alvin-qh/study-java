@@ -1,13 +1,14 @@
 package alvin.study.service;
 
+import alvin.study.model.User;
+
 import java.util.List;
 import java.util.Optional;
-
-import alvin.study.model.User;
 
 /**
  * 用于测试的用户服务接口
  */
+@SuppressWarnings("unused")
 public interface UserService {
     /**
      * 获取所有用户实体

@@ -1,12 +1,11 @@
 package alvin.study.faker;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import com.github.javafaker.Faker;
+import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 
-import org.junit.jupiter.api.Test;
-
-import com.github.javafaker.Faker;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 通过 {@link Faker} 类型对象可以伪造各类测试数据
@@ -116,6 +115,7 @@ class FakerTest {
 
         // 产生一个伪造的地址
         var address = faker.address();
+
         // 地址的城市名
         then(address.cityName()).isNotEmpty();
         // 地址的街道名
@@ -148,7 +148,7 @@ class FakerTest {
         // 产生一个符合指定正则表达式的数据
         var value = faker.regexify("\\d{3}\\-\\d{7}");
         // 确认产生的数据符合预期的正则表达式
-        then(value).matches("^\\d{3}\\-\\d{7}$");
+        then(value).matches("^\\d{3}-\\d{7}$");
     }
 
     /**

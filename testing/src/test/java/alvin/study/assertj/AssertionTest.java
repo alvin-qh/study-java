@@ -1,5 +1,14 @@
 package alvin.study.assertj;
 
+import alvin.study.model.Group;
+import alvin.study.model.User;
+import org.assertj.core.api.Condition;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.allOf;
 import static org.assertj.core.api.Assertions.anyOf;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -9,20 +18,10 @@ import static org.assertj.core.api.Assertions.tuple;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.assertj.core.api.Condition;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
-import alvin.study.model.Group;
-import alvin.study.model.User;
-
 /**
  * 测试 AssertJ 断言库
  */
+@SuppressWarnings({"StringOperationCanBeSimplified", "ConstantValue", "ReassignedVariable"})
 class AssertionTest {
     /**
      * 断言值是否为 {@code true} 或 {@code false}
@@ -62,7 +61,7 @@ class AssertionTest {
         assertThat(obj).has(cond);
 
         // 定义另一个 Condition 对象, 断言是否无需满足该 Condition 对象
-        cond = new Condition<User>(user -> user.getName().equals("Emma"), "Check name");
+        cond = new Condition<>(user -> user.getName().equals("Emma"), "Check name");
         assertThat(obj).isNot(cond);
         assertThat(obj).doesNotHave(cond);
 
@@ -73,19 +72,19 @@ class AssertionTest {
         var condId = new Condition<User>() {
             public boolean matches(User value) {
                 return value.getId() == 1;
-            };
+            }
         };
 
         var condName = new Condition<User>() {
             public boolean matches(User value) {
                 return value.getName().equals("Alvin");
-            };
+            }
         };
 
         var condBad = new Condition<User>() {
             public boolean matches(User value) {
                 return value == null;
-            };
+            }
         };
 
         // 断言一个对象是否满足所有指定的 Condition 对象
@@ -121,7 +120,7 @@ class AssertionTest {
         then(obj).has(cond);
 
         // 定义另一个 Condition 对象, 断言是否无需满足该 Condition 对象
-        cond = new Condition<User>(user -> user.getName().equals("Emma"), "Check name");
+        cond = new Condition<>(user -> user.getName().equals("Emma"), "Check name");
         then(obj).isNot(cond);
         then(obj).doesNotHave(cond);
 
@@ -213,7 +212,7 @@ class AssertionTest {
      */
     @Test
     void arrays_shouldAssertArrayMatchedMatches() {
-        var array = new int[] { 1, 2, 3, 3 };
+        var array = new int[]{1, 2, 3, 3};
 
         // 断言一个数组的长度
         then(array).hasSize(4);
@@ -239,7 +238,7 @@ class AssertionTest {
         // 断言一个数组的元素是否有序排列
         then(array).isSorted();
         // 断言一个数组的元素是否安装指定的比较器有序排列
-        then(array).isSortedAccordingTo((l, r) -> l.compareTo(r));
+        then(array).isSortedAccordingTo(Integer::compareTo);
     }
 
     /**
@@ -276,7 +275,7 @@ class AssertionTest {
         // 断言一个集合的元素是否有序排列
         then(list).isSorted();
         // 断言一个集合的元素是否安装指定的比较器有序排列
-        then(list).isSortedAccordingTo((l, r) -> l.compareTo(r));
+        then(list).isSortedAccordingTo(Integer::compareTo);
 
         // 断言集合的所有元素是否满足指定条件
         then(list).allMatch(n -> n > 0);
@@ -286,16 +285,16 @@ class AssertionTest {
         // 对集合元素通过条件进行过滤, 断言过滤结果
         then(list).filteredOn(n -> n > 0).containsExactly(1, 2, 3, 3);
         // 对集合元素进行转换后, 断言转换后的结果
-        then(list).map(n -> String.valueOf(n))
-                .filteredOn(s -> !s.isEmpty())
-                .containsExactly("1", "2", "3", "3");
+        then(list).map(String::valueOf)
+            .filteredOn(s -> !s.isEmpty())
+            .containsExactly("1", "2", "3", "3");
 
         // 断言集合的所有元素都满足指定的 Condition 对象
         var cond = new Condition<Integer>(n -> n > 0, "great than 1");
         then(list).are(cond);
 
         // 断言集合的指定数量元素满足指定的 Condition 对象
-        cond = new Condition<Integer>(n -> n > 1, "");
+        cond = new Condition<>(n -> n > 1, "");
         then(list).areAtMost(3, cond);
 
         var users = List.of(
@@ -305,15 +304,15 @@ class AssertionTest {
 
         // 获取集合元素的特定属性, 进行断言
         then(users).extracting("name")
-                .contains("Alvin", "Emma", "Lucy")
-                .doesNotContain("Lily");
+            .contains("Alvin", "Emma", "Lucy")
+            .doesNotContain("Lily");
 
         // 获取集合元素的若干属性, 进行断言
         then(users).extracting("id", "name")
-                .contains(
-                    tuple(1, "Alvin"),
-                    tuple(2, "Emma"),
-                    tuple(3, "Lucy"));
+            .contains(
+                tuple(1, "Alvin"),
+                tuple(2, "Emma"),
+                tuple(3, "Lucy"));
 
         var groups = List.of(
             new Group(1,
@@ -329,9 +328,9 @@ class AssertionTest {
 
         // 将集合中对象中的集合属性展开, 进行断言
         then(groups).flatExtracting("users")
-                .extracting("name")
-                .contains("Alvin", "Emma", "Lucy", "Lily")
-                .doesNotContain("Arthur");
+            .extracting("name")
+            .contains("Alvin", "Emma", "Lucy", "Lily")
+            .doesNotContain("Arthur");
     }
 
     /**
@@ -383,9 +382,8 @@ class AssertionTest {
         // 断言 Map 对象的 Key 和 Value 是否匹配指定的 Condition 对象
         then(map).hasEntrySatisfying(keyCond, valueCond);
         then(map).hasEntrySatisfying("B", valueCond);
-        then(map).hasEntrySatisfying(new Condition<Entry<String, Integer>>(
-            e -> keyCond.matches(e.getKey()) && valueCond.matches(e.getValue()),
-            ""));
+        then(map).hasEntrySatisfying(
+            new Condition<>(e -> keyCond.matches(e.getKey()) && valueCond.matches(e.getValue()), ""));
     }
 
     /**
@@ -396,8 +394,8 @@ class AssertionTest {
         thenThrownBy(() -> {
             throw new IllegalAccessException("Test exception");
         })
-                .isInstanceOf(IllegalAccessException.class)
-                .hasMessage("Test exception");
+            .isInstanceOf(IllegalAccessException.class)
+            .hasMessage("Test exception");
     }
 
     /**

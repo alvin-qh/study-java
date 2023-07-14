@@ -1,10 +1,5 @@
 package alvin.study.junit;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -33,6 +28,11 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.condition.OS;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 // @formatter:off
 
 /**
@@ -45,7 +45,7 @@ import org.junit.jupiter.api.condition.OS;
  */
 @TestMethodOrder(OrderAnnotation.class)
 class AnnotationTest {
-    private static List<String> TEST_LIST = new ArrayList<>();
+    private static final List<String> TEST_LIST = new ArrayList<>();
 
     /**
      * 在所有测试方法执行前执行
@@ -116,11 +116,9 @@ class AnnotationTest {
      * 如果值为 {@code 1}, 表示重复 1 次, 加上原本要执行的 1 次, 该测试方法总共执行 2 次
      * </p>
      */
-    @Test
     @Order(1)
     @DisplayName("Running test")
     @RepeatedTest(1)
-    @SuppressWarnings({"java:S2699", "java:S5967"})
     void order1_shouldTestRunAtFirst() {
         TEST_LIST.add("runTest1");
     }
@@ -201,7 +199,6 @@ class AnnotationTest {
     // @DisabledIfEnvironmentVariables({ @DisabledIfEnvironmentVariable(named = "JAVA_HOME", matches = ".*") })
     @EnabledIf("checkTestEnabled")
     @DisabledIf("checkTestDisabled")
-    @SuppressWarnings("java:S2699")
     void order2_shouldTestRunAtSecond() {
         TEST_LIST.add("runTest2");
     }
@@ -215,7 +212,6 @@ class AnnotationTest {
      *
      * @return {@code true} 表示允许测试执行
      */
-    @SuppressWarnings("unused")
     private boolean checkTestEnabled() {
         return true;
     }
@@ -229,7 +225,6 @@ class AnnotationTest {
      *
      * @return {@code false} 表示允许测试执行
      */
-    @SuppressWarnings("unused")
     private boolean checkTestDisabled() {
         return false;
     }
@@ -243,7 +238,6 @@ class AnnotationTest {
      */
     @Test
     @Disabled("for testing")
-    @SuppressWarnings("java:S2699")
     void disable_shouldTestDisabled() {
         TEST_LIST.add("disabledTest");
     }
@@ -301,9 +295,6 @@ class AnnotationTest {
 
         assertEquals(List.of(
             "beforeAll",
-            "beforeEach",
-            "runTest1",
-            "afterEach",
             "beforeEach",
             "runTest1",
             "afterEach",

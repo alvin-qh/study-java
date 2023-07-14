@@ -1,13 +1,13 @@
 package alvin.study.junit.tag;
 
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 
 /**
  * 定义一个具备标签功能的测试注解
@@ -22,7 +22,8 @@ import org.junit.jupiter.api.Test;
  */
 @Tag("important")
 @Test
-@Target({ ElementType.TYPE, ElementType.METHOD })
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface ImportantTagTest {}
+public @interface ImportantTagTest {
+}

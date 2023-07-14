@@ -1,14 +1,14 @@
 package alvin.study.service;
 
+import alvin.study.model.User;
+import lombok.SneakyThrows;
+
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
-
-import alvin.study.model.User;
-import lombok.SneakyThrows;
 
 /**
  * 为测试 Awaitility 库定义测试类型
@@ -31,10 +31,10 @@ public class AsyncService {
     private volatile boolean initialized = false;
 
     // Value 值
-    private AtomicLong value = new AtomicLong(0);
+    private final AtomicLong value = new AtomicLong(0);
 
     // User 值
-    private AtomicReference<User> userRef = new AtomicReference<>();
+    private final AtomicReference<User> userRef = new AtomicReference<>();
 
     /**
      * 初始化方法
@@ -55,7 +55,9 @@ public class AsyncService {
      *
      * @return {@code true} 表示初始化完毕
      */
-    public boolean isInitialized() { return initialized; }
+    public boolean isInitialized() {
+        return initialized;
+    }
 
     /**
      * 设置一个值
@@ -74,7 +76,9 @@ public class AsyncService {
      *
      * @return 之前设置的整数值
      */
-    public long getValue() { return value.get(); }
+    public long getValue() {
+        return value.get();
+    }
 
     /**
      * 设置一个 {@link User} 对象

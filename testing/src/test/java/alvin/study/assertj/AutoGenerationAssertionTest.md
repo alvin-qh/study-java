@@ -95,26 +95,27 @@
 如果代码没有生成在 `src/java` 路径下, 则要通过 `build-helper-maven-plugin` 插件设置源码路径:
 
 ```xml
+
 <plugin>
-  <groupId>org.codehaus.mojo</groupId>
-  <artifactId>build-helper-maven-plugin</artifactId>
-  <executions>
-    <execution>
-      <id>add-test-source</id>
-      <!-- 指定当前执行要附加到的 phase -->
-      <phase>generate-test-sources</phase>
-      <!-- 指定要执行的 goal, 即在 generate-test-sources 阶段执行 add-test-source 任务 -->
-      <goals>
-        <goal>add-test-source</goal>
-      </goals>
-      <configuration>
-        <sources>
-          <!-- 设置额外的源码路径 -->
-          <source>${project.basedir}/src/test/assertj/</source>
-        </sources>
-      </configuration>
-    </execution>
-  </executions>
+    <groupId>org.codehaus.mojo</groupId>
+    <artifactId>build-helper-maven-plugin</artifactId>
+    <executions>
+        <execution>
+            <id>add-test-source</id>
+            <!-- 指定当前执行要附加到的 phase -->
+            <phase>generate-test-sources</phase>
+            <!-- 指定要执行的 goal, 即在 generate-test-sources 阶段执行 add-test-source 任务 -->
+            <goals>
+                <goal>add-test-source</goal>
+            </goals>
+            <configuration>
+                <sources>
+                    <!-- 设置额外的源码路径 -->
+                    <source>${project.basedir}/src/test/assertj/</source>
+                </sources>
+            </configuration>
+        </execution>
+    </executions>
 </plugin>
 ```
 
@@ -140,16 +141,16 @@ assertjGenerator {
 
 可配置的属性包括:
 
-| 属性 | 类型 | 默认值 | 说明 |
-|------|-----|------|------|
-|`classOrPackageNames`|`String[]`|`[]`|被生成断言类的类名或包名|
-|`entryPointPackage`|`String`|`null`|断言入口类的包名|
-|`outputDir`|`Object`|`src/[testSourceSet.name]/generated-java`|要生成代码的路径|
-|`sourceSet`|`SourceSet`|`sourceSets.main`|被断言类所在的 SourceSet|
-|`testSourceSet`|`SourceSet`|`sourceSets.test`|生成断言类所在的 SourceSet|
-|`entryPointTypes`|`AssertionsEntryPointType[]`|`["STANDARD"]`|要生成的断言类的类型|
-|`entryPointInherits`|`boolean`|`true`|生成断言类是否支持继承|
-|`cleanOutputDir`|`boolean`|`true`|在生成代码前是否情况目标目录|
+| 属性                    | 类型                           | 默认值                                       | 说明                 |
+|-----------------------|------------------------------|-------------------------------------------|--------------------|
+| `classOrPackageNames` | `String[]`                   | `[]`                                      | 被生成断言类的类名或包名       |
+| `entryPointPackage`   | `String`                     | `null`                                    | 断言入口类的包名           |
+| `outputDir`           | `Object`                     | `src/[testSourceSet.name]/generated-java` | 要生成代码的路径           |
+| `sourceSet`           | `SourceSet`                  | `sourceSets.main`                         | 被断言类所在的 SourceSet  |
+| `testSourceSet`       | `SourceSet`                  | `sourceSets.test`                         | 生成断言类所在的 SourceSet |
+| `entryPointTypes`     | `AssertionsEntryPointType[]` | `["STANDARD"]`                            | 要生成的断言类的类型         |
+| `entryPointInherits`  | `boolean`                    | `true`                                    | 生成断言类是否支持继承        |
+| `cleanOutputDir`      | `boolean`                    | `true`                                    | 在生成代码前是否情况目标目录     |
 
 参考本例的 [build.gradle](../../../../../../build.gradle) 文件
 

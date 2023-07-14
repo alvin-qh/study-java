@@ -3,6 +3,8 @@ package alvin.study.assertj.custom;
 import alvin.study.model.User;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * 定义断言入口类
@@ -19,7 +21,8 @@ public final class Assertions {
      * @param user 要进行断言的对象
      * @return {@link UserAssert} 断言对象
      */
-    public static UserAssert assertThat(User user) {
+    @Contract("_ -> new")
+    public static @NotNull UserAssert assertThat(User user) {
         return new UserAssert(user);
     }
 
@@ -29,7 +32,8 @@ public final class Assertions {
      * @param user 要进行断言的对象
      * @return {@link UserAssert} 断言对象
      */
-    public static UserAssert then(User user) {
+    @Contract("_ -> new")
+    public static @NotNull UserAssert then(User user) {
         return assertThat(user);
     }
 }

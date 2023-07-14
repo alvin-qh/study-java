@@ -1,10 +1,9 @@
 package alvin.study.assertj.custom;
 
-import java.util.Objects;
-
+import alvin.study.model.User;
 import org.assertj.core.api.AbstractAssert;
 
-import alvin.study.model.User;
+import java.util.Objects;
 
 /**
  * 对 {@link User} 类型进行断言的断言类

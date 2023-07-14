@@ -1,22 +1,7 @@
 package alvin.study.pioneer;
 
-import static org.assertj.core.api.Assertions.tuple;
-import static org.assertj.core.api.BDDAssertions.then;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.reflect.Parameter;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
+import alvin.study.model.Group;
+import alvin.study.model.User;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -36,8 +21,22 @@ import org.junitpioneer.jupiter.json.JsonSource;
 import org.junitpioneer.jupiter.json.Property;
 import org.junitpioneer.jupiter.params.IntRangeSource;
 
-import alvin.study.model.Group;
-import alvin.study.model.User;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.Parameter;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+import static org.assertj.core.api.Assertions.tuple;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 该注解用于测试参数, 指定该参数值的生成规则
@@ -85,7 +84,7 @@ class NumberSourceProvider implements CartesianParameterArgumentsProvider<Intege
      * @return 生成的参数值集合的 {@link Stream} 对象
      */
     @Override
-    public Stream<Integer> provideArguments(ExtensionContext context, Parameter parameter) throws Exception {
+    public Stream<Integer> provideArguments(ExtensionContext context, Parameter parameter) {
         // 从参数对象上获取注解对象
         var anno = Objects.requireNonNull(
             parameter.getAnnotation(NumberSource.class));
@@ -147,7 +146,7 @@ class NumberSourceProvider implements CartesianParameterArgumentsProvider<Intege
  * </p>
  */
 class NumberArgumentSourceProvider implements CartesianMethodArgumentsProvider,
-                                   AnnotationConsumer<NumberArgumentSource> {
+    AnnotationConsumer<NumberArgumentSource> {
     // NumberArgumentSource 注解的 value 属性值, 作为产生参数值的规则
     private int[] numbers;
 
@@ -169,7 +168,7 @@ class NumberArgumentSourceProvider implements CartesianMethodArgumentsProvider,
      * @return 生成的参数值集合的 {@link ArgumentSets} 对象, 包括测试方法的所有参数值
      */
     @Override
-    public ArgumentSets provideArguments(ExtensionContext context) throws Exception {
+    public ArgumentSets provideArguments(ExtensionContext context) {
         // 创建保持参数集合
         var argSets = ArgumentSets.create();
 
@@ -186,6 +185,7 @@ class NumberArgumentSourceProvider implements CartesianMethodArgumentsProvider,
 /**
  * 测试 pioneer 库的参数化功能
  */
+@SuppressWarnings({"unused", "DefaultAnnotationParam"})
 class ParameterizeTest {
     /**
      * 以笛卡尔积将设定的参数进行组合传递
@@ -205,20 +205,21 @@ class ParameterizeTest {
      */
     @CartesianTest(name = "{index} => first arg: {0}, second arg: {1}")
     void cartesian_shouldInjectCartesianArguments(
-            @Values(ints = { 1, 2 }) int x,
-            @Values(ints = { 3, 4 }) int y) {
-        var expected = new Object[] {
-            new int[] { 1, 3 },
-            new int[] { 1, 4 },
-            new int[] { 2, 3 },
-            new int[] { 2, 4 }
+        @Values(ints = {1, 2}) int x,
+        @Values(ints = {3, 4}) int y) {
+        var expected = new Object[]{
+            new int[]{1, 3},
+            new int[]{1, 4},
+            new int[]{2, 3},
+            new int[]{2, 4}
         };
 
-        then(new int[] { x, y }).isIn(expected);
+        then(new int[]{x, y}).isIn(expected);
     }
 
     enum TestEnum {
-        FIRST, SECOND;
+        FIRST,
+        SECOND
     }
 
     /**
@@ -250,12 +251,12 @@ class ParameterizeTest {
      * </p>
      *
      * <p>
-     * {@link Enum @Enum} 注解具备 {@link names} 属性, 默认情况表示要包含的枚举名称, 例如:
+     * {@link Enum @Enum} 注解具备 {@code names} 属性, 默认情况表示要包含的枚举名称, 例如:
      * <code>@Enum(names = { "DAYS", "HOURS" }) ChronoUnit unit</code> 参数, 表示只包含 {@code DAYS} 和 {@code HOURS} 两项
      * </p>
      *
      * <p>
-     * {@link Enum @Enum} 注解具备 {@link mode} 属性, 取值为 {@link Enum.Mode} 枚举, 表示 {@code names} 属性的含义, 默认为
+     * {@link Enum @Enum} 注解具备 {@code mode} 属性, 取值为 {@link Enum.Mode} 枚举, 表示 {@code names} 属性的含义, 默认为
      * {@link Enum.Mode#INCLUDE}, 表达如下:
      * <ul>
      * <li>
@@ -279,21 +280,21 @@ class ParameterizeTest {
      */
     @CartesianTest
     void cartesian_shouldPassArgumentsInRange(
-            @IntRangeSource(from = 1, to = 3, step = 1) int x,
-            @Values(strings = { "A", "B" }) String s,
-            @Enum(TestEnum.class) TestEnum e) {
-        var expected = new Object[] {
-            new Object[] { 1, "A", TestEnum.FIRST },
-            new Object[] { 1, "A", TestEnum.SECOND },
-            new Object[] { 1, "B", TestEnum.FIRST },
-            new Object[] { 1, "B", TestEnum.SECOND },
-            new Object[] { 2, "A", TestEnum.FIRST },
-            new Object[] { 2, "A", TestEnum.SECOND },
-            new Object[] { 2, "B", TestEnum.FIRST },
-            new Object[] { 2, "B", TestEnum.SECOND }
+        @IntRangeSource(from = 1, to = 3, step = 1) int x,
+        @Values(strings = {"A", "B"}) String s,
+        @Enum(TestEnum.class) TestEnum e) {
+        var expected = new Object[]{
+            new Object[]{1, "A", TestEnum.FIRST},
+            new Object[]{1, "A", TestEnum.SECOND},
+            new Object[]{1, "B", TestEnum.FIRST},
+            new Object[]{1, "B", TestEnum.SECOND},
+            new Object[]{2, "A", TestEnum.FIRST},
+            new Object[]{2, "A", TestEnum.SECOND},
+            new Object[]{2, "B", TestEnum.FIRST},
+            new Object[]{2, "B", TestEnum.SECOND}
         };
 
-        then(new Object[] { x, s, e }).isIn(expected);
+        then(new Object[]{x, s, e}).isIn(expected);
     }
 
     /**
@@ -312,16 +313,16 @@ class ParameterizeTest {
      * </p>
      *
      * <p>
-     * 关于 {@code PER_CLASS} 生命周期的说明, 请参见 {@link alvin.study.junit.LifecycleTest LifecycleTest} 范例
+     * 关于 {@code PER_CLASS} 生命周期的说明, 请参见 {@code LifecycleTest} 范例
      * </p>
      *
      * @return {@link ArgumentSets} 参数集合对象
      */
     static ArgumentSets argumentsGenerator() {
         return ArgumentSets
-                .argumentsForFirstParameter(IntStream.range(1, 3).boxed())
-                .argumentsForNextParameter("A", "B")
-                .argumentsForNextParameter(TestEnum.values());
+            .argumentsForFirstParameter(IntStream.range(1, 3).boxed())
+            .argumentsForNextParameter("A", "B")
+            .argumentsForNextParameter(TestEnum.values());
     }
 
     /**
@@ -334,18 +335,18 @@ class ParameterizeTest {
     @CartesianTest
     @MethodFactory("argumentsGenerator")
     void cartesian_shouldGenerateArgumentsByFactoryMethod(int x, String s, TestEnum e) {
-        var expected = new Object[] {
-            new Object[] { 1, "A", TestEnum.FIRST },
-            new Object[] { 1, "A", TestEnum.SECOND },
-            new Object[] { 1, "B", TestEnum.FIRST },
-            new Object[] { 1, "B", TestEnum.SECOND },
-            new Object[] { 2, "A", TestEnum.FIRST },
-            new Object[] { 2, "A", TestEnum.SECOND },
-            new Object[] { 2, "B", TestEnum.FIRST },
-            new Object[] { 2, "B", TestEnum.SECOND }
+        var expected = new Object[]{
+            new Object[]{1, "A", TestEnum.FIRST},
+            new Object[]{1, "A", TestEnum.SECOND},
+            new Object[]{1, "B", TestEnum.FIRST},
+            new Object[]{1, "B", TestEnum.SECOND},
+            new Object[]{2, "A", TestEnum.FIRST},
+            new Object[]{2, "A", TestEnum.SECOND},
+            new Object[]{2, "B", TestEnum.FIRST},
+            new Object[]{2, "B", TestEnum.SECOND}
         };
 
-        then(new Object[] { x, s, e }).isIn(expected);
+        then(new Object[]{x, s, e}).isIn(expected);
     }
 
     /**
@@ -359,7 +360,7 @@ class ParameterizeTest {
      */
     @CartesianTest
     void cartesian_shouldGenerateArgumentsByAnnotation(
-            @NumberSource({ 1, 2, 3 }) int x) {
+        @NumberSource({1, 2, 3}) int x) {
         then(x).isIn(1, 2, 3);
     }
 
@@ -380,21 +381,21 @@ class ParameterizeTest {
      * @param y 测试参数值
      */
     @CartesianTest
-    @NumberArgumentSource({ 1, 2, 3 })
+    @NumberArgumentSource({1, 2, 3})
     void cartesian_shouldGenerateAllArgumentsByAnnotation(int x, int y) {
-        var expected = new Object[] {
-            new int[] { 1, 1 },
-            new int[] { 1, 2 },
-            new int[] { 1, 3 },
-            new int[] { 2, 1 },
-            new int[] { 2, 2 },
-            new int[] { 2, 3 },
-            new int[] { 3, 1 },
-            new int[] { 3, 2 },
-            new int[] { 3, 3 },
+        var expected = new Object[]{
+            new int[]{1, 1},
+            new int[]{1, 2},
+            new int[]{1, 3},
+            new int[]{2, 1},
+            new int[]{2, 2},
+            new int[]{2, 3},
+            new int[]{3, 1},
+            new int[]{3, 2},
+            new int[]{3, 3},
         };
 
-        then(new int[] { x, y }).isIn(expected);
+        then(new int[]{x, y}).isIn(expected);
     }
 
     /**
@@ -433,7 +434,7 @@ class ParameterizeTest {
      * 规定为: {@link IntRangeSource @IntRangeSource} 等范围定义注解只能包含一次, 且只能包含一个对应参数
      * </p>
      *
-     * @param range
+     * @param range 每次测试输入的测试纸
      */
     @IntRangeSource(from = 1, to = 3, closed = true, step = 1)
     @ParameterizedTest(name = "{index}: range = {0}")
@@ -444,7 +445,7 @@ class ParameterizeTest {
     /**
      * 测试从 Java 资源中读取 JSON 文件, 并反序列化为指定类型对象
      *
-     * @param user 从 JSON 反序列化后得到的对象
+     * @param group 从 JSON 反序列化后得到的对象
      */
     @ParameterizedTest
     @JsonClasspathSource("json/group.json")
@@ -452,7 +453,7 @@ class ParameterizeTest {
         // 确认 JSON 反序列化结果正确
         then(group).extracting("id", "name").isNotEqualTo(tuple(1001, "Students"));
         then(group.getUsers()).extracting("id", "name")
-                .containsExactly(tuple(1001001, "Alvin"), tuple(1001002, "Emma"));
+            .containsExactly(tuple(1001001, "Alvin"), tuple(1001002, "Emma"));
     }
 
     /**
@@ -494,7 +495,7 @@ class ParameterizeTest {
      * </p>
      */
     @AfterAll
-    static void deleteJsonFile() throws Exception {
+    static void deleteJsonFile() {
         var file = new File("user.json");
         if (file.exists()) {
             file.delete();
@@ -531,8 +532,8 @@ class ParameterizeTest {
     @JsonSource("{\"id\": 1001, \"name\": \"Alvin\"}")
     @ParameterizedTest
     void json_shouldDeserializedObjectFromJsonInStringAndGetCertainProperties(
-            @Property("id") Integer id,
-            @Property("name") String name) {
+        @Property("id") Integer id,
+        @Property("name") String name) {
         // 确认 JSON 反序列化结果正确
         then(id).isEqualTo(1001);
         then(name).isEqualTo("Alvin");
@@ -558,8 +559,8 @@ class ParameterizeTest {
     @ParameterizedTest
     @JsonClasspathSource(value = "json/group.json", data = "users")
     void json_shouldDeserializedObjectFromJsonAndGetAPartOfIt(
-            @Property("id") int id,
-            @Property("name") String name) {
+        @Property("id") int id,
+        @Property("name") String name) {
         // 确认 JSON 反序列化结果正确
         then(id).isIn(1001001, 1001002);
         then(name).isIn("Alvin", "Emma");

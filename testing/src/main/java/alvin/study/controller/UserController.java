@@ -1,8 +1,7 @@
 package alvin.study.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import alvin.study.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 
 /**
@@ -33,7 +32,7 @@ public class UserController {
     public String getUser(String name) {
         // 根据用户名获取用户对象
         var mayUser = userService.findByName(name);
-        if (!mayUser.isPresent()) {
+        if (mayUser.isEmpty()) {
             return "";
         }
 

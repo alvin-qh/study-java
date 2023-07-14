@@ -1,7 +1,5 @@
 package alvin.study.junit;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Order;
@@ -9,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试生命周期

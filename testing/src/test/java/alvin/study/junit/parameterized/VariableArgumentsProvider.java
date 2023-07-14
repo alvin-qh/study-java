@@ -1,12 +1,12 @@
 package alvin.study.junit.parameterized;
 
-import java.lang.reflect.Field;
-import java.util.stream.Stream;
-
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.support.AnnotationConsumer;
+
+import java.lang.reflect.Field;
+import java.util.stream.Stream;
 
 /**
  * 测试假设参数提供器
@@ -41,13 +41,14 @@ public class VariableArgumentsProvider implements ArgumentsProvider, AnnotationC
         // var testInstance = context.getTestInstance().get();
 
         // 从上下文中获取当前执行的测试类型
-        return context.getTestClass()
-                // 转换为指定的字段对象
-                .map(this::getField)
-                // 从字段中获取字段值
-                .map(this::getValue)
-                // 为获取到结果, 抛出异常
-                .orElseThrow(() -> new IllegalArgumentException("Failed to load test arguments"));
+        return context
+            .getTestClass()
+            // 转换为指定的字段对象
+            .map(this::getField)
+            // 从字段中获取字段值
+            .map(this::getValue)
+            // 为获取到结果, 抛出异常
+            .orElseThrow(() -> new IllegalArgumentException("Failed to load test arguments"));
     }
 
     /**
@@ -73,8 +74,8 @@ public class VariableArgumentsProvider implements ArgumentsProvider, AnnotationC
      * {@code Stream<Arguments>} 类型
      * </p>
      *
-     * @param clazz 所给测试类型
-     * @return 根据注解的 {@code value} 属性值表示的字段名获取字段对象
+     * @param field 所給測試字段
+     * @return 測試參數序列
      */
     @SuppressWarnings("unchecked")
     private Stream<Arguments> getValue(Field field) {
@@ -88,7 +89,8 @@ public class VariableArgumentsProvider implements ArgumentsProvider, AnnotationC
             }
             // 从字段获取字段值, 因为是静态字段, 所以无需类实例对象
             return (Stream<Arguments>) field.get(null);
-        } catch (Exception ignored) {} finally {
+        } catch (Exception ignored) {
+        } finally {
             if (!accessible) {
                 // 关闭无法直接访问字段的访问权限
                 field.setAccessible(false);

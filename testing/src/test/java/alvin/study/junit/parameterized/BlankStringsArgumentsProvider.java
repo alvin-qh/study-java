@@ -1,27 +1,26 @@
 package alvin.study.junit.parameterized;
 
-import java.util.stream.Stream;
-
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 
+import java.util.stream.Stream;
+
 /**
  * 为
- * {@link alvin.study.junit.ParameterizeTest#shouldReturnTrueForNullOrBlankStringsArgProvider(String)
- * ParameterizeTest.shouldReturnTrueForNullOrBlankStringsArgProvider(String)}
+ * {@code ParameterizeTest.shouldReturnTrueForNullOrBlankStringsArgProvider(String)}
  * 测试方法提供参数的类型
  */
 public class BlankStringsArgumentsProvider implements ArgumentsProvider {
     /**
      * 提供参数的方法, 参考
-     * {@link alvin.study.junit.ParameterizeTest#shouldReturnTrueForNullOrBlankStringsByMethod()
-     * ParameterizeTest.shouldReturnTrueForNullOrBlankStringsByMethod()} 方法
+     * {@code ParameterizeTest.shouldReturnTrueForNullOrBlankStringsByMethod()} 方法
      */
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
         return Stream.of(
             Arguments.of((String) null),
-            Arguments.of(""));
+            Arguments.of("")
+        );
     }
 }

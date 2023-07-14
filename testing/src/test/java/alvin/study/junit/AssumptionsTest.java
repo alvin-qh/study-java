@@ -1,15 +1,15 @@
 package alvin.study.junit;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalTime;
+
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.junit.jupiter.api.Assumptions.assumingThat;
-
-import java.time.LocalTime;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
 /**
  * 根据条件跳过测试
@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Test;
  * 跳过的测试会在测试报告中标记为 {@code SKIP}
  * </p>
  */
+@SuppressWarnings("DataFlowIssue")
 class AssumptionsTest {
     /**
      * {@link org.junit.jupiter.api.Assumptions#assumeTrue(boolean)

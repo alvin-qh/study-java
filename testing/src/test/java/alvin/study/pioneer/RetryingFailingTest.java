@@ -1,11 +1,11 @@
 package alvin.study.pioneer;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.junit.jupiter.api.Assertions.fail;
-
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junitpioneer.jupiter.RetryingTest;
+
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * 在测试失败时进行重试
@@ -79,8 +79,8 @@ class RetryingFailingTest {
 
         // 确认测试时间间隔, 第一次测试会失败, 第二次测试和第一次间隔 300 毫秒左右 (误差为 50 ms)
         then(System.currentTimeMillis() - timestamp)
-                .isGreaterThanOrEqualTo(300)
-                .isLessThan(350);
+            .isGreaterThanOrEqualTo(300)
+            .isLessThan(350);
     }
 
     private int retryTimes3 = 1;

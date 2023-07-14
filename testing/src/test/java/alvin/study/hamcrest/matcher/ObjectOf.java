@@ -1,10 +1,10 @@
 package alvin.study.hamcrest.matcher;
 
-import java.util.function.Function;
-
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
+
+import java.util.function.Function;
 
 /**
  * 对一个对象执行回调方法, 并对回调结果进行匹配
@@ -19,7 +19,7 @@ import org.hamcrest.TypeSafeDiagnosingMatcher;
  * ));
  * </pre>
  * </p>
- *
+ * <p>
  * 当前类型的超类 {@link TypeSafeDiagnosingMatcher} 表示一个"类型安全"并且"包含下一级
  * {@link Matcher}"的类型, 相当于结合了 {@link org.hamcrest.TypeSafeMatcher
  * TypeSafeMatcher} (类型安全 Matcher) 以及 {@link org.hamcrest.DiagnosingMatcher
@@ -33,16 +33,10 @@ public class ObjectOf<T, R> extends TypeSafeDiagnosingMatcher<T> {
     private final Matcher<? extends R> matcher;
 
     /**
-     * 设置匹配器
-     *
-     * @param mapper  一个 mapper 函数, 用来将给定对象进行 map 操作
-     * @param matcher 对 mapper 转换后的值进行匹配的下级匹配器
-     */
-    /**
      * 构造器, 传入 {@link Function} 用于对象转换, 传入 {@link Matcher} 对象对转换后的对象进行匹配
      *
-     * @param mapper   {@link Function} 对象, 用于对象转换
-     * @param matchers {@link Matcher} 对象, 用于对转换后的对象进行匹配
+     * @param mapper  {@link Function} 对象, 用于对象转换
+     * @param matcher {@link Matcher} 对象, 用于对转换后的对象进行匹配
      */
     protected ObjectOf(Function<? super T, ? extends R> mapper, Matcher<? extends R> matcher) {
         this.mapper = mapper;
@@ -89,10 +83,8 @@ public class ObjectOf<T, R> extends TypeSafeDiagnosingMatcher<T> {
      *
      * @param <T>     原始对象类型, 通过 {@code mapper} 参数转化为 {@code <R>} 类型对象
      * @param <R>     要匹配的对象类型
-     *
      * @param mapper  用于对象转换的 {@link Function} 对象
      * @param matcher 用于对转换后结果进行匹配的 {@link Matcher} 对象
-     *
      * @return {@link ObjectOf} 类型对象
      */
     public static <T, R> Matcher<T> objectOf(Function<? super T, ? extends R> mapper, Matcher<? extends R> matcher) {

@@ -1,13 +1,12 @@
 package alvin.study.model;
 
-import java.io.Serializable;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import lombok.Getter;
 import lombok.SneakyThrows;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * 用于测试的组实体类型
@@ -24,9 +23,9 @@ public class Group implements Serializable {
     private final List<User> users;
 
     public Group(
-            @JsonProperty("id") int id,
-            @JsonProperty("name") String name,
-            @JsonProperty("users") List<User> users) {
+        @JsonProperty("id") int id,
+        @JsonProperty("name") String name,
+        @JsonProperty("users") List<User> users) {
         this.id = id;
         this.name = name;
         this.users = users;

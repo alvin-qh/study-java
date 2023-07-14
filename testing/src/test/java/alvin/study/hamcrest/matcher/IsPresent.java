@@ -1,13 +1,15 @@
 package alvin.study.hamcrest.matcher;
 
-import static org.hamcrest.Matchers.not;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeDiagnosingMatcher;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeDiagnosingMatcher;
+import static org.hamcrest.Matchers.not;
 
 /**
  * 针对 {@link Optional} 对象进行匹配的 {@link Matcher} 接口对象
@@ -81,7 +83,7 @@ public class IsPresent<T> extends TypeSafeDiagnosingMatcher<Optional<? extends T
     @Override
     protected boolean matchesSafely(Optional<? extends T> item, Description mismatch) {
         // 如果 Optional 对象为空, 则匹配失败
-        if (item == null || item.isEmpty()) {
+        if (item.isEmpty()) {
             matchers = null;
             return false;
         }
@@ -126,7 +128,8 @@ public class IsPresent<T> extends TypeSafeDiagnosingMatcher<Optional<? extends T
      * @param <T> 任意类型
      * @return {@link IsPresent} 类型对象
      */
-    public static <T> Matcher<Optional<? extends T>> present() {
+    @Contract(" -> new")
+    public static <T> @NotNull Matcher<Optional<? extends T>> present() {
         return new IsPresent<>(null);
     }
 
@@ -136,7 +139,8 @@ public class IsPresent<T> extends TypeSafeDiagnosingMatcher<Optional<? extends T
      * @param <T> 任意类型
      * @return {@link org.hamcrest.core.IsNot IsNot(IsPresent)} 类型对象
      */
-    public static <T> Matcher<Optional<? extends T>> notPresent() {
+    @Contract(" -> new")
+    public static <T> @NotNull Matcher<Optional<? extends T>> notPresent() {
         return not(present());
     }
 
@@ -147,8 +151,9 @@ public class IsPresent<T> extends TypeSafeDiagnosingMatcher<Optional<? extends T
      * @param <T> 任意类型
      * @return {@link IsPresent} 类型对象
      */
+    @Contract("_ -> new")
     @SafeVarargs
-    public static <T> Matcher<Optional<? extends T>> presentThen(Matcher<? extends T>... matcher) {
+    public static <T> @NotNull Matcher<Optional<? extends T>> presentThen(Matcher<? extends T>... matcher) {
         return new IsPresent<>(List.of(matcher));
     }
 }

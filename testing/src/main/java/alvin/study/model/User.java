@@ -1,12 +1,11 @@
 package alvin.study.model;
 
-import java.io.Serializable;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import lombok.Getter;
 import lombok.SneakyThrows;
+
+import java.io.Serializable;
 
 /**
  * 用于测试的用户实体类型
@@ -20,8 +19,8 @@ public class User implements Serializable {
     private final String name;
 
     public User(
-            @JsonProperty("id") int id,
-            @JsonProperty("name") String name) {
+        @JsonProperty("id") int id,
+        @JsonProperty("name") String name) {
         this.id = id;
         this.name = name;
     }

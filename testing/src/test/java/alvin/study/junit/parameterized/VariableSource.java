@@ -1,12 +1,12 @@
 package alvin.study.junit.parameterized;
 
+import org.junit.jupiter.params.provider.ArgumentsSource;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import org.junit.jupiter.params.provider.ArgumentsSource;
 
 /**
  * 定义一个注解, 其注解在测试方法上, 相当于在测试方法上添加了 {@link ArgumentsSource @ArgumentsSource}
@@ -19,8 +19,7 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
  *
  * <p>
  * 注意, {@link #value()} 参数指定的字段必须为 {@code static}, 这一点可以参考
- * {@link VariableArgumentsProvider#getValue(java.lang.reflect.Field)}
- * VariableArgumentsProvider.getValue(Field) 方法中对字段取值的方式
+ * {@code VariableArgumentsProvider.getValue(Field) 方法中对字段取值的方式
  * </p>
  */
 @Documented

@@ -1,12 +1,11 @@
 package alvin.study.assertj;
 
-import static alvin.study.assertj.custom.Assertions.assertThat;
-import static alvin.study.assertj.custom.Assertions.then;
-
-import org.junit.jupiter.api.Test;
-
 import alvin.study.assertj.custom.SoftAssertions;
 import alvin.study.model.User;
+import org.junit.jupiter.api.Test;
+
+import static alvin.study.assertj.custom.Assertions.assertThat;
+import static alvin.study.assertj.custom.Assertions.then;
 
 /**
  * 测试自定义断言
@@ -29,9 +28,10 @@ class CustomAssertionTest {
      */
     @Test
     void standard_shouldCustomAssertWorked() {
-        assertThat(user).isNotNull();
-        assertThat(user).hasId(1001);
-        assertThat(user).hasName("Alvin");
+        assertThat(user)
+            .isNotNull()
+            .hasId(1001)
+            .hasName("Alvin");
     }
 
     /**
@@ -43,9 +43,10 @@ class CustomAssertionTest {
      */
     @Test
     void bdd_shouldCustomAssertWorked() {
-        assertThat(user).isNotNull();
-        then(user).hasId(1001);
-        then(user).hasName("Alvin");
+        then(user)
+            .isNotNull()
+            .hasId(1001)
+            .hasName("Alvin");
     }
 
     /**
@@ -58,9 +59,10 @@ class CustomAssertionTest {
     @Test
     void softly_shouldCustomAssertWorked() {
         SoftAssertions.assertSoftly(softly -> {
-            softly.assertThat(user).isNotNull();
-            softly.assertThat(user).hasId(1001);
-            softly.assertThat(user).hasName("Alvin");
+            softly.assertThat(user)
+                .isNotNull()
+                .hasName("Alvin")
+                .hasId(1001);
         });
     }
 }
