@@ -6,6 +6,7 @@ import lombok.Data;
  * 用于测试注入的类型
  */
 @Data
+@SuppressWarnings("unused")
 public class InjectDemo {
     private final String value;
 

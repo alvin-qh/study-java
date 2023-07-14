@@ -1,9 +1,8 @@
 package alvin.study.bind;
 
+import alvin.study.bind.inte.BindDemo;
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
-
-import alvin.study.bind.inte.BindDemo;
 
 /**
  * 为绑定关系命名
@@ -56,7 +55,7 @@ public class NamedBindingModule extends AbstractModule {
      * </p>
      *
      * <p>
-     * {@link Names#named(String)} 方法产生一个 {@link javax.inject.Named @Named} 注解对象,
+     * {@link Names#named(String)} 方法产生一个 {@link jakarta.inject.Named @Named} 注解对象,
      * 可以通过该对象获取绑定时设置的名称
      * </p>
      *
@@ -90,15 +89,15 @@ public class NamedBindingModule extends AbstractModule {
     protected void configure() {
         // 通过名称 A 将 BindDemo 接口绑定在 BindDemoA 类型
         bind(BindDemo.class)
-                .annotatedWith(Names.named("A"))
-                .to(BindDemoA.class)
-                .asEagerSingleton();
+            .annotatedWith(Names.named("A"))
+            .to(BindDemoA.class)
+            .asEagerSingleton();
 
         // 通过名称 B 将 BindDemo 接口绑定在 BindDemoB 类型
         bind(BindDemo.class)
-                .annotatedWith(Names.named("B"))
-                .to(BindDemoB.class)
-                .asEagerSingleton();
+            .annotatedWith(Names.named("B"))
+            .to(BindDemoB.class)
+            .asEagerSingleton();
     }
 
     /**

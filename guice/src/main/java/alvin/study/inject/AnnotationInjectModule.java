@@ -1,14 +1,12 @@
 package alvin.study.inject;
 
-import javax.inject.Inject;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
-
 import alvin.study.inject.anno.A;
 import alvin.study.inject.anno.B;
 import alvin.study.inject.bean.InjectDemo;
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
+import jakarta.inject.Inject;
 import lombok.Data;
 import lombok.Getter;
 
@@ -17,22 +15,21 @@ import lombok.Getter;
  *
  * @see alvin.study.bind.AnnotationBindingModule
  */
+@SuppressWarnings("unused")
 public class AnnotationInjectModule extends AbstractModule {
     /**
      * 配置模块
      *
      * <p>
-     * {@link AbstractModule#bind(Class)} 用于绑定一个类型, 返回一个
-     * {@link com.google.inject.binder.AnnotatedBindingBuilder
+     * {@link AbstractModule#bind(Class)} 用于绑定一个类型, 返回一个 {@link com.google.inject.binder.AnnotatedBindingBuilder
      * AnnotatedBindingBuilder} 接口对象, 用于进一步配置类型绑定的目标
      * </p>
      *
      * <p>
      * {@link com.google.inject.binder.AnnotatedBindingBuilder#annotatedWith(Class)
-     * AnnotatedBindingBuilder.annotatedWith(Class&lt;? extends Annotation&gt;)}
-     * 表示绑定范围由一个注解来确定, 即同一个类型可以通过不同的注解类型, 绑定到不同的目标上, 返回一个
-     * {@link com.google.inject.binder.LinkedBindingBuilder LinkedBindingBuilder}
-     * 接口对象
+     * AnnotatedBindingBuilder.annotatedWith(Class&lt;? extends Annotation&gt;)} 表示绑定范围由一个注解来确定,
+     * 即同一个类型可以通过不同的注解类型, 绑定到不同的目标上, 返回一个
+     * {@link com.google.inject.binder.LinkedBindingBuilder LinkedBindingBuilder} 接口对象
      * </p>
      *
      * <p>
@@ -49,8 +46,8 @@ public class AnnotationInjectModule extends AbstractModule {
     protected void configure() {
         // 绑定时使用注解: 将类型通过注解 A 绑定到实例上
         bind(InjectDemo.class)
-                .annotatedWith(A.class)
-                .toInstance(new InjectDemo("inject_by_a"));
+            .annotatedWith(A.class)
+            .toInstance(new InjectDemo("inject_by_a"));
     }
 
     /**

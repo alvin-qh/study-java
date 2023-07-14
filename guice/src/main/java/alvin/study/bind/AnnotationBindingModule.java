@@ -1,10 +1,9 @@
 package alvin.study.bind;
 
-import com.google.inject.AbstractModule;
-
 import alvin.study.bind.anno.A;
 import alvin.study.bind.anno.B;
 import alvin.study.bind.inte.BindDemo;
+import com.google.inject.AbstractModule;
 
 /**
  * 通过<b>注解</b>标识绑定关系
@@ -84,15 +83,15 @@ public class AnnotationBindingModule extends AbstractModule {
     protected void configure() {
         // 将 BindDemo 接口和 BindDemoA 类型绑定, 通过 A 注解标记
         bind(BindDemo.class)
-                .annotatedWith(A.class)
-                .to(BindDemoA.class)
-                .asEagerSingleton();
+            .annotatedWith(A.class)
+            .to(BindDemoA.class)
+            .asEagerSingleton();
 
         // 将 BindDemo 接口和 BindDemoB 类型绑定, 通过 B 注解标记
         bind(BindDemo.class)
-                .annotatedWith(B.class)
-                .to(BindDemoB.class)
-                .asEagerSingleton();
+            .annotatedWith(B.class)
+            .to(BindDemoB.class)
+            .asEagerSingleton();
     }
 
     /**

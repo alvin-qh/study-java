@@ -1,12 +1,10 @@
 package alvin.study.bind;
 
-import java.util.Random;
-
-import javax.inject.Provider;
-
-import com.google.inject.AbstractModule;
-
 import alvin.study.bind.inte.BindDemo;
+import com.google.inject.AbstractModule;
+import jakarta.inject.Provider;
+
+import java.util.Random;
 
 /**
  * 绑定 Provider
@@ -78,8 +76,8 @@ public class ProviderBindingModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(BindDemo.class)
-                .toProvider(BindDemoProvider.class)
-                .asEagerSingleton();
+            .toProvider(BindDemoProvider.class)
+            .asEagerSingleton();
     }
 
     /**

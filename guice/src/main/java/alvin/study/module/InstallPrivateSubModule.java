@@ -1,8 +1,7 @@
 package alvin.study.module;
 
-import com.google.inject.AbstractModule;
-
 import alvin.study.module.submodule.SubPrivateModule;
+import com.google.inject.AbstractModule;
 
 /**
  * 安装私有子模块

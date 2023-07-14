@@ -1,20 +1,17 @@
 package alvin.study.module;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
-import org.junit.jupiter.api.Test;
-
+import alvin.study.BaseModuleTest;
+import alvin.study.module.bean.ModuleDemo;
 import com.google.inject.ConfigurationException;
 import com.google.inject.Key;
 import com.google.inject.Module;
 import com.google.inject.name.Names;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import org.junit.jupiter.api.Test;
 
-import alvin.study.BaseModuleTest;
-import alvin.study.module.bean.ModuleDemo;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 class InstallPrivateSubModuleTest extends BaseModuleTest {
     /**
@@ -30,9 +27,10 @@ class InstallPrivateSubModuleTest extends BaseModuleTest {
     // @Inject
     // @Named("Hidden")
     // private ModuleDemo hiddenBean;
-
     @Override
-    protected Module getModule() { return new InstallPrivateSubModule(); }
+    protected Module getModule() {
+        return new InstallPrivateSubModule();
+    }
 
     /**
      * 确认 {@code exposedBean} 字段注入正确

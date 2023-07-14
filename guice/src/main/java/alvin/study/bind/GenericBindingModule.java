@@ -1,17 +1,16 @@
 package alvin.study.bind;
 
-import static java.util.Arrays.asList;
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
+import com.google.inject.TypeLiteral;
+import jakarta.inject.Singleton;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.inject.Singleton;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.TypeLiteral;
+import static java.util.Arrays.asList;
 
 /**
  * 根据<b>泛型参数</b>匹配注入对象类型
@@ -49,6 +48,7 @@ import com.google.inject.TypeLiteral;
  * Injector.injectMembers(Object)} 方法将绑定关系中定义的实例注入到目标对象的字段中
  * </p>
  */
+@SuppressWarnings("unused")
 public class GenericBindingModule extends AbstractModule {
     /**
      * 配置模块
@@ -91,10 +91,13 @@ public class GenericBindingModule extends AbstractModule {
     @Override
     protected void configure() {
         // 为 Set<Integer> 泛型接口绑定类型
-        bind(new TypeLiteral<Set<Integer>>() {}).to(new TypeLiteral<HashSet<Integer>>() {}).asEagerSingleton();
+        bind(new TypeLiteral<Set<Integer>>() {
+        }).to(new TypeLiteral<HashSet<Integer>>() {
+        }).asEagerSingleton();
 
         // 为 Set<Double> 泛型接口绑定对象实例
-        bind(new TypeLiteral<Set<Double>>() {}).toInstance(new TreeSet<>(asList(1.1, 1.2, 1.3, 1.4)));
+        bind(new TypeLiteral<Set<Double>>() {
+        }).toInstance(new TreeSet<>(asList(1.1, 1.2, 1.3, 1.4)));
     }
 
     /**

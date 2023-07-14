@@ -1,14 +1,12 @@
 package alvin.study.inject;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-
+import alvin.study.inject.bean.InjectDemo;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Names;
-
-import alvin.study.inject.bean.InjectDemo;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import lombok.Getter;
 
 /**
@@ -27,7 +25,7 @@ public class NamedInjectModule extends AbstractModule {
      * </p>
      *
      * <p>
-     * {@link Names#named(String)} 方法产生一个 {@link javax.inject.Named @Named} 注解对象,
+     * {@link Names#named(String)} 方法产生一个 {@link jakarta.inject.Named @Named} 注解对象,
      * 可以通过该对象获取绑定时设置的名称
      * </p>
      *
@@ -48,7 +46,7 @@ public class NamedInjectModule extends AbstractModule {
     protected void configure() {
         // 绑定时使用名称: 将类型通过名称 "A" 绑定到实例上
         bind(InjectDemo.class).annotatedWith(Names.named("A"))
-                .toInstance(new InjectDemo("inject_by_a"));
+            .toInstance(new InjectDemo("inject_by_a"));
     }
 
     /**

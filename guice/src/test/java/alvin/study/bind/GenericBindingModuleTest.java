@@ -1,21 +1,18 @@
 package alvin.study.bind;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import alvin.study.BaseModuleTest;
+import com.google.inject.Key;
+import com.google.inject.Module;
+import com.google.inject.TypeLiteral;
+import jakarta.inject.Inject;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.inject.Inject;
-
-import org.junit.jupiter.api.Test;
-
-import com.google.inject.Key;
-import com.google.inject.Module;
-import com.google.inject.TypeLiteral;
-
-import alvin.study.BaseModuleTest;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link GenericBindingModule} 类型
@@ -40,7 +37,9 @@ class GenericBindingModuleTest extends BaseModuleTest {
     private Set<String> stringSet;
 
     @Override
-    protected Module getModule() { return new GenericBindingModule(); }
+    protected Module getModule() {
+        return new GenericBindingModule();
+    }
 
     /**
      * 测试注入的对象符合预期
@@ -63,9 +62,12 @@ class GenericBindingModuleTest extends BaseModuleTest {
      */
     @Test
     void bind_shouldGetObjectByInjector() {
-        var intSet = injector.getInstance(Key.get(new TypeLiteral<Set<Integer>>() {}));
-        var doubleSet = injector.getInstance(Key.get(new TypeLiteral<Set<Double>>() {}));
-        var strSet = injector.getInstance(Key.get(new TypeLiteral<Set<String>>() {}));
+        var intSet = injector.getInstance(Key.get(new TypeLiteral<Set<Integer>>() {
+        }));
+        var doubleSet = injector.getInstance(Key.get(new TypeLiteral<Set<Double>>() {
+        }));
+        var strSet = injector.getInstance(Key.get(new TypeLiteral<Set<String>>() {
+        }));
 
         then(intSet).isSameAs(this.intSet);
         then(doubleSet).isSameAs(this.doubleSet);

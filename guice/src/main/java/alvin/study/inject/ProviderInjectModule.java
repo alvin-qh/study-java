@@ -1,13 +1,11 @@
 package alvin.study.inject;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.inject.Singleton;
-
+import alvin.study.inject.bean.InjectDemo;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-
-import alvin.study.inject.bean.InjectDemo;
+import jakarta.inject.Inject;
+import jakarta.inject.Provider;
+import jakarta.inject.Singleton;
 import lombok.Data;
 
 /**
@@ -32,6 +30,7 @@ import lombok.Data;
  *
  * @see alvin.study.bind.ProviderBindingModule
  */
+@SuppressWarnings("unused")
 public class ProviderInjectModule extends AbstractModule {
     /**
      * 定义一个包装为 {@link Provider} 方法

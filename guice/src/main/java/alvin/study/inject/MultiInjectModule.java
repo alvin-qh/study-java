@@ -1,12 +1,11 @@
 package alvin.study.inject;
 
+import alvin.study.inject.bean.InjectDemo;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
 import com.google.inject.multibindings.MapBinder;
 import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Names;
-
-import alvin.study.inject.bean.InjectDemo;
 
 /**
  * 多实例绑定注入
@@ -79,7 +78,7 @@ public class MultiInjectModule extends AbstractModule {
      * </p>
      *
      * <p>
-     * {@link MapBinder#addBinding(String)} 用于添加一个绑定关系, 并给出一个 {@code Key} 值作为标识,
+     * {@link MapBinder#addBinding(Object)} 用于添加一个绑定关系, 并给出一个 {@code Key} 值作为标识,
      * 返回一个 {@link com.google.inject.binder.LinkedBindingBuilder
      * LinkedBindingBuilder} 对象
      * </p>

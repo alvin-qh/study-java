@@ -1,32 +1,30 @@
 package alvin.study.inject;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import javax.inject.Inject;
-
-import org.junit.jupiter.api.Test;
-
-import com.google.inject.Module;
-
 import alvin.study.BaseModuleTest;
 import alvin.study.inject.ProviderInjectModule.InjectProvider;
 import alvin.study.inject.ProviderInjectModule.InjectValue;
+import com.google.inject.Inject;
+import com.google.inject.Module;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link ProviderInjectModule} 模块
  *
  * <p>
  * 确认在模块中通过 {@link com.google.inject.Provides @Provides} 注解标记的方法可以被包装为一个
- * {@link javax.inject.Provider Provider} 对象
+ * {@link jakarta.inject.Provider Provider} 对象
  * </p>
  *
  * <p>
- * 确认对于存在一个 {@link javax.inject.Provider Provider<T>} 类型时, 可以注入整个
- * {@link javax.inject.Provider Provider<T>} 对象, 也可以直接注入 {@code T} 类型对象,
- * 后者的特殊时会将 {@code T} 对象的实例化推迟到调用 {@link javax.inject.Provider#get()
+ * 确认对于存在一个 {@link jakarta.inject.Provider Provider<T>} 类型时, 可以注入整个
+ * {@link jakarta.inject.Provider Provider<T>} 对象, 也可以直接注入 {@code T} 类型对象,
+ * 后者的特殊时会将 {@code T} 对象的实例化推迟到调用 {@link jakarta.inject.Provider#get()
  * Provider.get()} 方法的时候
  * </p>
  */
+@SuppressWarnings("unused")
 class ProviderInjectModuleTest extends BaseModuleTest {
     /**
      * 该对象中直接注入了目标 bean
@@ -35,16 +33,18 @@ class ProviderInjectModuleTest extends BaseModuleTest {
     private InjectValue injectValue;
 
     /**
-     * 该对象中注入了目标 bean 的一个 {@link javax.inject.Provider Provider} 对象
+     * 该对象中注入了目标 bean 的一个 {@link jakarta.inject.Provider Provider} 对象
      */
     @Inject
     private InjectProvider injectProvider;
 
     @Override
-    protected Module getModule() { return new ProviderInjectModule(); }
+    protected Module getModule() {
+        return new ProviderInjectModule();
+    }
 
     /**
-     * 确认注入的对象或对象的 {@link javax.inject.Provider}
+     * 确认注入的对象或对象的 {@link jakarta.inject.Provider}
      */
     @Test
     void inject_shouldInjectValueOrProvider() {

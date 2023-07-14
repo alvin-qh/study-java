@@ -1,22 +1,19 @@
 package alvin.study.aspect.interceptor;
 
+import alvin.study.aspect.anno.Event;
+import alvin.study.aspect.anno.EventHandler;
+import alvin.study.aspect.anno.Handler;
+import com.google.inject.name.Named;
+import jakarta.inject.Inject;
+import lombok.SneakyThrows;
+import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
+
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import javax.inject.Inject;
-
-import org.aopalliance.intercept.MethodInterceptor;
-import org.aopalliance.intercept.MethodInvocation;
-
-import com.google.inject.name.Named;
-
-import alvin.study.aspect.anno.Event;
-import alvin.study.aspect.anno.EventHandler;
-import alvin.study.aspect.anno.Handler;
-import lombok.SneakyThrows;
 
 /**
  * 实现一个拦截器类
@@ -34,8 +31,7 @@ public class EventInterceptor implements MethodInterceptor {
      * <p>
      * Key 为 {@link EventHandler#handler(Object, Method, Object[])} 方法上
      * {@link Handler @Handler} 注解的 {@code name} 属性. 参考:
-     * {@link alvin.study.aspect.AspectModule.HandlerDemo#handler(Object, Method, Object[])
-     * HandlerDemo.handler(Object, Method, Object[])} 方法
+     * {@code HandlerDemo.handler(Object, Method, Object[])} 方法
      * </p>
      */
     private Map<String, EventHandler> handlers;
@@ -44,7 +40,6 @@ public class EventInterceptor implements MethodInterceptor {
      * 执行方法拦截
      */
     @Override
-    @SuppressWarnings("java:S1181")
     public Object invoke(MethodInvocation invocation) throws Throwable {
         try {
             // 获取被拦截的方法
@@ -60,7 +55,8 @@ public class EventInterceptor implements MethodInterceptor {
                     handler.handler(invocation.getThis(), invocation.getMethod(), invocation.getArguments());
                 }
             }
-        } catch (Throwable ignore) {}
+        } catch (Throwable ignore) {
+        }
 
         // 执行被拦截的方法, 返回执行结果
         return invocation.proceed();
@@ -92,8 +88,8 @@ public class EventInterceptor implements MethodInterceptor {
      *
      * @param handler {@link EventHandler} 接口对象
      * @return {@link EventHandler#handler(Object, Method, Object[])
-     *         EventHandler.handler(...)} 方法上 {@link Handler @Handler} 注解的
-     *         {@code name} 属性值
+     * EventHandler.handler(...)} 方法上 {@link Handler @Handler} 注解的
+     * {@code name} 属性值
      */
     @SneakyThrows
     private static String getHandlerName(EventHandler handler) {

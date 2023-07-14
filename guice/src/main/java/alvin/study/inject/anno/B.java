@@ -16,4 +16,5 @@ import com.google.inject.BindingAnnotation;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @BindingAnnotation
-public @interface B {}
+public @interface B {
+}

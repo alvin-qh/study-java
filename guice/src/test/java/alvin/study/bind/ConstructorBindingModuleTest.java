@@ -1,16 +1,13 @@
 package alvin.study.bind;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import javax.inject.Inject;
-
-import org.junit.jupiter.api.Test;
-
-import com.google.inject.Module;
-
 import alvin.study.BaseModuleTest;
 import alvin.study.bind.ConstructorBindingModule.BindDemoImpl;
 import alvin.study.bind.inte.BindDemo;
+import com.google.inject.Module;
+import jakarta.inject.Inject;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link ConstructorBindingModule} 类型
@@ -23,7 +20,9 @@ class ConstructorBindingModuleTest extends BaseModuleTest {
     private BindDemo bindDemo;
 
     @Override
-    protected Module getModule() { return new ConstructorBindingModule(); }
+    protected Module getModule() {
+        return new ConstructorBindingModule();
+    }
 
     /**
      * 测试注入的对象符合预期

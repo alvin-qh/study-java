@@ -1,18 +1,15 @@
 package alvin.study.aspect;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import java.time.Instant;
-
-import javax.inject.Inject;
-
-import org.junit.jupiter.api.Test;
-
-import com.google.inject.Module;
-
 import alvin.study.BaseModuleTest;
 import alvin.study.aspect.AspectModule.EventDemo;
 import alvin.study.aspect.AspectModule.HandlerDemo;
+import com.google.inject.Module;
+import jakarta.inject.Inject;
+import org.junit.jupiter.api.Test;
+
+import java.time.Instant;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link AspectModule} 模块, 拦截器的使用
@@ -27,7 +24,9 @@ class AspectModuleTest extends BaseModuleTest {
     private HandlerDemo handlerDemo;
 
     @Override
-    protected Module getModule() { return new AspectModule(); }
+    protected Module getModule() {
+        return new AspectModule();
+    }
 
     /**
      * 测试方法拦截器是否工作

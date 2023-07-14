@@ -1,11 +1,9 @@
 package alvin.study.inject;
 
-import javax.inject.Inject;
-
+import alvin.study.inject.bean.InjectDemo;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-
-import alvin.study.inject.bean.InjectDemo;
+import jakarta.inject.Inject;
 import lombok.Getter;
 
 /**
@@ -19,7 +17,7 @@ import lombok.Getter;
  */
 public class SimpleInjectModule extends AbstractModule {
     /**
-     * 以 {@link javax.inject.Provider Provider} 方法提供被注入对象
+     * 以 {@link jakarta.inject.Provider Provider} 方法提供被注入对象
      */
     @Provides
     public InjectDemo provideInjectDemo() {
@@ -81,6 +79,8 @@ public class SimpleInjectModule extends AbstractModule {
          * @param bean 注入的参数
          */
         @Inject
-        public void setInjector(InjectDemo bean) { this.bean = bean; }
+        public void setInjector(InjectDemo bean) {
+            this.bean = bean;
+        }
     }
 }

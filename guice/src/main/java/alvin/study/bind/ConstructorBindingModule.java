@@ -1,12 +1,10 @@
 package alvin.study.bind;
 
-import javax.inject.Singleton;
-
+import alvin.study.bind.inte.BindDemo;
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
-
-import alvin.study.bind.inte.BindDemo;
+import jakarta.inject.Singleton;
 
 /**
  * 通过<b>构造器</b>进行绑定
@@ -80,13 +78,13 @@ public class ConstructorBindingModule extends AbstractModule {
             var constructor = BindDemoImpl.class.getConstructor(String.class);
             // 通过构造器将 BindDemo 接口和 BindDemoImpl 类型进行绑定
             bind(BindDemo.class)
-                    .toConstructor(constructor)
-                    .asEagerSingleton();
+                .toConstructor(constructor)
+                .asEagerSingleton();
 
             // 将标记为 "Value" 的字符串注入到 BindDemoImpl 的构造器参数中
             bind(String.class)
-                    .annotatedWith(Names.named("Value"))
-                    .toInstance("ConstructorBinding");
+                .annotatedWith(Names.named("Value"))
+                .toInstance("ConstructorBinding");
         } catch (Exception e) {
             addError(e);
         }
@@ -97,7 +95,7 @@ public class ConstructorBindingModule extends AbstractModule {
      */
     @Singleton
     static class BindDemoImpl implements BindDemo {
-        private String value;
+        private final String value;
 
         /**
          * 用于注入操作的构造器

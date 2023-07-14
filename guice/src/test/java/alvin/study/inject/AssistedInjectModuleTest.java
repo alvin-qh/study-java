@@ -1,15 +1,12 @@
 package alvin.study.inject;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import javax.inject.Inject;
-
-import org.junit.jupiter.api.Test;
-
-import com.google.inject.Module;
-
 import alvin.study.BaseModuleTest;
 import alvin.study.inject.AssistedInjectModule.ConnectionFactory;
+import com.google.inject.Module;
+import jakarta.inject.Inject;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link AssistedInjectModule} 模块
@@ -27,7 +24,9 @@ class AssistedInjectModuleTest extends BaseModuleTest {
     private ConnectionFactory factory;
 
     @Override
-    protected Module getModule() { return new AssistedInjectModule(); }
+    protected Module getModule() {
+        return new AssistedInjectModule();
+    }
 
     /**
      * 验证通过工厂方法创建 {@link alvin.study.inject.AssistedInjectModule.Connection

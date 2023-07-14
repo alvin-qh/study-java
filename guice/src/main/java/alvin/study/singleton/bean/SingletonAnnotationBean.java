@@ -1,6 +1,6 @@
 package alvin.study.singleton.bean;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /**
  * 用于演示注入的类型

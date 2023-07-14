@@ -1,10 +1,10 @@
 package alvin.study.bind.anno;
 
+import com.google.inject.BindingAnnotation;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-
-import com.google.inject.BindingAnnotation;
 
 /**
  * 该注解用于区分同一类型的不同绑定关系
@@ -16,4 +16,5 @@ import com.google.inject.BindingAnnotation;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @BindingAnnotation
-public @interface B {}
+public @interface B {
+}

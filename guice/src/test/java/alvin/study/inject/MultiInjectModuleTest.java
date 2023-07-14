@@ -1,19 +1,16 @@
 package alvin.study.inject;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import alvin.study.BaseModuleTest;
+import alvin.study.inject.bean.InjectDemo;
+import com.google.inject.Module;
+import com.google.inject.name.Named;
+import jakarta.inject.Inject;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 import java.util.Set;
 
-import javax.inject.Inject;
-
-import org.junit.jupiter.api.Test;
-
-import com.google.inject.Module;
-import com.google.inject.name.Named;
-
-import alvin.study.BaseModuleTest;
-import alvin.study.inject.bean.InjectDemo;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link MultiInjectModule} 模块
@@ -41,7 +38,9 @@ class MultiInjectModuleTest extends BaseModuleTest {
     private Map<String, InjectDemo> boundMap;
 
     @Override
-    protected Module getModule() { return new MultiInjectModule(); }
+    protected Module getModule() {
+        return new MultiInjectModule();
+    }
 
     /**
      * 确认注入的集合内容符合设定的绑定关系

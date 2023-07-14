@@ -1,17 +1,14 @@
 package alvin.study.singleton;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Provider;
-
-import org.junit.jupiter.api.Test;
-
-import com.google.inject.Guice;
-
 import alvin.study.singleton.bean.SingletonAnnotationBean;
 import alvin.study.singleton.bean.SingletonBean;
+import com.google.inject.Guice;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.inject.Provider;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link SingletonModule} 模块
@@ -24,7 +21,7 @@ import alvin.study.singleton.bean.SingletonBean;
  *
  * <p>
  * 对于 {@link SingletonAnnotationBean} 类型, 由于其标识了
- * {@link javax.inject.Singleton @Singleton} 注解, 所以无论
+ * {@link jakarta.inject.Singleton @Singleton} 注解, 所以无论
  * {@link SingletonModule#SingletonModule(boolean)} 构造器的参数为何, 该类型一直为单例模式
  * </p>
  */

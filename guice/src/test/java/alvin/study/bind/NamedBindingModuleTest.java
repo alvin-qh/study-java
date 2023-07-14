@@ -1,20 +1,17 @@
 package alvin.study.bind;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import javax.inject.Inject;
-
-import org.junit.jupiter.api.Test;
-
-import com.google.inject.Key;
-import com.google.inject.Module;
-import com.google.inject.name.Named;
-import com.google.inject.name.Names;
-
 import alvin.study.BaseModuleTest;
 import alvin.study.bind.NamedBindingModule.BindDemoA;
 import alvin.study.bind.NamedBindingModule.BindDemoB;
 import alvin.study.bind.inte.BindDemo;
+import com.google.inject.Key;
+import com.google.inject.Module;
+import com.google.inject.name.Names;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link NamedBindingModule} 类型
@@ -35,7 +32,9 @@ class NamedBindingModuleTest extends BaseModuleTest {
     private BindDemo bindDemoB;
 
     @Override
-    protected Module getModule() { return new NamedBindingModule(); }
+    protected Module getModule() {
+        return new NamedBindingModule();
+    }
 
     /**
      * 测试注入的对象符合预期

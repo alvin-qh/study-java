@@ -1,14 +1,12 @@
 package alvin.study.bind;
 
-import javax.inject.Singleton;
-
+import alvin.study.bind.inte.BindDemo;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
 import com.google.inject.multibindings.MapBinder;
 import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Names;
-
-import alvin.study.bind.inte.BindDemo;
+import jakarta.inject.Singleton;
 
 /**
  * 多实例绑定
@@ -82,7 +80,7 @@ public class MultiBinderModule extends AbstractModule {
      * </p>
      *
      * <p>
-     * {@link MapBinder#addBinding(String)} 用于添加一个绑定关系, 并给出一个 {@code Key} 值作为标识,
+     * {@link MapBinder#addBinding(Object)} 用于添加一个绑定关系, 并给出一个 {@code Key} 值作为标识,
      * 返回一个 {@link com.google.inject.binder.LinkedBindingBuilder
      * LinkedBindingBuilder} 对象
      * </p>
@@ -110,15 +108,14 @@ public class MultiBinderModule extends AbstractModule {
         var boundMap = MapBinder.newMapBinder(binder(), String.class, BindDemo.class, Names.named("boundMap"));
         boundMap.addBinding("A").toInstance(new BindDemoImpl("toInstanceA")); // 将对象实例绑定在 Key A 上
         boundMap.addBinding("B").to(BindDemoImpl.class); // 将类型绑定在 Key B 上
-        boundMap.addBinding("C")
-                .toProvider(() -> new BindDemoImpl("toInstanceC"))
-                .asEagerSingleton();   // 将 Provider 绑定在 Key C 上
+        boundMap.addBinding("C").toProvider(() -> new BindDemoImpl("toInstanceC")).asEagerSingleton();   // 将 Provider 绑定在 Key C 上
     }
 
     /**
      * 用于绑定的演示类型
      */
     @Singleton
+    @SuppressWarnings("unused")
     static class BindDemoImpl implements BindDemo {
         private final String value;
 

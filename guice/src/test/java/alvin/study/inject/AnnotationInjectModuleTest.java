@@ -1,16 +1,13 @@
 package alvin.study.inject;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import javax.inject.Inject;
-
-import org.junit.jupiter.api.Test;
-
-import com.google.inject.Module;
-
 import alvin.study.BaseModuleTest;
 import alvin.study.inject.AnnotationInjectModule.InjectByA;
 import alvin.study.inject.AnnotationInjectModule.InjectByB;
+import com.google.inject.Module;
+import jakarta.inject.Inject;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link AnnotationInjectModule} 模块
@@ -29,7 +26,9 @@ class AnnotationInjectModuleTest extends BaseModuleTest {
     private InjectByB injectByB;
 
     @Override
-    protected Module getModule() { return new AnnotationInjectModule(); }
+    protected Module getModule() {
+        return new AnnotationInjectModule();
+    }
 
     /**
      * 确认通过不同注解注入的字段符合预期

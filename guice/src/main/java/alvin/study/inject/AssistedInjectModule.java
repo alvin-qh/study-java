@@ -1,13 +1,12 @@
 package alvin.study.inject;
 
-import javax.inject.Named;
-
 import com.google.common.base.Strings;
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.name.Names;
+import jakarta.inject.Named;
 
 /**
  * 参数辅助注入
@@ -26,7 +25,7 @@ import com.google.inject.name.Names;
  * {@link Assisted @Assisted} 注解, 标记在构造器参数上, 表示这个参数需要手动传递, 其余未标记的参数会被自动注入
  * </li>
  * <li>
- * 使用辅助注入的类型无法直接通过 {@link javax.inject.Inject @Inject} 注解注入, 必须通过一个工厂类进行构建
+ * 使用辅助注入的类型无法直接通过 {@link jakarta.inject.Inject @Inject} 注解注入, 必须通过一个工厂类进行构建
  * </li>
  * </ul>
  * </p>
@@ -59,15 +58,16 @@ public class AssistedInjectModule extends AbstractModule {
 
         // 通过指定名称绑定一组值
         bind(String.class).annotatedWith(Names.named("url"))
-                .toInstance("alvin.edu");
+            .toInstance("alvin.edu");
 
         bind(Integer.class).annotatedWith(Names.named("timeout"))
-                .toInstance(1000);
+            .toInstance(1000);
     }
 
     /**
      * 需要进行辅助注入的类
      */
+    @SuppressWarnings("unused")
     static class Connection {
         private final String url;
         private final int timeout;
@@ -87,10 +87,10 @@ public class AssistedInjectModule extends AbstractModule {
          */
         @AssistedInject
         public Connection(
-                @Named("url") String url,
-                @Named("timeout") int timeout,
-                @Assisted("account") String account,
-                @Assisted("password") String password) {
+            @Named("url") String url,
+            @Named("timeout") int timeout,
+            @Assisted("account") String account,
+            @Assisted("password") String password) {
             this.url = url;
             this.timeout = timeout;
             this.account = account;
@@ -102,8 +102,8 @@ public class AssistedInjectModule extends AbstractModule {
          */
         @AssistedInject
         public Connection(
-                @Named("url") String url,
-                @Named("timeout") int timeout) {
+            @Named("url") String url,
+            @Named("timeout") int timeout) {
             this.url = url;
             this.timeout = timeout;
             this.account = null;
@@ -150,8 +150,8 @@ public class AssistedInjectModule extends AbstractModule {
          * @param password 对应 {@link Connection} 类型的 {@code password} 参数
          */
         Connection create(
-                @Assisted("account") String account,
-                @Assisted("password") String password);
+            @Assisted("account") String account,
+            @Assisted("password") String password);
 
         /**
          * 创建 {@link Connection} 类型对象

@@ -1,9 +1,8 @@
 package alvin.study.module.submodule;
 
+import alvin.study.module.bean.ModuleDemo;
 import com.google.inject.PrivateModule;
 import com.google.inject.name.Names;
-
-import alvin.study.module.bean.ModuleDemo;
 
 /**
  * 私有子模块
@@ -38,13 +37,13 @@ public class SubPrivateModule extends PrivateModule {
     protected void configure() {
         // 创建 Hidden 绑定关系
         bind(ModuleDemo.class)
-                .annotatedWith(Names.named("Hidden"))
-                .toInstance(new ModuleDemo("Hidden Object"));
+            .annotatedWith(Names.named("Hidden"))
+            .toInstance(new ModuleDemo("Hidden Object"));
 
         // 创建 Exposed 绑定关系
         bind(ModuleDemo.class)
-                .annotatedWith(Names.named("Exposed"))
-                .toInstance(new ModuleDemo("Exposed Object"));
+            .annotatedWith(Names.named("Exposed"))
+            .toInstance(new ModuleDemo("Exposed Object"));
 
         // 暴露 Exposed 绑定关系, 即 Hidden 绑定关系被隐藏
         expose(ModuleDemo.class).annotatedWith(Names.named("Exposed"));

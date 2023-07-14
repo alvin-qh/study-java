@@ -1,11 +1,9 @@
 package alvin.study.singleton;
 
-import javax.inject.Singleton;
-
+import alvin.study.singleton.bean.SingletonBean;
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
-
-import alvin.study.singleton.bean.SingletonBean;
+import jakarta.inject.Singleton;
 
 /**
  * 单例是一种设计模式和代码设计技巧
@@ -25,7 +23,7 @@ import alvin.study.singleton.bean.SingletonBean;
  * </p>
  *
  * <p>
- * 对于 {@link javax.inject.Provider} 来说, 如果其标注了 {@link Singleton @Singleton} 注解,
+ * 对于 {@link jakarta.inject.Provider} 来说, 如果其标注了 {@link Singleton @Singleton} 注解,
  * 则其 {@code get} 方法只会执行一次, 产生的对象会以单例一直存在, 不会在产生第二个对象
  * </p>
  */

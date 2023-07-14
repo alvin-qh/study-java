@@ -1,8 +1,7 @@
 package alvin.study.module.submodule;
 
-import com.google.inject.AbstractModule;
-
 import alvin.study.module.bean.ModuleDemo;
+import com.google.inject.AbstractModule;
 
 /**
  * 定义子模块

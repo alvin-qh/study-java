@@ -8,8 +8,8 @@ import java.lang.annotation.Target;
 
 /**
  * 用于标识一个方法需要事件处理的注解
- *
- * @see alvin.study.aspect.AspectModule.EventDemo
+ * <p>
+ * 参考 {@code EventDemo} 类
  */
 @Documented
 @Target(ElementType.METHOD)

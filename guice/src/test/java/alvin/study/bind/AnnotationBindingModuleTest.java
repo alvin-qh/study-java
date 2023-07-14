@@ -1,20 +1,17 @@
 package alvin.study.bind;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import javax.inject.Inject;
-
-import org.junit.jupiter.api.Test;
-
-import com.google.inject.Key;
-import com.google.inject.Module;
-
 import alvin.study.BaseModuleTest;
 import alvin.study.bind.AnnotationBindingModule.BindDemoA;
 import alvin.study.bind.AnnotationBindingModule.BindDemoB;
 import alvin.study.bind.anno.A;
 import alvin.study.bind.anno.B;
 import alvin.study.bind.inte.BindDemo;
+import com.google.inject.Key;
+import com.google.inject.Module;
+import jakarta.inject.Inject;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link AnnotationBindingModule} 类型
@@ -35,7 +32,9 @@ class AnnotationBindingModuleTest extends BaseModuleTest {
     private BindDemo bindDemoB;
 
     @Override
-    protected Module getModule() { return new AnnotationBindingModule(); }
+    protected Module getModule() {
+        return new AnnotationBindingModule();
+    }
 
     /**
      * 测试注入的对象符合预期

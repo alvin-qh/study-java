@@ -1,14 +1,11 @@
 package alvin.study.module;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import javax.inject.Inject;
-
+import alvin.study.module.bean.ModuleDemo;
+import com.google.inject.Guice;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
-import com.google.inject.Guice;
-
-import alvin.study.module.bean.ModuleDemo;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link InstallSubModule} 模块

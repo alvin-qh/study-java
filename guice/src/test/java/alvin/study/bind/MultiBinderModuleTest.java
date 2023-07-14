@@ -1,22 +1,19 @@
 package alvin.study.bind;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import java.util.Map;
-import java.util.Set;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
-import org.junit.jupiter.api.Test;
-
+import alvin.study.BaseModuleTest;
+import alvin.study.bind.inte.BindDemo;
 import com.google.inject.Key;
 import com.google.inject.Module;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import org.junit.jupiter.api.Test;
 
-import alvin.study.BaseModuleTest;
-import alvin.study.bind.inte.BindDemo;
+import java.util.Map;
+import java.util.Set;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link MultiBinderModule} 类型
@@ -39,7 +36,9 @@ class MultiBinderModuleTest extends BaseModuleTest {
     private Map<String, BindDemo> boundMap;
 
     @Override
-    protected Module getModule() { return new MultiBinderModule(); }
+    protected Module getModule() {
+        return new MultiBinderModule();
+    }
 
     /**
      * 测试注入的对象符合预期
@@ -58,9 +57,11 @@ class MultiBinderModuleTest extends BaseModuleTest {
      */
     @Test
     void bind_shouldGetObjectByInjector() {
-        var boundSet = injector.getInstance(Key.get(new TypeLiteral<Set<Integer>>() {}, Names.named("boundSet")));
+        var boundSet = injector.getInstance(Key.get(new TypeLiteral<Set<Integer>>() {
+        }, Names.named("boundSet")));
         var boundMap
-            = injector.getInstance(Key.get(new TypeLiteral<Map<String, BindDemo>>() {}, Names.named("boundMap")));
+                = injector.getInstance(Key.get(new TypeLiteral<Map<String, BindDemo>>() {
+        }, Names.named("boundMap")));
 
         then(boundSet).isEqualTo(this.boundSet);
         then(boundMap).isEqualTo(this.boundMap);
