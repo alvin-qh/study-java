@@ -1,5 +1,14 @@
 package alvin.study.algorithms;
 
+import alvin.study.util.DataGenerator;
+import com.google.common.base.Strings;
+
+import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
+import javax.crypto.CipherOutputStream;
+import javax.crypto.KeyGenerator;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,17 +22,6 @@ import java.security.Signature;
 import java.security.interfaces.RSAKey;
 import java.security.spec.AlgorithmParameterSpec;
 import java.util.Arrays;
-
-import javax.crypto.Cipher;
-import javax.crypto.CipherInputStream;
-import javax.crypto.CipherOutputStream;
-import javax.crypto.KeyGenerator;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-
-import com.google.common.base.Strings;
-
-import alvin.study.util.DataGenerator;
 
 /**
  * 密码应用
@@ -182,6 +180,7 @@ import alvin.study.util.DataGenerator;
  * </ul>
  * </p>
  */
+@SuppressWarnings("unused")
 public class Ciphers {
     // 默认缓冲区大小
     private static final int BUFFER_SIZE = 1024;
@@ -360,7 +359,7 @@ public class Ciphers {
      * @param out           输出密文数据的流
      * @return 加密数据的长度
      */
-    @SuppressWarnings("resource")
+    @SuppressWarnings("UnusedReturnValue")
     public long encrypt(SecretKeySpec keySpec, AlgorithmParameterSpec parameterSpec, InputStream in, OutputStream out) {
         // 实例化密码学对象
         var cipher = makeCipherInstance(Cipher.ENCRYPT_MODE, keySpec, parameterSpec);
@@ -488,6 +487,7 @@ public class Ciphers {
      * @param out           写入明文的输出流
      * @return 明文数据长度
      */
+    @SuppressWarnings("UnusedReturnValue")
     public long decrypt(SecretKeySpec keySpec, AlgorithmParameterSpec parameterSpec, InputStream in, OutputStream out) {
         // 实例化密码学对象
         var cipher = makeCipherInstance(Cipher.DECRYPT_MODE, keySpec, parameterSpec);
@@ -509,9 +509,8 @@ public class Ciphers {
     }
 
     /**
-     * 创建非对称加密密钥
+     * 创建非对称加密密钥对
      *
-     * @param keySize 密钥长度
      * @return 密钥对对象
      */
     public SecretKeyPairSpec makeSecretKeyPair() throws NoSuchAlgorithmException {
@@ -524,9 +523,9 @@ public class Ciphers {
         // 产生非对称密钥
         var keyPair = keyPairGenerator.generateKeyPair();
         return new SecretKeyPairSpec(
-            algorithm.algorithm(),
-            keyPair.getPrivate().getEncoded(),
-            keyPair.getPublic().getEncoded());
+                algorithm.algorithm(),
+                keyPair.getPrivate().getEncoded(),
+                keyPair.getPublic().getEncoded());
     }
 
     /**
@@ -645,9 +644,9 @@ public class Ciphers {
         if (encrypt) {
             // 对于不同的填充算法, 在加密时块大小要减去填充数据大小
             blockSize -= switch (padding == null ? "" : padding) {
-            case "", "PKCS5Padding" -> 11;
-            case "OAEPWithSHA-256AndMGF1Padding" -> 66;
-            default -> 11;
+                case "", "PKCS5Padding" -> 11;
+                case "OAEPWithSHA-256AndMGF1Padding" -> 66;
+                default -> 11;
             };
         }
         return blockSize;
@@ -751,9 +750,9 @@ public class Ciphers {
     /**
      * 通过非对称算法, 对输入流的密文进行解密操作, 将解密后的明文写入到输出流中
      *
-     * @param key    密钥对象, 一般为私钥对象, 需和加密的密钥对应
-     * @param input  读取密文数据的输入流
-     * @param output 写入解密后明文数据的输出流
+     * @param key 密钥对象, 一般为私钥对象, 需和加密的密钥对应
+     * @param in  读取密文数据的输入流
+     * @param out 写入解密后明文数据的输出流
      * @return 处理的字节数
      */
     public long decrypt(Key key, InputStream in, OutputStream out) {
@@ -788,21 +787,27 @@ public class Ciphers {
      *
      * @return {@link Algorithm} 枚举对象
      */
-    public Algorithm getAlgorithm() { return algorithm; }
+    public Algorithm getAlgorithm() {
+        return algorithm;
+    }
 
     /**
      * 获取当前密码算法的模式, 可能的值为 {@code "CBC"}, {@code "ECB"} 等
      *
      * @return 表示算法的模式
      */
-    public String getMode() { return mode; }
+    public String getMode() {
+        return mode;
+    }
 
     /**
      * 获取当前密码算法的填充方式, 可能的值为 {@code "NoPadding"}, {@code "PKCS5Padding"} 等
      *
      * @return 表示填充方式的字符串
      */
-    public String getPadding() { return padding; }
+    public String getPadding() {
+        return padding;
+    }
 
     /**
      * 表示各类密码算法的枚举类型

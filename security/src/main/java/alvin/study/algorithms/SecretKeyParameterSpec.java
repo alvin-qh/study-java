@@ -1,14 +1,12 @@
 package alvin.study.algorithms;
 
-import java.security.spec.AlgorithmParameterSpec;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.codec.binary.Hex;
 
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.commons.codec.binary.Hex;
-
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
+import java.security.spec.AlgorithmParameterSpec;
 
 /**
  * 对称加密密钥和初始向量类型
@@ -29,14 +27,15 @@ public final class SecretKeyParameterSpec {
      *
      * @return 密钥对象
      */
-    public SecretKeySpec getSecretKeySpec() { return new SecretKeySpec(key, algorithm); }
+    public SecretKeySpec getSecretKeySpec() {
+        return new SecretKeySpec(key, algorithm);
+    }
 
     /**
      * 获取加密向量
      *
      * @return 加密向量对象
      */
-    @SuppressWarnings("java:S3329")
     public AlgorithmParameterSpec getParameterSpec() {
         if (iv == null || iv.length == 0) {
             return null;
@@ -48,15 +47,15 @@ public final class SecretKeyParameterSpec {
     public String toString() {
         if (iv != null) {
             return String.format(
-                "algorithm=%s, key=%s, iv=%s",
-                algorithm,
-                Hex.encodeHexString(key),
-                Hex.encodeHexString(iv));
+                    "algorithm=%s, key=%s, iv=%s",
+                    algorithm,
+                    Hex.encodeHexString(key),
+                    Hex.encodeHexString(iv));
         }
 
         return String.format(
-            "algorithm=%s, key=%s",
-            algorithm,
-            Hex.encodeHexString(key));
+                "algorithm=%s, key=%s",
+                algorithm,
+                Hex.encodeHexString(key));
     }
 }

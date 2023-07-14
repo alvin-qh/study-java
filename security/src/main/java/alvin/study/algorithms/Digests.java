@@ -1,5 +1,8 @@
 package alvin.study.algorithms;
 
+import lombok.SneakyThrows;
+import org.apache.commons.codec.binary.Hex;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -9,13 +12,10 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 
-import org.apache.commons.codec.binary.Hex;
-
-import lombok.SneakyThrows;
-
 /**
  * 摘要算法工具类
  */
+@SuppressWarnings("unused")
 public class Digests {
     // 读取文件的默认缓冲区大小
     private static final int BUFFER_SIZE = 1024;
@@ -72,7 +72,6 @@ public class Digests {
      *
      * @param input 输入流对象
      * @return 摘要结果, 为摘要数据的 16 进制字符串表示
-     *
      * @throws IOException 读取流时发生异常
      */
     public String digest(InputStream input) throws IOException {
@@ -91,7 +90,6 @@ public class Digests {
      *
      * @param file 文件路径名
      * @return 摘要信息, 为摘要数据的 16 进制字符串表示
-     *
      * @throws IOException 读取流时发生异常
      */
     public String digest(Path file) throws IOException {

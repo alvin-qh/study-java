@@ -1,16 +1,14 @@
 package alvin.study.util;
 
-import java.io.File;
+import alvin.study.algorithms.RSAKeyLoader;
+import com.google.common.io.ByteStreams;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
-
-import com.google.common.io.ByteStreams;
-
-import alvin.study.algorithms.RSAKeyLoader;
 
 /**
  * 从指定文件中读取 RSA 公私钥的工具类
@@ -41,7 +39,7 @@ public class RSAKeyReader {
      * @return RSA 私钥 {@link RSAPrivateKey} 对象
      */
     public RSAPrivateKey readPrivateKey() throws IOException, InvalidKeySpecException {
-        try (var is = new FileInputStream(new File(baseName))) {
+        try (var is = new FileInputStream(baseName)) {
             var key = new String(ByteStreams.toByteArray(is), StandardCharsets.UTF_8);
             return (RSAPrivateKey) rsaKeyLoader.loadPrivateKey(key);
         }
@@ -53,7 +51,7 @@ public class RSAKeyReader {
      * @return RSA 公钥 {@link RSAPublicKey} 对象
      */
     public RSAPublicKey readPublicKey() throws IOException, InvalidKeySpecException {
-        try (var is = new FileInputStream(new File(baseName + ".pub"))) {
+        try (var is = new FileInputStream(baseName + ".pub")) {
             var key = new String(ByteStreams.toByteArray(is), StandardCharsets.UTF_8);
             return (RSAPublicKey) rsaKeyLoader.loadPublicKey(key);
         }

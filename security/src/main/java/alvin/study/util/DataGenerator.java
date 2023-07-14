@@ -1,9 +1,9 @@
 package alvin.study.util;
 
-import java.security.SecureRandom;
-
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+
+import java.security.SecureRandom;
 
 /**
  * 随机数据生成器类型

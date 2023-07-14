@@ -1,5 +1,8 @@
 package alvin.study.algorithms;
 
+import com.google.common.annotations.VisibleForTesting;
+import org.apache.commons.codec.binary.Base64;
+
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -8,10 +11,6 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.regex.Pattern;
-
-import org.apache.commons.codec.binary.Base64;
-
-import com.google.common.annotations.VisibleForTesting;
 
 /**
  * 产生 RSA 加密算法密钥
@@ -58,7 +57,6 @@ public class RSAKeyLoader {
      *
      * @param keyData 保存密钥的字节串
      * @return {@link java.security.interfaces.RSAPublicKey RSAPublicKey} 公钥对象
-     *
      * @see KeyFactory#getInstance(String)
      * @see KeyFactory#generatePublic(java.security.spec.KeySpec)
      * @see X509EncodedKeySpec(byte[])
@@ -76,7 +74,6 @@ public class RSAKeyLoader {
      *
      * @param keyString 保存密钥定义的文本字符串
      * @return {@link java.security.interfaces.RSAPublicKey RSAPublicKey} 公钥对象
-     *
      * @see #loadPublicKey(byte[])
      * @see #decodePublicKey(String)
      */
@@ -100,7 +97,6 @@ public class RSAKeyLoader {
      *
      * @param keyData 保存密钥的字节串
      * @return {@link java.security.interfaces.RSAPrivateKey RSAPrivateKey} 私钥对象
-     *
      * @see KeyFactory#getInstance(String)
      * @see KeyFactory#generatePrivate(java.security.spec.KeySpec)
      * @see PKCS8EncodedKeySpec(byte[])
@@ -133,7 +129,6 @@ public class RSAKeyLoader {
      *
      * @param keyString 保存密钥定义的文本字符串
      * @return {@link java.security.interfaces.RSAPrivateKey RSAPrivateKey} 私钥对象
-     *
      * @see #loadPrivateKey(byte[])
      * @see #decodePrivateKey(String)
      */

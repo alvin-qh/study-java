@@ -1,5 +1,9 @@
 package alvin.study.algorithms;
 
+import org.apache.commons.codec.binary.Hex;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -9,11 +13,6 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.commons.codec.binary.Hex;
 
 /**
  * 支持 HMAC 盐密钥的摘要算法工具类
@@ -107,6 +106,7 @@ import org.apache.commons.codec.binary.Hex;
  * </table>
  * </p>
  */
+@SuppressWarnings("unused")
 public class HmacDigests {
     // 默认的缓冲区大小
     private static final int BUFFER_SIZE = 1024;
@@ -192,7 +192,6 @@ public class HmacDigests {
      * @param hmacKey HMAC 密钥
      * @param file    要摘要的文件路径名
      * @return 摘要信息字符串
-     *
      * @throws NoSuchAlgorithmException 算法名错误
      * @throws InvalidKeyException      无效的密钥
      * @throws IOException              读取流时发生异常

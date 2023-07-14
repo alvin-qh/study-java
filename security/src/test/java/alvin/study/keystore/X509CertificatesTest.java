@@ -1,13 +1,13 @@
 package alvin.study.keystore;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import java.io.File;
-
-import org.junit.jupiter.api.Test;
-
 import alvin.study.algorithms.Ciphers;
 import alvin.study.util.DataGenerator;
+import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.util.Objects;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link X509Certificates} 类型, 从证书中获取公钥
@@ -17,17 +17,17 @@ class X509CertificatesTest {
      * 测试 {@link X509Certificates#X509Certificates(File)} 方法, 创建证书对象, 并读取公钥对象
      */
     @Test
-    void certificates_shouldLoadPublicKeyFromCertificateFile() throws Exception {
+    void certificates_shouldLoadPublicKeyFromCertificateFile() {
         // 生成随机测试数据
         var data = DataGenerator.generate(5011);
         then(data).hasSize(5011);
 
         // 读取密码库文件
-        var keyStoreFile = new File(getClass().getResource("/keystore/keystore.p12").getFile());
+        var keyStoreFile = new File(Objects.requireNonNull(getClass().getResource("/keystore/keystore.p12")).getFile());
         var keyStore = new PKCS12KeyStores(keyStoreFile, "password");
 
         // 从资源中获取证书文件名
-        var cerFile = new File(getClass().getResource("/keystore/pub.cer").getFile());
+        var cerFile = new File(Objects.requireNonNull(getClass().getResource("/keystore/pub.cer")).getFile());
         // 读取证书文件
         var cer = new X509Certificates(cerFile);
 

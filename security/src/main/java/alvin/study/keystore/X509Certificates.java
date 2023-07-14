@@ -23,7 +23,7 @@ import java.security.cert.CertificateFactory;
  * </pre>
  * </p>
  *
- * @see PKCS12KeyStore
+ * @see PKCS12KeyStores
  */
 public class X509Certificates extends Certificates {
     /**

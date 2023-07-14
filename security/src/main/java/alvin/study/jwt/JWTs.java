@@ -1,19 +1,20 @@
 package alvin.study.jwt;
 
-import java.security.interfaces.RSAKey;
-import java.time.Clock;
-import java.time.Instant;
-import java.util.UUID;
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.common.annotations.VisibleForTesting;
 
+import java.security.interfaces.RSAKey;
+import java.time.Clock;
+import java.time.Instant;
+import java.util.UUID;
+
 /**
  * JWT 工具类
  */
+@SuppressWarnings("unused")
 public class JWTs {
     // 附加字段名, 表示组织代码
     static final String CLAIM_ORG_CODE = "org";
@@ -52,7 +53,7 @@ public class JWTs {
      *   "alg": "HS256"
      * }
      * </pre>
-     *
+     * <p>
      * 表示 JWT 的类型 (固定值为 {@code JWT}) 和签名算法名称
      * </p>
      *
@@ -68,7 +69,7 @@ public class JWTs {
      *   "exp": "2286-11-20T17:46:39Z"
      * }
      * </pre>
-     *
+     * <p>
      * Payload 的内容并没有统一标准和固定格式, 可以为任意 JSON 字段, 但字段数量过多会导致 JWT 字符串长度变长
      * (原始 JSON 变大以及签名信息变大)
      * </p>
@@ -155,7 +156,6 @@ public class JWTs {
      * @param org       允许的 {@code org} 属性值
      * @param type      允许的 {@code typ} 属性值
      * @return 解码后的 Payload 内容
-     *
      * @throws com.auth0.jwt.exceptions.AlgorithmMismatchException     无效的签名算法, 即在 JWT Header
      *                                                                 中定义的签名算法和实际使用的不符
      * @throws com.auth0.jwt.exceptions.SignatureVerificationException 签名验证失败

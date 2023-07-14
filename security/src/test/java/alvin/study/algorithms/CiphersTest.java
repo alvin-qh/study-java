@@ -1,17 +1,16 @@
 package alvin.study.algorithms;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import alvin.study.util.DataGenerator;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-
-import alvin.study.util.DataGenerator;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link Ciphers} 类型, 使用对称和非对称方式对数据进行加密
@@ -23,33 +22,33 @@ class CiphersTest {
      * 所给的算法名称对字节串进行对称加解密
      */
     @CsvSource({
-        "DES",
-        "DES/CBC/NoPadding",
-        "DES/CBC/PKCS5Padding",
-        "DES/CBC/ISO10126Padding",
-        "DES/ECB/NoPadding",
-        "DES/ECB/PKCS5Padding",
-        "DES/ECB/ISO10126Padding",
-        "DESede",
-        "DESede/CBC/NoPadding",
-        "DESede/CBC/PKCS5Padding",
-        "DESede/CBC/ISO10126Padding",
-        "DESede/ECB/NoPadding",
-        "DESede/ECB/PKCS5Padding",
-        "DESede/ECB/ISO10126Padding",
-        "AES",
-        "AES/CBC/NoPadding",
-        "AES/CBC/PKCS5Padding",
-        "AES/CBC/ISO10126Padding",
-        "AES/ECB/NoPadding",
-        "AES/ECB/PKCS5Padding",
-        "AES/ECB/ISO10126Padding",
-        "RC2",
-        "RC2/ECB/NoPadding",
-        "RC2/ECB/PKCS5Padding",
-        "RC2/CBC/NoPadding",
-        "RC2/CBC/PKCS5Padding",
-        "RC4"
+            "DES",
+            "DES/CBC/NoPadding",
+            "DES/CBC/PKCS5Padding",
+            "DES/CBC/ISO10126Padding",
+            "DES/ECB/NoPadding",
+            "DES/ECB/PKCS5Padding",
+            "DES/ECB/ISO10126Padding",
+            "DESede",
+            "DESede/CBC/NoPadding",
+            "DESede/CBC/PKCS5Padding",
+            "DESede/CBC/ISO10126Padding",
+            "DESede/ECB/NoPadding",
+            "DESede/ECB/PKCS5Padding",
+            "DESede/ECB/ISO10126Padding",
+            "AES",
+            "AES/CBC/NoPadding",
+            "AES/CBC/PKCS5Padding",
+            "AES/CBC/ISO10126Padding",
+            "AES/ECB/NoPadding",
+            "AES/ECB/PKCS5Padding",
+            "AES/ECB/ISO10126Padding",
+            "RC2",
+            "RC2/ECB/NoPadding",
+            "RC2/ECB/PKCS5Padding",
+            "RC2/CBC/NoPadding",
+            "RC2/CBC/PKCS5Padding",
+            "RC4"
     })
     @ParameterizedTest
     void symmetric_shouldEncryptAndDecryptBytes(String algorithmsName) throws Exception {
@@ -81,33 +80,33 @@ class CiphersTest {
      * Ciphers.decrypt(Key, InputStream, OutputStream)} 方法, 根据所给的算法名称对输入流进行对称加解密
      */
     @CsvSource({
-        "DES",
-        "DES/CBC/NoPadding",
-        "DES/CBC/PKCS5Padding",
-        "DES/CBC/ISO10126Padding",
-        "DES/ECB/NoPadding",
-        "DES/ECB/PKCS5Padding",
-        "DES/ECB/ISO10126Padding",
-        "DESede",
-        "DESede/CBC/NoPadding",
-        "DESede/CBC/PKCS5Padding",
-        "DESede/CBC/ISO10126Padding",
-        "DESede/ECB/NoPadding",
-        "DESede/ECB/PKCS5Padding",
-        "DESede/ECB/ISO10126Padding",
-        "AES",
-        "AES/CBC/NoPadding",
-        "AES/CBC/PKCS5Padding",
-        "AES/CBC/ISO10126Padding",
-        "AES/ECB/NoPadding",
-        "AES/ECB/PKCS5Padding",
-        "AES/ECB/ISO10126Padding",
-        "RC2",
-        "RC2/ECB/NoPadding",
-        "RC2/ECB/PKCS5Padding",
-        "RC2/CBC/NoPadding",
-        "RC2/CBC/PKCS5Padding",
-        "RC4"
+            "DES",
+            "DES/CBC/NoPadding",
+            "DES/CBC/PKCS5Padding",
+            "DES/CBC/ISO10126Padding",
+            "DES/ECB/NoPadding",
+            "DES/ECB/PKCS5Padding",
+            "DES/ECB/ISO10126Padding",
+            "DESede",
+            "DESede/CBC/NoPadding",
+            "DESede/CBC/PKCS5Padding",
+            "DESede/CBC/ISO10126Padding",
+            "DESede/ECB/NoPadding",
+            "DESede/ECB/PKCS5Padding",
+            "DESede/ECB/ISO10126Padding",
+            "AES",
+            "AES/CBC/NoPadding",
+            "AES/CBC/PKCS5Padding",
+            "AES/CBC/ISO10126Padding",
+            "AES/ECB/NoPadding",
+            "AES/ECB/PKCS5Padding",
+            "AES/ECB/ISO10126Padding",
+            "RC2",
+            "RC2/ECB/NoPadding",
+            "RC2/ECB/PKCS5Padding",
+            "RC2/CBC/NoPadding",
+            "RC2/CBC/PKCS5Padding",
+            "RC4"
     })
     @ParameterizedTest
     void symmetric_shouldEncryptFromInputStreamAndDecryptToOutputStream(String algorithmsName) throws Exception {
@@ -121,7 +120,7 @@ class CiphersTest {
         // 根据密钥和 iv 的大小创建密钥对象
         var spec = cipher.makeSecretKeyParameterSpec();
 
-        byte[] encData = null;
+        byte[] encData;
         try (var in = new ByteArrayInputStream(data)) {
             try (var out = new ByteArrayOutputStream()) {
                 // 将输入流的内容加密后写入输出流
@@ -133,7 +132,7 @@ class CiphersTest {
             }
         }
 
-        byte[] decData = null;
+        byte[] decData;
         try (var in = new ByteArrayInputStream(encData)) {
             try (var out = new ByteArrayOutputStream()) {
                 // 将输入流的内容解密后写入输出流
@@ -205,7 +204,7 @@ class CiphersTest {
         var cipher = new Ciphers("RSA");
         var keyPair = cipher.makeSecretKeyPair();
 
-        byte[] signature = null;
+        byte[] signature;
         try (var in = new ByteArrayInputStream(data)) {
             // 通过私钥签名
             signature = cipher.sign("SHA256", keyPair.generatePrivateKey(), in);
@@ -230,9 +229,9 @@ class CiphersTest {
      * </p>
      */
     @CsvSource({
-        "RSA",
-        "RSA/ECB/PKCS1Padding",
-        "RSA/ECB/OAEPWithSHA-256AndMGF1Padding",
+            "RSA",
+            "RSA/ECB/PKCS1Padding",
+            "RSA/ECB/OAEPWithSHA-256AndMGF1Padding",
     })
     @ParameterizedTest
     void asymmetric_shouldEncryptAndDecryptBytes(String algorithmsName) throws Exception {
@@ -283,9 +282,9 @@ class CiphersTest {
      * </p>
      */
     @CsvSource({
-        "RSA",
-        "RSA/ECB/PKCS1Padding",
-        "RSA/ECB/OAEPWithSHA-256AndMGF1Padding",
+            "RSA",
+            "RSA/ECB/PKCS1Padding",
+            "RSA/ECB/OAEPWithSHA-256AndMGF1Padding",
     })
     @ParameterizedTest
     void asymmetric_shouldEncryptFromInputStreamAndDecryptToOutputStream(String algorithmsName) throws Exception {
