@@ -1,8 +1,8 @@
 package alvin.study.common;
 
-import java.util.List;
-import java.util.Set;
-
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -10,9 +10,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 在每次测试执行前, 将测试数据库的表清空
@@ -45,13 +44,13 @@ public class TableCleaner {
     @SuppressWarnings("unchecked")
     private List<String> listAllTables(String schema, String tableType) {
         return em.createNativeQuery("""
-            SELECT `table_name`
-            FROM `information_schema`.`tables`
-            WHERE `table_schema`=:schema AND `table_type`=:typeType
-            """)
-                .setParameter("schema", schema)
-                .setParameter("typeType", tableType)
-                .getResultList();
+                SELECT `table_name`
+                FROM `information_schema`.`tables`
+                WHERE `table_schema`=:schema AND `table_type`=:typeType
+                """)
+            .setParameter("schema", schema)
+            .setParameter("typeType", tableType)
+            .getResultList();
     }
 
     /**
@@ -75,27 +74,27 @@ public class TableCleaner {
             String schema;
             String tableType;
             // 根据不同的数据库连接, 获取对应的 schema 和 tableType 参数
+            // h2 表类型
             if (connectUrl.startsWith("jdbc:mysql")) {
                 schema = conn.getCatalog(); // MySQL schema
-                tableType = "BASE TABLE"; // MySql 表类型
             } else {
                 schema = "PUBLIC"; // h2 schema
-                tableType = "BASE TABLE"; // h2 表类型
             }
+            tableType = "BASE TABLE"; // 表类型
 
             // 关闭外键约束
             em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0").executeUpdate();
 
             // 获取所有待清除的数据表名并执行清除语句
             listAllTables(schema, tableType).stream()
-                    // 去除排除的数据表
-                    .filter(t -> !excludeSet.contains(t))
-                    // 对每个数据表进行清除操作
-                    .forEach(t -> {
-                        log.info("Clear table {}", t);
-                        // 执行 truncate 操作
-                        em.createNativeQuery(String.format("TRUNCATE TABLE `%s`", t)).executeUpdate();
-                    });
+                // 去除排除的数据表
+                .filter(t -> !excludeSet.contains(t))
+                // 对每个数据表进行清除操作
+                .forEach(t -> {
+                    log.info("Clear table {}", t);
+                    // 执行 truncate 操作
+                    em.createNativeQuery(String.format("TRUNCATE TABLE `%s`", t)).executeUpdate();
+                });
 
             // 恢复外键约束
             em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1").executeUpdate();

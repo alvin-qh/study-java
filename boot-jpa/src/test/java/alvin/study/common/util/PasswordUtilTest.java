@@ -1,12 +1,11 @@
 package alvin.study.common.util;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
+import alvin.study.IntegrationTest;
+import alvin.study.util.security.PasswordUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import alvin.study.IntegrationTest;
-import alvin.study.util.security.PasswordUtil;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试密码工具类

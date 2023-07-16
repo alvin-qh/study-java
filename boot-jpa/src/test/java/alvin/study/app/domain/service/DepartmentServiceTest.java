@@ -1,16 +1,15 @@
 package alvin.study.app.domain.service;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import java.util.ArrayList;
-
+import alvin.study.IntegrationTest;
+import alvin.study.builder.DepartmentBuilder;
+import alvin.study.infra.entity.Department;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 
-import alvin.study.IntegrationTest;
-import alvin.study.builder.DepartmentBuilder;
-import alvin.study.infra.entity.Department;
+import java.util.ArrayList;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link DepartmentService} 对象
@@ -43,17 +42,16 @@ class DepartmentServiceTest extends IntegrationTest {
             for (var i = 0; i < 5; i++) {
                 // 创建部门实体对象
                 var department = newBuilder(DepartmentBuilder.class)
-                        .withName(namePrefix + i)
-                        .create();
+                    .name(namePrefix + i)
+                    .create();
 
                 // 创建 10 个部门实体对象
                 for (var j = 0; j < 10; j++) {
                     var subDepartment = newBuilder(DepartmentBuilder.class)
-                            .withName(namePrefix + i + "-" + j)
-                            .create();
+                        .name(namePrefix + i + "-" + j)
+                        .create();
                     department.addSubDepartment(subDepartment);
                 }
-                departments.add(department);
             }
         }
 
@@ -71,10 +69,10 @@ class DepartmentServiceTest extends IntegrationTest {
         var subDepartments = department.getChildren();
         // 确认子部门的名称
         then(subDepartments)
-                .hasSize(10)
-                .extracting("name")
-                .map(name -> (String) name)
-                .allMatch(name -> name.startsWith("DEPT-3-"));
+            .hasSize(10)
+            .extracting("name")
+            .map(name -> (String) name)
+            .allMatch(name -> name.startsWith("DEPT-3-"));
     }
 
     /**
@@ -92,24 +90,21 @@ class DepartmentServiceTest extends IntegrationTest {
         // 部门名称前缀
         var namePrefix = "DEPT-";
 
-        var departments = new ArrayList<Department>();
-
         // 创建 5 个部门, 每个部门下面创建 10 个子部门
         try (var ignore = beginTx(false)) {
             for (var i = 0; i < 5; i++) {
                 // 创建部门实体对象
                 var department = newBuilder(DepartmentBuilder.class)
-                        .withName(namePrefix + i)
-                        .create();
+                    .name(namePrefix + i)
+                    .create();
 
                 // 创建 10 个部门实体对象
                 for (var j = 0; j < 10; j++) {
                     var subDepartment = newBuilder(DepartmentBuilder.class)
-                            .withName(namePrefix + i + "-" + j)
-                            .create();
+                        .name(namePrefix + i + "-" + j)
+                        .create();
                     department.addSubDepartment(subDepartment);
                 }
-                departments.add(department);
             }
         }
 
@@ -127,8 +122,8 @@ class DepartmentServiceTest extends IntegrationTest {
         var subDepartments = department.getChildren();
         // 确认子部门的名称
         then(subDepartments)
-                .hasSize(1)
-                .extracting("name")
-                .startsWith("DEPT-4-2");
+            .hasSize(1)
+            .extracting("name")
+            .startsWith("DEPT-4-2");
     }
 }

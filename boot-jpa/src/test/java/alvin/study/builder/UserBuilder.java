@@ -1,23 +1,18 @@
 package alvin.study.builder;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import alvin.study.infra.entity.User;
 import alvin.study.util.security.PasswordUtil;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 用户实体构建器类
  */
 public class UserBuilder extends Builder<User> {
-    private final static AtomicInteger SEQUENCE = new AtomicInteger();
-
     @Autowired
     private PasswordUtil passwordUtil;
 
-    private String account = "User" + SEQUENCE.incrementAndGet();
+    private String account = FAKER.name().username();
     private String password = "c926d53ca183e8bb5a369e8752b4ed574304bf1f15d680b8304f3251306915ec";
 
     /**

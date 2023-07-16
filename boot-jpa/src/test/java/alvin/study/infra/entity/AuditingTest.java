@@ -1,17 +1,16 @@
 package alvin.study.infra.entity;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import java.time.Duration;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import alvin.study.IntegrationTest;
 import alvin.study.builder.DepartmentBuilder;
 import alvin.study.builder.UserBuilder;
 import alvin.study.core.context.Context;
 import lombok.SneakyThrows;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.Duration;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试实体类型的审计字段是否生效

@@ -1,12 +1,11 @@
 package alvin.study.infra.repository;
 
-import java.util.List;
-
+import alvin.study.infra.entity.Department;
+import jakarta.persistence.OrderBy;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
 
-import alvin.study.infra.entity.Department;
-import jakarta.persistence.OrderBy;
+import java.util.List;
 
 /**
  * 部门实体 {@link Department} 类型的存储操作接口类

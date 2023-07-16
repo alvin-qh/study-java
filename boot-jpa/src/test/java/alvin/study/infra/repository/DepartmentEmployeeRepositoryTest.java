@@ -1,15 +1,5 @@
 package alvin.study.infra.repository;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Random;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
 import alvin.study.IntegrationTest;
 import alvin.study.builder.DepartmentBuilder;
 import alvin.study.builder.EmployeeBuilder;
@@ -17,6 +7,15 @@ import alvin.study.builder.OrgBuilder;
 import alvin.study.infra.entity.Department;
 import alvin.study.infra.entity.Employee;
 import alvin.study.infra.entity.Org;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Random;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link alvin.study.infra.repository.DepartmentRepository} 的增删查改操作
@@ -45,8 +44,9 @@ class DepartmentEmployeeRepositoryTest extends IntegrationTest {
 
         // 在新建的租户下创建 10 个雇员实体和 10 个部门实体, 并建立两个实体的关系, 产生 DepartmentEmployee 实体对象
         for (var i = 0; i < 10; i++) {
-            var employee = newBuilder(EmployeeBuilder.class).withOrgId(org.getId()).create();
-            var department = newBuilder(DepartmentBuilder.class).withOrgId(org.getId()).create();
+            var employee = newBuilder(EmployeeBuilder.class).name("EMP_" + i).withOrgId(org.getId()).create();
+            var department = newBuilder(DepartmentBuilder.class).name("DEP_" + i).withOrgId(org.getId()).create();
+
             // 建立 employee 和 department 的关系并返回 DepartmentEmployee 实体对象, 为其设置 orgId 属性
             department.addEmployee(employee).setOrgId(org.getId());
 
@@ -90,8 +90,8 @@ class DepartmentEmployeeRepositoryTest extends IntegrationTest {
 
         // 在新建的租户下创建 10 个雇员实体
         for (var i = 0; i < 10; i++) {
-            var employee = newBuilder(EmployeeBuilder.class).create();
-            var department = newBuilder(DepartmentBuilder.class).create();
+            var employee = newBuilder(EmployeeBuilder.class).name("EMP_" + i).create();
+            var department = newBuilder(DepartmentBuilder.class).name("DEP_" + i).create();
             // 建立 employee 和 department 的关系并返回 DepartmentEmployee 实体对象, 为其设置 orgId 属性
             department.addEmployee(employee);
 

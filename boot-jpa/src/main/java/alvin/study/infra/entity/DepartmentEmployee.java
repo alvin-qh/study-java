@@ -21,7 +21,6 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "department_employee")
-@SuppressWarnings("java:S2160")
 public class DepartmentEmployee extends AuditedEntity {
     /**
      * <p>

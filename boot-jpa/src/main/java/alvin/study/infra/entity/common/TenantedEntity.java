@@ -1,12 +1,11 @@
 package alvin.study.infra.entity.common;
 
-import org.hibernate.annotations.Filter;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Filter;
 
 /**
  * 多租户实体类的超类
@@ -50,7 +49,7 @@ import lombok.Setter;
  * @PersistenceContext
  * private EntityManager em;
  * </pre>
- *
+ * <p>
  * {@link javax.persistence.PersistenceContext @PersistenceContext} 注解用于注入
  * {@code EntityManager} 对象
  * </p>
@@ -65,7 +64,7 @@ import lombok.Setter;
  * var session = em.unwrap(Session.class);
  * session.enableFilter("tenantFilter").setParameter("orgId", org.getId()).validate();
  * </pre>
- *
+ * <p>
  * 表示启动名为 {@code "tenantFilter"} 的过滤器, 并设置过滤器参数 {@code "orgId"} 的值, 之后, 在当前线程下,
  * {@code EntityManager} 对象的指定过滤器被开启
  * </p>
@@ -84,8 +83,7 @@ import lombok.Setter;
 @Setter
 @Filter(name = "tenantFilter", condition = "org_id = :orgId")
 @MappedSuperclass
-@EntityListeners({ TenantedEntityListener.class })
-@SuppressWarnings("java:S2160")
+@EntityListeners({TenantedEntityListener.class})
 public abstract class TenantedEntity extends BaseEntity {
     /**
      * 租户字段

@@ -1,15 +1,5 @@
 package alvin.study;
 
-import org.hibernate.Session;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-
 import alvin.study.builder.Builder;
 import alvin.study.builder.OrgBuilder;
 import alvin.study.builder.UserBuilder;
@@ -27,6 +17,15 @@ import alvin.study.infra.entity.common.BaseEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.SneakyThrows;
+import org.hibernate.Session;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 
 /**
  * 集成测试类的超类
@@ -51,9 +50,10 @@ import lombok.SneakyThrows;
  * {@code initializers} 属性用于指定测试初始化类. 参考 {@link TestingContextInitializer} 类型
  * </p>
  */
+@SuppressWarnings("unused")
 @ActiveProfiles("test")
-@SpringBootTest(classes = { TestingConfig.class })
-@ContextConfiguration(initializers = { TestingContextInitializer.class })
+@SpringBootTest(classes = {TestingConfig.class})
+@ContextConfiguration(initializers = {TestingContextInitializer.class})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public abstract class IntegrationTest {
     /**
@@ -155,7 +155,6 @@ public abstract class IntegrationTest {
      * </p>
      *
      * @see IntegrationTest#newBuilder(Class)
-     *
      * @see alvin.study.infra.entity.common.TenantedEntity#orgId
      * @see alvin.study.infra.entity.common.AuditedEntity#createdBy
      * @see alvin.study.infra.entity.common.AuditedEntity#updatedBy
@@ -254,7 +253,6 @@ public abstract class IntegrationTest {
      * @param org  要切换的组织实体对象
      * @param user 要切换的用户实体对象
      * @return 上下文切换对象
-     *
      * @see ContextSwitcher#doSwitch(Context, java.util.function.Consumer)
      */
     protected ContextSwitcher switchContext(Org org, User user) {

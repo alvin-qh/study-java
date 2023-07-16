@@ -1,13 +1,18 @@
 package alvin.study.builder;
 
 import alvin.study.infra.entity.common.TenantedEntity;
+import com.github.javafaker.Faker;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+
+import java.util.Locale;
 
 /**
  * 实体构建器超类
  */
 public abstract class Builder<T> {
+    protected static final Faker FAKER = new Faker(Locale.CHINA);
+
     // 实体管理器对象
     @PersistenceContext
     protected EntityManager em;

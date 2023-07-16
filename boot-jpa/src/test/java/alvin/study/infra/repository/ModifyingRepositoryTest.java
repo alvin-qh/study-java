@@ -1,14 +1,13 @@
 package alvin.study.infra.repository;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import alvin.study.IntegrationTest;
 import alvin.study.builder.UserBuilder;
 import alvin.study.util.security.PasswordUtil;
 import lombok.SneakyThrows;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试通过显式声明的 HQL 语句完成查询, 修改和删除操作
@@ -28,13 +27,12 @@ class ModifyingRepositoryTest extends IntegrationTest {
      * 测试通过 HQL 进行数据修改操作
      *
      * @see alvin.study.infra.repository.ModifyingRepository#updatePasswordById(Long,
-     *      String)
+     * String) ModifyingRepository.updatePasswordById(Long, String)
      */
     @Test
     @SneakyThrows
     void updatePasswordById_shouldUpdateEntity() {
-        long id = 0;
-
+        long id;
         try (var ignore = beginTx(false)) {
             // 创建 User 对象并获取其 id 属性
             id = newBuilder(UserBuilder.class).create().getId();
@@ -56,12 +54,12 @@ class ModifyingRepositoryTest extends IntegrationTest {
     /**
      * 测试通过 HQL 语句查询和删除实体对象
      *
-     * @see alvin.study.infra.repository.ModifyingRepository#findAllByAccount(String)
-     * @see alvin.study.infra.repository.ModifyingRepository#deleteAllByAccount(String)
+     * @see alvin.study.infra.repository.ModifyingRepository#findAllByAccount(String) ModifyingRepository.findAllByAccount(String)
+     * @see alvin.study.infra.repository.ModifyingRepository#deleteAllByAccount(String) ModifyingRepository.deleteAllByAccount(String)
      */
     @Test
     void deleteAllByAccount_shouldDeleteEntities() {
-        String account = "";
+        String account;
 
         try (var ignore = beginTx(false)) {
             // 创建 User 对象并获取 account 属性值

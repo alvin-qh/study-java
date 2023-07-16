@@ -1,14 +1,12 @@
 package alvin.study.util.security;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import com.google.common.base.Charsets;
+import org.apache.commons.codec.binary.Hex;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.commons.codec.binary.Hex;
-
-import com.google.common.base.Charsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * 密码加密处理工具类
@@ -30,7 +28,6 @@ public class PasswordUtil {
      *
      * @param algorithm 加密算法名称
      * @param hmacKey   用于密钥认证的 hmac (散列信息认证码)
-     *
      * @see SecretKeySpec#SecretKeySpec(byte[], String)
      */
     public PasswordUtil(String algorithm, String hmacKey) {
@@ -42,10 +39,8 @@ public class PasswordUtil {
      * 获取密钥的 HMAC 对象 (表示散列信息认证的对象)
      *
      * @return {@link Mac} 对象
-     *
      * @throws NoSuchAlgorithmException 指定的加密算法无效
      * @throws InvalidKeyException      所给的 {@link SecretKeySpec} 对象表示的密钥无效
-     *
      * @see Mac#getInstance(String)
      * @see Mac#init(java.security.Key)
      */
@@ -62,10 +57,8 @@ public class PasswordUtil {
      *
      * @param src 待加密的字符串内容
      * @return 加密后的结果转化为 16 进制字符串
-     *
      * @throws NoSuchAlgorithmException 指定的加密算法无效
      * @throws InvalidKeyException      所给的 {@link SecretKeySpec} 对象表示的密钥无效
-     *
      * @see Mac#doFinal(byte[])
      * @see Hex#encodeHexString(byte[])
      */
@@ -84,7 +77,6 @@ public class PasswordUtil {
      * @param src    未加密的源字符串
      * @param secret 经过加密的字符串
      * @return 两个字符串是否相符, 即将源字符串进行加密后是否和加密字符串相同
-     *
      * @throws NoSuchAlgorithmException 指定的加密算法无效
      * @throws InvalidKeyException      所给的 {@link SecretKeySpec} 对象表示的密钥无效
      */

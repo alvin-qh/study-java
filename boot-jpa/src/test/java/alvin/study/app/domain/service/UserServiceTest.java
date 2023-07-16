@@ -1,14 +1,13 @@
 package alvin.study.app.domain.service;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
+import alvin.study.IntegrationTest;
+import alvin.study.builder.UserBuilder;
+import alvin.study.infra.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 
-import alvin.study.IntegrationTest;
-import alvin.study.builder.UserBuilder;
-import alvin.study.infra.entity.User;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 对 UserService 进行测试
@@ -32,9 +31,9 @@ class UserServiceTest extends IntegrationTest {
         try (var ignore = beginTx(false)) {
             // 根据所给的 account 和 password 创建 User 对象
             user = newBuilder(UserBuilder.class)
-                    .withAccount(account)
-                    .withPassword(password)
-                    .create();
+                .withAccount(account)
+                .withPassword(password)
+                .create();
         }
 
         // 创建分页对象, 当前页为第 1 页 (页码从 0 开始), 每页 20 条记录

@@ -28,6 +28,7 @@ import org.springframework.web.context.request.RequestContextHolder;
  *
  * @see alvin.study.core.context.WebContext
  */
+@SuppressWarnings("unused")
 public interface Context {
     // 获取 Context 存储的内置 Key 值
     String KEY = ScopedProxyUtils.getTargetBeanName("context");
@@ -50,8 +51,6 @@ public interface Context {
      * @param <T>  {@code Value} 值的类型
      * @param name {@code Key} 值
      * @return {@code Value} 值
-     *
-     * @throws NoContextAttributeException
      */
     default <T> T get(String key) {
         T val = getOrDefault(key, null);
@@ -95,7 +94,6 @@ public interface Context {
      * @param <T>          {@code Value} 的类型
      * @param name         {@code Key} 值
      * @param defaultValue {@code Key} 不存在情况下的默认值
-     * @return {@code Value} 值
      */
     void set(String key, Object value);
 
@@ -103,11 +101,10 @@ public interface Context {
      * 获取当前请求范围内注册的 {@link Context} 对象
      *
      * @return 当前请求范围内注册的 {@link Context} 对象
-     *
      * @see ScopedProxyUtils#getTargetBeanName(String)
      * @see RequestContextHolder#currentRequestAttributes()
      */
-    public static Context current() {
+    static Context current() {
         var attributes = RequestContextHolder.currentRequestAttributes();
         return (Context) attributes.getAttribute(KEY, RequestAttributes.SCOPE_REQUEST);
     }

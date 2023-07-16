@@ -1,11 +1,5 @@
 package alvin.study.infra.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
-
 import alvin.study.infra.entity.common.AuditedEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -18,6 +12,11 @@ import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 部门实体, 对应 {@code department} 表
@@ -38,7 +37,6 @@ import lombok.Setter;
 @Table(name = "department")
 @Where(clause = "deleted = 0")
 @SQLDelete(sql = "UPDATE department SET deleted = id WHERE id = ?")
-@SuppressWarnings("java:S2160")
 public class Department extends AuditedEntity {
     /**
      * 部门名称
@@ -118,7 +116,7 @@ public class Department extends AuditedEntity {
      * </p>
      */
     @OrderBy("id asc")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent", cascade = { CascadeType.ALL }, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent", cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<Department> children = new ArrayList<>();
 
     /**
@@ -180,7 +178,7 @@ public class Department extends AuditedEntity {
      * </p>
      */
     @OrderBy("id asc")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "department", cascade = { CascadeType.ALL }, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "department", cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<DepartmentEmployee> departmentEmployees = new ArrayList<>();
 
     /**
@@ -195,10 +193,10 @@ public class Department extends AuditedEntity {
      */
     public List<Employee> getEmployees() {
         return departmentEmployees.stream()
-                // 将集合的每一项 mapping 为 Employee 类型实体对象
-                .map(DepartmentEmployee::getEmployee)
-                // 将 mapping 的结果重新转为 List 集合
-                .toList();
+            // 将集合的每一项 mapping 为 Employee 类型实体对象
+            .map(DepartmentEmployee::getEmployee)
+            // 将 mapping 的结果重新转为 List 集合
+            .toList();
     }
 
     /**

@@ -1,13 +1,5 @@
 package alvin.study.infra.entity;
 
-import java.time.Instant;
-
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import alvin.study.infra.entity.common.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,6 +7,13 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.Instant;
 
 /**
  * 组织实体, 同时表示租户, 对应 {@code org} 表
@@ -37,8 +36,7 @@ import lombok.Setter;
 @Table(name = "org")
 @Where(clause = "deleted = 0")
 @SQLDelete(sql = "UPDATE org SET deleted = id WHERE id = ?")
-@EntityListeners({ AuditingEntityListener.class })
-@SuppressWarnings("java:S2160")
+@EntityListeners({AuditingEntityListener.class})
 public class Org extends BaseEntity {
     /**
      * 组织名称

@@ -1,15 +1,14 @@
 package alvin.study.infra.repository;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
 import alvin.study.IntegrationTest;
 import alvin.study.builder.DepartmentBuilder;
 import alvin.study.builder.OrgBuilder;
 import alvin.study.infra.entity.Org;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link DepartmentRepository} 的增删查改操作
@@ -23,7 +22,6 @@ class DepartmentRepositoryTest extends IntegrationTest {
      * 测试对 {@link alvin.study.infra.entity.Department Department} 对象进行存储操作
      *
      * @see alvin.study.builder.DepartmentBuilder#build()
-     *
      * @see org.springframework.data.repository.CrudRepository#save(Object)
      * @see org.springframework.data.repository.CrudRepository#findById(Object)
      */
@@ -50,16 +48,14 @@ class DepartmentRepositoryTest extends IntegrationTest {
      * 测试更新实体对象
      *
      * @see alvin.study.builder.DepartmentBuilder#create()
-     *
      * @see org.springframework.data.repository.CrudRepository#findById(Object)
      */
     @Test
     void update_shouldUpdateEntity() {
-        long id = 0;
-
-        try (var tx = beginTx(false)) {
+        long id;
+        try (var ignored = beginTx(false)) {
             // 创建一个实体对象并保存其 id 属性
-            id = newBuilder(DepartmentBuilder.class).withName("RD").create().getId();
+            id = newBuilder(DepartmentBuilder.class).name("RD").create().getId();
         }
 
         try (var ignore = beginTx(false)) {
@@ -85,15 +81,14 @@ class DepartmentRepositoryTest extends IntegrationTest {
      * 测试删除实体
      *
      * @see alvin.study.builder.DepartmentBuilder#create()
-     *
      * @see org.springframework.data.repository.CrudRepository#findById(Object)
      * @see org.springframework.data.repository.CrudRepository#delete(Object)
      */
     @Test
     void delete_shouldDeleteEntity() {
-        long id = 0;
+        long id;
 
-        try (var tx = beginTx(false)) {
+        try (var ignored = beginTx(false)) {
             // 创建一个实体对象并保存其 id 属性
             id = newBuilder(DepartmentBuilder.class).create().getId();
         }
@@ -134,7 +129,7 @@ class DepartmentRepositoryTest extends IntegrationTest {
 
         // 在新建的租户下创建 10 个部门实体
         for (var i = 0; i < 10; i++) {
-            newBuilder(DepartmentBuilder.class).withOrgId(org.getId()).create();
+            newBuilder(DepartmentBuilder.class).name("DEP_" + i).withOrgId(org.getId()).create();
         }
         flushEntityManager();
 

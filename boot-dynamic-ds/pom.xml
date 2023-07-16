@@ -58,6 +58,7 @@
     <dependency>
       <groupId>org.flywaydb</groupId>
       <artifactId>flyway-core</artifactId>
+      <scope>runtime</scope>
     </dependency>
 
     <!-- Spring Boot Webflux Starter, 这里仅用作测试 -->

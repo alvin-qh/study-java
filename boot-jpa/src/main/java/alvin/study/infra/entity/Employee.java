@@ -1,11 +1,5 @@
 package alvin.study.infra.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
-
 import alvin.study.infra.entity.common.AuditedEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -16,6 +10,11 @@ import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 雇员实体, 对应 {@code employee} 表
@@ -36,7 +35,6 @@ import lombok.Setter;
 @Table(name = "employee")
 @Where(clause = "deleted = 0") // 增加逻辑删除查询条件
 @SQLDelete(sql = "UPDATE employee SET deleted = id WHERE id = ?") // 增加逻辑删除 SQL 语句
-@SuppressWarnings("java:S2160")
 public class Employee extends AuditedEntity {
     /**
      * 职员名称
@@ -114,7 +112,7 @@ public class Employee extends AuditedEntity {
      * {@link OrderBy @OrderBy} 注解表示查询级联集合时采用的排序规则
      * </p>
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee", cascade = { CascadeType.ALL }, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee", cascade = {CascadeType.ALL}, orphanRemoval = true)
     @OrderBy("id asc")
     private List<DepartmentEmployee> departmentEmployees = new ArrayList<>();
 

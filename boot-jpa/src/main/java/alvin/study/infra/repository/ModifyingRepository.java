@@ -1,13 +1,12 @@
 package alvin.study.infra.repository;
 
-import java.util.List;
-
+import alvin.study.infra.entity.User;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import alvin.study.infra.entity.User;
+import java.util.List;
 
 /**
  * 演示如何通过 JPQL 来执行更新和删除操作的存储操作接口类

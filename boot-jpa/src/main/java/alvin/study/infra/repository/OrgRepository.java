@@ -1,10 +1,9 @@
 package alvin.study.infra.repository;
 
-import java.util.Optional;
-
+import alvin.study.infra.entity.Org;
 import org.springframework.data.repository.CrudRepository;
 
-import alvin.study.infra.entity.Org;
+import java.util.Optional;
 
 /**
  * 组织实体 {@link Org} 类型的存储操作接口类
@@ -17,13 +16,14 @@ import alvin.study.infra.entity.Org;
  * {@link CrudRepository} 接口的泛型参数表示要操作的实体类型和实体类型的主键类型
  * </p>
  */
+@SuppressWarnings("unused")
 public interface OrgRepository extends CrudRepository<Org, Long> {
     /**
      * 依据组织名称查询组织实体
      *
      * @param name 组织名
      * @return {@link Optional} 对象, {@link Optional#isPresent()} 方法返回 {@code true}
-     *         表示查询成功
+     * 表示查询成功
      */
     Optional<Org> findByName(String name);
 }

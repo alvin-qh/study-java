@@ -1,14 +1,5 @@
 package alvin.study.infra.entity;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.util.ArrayList;
-
-import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
-import org.hibernate.Session;
-import org.junit.jupiter.api.Test;
-
 import alvin.study.IntegrationTest;
 import alvin.study.builder.DepartmentBuilder;
 import alvin.study.builder.OrgBuilder;
@@ -20,6 +11,14 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.PersistenceException;
 import lombok.SneakyThrows;
+import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
+import org.hibernate.Session;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class TenantingTest extends IntegrationTest {
     // 注入 JPA 实体管理器对象
@@ -93,9 +92,9 @@ class TenantingTest extends IntegrationTest {
         // 本次持久化操作成功
         try (var ignore = beginTx(false)) {
             newBuilder(DepartmentBuilder.class)
-                    // 设置 orgId 字段
-                    .withOrgId(currentOrg().getId())
-                    .create();
+                // 设置 orgId 字段
+                .withOrgId(currentOrg().getId())
+                .create();
         }
     }
 }

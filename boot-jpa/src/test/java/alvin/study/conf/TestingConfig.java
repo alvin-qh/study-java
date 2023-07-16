@@ -1,11 +1,10 @@
 package alvin.study.conf;
 
+import alvin.study.common.TestingTransactionManager;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.transaction.PlatformTransactionManager;
-
-import alvin.study.common.TestingTransactionManager;
 
 /**
  * 用于测试的自动配置类

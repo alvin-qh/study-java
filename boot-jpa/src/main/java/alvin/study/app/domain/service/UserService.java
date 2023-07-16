@@ -1,18 +1,16 @@
 package alvin.study.app.domain.service;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
-import com.google.common.base.Strings;
-
 import alvin.study.core.context.Context;
 import alvin.study.infra.entity.Org;
 import alvin.study.infra.entity.User;
 import alvin.study.infra.repository.UserRepository;
 import alvin.study.util.security.PasswordUtil;
+import com.google.common.base.Strings;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 /**
  * 和用户相关的服务类
@@ -116,12 +114,12 @@ public class UserService {
             // 返回 where 条件 + order by 的组合结果
             // 如果只需要 where 条件即可, 则可直接返回 predicate 变量
             return query
-                    // 将查询条件放入 query 的 where 子句中
-                    .where(predicate)
-                    // 设置排序表达式
-                    .orderBy(cb.desc(root.get("id")))
-                    // 返回复合查询条件
-                    .getRestriction();
+                // 将查询条件放入 query 的 where 子句中
+                .where(predicate)
+                // 设置排序表达式
+                .orderBy(cb.desc(root.get("id")))
+                // 返回复合查询条件
+                .getRestriction();
         }, pageable);
     }
 

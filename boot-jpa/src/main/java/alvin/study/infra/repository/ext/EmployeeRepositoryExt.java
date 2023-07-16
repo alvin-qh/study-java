@@ -1,11 +1,11 @@
 package alvin.study.infra.repository.ext;
 
-import java.util.List;
-
 import alvin.study.infra.entity.Department;
 import alvin.study.infra.entity.Employee;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+
+import java.util.List;
 
 /**
  * 定义一个接口来扩充 {@link alvin.study.infra.repository.EmployeeRepository
@@ -57,13 +57,13 @@ public interface EmployeeRepositoryExt {
         public List<Employee> findEmployeesByDepartment(Department department) {
             // 通过 JPQL 实现查询
             return em.createQuery("""
-                select e
-                from DepartmentEmployee de
-                join de.employee e
-                where de.department=:department
-                """, Employee.class)
-                    .setParameter("department", department)
-                    .getResultList();
+                    select e
+                    from DepartmentEmployee de
+                    join de.employee e
+                    where de.department=:department
+                    """, Employee.class)
+                .setParameter("department", department)
+                .getResultList();
         }
 
         @Override
@@ -79,8 +79,8 @@ public interface EmployeeRepositoryExt {
                 """;
 
             return em.createNativeQuery(sql, Employee.class)
-                    .setParameter("department_id", department.getId())
-                    .getResultList();
+                .setParameter("department_id", department.getId())
+                .getResultList();
         }
     }
 }

@@ -1,13 +1,12 @@
 package alvin.study.infra.repository;
 
-import java.util.List;
-import java.util.Optional;
-
+import alvin.study.infra.entity.User;
+import jakarta.persistence.OrderBy;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
 
-import alvin.study.infra.entity.User;
-import jakarta.persistence.OrderBy;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * 用户实体 {@link User} 类型的存储操作接口类
@@ -43,7 +42,7 @@ public interface UserRepository extends CrudRepository<User, Long>, JpaSpecifica
      *
      * @param account 用户账号
      * @return {@link Optional} 对象, {@link Optional#isPresent()} 方法返回 {@code true}
-     *         表示查询成功
+     * 表示查询成功
      */
     Optional<User> findByAccount(String account);
 }

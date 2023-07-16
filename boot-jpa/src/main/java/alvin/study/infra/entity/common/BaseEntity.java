@@ -1,14 +1,14 @@
 package alvin.study.infra.entity.common;
 
-import java.io.Serializable;
-import java.util.Objects;
-
 import jakarta.persistence.Access;
 import jakarta.persistence.AccessType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+
+import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * 所有实体类超类
@@ -49,7 +49,9 @@ public abstract class BaseEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
     /**
      * 比较两个实体对象, 比较 {@code id} 字段即可

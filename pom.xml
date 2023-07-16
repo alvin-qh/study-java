@@ -49,7 +49,7 @@
     <version.hikari-cp>5.0.1</version.hikari-cp>
     <version.jooq>3.18.5</version.jooq>
     <version.mybatis-plus>3.5.2</version.mybatis-plus>
-    <version.flyway>9.20.1</version.flyway>
+    <version.flyway>9.19.4</version.flyway>
 
     <version.spring-boot>3.1.1</version.spring-boot>
     <version.spring-boot2>2.7.7</version.spring-boot2>
@@ -103,8 +103,8 @@
     <!-- <module>boot-aop</module> -->
     <!-- <module>boot-spel</module> -->
     <!-- <module>boot-validator</module> -->
-    <module>boot-testing</module>
-    <!-- <module>boot-jpa</module> -->
+    <!-- <module>boot-testing</module> -->
+    <module>boot-jpa</module>
     <!-- <module>boot-mybatis</module> -->
     <!-- <module>boot-jooq</module> -->
     <!-- <module>boot-graphql</module> -->

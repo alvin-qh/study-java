@@ -3,13 +3,13 @@ package alvin.study.infra.entity.common;
 import alvin.study.core.context.Context;
 import alvin.study.infra.entity.Org;
 import jakarta.persistence.PrePersist;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 实体操作监听器, 监听对实体的增删查改操作
  *
  * <p>
- * 配合实体类型上的 {@link javax.persistence.EntityListeners @EntityListeners} 注解,
+ * 配合实体类型上的 {@link jakarta.persistence.EntityListeners @EntityListeners} 注解,
  * 用来启用该监听器, 对于继承了 {@link TenantedEntity} 的实体类对象进行处理
  * </p>
  *
@@ -21,10 +21,10 @@ import lombok.RequiredArgsConstructor;
  * {@code orgId} 参数值通过 {@link Context#get(String)} 方法获取
  * </p>
  */
-@RequiredArgsConstructor
 public class TenantedEntityListener {
     // 上下文对象
-    private final Context context;
+    @Autowired
+    private Context context;
 
     /**
      * 获取租户 ID, 并设置到对应的实体对象中

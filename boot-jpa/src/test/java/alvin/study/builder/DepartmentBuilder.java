@@ -1,19 +1,17 @@
 package alvin.study.builder;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import alvin.study.infra.entity.Department;
 import alvin.study.infra.entity.Employee;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 部门实体构建器类
  */
+@SuppressWarnings("unused")
 public class DepartmentBuilder extends Builder<Department> {
-    private final static AtomicInteger SEQUENCE = new AtomicInteger();
-
-    private String name = "Department" + SEQUENCE.incrementAndGet();
+    private String name = FAKER.commerce().department();
     private Department parent = null;
     private List<Department> subDepartments = new ArrayList<>();
     private List<Employee> employees = new ArrayList<>();
@@ -21,7 +19,7 @@ public class DepartmentBuilder extends Builder<Department> {
     /**
      * 设置部门名称
      */
-    public DepartmentBuilder withName(String name) {
+    public DepartmentBuilder name(String name) {
         this.name = name;
         return this;
     }
@@ -29,7 +27,7 @@ public class DepartmentBuilder extends Builder<Department> {
     /**
      * 设置上级部门
      */
-    public DepartmentBuilder withParent(Department parent) {
+    public DepartmentBuilder parent(Department parent) {
         this.parent = parent;
         return this;
     }
@@ -37,7 +35,7 @@ public class DepartmentBuilder extends Builder<Department> {
     /**
      * 设置下级部门列表
      */
-    public DepartmentBuilder withChildren(List<Department> subDepartments) {
+    public DepartmentBuilder children(List<Department> subDepartments) {
         this.subDepartments = subDepartments;
         return this;
     }
@@ -45,7 +43,7 @@ public class DepartmentBuilder extends Builder<Department> {
     /**
      * 设置部门员工
      */
-    public DepartmentBuilder withEmployees(List<Employee> employees) {
+    public DepartmentBuilder employees(List<Employee> employees) {
         this.employees = employees;
         return this;
     }

@@ -1,20 +1,19 @@
 package alvin.study.conf;
 
-import java.util.Map;
-import java.util.stream.IntStream;
-
+import alvin.study.Main;
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 
-import com.google.common.base.Joiner;
-import com.google.common.base.Splitter;
-import com.google.common.base.Strings;
-
-import alvin.study.Main;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Map;
+import java.util.stream.IntStream;
 
 /**
  * 初始化测试上下文
@@ -29,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
  * {@link ConfigurableApplicationContext} 上下文对象用于进行额外设置
  * </p>
  */
+@SuppressWarnings("unused")
 @Slf4j
 public class TestingContextInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
     /**
@@ -39,8 +39,8 @@ public class TestingContextInitializer implements ApplicationContextInitializer<
     public void initialize(ConfigurableApplicationContext applicationContext) {
         // 获取 Main 类中定义的额外的 Spring 配置项
         var properties = Main.getDefaultProperties(
-        // Pair.of("spring.datasource.hikari.pool-name", "cp-alvin-study-test"),
-        // Pair.of("spring.jpa.show-sql", "true")
+            // Pair.of("spring.datasource.hikari.pool-name", "cp-alvin-study-test"),
+            // Pair.of("spring.jpa.show-sql", "true")
         );
 
         // 对 Gradle 多进程测试配置不同的数据源
@@ -61,7 +61,6 @@ public class TestingContextInitializer implements ApplicationContextInitializer<
      * @param env 获取当前测试环境的配置项
      * @return 新的配置项
      */
-    @SuppressWarnings("unused")
     private Map<String, String> setupTestDataSource(ConfigurableEnvironment env) {
         // 从 Gradle 或 Maven 的环境变量中获取当前的 work 编号
         var worker = System.getProperty("org.gradle.test.worker");
@@ -97,13 +96,13 @@ public class TestingContextInitializer implements ApplicationContextInitializer<
      * @param executionNo 本次测试的运行号
      * @return 结合运行号的新数据库连接
      */
-    private String makeJDBCUrlByExecutionNo(String jdbcUrl, int executionNo) {
+    private @NotNull String makeJDBCUrlByExecutionNo(String jdbcUrl, int executionNo) {
         // 获取数据库连接的主体部分和参数部分
         var parts = Splitter.on(";")
-                .omitEmptyStrings()
-                .trimResults()
-                .limit(2)
-                .splitToList(jdbcUrl);
+            .omitEmptyStrings()
+            .trimResults()
+            .limit(2)
+            .splitToList(jdbcUrl);
 
         var newParts = IntStream.range(0, parts.size()).mapToObj(i -> {
             if (i == 0) {
