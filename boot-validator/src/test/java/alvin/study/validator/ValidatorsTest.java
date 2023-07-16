@@ -1,14 +1,13 @@
 package alvin.study.validator;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import alvin.study.IntegrationTest;
 import alvin.study.model.Computer;
 import alvin.study.model.User;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * 测试 {@link Validators} 工具类, 对具备校验注解字段的对象进行校验
@@ -34,7 +33,7 @@ class ValidatorsTest extends IntegrationTest {
     }
 
     /**
-     * 测试以注入方式获取的 {@link javax.validation.Validator Validator} 对象
+     * 测试以注入方式获取的 {@link jakarta.validation.Validator Validator} 对象
      */
     @Test
     void validate_shouldSpringValidatorWorked() {
@@ -57,7 +56,7 @@ class ValidatorsTest extends IntegrationTest {
     }
 
     /**
-     * 测试以工厂方法获取的 {@link javax.validation.Validator Validator} 对象
+     * 测试以工厂方法获取的 {@link jakarta.validation.Validator Validator} 对象
      */
     @Test
     void validate_shouldHibernateValidatorWorked() {

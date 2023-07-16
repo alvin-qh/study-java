@@ -1,27 +1,25 @@
 package alvin.study.service;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import alvin.study.IntegrationTest;
 import alvin.study.model.Computer;
 import jakarta.validation.ConstraintViolationException;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * 测试对具备验证注解的参数进行校验
  *
  * <p>
- * {@link Computer#ipAddress Computer.ipAddress} 的字段具备自定义
+ * {@code Computer.ipAddress} 的字段具备自定义
  * {@link alvin.study.validator.IpAddress IpAddress} 校验注解
  * </p>
  */
 class ComputerServiceTest extends IntegrationTest {
     /**
-     * 注入具备 {@link org.springframework.validation.annotation.Validated @Validated}
-     * 注解的服务类对象
+     * 注入具备 {@link org.springframework.validation.annotation.Validated @Validated} 注解的服务类对象
      */
     @Autowired
     private ComputerService computerService;
@@ -30,13 +28,11 @@ class ComputerServiceTest extends IntegrationTest {
      * 测试参数正确时的情况
      *
      * <p>
-     * 调用 {@link ComputerService#createComputer(String, String)} 方法并传入正确参数, 返回正确的
-     * {@link Computer} 对象
+     * 调用 {@link ComputerService#createComputer(String, String)} 方法并传入正确参数, 返回正确的 {@link Computer} 对象
      * </p>
      *
      * <p>
-     * 调用 {@link ComputerService#updateComputer(Computer)} 方法并传入正确的 {@link Computer}
-     * 对象, 方法正确执行
+     * 调用 {@link ComputerService#updateComputer(Computer)} 方法并传入正确的 {@link Computer} 对象, 方法正确执行
      * </p>
      */
     @Test
@@ -61,17 +57,15 @@ class ComputerServiceTest extends IntegrationTest {
      *
      * <p>
      * 通过 {@link ConstraintViolationException#getConstraintViolations()} 方法可以获取
-     * {@link javax.validation.ConstraintViolation ConstraintViolation} 对象,
-     * 表示详细的验证错误信息, 其中:
+     * {@link jakarta.validation.ConstraintViolation ConstraintViolation} 对象, 表示详细的验证错误信息, 其中:
      * <ul>
      * <li>
-     * {@link javax.validation.ConstraintViolation#getPropertyPath()
-     * ConstraintViolation.getPropertyPath()} 方法返回校验错误的 {@code 参数/属性} 的路径, 对于简单参数,
-     * 格式为 {@code 方法名.参数名}
+     * {@link jakarta.validation.ConstraintViolation#getPropertyPath() ConstraintViolation.getPropertyPath()}
+     * 方法返回校验错误的 {@code 参数/属性} 的路径, 对于简单参数, 格式为 {@code 方法名.参数名}
      * </li>
      * <li>
-     * {@link javax.validation.ConstraintViolation#getMessage()
-     * ConstraintViolation.getMessage()} 方法返回校验错误的错误信息
+     * {@link jakarta.validation.ConstraintViolation#getMessage() ConstraintViolation.getMessage()}
+     * 方法返回校验错误的错误信息
      * </li>
      * </ul>
      * </p>
@@ -106,17 +100,15 @@ class ComputerServiceTest extends IntegrationTest {
      *
      * <p>
      * 通过 {@link ConstraintViolationException#getConstraintViolations()} 方法可以获取
-     * {@link javax.validation.ConstraintViolation ConstraintViolation} 对象,
-     * 表示详细的验证错误信息, 其中:
+     * {@link jakarta.validation.ConstraintViolation ConstraintViolation} 对象, 表示详细的验证错误信息, 其中:
      * <ul>
      * <li>
-     * {@link javax.validation.ConstraintViolation#getPropertyPath()
-     * ConstraintViolation.getPropertyPath()} 方法返回校验错误的 {@code 参数/属性} 的路径, 对于复杂类型参数,
-     * 格式为 {@code 方法名.参数名.字段名}
+     * {@link jakarta.validation.ConstraintViolation#getPropertyPath() ConstraintViolation.getPropertyPath()}
+     * 方法返回校验错误的 {@code 参数/属性} 的路径, 对于复杂类型参数, 格式为 {@code 方法名.参数名.字段名}
      * </li>
      * <li>
-     * {@link javax.validation.ConstraintViolation#getMessage()
-     * ConstraintViolation.getMessage()} 方法返回校验错误的错误信息
+     * {@link jakarta.validation.ConstraintViolation#getMessage() ConstraintViolation.getMessage()}
+     * 方法返回校验错误的错误信息
      * </li>
      * </ul>
      * </p>
@@ -136,8 +128,8 @@ class ComputerServiceTest extends IntegrationTest {
                 // 对于复合参数类型, 路径格式为: 方法名.参数名.字段名
                 switch (violation.getPropertyPath().toString()) {
                 case "updateComputer.computer.name" -> then(violation.getMessage()).isEqualTo("must not be blank");
-                case "updateComputer.computer.ipAddress" -> then(violation.getMessage())
-                        .isEqualTo("invalid IP address");
+                case "updateComputer.computer.ipAddress" ->
+                    then(violation.getMessage()).isEqualTo("invalid IP address");
                 default -> fail();
                 }
             }

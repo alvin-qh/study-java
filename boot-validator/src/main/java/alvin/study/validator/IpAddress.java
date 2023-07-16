@@ -1,13 +1,13 @@
 package alvin.study.validator;
 
+import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import jakarta.validation.Constraint;
-import jakarta.validation.Payload;
 
 /**
  * 自定义校验注解, 对字段是否表示 IP 地址进行校验
@@ -18,9 +18,9 @@ import jakarta.validation.Payload;
  * </p>
  */
 @Documented
-@Target({ ElementType.FIELD, ElementType.PARAMETER })
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = { IpAddressValidator.class }) // 执行校验的校验类
+@Constraint(validatedBy = {IpAddressValidator.class}) // 执行校验的校验类
 public @interface IpAddress {
     /**
      * 设置 IP 版本号, 4 表示 ipv4, 6 表示 ipv6
@@ -50,7 +50,7 @@ public @interface IpAddress {
      *
      * <p>
      * 执行校验时使用那个 {@code group} 由
-     * {@link javax.validation.Validator#validate(Object, Class...)
+     * {@link jakarta.validation.Validator#validate(Object, Class...)
      * Validator.validate(Object, Class...)} 方法从第二个开始的参数指定
      * </p>
      *
@@ -63,7 +63,7 @@ public @interface IpAddress {
      *
      * <p>
      * 可以传递 {@link Payload} 接口的实现类, 并且在校验失败后返回的结果
-     * ({@link javax.validation.ConstraintViolation ConstraintViolation} 对象)
+     * ({@link jakarta.validation.ConstraintViolation ConstraintViolation} 对象)
      * 中获取这个参数的值
      * </p>
      *

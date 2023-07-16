@@ -1,12 +1,11 @@
 package alvin.study.service;
 
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
 import alvin.study.model.Computer;
 import alvin.study.validator.IpAddress;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * 定义类型进行参数校验
@@ -45,8 +44,8 @@ public class ComputerService {
      * @return 校验成功, 产生实体类
      */
     public Computer createComputer(
-            @NotBlank String name,
-            @NotBlank @IpAddress String ipAddress) {
+        @NotBlank String name,
+        @NotBlank @IpAddress String ipAddress) {
         return new Computer(name, ipAddress);
     }
 

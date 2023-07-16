@@ -28,8 +28,8 @@ public class User {
 
     // 非 null 校验
     // 数值范围校验
-    @NotNull
     @Min(10)
     @Max(100)
+    @NotNull
     private final Integer age;
 }

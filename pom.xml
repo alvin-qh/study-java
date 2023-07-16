@@ -101,8 +101,8 @@
     <!-- <module>socketio</module> -->
     <!-- <module>boot-mvc</module> -->
     <!-- <module>boot-aop</module> -->
-    <module>boot-spel</module>
-    <!-- <module>boot-validator</module> -->
+    <!-- <module>boot-spel</module> -->
+    <module>boot-validator</module>
     <!-- <module>boot-testing</module> -->
     <!-- <module>boot-jpa</module> -->
     <!-- <module>boot-mybatis</module> -->

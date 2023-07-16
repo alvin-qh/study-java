@@ -1,14 +1,13 @@
 package alvin.study.service;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import alvin.study.IntegrationTest;
 import alvin.study.model.User;
 import jakarta.validation.ConstraintViolationException;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * 测试对具备验证注解的参数进行校验
@@ -29,8 +28,7 @@ class UserServiceTest extends IntegrationTest {
      * 测试参数正确时的情况
      *
      * <p>
-     * 调用 {@link UserService#createUser(String, Integer)} 方法并传入正确参数, 返回正确的
-     * {@link User} 对象
+     * 调用 {@link UserService#createUser(String, Integer)} 方法并传入正确参数, 返回正确的 {@link User} 对象
      * </p>
      *
      * <p>
@@ -54,23 +52,19 @@ class UserServiceTest extends IntegrationTest {
      * 测试简单参数错误时的情况
      *
      * <p>
-     * 调用 {@link UserService#createUser(String, Integer)} 方法并传入错误参数, 抛出
-     * {@link ConstraintViolationException} 异常
+     * 调用 {@link UserService#createUser(String, Integer)} 方法并传入错误参数, 抛出 {@link ConstraintViolationException} 异常
      * </p>
      *
      * <p>
      * 通过 {@link ConstraintViolationException#getConstraintViolations()} 方法可以获取
-     * {@link javax.validation.ConstraintViolation ConstraintViolation} 对象,
-     * 表示详细的验证错误信息, 其中:
+     * {@link jakarta.validation.ConstraintViolation ConstraintViolation} 对象, 表示详细的验证错误信息, 其中:
      * <ul>
      * <li>
-     * {@link javax.validation.ConstraintViolation#getPropertyPath()
-     * ConstraintViolation.getPropertyPath()} 方法返回校验错误的 {@code 参数/属性} 的路径, 对于简单参数,
-     * 格式为 {@code 方法名.参数名}
+     * {@link jakarta.validation.ConstraintViolation#getPropertyPath() ConstraintViolation.getPropertyPath()}
+     * 方法返回校验错误的 {@code 参数/属性} 的路径, 对于简单参数, 格式为 {@code 方法名.参数名}
      * </li>
      * <li>
-     * {@link javax.validation.ConstraintViolation#getMessage()
-     * ConstraintViolation.getMessage()} 方法返回校验错误的错误信息
+     * {@link jakarta.validation.ConstraintViolation#getMessage() ConstraintViolation.getMessage()} 方法返回校验错误的错误信息
      * </li>
      * </ul>
      * </p>
@@ -105,17 +99,15 @@ class UserServiceTest extends IntegrationTest {
      *
      * <p>
      * 通过 {@link ConstraintViolationException#getConstraintViolations()} 方法可以获取
-     * {@link javax.validation.ConstraintViolation ConstraintViolation} 对象,
-     * 表示详细的验证错误信息, 其中:
+     * {@link jakarta.validation.ConstraintViolation ConstraintViolation} 对象, 表示详细的验证错误信息, 其中:
      * <ul>
      * <li>
-     * {@link javax.validation.ConstraintViolation#getPropertyPath()
-     * ConstraintViolation.getPropertyPath()} 方法返回校验错误的 {@code 参数/属性} 的路径, 对于复杂类型参数,
-     * 格式为 {@code 方法名.参数名.字段名}
+     * {@link jakarta.validation.ConstraintViolation#getPropertyPath() ConstraintViolation.getPropertyPath()}
+     * 方法返回校验错误的 {@code 参数/属性} 的路径, 对于复杂类型参数, 格式为 {@code 方法名.参数名.字段名}
      * </li>
      * <li>
-     * {@link javax.validation.ConstraintViolation#getMessage()
-     * ConstraintViolation.getMessage()} 方法返回校验错误的错误信息
+     * {@link jakarta.validation.ConstraintViolation#getMessage() ConstraintViolation.getMessage()}
+     * 方法返回校验错误的错误信息
      * </li>
      * </ul>
      * </p>
@@ -136,8 +128,8 @@ class UserServiceTest extends IntegrationTest {
                 switch (violation.getPropertyPath().toString()) {
                 case "updateUser.user.id" -> then(violation.getMessage()).isEqualTo("must not be null");
                 case "updateUser.user.name" -> then(violation.getMessage()).isEqualTo("must not be blank");
-                case "updateUser.user.age" -> then(violation.getMessage()).isEqualTo(
-                    "must be greater than or equal to 10");
+                case "updateUser.user.age" ->
+                    then(violation.getMessage()).isEqualTo("must be greater than or equal to 10");
                 default -> fail();
                 }
             }

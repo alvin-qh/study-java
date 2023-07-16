@@ -1,13 +1,12 @@
 package alvin.study.validator;
 
-import java.util.Set;
-
-import org.springframework.stereotype.Component;
-
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
+import java.util.Set;
 
 /**
  * 以编程方式对指定对象进行校验
@@ -26,7 +25,7 @@ import lombok.RequiredArgsConstructor;
  * <p>
  * 对于 Hibernate 提供的 {@link Validator} 实现类型
  * {@link org.hibernate.validator.internal.engine.ValidatorImpl ValidatorImpl},
- * 是通过 {@link javax.validation.ValidatorFactory ValidatorFactory} 工厂来创建
+ * 是通过 {@link jakarta.validation.ValidatorFactory ValidatorFactory} 工厂来创建
  * </p>
  */
 @Component
@@ -67,26 +66,28 @@ public class Validators {
      * </p>
      *
      * @return {@link org.springframework.validation.beanvalidation.LocalValidatorFactoryBean
-     *         LocalValidatorFactoryBean} 类型对象
+     * LocalValidatorFactoryBean} 类型对象
      */
-    public Validator getInjectedValidator() { return validator; }
+    public Validator getInjectedValidator() {
+        return validator;
+    }
 
     /**
      * 获取提供工厂方法产生的校验对象, 该验证对象由 Hibernate 框架提供
      *
-     * <P>
-     * 参考 {@link javax.validation.ValidatorFactory#getValidator()
+     * <p>
+     * 参考 {@link jakarta.validation.ValidatorFactory#getValidator()
      * ValidatorFactory.getValidator()}
      * </P>
      *
      * @return {@link org.hibernate.validator.internal.engine.ValidatorImpl
-     *         ValidatorImpl} 类型对象
+     * ValidatorImpl} 类型对象
      */
     public Validator getDefaultValidator() {
         // 获取默认的验证对象工厂
-        var factory = Validation.buildDefaultValidatorFactory();
-
-        // 获取验证对象
-        return factory.getValidator();
+        try (var factory = Validation.buildDefaultValidatorFactory()) {
+            // 获取验证对象
+            return factory.getValidator();
+        }
     }
 }

@@ -1,11 +1,10 @@
 package alvin.study.validator;
 
-import java.util.regex.Pattern;
-
 import com.google.common.base.Strings;
-
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+
+import java.util.regex.Pattern;
 
 /**
  * 和校验注解关联的校验执行类
@@ -21,7 +20,7 @@ import jakarta.validation.ConstraintValidatorContext;
 class IpAddressValidator implements ConstraintValidator<IpAddress, String> {
     // 用于判断 IPv4 格式的正则表达式
     private static final Pattern PATTERN_IPV4 = Pattern
-            .compile("^(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})$");
+        .compile("^(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})$");
 
     // 用于判断 IPv6 格式的正则表达式
     private static final Pattern PATTERN_IPV6 = Pattern.compile("^([a-fA-F]{1,4}:){7}[a-fA-F]{1,4}$");
@@ -36,7 +35,7 @@ class IpAddressValidator implements ConstraintValidator<IpAddress, String> {
      * 用于字段 (或参数) 验证的注解会通过该函数传入. 如果需要获取注解上定义的属性值, 需要重写该方法并保持传入的注解对象
      * </p>
      *
-     * @see javax.validation.ConstraintValidator#initialize(java.lang.annotation.Annotation)
+     * @see jakarta.validation.ConstraintValidator#initialize(java.lang.annotation.Annotation)
      */
     @Override
     public void initialize(IpAddress constraintAnnotation) {
