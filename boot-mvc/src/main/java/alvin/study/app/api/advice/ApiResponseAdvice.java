@@ -1,9 +1,12 @@
 package alvin.study.app.api.advice;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.stream.Collectors;
-
+import alvin.study.core.http.ResponseWrapper;
+import alvin.study.core.http.ResponseWrapper.ErrorDetail;
+import com.google.common.base.Joiner;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Path;
+import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,13 +25,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
-import com.google.common.base.Joiner;
-
-import alvin.study.core.http.ResponseWrapper;
-import alvin.study.core.http.ResponseWrapper.ErrorDetail;
-import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Path;
-import lombok.extern.slf4j.Slf4j;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 对 Controller 的返回结果进行处理
@@ -71,7 +70,9 @@ public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
      * </p>
      */
     @Override
-    public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
+    public boolean supports(
+        MethodParameter returnType,
+        @NotNull Class<? extends HttpMessageConverter<?>> converterType) {
         var method = returnType.getMethod();
         if (method == null) {
             return false;
@@ -101,12 +102,12 @@ public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
      */
     @Override
     public Object beforeBodyWrite(
-            Object body, // controller 方法返回的返回值
-            MethodParameter returnType,
-            MediaType selectedContentType,
-            Class<? extends HttpMessageConverter<?>> selectedConverterType,
-            ServerHttpRequest request,
-            ServerHttpResponse response) {
+        Object body, // controller 方法返回的返回值
+        @NotNull MethodParameter returnType,
+        @NotNull MediaType selectedContentType,
+        @NotNull Class<? extends HttpMessageConverter<?>> selectedConverterType,
+        @NotNull ServerHttpRequest request,
+        @NotNull ServerHttpResponse response) {
         // 返回表示正确的 Response 对象
         return ResponseWrapper.success(body);
     }
@@ -122,6 +123,7 @@ public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public ResponseWrapper<Void> handle(Exception e) {
+        log.error("Internel error casued", e);
         return ResponseWrapper.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "internal_error");
     }
 
@@ -141,11 +143,11 @@ public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
     @ExceptionHandler(BindException.class)
     public ResponseWrapper<ErrorDetail> handle(BindException e) {
         var fieldErrors = e.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .collect(Collectors.toMap(
-                    FieldError::getField,
-                    r -> new String[] { r.getDefaultMessage() }));
+            .getFieldErrors()
+            .stream()
+            .collect(Collectors.toMap(
+                FieldError::getField,
+                r -> new String[]{r.getDefaultMessage()}));
 
         return ResponseWrapper.error(
             HttpStatus.BAD_REQUEST.value(),
@@ -216,11 +218,11 @@ public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
         warningLog(e);
 
         var err = e.getConstraintViolations() // @Validated 注解的 controller 方法接收到未通过验证的 @RequestParam 参数
-                .stream()
-                .collect(Collectors.toMap( // 将错误信息转换为 Map 对象
-                    v -> pathToPropertyName(v.getPropertyPath()), // Key 为参数路径名连接的字符串
-                    v -> new String[] { v.getMessage() } // Value 为错误信息
-                ));
+            .stream()
+            .collect(Collectors.toMap( // 将错误信息转换为 Map 对象
+                v -> pathToPropertyName(v.getPropertyPath()), // Key 为参数路径名连接的字符串
+                v -> new String[]{v.getMessage()} // Value 为错误信息
+            ));
 
         return ResponseWrapper.error(
             HttpStatus.BAD_REQUEST.value(), // 为此种错误定义代码和错误信息, 此处暂用 400 类型错误代码和信息
@@ -256,7 +258,7 @@ public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
             HttpStatus.BAD_REQUEST.value(), // 为此种错误定义代码和错误信息, 此处暂用 400 类型错误代码和信息
             "missing_request_args",
             ErrorDetail.withErrorParameters(
-                Map.of(e.getParameterName(), new String[] { e.getLocalizedMessage() })));
+                Map.of(e.getParameterName(), new String[]{e.getLocalizedMessage()})));
     }
 
     /**

@@ -1,12 +1,11 @@
 package alvin.study.common;
 
-import java.time.Instant;
-import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Getter;
+
+import java.time.Instant;
+import java.util.Map;
 
 /**
  * 返回对象的包装类
@@ -32,8 +31,7 @@ import lombok.Getter;
  *
  * <p>
  * 实际返回的对象 JSON 包装在 {@link ResponseWrapper#payload} 字段中, 提供了两个方法完成包装:
- * {@link ResponseWrapper#success(Object)} 和
- * {@link ResponseWrapper#error(int, String, Object)}
+ * {@link ResponseWrapper#success(Object)} 和 {@link ResponseWrapper#error(int, String)} 方法
  * </p>
  */
 @Getter
@@ -65,11 +63,11 @@ public class ResponseWrapper<T> {
      */
     @JsonCreator
     public ResponseWrapper(
-            @JsonProperty("retCode") int retCode,
-            @JsonProperty("retMsg") String retMsg,
-            @JsonProperty("payload") T payload,
-            @JsonProperty("path") String path,
-            @JsonProperty("timestamp") Instant timestamp) {
+        @JsonProperty("retCode") int retCode,
+        @JsonProperty("retMsg") String retMsg,
+        @JsonProperty("payload") T payload,
+        @JsonProperty("path") String path,
+        @JsonProperty("timestamp") Instant timestamp) {
         this.retCode = retCode;
         this.retMsg = retMsg;
         this.payload = payload;
@@ -81,6 +79,7 @@ public class ResponseWrapper<T> {
      * 包装正确的响应数据
      *
      * @param payload 响应对象中的数据载荷
+     * @return 包装后的响应对象
      */
     public static <T> ResponseWrapper<T> success(T payload) {
         return new ResponseWrapper<>(
@@ -95,7 +94,9 @@ public class ResponseWrapper<T> {
     /**
      * 包装错误的响应数据
      *
-     * @param payload 错误信息载荷
+     * @param code    错误代码
+     * @param message 错误信息
+     * @return 包装后的响应对象
      */
     public static ResponseWrapper<Void> error(int code, String message) {
         return new ResponseWrapper<>(
@@ -109,6 +110,11 @@ public class ResponseWrapper<T> {
 
     /**
      * 包装错误的响应数据
+     *
+     * @param code        错误代码
+     * @param message     错误信息
+     * @param errorDetail 错误详细描述
+     * @return 包装后的响应对象
      */
     public static ResponseWrapper<ErrorDetail> error(int code, String message, ErrorDetail errorDetail) {
         return new ResponseWrapper<>(
@@ -126,12 +132,9 @@ public class ResponseWrapper<T> {
      * <p>
      * 一般情况, 错误都是有验证器验证结果提供的, 会以异常方式或者
      * {@link org.springframework.validation.BindingResult BindingResult} 对象形式返回,
-     * 前者更容易处理, 参考: {@link alvin.study.app.api.advice.ApiResponseAdvice
-     * ApiResponseAdvice} 类中的
-     * {@link alvin.study.app.api.advice.ApiResponseAdvice#handle(javax.validation.ConstraintViolationException)
-     * ApiResponseAdvice.handleException(ConstraintViolationException)},
-     * {@link alvin.study.app.api.advice.ApiResponseAdvice#handle(org.springframework.web.bind.MethodArgumentNotValidException)
-     * ApiResponseAdvice.handleException(MethodArgumentNotValidException)} 以及
+     * 前者更容易处理, 参考: {@link alvin.study.app.api.advice.ApiResponseAdvice ApiResponseAdvice} 类中的
+     * {@link alvin.study.app.api.advice.ApiResponseAdvice#handle(jakarta.validation.ConstraintViolationException)
+     * ApiResponseAdvice.handleException(ConstraintViolationException)}, 以及
      * {@link alvin.study.app.api.advice.ApiResponseAdvice#handle(org.springframework.web.bind.MissingServletRequestParameterException)
      * ApiResponseAdvice.handleException(MissingServletRequestParameterException)}
      * 方法, 均是对当传递到 Controller 方法的参数不符合要求时抛出异常的处理方法
@@ -171,7 +174,7 @@ public class ResponseWrapper<T> {
      *
      * <p>
      * {@link ErrorDetail} 对象并不直接作为结果返回, 为了返回格式统一, 仍需通过 {@link ResponseWrapper}
-     * 对象进行包装, 参考: {@link ResponseWrapper#error(int, String, Object)} 方法
+     * 对象进行包装, 参考: {@link ResponseWrapper#error(int, String, ErrorDetail)} 方法
      * </p>
      */
     @Getter
@@ -190,8 +193,8 @@ public class ResponseWrapper<T> {
          */
         @JsonCreator
         public ErrorDetail(
-                @JsonProperty("errorParameters") Map<String, String[]> errorParameters,
-                @JsonProperty("errorFields") Map<String, String[]> errorFields) {
+            @JsonProperty("errorParameters") Map<String, String[]> errorParameters,
+            @JsonProperty("errorFields") Map<String, String[]> errorFields) {
             this.errorParameters = errorParameters;
             this.errorFields = errorFields;
         }

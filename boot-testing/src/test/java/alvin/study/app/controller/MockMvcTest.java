@@ -1,5 +1,11 @@
 package alvin.study.app.controller;
 
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
+
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -7,12 +13,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
 
 /**
  * 通过 {@link WebMvcTest @WebMvcTest} 注解进行 HTTP 测试
@@ -30,7 +30,7 @@ import org.springframework.test.web.servlet.MockMvc;
  * </p>
  */
 @ActiveProfiles("test") // 定义测试配置文件后缀, 令 application-test.yml 生效
-@WebMvcTest({ TestController.class }) // 针对 TestController 进行测试
+@WebMvcTest({TestController.class}) // 针对 TestController 进行测试
 class MockMvcTest {
     // 用于 mock 当前时间
     private static final String CLOCK = "2022-10-01T08:00:00Z";
@@ -88,14 +88,14 @@ class MockMvcTest {
     @Test
     void mockMvc_shouldGetResponse() throws Exception {
         mockMvc.perform(get("/testing?name={name}&clock={clock}", "Alvin", CLOCK))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.path", is(equalTo("/testing"))))
-                .andExpect(jsonPath("$.retCode", is(equalTo(0))))
-                .andExpect(jsonPath("$.retMsg", is(equalTo("success"))))
-                .andExpect(jsonPath("$.payload.id", is(notNullValue())))
-                .andExpect(jsonPath("$.payload.name", is(equalTo("Alvin"))))
-                .andExpect(jsonPath("$.payload.timestamp", is(equalTo("2022-10-01T08:00:00Z"))));
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.path", is(equalTo("/testing"))))
+            .andExpect(jsonPath("$.retCode", is(equalTo(0))))
+            .andExpect(jsonPath("$.retMsg", is(equalTo("success"))))
+            .andExpect(jsonPath("$.payload.id", is(notNullValue())))
+            .andExpect(jsonPath("$.payload.name", is(equalTo("Alvin"))))
+            .andExpect(jsonPath("$.payload.timestamp", is(equalTo("2022-10-01T08:00:00Z"))));
     }
 
     /**
@@ -147,12 +147,12 @@ class MockMvcTest {
     @Test
     void mockMvc_shouldGetResponseWithoutQueryParameters() throws Exception {
         mockMvc.perform(get("/testing"))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.path", is(equalTo("/testing"))))
-                .andExpect(jsonPath("$.retCode", is(equalTo(400))))
-                .andExpect(jsonPath("$.retMsg", is(equalTo("missing_request_args"))))
-                .andExpect(jsonPath("$.payload.errorParameters['name'][0]",
-                    is(equalTo("Required request parameter 'name' for method parameter type String is not present"))));
+            .andDo(print())
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.path", is(equalTo("/testing"))))
+            .andExpect(jsonPath("$.retCode", is(equalTo(400))))
+            .andExpect(jsonPath("$.retMsg", is(equalTo("missing_request_args"))))
+            .andExpect(jsonPath("$.payload.errorParameters['name'][0]",
+                is(equalTo("Required request parameter 'name' for method parameter type String is not present"))));
     }
 }

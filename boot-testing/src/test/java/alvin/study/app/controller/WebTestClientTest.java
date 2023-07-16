@@ -1,9 +1,8 @@
 package alvin.study.app.controller;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import java.time.Duration;
-
+import alvin.study.common.ResponseWrapper;
+import alvin.study.common.ResponseWrapper.ErrorDetail;
+import alvin.study.model.TestModel;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +13,9 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import alvin.study.common.ResponseWrapper;
-import alvin.study.common.ResponseWrapper.ErrorDetail;
-import alvin.study.model.TestModel;
+import java.time.Duration;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 通过 {@link WebTestClient} 工具类进行 HTTP 测试
@@ -38,7 +37,6 @@ import alvin.study.model.TestModel;
  * 令所有注解为 {@link org.springframework.context.annotation.Profile @Profile}
  * 的配置类生效, 且配置文件 {@code classpath:/application-test.yml} 生效
  * </p>
- *
  */
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -110,25 +108,26 @@ class WebTestClientTest {
     @Test
     void webTestClient_shouldGetResponse() {
         // 定义本次请求返回的类型
-        var bodyType = new ParameterizedTypeReference<ResponseWrapper<TestModel>>() {};
+        var bodyType = new ParameterizedTypeReference<ResponseWrapper<TestModel>>() {
+        };
 
         // 执行测试
         var resp = client.mutate().responseTimeout(Duration.ofSeconds(30)).build()
-                .get()
-                .uri("/testing?name={name}&clock={clock}", "Alvin", CLOCK)
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody(bodyType).returnResult()
-                .getResponseBody();
+            .get()
+            .uri("/testing?name={name}&clock={clock}", "Alvin", CLOCK)
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody(bodyType).returnResult()
+            .getResponseBody();
 
-        then(resp.getPath()).isEqualTo("/testing");
-        then(resp.getRetCode()).isZero();
-        then(resp.getRetMsg()).isEqualTo("success");
+        then(resp).isNotNull()
+            .extracting("path", "retCode", "retMsg")
+            .containsExactly("/testing", 0, "success");
 
-        var payload = resp.getPayload();
-        then(payload.getId()).isNotNull();
-        then(payload.getName()).isEqualTo("Alvin");
-        then(payload.getTimestamp()).hasToString("2022-10-01T08:00:00Z");
+        var assertion = then(resp.getPayload()).isNotNull();
+        assertion.extracting("id").isNotNull();
+        assertion.extracting("name").isEqualTo("Alvin");
+        assertion.extracting("timestamp").hasToString("2022-10-01T08:00:00Z");
     }
 
     /**
@@ -190,25 +189,26 @@ class WebTestClientTest {
     @Test
     void webTestClient_shouldGetResponseWithoutAnyQueryParameters() {
         // 定义本次请求返回的类型
-        var bodyType = new ParameterizedTypeReference<ResponseWrapper<ErrorDetail>>() {};
+        var bodyType = new ParameterizedTypeReference<ResponseWrapper<ErrorDetail>>() {
+        };
 
         // 执行测试
         var resp = client.mutate().responseTimeout(Duration.ofSeconds(30)).build()
-                .get()
-                .uri("/testing")
-                .exchange()
-                .expectStatus().isBadRequest()
-                .expectBody(bodyType).returnResult()
-                .getResponseBody();
+            .get()
+            .uri("/testing")
+            .exchange()
+            .expectStatus().isBadRequest()
+            .expectBody(bodyType).returnResult()
+            .getResponseBody();
 
-        then(resp.getPath()).isEqualTo("/testing");
-        then(resp.getRetCode()).isEqualTo(400);
-        then(resp.getRetMsg()).isEqualTo("missing_request_args");
+        then(resp).isNotNull()
+            .extracting("path", "retCode", "retMsg")
+            .contains("/testing", 400, "missing_request_args");
 
         var payload = resp.getPayload();
         then(payload.getErrorParameters())
-                .extractingByKey("name")
-                .asInstanceOf(InstanceOfAssertFactories.ARRAY)
-                .containsExactly("Required request parameter 'name' for method parameter type String is not present");
+            .extractingByKey("name")
+            .asInstanceOf(InstanceOfAssertFactories.ARRAY)
+            .containsExactly("Required request parameter 'name' for method parameter type String is not present");
     }
 }

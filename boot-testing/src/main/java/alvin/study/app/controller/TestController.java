@@ -23,17 +23,13 @@ import alvin.study.model.TestModel;
  * 对于 Controller, Spring Boot 框架提供了 3 种测试方法
  * <ul>
  * <li>
- * 通过 {@link org.springframework.boot.test.web.client.TestRestTemplate
- * TestRestTemplate} 作为 Http 客户端调用服务
+ * 通过 {@link org.springframework.boot.test.web.client.TestRestTemplate TestRestTemplate} 作为 Http 客户端调用服务
  * </li>
  * <li>
- * 通过
- * {@link org.springframework.test.web.reactive.server.WebTestClient
- * WebTestClient} 作为 Http 客户端调用服务
+ * 通过 {@link org.springframework.test.web.reactive.server.WebTestClient WebTestClient} 作为 Http 客户端调用服务
  * </li>
  * <li>
- * 通过 {@link org.springframework.test.web.servlet.MockMvc MockMvc} 作为 Http
- * 客户端调用服务
+ * 通过 {@link org.springframework.test.web.servlet.MockMvc MockMvc} 作为 Http 客户端调用服务
  * </li>
  * </ul>
  * </p>
@@ -53,10 +49,11 @@ public class TestController {
      */
     @GetMapping
     @ResponseBody
-    TestModel get(@RequestParam("name") String name,
-            @RequestParam(name = "clock", required = false) String clock) {
-        final Clock c;
+    TestModel get(
+        @RequestParam("name") String name,
+        @RequestParam(name = "clock", required = false) String clock) {
 
+        final Clock c;
         if (Strings.isNullOrEmpty(clock)) {
             // 如果不存在 clock 参数, 则使用系统定义的 Clock 对象, 此时 Instant.now(c) 返回系统当前时间
             c = Clock.systemUTC();
