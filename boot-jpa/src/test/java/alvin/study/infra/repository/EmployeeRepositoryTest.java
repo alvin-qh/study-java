@@ -88,8 +88,8 @@ class EmployeeRepositoryTest extends IntegrationTest {
 
         // 在新建的租户下创建 10 个雇员实体
         for (var i = 0; i < 10; i++) {
-            var employee = newBuilder(EmployeeBuilder.class).create();
-            var department = newBuilder(DepartmentBuilder.class).create();
+            var employee = newBuilder(EmployeeBuilder.class).name("EMP_" + i).create();
+            var department = newBuilder(DepartmentBuilder.class).name("DEP_" + i).create();
             // 建立 employee 和 department 的关系并返回 DepartmentEmployee 实体对象, 为其设置 orgId 属性
             department.addEmployee(employee);
 
