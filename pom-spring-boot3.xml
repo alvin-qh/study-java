@@ -1,13 +1,11 @@
-<project
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <name>${project.artifactId}</name>
   <artifactId>study-java-spring-boot3</artifactId>
+  <name>${project.artifactId}</name>
   <packaging>pom</packaging>
 
-  <!-- 从根项目 pom.xml 继承 -->
   <parent>
     <groupId>alvin.study</groupId>
     <artifactId>study-java</artifactId>
@@ -17,8 +15,8 @@
 
   <dependencyManagement>
     <dependencies>
-      <!-- Spring Boot Bom -->
       <dependency>
+        <!-- Spring Boot Bom -->
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
         <version>${version.spring-boot}</version>
@@ -29,8 +27,8 @@
   </dependencyManagement>
 
   <dependencies>
-    <!-- Spring Boot 核心依赖 -->
     <dependency>
+      <!-- Spring Boot 核心依赖 -->
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
       <exclusions>
@@ -40,22 +38,19 @@
         </exclusion>
       </exclusions>
     </dependency>
-
-    <!-- Spring Boot 热部署插件 -->
     <dependency>
+      <!-- Spring Boot 热部署插件 -->
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-devtools</artifactId>
       <optional>true</optional>
     </dependency>
-
-    <!-- Slf4j 依赖 -->
     <dependency>
+      <!-- Slf4j 依赖 -->
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
-
-    <!-- Spring Boot Test Starter 依赖 -->
     <dependency>
+      <!-- Spring Boot Test Starter 依赖 -->
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
@@ -79,8 +74,8 @@
   <build>
     <pluginManagement>
       <plugins>
-        <!-- Spring Boot 构建插件 -->
         <plugin>
+          <!-- Spring Boot 构建插件 -->
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-maven-plugin</artifactId>
           <version>${version.spring-boot}</version>
@@ -89,8 +84,8 @@
     </pluginManagement>
 
     <plugins>
-      <!-- 编译插件 -->
       <plugin>
+        <!-- 编译插件 -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
@@ -100,8 +95,8 @@
             <!-- 编译时保留参数名 -->
             <arg>-parameters</arg>
           </compilerArgs>
-          <!-- 编译期注解生成代码配置 -->
           <annotationProcessorPaths>
+            <!-- 编译期注解生成代码配置 -->
             <path>
               <groupId>org.projectlombok</groupId>
               <artifactId>lombok</artifactId>
@@ -115,9 +110,8 @@
           </annotationProcessorPaths>
         </configuration>
       </plugin>
-
-      <!-- Spring Boot Maven 插件 -->
       <plugin>
+        <!-- Spring Boot Maven 插件 -->
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>

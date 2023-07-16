@@ -16,28 +16,21 @@
 
   <dependencyManagement>
     <dependencies>
-      <!-- Java Mail 依赖 -->
       <dependency>
         <groupId>com.sun.mail</groupId>
         <artifactId>jakarta.mail</artifactId>
         <version>${version.jakarta-mail}</version>
       </dependency>
-
-      <!-- H2 DB 驱动依赖 -->
       <dependency>
         <groupId>com.h2database</groupId>
         <artifactId>h2</artifactId>
         <version>${version.h2}</version>
       </dependency>
-
-      <!-- HikariCP 数据源 -->
       <dependency>
         <groupId>com.zaxxer</groupId>
         <artifactId>HikariCP</artifactId>
         <version>${version.hikari-cp}</version>
       </dependency>
-
-      <!-- Java Faker 依赖 -->
       <dependency>
         <groupId>com.github.javafaker</groupId>
         <artifactId>javafaker</artifactId>
@@ -47,7 +40,6 @@
     </dependencies>
   </dependencyManagement>
 
-  <!-- 配置依赖 -->
   <dependencies>
     <dependency>
       <groupId>com.sun.mail</groupId>

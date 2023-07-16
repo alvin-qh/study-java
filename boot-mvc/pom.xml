@@ -1,13 +1,11 @@
-<project
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>study-java-boot-mvc</artifactId>
   <name>${project.artifactId}</name>
   <packaging>jar</packaging>
 
-  <!-- 从根项目 pom.xml 继承 -->
   <parent>
     <groupId>alvin.study</groupId>
     <artifactId>study-java-spring-boot3</artifactId>
@@ -15,16 +13,23 @@
     <relativePath>../pom-spring-boot3.xml</relativePath>
   </parent>
 
-  <!-- 配置依赖 -->
   <dependencies>
-    <!-- Spring Boot Web Starter 依赖 -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
-
-    <!-- JWT 依赖 -->
     <dependency>
+      <!-- Spring Boot Bean 验证依赖 -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
+    <dependency>
+      <!-- HTML 模板引擎依赖 -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>
+    <dependency>
+      <!-- JWT 依赖 -->
       <groupId>com.auth0</groupId>
       <artifactId>java-jwt</artifactId>
       <version>${version.auth-jwt}</version>
@@ -35,21 +40,8 @@
         </exclusion>
       </exclusions>
     </dependency>
-
-    <!-- Spring Boot Bean 验证依赖 -->
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-validation</artifactId>
-    </dependency>
-
-    <!-- HTML 模板引擎依赖 -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-thymeleaf</artifactId>
-    </dependency>
-
-    <!-- Spring Boot Webflux Starter, 这里仅用作测试 -->
-    <dependency>
+      <!-- Spring Boot Webflux Starter, 这里仅用作测试 -->
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-webflux</artifactId>
       <scope>test</scope>

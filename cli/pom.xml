@@ -1,14 +1,11 @@
-<project
-    xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>study-java-cli</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
   <name>${project.artifactId}</name>
+  <packaging>jar</packaging>
 
-  <!-- 从根项目 pom.xml 继承 -->
   <parent>
     <groupId>alvin.study</groupId>
     <artifactId>study-java</artifactId>
@@ -16,9 +13,7 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <!-- 配置依赖 -->
   <dependencies>
-    <!-- picocli 依赖, 命令行支持 -->
     <dependency>
       <groupId>info.picocli</groupId>
       <artifactId>picocli</artifactId>
@@ -26,12 +21,10 @@
     </dependency>
   </dependencies>
 
-  <!-- 配置构建 -->
   <build>
-    <!-- 配置构建插件 -->
     <plugins>
-      <!-- 执行器插件, 可以通过 mvn clean compile exec:java -Dexec.args="echo hello" 命令测试程序 -->
       <plugin>
+        <!-- 执行器插件, 可以通过 mvn clean compile exec:java -Dexec.args="echo hello" 命令测试程序 -->
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <executions>
@@ -45,12 +38,11 @@
         <configuration>
           <!-- 指定入口类 -->
           <mainClass>alvin.study.Main</mainClass>
-          <workingdir>${project.root.directory}</workingdir>
+          <workingDirectory>${project.root.directory}</workingDirectory>
         </configuration>
       </plugin>
-
-      <!-- 打包 Jar 包, 并包含所有依赖 -->
       <plugin>
+        <!-- 打包 Jar 包, 并包含所有依赖 -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
         <version>${version.maven-shade}</version>
