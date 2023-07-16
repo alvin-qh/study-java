@@ -1,12 +1,11 @@
 package alvin.study.util.spel;
 
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.ParserContext;
 import org.springframework.stereotype.Component;
-
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 
 /**
  * 模板解析器类型
@@ -23,8 +22,7 @@ public class TemplatedExpressionParser {
      * 注入解析器对象
      *
      * <p>
-     * 参考 {@link alvin.study.conf.SpelConfig#expressionParser()
-     * SpelConfig.expressionParser()} 方法
+     * 参考 {@code SpelConfig.expressionParser()} 方法
      * </p>
      */
     private final ExpressionParser parser;

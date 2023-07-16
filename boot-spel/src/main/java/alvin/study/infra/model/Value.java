@@ -1,16 +1,14 @@
 package alvin.study.infra.model;
 
-import alvin.study.conf.SpelConfig;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 用于测试 SpEL 获取对 {@link org.springframework.context.ApplicationContext
- * ApplicationContext} 中管理的 Bean 对象
+ * 用于测试 SpEL 获取对 {@link org.springframework.context.ApplicationContext ApplicationContext} 中管理的 Bean 对象
  *
  * <p>
- * 参考 {@link SpelConfig#intValue()}
+ * 参考 {@code SpelConfig.intValue()}
  * </p>
  *
  * @param <T> 值类型

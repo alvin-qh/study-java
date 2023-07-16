@@ -1,14 +1,8 @@
 package alvin.study;
 
-import static org.assertj.core.api.Assertions.atIndex;
-import static org.assertj.core.api.Assertions.entry;
-import static org.assertj.core.api.BDDAssertions.then;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-
+import alvin.study.infra.model.Group;
+import alvin.study.infra.model.User;
+import alvin.study.util.spel.TemplatedExpressionParser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,9 +13,15 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
-import alvin.study.infra.model.Group;
-import alvin.study.infra.model.User;
-import alvin.study.util.spel.TemplatedExpressionParser;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import static org.assertj.core.api.Assertions.atIndex;
+import static org.assertj.core.api.Assertions.entry;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 对各类 SpEL 进行测试
@@ -43,6 +43,7 @@ import alvin.study.util.spel.TemplatedExpressionParser;
  */
 @ActiveProfiles("test")
 @SpringBootTest
+@SuppressWarnings("unchecked")
 @ContextConfiguration
 public class ExpressionsTest {
     /**
@@ -221,7 +222,7 @@ public class ExpressionsTest {
         var context = SimpleEvaluationContext.forReadOnlyDataBinding().build();
 
         // 实例化整型数组对象
-        var nums = new int[] { 1, 2, 3, 4 };
+        var nums = new int[]{1, 2, 3, 4};
 
         // 通过 root 对象下标访问数组元素
         var expression = parser.parseExpression("#{ [0] }:#{ [1] }:#{ [2] }");
@@ -229,10 +230,10 @@ public class ExpressionsTest {
         then(value).isEqualTo("1:2:3");
 
         // 实例化 User 对象数组
-        var users = new User[] {
+        var users = new User[]{
             User.builder().id(1L).name("U-1").birthday(LocalDate.of(1981, 3, 17)).build(),
             User.builder().id(2L).name("U-2").birthday(LocalDate.of(1982, 3, 17)).build(),
-            User.builder().id(3L).name("U-3").birthday(LocalDate.of(1983, 3, 17)).build() };
+            User.builder().id(3L).name("U-3").birthday(LocalDate.of(1983, 3, 17)).build()};
 
         // 通过 root 对象下标访问数组元素的属性值
         expression = parser.parseExpression("#{ [1].id }:#{ [1].name }:#{ [1].birthday.dayOfMonth }");
@@ -293,7 +294,6 @@ public class ExpressionsTest {
      * </p>
      */
     @Test
-    @SuppressWarnings("unchecked")
     void list_shouldExecute() {
         // 初始化一个 Evaluation 上下文对象
         var context = SimpleEvaluationContext.forReadOnlyDataBinding().build();
@@ -310,7 +310,8 @@ public class ExpressionsTest {
         var users = List.of(
             User.builder().id(1L).name("U-1").birthday(LocalDate.of(1981, 3, 17)).build(),
             User.builder().id(2L).name("U-2").birthday(LocalDate.of(1982, 3, 17)).build(),
-            User.builder().id(3L).name("U-3").birthday(LocalDate.of(1983, 3, 17)).build());
+            User.builder().id(3L).name("U-3").birthday(LocalDate.of(1983, 3, 17)).build()
+        );
 
         // 通过 root 对象下标访问集合元素的属性值
         expression = parser.parseExpression("#{ [1].id }:#{ [1].name }:#{ [1].birthday.dayOfMonth }");
@@ -328,24 +329,27 @@ public class ExpressionsTest {
 
         // 测试对集合元素的过滤操作, 基于 nums 集合, 获取一个全部元素值大于 2 的子集合
         expression = parser.parseExpression("#{ ?[#this >= 2] }");
-        var list = expression.getValue(context, nums, List.class);
+        var list = (List<Object>) expression.getValue(context, nums, List.class);
         then(list).containsExactly(2, 3, 4);
 
         // 测试对集合元素的过滤操作, 基于 users 集合, 获取第一个 user.name 属性值为 "U-2" 的元素, 这里省略了 #this
         expression = parser.parseExpression("#{ ^[name == 'U-2'] }");
         var user = expression.getValue(context, users, User.class);
-        then(user.getName()).isEqualTo("U-2");
+        then(user).isNotNull()
+            .extracting("name")
+            .isEqualTo("U-2");
 
         // 测试对集合元素的过滤操作, 基于 users 集合, 获取第一个 user.name 属性值为 "U-2" 的元素, 这里省略了 #this (即
         // #this.name)
         expression = parser.parseExpression("#{ $[name == 'U-3'] }");
         user = expression.getValue(context, users, User.class);
-        then(user.getName()).isEqualTo("U-3");
+        then(user).isNotNull()
+            .extracting("name").isEqualTo("U-3");
 
         // 将集合元素进行映射, 组成新的集合, 这里省略了 #this (即 #this.name)
         expression = parser.parseExpression("#{ ![id + '-' + name] }");
-        list = expression.getValue(context, users, List.class);
-        then(list).containsExactly("1-U-1", "2-U-2", "3-U-3");
+        list = (List<Object>) expression.getValue(context, users, List.class);
+        then(list).asList().containsExactly("1-U-1", "2-U-2", "3-U-3");
     }
 
     /**
@@ -374,7 +378,6 @@ public class ExpressionsTest {
      * </p>
      */
     @Test
-    @SuppressWarnings("unchecked")
     void map_shouldExecute() {
         // 初始化一个 Evaluation 上下文对象
         var context = SimpleEvaluationContext.forReadOnlyDataBinding().build();
@@ -517,7 +520,7 @@ public class ExpressionsTest {
         // 在表达式中通过 new 运算符实例化一个 User 对象
         expression = parser.parseExpression("#{ new alvin.study.infra.model.User(1L, 'Alvin', #birthday) }");
         var user = expression.getValue(context, User.class);
-        then(user.getId()).isEqualTo(1L);
+        then(Objects.requireNonNull(user).getId()).isEqualTo(1L);
         then(user.getName()).isEqualTo("Alvin");
         then(user.getBirthday()).isEqualTo(LocalDate.of(1981, 3, 17));
 
@@ -530,8 +533,8 @@ public class ExpressionsTest {
         expression = parser.parseExpression("#{ new int[2][3] }");
         var arrays = expression.getValue(context, int[][].class);
         then(arrays).hasNumberOfRows(2)
-                .contains(new int[] { 0, 0, 0 }, atIndex(0))
-                .contains(new int[] { 0, 0, 0 }, atIndex(1));
+            .contains(new int[]{0, 0, 0}, atIndex(0))
+            .contains(new int[]{0, 0, 0}, atIndex(1));
     }
 
     /**
@@ -590,55 +593,61 @@ public class ExpressionsTest {
         then(context.lookupVariable("str")).isEqualTo("Hello");
 
         // 在 EvaluationContext 中设置 root 对象
-        context.setRootObject(User.builder()
+        context.setRootObject(
+            User.builder()
                 .id(1L)
                 .name("Alvin")
                 .birthday(LocalDate.of(1981, 3, 17))
-                .build());
+                .build()
+        );
 
         // 在表达式中改变 root 对象的 id 属性, 即 root.id = 2L, 并验证赋值表达式的返回结果
         expression = parser.parseExpression("#{ id = 2L }");
         value = expression.getValue(context, Long.class);
         then(value).isEqualTo(2L);
         then(context.getRootObject().getValue())
-                .isInstanceOf(User.class)
-                .extracting("id")
-                .isEqualTo(2L);
+            .isInstanceOf(User.class)
+            .extracting("id")
+            .isEqualTo(2L);
 
         // 确认 root 对象的 id 属性已经改变
         expression = parser.parseExpression("#{ #root }");
         var user = expression.getValue(context, User.class);
-        then(user.getId()).isEqualTo(2L);
+        then(user).isNotNull()
+            .extracting("id")
+            .isEqualTo(2L);
 
         // 从 EvaluationContext 中获取 root 对象, 确认其 id 属性以及改变
         user = (User) context.getRootObject().getValue();
-        then(user.getId()).isEqualTo(2L);
+        then(user).isNotNull()
+            .extracting("id")
+            .isEqualTo(2L);
 
         // 在表达式中为 root 赋值, 并确认赋值表达式的结果
         expression = parser.parseExpression(
             "#{ #root = new alvin.study.infra.model.User(3L, 'Emma', birthday) }");
         user = expression.getValue(context, User.class);
-        then(user.getId()).isEqualTo(3L);
-        then(user.getName()).isEqualTo("Emma");
-        then(user.getBirthday()).isEqualTo(LocalDate.of(1981, 3, 17));
+        then(user).isNotNull()
+            .extracting("id", "name", "birthday")
+            .contains(3L, "Emma", LocalDate.of(1981, 3, 17));
 
         // 在表达式中访问 root 对象, 确认 root 变量并未因为上面的赋值发生变化
         expression = parser.parseExpression("#{ #root }");
         user = expression.getValue(context, User.class);
-        then(user.getId()).isEqualTo(2L);
-        then(user.getName()).isEqualTo("Alvin");
-        then(user.getBirthday()).isEqualTo(LocalDate.of(1981, 3, 17));
+        then(user).isNotNull()
+            .extracting("id", "name", "birthday")
+            .contains(2L, "Alvin", LocalDate.of(1981, 3, 17));
 
         // 从 EvaluationContext 中获取 root 对象, 确认该对象未发生变化
         user = (User) context.getRootObject().getValue();
-        then(user.getId()).isEqualTo(2L);
-        then(user.getName()).isEqualTo("Alvin");
-        then(user.getBirthday()).isEqualTo(LocalDate.of(1981, 3, 17));
+        then(user).isNotNull()
+            .extracting("id", "name", "birthday")
+            .contains(2L, "Alvin", LocalDate.of(1981, 3, 17));
 
         // 从 EvaluationContext 中获取 root 变量, 确认增加了 root 变量
         user = (User) context.lookupVariable("root");
-        then(user.getId()).isEqualTo(3L);
-        then(user.getName()).isEqualTo("Emma");
-        then(user.getBirthday()).isEqualTo(LocalDate.of(1981, 3, 17));
+        then(user).isNotNull()
+            .extracting("id", "name", "birthday")
+            .contains(3L, "Emma", LocalDate.of(1981, 3, 17));
     }
 }

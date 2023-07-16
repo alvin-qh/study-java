@@ -1,23 +1,23 @@
 package alvin.study.infra.model;
 
+import com.google.common.base.Functions;
+import lombok.Builder;
+import lombok.Data;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import com.google.common.base.Functions;
-
-import lombok.Builder;
-import lombok.Data;
 
 /**
  * 用于测试 SpEL 获取对象属性值的 Pojo 类型
  */
 @Data
 @Builder
+@SuppressWarnings("unused")
 public class Group {
-    private String name;
-    private User[] users;
+    private final String name;
+    private final User[] users;
 
     /**
      * {@code usersAsList} 属性, 将 {@code users} 属性以 {@link List} 集合返回
@@ -39,6 +39,6 @@ public class Group {
      */
     public Map<String, User> getUsersAsMap() {
         return Arrays.stream(users)
-                .collect(Collectors.toMap(User::getName, Functions.identity()));
+            .collect(Collectors.toMap(User::getName, Functions.identity()));
     }
 }
