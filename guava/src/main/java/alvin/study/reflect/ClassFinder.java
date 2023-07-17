@@ -1,4 +1,4 @@
-package alvin.study.refect;
+package alvin.study.reflect;
 
 import com.google.common.reflect.ClassPath;
 import lombok.AccessLevel;

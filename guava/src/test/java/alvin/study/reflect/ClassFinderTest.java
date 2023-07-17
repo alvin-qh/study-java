@@ -1,4 +1,4 @@
-package alvin.study.refect;
+package alvin.study.reflect;
 
 import org.junit.jupiter.api.Test;
 
