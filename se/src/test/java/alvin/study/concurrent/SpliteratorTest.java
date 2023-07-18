@@ -165,8 +165,7 @@ class SpliteratorTest {
         then(sp.getExactSizeIfKnown()).isEqualTo(sp.estimateSize()).isEqualTo(10);
 
         // 处理掉一个元素
-        sp.tryAdvance(n -> {
-        });
+        sp.tryAdvance(n -> {});
         // 确认 getExactSizeIfKnown 方法的结果和 estimateSize 一致
         then(sp.getExactSizeIfKnown()).isEqualTo(sp.estimateSize()).isEqualTo(9);
     }

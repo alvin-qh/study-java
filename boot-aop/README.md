@@ -400,7 +400,8 @@ this is after around advice
  * 使用注解标注的参数类
  */
 @FruitAspect
-public class Apple { }
+public class Apple {
+}
 ```
 
 ```java

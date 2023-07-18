@@ -30,19 +30,19 @@ import static org.assertj.core.api.BDDAssertions.then;
 class StaffTest {
     // 要序列化的对象
     private static final Staff OBJECT = new Staff(
-            1L,
-            "Alvin",
-            "M",
-            new SimpleDate(1981, 3, 17),
-            true);
+        1L,
+        "Alvin",
+        "M",
+        new SimpleDate(1981, 3, 17),
+        true);
 
     // 期待的单个对象序列化结果
     private static final String SINGLE_JSON
-            = "{\"id\":1,\"gender\":\"M\",\"birthday\":{\"year\":1981,\"month\":3,\"day\":17},\"staffName\":\"Alvin\"}";
+        = "{\"id\":1,\"gender\":\"M\",\"birthday\":{\"year\":1981,\"month\":3,\"day\":17},\"staffName\":\"Alvin\"}";
 
     // 期待的集合对象序列化结果
     private static final String LIST_JSON
-            = "[{\"id\":1,\"gender\":\"M\",\"birthday\":{\"year\":1981,\"month\":3,\"day\":17},\"staffName\":\"Alvin\"}]";
+        = "[{\"id\":1,\"gender\":\"M\",\"birthday\":{\"year\":1981,\"month\":3,\"day\":17},\"staffName\":\"Alvin\"}]";
 
     /**
      * 测试 {@link Encoder#toJson(Object)} 方法
@@ -114,8 +114,7 @@ class StaffTest {
         var dec = new Decoder(false);
 
         // 将 JSON 字符串反序列化为对象, 确认结果符合预期
-        var list = dec.fromJson(LIST_JSON, new TypeReference<List<Staff>>() {
-        });
+        var list = dec.fromJson(LIST_JSON, new TypeReference<List<Staff>>() {});
         then(list).containsExactly(OBJECT);
     }
 

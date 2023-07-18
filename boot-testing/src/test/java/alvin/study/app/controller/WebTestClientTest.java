@@ -108,8 +108,7 @@ class WebTestClientTest {
     @Test
     void webTestClient_shouldGetResponse() {
         // 定义本次请求返回的类型
-        var bodyType = new ParameterizedTypeReference<ResponseWrapper<TestModel>>() {
-        };
+        var bodyType = new ParameterizedTypeReference<ResponseWrapper<TestModel>>() {};
 
         // 执行测试
         var resp = client.mutate().responseTimeout(Duration.ofSeconds(30)).build()
@@ -189,8 +188,7 @@ class WebTestClientTest {
     @Test
     void webTestClient_shouldGetResponseWithoutAnyQueryParameters() {
         // 定义本次请求返回的类型
-        var bodyType = new ParameterizedTypeReference<ResponseWrapper<ErrorDetail>>() {
-        };
+        var bodyType = new ParameterizedTypeReference<ResponseWrapper<ErrorDetail>>() {};
 
         // 执行测试
         var resp = client.mutate().responseTimeout(Duration.ofSeconds(30)).build()
