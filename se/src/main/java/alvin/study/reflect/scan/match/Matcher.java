@@ -3,11 +3,6 @@ package alvin.study.reflect.scan.match;
 import java.io.Serializable;
 
 /**
- * Returns {@code true} or {@code false} for a given input.
- *
- * @author crazybob@google.com (Bob Lee)
- */
-/**
  * 匹配器对象
  */
 public interface Matcher<T> extends Serializable {

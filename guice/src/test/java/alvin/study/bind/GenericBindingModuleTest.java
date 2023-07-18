@@ -62,12 +62,9 @@ class GenericBindingModuleTest extends BaseModuleTest {
      */
     @Test
     void bind_shouldGetObjectByInjector() {
-        var intSet = injector.getInstance(Key.get(new TypeLiteral<Set<Integer>>() {
-        }));
-        var doubleSet = injector.getInstance(Key.get(new TypeLiteral<Set<Double>>() {
-        }));
-        var strSet = injector.getInstance(Key.get(new TypeLiteral<Set<String>>() {
-        }));
+        var intSet = injector.getInstance(Key.get(new TypeLiteral<Set<Integer>>() {}));
+        var doubleSet = injector.getInstance(Key.get(new TypeLiteral<Set<Double>>() {}));
+        var strSet = injector.getInstance(Key.get(new TypeLiteral<Set<String>>() {}));
 
         then(intSet).isSameAs(this.intSet);
         then(doubleSet).isSameAs(this.doubleSet);

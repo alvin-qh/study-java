@@ -70,7 +70,7 @@ import lombok.extern.slf4j.Slf4j;
  * <pre>
  * &#64;AfterReturning(pointcut = "point()", returning = "result")
  * </pre>
- *
+ * <p>
  * 其中的 {@code returning = "result"} 表示该拦截方法通过 {@code result} 参数接收目标方法的原始返回值, 参考:
  * {@link AnnotationAdvice#afterReturning(JoinPoint, Object)} 方法
  * </p>
@@ -93,7 +93,7 @@ import lombok.extern.slf4j.Slf4j;
  * <pre>
  * &#64;AfterThrowing(pointcut = "point()", throwing = "exception")
  * </pre>
- *
+ * <p>
  * 其中的 {@code throwing = "exception"} 表示该拦截方法通过 {@code exception} 参数接收目标方法的原始异常,
  * 参考:
  * {@link AnnotationAdvice#afterThrowing(JoinPoint, Throwable)} 方法
@@ -123,8 +123,8 @@ public class AnnotationAdvice {
      * @param objectMapper 用于对象 JSON 序列化
      */
     public AnnotationAdvice(
-            @Qualifier("mqForAnnotationAdvice") BlockingQueue<Message> messageQueue,
-            ObjectMapper objectMapper) {
+        @Qualifier("mqForAnnotationAdvice") BlockingQueue<Message> messageQueue,
+        ObjectMapper objectMapper) {
         this.messageQueue = messageQueue;
         this.objectMapper = objectMapper;
     }
@@ -217,17 +217,18 @@ public class AnnotationAdvice {
     @AfterThrowing(pointcut = "point()", throwing = "exception")
     public void afterThrowing(JoinPoint jp, Throwable exception) {
         log.info(
-            "[AnnotationAdvice] Method \"{}\" was called, and raised exception is: {}",
-            jp.getSignature(),
-            exception);
+            "[AnnotationAdvice] Method \"{}\" was called, and raised exception is", jp.getSignature(), exception);
 
-        messageQueue.add(new Message(
-            this,
-            Step.AFTER_THROWING,
-            jp.getSignature().toLongString(),
-            jp.getThis(),
-            jp.getArgs(),
-            exception));
+        messageQueue.add(
+            new Message(
+                this,
+                Step.AFTER_THROWING,
+                jp.getSignature().toLongString(),
+                jp.getThis(),
+                jp.getArgs(),
+                exception
+            )
+        );
     }
 
     /**
@@ -248,20 +249,23 @@ public class AnnotationAdvice {
      */
     @Around("point()")
     public Object around(ProceedingJoinPoint jp) throws Throwable {
-        log.info("[AnnotationAdvice] Method \"{}\" was called, and raised exception is: {}", jp.getSignature());
+        log.info("[AnnotationAdvice] Method \"{}\" was called", jp.getSignature());
 
         // 演示如何从 ProceedingJoinPoint 对象获取标记在方法上的注解
         var sign = (MethodSignature) jp.getSignature();
         var anno = sign.getMethod().getAnnotation(Transactional.class);
         log.info("Annotation \"{}\" was got", anno);
 
-        messageQueue.add(new Message(
-            this,
-            Step.AROUND,
-            jp.getSignature().toLongString(),
-            jp.getThis(),
-            jp.getArgs(),
-            null));
+        messageQueue.add(
+            new Message(
+                this,
+                Step.AROUND,
+                jp.getSignature().toLongString(),
+                jp.getThis(),
+                jp.getArgs(),
+                null
+            )
+        );
 
         var result = jp.proceed();
         if (result instanceof String r) {
@@ -270,7 +274,8 @@ public class AnnotationAdvice {
                 json.put("addition", this.getClass().getSimpleName());
 
                 result = objectMapper.writeValueAsString(json);
-            } catch (Exception e) {}
+            } catch (Exception ignored) {
+            }
         }
         return result;
     }

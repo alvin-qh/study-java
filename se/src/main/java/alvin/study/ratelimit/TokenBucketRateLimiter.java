@@ -16,7 +16,7 @@ package alvin.study.ratelimit;
  * 按照一个固定的频率向桶中不断放入令牌, 直到放满为止
  * </li>
  * </ol>
- *
+ * <p>
  * 整个过程如下图所示:
  * </p>
  *

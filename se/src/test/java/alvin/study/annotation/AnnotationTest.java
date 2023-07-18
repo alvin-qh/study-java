@@ -22,7 +22,6 @@ import static org.assertj.core.api.BDDAssertions.then;
  * {@link AnnotationUtil#getMethodAnnotation(Class, String, Class)} 方法获取到
  * </p>
  */
-@SuppressWarnings("unused")
 @A("TypeAnnotation")
 class AnnotationDemo {
     /**
@@ -35,8 +34,7 @@ class AnnotationDemo {
      * 测试在方法上设置注解
      */
     @C({"MethodAnnotation-B1", "MethodAnnotation-B2"})
-    public void method() {
-    }
+    public void method() {}
 }
 
 /**

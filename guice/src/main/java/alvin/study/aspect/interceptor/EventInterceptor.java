@@ -70,9 +70,12 @@ public class EventInterceptor implements MethodInterceptor {
      */
     @Inject
     public void setHandlers(@Named("Handlers") Set<EventHandler> handlers) {
-        this.handlers = handlers.stream().collect(Collectors.toMap(
-            EventInterceptor::getHandlerName,
-            Function.identity()));
+        this.handlers = handlers.stream().collect(
+            Collectors.toMap(
+                EventInterceptor::getHandlerName,
+                Function.identity()
+            )
+        );
     }
 
     /**
