@@ -24,6 +24,7 @@
     <module>datasource</module>
     <module>security</module>
     <module>mybatis</module>
+    <module>jooq</module>
   </modules>
 
   <dependencyManagement>
