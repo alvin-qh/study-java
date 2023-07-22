@@ -9,7 +9,7 @@
   <!-- 从根项目 pom.xml 继承 -->
   <parent>
     <groupId>alvin.study</groupId>
-    <artifactId>study-java</artifactId>
+    <artifactId>study-java-springboot-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
