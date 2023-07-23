@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 
-import java.util.ArrayList;
-
 import static org.assertj.core.api.BDDAssertions.then;
 
 /**
@@ -34,8 +32,6 @@ class DepartmentServiceTest extends IntegrationTest {
     void searchSubDepartments_shouldSearchChildDepartmentsByDepartmentName() {
         // 部门名称前缀
         var namePrefix = "DEPT-";
-
-        var departments = new ArrayList<Department>();
 
         // 创建 5 个部门, 每个部门下面创建 10 个子部门
         try (var ignore = beginTx(false)) {
