@@ -35,7 +35,7 @@
     <version.modelmapper>3.1.0</version.modelmapper>
     <version.akka>2.8.0</version.akka>
     <version.jetty>11.0.15</version.jetty>
-    <version.shiro>1.10.0</version.shiro>
+    <version.shiro>2.0.0-alpha-2</version.shiro>
 
     <version.slf4j>2.0.7</version.slf4j>
     <version.log4j2>2.20.0</version.log4j2>
