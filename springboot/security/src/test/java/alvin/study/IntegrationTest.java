@@ -214,7 +214,7 @@ public abstract class IntegrationTest {
 
             // 在线程上下文中注册当前登录用户
             SecurityContextHolder.getContext().setAuthentication(
-                new NameAndPasswordAuthenticationToken(currentUser, List.of()));
+                new NameAndPasswordAuthenticationToken(currentUser, "", List.of()));
 
             // 当前用户所属的用户组
             adminGroup = newBuilder(GroupBuilder.class)

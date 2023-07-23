@@ -1,18 +1,5 @@
 package alvin.study.app.domain.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.google.common.base.Strings;
-
 import alvin.study.core.cache.Cache;
 import alvin.study.core.security.exception.UserIdentityNotFoundException;
 import alvin.study.infra.entity.Group;
@@ -23,7 +10,19 @@ import alvin.study.infra.mapper.PermissionMapper;
 import alvin.study.infra.mapper.RoleMapper;
 import alvin.study.infra.mapper.UserMapper;
 import alvin.study.util.security.Jwt;
+import alvin.study.util.security.PasswordEncoder;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.google.common.base.Strings;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * 登录验证的服务类
@@ -49,12 +48,14 @@ public class AuthService {
     // 注入 JWT 编解码对象
     private final Jwt jwt;
 
+    // 注入密码处理工具类对象
+    private final PasswordEncoder passwordEncoder;
+
     /**
      * 根据用户 ID 查询用户实体对象
      *
      * @param id 用户 ID
      * @return 用户实体 {@link User} 对象
-     *
      * @throws UsernameNotFoundException 查无此用户 ID
      */
     @Transactional(readOnly = true)
@@ -97,13 +98,28 @@ public class AuthService {
      *
      * @param account 用户账号
      * @return 用户实体 {@link User} 对象
-     *
      * @throws UsernameNotFoundException 查无此用户账号
      */
     @Transactional(readOnly = true)
     public User findUserByAccount(String account) {
         return userMapper.selectByAccount(account)
                 .orElseThrow(() -> new UsernameNotFoundException(account));
+    }
+
+    /**
+     * 用户登录方法
+     *
+     * @param username 用户名
+     * @param password 密码
+     * @return 登录成功的用户实体对象
+     */
+    @Transactional(readOnly = true)
+    public User login(String username, String password) {
+        var user = findUserByAccount(username);
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new BadCredentialsException("Invalid password");
+        }
+        return user;
     }
 
     /**

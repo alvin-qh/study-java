@@ -1,12 +1,5 @@
 package alvin.study.app.domain.service;
 
-import java.util.Collection;
-
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import alvin.study.core.cache.Cache;
 import alvin.study.core.security.handler.AclPermissionEvaluator;
 import alvin.study.infra.entity.Menu;
@@ -14,6 +7,12 @@ import alvin.study.infra.entity.Permission;
 import alvin.study.infra.entity.Role;
 import alvin.study.infra.mapper.MenuMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
 
 /**
  * 菜单服务类
@@ -23,9 +22,6 @@ import lombok.RequiredArgsConstructor;
 public class MenuService {
     // 注入菜单数据库访问对象
     private final MenuMapper menuMapper;
-
-    // 注入权限匹配对象
-    private final AclPermissionEvaluator permissionEvaluator;
 
     // 注入缓存对象
     private final Cache cache;
@@ -59,7 +55,7 @@ public class MenuService {
         if (role == null) {
             return true;
         }
-        return permissionEvaluator.hasRole(getAuthentication(), role.getName());
+        return new AclPermissionEvaluator().hasRole(getAuthentication(), role.getName());
     }
 
     /**
@@ -72,7 +68,8 @@ public class MenuService {
         if (permission == null) {
             return true;
         }
-        return permissionEvaluator.hasPermission(getAuthentication(), permission.getTarget(), permission.getAction());
+        return new AclPermissionEvaluator().hasPermission(
+                getAuthentication(), permission.getTarget(), permission.getAction());
     }
 
     /**

@@ -1,17 +1,15 @@
 package alvin.study.app.endpoint;
 
 
+import alvin.study.app.domain.service.AuthService;
 import alvin.study.app.endpoint.common.BaseController;
 import alvin.study.app.endpoint.model.LoginForm;
 import alvin.study.app.endpoint.model.TokenDto;
 import alvin.study.app.endpoint.model.UserDto;
 import alvin.study.core.cache.Cache;
-import alvin.study.core.security.auth.NameAndPasswordAuthenticationToken;
-import alvin.study.infra.entity.User;
 import alvin.study.util.security.Jwt;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,7 +37,7 @@ public class AuthController extends BaseController {
     private final Jwt jwt;
 
     // 注入验证管理器对象
-    private final AuthenticationManager authManager;
+    private final AuthService authService;
 
     // 注入缓存对象
     private final Cache cache;
@@ -67,24 +65,6 @@ public class AuthController extends BaseController {
     /**
      * 用户登录
      *
-     * <p>
-     * 通过登录的用户名和密码产生一个 {@link NameAndPasswordAuthenticationToken} 对象, 再通过
-     * {@link AuthenticationManager#authenticate(org.springframework.security.core.Authentication)
-     * AuthenticationManager.authenticate(Authentication)} 方法进行校验, 通过
-     * {@link alvin.study.conf.SecurityConfig#authManager(org.springframework.security.config.annotation.web.builders.HttpSecurity)
-     * SecurityConfig.authManager(HttpSecurity)} 方法获取
-     * </p>
-     *
-     * <p>
-     * {@link AuthenticationManager#authenticate(org.springframework.security.core.Authentication)
-     * AuthenticationManager.authenticate(Authentication)} 方法在内部会调用
-     * {@link alvin.study.core.security.auth.NameAndPasswordAuthenticationProvider#authenticate(org.springframework.security.core.Authentication)
-     * NameAndPasswordAuthenticationProvider.authenticate(Authentication)} 方法并返回一个
-     * {@link NameAndPasswordAuthenticationToken} 对象, 其
-     * {@link NameAndPasswordAuthenticationToken#getPrincipal()} 方法返回一个 {@link User}
-     * 对象表示登录的用户实体
-     * </p>
-     *
      * @param form 登录表单对象
      * @return 生成的 JWT token 对象
      */
@@ -92,11 +72,7 @@ public class AuthController extends BaseController {
     @ResponseBody
     TokenDto postLogin(@RequestBody @Valid LoginForm form) {
         // 通过用户名和密码产生 Authentication 对象, 进行验证
-        var auth = authManager.authenticate(
-            new NameAndPasswordAuthenticationToken(form.getAccount(), form.getPassword()));
-
-        // 获取登录的用户对象
-        var user = (User) auth.getPrincipal();
+        var user = authService.login(form.getAccount(), form.getPassword());
 
         // 生成 JWT token 对象
         var token = jwt.encode(String.valueOf(user.getId()));

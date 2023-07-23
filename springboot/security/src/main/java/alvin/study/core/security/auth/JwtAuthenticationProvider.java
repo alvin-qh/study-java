@@ -1,33 +1,36 @@
 package alvin.study.core.security.auth;
 
+import alvin.study.app.domain.service.AuthService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
-import alvin.study.app.domain.service.AuthService;
-import lombok.RequiredArgsConstructor;
-
 /**
- * 对 {@link JwtAuthenticationToken} 类型对象进行身份验证的类型
+ * 对 {@code JwtAuthenticationToken} 类型对象进行身份验证的类型
  *
  * <p>
- * 该类型对象在
- * {@link alvin.study.conf.SecurityConfig#authManager(org.springframework.security.config.annotation.web.builders.HttpSecurity)
- * SecurityConfig.authManager(HttpSecurity)} 方法中进行注册
+ * 该类型对象在 {@code SecurityConfig.authManage} 方法中进行注册 (参见 {@link alvin.study.conf.SecurityConfig
+ * SecurityConfig} 类型)
  * </p>
+ *
+ * @deprecated 在 Spring Security 6+ 版本之后, 无需使用 Provider, 只需要在 Filter 中为
+ * {@link org.springframework.security.core.context.SecurityContext SecurityContext}传递
+ * {@link Authentication} 对象即可, 参见 {@link alvin.study.core.security.filter.JwtRequestFilter JwtRequestFilter} 类型
  */
 @Component
+@Deprecated(forRemoval = true, since = "3.0")
 @RequiredArgsConstructor
 public class JwtAuthenticationProvider implements AuthenticationProvider {
     private final AuthService authService;
 
     /**
-     * 对传入的 {@link JwtAuthenticationToken} 类型对象进行身份验证
+     * 对传入的 {@code JwtAuthenticationToken} 类型对象进行身份验证
      *
-     * @param auth {@link JwtAuthenticationToken} 类型对象
+     * @param auth {@code JwtAuthenticationToken} 类型对象
      * @return {@link NameAndPasswordAuthenticationToken} 存储
-     *         {@link alvin.study.infra.entity.User User} 实体对象
+     * {@link alvin.study.infra.entity.User User} 实体对象
      */
     @Override
     public Authentication authenticate(Authentication auth) throws AuthenticationException {
@@ -38,16 +41,17 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         var user = authService.decodeJwtToken(jwt);
 
         // 产生新的 Authentication 对象, 存储用户和其角色权限
-        return new NameAndPasswordAuthenticationToken(user, authService.findPermissionsByUserId(user.getId()));
+        return new NameAndPasswordAuthenticationToken(user, jwt, authService.findPermissionsByUserId(user.getId()));
     }
 
     /**
-     * 设置当前类型对象只处理 {@link JwtAuthenticationToken} 类型对象
+     * 设置当前类型对象只处理 {@code JwtAuthenticationToken} 类型对象
      *
      * @param authType 待匹配的 {@link Authentication} 对象类型
-     * @return 如果 {@code authType} 参数类型为 {@link JwtAuthenticationToken} 类型则返回
-     *         {@code true}
+     * @return 如果 {@code authType} 参数类型为 {@licode JwtAuthenticationToken} 类型则返回
+     * {@code true}
      */
+    @SuppressWarnings("removal")
     @Override
     public boolean supports(Class<?> authType) {
         return JwtAuthenticationToken.class.isAssignableFrom(authType);

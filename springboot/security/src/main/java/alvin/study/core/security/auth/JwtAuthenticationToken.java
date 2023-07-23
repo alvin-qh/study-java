@@ -11,6 +11,7 @@ import alvin.study.infra.entity.User;
 /**
  * 对 JWT 字符串进行验证的 {@link Authentication} 接口类型
  */
+@Deprecated(forRemoval = true, since = "3.0")
 public class JwtAuthenticationToken implements Authentication {
     /**
      * 存储 JWT 字符串
@@ -78,7 +79,7 @@ public class JwtAuthenticationToken implements Authentication {
      * 该类型不能设置已认证过状态
      */
     @Override
-    public boolean isAuthenticated() { return false; }
+    public boolean isAuthenticated() { return true; }
 
     /**
      * 设置已认证状态, 该方法在该类型中无效

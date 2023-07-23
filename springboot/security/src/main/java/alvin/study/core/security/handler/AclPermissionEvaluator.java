@@ -1,11 +1,9 @@
 package alvin.study.core.security.handler;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
@@ -19,8 +17,6 @@ import java.io.Serializable;
  * </p>
  */
 @Slf4j
-@Component
-@RequiredArgsConstructor
 public class AclPermissionEvaluator implements PermissionEvaluator {
     private static final String ROLE_PREFIX = "ROLE_";
 
@@ -33,7 +29,7 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
      */
     public boolean hasRole(@NotNull Authentication authentication, String role) {
         return authentication.getAuthorities().stream()
-            .anyMatch(it -> checkIfRoleMatch(role, it.getAuthority()));
+                .anyMatch(it -> checkIfRoleMatch(role, it.getAuthority()));
     }
 
     /**
@@ -206,7 +202,7 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
 
     @Override
     public boolean hasPermission(
-        Authentication authentication, Serializable targetId, String targetType, Object permission) {
+            Authentication authentication, Serializable targetId, String targetType, Object permission) {
         throw new UnsupportedOperationException("Use hasPermission(String, String) instead of");
     }
 }

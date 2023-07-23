@@ -25,8 +25,7 @@ import java.util.Objects;
  * </p>
  *
  * <p>
- * {@link PreAuthorize @PreAuthorize} 注解中的 {@code hasRole('ANY_ONE')}
- * 表达式表示调用该方法的用户是否具备指定的角色
+ * {@link PreAuthorize @PreAuthorize} 注解中的 {@code hasRole('ANY_ONE')} 表达式表示调用该方法的用户是否具备指定的角色
  * </p>
  *
  * <p>
@@ -37,9 +36,14 @@ import java.util.Objects;
  * </p>
  *
  * <p>
- * 角色和权限的获取参考
- * {@link alvin.study.core.security.auth.JwtAuthenticationProvider#authenticate(org.springframework.security.core.Authentication)
- * JwtAuthenticationProvider.authenticate(Authentication)} 方法
+ * 已弃用
+ * <s>
+ * 角色和权限的获取参考 {@code JwtAuthenticationProvider.authenticate} 方法
+ * </s>
+ * </p>
+ *
+ * <p>
+ * 用户的角色权限参考 {@link alvin.study.core.security.filter.JwtRequestFilter JwtRequestFilter} 类型
  * </p>
  *
  * <p>

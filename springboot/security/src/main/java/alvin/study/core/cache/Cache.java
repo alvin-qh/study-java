@@ -36,7 +36,7 @@ public class Cache {
             }
             log.debug("Remove all keys from cache");
         } catch (Exception e) {
-            log.error("Cannot delete keys from cache", e);
+            // log.error("Cannot delete keys from cache", e);
         }
     }
 
@@ -52,7 +52,7 @@ public class Cache {
             redis.opsForValue().set(KEY_USER + token, user, expired);
             log.debug("Save user(id = {}) into cache", user.getId());
         } catch (Exception e) {
-            log.error("Cannot save user into cache", e);
+            // log.error("Cannot save user into cache", e);
         }
         return user;
     }
@@ -74,7 +74,7 @@ public class Cache {
             log.debug("Load user(id = {}) from cache", user.getId());
             return Optional.of(user);
         } catch (Exception e) {
-            log.error("Cannot load user from cache", e);
+            // log.error("Cannot load user from cache", e);
             return Optional.empty();
         }
     }
@@ -92,7 +92,7 @@ public class Cache {
             redis.opsForValue().set(key, menus);
             log.debug("Save menus(userId = {}, size = {}) into cache", userId, menus.size());
         } catch (Exception e) {
-            log.error("Cannot save menus for user", e);
+            // log.error("Cannot save menus for user", e);
         }
         return menus;
     }
@@ -115,7 +115,7 @@ public class Cache {
             log.debug("Load menus(userId = {}, size = {}) from cache", userId, menus.size());
             return Optional.of(menus);
         } catch (Exception e) {
-            log.error("Cannot load menus from cache", e);
+            // log.error("Cannot load menus from cache", e);
             return Optional.empty();
         }
     }
@@ -137,7 +137,7 @@ public class Cache {
             redis.opsForValue().set(key, permissions);
             log.debug("Save permissions(userId = {}, size = {}) into cache", userId, permissions.size());
         } catch (Exception e) {
-            log.error("Cannot save permissions into cache", e);
+            // log.error("Cannot save permissions into cache", e);
         }
         return authorities;
     }
@@ -163,7 +163,7 @@ public class Cache {
                     .map(p -> (GrantedAuthority) new SimpleGrantedAuthority(p))
                     .toList());
         } catch (Exception e) {
-            log.error("Cannot load permissions from cache", e);
+            // log.error("Cannot load permissions from cache", e);
             return Optional.empty();
         }
     }

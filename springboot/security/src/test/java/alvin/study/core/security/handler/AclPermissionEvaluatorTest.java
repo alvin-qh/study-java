@@ -4,6 +4,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.List;
 
+import alvin.study.infra.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -23,10 +24,12 @@ public class AclPermissionEvaluatorTest {
      */
     @Test
     void hasRole_shouldCheckRole() {
-        var token = new NameAndPasswordAuthenticationToken(null,
-            List.of(
-                new SimpleGrantedAuthority("ROLE_A"),
-                new SimpleGrantedAuthority("ROLE_B")));
+        var token = new NameAndPasswordAuthenticationToken(
+                new User(),
+                "",
+                List.of(
+                        new SimpleGrantedAuthority("ROLE_A"),
+                        new SimpleGrantedAuthority("ROLE_B")));
 
         var r = evaluator.hasRole(token, "A");
         then(r).isTrue();
@@ -43,14 +46,16 @@ public class AclPermissionEvaluatorTest {
      */
     @Test
     void hasPermission_shouldCheckPermissions() {
-        var token = new NameAndPasswordAuthenticationToken(null,
-            List.of(
-                new SimpleGrantedAuthority("A:X:R"),
-                new SimpleGrantedAuthority("A:Y:R"),
-                new SimpleGrantedAuthority("A:Z:W"),
-                new SimpleGrantedAuthority("B:X:W"),
-                new SimpleGrantedAuthority("B:Y:W"),
-                new SimpleGrantedAuthority("C:Z:W")));
+        var token = new NameAndPasswordAuthenticationToken(
+                new User(),
+                "",
+                List.of(
+                        new SimpleGrantedAuthority("A:X:R"),
+                        new SimpleGrantedAuthority("A:Y:R"),
+                        new SimpleGrantedAuthority("A:Z:W"),
+                        new SimpleGrantedAuthority("B:X:W"),
+                        new SimpleGrantedAuthority("B:Y:W"),
+                        new SimpleGrantedAuthority("C:Z:W")));
 
         var r = evaluator.hasPermission(token, "A:X", "R");
         then(r).isTrue();

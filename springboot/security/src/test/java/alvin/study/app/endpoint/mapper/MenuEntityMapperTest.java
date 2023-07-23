@@ -49,8 +49,10 @@ class MenuEntityMapperTest extends IntegrationTest {
 
         // 为当前用户设置角色, 不设置必要权限, 所以 II-II-I 和 II-II—II 两个菜单不予返回
         SecurityContextHolder.setContext(new SecurityContextImpl(
-            new NameAndPasswordAuthenticationToken(currentUser(),
-                List.of(new SimpleGrantedAuthority("ROLE_" + role.getName())))));
+                new NameAndPasswordAuthenticationToken(
+                        currentUser(),
+                        "",
+                        List.of(new SimpleGrantedAuthority("ROLE_" + role.getName())))));
 
         // 构建数据库记录
         var menu1 = newBuilder(MenuBuilder.class).withText("I").create();
