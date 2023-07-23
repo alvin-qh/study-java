@@ -1,7 +1,10 @@
 package alvin.study.conf;
 
-import java.util.List;
-
+import alvin.study.core.security.auth.CustomAuthenticationProvider;
+import alvin.study.core.security.filter.CustomErrorHandlerEntryPoint;
+import alvin.study.core.security.filter.CustomRequestFilter;
+import alvin.study.util.security.PasswordEncoder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,17 +12,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import alvin.study.core.security.auth.CustomAuthenticationProvider;
-import alvin.study.core.security.filter.CustomErrorHandlerEntryPoint;
-import alvin.study.core.security.filter.CustomRequestFilter;
-import alvin.study.util.security.PasswordEncoder;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
 
 /**
  * 设置 Spring Security 配置
@@ -39,13 +39,12 @@ public class SecurityConfig {
      * @param algorithm 加密算法名称, 从 {@code application.yml} 文件中获得
      * @param key       散列信息认证码, 从 {@code application.yml} 文件中获得
      * @return {@link PasswordEncoder} 对象
-     *
      * @see PasswordEncoder#PasswordUtil(String, String)
      */
     @Bean
     PasswordEncoder passwordEncoder(
-            @Value("${application.security.hash.algorithm}") String algorithm,
-            @Value("${application.security.hash.key}") String key) {
+        @Value("${application.security.hash.algorithm}") String algorithm,
+        @Value("${application.security.hash.key}") String key) {
         var encoder = new PasswordEncoder(algorithm, key);
         log.info("[CONF] PasswordEncoder object created, algorithm=\"{}\", hmacKey=\"{}\"", algorithm, key);
         return encoder;
@@ -61,13 +60,13 @@ public class SecurityConfig {
      */
     @Bean
     InMemoryUserDetailsManager userDetailsManager(
-            PasswordEncoder encoder,
-            @Value("${springdoc.authorization.username}") String username,
-            @Value("${springdoc.authorization.password}") String password) {
+        PasswordEncoder encoder,
+        @Value("${springdoc.authorization.username}") String username,
+        @Value("${springdoc.authorization.password}") String password) {
         return new InMemoryUserDetailsManager(User.withUsername(username)
-                .password(encoder.encode(password))
-                .authorities(List.of())
-                .build());
+            .password(encoder.encode(password))
+            .authorities(List.of())
+            .build());
     }
 
     /**
@@ -83,12 +82,12 @@ public class SecurityConfig {
     @Bean
     CustomRequestFilter customRequestFilter() {
         return new CustomRequestFilter(
-                // 设置需要 basic auth 登录认证拦截的路径
-                new String[] { "/**/api-docs/**" },
-                // 设置需要 JWT 登录认证拦截的路径
-                new String[] { "/api/**" },
-                // 设置不需要认证拦截的路径
-                new String[] { "/swagger-ui/**" });
+            // 设置需要 basic auth 登录认证拦截的路径
+            new String[]{ "/**/api-docs/**" },
+            // 设置需要 JWT 登录认证拦截的路径
+            new String[]{ "/api/**" },
+            // 设置不需要认证拦截的路径
+            new String[]{ "/swagger-ui/**" });
     }
 
     /**
@@ -117,17 +116,17 @@ public class SecurityConfig {
      *                     CustomAuthenticationToken} 进行验证的
      *                     {@link CustomAuthenticationProvider} 类型对象
      * @return {@link org.springframework.security.authentication.ProviderManager
-     *         ProviderManager} 类型对象
+     * ProviderManager} 类型对象
      */
     @Bean
     AuthenticationManager authManager(
-            HttpSecurity security, CustomAuthenticationProvider authProvider) throws Exception {
+        HttpSecurity security, CustomAuthenticationProvider authProvider) throws Exception {
         // 获取 AuthenticationManagerBuilder 对象, 用于构建 ProviderManager 对象
         return security.getSharedObject(AuthenticationManagerBuilder.class)
-                .authenticationProvider(authProvider)
-                // 设置 ProviderManager.parent 字段为 null, 防止抛出 AuthenticationException 异常后导致无线递归
-                .parentAuthenticationManager(null)
-                .build();
+            .authenticationProvider(authProvider)
+            // 设置 ProviderManager.parent 字段为 null, 防止抛出 AuthenticationException 异常后导致无线递归
+            .parentAuthenticationManager(null)
+            .build();
     }
 
     /**
@@ -140,29 +139,31 @@ public class SecurityConfig {
      */
     @Bean
     SecurityFilterChain filterChain(
-            HttpSecurity security,
-            CustomRequestFilter customRequestFilter,
-            AuthenticationManager authManager,
-            CustomErrorHandlerEntryPoint errorHandlerEntryPoint) throws Exception {
-        return security
-                .authenticationManager(authManager)
-                // 设置认证相关的访问 URI
-                .authorizeRequests()
-                // 无需凭证的 URI
-                .antMatchers("/auth/**", "/swagger-ui/**").permitAll()
-                // 其它请求均需要凭证认证
-                .anyRequest().authenticated()
-                .and()
-                // 设置拦截器的位置
-                .addFilterBefore(customRequestFilter, UsernamePasswordAuthenticationFilter.class)
+        HttpSecurity security,
+        CustomRequestFilter customRequestFilter,
+        AuthenticationManager authManager,
+        CustomErrorHandlerEntryPoint errorHandlerEntryPoint) throws Exception {
+        return security.authenticationManager(authManager)
+            // 禁用 CSRF 重复提交检验
+            .csrf(AbstractHttpConfigurer::disable)
+            // 设置认证相关的访问 URI
+            .authorizeHttpRequests(registry ->
+                registry
+                    // 无需凭证的 URI
+                    // .requestMatchers("/auth/**", "/swagger-ui/**").permitAll()
+                    // 其它请求均需要凭证认证
+                    .anyRequest().permitAll()
+            )
+            .sessionManagement(configurer ->
                 // 设置 session 管理方式, 以 Cookie 管理无状态 session
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+                configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            .exceptionHandling(configurer ->
                 // 设置异常处理器
-                .exceptionHandling().authenticationEntryPoint(errorHandlerEntryPoint)
-                .and()
-                // 禁用 CSRF 重复提交检验
-                .csrf().disable()
-                .build();
+                configurer.authenticationEntryPoint(errorHandlerEntryPoint)
+            )
+            // 设置拦截器的位置
+            .addFilterBefore(customRequestFilter, UsernamePasswordAuthenticationFilter.class)
+            .build();
     }
 }

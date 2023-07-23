@@ -1,13 +1,12 @@
 package alvin.study.app.endpoint.model;
 
-import java.io.Serializable;
-
-import javax.validation.constraints.NotBlank;
-
+import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 /**
  * 登录表单类型

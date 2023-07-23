@@ -28,6 +28,7 @@
     <module>mybatis</module>
     <module>jooq</module>
     <module>kickstart-graphql</module>
+    <module>springdoc</module>
   </modules>
 
   <dependencyManagement>

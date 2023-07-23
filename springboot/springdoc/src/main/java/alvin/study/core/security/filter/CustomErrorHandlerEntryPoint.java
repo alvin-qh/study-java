@@ -1,21 +1,17 @@
 package alvin.study.core.security.filter;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import alvin.study.core.http.ResponseWrapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import alvin.study.core.http.ResponseWrapper;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
 
 /**
  * 对 {@link AuthenticationException} 异常进行处理
@@ -46,7 +42,7 @@ public class CustomErrorHandlerEntryPoint implements AuthenticationEntryPoint {
      */
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e)
-            throws IOException, ServletException {
+        throws IOException {
         log.error("Authentication error caused", e);
         var error = objectMapper.writeValueAsString(
             ResponseWrapper.error(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage()));

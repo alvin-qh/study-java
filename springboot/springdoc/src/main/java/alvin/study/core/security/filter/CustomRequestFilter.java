@@ -1,14 +1,14 @@
 package alvin.study.core.security.filter;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import alvin.study.core.security.auth.CustomAuthenticationToken;
+import alvin.study.util.http.Headers;
+import com.google.common.base.Strings;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,11 +16,9 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.google.common.base.Strings;
-
-import alvin.study.core.security.auth.CustomAuthenticationToken;
-import alvin.study.util.http.Headers;
-import lombok.SneakyThrows;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 /**
  * 对客户端请求进行拦截, 处理 Basic Auth 和 Jwt 两类 Header 信息
@@ -92,9 +90,9 @@ public class CustomRequestFilter extends OncePerRequestFilter {
      */
     @Override
     protected void doFilterInternal(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain chain) throws ServletException, IOException {
+        @NotNull HttpServletRequest request,
+        @NotNull HttpServletResponse response,
+        @NotNull FilterChain chain) throws ServletException, IOException {
         // 判断安全上下文中是否已经存储用户信息
         var context = SecurityContextHolder.getContext();
 
@@ -163,7 +161,7 @@ public class CustomRequestFilter extends OncePerRequestFilter {
         try {
             // 将 Basic Auth 认证字符串进行 Base64 解码
             var b64Val = Base64.getDecoder().decode(token.substring(Headers.BASIC.length()).trim());
-            token = new String(b64Val, 0, b64Val.length, StandardCharsets.UTF_8);
+            token = new String(b64Val, StandardCharsets.UTF_8);
 
             // 从解码结果中获取用户名和密码
             var nameAndPass = token.split(":", 2);

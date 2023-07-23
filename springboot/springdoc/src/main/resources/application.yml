@@ -4,7 +4,8 @@
 # 配置 Spring Boot Server
 server:
   port: 8080
-  max-http-header-size: 8KB
+  max-http-request-header-size: 8KB
+
 
   # 配置 Spring Boot Servlet
   servlet:

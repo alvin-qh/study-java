@@ -1,17 +1,17 @@
 package alvin.study.app.interceptor;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 
 import alvin.study.infra.entity.AccessLog;
 import alvin.study.infra.entity.User;
 import alvin.study.infra.repository.AccessLogRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Spring 拦截器, 拦截请求, 记录访问时间
@@ -22,9 +22,9 @@ import lombok.RequiredArgsConstructor;
  * </p>
  *
  * @see HandlerInterceptor#preHandle(HttpServletRequest, HttpServletResponse,
- *      Object)
+ * Object)
  * @see HandlerInterceptor#postHandle(HttpServletRequest, HttpServletResponse,
- *      Object, ModelAndView)
+ * Object, ModelAndView)
  */
 @Component
 @RequiredArgsConstructor
@@ -37,10 +37,10 @@ public class AccessInterceptor implements HandlerInterceptor {
      */
     @Override
     public void postHandle(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            Object handler,
-            ModelAndView modelAndView) throws Exception {
+        @NotNull HttpServletRequest request,
+        @NotNull HttpServletResponse response,
+        @NotNull Object handler,
+        ModelAndView modelAndView) {
         // 获取登录信息
         var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null) {
@@ -51,6 +51,6 @@ public class AccessInterceptor implements HandlerInterceptor {
         var user = (User) auth.getPrincipal();
         try {
             accessLogRepository.insert(AccessLog.forAccess(user.getUsername()));
-        } catch (Exception ignore) {}
+        } catch (Exception ignore) { }
     }
 }

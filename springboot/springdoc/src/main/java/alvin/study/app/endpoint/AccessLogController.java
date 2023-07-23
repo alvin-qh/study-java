@@ -1,22 +1,20 @@
 package alvin.study.app.endpoint;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.validation.constraints.NotBlank;
-
+import alvin.study.app.endpoint.model.AccessLogDto;
+import alvin.study.infra.repository.AccessLogRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotBlank;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import alvin.study.app.endpoint.model.AccessLogDto;
-import alvin.study.infra.repository.AccessLogRepository;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 获取访问日志的控制器类
@@ -64,8 +62,8 @@ public class AccessLogController {
 
         // 根据用户名查询该用户的访问日志集合
         return accessLogRepository.selectByUsername(username).stream()
-                .map(log -> new AccessLogDto(log.getUsername(), log.getLastAccessAt(), log.isActionLogin()))
-                .collect(Collectors.toList());
+            .map(log -> new AccessLogDto(log.getUsername(), log.getLastAccessAt(), log.isActionLogin()))
+            .collect(Collectors.toList());
     }
 
     /**
@@ -78,7 +76,7 @@ public class AccessLogController {
     List<AccessLogDto> getAllAccessLog() {
         // 查询所有的访问日志集合
         return accessLogRepository.selectAll().stream()
-                .map(log -> new AccessLogDto(log.getUsername(), log.getLastAccessAt(), log.isActionLogin()))
-                .collect(Collectors.toList());
+            .map(log -> new AccessLogDto(log.getUsername(), log.getLastAccessAt(), log.isActionLogin()))
+            .collect(Collectors.toList());
     }
 }

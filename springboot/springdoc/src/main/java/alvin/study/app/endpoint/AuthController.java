@@ -1,13 +1,5 @@
 package alvin.study.app.endpoint;
 
-import javax.validation.Valid;
-
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import alvin.study.app.endpoint.model.LoginForm;
 import alvin.study.app.endpoint.model.TokenDto;
@@ -17,7 +9,14 @@ import alvin.study.infra.repository.AccessLogRepository;
 import alvin.study.util.security.Jwt;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 获取访问日志的控制器类

@@ -1,11 +1,10 @@
 package alvin.study.conf;
 
+import alvin.study.app.interceptor.AccessInterceptor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import alvin.study.app.interceptor.AccessInterceptor;
-import lombok.RequiredArgsConstructor;
 
 /**
  * 配置和 Web 访问相关的配置
@@ -27,8 +26,9 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 添加拦截器
-        registry.addInterceptor(accessInterceptor)
-                // 添加拦截器要拦截的 url 范围
-                .addPathPatterns("/api/**");
+        registry
+            .addInterceptor(accessInterceptor)
+            // 添加拦截器要拦截的 url 范围
+            .addPathPatterns("/api/**");
     }
 }
