@@ -19,7 +19,6 @@ import java.security.NoSuchAlgorithmException;
  * @see SecretKeySpec
  * @see Mac
  */
-@SuppressWarnings("unused")
 public class PasswordUtil {
     // 密钥生成对象
     private final SecretKeySpec secretKeySpec;

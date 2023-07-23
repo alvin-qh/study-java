@@ -14,7 +14,7 @@ import java.util.UUID;
 /**
  * JWT 工具类
  */
-@SuppressWarnings("unused")
+
 public class JWTs {
     // 附加字段名, 表示组织代码
     static final String CLAIM_ORG_CODE = "org";

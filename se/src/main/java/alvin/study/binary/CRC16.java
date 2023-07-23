@@ -14,7 +14,6 @@ import java.util.function.BiFunction;
  * 进行处理
  * </p>
  */
-@SuppressWarnings("unused")
 public final class CRC16 {
     // @formatter:off
     private static final int[] TABLE = {

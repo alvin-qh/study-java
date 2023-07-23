@@ -20,7 +20,6 @@ import org.jetbrains.annotations.NotNull;
  * 实体被删除后的缓存处理工作
  * </p>
  */
-@SuppressWarnings("unused")
 public class CacheObserver {
     // 缓存对象
     private final LoadingCache<Long, User> cache;

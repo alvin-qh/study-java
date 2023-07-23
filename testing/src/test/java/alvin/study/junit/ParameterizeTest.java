@@ -211,6 +211,7 @@ class ParameterizeTest {
      *
      * @return 包含一组 {@link Arguments} 对象的流对象, 每个 {@link Arguments} 对象作为一组传递给测试方法的参数
      */
+    @SuppressWarnings("unchecked")
     private static Stream<? extends Arguments> methodSource_shouldReturnTrueForNullOrBlankStringsByMethod() {
         return Stream.of(
             // 每个 Arguments 对象均包含两个参数值

@@ -10,7 +10,6 @@ import static java.lang.Character.digit;
 /**
  * 二进制转 16 进制字符串工具类
  */
-@SuppressWarnings("unused")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Hex {
     private static final char[] HEX_DIGITS = "0123456789ABCDEF".toCharArray();
@@ -272,7 +271,6 @@ public final class Hex {
      * @param length 要转换的数据长度
      * @return 内存转储字符串
      */
-    @SuppressWarnings("java:S3776")
     public static @NotNull String dump(byte[] data, int offset, int length) {
         if (data == null || data.length == 0) {
             return "";

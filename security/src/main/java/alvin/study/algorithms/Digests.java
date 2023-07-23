@@ -15,7 +15,7 @@ import java.security.MessageDigest;
 /**
  * 摘要算法工具类
  */
-@SuppressWarnings("unused")
+
 public class Digests {
     // 读取文件的默认缓冲区大小
     private static final int BUFFER_SIZE = 1024;

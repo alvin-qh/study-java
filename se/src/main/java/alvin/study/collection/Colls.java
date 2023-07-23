@@ -26,7 +26,6 @@ import java.util.stream.Stream;
 /**
  * 集合操作工具类, 用于演示集合的常见操作
  */
-@SuppressWarnings("unused")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Colls {
     // 一个临界值, 在此临界值以内通过迭代算法进行处理, 超过该临界值则选用其它算法

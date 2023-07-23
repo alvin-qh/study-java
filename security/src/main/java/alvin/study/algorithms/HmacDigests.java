@@ -106,7 +106,7 @@ import java.security.NoSuchAlgorithmException;
  * </table>
  * </p>
  */
-@SuppressWarnings("unused")
+
 public class HmacDigests {
     // 默认的缓冲区大小
     private static final int BUFFER_SIZE = 1024;

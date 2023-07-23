@@ -429,7 +429,6 @@ public class ExpressionsTest {
      * </p>
      */
     @Test
-    @SuppressWarnings("unchecked")
     void inlineList_shouldExecute() {
         // 初始化一个 Evaluation 上下文对象
         var context = SimpleEvaluationContext.forReadOnlyDataBinding().build();
@@ -467,7 +466,6 @@ public class ExpressionsTest {
      * </p>
      */
     @Test
-    @SuppressWarnings("unchecked")
     void inlineMap_shouldExecute() {
         // 初始化一个 Evaluation 上下文对象
         var context = SimpleEvaluationContext.forReadOnlyDataBinding().build();

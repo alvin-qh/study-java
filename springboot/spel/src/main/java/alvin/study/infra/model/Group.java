@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
  */
 @Data
 @Builder
-@SuppressWarnings("unused")
 public class Group {
     private final String name;
     private final User[] users;

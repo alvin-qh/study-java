@@ -11,7 +11,6 @@ import java.time.Instant;
 /**
  * Jwt 令牌处理类型
  */
-@SuppressWarnings("unused")
 @RequiredArgsConstructor
 public class Jwt {
     // token 签名算法
@@ -38,13 +37,13 @@ public class Jwt {
 
         // 创建 token
         return JWT.create()
-            .withAudience(org) // 设置 token 的接收方
-            .withIssuer(user) // 设置 token 的发行方
-            .withIssuedAt(now) // 设置 token 的发行时间
-            .withNotBefore(now) // 设置 token 的生效时间
-            .withExpiresAt(expiresAt) // 设置 token 的失效时间
-            .withJWTId(jwtId) // 设置 token 的标识 id
-            .sign(algorithm); // 对 token 进行签名操作, 产生完整的 token 字符串
+                .withAudience(org) // 设置 token 的接收方
+                .withIssuer(user) // 设置 token 的发行方
+                .withIssuedAt(now) // 设置 token 的发行时间
+                .withNotBefore(now) // 设置 token 的生效时间
+                .withExpiresAt(expiresAt) // 设置 token 的失效时间
+                .withJWTId(jwtId) // 设置 token 的标识 id
+                .sign(algorithm); // 对 token 进行签名操作, 产生完整的 token 字符串
     }
 
     /**
@@ -65,8 +64,8 @@ public class Jwt {
      */
     public DecodedJWT verify(String token) {
         return JWT.require(algorithm)
-            .withJWTId(jwtId)
-            .build()
-            .verify(token);
+                .withJWTId(jwtId)
+                .build()
+                .verify(token);
     }
 }

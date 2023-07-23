@@ -115,7 +115,6 @@ public class MultiBinderModule extends AbstractModule {
      * 用于绑定的演示类型
      */
     @Singleton
-    @SuppressWarnings("unused")
     static class BindDemoImpl implements BindDemo {
         private final String value;
 

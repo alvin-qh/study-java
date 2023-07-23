@@ -180,7 +180,7 @@ import java.util.Arrays;
  * </ul>
  * </p>
  */
-@SuppressWarnings("unused")
+
 public class Ciphers {
     // 默认缓冲区大小
     private static final int BUFFER_SIZE = 1024;

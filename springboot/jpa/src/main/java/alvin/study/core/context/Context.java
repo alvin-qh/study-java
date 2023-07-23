@@ -28,7 +28,6 @@ import org.springframework.web.context.request.RequestContextHolder;
  *
  * @see alvin.study.core.context.WebContext
  */
-@SuppressWarnings("unused")
 public interface Context {
     // 获取 Context 存储的内置 Key 值
     String KEY = ScopedProxyUtils.getTargetBeanName("context");

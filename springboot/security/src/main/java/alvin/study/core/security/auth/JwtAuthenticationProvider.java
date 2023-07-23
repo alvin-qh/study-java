@@ -49,8 +49,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
      * 设置当前类型对象只处理 {@code JwtAuthenticationToken} 类型对象
      *
      * @param authType 待匹配的 {@link Authentication} 对象类型
-     * @return 如果 {@code authType} 参数类型为 {@licode JwtAuthenticationToken} 类型则返回
-     * {@code true}
+     * @return 如果 {@code authType} 参数类型为 {@code JwtAuthenticationToken} 类型则返回 {@code true}
      */
     @Override
     public boolean supports(Class<?> authType) {

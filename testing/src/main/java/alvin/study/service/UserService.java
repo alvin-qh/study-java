@@ -8,7 +8,6 @@ import java.util.Optional;
 /**
  * 用于测试的用户服务接口
  */
-@SuppressWarnings("unused")
 public interface UserService {
     /**
      * 获取所有用户实体

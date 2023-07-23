@@ -48,7 +48,6 @@ import static java.util.Arrays.asList;
  * Injector.injectMembers(Object)} 方法将绑定关系中定义的实例注入到目标对象的字段中
  * </p>
  */
-@SuppressWarnings("unused")
 public class GenericBindingModule extends AbstractModule {
     /**
      * 配置模块

@@ -6,7 +6,6 @@ import java.util.Collection;
 /**
  * 调用 API 时因为输入参数错误导致的异常类型
  */
-@SuppressWarnings("unused")
 public class InputException extends ApiException {
     public InputException() {
         super(ErrorCode.INPUT_ERROR);

@@ -98,7 +98,6 @@ public class CustomRequestAttributes implements RequestAttributes {
     /**
      * 取消当前 Context 对象的注册
      */
-    @SuppressWarnings("unused")
     public static void unregister() {
         var attributes = RequestContextHolder.currentRequestAttributes();
         attributes.removeAttribute(Context.KEY, SCOPE_REQUEST);

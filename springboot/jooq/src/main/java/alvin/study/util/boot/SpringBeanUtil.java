@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
  * 辅助获取 Bean 对象的工具类
  */
 @Component
-@SuppressWarnings("unused")
 public class SpringBeanUtil implements ApplicationContextAware {
     // 应用上下文对象
     private static ApplicationContext context;

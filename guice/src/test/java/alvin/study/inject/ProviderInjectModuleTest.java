@@ -24,7 +24,7 @@ import static org.assertj.core.api.BDDAssertions.then;
  * Provider.get()} 方法的时候
  * </p>
  */
-@SuppressWarnings("unused")
+
 class ProviderInjectModuleTest extends BaseModuleTest {
     /**
      * 该对象中直接注入了目标 bean

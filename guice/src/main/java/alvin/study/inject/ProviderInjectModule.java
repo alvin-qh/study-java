@@ -30,7 +30,6 @@ import lombok.Data;
  *
  * @see alvin.study.bind.ProviderBindingModule
  */
-@SuppressWarnings("unused")
 public class ProviderInjectModule extends AbstractModule {
     /**
      * 定义一个包装为 {@link Provider} 方法

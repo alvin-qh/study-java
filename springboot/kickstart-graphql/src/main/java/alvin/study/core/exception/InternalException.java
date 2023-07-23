@@ -9,7 +9,6 @@ import graphql.ErrorType;
 /**
  * 调用 API 时因为内部错误导致异常
  */
-@SuppressWarnings("unused")
 public class InternalException extends GraphqlBaseException {
     // 异常原因
     private final String reason;

@@ -13,7 +13,6 @@ import lombok.SneakyThrows;
 /**
  * 用户实体构建器类
  */
-@SuppressWarnings("unused")
 public class UserBuilder extends Builder<User> {
     private final static AtomicInteger SEQUENCE = new AtomicInteger();
 

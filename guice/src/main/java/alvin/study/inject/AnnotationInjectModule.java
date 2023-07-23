@@ -15,7 +15,6 @@ import lombok.Getter;
  *
  * @see alvin.study.bind.AnnotationBindingModule
  */
-@SuppressWarnings("unused")
 public class AnnotationInjectModule extends AbstractModule {
     /**
      * 配置模块

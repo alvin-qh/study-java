@@ -38,7 +38,7 @@ import static org.assertj.core.api.BDDAssertions.thenThrownBy;
  * {@link Doubles}, {@link Chars} 以及 {@link Booleans} 等工具类, 对应不同的简单类型进行操作
  * </p>
  */
-@SuppressWarnings({"unused", "EqualsWithItself", "ConstantValue"})
+@SuppressWarnings({"EqualsWithItself", "ConstantValue"})
 class PrimitivesTest {
     /**
      * 将简单类型元素包装为 {@link java.util.List List} 集合

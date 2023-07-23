@@ -7,7 +7,6 @@ import java.util.Map;
  *
  * @see java.util.Map.Entry
  */
-@SuppressWarnings("unused")
 public class Pair<F, S> implements Map.Entry<F, S> {
     // 第一个值
     private F first;

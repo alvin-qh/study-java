@@ -19,7 +19,6 @@ import org.jetbrains.annotations.NotNull;
  * </pre>
  * </p>
  */
-@SuppressWarnings("unused")
 public final class BCC {
     // 求和校验码
     private int code;

@@ -50,7 +50,6 @@ import org.springframework.test.context.ContextConfiguration;
  * {@code initializers} 属性用于指定测试初始化类. 参考 {@link TestingContextInitializer} 类型
  * </p>
  */
-@SuppressWarnings("unused")
 @ActiveProfiles("test")
 @SpringBootTest(classes = {TestingConfig.class})
 @ContextConfiguration(initializers = {TestingContextInitializer.class})

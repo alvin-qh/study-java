@@ -28,7 +28,6 @@ import java.util.stream.IntStream;
  * {@link ConfigurableApplicationContext} 上下文对象用于进行额外设置
  * </p>
  */
-@SuppressWarnings("unused")
 @Slf4j
 public class TestingContextInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
     /**
@@ -61,6 +60,7 @@ public class TestingContextInitializer implements ApplicationContextInitializer<
      * @param env 获取当前测试环境的配置项
      * @return 新的配置项
      */
+    @SuppressWarnings("unused")
     private Map<String, String> setupTestDataSource(ConfigurableEnvironment env) {
         // 从 Gradle 或 Maven 的环境变量中获取当前的 work 编号
         var worker = System.getProperty("org.gradle.test.worker");

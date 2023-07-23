@@ -67,7 +67,6 @@ public class AssistedInjectModule extends AbstractModule {
     /**
      * 需要进行辅助注入的类
      */
-    @SuppressWarnings("unused")
     static class Connection {
         private final String url;
         private final int timeout;

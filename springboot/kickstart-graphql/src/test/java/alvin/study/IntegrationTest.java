@@ -76,7 +76,6 @@ import java.util.Map;
  * {@code initializers} 属性用于指定测试初始化类. 参考 {@link TestingContextInitializer} 类型
  * </p>
  */
-@SuppressWarnings("unused")
 @Slf4j
 @ActiveProfiles("test")
 @SpringBootTest(classes = { TestingConfig.class }, webEnvironment = WebEnvironment.RANDOM_PORT)

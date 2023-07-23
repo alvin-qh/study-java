@@ -18,7 +18,6 @@ import java.util.stream.Stream;
 /**
  * "图"结构数据源, 用于测试"图"类型和"网络"类型
  */
-@SuppressWarnings("unused")
 public class GraphsDatasource<N, E> {
     /**
      * 定义"图"的"边"数据的类型

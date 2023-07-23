@@ -51,7 +51,6 @@ import java.util.concurrent.Callable;
  * </pre>
  * </p>
  */
-@SuppressWarnings("unused")
 @Command(name = "datetime", mixinStandardHelpOptions = true, version = "datetime 1.0", description = "Show datetime")
 public final class DatetimeCli implements Callable<Integer> {
     // 定义获取当前时间的 Clock 对象

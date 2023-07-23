@@ -18,7 +18,6 @@ import java.util.Properties;
 /**
  * 通过 {@code jakarta} ({@code javax}) 邮件 API 发送邮件
  */
-@SuppressWarnings("unused")
 public class SimpleMailClientBuilder {
     // 指定 SSL Socket 工厂类
     private static final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";

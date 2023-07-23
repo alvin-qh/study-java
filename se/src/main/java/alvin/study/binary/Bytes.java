@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
  * 通过该工具类可以方便的进行字节串的各类操作
  * </p>
  */
-@SuppressWarnings("unused")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Bytes {
     /**

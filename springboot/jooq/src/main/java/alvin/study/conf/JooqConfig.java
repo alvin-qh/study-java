@@ -11,7 +11,6 @@ import org.jooq.VisitListenerProvider;
 import org.jooq.impl.DSL;
 import org.jooq.impl.DataSourceConnectionProvider;
 import org.jooq.impl.DefaultConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jooq.JooqExceptionTranslator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -71,7 +70,6 @@ public class JooqConfig {
      * @return JOOQ 数据库连接提供器对象
      */
     // @Bean
-    @SuppressWarnings("unused")
     DataSourceConnectionProvider connectionProvider(DataSource dataSource) {
         return new DataSourceConnectionProvider(dataSource);
     }
@@ -87,7 +85,6 @@ public class JooqConfig {
      * @return Jooq 异常转换器对象
      */
     // @Bean
-    @SuppressWarnings("unused")
     JooqExceptionTranslator exceptionTransformer() {
         return new JooqExceptionTranslator();
     }
@@ -106,10 +103,10 @@ public class JooqConfig {
     @Bean
     DSLContext dslContext(DataSourceConnectionProvider connectionProvider) {
         var config = new DefaultConfiguration()
-            .set(connectionProvider)
-            .set(SQLDialect.MYSQL)
-            .set((RecordListenerProvider) auditRecordListener)
-            .set((VisitListenerProvider) tentedVisitListener);
+                .set(connectionProvider)
+                .set(SQLDialect.MYSQL)
+                .set((RecordListenerProvider) auditRecordListener)
+                .set((VisitListenerProvider) tentedVisitListener);
 
         return DSL.using(config);
     }

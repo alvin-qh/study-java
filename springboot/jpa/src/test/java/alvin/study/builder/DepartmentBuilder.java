@@ -9,7 +9,6 @@ import java.util.List;
 /**
  * 部门实体构建器类
  */
-@SuppressWarnings("unused")
 public class DepartmentBuilder extends Builder<Department> {
     private String name = FAKER.commerce().department();
     private Department parent = null;

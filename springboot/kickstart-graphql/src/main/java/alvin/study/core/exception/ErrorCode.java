@@ -3,7 +3,6 @@ package alvin.study.core.exception;
 /**
  * 错误主代码
  */
-@SuppressWarnings("unused")
 public interface ErrorCode {
     String INPUT_ERROR = "input_error";
     String INTERNAL_ERROR = "internal_error";

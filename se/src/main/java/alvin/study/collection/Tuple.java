@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-@SuppressWarnings("unused")
 public final class Tuple<E> implements Iterable<E> {
     private final List<E> elements;
 

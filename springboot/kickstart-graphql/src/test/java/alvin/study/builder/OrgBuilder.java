@@ -10,7 +10,6 @@ import alvin.study.infra.mapper.OrgMapper;
 /**
  * 组织实体构建器类
  */
-@SuppressWarnings("unused")
 public class OrgBuilder extends Builder<Org> {
     private final static AtomicInteger SEQUENCE = new AtomicInteger();
 

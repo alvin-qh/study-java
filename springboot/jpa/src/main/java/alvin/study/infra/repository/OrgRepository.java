@@ -16,7 +16,6 @@ import java.util.Optional;
  * {@link CrudRepository} 接口的泛型参数表示要操作的实体类型和实体类型的主键类型
  * </p>
  */
-@SuppressWarnings("unused")
 public interface OrgRepository extends CrudRepository<Org, Long> {
     /**
      * 依据组织名称查询组织实体

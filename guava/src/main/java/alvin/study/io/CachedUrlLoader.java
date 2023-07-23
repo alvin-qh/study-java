@@ -37,7 +37,6 @@ import java.util.concurrent.TimeUnit;
  * @see Resources#asByteSource(java.net.URL) Resources.asByteSource(URL)
  * @see MoreFiles#asByteSource(Path, java.nio.file.OpenOption...) MoreFiles.asByteSource(Path, OpenOption...)
  */
-@SuppressWarnings("unused")
 public class CachedUrlLoader implements AutoCloseable {
     // 定义一个当前用户可读写的文件权限集
     private static final FileAttribute<Set<PosixFilePermission>> FILE_ATTR_RW

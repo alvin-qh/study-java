@@ -2,12 +2,9 @@ package alvin.study.builder;
 
 import alvin.study.infra.entity.Employee;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 /**
  * 职员实体构建器类
  */
-@SuppressWarnings("unused")
 public class EmployeeBuilder extends Builder<Employee> {
     private String name = FAKER.name().fullName();
     private String email = FAKER.internet().emailAddress();

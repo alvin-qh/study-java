@@ -50,7 +50,6 @@ public class MyBatisConfig extends DefaultSqlInjector {
      * @return {@link IKeyGenerator} 接口对象, 用于生成主键, 例如 {@link H2KeyGenerator} 对象
      */
     // @Bean
-    @SuppressWarnings("unused")
     IKeyGenerator keyGenerator() {
         return new H2KeyGenerator();
     }

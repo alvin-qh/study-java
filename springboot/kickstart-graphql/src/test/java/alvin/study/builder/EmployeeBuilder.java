@@ -11,7 +11,6 @@ import alvin.study.infra.mapper.EmployeeMapper;
 /**
  * 职员实体构建器类
  */
-@SuppressWarnings("unused")
 public class EmployeeBuilder extends Builder<Employee> {
     private final static AtomicInteger SEQUENCE = new AtomicInteger();
 
