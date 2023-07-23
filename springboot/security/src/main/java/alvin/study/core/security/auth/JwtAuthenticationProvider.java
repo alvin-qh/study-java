@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Deprecated(forRemoval = true, since = "3.0")
+@SuppressWarnings("all")
 @RequiredArgsConstructor
 public class JwtAuthenticationProvider implements AuthenticationProvider {
     private final AuthService authService;
@@ -51,7 +52,6 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
      * @return 如果 {@code authType} 参数类型为 {@licode JwtAuthenticationToken} 类型则返回
      * {@code true}
      */
-    @SuppressWarnings("removal")
     @Override
     public boolean supports(Class<?> authType) {
         return JwtAuthenticationToken.class.isAssignableFrom(authType);

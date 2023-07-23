@@ -12,7 +12,6 @@ import org.springframework.security.access.expression.method.DefaultMethodSecuri
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -31,7 +30,7 @@ import org.springframework.security.web.header.HeaderWriterFilter;
  * <p>
  * 已弃用
  * <s>
- * {@link EnableGlobalMethodSecurity @EnableGlobalMethodSecurity} 注解表示使用方法级别的权限控制, 添加此注解后, 即可以使用
+ * {@code @EnableGlobalMethodSecurity} 注解表示使用方法级别的权限控制, 添加此注解后, 即可以使用
  * {@link org.springframework.security.access.prepost.PreAuthorize @PreAuthorize} 等注解对方法进行权限控制
  * </s>
  * </p>
