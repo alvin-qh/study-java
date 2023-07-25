@@ -1,6 +1,6 @@
-package alvin.study.mock;
+package alvin.study.testing.mock;
 
-import alvin.study.model.User;
+import alvin.study.testing.testcase.model.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;

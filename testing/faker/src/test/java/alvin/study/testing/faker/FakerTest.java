@@ -1,4 +1,4 @@
-package alvin.study.faker;
+package alvin.study.testing.faker;
 
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Test;

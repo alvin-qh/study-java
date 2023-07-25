@@ -28,11 +28,13 @@
     <dependency>
       <groupId>javax.annotation</groupId>
       <artifactId>javax.annotation-api</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>alvin.study</groupId>
       <artifactId>study-java-testing-testcase</artifactId>
       <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.assertj</groupId>

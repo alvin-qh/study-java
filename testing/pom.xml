@@ -18,6 +18,8 @@
     <module>testcase</module>
     <module>junit</module>
     <module>assertj</module>
+    <module>faker</module>
+    <module>mock</module>
   </modules>
 
   <build>

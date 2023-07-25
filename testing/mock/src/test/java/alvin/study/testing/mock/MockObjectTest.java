@@ -1,4 +1,17 @@
-package alvin.study.mock;
+package alvin.study.testing.mock;
+
+import alvin.study.testing.testcase.controller.UserController;
+import alvin.study.testing.testcase.model.User;
+import alvin.study.testing.testcase.service.UserService;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.exceptions.misusing.PotentialStubbingProblem;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
@@ -9,20 +22,6 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
-
-import java.util.Optional;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.exceptions.misusing.PotentialStubbingProblem;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import alvin.study.controller.UserController;
-import alvin.study.model.User;
-import alvin.study.service.UserService;
 
 /**
  * 测试对仿冒对象进行行为设置

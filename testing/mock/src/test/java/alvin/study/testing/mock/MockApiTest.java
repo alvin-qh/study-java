@@ -1,8 +1,8 @@
-package alvin.study.mock;
+package alvin.study.testing.mock;
 
-import alvin.study.controller.UserController;
-import alvin.study.model.User;
-import alvin.study.service.UserService;
+import alvin.study.testing.testcase.controller.UserController;
+import alvin.study.testing.testcase.model.User;
+import alvin.study.testing.testcase.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
