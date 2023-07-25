@@ -2,13 +2,13 @@
   "groups": [
     {
       "name": "autoconfig",
-      "type": "alvin.study.prop.ConfigProperties",
-      "sourceType": "alvin.study.prop.ConfigProperties"
+      "type": "alvin.study.springboot.autoconf.prop.ConfigProperties",
+      "sourceType": "alvin.study.springboot.autoconf.prop.ConfigProperties"
     },
     {
       "name": "autoconfig.common",
-      "type": "alvin.study.prop.ConfigCommonProperties",
-      "sourceType": "alvin.study.prop.ConfigProperties",
+      "type": "alvin.study.springboot.autoconf.prop.ConfigCommonProperties",
+      "sourceType": "alvin.study.springboot.autoconf.prop.ConfigProperties",
       "sourceMethod": "getCommon()"
     }
   ],
@@ -16,18 +16,18 @@
     {
       "name": "autoconfig.time-zone",
       "type": "java.lang.String",
-      "sourceType": "alvin.study.prop.ConfigProperties"
+      "sourceType": "alvin.study.springboot.autoconf.prop.ConfigProperties"
     },
     {
-      "name": "name",
+      "name": "autoconfig.common.name",
       "type": "java.lang.String",
-      "sourceType": "alvin.study.prop.ConfigCommonProperties",
+      "sourceType": "alvin.study.springboot.autoconf.prop.ConfigCommonProperties",
       "defaultValue": "Alvin"
     },
     {
-      "name": "use-module-user",
+      "name": "autoconfig.common.use-module-user",
       "type": "java.lang.Boolean",
-      "sourceType": "alvin.study.prop.ConfigCommonProperties",
+      "sourceType": "alvin.study.springboot.autoconf.prop.ConfigCommonProperties",
       "defaultValue": "true"
     }
   ]

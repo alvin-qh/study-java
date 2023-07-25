@@ -1,6 +1,6 @@
-package alvin.study.bootstrap;
+package alvin.study.springboot.autoconf.bootstrap;
 
-import alvin.study.prop.ConfigProperties;
+import alvin.study.springboot.autoconf.prop.ConfigProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplicationRunListener;
 import org.springframework.context.ConfigurableApplicationContext;

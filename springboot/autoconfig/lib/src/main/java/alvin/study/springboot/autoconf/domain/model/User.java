@@ -1,4 +1,4 @@
-package alvin.study.domain.model;
+package alvin.study.springboot.autoconf.domain.model;
 
 import lombok.Getter;
 

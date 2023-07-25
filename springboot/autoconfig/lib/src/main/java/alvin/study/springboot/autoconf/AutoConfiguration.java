@@ -1,8 +1,8 @@
-package alvin.study;
+package alvin.study.springboot.autoconf;
 
-import alvin.study.domain.model.User;
-import alvin.study.prop.ConfigProperties;
-import alvin.study.util.TimeUtil;
+import alvin.study.springboot.autoconf.domain.model.User;
+import alvin.study.springboot.autoconf.prop.ConfigProperties;
+import alvin.study.springboot.autoconf.util.TimeUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
  * 参见 `spring.factories` 配置文件中 {@code org.springframework.boot.autoconfigure.EnableAutoConfiguration} 的定义
  */
 @Configuration
-@ComponentScan(basePackages = { "alvin.study.domain" })
+@ComponentScan(basePackages = { "alvin.study.springboot.autoconf.domain" })
 @RequiredArgsConstructor
 @EnableConfigurationProperties({ ConfigProperties.class })
 public class AutoConfiguration {

@@ -1,4 +1,4 @@
-package alvin.study.util;
+package alvin.study.springboot.autoconf.util;
 
 import java.time.Clock;
 import java.time.Instant;

@@ -1,6 +1,6 @@
-package alvin.study;
+package alvin.study.springboot.autoconf;
 
-import alvin.study.domain.model.User;
+import alvin.study.springboot.autoconf.domain.model.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

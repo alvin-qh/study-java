@@ -1,4 +1,4 @@
-package alvin.study.prop;
+package alvin.study.springboot.autoconf.prop;
 
 import lombok.Getter;
 import lombok.Setter;

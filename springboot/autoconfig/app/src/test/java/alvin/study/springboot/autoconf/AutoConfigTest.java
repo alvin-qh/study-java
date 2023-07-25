@@ -1,8 +1,8 @@
-package alvin.study;
+package alvin.study.springboot.autoconf;
 
-import alvin.study.domain.model.User;
-import alvin.study.domain.service.UserService;
-import alvin.study.util.TimeUtil;
+import alvin.study.springboot.autoconf.domain.model.User;
+import alvin.study.springboot.autoconf.domain.service.UserService;
+import alvin.study.springboot.autoconf.util.TimeUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
