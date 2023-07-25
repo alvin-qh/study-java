@@ -1,0 +1,34 @@
+{
+  "groups": [
+    {
+      "name": "autoconfig",
+      "type": "alvin.study.prop.ConfigProperties",
+      "sourceType": "alvin.study.prop.ConfigProperties"
+    },
+    {
+      "name": "autoconfig.common",
+      "type": "alvin.study.prop.ConfigCommonProperties",
+      "sourceType": "alvin.study.prop.ConfigProperties",
+      "sourceMethod": "getCommon()"
+    }
+  ],
+  "properties": [
+    {
+      "name": "autoconfig.time-zone",
+      "type": "java.lang.String",
+      "sourceType": "alvin.study.prop.ConfigProperties"
+    },
+    {
+      "name": "name",
+      "type": "java.lang.String",
+      "sourceType": "alvin.study.prop.ConfigCommonProperties",
+      "defaultValue": "Alvin"
+    },
+    {
+      "name": "use-module-user",
+      "type": "java.lang.Boolean",
+      "sourceType": "alvin.study.prop.ConfigCommonProperties",
+      "defaultValue": "true"
+    }
+  ]
+}

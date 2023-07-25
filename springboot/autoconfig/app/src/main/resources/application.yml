@@ -1,0 +1,10 @@
+spring:
+  main:
+    banner-mode: off
+
+autoconfig:
+  time-zone: Asia/Shanghai
+  common:
+    name: Emma
+    use-module-user: true
+

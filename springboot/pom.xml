@@ -29,6 +29,7 @@
     <module>jooq</module>
     <module>kickstart-graphql</module>
     <module>springdoc</module>
+    <module>autoconfig</module>
   </modules>
 
   <dependencyManagement>

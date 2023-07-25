@@ -2,9 +2,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>study-java-se</artifactId>
+  <artifactId>study-java-se-parent</artifactId>
   <name>${project.artifactId}</name>
-  <packaging>jar</packaging>
+  <packaging>pom</packaging>
 
   <!-- 从根项目 pom.xml 继承 -->
   <parent>
