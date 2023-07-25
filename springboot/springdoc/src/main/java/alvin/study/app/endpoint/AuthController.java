@@ -3,15 +3,16 @@ package alvin.study.app.endpoint;
 
 import alvin.study.app.endpoint.model.LoginForm;
 import alvin.study.app.endpoint.model.TokenDto;
-import alvin.study.core.security.auth.CustomAuthenticationToken;
 import alvin.study.infra.entity.AccessLog;
 import alvin.study.infra.repository.AccessLogRepository;
+import alvin.study.infra.repository.UserRepository;
 import alvin.study.util.security.Jwt;
+import alvin.study.util.security.PasswordEncoder;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,8 +41,11 @@ public class AuthController {
     // 注入 JWT 操作对象
     private final Jwt jwt;
 
-    // 注入验证管理器对象
-    private final AuthenticationManager authManager;
+    // 注入用户持久化对象
+    private final UserRepository userRepository;
+
+    // 密码解码器对象
+    private final PasswordEncoder passwordEncoder;
 
     // 注入访问日志持久化操作对象
     private final AccessLogRepository accessLogRepository;
@@ -56,14 +60,19 @@ public class AuthController {
     @PostMapping("/login")
     TokenDto login(@Valid @RequestBody LoginForm form) {
         // 对登录信息进行验证
-        var auth = authManager.authenticate(
-            new CustomAuthenticationToken(form.getUsername(), form.getPassword(), false));
+        var user = userRepository
+            .selectUserByName(form.getUsername())
+            .orElseThrow(() -> new BadCredentialsException("bad_credentials"));
+
+        if (!passwordEncoder.matches(form.getPassword(), user.getPassword())) {
+            throw new BadCredentialsException("bad_credentials");
+        }
 
         // 记录访问日志, 并标识为登录日志
         accessLogRepository.insert(AccessLog.forLogin(form.getUsername()));
 
         // 产生 JWT 结果并返回
-        var token = jwt.encode(auth.getName());
+        var token = jwt.encode(user.getUsername());
         return new TokenDto(token.getToken(), token.getExpiresAt());
     }
 }

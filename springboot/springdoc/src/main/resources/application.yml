@@ -34,8 +34,6 @@ server:
     max-http-form-post-size: 5MB
     keep-alive-timeout: 30000
     max-keep-alive-requests: 10000
-    mbeanregistry:
-      enabled: true
     threads:
       max: 256
       min-spare: 10

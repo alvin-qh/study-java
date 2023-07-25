@@ -18,8 +18,7 @@ import java.io.IOException;
  *
  * <p>
  * 在
- * {@link alvin.study.conf.SecurityConfig#filterChain(org.springframework.security.config.annotation.web.builders.HttpSecurity)
- * SecurityConfig.filterChain(HttpSecurity)} 方法中进行注册
+ * {@code SecurityConfig.filterChain(HttpSecurity)} 方法中进行注册
  * </p>
  */
 @Slf4j

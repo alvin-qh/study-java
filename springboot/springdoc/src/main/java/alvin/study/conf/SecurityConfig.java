@@ -1,23 +1,23 @@
 package alvin.study.conf;
 
-import alvin.study.core.security.auth.CustomAuthenticationProvider;
 import alvin.study.core.security.filter.CustomErrorHandlerEntryPoint;
 import alvin.study.core.security.filter.CustomRequestFilter;
+import alvin.study.infra.repository.UserRepository;
+import alvin.study.util.security.Jwt;
 import alvin.study.util.security.PasswordEncoder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.HeaderWriterFilter;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class SecurityConfig {
      * @param algorithm 加密算法名称, 从 {@code application.yml} 文件中获得
      * @param key       散列信息认证码, 从 {@code application.yml} 文件中获得
      * @return {@link PasswordEncoder} 对象
-     * @see PasswordEncoder#PasswordUtil(String, String)
+     * @see PasswordEncoder#matches(CharSequence, String)
      */
     @Bean
     PasswordEncoder passwordEncoder(
@@ -80,79 +80,47 @@ public class SecurityConfig {
      * @return {@link CustomRequestFilter} 对象
      */
     @Bean
-    CustomRequestFilter customRequestFilter() {
+    CustomRequestFilter customRequestFilter(
+        UserDetailsService userDetailsService,
+        UserRepository userRepository,
+        PasswordEncoder passwordEncoder,
+        Jwt jwt
+    ) {
         return new CustomRequestFilter(
             // 设置需要 basic auth 登录认证拦截的路径
             new String[]{ "/**/api-docs/**" },
             // 设置需要 JWT 登录认证拦截的路径
             new String[]{ "/api/**" },
             // 设置不需要认证拦截的路径
-            new String[]{ "/swagger-ui/**" });
-    }
-
-    /**
-     * 配置 {@link org.springframework.security.authentication.ProviderManager
-     * ProviderManager} 对象
-     *
-     * <p>
-     * 需要设置 {@link org.springframework.security.core.Authentication Authentication}
-     * 验证信息对象的验证器 Provider
-     * </p>
-     *
-     * <p>
-     * 另外需要将
-     * {@link AuthenticationManagerBuilder#parentAuthenticationManager(AuthenticationManager)}
-     * 参数设置为 {@code null}, 令
-     * {@link org.springframework.security.authentication.ProviderManager#parent
-     * ProviderManager.parent} 字段未 {@code null}, 否则当抛出
-     * {@link org.springframework.security.core.AuthenticationException
-     * AuthenticationException} 异常后, 会导致无限递归
-     * </p>
-     *
-     * @param security     {@link HttpSecurity} 类型对象, 用于配置
-     *                     Spring Security, 该对象必须通过参数注入, 否则会导致循环依赖
-     * @param authProvider 对
-     *                     {@link alvin.study.core.security.auth.CustomAuthenticationToken
-     *                     CustomAuthenticationToken} 进行验证的
-     *                     {@link CustomAuthenticationProvider} 类型对象
-     * @return {@link org.springframework.security.authentication.ProviderManager
-     * ProviderManager} 类型对象
-     */
-    @Bean
-    AuthenticationManager authManager(
-        HttpSecurity security, CustomAuthenticationProvider authProvider) throws Exception {
-        // 获取 AuthenticationManagerBuilder 对象, 用于构建 ProviderManager 对象
-        return security.getSharedObject(AuthenticationManagerBuilder.class)
-            .authenticationProvider(authProvider)
-            // 设置 ProviderManager.parent 字段为 null, 防止抛出 AuthenticationException 异常后导致无线递归
-            .parentAuthenticationManager(null)
-            .build();
+            new String[]{ "/swagger-ui/**" },
+            userDetailsService,
+            passwordEncoder,
+            jwt,
+            userRepository
+        );
     }
 
     /**
      * 设置过滤器链配置
      *
-     * @param security    {@link HttpSecurity} 对象
-     * @param authManager {@link #authManager(HttpSecurity, CustomAuthenticationProvider)}
-     *                    方法产生的对象
+     * @param security {@link HttpSecurity} 对象
      * @return {@link SecurityFilterChain} 对象, 表示过滤器链配置
      */
     @Bean
     SecurityFilterChain filterChain(
         HttpSecurity security,
         CustomRequestFilter customRequestFilter,
-        AuthenticationManager authManager,
         CustomErrorHandlerEntryPoint errorHandlerEntryPoint) throws Exception {
-        return security.authenticationManager(authManager)
+        return security
             // 禁用 CSRF 重复提交检验
             .csrf(AbstractHttpConfigurer::disable)
             // 设置认证相关的访问 URI
             .authorizeHttpRequests(registry ->
                 registry
                     // 无需凭证的 URI
-                    // .requestMatchers("/auth/**", "/swagger-ui/**").permitAll()
+                    .requestMatchers("/auth/**", "/swagger-ui/**").permitAll()
                     // 其它请求均需要凭证认证
-                    .anyRequest().permitAll()
+                    .anyRequest().authenticated()
             )
             .sessionManagement(configurer ->
                 // 设置 session 管理方式, 以 Cookie 管理无状态 session
@@ -163,7 +131,7 @@ public class SecurityConfig {
                 configurer.authenticationEntryPoint(errorHandlerEntryPoint)
             )
             // 设置拦截器的位置
-            .addFilterBefore(customRequestFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(customRequestFilter, HeaderWriterFilter.class)
             .build();
     }
 }

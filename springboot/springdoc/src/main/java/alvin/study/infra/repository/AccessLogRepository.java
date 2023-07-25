@@ -19,8 +19,7 @@ public class AccessLogRepository extends BaseRepository<List<AccessLog>> {
     /**
      * 插入一条访问记录
      *
-     * @param username
-     * @param isActionLogin
+     * @param log 访问记录对象
      */
     public synchronized void insert(AccessLog log) {
         var storage = getStorage(NAME_ACCESS_LOGS);
