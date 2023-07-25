@@ -1,6 +1,6 @@
-package alvin.study.model;
+package alvin.study.springboot.validator.model;
 
-import alvin.study.validator.IpAddress;
+import alvin.study.springboot.validator.validator.IpAddress;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package alvin.study.validator;
+package alvin.study.springboot.validator.validator;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

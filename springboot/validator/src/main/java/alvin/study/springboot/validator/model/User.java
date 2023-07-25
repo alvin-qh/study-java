@@ -1,4 +1,4 @@
-package alvin.study.model;
+package alvin.study.springboot.validator.model;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

@@ -1,4 +1,4 @@
-package alvin.study.validator;
+package alvin.study.springboot.validator.validator;
 
 import com.google.common.base.Strings;
 import jakarta.validation.ConstraintValidator;

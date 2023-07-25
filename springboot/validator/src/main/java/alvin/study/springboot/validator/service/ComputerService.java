@@ -1,15 +1,11 @@
-package alvin.study.service;
+package alvin.study.springboot.validator.service;
 
-import alvin.study.model.User;
+import alvin.study.springboot.validator.model.Computer;
+import alvin.study.springboot.validator.validator.IpAddress;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-
-import java.util.Random;
 
 /**
  * 定义类型进行参数校验
@@ -38,31 +34,29 @@ import java.util.Random;
  * </p>
  */
 @Service
-@Validated
-public class UserService {
-    private static final Random RANDOM = new Random();
-
+@Validated // 指定需要对方法参数进行校验
+public class ComputerService {
     /**
      * 对基本参数进行校验
      *
-     * @param name 进行非空校验
-     * @param age  进行非 {@code null} 校验和数值范围校验
+     * @param name      进行非空校验
+     * @param ipAddress 进行非空校验和 ip 地址校验
      * @return 校验成功, 产生实体类
      */
-    public User createUser(
+    public Computer createComputer(
         @NotBlank String name,
-        @NotNull @Min(10) @Max(100) Integer age) {
-        return new User((long) RANDOM.nextInt(1000), name, age);
+        @NotBlank @IpAddress String ipAddress) {
+        return new Computer(name, ipAddress);
     }
 
     /**
      * 对复合类型的参数进行校验
      *
      * <p>
-     * 对于 {@link User} 类型参数, 其类型字段也包含了校验注释, 所以需要增加 {@link Valid @Valid} 注解
+     * 对于 {@link Computer} 类型参数, 其类型字段也包含了校验注释, 所以需要增加 {@link Valid @Valid} 注解
      * </p>
      *
-     * @param user {@link User} 类型参数, 字段带有校验规则
+     * @param computer {@link Computer} 类型参数, 字段带有校验规则
      */
-    public void updateUser(@Valid User user) { /* Keep blank */ }
+    public void updateComputer(@Valid Computer computer) { /* Keep blank */ }
 }

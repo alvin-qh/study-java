@@ -1,8 +1,8 @@
-package alvin.study.validator;
+package alvin.study.springboot.validator.validator;
 
-import alvin.study.IntegrationTest;
-import alvin.study.model.Computer;
-import alvin.study.model.User;
+import alvin.study.springboot.validator.IntegrationTest;
+import alvin.study.springboot.validator.model.Computer;
+import alvin.study.springboot.validator.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
