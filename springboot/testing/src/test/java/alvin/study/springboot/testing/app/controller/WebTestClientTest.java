@@ -1,8 +1,8 @@
-package alvin.study.app.controller;
+package alvin.study.springboot.testing.app.controller;
 
-import alvin.study.common.ResponseWrapper;
-import alvin.study.common.ResponseWrapper.ErrorDetail;
-import alvin.study.model.TestModel;
+import alvin.study.springboot.testing.common.ResponseWrapper;
+import alvin.study.springboot.testing.common.ResponseWrapper.ErrorDetail;
+import alvin.study.springboot.testing.model.TestModel;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,7 +108,7 @@ class WebTestClientTest {
     @Test
     void webTestClient_shouldGetResponse() {
         // 定义本次请求返回的类型
-        var bodyType = new ParameterizedTypeReference<ResponseWrapper<TestModel>>() {};
+        var bodyType = new ParameterizedTypeReference<ResponseWrapper<TestModel>>() { };
 
         // 执行测试
         var resp = client.mutate().responseTimeout(Duration.ofSeconds(30)).build()
@@ -188,7 +188,7 @@ class WebTestClientTest {
     @Test
     void webTestClient_shouldGetResponseWithoutAnyQueryParameters() {
         // 定义本次请求返回的类型
-        var bodyType = new ParameterizedTypeReference<ResponseWrapper<ErrorDetail>>() {};
+        var bodyType = new ParameterizedTypeReference<ResponseWrapper<ErrorDetail>>() { };
 
         // 执行测试
         var resp = client.mutate().responseTimeout(Duration.ofSeconds(30)).build()

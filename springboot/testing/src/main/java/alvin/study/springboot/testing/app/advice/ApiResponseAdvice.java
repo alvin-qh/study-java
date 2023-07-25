@@ -1,7 +1,6 @@
-package alvin.study.app.advice;
+package alvin.study.springboot.testing.app.advice;
 
-import alvin.study.common.ResponseWrapper;
-import alvin.study.common.ResponseWrapper.ErrorDetail;
+import alvin.study.springboot.testing.common.ResponseWrapper;
 import com.google.common.base.Joiner;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Path;
@@ -30,6 +29,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static alvin.study.springboot.testing.common.ResponseWrapper.ErrorDetail;
+import static alvin.study.springboot.testing.common.ResponseWrapper.error;
+import static alvin.study.springboot.testing.common.ResponseWrapper.success;
+
 /**
  * 对 Controller 的返回结果进行处理
  *
@@ -54,7 +57,7 @@ import java.util.stream.Collectors;
  * </p>
  */
 @Slf4j
-@RestControllerAdvice(basePackages = "alvin.study.app")
+@RestControllerAdvice(basePackages = "alvin.study.springboot.testing.app")
 public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
     /**
      * 返回 {@code true} 或 {@code false}, 以决定 {@code beforeBodyWrite} 方法是否需要执行
@@ -108,7 +111,7 @@ public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
         @NotNull ServerHttpRequest request,
         @NotNull ServerHttpResponse response) {
         // 返回 ResponseWrapper 对象
-        return ResponseWrapper.success(body);
+        return success(body);
     }
 
     /**
@@ -123,7 +126,7 @@ public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
     @ExceptionHandler(Exception.class)
     public ResponseWrapper<Void> handle(Exception e) {
         log.error("Internal error caused", e);
-        return ResponseWrapper.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "internal_error");
+        return error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "internal_error");
     }
 
     /**
@@ -145,11 +148,11 @@ public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
             .getFieldErrors() // 获取字段验证错误信息
             .stream().collect(Collectors.toMap( // 转换为 Map 类型
                 FieldError::getField, // Key 为字段名称
-                f -> new String[]{f.getDefaultMessage()} // Value 为该字段验证的错误信息
+                f -> new String[]{ f.getDefaultMessage() } // Value 为该字段验证的错误信息
             ));
 
         // 将错误信息包装为 ResponseWrapper<ErrorDetail> 类型对象并返回
-        return ResponseWrapper.error(
+        return error(
             HttpStatus.BAD_REQUEST.value(), // 为此种错误定义代码和错误信息, 此处暂用 400 类型错误代码和信息
             "missing_request_args",
             ErrorDetail.withErrorFields(err));
@@ -187,10 +190,10 @@ public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
         var err = e.getConstraintViolations().stream()
             .collect(Collectors.toMap(
                 v -> pathToPropertyName(v.getPropertyPath()),
-                v -> new String[]{v.getMessage()})
+                v -> new String[]{ v.getMessage() })
             );
 
-        return ResponseWrapper.error(
+        return error(
             HttpStatus.BAD_REQUEST.value(),
             "invalid_request_args",
             ErrorDetail.withErrorParameters(err));
@@ -258,11 +261,11 @@ public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
     public ResponseWrapper<ErrorDetail> handle(MissingServletRequestParameterException e) {
         warnLog(e);
 
-        return ResponseWrapper.error(
+        return error(
             HttpStatus.BAD_REQUEST.value(), // 为此种错误定义代码和错误信息, 此处暂用 400 类型错误代码和信息
             "missing_request_args",
             ErrorDetail.withErrorParameters(
-                Map.of(e.getParameterName(), new String[]{e.getLocalizedMessage()})));
+                Map.of(e.getParameterName(), new String[]{ e.getLocalizedMessage() })));
     }
 
     /**
@@ -288,7 +291,7 @@ public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
     public ResponseEntity<ResponseWrapper<Void>> handle(HttpClientErrorException e) {
         warnLog(e);
 
-        var resp = ResponseWrapper.error(e.getStatusCode().value(), e.getStatusText());
+        var resp = error(e.getStatusCode().value(), e.getStatusText());
         return new ResponseEntity<>(resp, e.getStatusCode());
     }
 }

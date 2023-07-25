@@ -1,5 +1,6 @@
-package alvin.study.app.controller;
+package alvin.study.springboot.testing.app.controller;
 
+import alvin.study.springboot.testing.app.controller.TestController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -30,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * </p>
  */
 @ActiveProfiles("test") // 定义测试配置文件后缀, 令 application-test.yml 生效
-@WebMvcTest({TestController.class}) // 针对 TestController 进行测试
+@WebMvcTest({ TestController.class }) // 针对 TestController 进行测试
 class MockMvcTest {
     // 用于 mock 当前时间
     private static final String CLOCK = "2022-10-01T08:00:00Z";

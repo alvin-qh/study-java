@@ -1,10 +1,7 @@
-package alvin.study.app.controller;
+package alvin.study.springboot.testing.app.controller;
 
-import java.time.Clock;
-import java.time.Instant;
-import java.time.ZoneOffset;
-import java.util.Random;
-
+import alvin.study.springboot.testing.model.TestModel;
+import com.google.common.base.Strings;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,9 +9,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.common.base.Strings;
-
-import alvin.study.model.TestModel;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.util.Random;
 
 /**
  * 用于演示 Controller 测试方法的类型

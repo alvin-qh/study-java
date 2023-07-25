@@ -1,4 +1,4 @@
-package alvin.study;
+package alvin.study.springboot.testing;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

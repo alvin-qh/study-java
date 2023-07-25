@@ -1,4 +1,4 @@
-package alvin.study.common;
+package alvin.study.springboot.testing.common;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;

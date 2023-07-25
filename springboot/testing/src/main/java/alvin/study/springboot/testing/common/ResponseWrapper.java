@@ -1,4 +1,4 @@
-package alvin.study.common;
+package alvin.study.springboot.testing.common;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

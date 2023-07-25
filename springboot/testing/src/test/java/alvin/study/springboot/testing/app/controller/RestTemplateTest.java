@@ -1,8 +1,7 @@
-package alvin.study.app.controller;
+package alvin.study.springboot.testing.app.controller;
 
-import alvin.study.common.ResponseWrapper;
-import alvin.study.common.ResponseWrapper.ErrorDetail;
-import alvin.study.model.TestModel;
+import alvin.study.springboot.testing.common.ResponseWrapper;
+import alvin.study.springboot.testing.model.TestModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
@@ -15,6 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Map;
 
+import static alvin.study.springboot.testing.common.ResponseWrapper.ErrorDetail;
 import static org.assertj.core.api.BDDAssertions.then;
 
 /**
