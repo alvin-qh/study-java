@@ -2,22 +2,23 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>study-java-guava</artifactId>
+  <artifactId>study-java-guava-parent</artifactId>
   <name>${project.artifactId}</name>
-  <packaging>jar</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
 
   <parent>
     <groupId>alvin.study</groupId>
-    <artifactId>study-java</artifactId>
+    <artifactId>study-java-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.junit-pioneer</groupId>
-      <artifactId>junit-pioneer</artifactId>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+  <!--<dependencies>-->
+  <!--  <dependency>-->
+  <!--    <groupId>org.junit-pioneer</groupId>-->
+  <!--    <artifactId>junit-pioneer</artifactId>-->
+  <!--    <scope>test</scope>-->
+  <!--  </dependency>-->
+  <!--</dependencies>-->
 </project>

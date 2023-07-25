@@ -17,7 +17,7 @@ import alvin.study.jdbc.mptt.model.MPTT;
  * <img src="assets/mptt.gif"/>
  * </p>
  */
-class MPTTJdbcTest extends MPTTTest {
+class MPTTJdbcTest extends MPTTBaseTest {
     /**
      * 测试构建 MPTT 数据表记录
      */

@@ -1,13 +1,13 @@
-package alvin.study.rflect.scan.match;
+package alvin.study.reflect.scan.match;
+
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
-
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 
 /**
  * {@link Matcher} 接口的一组实现类型以及创建各类 {@link Matcher} 对象的工厂方法
@@ -149,7 +149,7 @@ public final class Matchers {
         /**
          * 构造器, 禁止从外部实例化对象
          */
-        private Any() {}
+        private Any() { }
 
         /**
          * 执行匹配操作, 返回匹配结果

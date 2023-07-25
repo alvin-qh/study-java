@@ -1,4 +1,4 @@
-package alvin.study.rflect.scan;
+package alvin.study.reflect.scan;
 
 /**
  * 包扫描失败异常类型

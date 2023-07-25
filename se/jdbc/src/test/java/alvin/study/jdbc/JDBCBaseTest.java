@@ -15,7 +15,7 @@ import java.sql.SQLException;
 /**
  * JDBC 测试超类类型
  */
-public abstract class JDBCTest {
+public abstract class JDBCBaseTest {
     // 全局数据源对象
     private static DataSource dataSource;
 

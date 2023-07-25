@@ -1,4 +1,4 @@
-package alvin.study.rflect.scan;
+package alvin.study.reflect.scan;
 
 import alvin.study.rflect.generic.TypeDefinition;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ class TypeDefinitionTest {
     @Test
     void genericArgumentType_shouldGetGenericType() {
         // 实例化具备泛型类型参数的对象
-        var def = new TypeDefinition<List<String>>() {};
+        var def = new TypeDefinition<List<String>>() { };
 
         // 确认获取泛型参数类型名正确
         then(def.getTypeName()).isEqualTo("java.util.List<java.lang.String>");

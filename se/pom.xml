@@ -6,61 +6,25 @@
   <name>${project.artifactId}</name>
   <packaging>pom</packaging>
 
-  <!-- 从根项目 pom.xml 继承 -->
   <parent>
     <groupId>alvin.study</groupId>
-    <artifactId>study-java-springboot-parent</artifactId>
+    <artifactId>study-java-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>com.sun.mail</groupId>
-        <artifactId>jakarta.mail</artifactId>
-        <version>${version.jakarta-mail}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.h2database</groupId>
-        <artifactId>h2</artifactId>
-        <version>${version.h2}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.zaxxer</groupId>
-        <artifactId>HikariCP</artifactId>
-        <version>${version.hikari-cp}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.github.javafaker</groupId>
-        <artifactId>javafaker</artifactId>
-        <version>${version.javafaker}</version>
-        <scope>test</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
-  <dependencies>
-    <dependency>
-      <groupId>com.sun.mail</groupId>
-      <artifactId>jakarta.mail</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.flywaydb</groupId>
-      <artifactId>flyway-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.zaxxer</groupId>
-      <artifactId>HikariCP</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.github.javafaker</groupId>
-      <artifactId>javafaker</artifactId>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+  <modules>
+    <module>binary</module>
+    <module>timing</module>
+    <module>collection</module>
+    <module>ratelimit</module>
+    <module>annotation</module>
+    <module>reflect</module>
+    <module>io</module>
+    <module>process</module>
+    <module>concurrent</module>
+    <module>mail</module>
+    <module>jdbc</module>
+    <module>misc</module>
+  </modules>
 </project>

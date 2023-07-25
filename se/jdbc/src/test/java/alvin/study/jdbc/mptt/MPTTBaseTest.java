@@ -1,21 +1,20 @@
 package alvin.study.jdbc.mptt;
 
+import alvin.study.jdbc.JDBCBaseTest;
+import alvin.study.jdbc.mptt.model.MPTT;
+import alvin.study.jdbc.mptt.repository.MPTTRepository;
+import org.junit.jupiter.api.BeforeEach;
+
 import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.jupiter.api.BeforeEach;
-
-import alvin.study.jdbc.JDBCTest;
-import alvin.study.jdbc.mptt.model.MPTT;
-import alvin.study.jdbc.mptt.repository.MPTTRepository;
-
 /**
  * MPTT 测试超类
  */
-public abstract class MPTTBaseTest extends JDBCTest {
+abstract class MPTTBaseTest extends JDBCBaseTest {
     // MPTT 存储对象
     protected final MPTTRepository repository = new MPTTRepository();
 
@@ -41,7 +40,7 @@ public abstract class MPTTBaseTest extends JDBCTest {
      * @param value    节点名称
      * @param children 子节点集合
      */
-    private record TreeNode(String value, List<TreeNode> children) {}
+    private record TreeNode(String value, List<TreeNode> children) { }
 
     /**
      * 创建测试用的树形结构数据

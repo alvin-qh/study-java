@@ -1,6 +1,8 @@
 package alvin.study.collection;
 
-import com.github.javafaker.Faker;
+import com.github.javafaker
+
+    .Faker;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Condition;

@@ -21,7 +21,7 @@ import static org.assertj.core.api.BDDAssertions.then;
  * <img src="assets/mptt.gif"/>
  * </p>
  */
-class MPTTTreeTest extends MPTTTest {
+class MPTTTreeTest extends MPTTBaseTest {
     /**
      * 通过 {@link MPTT} 类型数据集合创建 {@link MPTTTree} 类型对象
      */
