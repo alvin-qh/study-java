@@ -93,6 +93,7 @@
   <modules>
     <module>se</module>
     <module>springboot</module>
+    <module>misc</module>
     <!-- <module>se</module> -->
     <!-- <module>testing</module> -->
     <!-- <module>cli</module> -->

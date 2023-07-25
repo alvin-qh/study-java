@@ -15,7 +15,7 @@
 
 - 通过 Maven 打包
 
-  > 参考 [pom.xml](./pom.xml) 打包文件
+  > 参考 [pom.xml](pom.xml) 打包文件
 
   ```bash
   mvn package -pl cli
@@ -25,7 +25,7 @@
 
 - 通过 Gradle 打包
 
-  > 参考 [build.gradle](./build.gradle) 打包文件
+  > 参考 [build.gradle](build.gradle) 打包文件
 
   ```bash
   ./gradlew :cli:fatJar
