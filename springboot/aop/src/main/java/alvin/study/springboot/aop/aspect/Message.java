@@ -1,4 +1,4 @@
-package alvin.study.aspect;
+package alvin.study.springboot.aop.aspect;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

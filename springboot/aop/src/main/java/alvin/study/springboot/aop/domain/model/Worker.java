@@ -1,4 +1,4 @@
-package alvin.study.domain.model;
+package alvin.study.springboot.aop.domain.model;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

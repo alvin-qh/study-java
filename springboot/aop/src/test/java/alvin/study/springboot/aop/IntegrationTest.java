@@ -1,4 +1,4 @@
-package alvin.study;
+package alvin.study.springboot.aop;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;

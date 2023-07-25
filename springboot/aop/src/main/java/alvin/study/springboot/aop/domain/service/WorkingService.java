@@ -1,5 +1,7 @@
-package alvin.study.domain.service;
+package alvin.study.springboot.aop.domain.service;
 
+import alvin.study.springboot.aop.aspect.AnnotationAdvice;
+import alvin.study.springboot.aop.aspect.MethodAdvice;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -8,8 +10,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.VisibleForTesting;
 
-import alvin.study.aspect.Transactional;
-import alvin.study.domain.model.Worker;
+import alvin.study.springboot.aop.aspect.Transactional;
+import alvin.study.springboot.aop.domain.model.Worker;
 import lombok.AllArgsConstructor;
 
 /**
@@ -28,7 +30,7 @@ public class WorkingService {
     private ObjectMapper objectMapper;
 
     /**
-     * 测试 {@link alvin.study.aspect.MethodAdvice MethodAdvice} 切面所拦截的目标方法
+     * 测试 {@link MethodAdvice MethodAdvice} 切面所拦截的目标方法
      *
      * @param worker 方法参数
      * @return 字符串
@@ -39,7 +41,7 @@ public class WorkingService {
     }
 
     /**
-     * 测试 {@link alvin.study.aspect.AnnotationAdvice AnnotationAdvice} 切面所拦截的目标方法
+     * 测试 {@link AnnotationAdvice AnnotationAdvice} 切面所拦截的目标方法
      *
      * @param worker 方法参数
      * @return 字符串

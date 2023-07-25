@@ -1,13 +1,14 @@
-package alvin.study.conf;
+package alvin.study.springboot.aop.conf;
 
-import java.util.concurrent.BlockingDeque;
-import java.util.concurrent.LinkedBlockingDeque;
-
+import alvin.study.springboot.aop.aspect.AnnotationAdvice;
+import alvin.study.springboot.aop.aspect.Message;
+import alvin.study.springboot.aop.aspect.MethodAdvice;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import alvin.study.aspect.Message;
+import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * 产生所需的 Bean 对象
@@ -15,7 +16,7 @@ import alvin.study.aspect.Message;
 @Configuration("core/bean")
 public class BeanConfig {
     /**
-     * 在 {@link alvin.study.aspect.MethodAdvice MethodAdvice} 中使用的消息队列
+     * 在 {@link MethodAdvice MethodAdvice} 中使用的消息队列
      *
      * @return {@link LinkedBlockingDeque} 类型对象
      */
@@ -26,7 +27,7 @@ public class BeanConfig {
     }
 
     /**
-     * 在 {@link alvin.study.aspect.AnnotationAdvice AnnotationAdvice} 中使用的消息队列
+     * 在 {@link AnnotationAdvice AnnotationAdvice} 中使用的消息队列
      *
      * @return {@link LinkedBlockingDeque} 类型对象
      */

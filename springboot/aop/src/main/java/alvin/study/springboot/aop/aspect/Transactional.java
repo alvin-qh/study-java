@@ -1,4 +1,4 @@
-package alvin.study.aspect;
+package alvin.study.springboot.aop.aspect;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
