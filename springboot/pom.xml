@@ -134,9 +134,6 @@
         <!-- Spring Boot Maven 插件 -->
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <configuration>
-          <mainClass>alvin.study.Main</mainClass>
-        </configuration>
       </plugin>
     </plugins>
   </build>

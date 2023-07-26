@@ -148,7 +148,7 @@
                 <!-- 处理 user.type 字段 -->
                 <forcedType>
                   <!-- 字段对应的 java 类型 -->
-                  <userType>alvin.study.infra.model.UserType</userType>
+                  <userType>alvin.study.springboot.jooq.infra.model.UserType</userType>
                   <!-- 是否为枚举类型, 此时会使用 org.jooq.impl.EnumConverter 转换器进行处理 -->
                   <enumConverter>true</enumConverter>
                   <!-- 要处理的字段, 为一个正则表达式, 匹配所有要被处理的字段 -->
@@ -158,9 +158,9 @@
                 <!-- 处理 employee.info 字段 -->
                 <forcedType>
                   <!-- 字段对应的 java 类型 -->
-                  <userType>alvin.study.infra.model.EmployeeInfo</userType>
+                  <userType>alvin.study.springboot.jooq.infra.model.EmployeeInfo</userType>
                   <!-- 指定类型转换器类型 -->
-                  <converter>alvin.study.infra.converter.EmployeeInfoConverter</converter>
+                  <converter>alvin.study.springboot.jooq.infra.converter.EmployeeInfoConverter</converter>
                   <!-- 要处理的字段, 为一个正则表达式, 匹配所有要被处理的字段 -->
                   <includeExpression>EMPLOYEE\.INFO</includeExpression>
                 </forcedType>
@@ -186,7 +186,7 @@
             </generate>
             <target>
               <!-- 代码生成配置 -->
-              <packageName>alvin.study.infra.model</packageName>
+              <packageName>alvin.study.springboot.jooq.infra.model</packageName>
               <directory>${project.basedir}/src/jooq/java</directory>
             </target>
           </generator>
