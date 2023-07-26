@@ -1,13 +1,6 @@
 package alvin.study.collection;
 
-<<<<<<< Updated upstream
-import com.github.javafaker
-
-    .Faker;
-import lombok.Getter;
-=======
 import com.github.javafaker.Faker;
->>>>>>> Stashed changes
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Condition;
 import org.assertj.core.api.InstanceOfAssertFactories;

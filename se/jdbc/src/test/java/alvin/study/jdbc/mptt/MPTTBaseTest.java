@@ -11,15 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-<<<<<<< Updated upstream
-=======
-import org.junit.jupiter.api.BeforeEach;
-
-import alvin.study.jdbc.JDBCBaseTest;
-import alvin.study.jdbc.mptt.model.MPTT;
-import alvin.study.jdbc.mptt.repository.MPTTRepository;
-
->>>>>>> Stashed changes
 /**
  * MPTT 测试超类
  */
