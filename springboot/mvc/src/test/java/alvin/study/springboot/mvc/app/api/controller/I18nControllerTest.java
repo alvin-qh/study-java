@@ -39,10 +39,10 @@ class I18nControllerTest extends WebTest {
         then(resp).isNotNull();
 
         // 确认返回的 key 正确
-        then(resp.getPayload().getKey()).isEqualTo("application.name");
+        then(resp.payload().key()).isEqualTo("application.name");
 
         // 确认返回的 message 正确
-        then(resp.getPayload().getMessage()).isEqualTo("Study Spring Boot MVC");
+        then(resp.payload().message()).isEqualTo("Study Spring Boot MVC");
     }
 
     /**
@@ -66,10 +66,10 @@ class I18nControllerTest extends WebTest {
         then(resp).isNotNull();
 
         // 确认返回的 key 正确
-        then(resp.getPayload().getKey()).isEqualTo("application.name");
+        then(resp.payload().key()).isEqualTo("application.name");
 
         // 确认返回的 message 正确
-        then(resp.getPayload().getMessage()).isEqualTo("Spring Boot MVC 学习");
+        then(resp.payload().message()).isEqualTo("Spring Boot MVC 学习");
     }
 
     /**
@@ -91,9 +91,9 @@ class I18nControllerTest extends WebTest {
         then(resp).isNotNull();
 
         // 确认返回的 key 正确
-        then(resp.getPayload().getKey()).isEqualTo("application.name");
+        then(resp.payload().key()).isEqualTo("application.name");
 
         // 确认返回的 message 正确
-        then(resp.getPayload().getMessage()).isEqualTo("Spring Boot MVC 学习");
+        then(resp.payload().message()).isEqualTo("Spring Boot MVC 学习");
     }
 }

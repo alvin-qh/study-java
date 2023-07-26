@@ -43,9 +43,9 @@ class ContextControllerTest extends WebTest {
         then(resp).isNotNull();
 
         // 确认 payload 的信息, 为 ContextDto 类型
-        var payload = resp.getPayload();
-        then(payload.getOrgCode()).isEqualTo("alvin.org");
-        then(payload.getUserId()).isEqualTo(1001L);
+        var payload = resp.payload();
+        then(payload.orgCode()).isEqualTo("alvin.org");
+        then(payload.userId()).isEqualTo(1001L);
     }
 
     /**
@@ -68,8 +68,8 @@ class ContextControllerTest extends WebTest {
         then(resp).isNotNull();
 
         // 确认 response 的返回代码和信息
-        then(resp.getRetCode()).isEqualTo(400);
-        then(resp.getRetMsg()).isEqualTo("no_org_code");
+        then(resp.retCode()).isEqualTo(400);
+        then(resp.retMsg()).isEqualTo("no_org_code");
     }
 
     /**
@@ -93,7 +93,7 @@ class ContextControllerTest extends WebTest {
         then(resp).isNotNull();
 
         // 确认 response 的返回代码和信息
-        then(resp.getRetCode()).isEqualTo(400);
-        then(resp.getRetMsg()).isEqualTo("invalid_bearer_token");
+        then(resp.retCode()).isEqualTo(400);
+        then(resp.retMsg()).isEqualTo("invalid_bearer_token");
     }
 }

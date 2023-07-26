@@ -38,13 +38,13 @@ class HelloControllerTest extends WebTest {
         then(resp).isNotNull();
 
         // 确认 response 的返回代码和信息
-        then(resp.getRetCode()).isEqualTo(0);
-        then(resp.getRetMsg()).isEqualTo("success");
+        then(resp.retCode()).isEqualTo(0);
+        then(resp.retMsg()).isEqualTo("success");
 
         // 确认 payload 的信息, 为 HelloDto 类型
-        var payload = resp.getPayload();
-        then(payload.getName()).isEqualTo("Alvin");
-        then(payload.getGreeting()).isEqualTo("Hello");
+        var payload = resp.payload();
+        then(payload.name()).isEqualTo("Alvin");
+        then(payload.greeting()).isEqualTo("Hello");
     }
 
     /**
@@ -67,12 +67,12 @@ class HelloControllerTest extends WebTest {
         then(resp).isNotNull();
 
         // 确认 response 的返回代码和信息
-        then(resp.getRetCode()).isEqualTo(400);
-        then(resp.getRetMsg()).isEqualTo("invalid_request_args");
+        then(resp.retCode()).isEqualTo(400);
+        then(resp.retMsg()).isEqualTo("invalid_request_args");
 
         // 确认 payload 的信息, 为 ErrorDetail 类型
-        var payload = resp.getPayload();
-        then(payload.getErrorParameters())
+        var payload = resp.payload();
+        then(payload.errorParameters())
                 .extractingByKey("name")
                 .asInstanceOf(InstanceOfAssertFactories.ARRAY)
                 .containsExactly("length must be between 3 and 10");
@@ -101,13 +101,13 @@ class HelloControllerTest extends WebTest {
         then(resp).isNotNull();
 
         // 确认 response 的返回代码和信息
-        then(resp.getRetCode()).isEqualTo(0);
-        then(resp.getRetMsg()).isEqualTo("success");
+        then(resp.retCode()).isEqualTo(0);
+        then(resp.retMsg()).isEqualTo("success");
 
         // 确认 payload 的信息, 为 HelloDto 类型
-        var payload = resp.getPayload();
-        then(payload.getName()).isEqualTo("Alvin");
-        then(payload.getGreeting()).isEqualTo("Welcome");
+        var payload = resp.payload();
+        then(payload.name()).isEqualTo("Alvin");
+        then(payload.greeting()).isEqualTo("Welcome");
     }
 
     /**
@@ -133,12 +133,12 @@ class HelloControllerTest extends WebTest {
         then(resp).isNotNull();
 
         // 确认 response 的返回代码和信息
-        then(resp.getRetCode()).isEqualTo(400);
-        then(resp.getRetMsg()).isEqualTo("invalid_request_args");
+        then(resp.retCode()).isEqualTo(400);
+        then(resp.retMsg()).isEqualTo("invalid_request_args");
 
         // 确认 payload 的信息, 为 ErrorDetail 类型
-        var payload = resp.getPayload();
-        then(payload.getErrorFields())
+        var payload = resp.payload();
+        then(payload.errorFields())
                 .extractingByKey("name")
                 .asInstanceOf(InstanceOfAssertFactories.ARRAY)
                 .containsExactly("length must be between 3 and 10");

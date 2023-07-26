@@ -13,9 +13,8 @@ import java.util.Locale;
  *
  * <p>
  * 通过
- * {@link alvin.study.conf.BeansConfig#i18n(org.springframework.context.MessageSource)}
- * 方法实例化当前接口的对象, {@code messageSource} 参数由
- * {@link WebConfig#messageSource()} 方法产生
+ * {@code BeanConfig.i18n(MessageSource} 方法实例化当前接口的对象, {@code messageSource} 参数由
+ * {@code WebConfig.messageSource()} 方法产生
  * </p>
  *
  * @see MessageI18n

@@ -1,10 +1,11 @@
 package alvin.study.springboot.mvc.app.api.controller;
 
-import java.util.List;
-
 import alvin.study.springboot.mvc.app.api.interceptor.ApiHandlerInterceptor;
-import alvin.study.springboot.mvc.conf.WebConfig;
+import alvin.study.springboot.mvc.app.api.model.I18nDto;
 import alvin.study.springboot.mvc.core.i18n.I18n;
+import jakarta.validation.constraints.NotBlank;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,10 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import alvin.study.springboot.mvc.app.api.model.I18nDto;
-import jakarta.validation.constraints.NotBlank;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
 
 /**
  * 根据请求获取 i18n 信息
@@ -38,7 +36,9 @@ import lombok.extern.slf4j.Slf4j;
  * </p>
  *
  * <p>
- * 测试调用: http://localhost:8080/api/i18n?key=application.name&args=MVC
+ * 测试调用: <a href="http://localhost:8080/api/i18n?key=application.name&args=MVC">
+ *     http://localhost:8080/api/i18n?key=application.name&args=MVC
+ *     </a>
  * </p>
  *
  * <p>
@@ -46,9 +46,6 @@ import lombok.extern.slf4j.Slf4j;
  * {@link ApiHandlerInterceptor} 拦截器会被执行,
  * 处理请求上下文
  * </p>
- *
- * @see WebConfig#messageSource()
- * @see alvin.study.conf.BeansConfig#i18n(org.springframework.context.MessageSource)
  *
  * @see I18n
  */

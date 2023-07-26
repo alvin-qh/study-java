@@ -1,14 +1,11 @@
 package alvin.study.springboot.mvc.core.i18n;
 
-import java.util.Locale;
-
-import alvin.study.springboot.mvc.conf.WebConfig;
+import alvin.study.springboot.mvc.util.http.Servlets;
+import com.google.common.base.Strings;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 
-import com.google.common.base.Strings;
-
-import alvin.study.springboot.mvc.util.http.Servlets;
-import lombok.RequiredArgsConstructor;
+import java.util.Locale;
 
 /**
  * 基于 Spring {@code MessageSource} 机制的 i18n 实现类
@@ -20,9 +17,6 @@ import lombok.RequiredArgsConstructor;
  *
  * @see I18n
  * @see MessageSource
- *
- * @see WebConfig#messageSource()
- * @see alvin.study.conf.BeansConfig#i18n(MessageSource)
  */
 @RequiredArgsConstructor
 public class MessageI18n implements I18n {
@@ -92,14 +86,10 @@ public class MessageI18n implements I18n {
      * </p>
      *
      * @see Servlets#getHttpServletRequest()
-     * @see javax.servlet.http.HttpServletRequest#getLocale()
+     * @see jakarta.servlet.http.HttpServletRequest#getLocale()
      */
     public static Locale createRequestLocale() {
         var req = Servlets.getHttpServletRequest();
-        if (req == null) {
-            return Locale.ENGLISH;
-        }
-
         var lang = req.getParameter("lang");
         if (!Strings.isNullOrEmpty(lang)) {
             return Locale.forLanguageTag(lang);

@@ -1,14 +1,12 @@
 package alvin.study.springboot.mvc.core.http;
 
-import java.time.Instant;
-import java.util.Map;
-
 import alvin.study.springboot.mvc.app.api.advice.ApiResponseAdvice;
+import alvin.study.springboot.mvc.util.http.Servlets;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import alvin.study.springboot.mvc.util.http.Servlets;
-import lombok.Getter;
+import java.time.Instant;
+import java.util.Map;
 
 /**
  * 返回对象的包装类
@@ -34,49 +32,27 @@ import lombok.Getter;
  *
  * <p>
  * 实际返回的对象 JSON 包装在 {@link ResponseWrapper#payload} 字段中, 提供了两个方法完成包装:
- * {@link ResponseWrapper#success(Object)} 和
- * {@link ResponseWrapper#error(int, String, Object)}
+ * {@link ResponseWrapper#success(Object)} 和 {@link ResponseWrapper#error(int, String)}
  * </p>
+ *
+ * @param retCode   响应代码
+ * @param retMsg    响应信息
+ * @param payload   响应数据载体
+ * @param path      请求路径
+ * @param timestamp 响应时间戳
  */
-@Getter
-public class ResponseWrapper<T> {
+public record ResponseWrapper<T>(
+    @JsonProperty("retCode") int retCode,
+    @JsonProperty("retMsg") String retMsg,
+    @JsonProperty("payload") T payload,
+    @JsonProperty("path") String path,
+    @JsonProperty("timestamp") Instant timestamp
+) {
     private static final int SUCCESS_CODE = 0;
     private static final String SUCCESS_MESSAGE = "success";
 
-    // 响应代码
-    private final int retCode;
-
-    // 响应信息
-    private final String retMsg;
-
-    // 响应数据载体
-    private final T payload;
-
-    // 请求路径
-    private final String path;
-
-    // 响应时间戳
-    private final Instant timestamp;
-
-    /**
-     * 构造器, 包装一个响应对象
-     *
-     * @param retCode 返回代码
-     * @param retMsg  返回的错误信息
-     * @param payload 返回的数据
-     */
     @JsonCreator
-    public ResponseWrapper(
-            @JsonProperty("retCode") int retCode,
-            @JsonProperty("retMsg") String retMsg,
-            @JsonProperty("payload") T payload,
-            @JsonProperty("path") String path,
-            @JsonProperty("timestamp") Instant timestamp) {
-        this.retCode = retCode;
-        this.retMsg = retMsg;
-        this.payload = payload;
-        this.path = path;
-        this.timestamp = timestamp;
+    public ResponseWrapper {
     }
 
     /**
@@ -110,7 +86,8 @@ public class ResponseWrapper<T> {
     /**
      * 包装错误的响应数据
      *
-     * @param payload 错误信息载荷
+     * @param message     错误信息
+     * @param errorDetail 错误详情
      */
     public static ResponseWrapper<ErrorDetail> error(int code, String message, ErrorDetail errorDetail) {
         return new ResponseWrapper<>(
@@ -128,15 +105,7 @@ public class ResponseWrapper<T> {
      * <p>
      * 一般情况, 错误都是有验证器验证结果提供的, 会以异常方式或者
      * {@link org.springframework.validation.BindingResult BindingResult} 对象形式返回,
-     * 前者更容易处理, 参考: {@link ApiResponseAdvice
-     * ApiResponseAdvice} 类中的
-     * {@link ApiResponseAdvice#handleException(javax.validation.ConstraintViolationException)
-     * ApiResponseAdvice.handleException(ConstraintViolationException)},
-     * {@link ApiResponseAdvice#handleException(org.springframework.web.bind.MethodArgumentNotValidException)
-     * ApiResponseAdvice.handleException(MethodArgumentNotValidException)} 以及
-     * {@link ApiResponseAdvice#handleException(org.springframework.web.bind.MissingServletRequestParameterException)
-     * ApiResponseAdvice.handleException(MissingServletRequestParameterException)}
-     * 方法, 均是对当传递到 Controller 方法的参数不符合要求时抛出异常的处理方法
+     * 前者更容易处理, 参考: {@link ApiResponseAdvice ApiResponseAdvice} 类中的 {@code ApiResponseAdvice.handle(...)}
      * </p>
      *
      * <p>
@@ -173,29 +142,18 @@ public class ResponseWrapper<T> {
      *
      * <p>
      * {@link ErrorDetail} 对象并不直接作为结果返回, 为了返回格式统一, 仍需通过 {@link ResponseWrapper}
-     * 对象进行包装, 参考: {@link ResponseWrapper#error(int, String, Object)} 方法
+     * 对象进行包装, 参考: {@link ResponseWrapper#error(int, String, ErrorDetail)} 方法
      * </p>
+     *
+     * @param errorParameters 错误参数列表
+     * @param errorFields     错误字段列表
      */
-    @Getter
-    public static class ErrorDetail {
-        // 错误参数列表
-        private final Map<String, String[]> errorParameters;
+    public record ErrorDetail(
+        @JsonProperty("errorParameters") Map<String, String[]> errorParameters,
+        @JsonProperty("errorFields") Map<String, String[]> errorFields) {
 
-        // 错误字段列表
-        private final Map<String, String[]> errorFields;
-
-        /**
-         * 构造器
-         *
-         * @param errorParameters 请求参数错误列表
-         * @param errorFields     请求对象错误字段列表
-         */
         @JsonCreator
-        public ErrorDetail(
-                @JsonProperty("errorParameters") Map<String, String[]> errorParameters,
-                @JsonProperty("errorFields") Map<String, String[]> errorFields) {
-            this.errorParameters = errorParameters;
-            this.errorFields = errorFields;
+        public ErrorDetail {
         }
 
         /**

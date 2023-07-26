@@ -8,8 +8,7 @@ import org.springframework.web.context.request.RequestContextHolder;
  * 上下文对象接口
  *
  * <p>
- * 该接口的实例化对象在 {@link alvin.study.conf.BeansConfig#context()
- * BeansConfig.context()} 方法中指定, 会为每次请求实例化一个对象, 该对象存储一组 Key/Value 值,
+ * 该接口的实例化对象在 {@code BeansConfig.context()} 方法中指定, 会为每次请求实例化一个对象, 该对象存储一组 Key/Value 值,
  * 并可以在当前请求的所有后续操作中获取
  * </p>
  *
@@ -52,8 +51,6 @@ public interface Context {
      * @param <T>  {@code Value} 值的类型
      * @param name {@code Key} 值
      * @return {@code Value} 值
-     *
-     * @throws NoContextAttributeException
      */
     default <T> T get(String name) {
         // 获取 Value 值, 如果 name 不存在则返回 null

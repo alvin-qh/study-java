@@ -14,17 +14,17 @@ import org.springframework.web.servlet.HandlerInterceptor;
  * 拦截器对象通过三个拦截方法完成上述目的:
  * <ul>
  * <li>
- * {@link HandlerInterceptor#preHandle(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, Object)
+ * {@link HandlerInterceptor#preHandle(jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse, Object)
  * HandlerInterceptor.preHandle(HttpServletRequest, HttpServletResponse,
  * Object)}, 在 Controller 方法执行前进行处理
  * </li>
  * <li>
- * {@link HandlerInterceptor#postHandle(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, Object, org.springframework.web.servlet.ModelAndView)
+ * {@link HandlerInterceptor#postHandle(jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse, Object, org.springframework.web.servlet.ModelAndView)
  * HandlerInterceptor.postHandle(HttpServletRequest, HttpServletResponse,
  * Object, ModelAndView)}, 在 Controller 方法执行后进行处理
  * </li>
  * <li>
- * {@link HandlerInterceptor#afterCompletion(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, Object, Exception)
+ * {@link HandlerInterceptor#afterCompletion(jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse, Object, Exception)
  * HandlerInterceptor.afterCompletion(HttpServletRequest, HttpServletResponse,
  * Object, Exception)}, 在整个请求处理完成后进行处理
  * </li>
@@ -40,8 +40,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
  *
  * <p>
  * 当前接口的所有实现类, 需要添加 {@link org.springframework.stereotype.Component @Component}
- * 注解, 以便自动注入到 {@link WebConfig#interceptors
- * WebConfig.interceptors} 字段中, 并通过
+ * 注解, 以便自动注入到 {@code WebConfig.interceptors} 字段中, 并通过
  * {@link WebConfig#addInterceptors(org.springframework.web.servlet.config.annotation.InterceptorRegistry)
  * WebConfig.addInterceptors(InterceptorRegistry)} 方法中进行注册
  * </p>

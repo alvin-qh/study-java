@@ -48,7 +48,7 @@ import lombok.extern.slf4j.Slf4j;
  * </p>
  *
  * <p>
- * 测试调用: http://localhost:8080/api/hello?name=Alvin
+ * 测试调用: <a href="http://localhost:8080/api/hello?name=Alvin">http://localhost:8080/api/hello?name=Alvin</a>
  * </p>
  */
 @Slf4j
@@ -132,9 +132,9 @@ public class HelloController {
     @ResponseBody
     HelloDto post(@RequestBody @Valid HelloForm form) {
         // 打印日志
-        log.info("POST method of HelloController was called, name=\"{}\"", form.getName());
+        log.info("POST method of HelloController was called, name=\"{}\"", form.name());
 
         // 返回成功响应
-        return new HelloDto(form.getName(), "Welcome");
+        return new HelloDto(form.name(), "Welcome");
     }
 }
