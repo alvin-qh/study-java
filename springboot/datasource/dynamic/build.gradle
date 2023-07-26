@@ -56,7 +56,7 @@ dependencies {
  */
 springBoot {
   // 设置入口类
-  mainClass = "alvin.study.Main"
+  mainClass = "study.springboot.ds.Main"
 }
 
 /**
