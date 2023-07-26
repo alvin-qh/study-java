@@ -69,9 +69,9 @@ public interface Context {
     /**
      * 删除指定的 Key
      *
-     * @param name {@code Key} 值
+     * @param key {@code Key} 值
      */
-    void remove(String name);
+    void remove(String key);
 
     /**
      * 清除所有的 Key

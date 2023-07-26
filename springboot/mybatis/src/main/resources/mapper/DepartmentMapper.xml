@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="alvin.study.infra.mapper.DepartmentMapper">
+<mapper namespace="alvin.study.springboot.mybatis.infra.mapper.DepartmentMapper">
   <!--
   定义查询结果如何映射到实体类对象的规则
   - resultMap 标签指定查询结果和实体对象的映射关系
@@ -15,7 +15,7 @@
   -->
   <resultMap
     id="departmentResultMap"
-    type="alvin.study.infra.entity.Department"
+    type="alvin.study.springboot.mybatis.infra.entity.Department"
     autoMapping="true"
   >
     <!-- id 映射关系需要显式声明 -->
@@ -75,7 +75,7 @@
     -->
     <collection
       property="employees"
-      resultMap="alvin.study.infra.mapper.EmployeeMapper.employeeResultMap"
+      resultMap="alvin.study.springboot.mybatis.infra.mapper.EmployeeMapper.employeeResultMap"
       columnPrefix="e_"
     />
   </resultMap>

@@ -1,6 +1,6 @@
-package alvin.study.springboot.jpa.core.context;
+package alvin.study.springboot.mybatis.core.context;
 
-import alvin.study.springboot.jpa.conf.ContextConfig;
+import alvin.study.springboot.mybatis.conf.ContextConfig;
 import org.springframework.aop.scope.ScopedProxyUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -9,7 +9,7 @@ import org.springframework.web.context.request.RequestContextHolder;
  * 上下文对象接口
  *
  * <p>
- * 该接口的实例化对象在 {@link ContextConfig#context()} 方法中指定,
+ * 该接口的实例化对象在 {@code ContextConfig.context()} 方法中指定,
  * 会为每次请求实例化一个对象, 该对象存储一组 Key/Value 值, 并可以在当前请求的所有后续操作中获取
  * </p>
  *
@@ -22,7 +22,7 @@ import org.springframework.web.context.request.RequestContextHolder;
  * <p>
  * 进一步,
  * {@link org.springframework.web.context.annotation.RequestScope @RequestScope}
- * 注解的作用是将对象交由 {@link RequestContextHolder} 对象管理, 其
+ * 注解的作用是将对象交由 ß{@link RequestContextHolder} 对象管理, 其
  * {@link RequestContextHolder#currentRequestAttributes()} 方法用于获取一个
  * {@link RequestAttributes} 请求上下文对象, 可以在在对象中存储需要在其后使用的键值对
  * </p>
@@ -89,10 +89,10 @@ public interface Context {
     <T> T getOrDefault(String name, T defaultValue);
 
     /**
-     * 保存键值对
+     * 设置键值对
      *
-     * @param key   {@code Key} 键
-     * @param value {@code Key} 值
+     * @param key   {@code Key} 值
+     * @param value {@code value} 值
      */
     void set(String key, Object value);
 
@@ -100,10 +100,10 @@ public interface Context {
      * 获取当前请求范围内注册的 {@link Context} 对象
      *
      * @return 当前请求范围内注册的 {@link Context} 对象
-     * @see ScopedProxyUtils#getTargetBeanName(String)
-     * @see RequestContextHolder#currentRequestAttributes()
+     * @see org.springframework.aop.scope.ScopedProxyUtils#getTargetBeanName(String)
+     * @see org.springframework.web.context.request.RequestContextHolder#currentRequestAttributes()
      */
-    static Context current() {
+    public static Context current() {
         var attributes = RequestContextHolder.currentRequestAttributes();
         return (Context) attributes.getAttribute(KEY, RequestAttributes.SCOPE_REQUEST);
     }
