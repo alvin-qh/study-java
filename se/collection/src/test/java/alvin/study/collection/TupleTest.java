@@ -1,10 +1,10 @@
 package alvin.study.collection;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link Tuple} 类型

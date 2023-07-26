@@ -840,7 +840,7 @@ class CompletableFutureTest {
      * @param count {@link List} 集合中 {@link Model} 元素的个数
      * @return 包含指定数量 {@link Model} 对象的 {@link List} 集合
      */
-    @SuppressWarnings({"SameParameterValue", "ComparatorMethodParameterNotUsed"})
+    @SuppressWarnings({ "SameParameterValue", "ComparatorMethodParameterNotUsed" })
     private List<Model> generateModels(int count) {
         var rand = new Random();
 

@@ -1,15 +1,18 @@
 package alvin.study.collection;
 
+<<<<<<< Updated upstream
 import com.github.javafaker
 
     .Faker;
 import lombok.Getter;
+=======
+import com.github.javafaker.Faker;
+>>>>>>> Stashed changes
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Condition;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 
-import java.io.Serializable;
 import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.IntSummaryStatistics;
@@ -34,15 +37,13 @@ enum BlogPostType {
 /**
  * 博客帖子类
  */
-@Getter
-@RequiredArgsConstructor
-class BlogPost implements Serializable {
-    private final String title;
-    private final String author;
-    private final BlogPostType type;
-    private final int likes;
-    private final List<String> comments;
-
+record BlogPost(
+    String title,
+    String author,
+    BlogPostType type,
+    int likes,
+    List<String> comments
+) {
     /**
      * 保存联合分组属性的记录类型
      *
@@ -168,7 +169,7 @@ class GroupingByTest {
         then(data).hasSize(23);
 
         // 将测试数据以 Map<BlogPostType, List<BlogPost>> 类型进行分组
-        var results = data.stream().collect(Collectors.groupingBy(BlogPost::getType));
+        var results = data.stream().collect(Collectors.groupingBy(BlogPost::type));
 
         // 确认分组数量
         then(results).hasSize(3);
@@ -207,8 +208,8 @@ class GroupingByTest {
         // 将测试数据以 Map<BlogPost.TypeAndLikeKey, List<BlogPost>> 类型进行分组
         var results = data.stream().collect(
             Collectors.groupingBy(blog -> new BlogPost.TypeAndLikeKey(
-                blog.getType(),
-                blog.getLikes())));
+                blog.type(),
+                blog.likes())));
 
         // 确认分组数量
         // 因为每个帖子类型都有点赞数为 1 和 2 的记录, 所以产生 6 个分组 (帖子类型分类 x 点赞数分类 = 3 * 2 = 6)
@@ -254,7 +255,7 @@ class GroupingByTest {
 
         // 将测试数据以 Map<BlogPostType, Set<BlogPost>> 类型进行分组
         var results = data.stream().collect(
-            Collectors.groupingBy(BlogPost::getType, Collectors.toSet()));
+            Collectors.groupingBy(BlogPost::type, Collectors.toSet()));
 
         // 确认分组数量
         then(results).hasSize(3);
@@ -295,7 +296,7 @@ class GroupingByTest {
 
         // 将测试数据以 Map<BlogPostType, Map<Integer, List<BlogPost>>> 类型进行分组
         var results = data.stream().collect(
-            Collectors.groupingBy(BlogPost::getType, Collectors.groupingBy(BlogPost::getLikes)));
+            Collectors.groupingBy(BlogPost::type, Collectors.groupingBy(BlogPost::likes)));
 
         // 确认第一级分组数量
         then(results).hasSize(3);
@@ -343,7 +344,7 @@ class GroupingByTest {
 
         // 将测试数据以 Map<BlogPostType, Double> 类型进行分组
         var results = data.stream().collect(
-            Collectors.groupingBy(BlogPost::getType, Collectors.averagingInt(BlogPost::getLikes)));
+            Collectors.groupingBy(BlogPost::type, Collectors.averagingInt(BlogPost::likes)));
 
         // 确认分组数量
         then(results).hasSize(3);
@@ -379,7 +380,7 @@ class GroupingByTest {
 
         // 将测试数据以 Map<BlogPostType, Integer> 类型进行分组
         var results = data.stream().collect(
-            Collectors.groupingBy(BlogPost::getType, Collectors.summingInt(BlogPost::getLikes)));
+            Collectors.groupingBy(BlogPost::type, Collectors.summingInt(BlogPost::likes)));
 
         // 确认分组数量
         then(results).hasSize(3);
@@ -414,7 +415,7 @@ class GroupingByTest {
 
         // 将测试数据以 Map<BlogPostType, Optional<BlogPost>> 类型进行分组, 每组返回点赞数最大的那个对象
         var results = data.stream().collect(
-            Collectors.groupingBy(BlogPost::getType, Collectors.maxBy(Comparator.comparingInt(BlogPost::getLikes))));
+            Collectors.groupingBy(BlogPost::type, Collectors.maxBy(Comparator.comparingInt(BlogPost::likes))));
 
         // 确认分组数量
         then(results).hasSize(3);
@@ -426,7 +427,7 @@ class GroupingByTest {
 
         // 将测试数据以 Map<BlogPostType, Optional<BlogPost>> 类型进行分组, 每组返回点赞数最小的那个对象
         results = data.stream().collect(
-            Collectors.groupingBy(BlogPost::getType, Collectors.minBy(Comparator.comparingInt(BlogPost::getLikes))));
+            Collectors.groupingBy(BlogPost::type, Collectors.minBy(Comparator.comparingInt(BlogPost::likes))));
 
         // 确认分组数量
         then(results).hasSize(3);
@@ -483,7 +484,7 @@ class GroupingByTest {
 
         // 将测试数据以 Map<BlogPostType, IntSummaryStatistics> 类型进行分组, 每组返回点赞数的统计指标对象
         var results = data.stream().collect(
-            Collectors.groupingBy(BlogPost::getType, Collectors.summarizingInt(BlogPost::getLikes)));
+            Collectors.groupingBy(BlogPost::type, Collectors.summarizingInt(BlogPost::likes)));
 
         // 确认分组数量
         then(results).hasSize(3);
@@ -532,18 +533,18 @@ class GroupingByTest {
 
         // 将测试数据以 Map<BlogPostType, BlogPost.PostCountTitlesLikesStats> 类型进行分组, 每组返回所需统计数据
         var results = data.stream().collect(
-            Collectors.groupingBy(BlogPost::getType, Collectors.collectingAndThen(
+            Collectors.groupingBy(BlogPost::type, Collectors.collectingAndThen(
                 // 分组结果存储在 List 集合中
                 Collectors.toList(),
                 // 对分组结果进行进一步处理
                 list -> {
                     // 将分组中所有帖子的标题连接成一个
                     var titles = list.stream()
-                        .map(BlogPost::getTitle)
+                        .map(BlogPost::title)
                         .collect(Collectors.joining(":"));
 
                     // 将分组中所有帖子的点赞数进行统计
-                    var summary = list.stream().collect(Collectors.summarizingInt(BlogPost::getLikes));
+                    var summary = list.stream().collect(Collectors.summarizingInt(BlogPost::likes));
 
                     // 将结果返回成 BlogPost.PostCountTitlesLikesStats 类型对象
                     return new BlogPost.PostCountTitlesLikesStats(list.size(), titles, summary);
@@ -591,9 +592,9 @@ class GroupingByTest {
         // 将测试数据以 Map<BlogPostType, BlogPost.TitlesBoundedSumOfLikes> 类型进行分组, 每组返回所需统计数据
         var results = data.stream().collect(Collectors.toMap(
             // Map 的 Key 值
-            BlogPost::getType,
+            BlogPost::type,
             // Map 的 Value 值
-            post -> new BlogPost.TitlesBoundedSumOfLikes(1, post.getTitle(), post.getLikes()),
+            post -> new BlogPost.TitlesBoundedSumOfLikes(1, post.title(), post.likes()),
             // Key 重复的时候, 解决冲突的方法, 这里可以用于进行分组统计计算
             (o, n) -> new BlogPost.TitlesBoundedSumOfLikes(
                 // 合并贴子总数
@@ -638,10 +639,10 @@ class GroupingByTest {
         // 将测试数据以 Map<BlogPostType, String> 类型进行分组, 将每个分组转为字符串类型
         var results = data.stream().collect(Collectors.groupingBy(
             // 指定分组 Key
-            BlogPost::getType,
+            BlogPost::type,
             // 将分组结果进行转换
             Collectors.mapping(
-                BlogPost::getTitle, // 获取分组结果每个元素的帖子标题, 并将结果进行字符串连接
+                BlogPost::title, // 获取分组结果每个元素的帖子标题, 并将结果进行字符串连接
                 Collectors.joining(", ", "Post Titles: [", "]"))));
 
         // 确认分组数量
@@ -670,7 +671,7 @@ class GroupingByTest {
      * </p>
      *
      * <p>
-     * 在本例中, 如果通过 {@link BlogPost#getType()} 来作为分组 {@code Key}, 则对于这种以枚举为 {@code Key} 的情况,
+     * 在本例中, 如果通过 {@link BlogPost#type()} 来作为分组 {@code Key}, 则对于这种以枚举为 {@code Key} 的情况,
      * {@link EnumMap} 是一种效率更高的 {@link Map} 实现
      * </p>
      */
@@ -686,7 +687,7 @@ class GroupingByTest {
         // 将测试数据以 EnumMap<BlogPostType, List<BlogPost>> 类型进行分组
         var results = data.stream().collect(Collectors.groupingBy(
             // 获取分组 Key
-            BlogPost::getType,
+            BlogPost::type,
             // 设置返回 Map 对象
             () -> new EnumMap<>(BlogPostType.class),
             // 设置分组集合
@@ -716,9 +717,9 @@ class GroupingByTest {
 
         var results = data.stream().collect(Collectors.groupingBy(
             // 获取分组 Key
-            BlogPost::getType,
+            BlogPost::type,
             // 对分组元素的每一项进行过滤
-            Collectors.filtering(blog -> blog.getLikes() > 1, Collectors.toList())));
+            Collectors.filtering(blog -> blog.likes() > 1, Collectors.toList())));
 
         // 确认分组数量
         then(results).hasSize(3);
@@ -734,7 +735,7 @@ class GroupingByTest {
      * Collectors.flatMapping(function, Collector)} 方法, 对分组结果中的集合进行平铺处理
      *
      * <p>
-     * 本例中, 对 {@link BlogPost#getComments()} 属性的结果进行平铺, 将一个分组下的所有帖子回复都整合到一个集合中
+     * 本例中, 对 {@link BlogPost#comments()} 属性的结果进行平铺, 将一个分组下的所有帖子回复都整合到一个集合中
      * </p>
      */
     @Test
@@ -748,9 +749,9 @@ class GroupingByTest {
 
         var results = data.stream().collect(Collectors.groupingBy(
             // 获取分组 Key
-            BlogPost::getType,
+            BlogPost::type,
             // 对每个分组中的回复进行平铺处理
-            Collectors.flatMapping(blog -> blog.getComments().stream(), Collectors.toList())));
+            Collectors.flatMapping(blog -> blog.comments().stream(), Collectors.toList())));
 
         // 确认分组数量
         then(results).hasSize(3);

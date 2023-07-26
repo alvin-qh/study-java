@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * 测试 {@link Colls} 集合工具类
  */
-class CollTest {
+class CollsTest {
     /**
      * 测试 {@link Colls#isEmpty(Collection)} 方法
      */
@@ -584,7 +584,7 @@ class CollTest {
         then(results).containsExactly("1", "2", "3", "4");
 
         // 确认过滤 null 的结果
-        results = Colls.toList(iter, CollTest::filterOdd, true);
+        results = Colls.toList(iter, CollsTest::filterOdd, true);
         then(results).containsExactly("1", "3");
     }
 
@@ -602,7 +602,7 @@ class CollTest {
         then(results).containsExactly("1", "2", "3", "4");
 
         // 确认过滤 null 的结果
-        results = Colls.toList(coll.iterator(), CollTest::filterOdd, true);
+        results = Colls.toList(coll.iterator(), CollsTest::filterOdd, true);
         then(results).containsExactly("1", "3");
     }
 
@@ -619,7 +619,7 @@ class CollTest {
         then(results).containsExactly("1", "2", "3", "4");
 
         // 确认过滤 null 的结果
-        results = Colls.toList(iter, CollTest::filterOdd, true);
+        results = Colls.toList(iter, CollsTest::filterOdd, true);
         then(results).containsExactly("1", "3");
     }
 
@@ -637,7 +637,7 @@ class CollTest {
         then(results).containsExactly("1", "2", "3", "4");
 
         // 确认过滤 null 的结果
-        results = Colls.toSet(coll.iterator(), CollTest::filterOdd, true);
+        results = Colls.toSet(coll.iterator(), CollsTest::filterOdd, true);
         then(results).containsExactly("1", "3");
     }
 
@@ -659,7 +659,7 @@ class CollTest {
             entry("4", "4:4"));
 
         // 确认过滤 null 的结果
-        results = Colls.toMap(iter, CollTest::filterOdd, n -> String.format("%d:%d", n, n), true);
+        results = Colls.toMap(iter, CollsTest::filterOdd, n -> String.format("%d:%d", n, n), true);
         then(results).containsExactly(
             entry("1", "1:1"),
             entry("3", "3:3"));
@@ -683,7 +683,7 @@ class CollTest {
             entry("4", 4));
 
         // 确认过滤 null 的结果
-        results = Colls.toMap(iter, CollTest::filterOdd, true);
+        results = Colls.toMap(iter, CollsTest::filterOdd, true);
         then(results).containsExactly(
             entry("1", 1),
             entry("3", 3));
@@ -707,7 +707,7 @@ class CollTest {
             entry("4", "4:4"));
 
         // 确认过滤 null 的结果
-        results = Colls.toMap(coll.iterator(), CollTest::filterOdd, n -> String.format("%d:%d", n, n), true);
+        results = Colls.toMap(coll.iterator(), CollsTest::filterOdd, n -> String.format("%d:%d", n, n), true);
         then(results).containsExactly(
             entry("1", "1:1"),
             entry("3", "3:3"));
@@ -731,7 +731,7 @@ class CollTest {
             entry("4", 4));
 
         // 确认过滤 null 的结果
-        results = Colls.toMap(coll.iterator(), CollTest::filterOdd, true);
+        results = Colls.toMap(coll.iterator(), CollsTest::filterOdd, true);
         then(results).containsExactly(
             entry("1", 1),
             entry("3", 3));

@@ -19,7 +19,7 @@ package alvin.study.ratelimit;
  * </p>
  *
  * <p>
- * <img src="./assets/leak-bucket-rate-limiter.png">
+ * <img src="../../../../../../assets/leak-bucket-rate-limiter.png">
  * </p>
  *
  * <p>

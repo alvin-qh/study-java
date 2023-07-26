@@ -23,7 +23,7 @@ class ProcessUtilTest {
      * </p>
      */
     @Test
-    @EnabledOnOs({OS.MAC, OS.LINUX})
+    @EnabledOnOs({ OS.MAC, OS.LINUX })
     void exec_shouldStartProcess() throws Exception {
         // 启动进程
         var process = ProcessUtil.exec("echo", "Hello World");
@@ -46,7 +46,7 @@ class ProcessUtilTest {
      * </p>
      */
     @Test
-    @EnabledOnOs({OS.MAC, OS.LINUX})
+    @EnabledOnOs({ OS.MAC, OS.LINUX })
     void kill_shouldTerminalProcess() throws Exception {
         // 启动一个持续执行的进程
         var process = ProcessUtil.exec("watch", "-n 1", "ps");
@@ -73,7 +73,7 @@ class ProcessUtilTest {
      * ProcessUtil.allProcesses(Predicate)} 方法, 获取符合条件的所有进程信息对象
      */
     @Test
-    @EnabledOnOs({OS.MAC, OS.LINUX})
+    @EnabledOnOs({ OS.MAC, OS.LINUX })
     void allProcesses_shouldListAllProcesses() throws Exception {
         // 启动一个持续执行的进程
         var process = ProcessUtil.exec("watch", "-n 1", "ps");

@@ -18,7 +18,7 @@ import static org.assertj.core.api.BDDAssertions.then;
  *
  * <p>
  * 本例在数据表中建立如下图中的树结构:
- * <img src="assets/mptt.gif"/>
+ * <img src="../../../../../../../assets/mptt.gif"/>
  * </p>
  */
 class MPTTTreeTest extends MPTTBaseTest {

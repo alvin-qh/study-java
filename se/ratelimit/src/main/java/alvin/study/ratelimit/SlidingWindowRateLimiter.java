@@ -33,7 +33,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * </p>
  *
  * <p>
- * <img src="./assets/slidingwindow-rate-limiter.png">
+ * <img src="../../../../../../assets/slidingwindow-rate-limiter.png">
  * </p>
  *
  * <p>

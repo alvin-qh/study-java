@@ -1,7 +1,10 @@
 package alvin.study.reflect.scan.match;
+<<<<<<< Updated upstream
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+=======
+>>>>>>> Stashed changes
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;

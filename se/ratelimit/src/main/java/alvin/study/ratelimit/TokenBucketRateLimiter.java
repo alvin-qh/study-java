@@ -21,7 +21,7 @@ package alvin.study.ratelimit;
  * </p>
  *
  * <p>
- * <img src="./assets/token-bucket-rate-limiter.png">
+ * <img src="../../../../../../assets/token-bucket-rate-limiter.png">
  * </p>
  */
 public class TokenBucketRateLimiter implements RateLimiter {

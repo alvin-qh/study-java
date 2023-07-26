@@ -24,7 +24,7 @@ package alvin.study.ratelimit;
  * </p>
  *
  * <p>
- * <img src="./assets/fixwindow-rate-limiter.png">
+ * <img src="../../../../../../assets/fixwindow-rate-limiter.png">
  * </p>
  *
  * <p>
