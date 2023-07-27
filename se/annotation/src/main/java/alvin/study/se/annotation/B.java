@@ -1,4 +1,4 @@
-package alvin.study.annotation;
+package alvin.study.se.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

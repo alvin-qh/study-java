@@ -1,4 +1,4 @@
-package alvin.study.annotation;
+package alvin.study.se.annotation;
 
 import org.junit.jupiter.api.Test;
 
