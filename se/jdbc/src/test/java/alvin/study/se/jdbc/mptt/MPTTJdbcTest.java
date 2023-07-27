@@ -1,4 +1,4 @@
-package alvin.study.jdbc.mptt;
+package alvin.study.se.jdbc.mptt;
 
 import static org.assertj.core.api.Assertions.tuple;
 import static org.assertj.core.api.BDDAssertions.then;
@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 import org.junit.jupiter.api.Test;
 
-import alvin.study.jdbc.mptt.model.MPTT;
+import alvin.study.se.jdbc.mptt.model.MPTT;
 
 /**
  * 测试通过 MPTT 在数据表中建立树结构

@@ -1,4 +1,4 @@
-package alvin.study.jdbc.flyway;
+package alvin.study.se.jdbc.flyway;
 
 import lombok.RequiredArgsConstructor;
 import org.flywaydb.core.Flyway;

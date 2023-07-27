@@ -1,4 +1,4 @@
-package alvin.study.jdbc.mptt.model;
+package alvin.study.se.jdbc.mptt.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

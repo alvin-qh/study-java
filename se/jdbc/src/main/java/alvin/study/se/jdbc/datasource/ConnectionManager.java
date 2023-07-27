@@ -1,4 +1,4 @@
-package alvin.study.jdbc.datasource;
+package alvin.study.se.jdbc.datasource;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

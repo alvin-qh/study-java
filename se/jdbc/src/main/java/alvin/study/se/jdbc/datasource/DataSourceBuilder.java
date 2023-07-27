@@ -1,4 +1,4 @@
-package alvin.study.jdbc.datasource;
+package alvin.study.se.jdbc.datasource;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

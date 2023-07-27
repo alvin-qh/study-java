@@ -1,8 +1,8 @@
-package alvin.study.jdbc;
+package alvin.study.se.jdbc;
 
-import alvin.study.jdbc.datasource.ConnectionManager;
-import alvin.study.jdbc.datasource.DataSourceBuilder;
-import alvin.study.jdbc.flyway.Migration;
+import alvin.study.se.jdbc.datasource.ConnectionManager;
+import alvin.study.se.jdbc.datasource.DataSourceBuilder;
+import alvin.study.se.jdbc.flyway.Migration;
 import com.zaxxer.hikari.HikariDataSource;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;

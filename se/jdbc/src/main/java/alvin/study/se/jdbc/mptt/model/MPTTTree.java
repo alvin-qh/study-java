@@ -1,4 +1,4 @@
-package alvin.study.jdbc.mptt.model;
+package alvin.study.se.jdbc.mptt.model;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;

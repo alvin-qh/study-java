@@ -1,4 +1,4 @@
-package alvin.study.io;
+package alvin.study.se.io;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

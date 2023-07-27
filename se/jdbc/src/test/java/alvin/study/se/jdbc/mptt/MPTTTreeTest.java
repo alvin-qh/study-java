@@ -1,7 +1,7 @@
-package alvin.study.jdbc.mptt;
+package alvin.study.se.jdbc.mptt;
 
-import alvin.study.jdbc.mptt.model.MPTT;
-import alvin.study.jdbc.mptt.model.MPTTTree;
+import alvin.study.se.jdbc.mptt.model.MPTT;
+import alvin.study.se.jdbc.mptt.model.MPTTTree;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;

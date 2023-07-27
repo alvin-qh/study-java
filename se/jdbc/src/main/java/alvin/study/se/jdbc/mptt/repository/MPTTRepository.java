@@ -1,7 +1,7 @@
-package alvin.study.jdbc.mptt.repository;
+package alvin.study.se.jdbc.mptt.repository;
 
-import alvin.study.jdbc.datasource.ConnectionManager;
-import alvin.study.jdbc.mptt.model.MPTT;
+import alvin.study.se.jdbc.datasource.ConnectionManager;
+import alvin.study.se.jdbc.mptt.model.MPTT;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
