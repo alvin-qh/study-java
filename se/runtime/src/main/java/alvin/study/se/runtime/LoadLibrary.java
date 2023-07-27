@@ -1,4 +1,4 @@
-package alvin.study.misc;
+package alvin.study.se.misc;
 
 import com.google.common.base.Strings;
 import com.google.common.io.ByteStreams;

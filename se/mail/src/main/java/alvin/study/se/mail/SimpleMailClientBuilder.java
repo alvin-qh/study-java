@@ -1,4 +1,4 @@
-package alvin.study.mail;
+package alvin.study.se.mail;
 
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;

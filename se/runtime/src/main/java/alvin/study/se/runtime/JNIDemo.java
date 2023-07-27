@@ -1,4 +1,4 @@
-package alvin.study.misc;
+package alvin.study.se.misc;
 
 import java.io.IOException;
 

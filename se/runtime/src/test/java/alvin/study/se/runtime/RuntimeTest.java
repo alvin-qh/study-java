@@ -1,4 +1,4 @@
-package alvin.study.misc;
+package alvin.study.se.misc;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
@@ -103,7 +103,7 @@ class RuntimeTest {
      * 测试加载 C++ 动态库
      *
      * <p>
-     * 参考 {@link JNIDemo} 类型和 {@link alvin.study.misc.LoadLibrary LoadLibrary} 类型
+     * 参考 {@link JNIDemo} 类型和 {@link LoadLibrary LoadLibrary} 类型
      * </p>
      */
     @Test
