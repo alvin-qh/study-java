@@ -17,7 +17,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
     set(JNI_H
         /usr/lib/jvm/java-17-openjdk-amd64/include
-        /usr/lib/jvm/java-17-openjdk-amd64/include/darwin)
+        /usr/lib/jvm/java-17-openjdk-amd64/include/linux)
 elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
     set(JNI_H
         /usr/local/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home/include

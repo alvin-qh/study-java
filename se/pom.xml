@@ -26,6 +26,6 @@
     <module>concurrent</module>
     <module>mail</module>
     <module>jdbc</module>
-    <module>misc</module>
+    <module>runtime</module>
   </modules>
 </project>

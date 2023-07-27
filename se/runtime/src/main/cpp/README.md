@@ -60,4 +60,4 @@ make
 </plugin>
 ```
 
-至于如何将 `so` 文件从 Java 资源中释放出来, 请参考 [alvin.study.se.misc.LoadLibrary.java](../src/main/java/alvin/study/misc/LoadLibrary.java) 文件
+至于如何将 `so` 文件从 Java 资源中释放出来, 请参考 [alvin.study.se.runtime.LoadLibrary.java](../src/main/java/alvin/study/misc/LoadLibrary.java) 文件
