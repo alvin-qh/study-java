@@ -1,4 +1,4 @@
-package alvin.study.concurrent.util;
+package alvin.study.se.concurrent.util;
 
 import org.jetbrains.annotations.NotNull;
 

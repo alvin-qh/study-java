@@ -1,4 +1,4 @@
-package alvin.study.concurrent;
+package alvin.study.se.concurrent;
 
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.awaitility.Awaitility.await;

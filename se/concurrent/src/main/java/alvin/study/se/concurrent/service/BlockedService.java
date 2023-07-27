@@ -1,4 +1,4 @@
-package alvin.study.concurrent.service;
+package alvin.study.se.concurrent.service;
 
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;

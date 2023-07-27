@@ -1,4 +1,4 @@
-package alvin.study.concurrent;
+package alvin.study.se.concurrent;
 
 import org.junit.jupiter.api.Test;
 

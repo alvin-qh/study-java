@@ -1,8 +1,8 @@
-package alvin.study.concurrent;
+package alvin.study.se.concurrent;
 
-import alvin.study.concurrent.service.BlockedService;
-import alvin.study.concurrent.service.BlockedService.Model;
-import alvin.study.concurrent.util.ExecutorCreator;
+import alvin.study.se.concurrent.service.BlockedService;
+import alvin.study.se.concurrent.service.BlockedService.Model;
+import alvin.study.se.concurrent.util.ExecutorCreator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 

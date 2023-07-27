@@ -1,4 +1,4 @@
-package alvin.study.concurrent.delay;
+package alvin.study.se.concurrent.delay;
 
 import org.jetbrains.annotations.NotNull;
 

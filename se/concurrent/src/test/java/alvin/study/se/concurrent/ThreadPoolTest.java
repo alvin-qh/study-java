@@ -1,7 +1,7 @@
-package alvin.study.concurrent;
+package alvin.study.se.concurrent;
 
-import alvin.study.concurrent.service.Fibonacci;
-import alvin.study.concurrent.util.ExecutorCreator;
+import alvin.study.se.concurrent.service.Fibonacci;
+import alvin.study.se.concurrent.util.ExecutorCreator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
