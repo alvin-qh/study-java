@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="alvin.study.infra.mapper.MenuMapper">
+<mapper namespace="alvin.study.springboot.security.infra.mapper.MenuMapper">
   <resultMap
     id="menuResultMap"
-    type="alvin.study.infra.entity.Menu"
+    type="alvin.study.springboot.security.infra.entity.Menu"
     autoMapping="true"
   >
     <id property="id" column="id" />
 
     <association
       property="role"
-      resultMap="alvin.study.infra.mapper.RoleMapper.roleResultMap"
+      resultMap="alvin.study.springboot.security.infra.mapper.RoleMapper.roleResultMap"
       columnPrefix="r_"
     />
 
     <association
       property="permission"
-      resultMap="alvin.study.infra.mapper.PermissionMapper.permissionResultMap"
+      resultMap="alvin.study.springboot.security.infra.mapper.PermissionMapper.permissionResultMap"
       columnPrefix="p_"
     />
   </resultMap>
