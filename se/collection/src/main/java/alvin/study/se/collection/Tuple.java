@@ -1,4 +1,4 @@
-package alvin.study.collection;
+package alvin.study.se.collection;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;

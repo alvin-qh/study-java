@@ -1,4 +1,4 @@
-package alvin.study.collection;
+package alvin.study.se.collection;
 
 import com.google.common.collect.Iterators;
 import lombok.AccessLevel;
