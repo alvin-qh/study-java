@@ -1,4 +1,4 @@
-package alvin.study.ratelimit;
+package alvin.study.se.ratelimit;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
@@ -7,11 +7,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;
 
 /**
- * 测试 {@link TokenBucketRateLimiter} 类型, 通过令牌桶进行限流
+ * 测试 {@link LeakBucketRateLimiter} 类型, 通过漏桶算法进行限流
  */
-class TokenBucketRateLimiterTest extends RateLimiterTest {
+class LeakBucketRateLimitTest extends RateLimiterTest {
     /**
-     * 测试 {@link TokenBucketRateLimiter#tryAcquire(int)} 方法, 通过令牌桶进行限流
+     * 测试 {@link LeakBucketRateLimiter#tryAcquire(int)} 方法, 通过漏桶算法进行限流
      *
      * <p>
      * 本次测试参数值为 {@code 1} 的情况
@@ -19,8 +19,8 @@ class TokenBucketRateLimiterTest extends RateLimiterTest {
      */
     @Test
     void testTryAcquire_shouldLimitOneByOne() {
-        // 实例化令牌桶进行限流对象, 桶容量 50, 每秒创建 50 个令牌
-        var limiter = new TokenBucketRateLimiter(50, 50);
+        // 实例化漏桶限流对象, 桶容量 50, 每秒漏 25
+        var limiter = new LeakBucketRateLimiter(50, 25);
 
         // 记录通过限流的调用次数
         var executeCount = new AtomicInteger();
@@ -39,14 +39,14 @@ class TokenBucketRateLimiterTest extends RateLimiterTest {
         });
 
         // 确认通过限流的次数约为 100 次
-        then(executeCount.get()).isGreaterThan(70).isLessThanOrEqualTo(130);
+        then(executeCount.get()).isGreaterThan(95).isLessThanOrEqualTo(105);
 
         // 确认未通过限流的次数约为 100 次
-        then(blockedCount.get()).isGreaterThan(70).isLessThanOrEqualTo(130);
+        then(blockedCount.get()).isGreaterThan(95).isLessThanOrEqualTo(105);
     }
 
     /**
-     * 测试 {@link SlidingWindowRateLimiter#tryAcquire(int)} 方法, 通过令牌桶进行限流
+     * 测试 {@link LeakBucketRateLimiter#tryAcquire(int)} 方法, 通过漏桶算法进行限流
      *
      * <p>
      * 本次测试参数值大于 {@code 1} 的情况
@@ -54,8 +54,8 @@ class TokenBucketRateLimiterTest extends RateLimiterTest {
      */
     @Test
     void testTryAcquire_shouldLimitByBatch() {
-        // 实例化令牌桶进行限流对象, 桶容量 50, 每秒创建 50 个令牌
-        var limiter = new TokenBucketRateLimiter(50, 50);
+        // 实例化漏桶限流对象, 桶容量 50, 每秒漏 25
+        var limiter = new LeakBucketRateLimiter(50, 25);
 
         // 先请求 30 次调用, 在限流次数范围内, 返回允许
         var r = limiter.tryAcquire(30);

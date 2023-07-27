@@ -1,4 +1,4 @@
-package alvin.study.process;
+package alvin.study.se.process;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;

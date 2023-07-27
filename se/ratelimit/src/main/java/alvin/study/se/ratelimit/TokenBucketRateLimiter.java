@@ -1,4 +1,4 @@
-package alvin.study.ratelimit;
+package alvin.study.se.ratelimit;
 
 /**
  * 令牌桶限流

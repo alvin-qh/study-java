@@ -1,4 +1,4 @@
-package alvin.study.process;
+package alvin.study.se.process;
 
 import lombok.AccessLevel;
 import lombok.Getter;

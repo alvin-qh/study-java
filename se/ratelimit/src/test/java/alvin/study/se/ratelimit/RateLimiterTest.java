@@ -1,4 +1,4 @@
-package alvin.study.ratelimit;
+package alvin.study.se.ratelimit;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.LockSupport;
