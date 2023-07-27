@@ -1,4 +1,4 @@
-package alvin.study.reflect.scan.match;
+package alvin.study.se.reflect.scan.match;
 
 import java.io.Serializable;
 

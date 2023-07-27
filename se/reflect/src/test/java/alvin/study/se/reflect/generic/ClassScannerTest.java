@@ -1,7 +1,8 @@
-package alvin.study.reflect.generic;
+package alvin.study.se.reflect.generic;
 
-import alvin.study.reflect.scan.ClassScanner;
-import alvin.study.reflect.scan.match.Matchers;
+import alvin.study.se.reflect.scan.ClassScanner;
+import alvin.study.se.reflect.scan.match.Matchers;
+import alvin.study.se.reflect.scan.match.Matcher;
 import org.junit.jupiter.api.Test;
 
 import java.lang.annotation.Documented;
@@ -25,7 +26,7 @@ class TestSubClass extends TestClass { }
  */
 class ClassScannerTest {
     /**
-     * 测试 {@link ClassScanner#matching(alvin.study.reflect.scan.match.Matcher)
+     * 测试 {@link ClassScanner#matching(Matcher)
      * ClassScanner#matching(Matcher)} 和 {@link ClassScanner#in(Package...)} 方法,
      * 通过指定的匹配器在指定包范围内查询类
      *
@@ -52,7 +53,7 @@ class ClassScannerTest {
     }
 
     /**
-     * 测试 {@link ClassScanner#matching(alvin.study.reflect.scan.match.Matcher)
+     * 测试 {@link ClassScanner#matching(Matcher)
      * ClassScanner#matching(Matcher)} 和 {@link ClassScanner#in(Package...)} 方法,
      * 通过指定的匹配器在指定包范围内查询类
      *

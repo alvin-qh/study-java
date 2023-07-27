@@ -1,4 +1,4 @@
-package alvin.study.reflect.generic;
+package alvin.study.se.reflect.generic;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

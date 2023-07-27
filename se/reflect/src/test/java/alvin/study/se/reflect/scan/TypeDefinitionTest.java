@@ -1,6 +1,6 @@
-package alvin.study.reflect.scan;
+package alvin.study.se.reflect.scan;
 
-import alvin.study.reflect.generic.TypeDefinition;
+import alvin.study.se.reflect.generic.TypeDefinition;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

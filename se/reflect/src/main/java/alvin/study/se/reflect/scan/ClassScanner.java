@@ -1,7 +1,7 @@
-package alvin.study.reflect.scan;
+package alvin.study.se.reflect.scan;
 
 
-import alvin.study.reflect.scan.match.Matcher;
+import alvin.study.se.reflect.scan.match.Matcher;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 

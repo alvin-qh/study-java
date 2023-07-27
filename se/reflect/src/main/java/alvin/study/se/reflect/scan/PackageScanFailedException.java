@@ -1,4 +1,4 @@
-package alvin.study.reflect.scan;
+package alvin.study.se.reflect.scan;
 
 /**
  * 包扫描失败异常类型
