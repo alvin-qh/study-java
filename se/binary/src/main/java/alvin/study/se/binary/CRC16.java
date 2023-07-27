@@ -1,4 +1,4 @@
-package alvin.study.binary;
+package alvin.study.se.binary;
 
 import java.util.function.BiFunction;
 

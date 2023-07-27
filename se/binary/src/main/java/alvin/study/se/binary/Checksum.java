@@ -1,42 +1,36 @@
-package alvin.study.binary;
+package alvin.study.se.binary;
 
 import org.jetbrains.annotations.NotNull;
 
 /**
- * 计算 BCC 校验码
+ * 计算累加和校验码
  *
  * <p>
- * BCC (Block Check Character, 信息组校验码), 因校验码是将所有数据异或得出, 故俗称异或校验
+ * 累加和校验码即将所有的字节累加后, 对累加结果求反, 得到校验码
  * </p>
  *
  * <p>
- * 具体算法是: 将每一个字节的数据进行异或后即得到校验码
- *
- * <pre>
- * 如: 0x01, 0xA0, 0x7C, 0xFF, 0x02
- * 计算: 0x01 ^ 0xA0 ^ 0x7C ^ 0xFF ^ 0x02 = 0x20
- * 校验码是：0x20
- * </pre>
+ * 注意, 本例只是累加和算法的基本型, 不同的系统会使用不同的累加算法 (例如对要累加的每 2 字节组成一个 {@code short} 值后进行累加等)
  * </p>
  */
-public final class BCC {
+public final class Checksum {
     // 求和校验码
-    private int code;
+    private int sum;
 
     /**
      * 默认构造器
      */
-    public BCC() {
+    public Checksum() {
         this(0);
     }
 
     /**
      * 构造器
      *
-     * @param code 异或结果初始值
+     * @param sum 累加和初始值
      */
-    private BCC(int code) {
-        this.code = code;
+    private Checksum(int sum) {
+        this.sum = sum;
     }
 
     /**
@@ -45,13 +39,13 @@ public final class BCC {
      * @param b {@code byte} 值
      */
     public void update(int b) {
-        code ^= Bytes.byteToInt(b);
+        sum += Bytes.byteToInt(b);
     }
 
     /**
      * 添加一组 {@code byte} 值
      *
-     * @param data {@code byte} 数组, 对数组的每一项进行异或运算
+     * @param data {@code byte} 数组, 对数组的每一项进行累加
      */
     public void update(byte[] data) {
         update(data, 0, data.length);
@@ -60,7 +54,7 @@ public final class BCC {
     /**
      * 添加一组 {@code byte} 值
      *
-     * @param data   {@code byte} 数组, 对数组的每一项进行异或运算
+     * @param data   {@code byte} 数组, 对数组的每一项进行累加
      * @param offset 偏移量, 从偏移量指定的位置开始计算
      */
     public void update(byte[] data, int offset) {
@@ -70,7 +64,7 @@ public final class BCC {
     /**
      * 添加一组 {@code byte} 值
      *
-     * @param data   {@code byte} 数组, 对数组的每一项进行异或运算
+     * @param data   {@code byte} 数组, 对数组的每一项进行累加
      * @param offset 偏移量, 从偏移量指定的位置开始计算
      * @param length 长度, 即从偏移量开始要计算的字节长度
      */
@@ -82,72 +76,77 @@ public final class BCC {
     }
 
     /**
-     * 计算 BCC 校验码
+     * 计算累加和校验码
      *
      * <p>
      * 最后的结果依赖于之前 {@code update} 方法执行的结果
      * </p>
      *
-     * @return BCC 校验码
+     * @return 累加和校验码
      */
     public int doFinal() {
-        return code;
+        if (sum <= 0xFF) {
+            // 如果累加结果不超过 255, 则返回累加结果
+            return sum;
+        }
+        // 如果累加结果超过 255, 则对结果求补码
+        return Bytes.byteToInt(~sum) + 1;
     }
 
     /**
-     * 计算 BCC 校验码
+     * 计算累加和校验码
      *
      * <p>
-     * 最后的结果依赖于之前 {@code update} 方法执行的结果, 并在之前的结果基础上计算本次传递参数的计算结果
+     * 最后的结果依赖于之前 {@code update} 方法执行的结果, 并在之前的结果累加上本次传递参数的计算结果
      * </p>
      *
      * <p>
      * 注意: {@code doFinal} 是一个幂等方法, 不会影响之前 {@code update} 的结果
      * </p>
      *
-     * @param data   {@code byte} 数组, 对数组的每一项进行异或运算
+     * @param data   {@code byte} 数组, 对数组的每一项进行累加
      * @param offset 偏移量, 从偏移量指定的位置开始计算
-     * @return BCC 校验码
+     * @return 累加和校验码
      */
     public int doFinal(byte[] data, int offset) {
         return doFinal(data, offset, data.length - offset);
     }
 
     /**
-     * 计算 BCC 校验码
+     * 计算累加和校验码
      *
      * <p>
-     * 最后的结果依赖于之前 {@code update} 方法执行的结果, 并在之前的结果基础上计算本次传递参数的计算结果
+     * 最后的结果依赖于之前 {@code update} 方法执行的结果, 并在之前的结果累加上本次传递参数的计算结果
      * </p>
      *
      * <p>
      * 注意: {@code doFinal} 是一个幂等方法, 不会影响之前 {@code update} 的结果
      * </p>
      *
-     * @param data   {@code byte} 数组, 对数组的每一项进行异或运算
+     * @param data   {@code byte} 数组, 对数组的每一项进行累加
      * @param offset 偏移量, 从偏移量指定的位置开始计算
      * @param length 长度, 即从偏移量开始要计算的字节长度
-     * @return BCC 校验码
+     * @return 累加和校验码
      */
     public int doFinal(byte[] data, int offset, int length) {
-        var bcc = new BCC(this.code);
-        bcc.update(data, offset, length);
-        return bcc.doFinal();
+        var checksum = new Checksum(sum);
+        checksum.update(data, offset, length);
+        return checksum.doFinal();
     }
 
     /**
-     * 计算 BCC 校验码
+     * 计算累加和校验码
      *
      * <p>
-     * 最后的结果依赖于之前 {@code update} 方法执行的结果, 并在之前的结果基础上计算本次传递参数的计算结果
+     * 最后的结果依赖于之前 {@code update} 方法执行的结果, 并在之前的结果累加上本次传递参数的计算结果
      * </p>
      *
      * <p>
      * 注意: {@code doFinal} 是一个幂等方法, 不会影响之前 {@code update} 的结果
      * </p>
      *
-     * @param data {@code byte} 数组, 对数组的每一项进行异或运算
-     * @return BCC 校验码
+     * @param data {@code byte} 数组, 对数组的每一项进行累加
+     * @return 累加和校验码
      */
     public int doFinal(byte[] data) {
         return doFinal(data, 0, data.length);

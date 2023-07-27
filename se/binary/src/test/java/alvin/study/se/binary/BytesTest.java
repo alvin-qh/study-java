@@ -1,4 +1,4 @@
-package alvin.study.binary;
+package alvin.study.se.binary;
 
 import com.google.common.base.Charsets;
 import org.junit.jupiter.api.Test;

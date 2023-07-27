@@ -1,4 +1,4 @@
-package alvin.study.binary;
+package alvin.study.se.binary;
 
 import static org.assertj.core.api.BDDAssertions.then;
 

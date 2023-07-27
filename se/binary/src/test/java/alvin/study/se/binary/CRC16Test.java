@@ -1,6 +1,5 @@
-package alvin.study.binary;
+package alvin.study.se.binary;
 
-import alvin.study.binary.CRC16.AlgorithmMode;
 import com.google.common.base.Charsets;
 import org.junit.jupiter.api.Test;
 
@@ -37,7 +36,7 @@ class CRC16Test {
         // 原数据
         var data = "HelloWorld".getBytes(Charsets.UTF_8); // 对应的 16 机制为 48 65 6C 6C 6F 57 6F 72 6C 64
 
-        var crc = new CRC16(AlgorithmMode.XOR);
+        var crc = new CRC16(CRC16.AlgorithmMode.XOR);
 
         // 分批计算
         crc.update(data[0]);
