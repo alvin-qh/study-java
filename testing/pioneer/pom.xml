@@ -19,6 +19,7 @@
       <groupId>alvin.study</groupId>
       <artifactId>study-java-testing-testcase</artifactId>
       <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit-pioneer</groupId>
