@@ -127,22 +127,6 @@
     <dependencies>
       <!-- Begin dev dependencies -->
       <dependency>
-        <!-- Guice 依赖 -->
-        <groupId>com.google.inject</groupId>
-        <artifactId>guice-bom</artifactId>
-        <version>${version.guice}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <dependency>
-        <!-- Jackson BOM -->
-        <groupId>com.fasterxml.jackson</groupId>
-        <artifactId>jackson-bom</artifactId>
-        <version>${version.jackson}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <dependency>
         <!-- Guava 依赖 -->
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
