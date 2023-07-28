@@ -17,9 +17,13 @@
   <modules>
     <module>testcase</module>
     <module>junit</module>
+    <module>hamcrest</module>
     <module>assertj</module>
     <module>faker</module>
     <module>mock</module>
+    <module>awaitility</module>
+    <module>pioneer</module>
+    <module>testng</module>
   </modules>
 
   <build>

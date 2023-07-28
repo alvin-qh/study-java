@@ -1,12 +1,12 @@
 package alvin.study.testing.assertj;
 
-import alvin.study.testing.assertion.SoftAssertions;
 import alvin.study.testing.testcase.model.User;
 import org.junit.jupiter.api.Test;
 
-import static alvin.study.testing.assertion.Assertions.assertThat;
-import static alvin.study.testing.assertion.BddAssertions.then;
+import static alvin.study.testing.assertj.assertion.Assertions.assertThat;
+import static alvin.study.testing.assertj.assertion.BddAssertions.then;
 
+import alvin.study.testing.assertj.assertion.SoftAssertions;
 
 /**
  * 测试自动生成的断言类

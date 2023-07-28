@@ -60,7 +60,7 @@
         <artifactId>assertj-assertions-generator-maven-plugin</artifactId>
         <configuration>
           <!-- 指定断言入口类 -->
-          <entryPointClassPackage>alvin.study.testing.assertion</entryPointClassPackage>
+          <entryPointClassPackage>alvin.study.testing.assertj.assertion</entryPointClassPackage>
           <!-- 指定要生成断言类的类型列表 -->
           <classes>
             <param>alvin.study.testing.testcase.model.User</param>
@@ -104,6 +104,7 @@
               <sources>
                 <!-- 设置额外的源码路径 -->
                 <source>${project.basedir}/src/test/assertj/</source>
+                <source>${project.basedir}/src/test/java</source>
               </sources>
             </configuration>
           </execution>
