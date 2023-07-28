@@ -1,4 +1,4 @@
-package alvin.study.infra.model;
+package alvin.study.springboot.spel.infra.model;
 
 import com.google.common.base.Functions;
 import lombok.Builder;

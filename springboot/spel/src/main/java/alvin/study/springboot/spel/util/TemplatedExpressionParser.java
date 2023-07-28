@@ -1,4 +1,4 @@
-package alvin.study.util.spel;
+package alvin.study.springboot.spel.util;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;

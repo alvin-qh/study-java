@@ -1,6 +1,6 @@
-package alvin.study.conf;
+package alvin.study.springboot.spel.conf;
 
-import alvin.study.infra.model.Value;
+import alvin.study.springboot.spel.infra.model.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.expression.ExpressionParser;

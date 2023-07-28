@@ -1,8 +1,8 @@
-package alvin.study;
+package alvin.study.springboot.spel;
 
-import alvin.study.infra.model.Group;
-import alvin.study.infra.model.User;
-import alvin.study.util.spel.TemplatedExpressionParser;
+import alvin.study.springboot.spel.infra.model.Group;
+import alvin.study.springboot.spel.infra.model.User;
+import alvin.study.springboot.spel.util.TemplatedExpressionParser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,8 +43,8 @@ import static org.assertj.core.api.BDDAssertions.then;
  */
 @ActiveProfiles("test")
 @SpringBootTest
-@SuppressWarnings("unchecked")
 @ContextConfiguration
+@SuppressWarnings("unchecked")
 public class ExpressionsTest {
     /**
      * 注入模板解析对象
@@ -516,7 +516,7 @@ public class ExpressionsTest {
         context.setVariable("birthday", LocalDate.of(1981, 3, 17));
 
         // 在表达式中通过 new 运算符实例化一个 User 对象
-        expression = parser.parseExpression("#{ new alvin.study.infra.model.User(1L, 'Alvin', #birthday) }");
+        expression = parser.parseExpression("#{ new alvin.study.springboot.spel.infra.model.User(1L, 'Alvin', #birthday) }");
         var user = expression.getValue(context, User.class);
         then(Objects.requireNonNull(user).getId()).isEqualTo(1L);
         then(user.getName()).isEqualTo("Alvin");
@@ -623,7 +623,7 @@ public class ExpressionsTest {
 
         // 在表达式中为 root 赋值, 并确认赋值表达式的结果
         expression = parser.parseExpression(
-            "#{ #root = new alvin.study.infra.model.User(3L, 'Emma', birthday) }");
+            "#{ #root = new alvin.study.springboot.spel.infra.model.User(3L, 'Emma', birthday) }");
         user = expression.getValue(context, User.class);
         then(user).isNotNull()
             .extracting("id", "name", "birthday")
