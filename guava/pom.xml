@@ -14,11 +14,31 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <!--<dependencies>-->
-  <!--  <dependency>-->
-  <!--    <groupId>org.junit-pioneer</groupId>-->
-  <!--    <artifactId>junit-pioneer</artifactId>-->
-  <!--    <scope>test</scope>-->
-  <!--  </dependency>-->
-  <!--</dependencies>-->
+  <modules>
+    <module>cache</module>
+    <module>io</module>
+    <module>collect</module>
+    <module>reflect</module>
+    <module>eventbus</module>
+    <module>future</module>
+    <module>graphs</module>
+    <module>hashing</module>
+  </modules>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${version.guava}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
+  </dependencies>
 </project>
