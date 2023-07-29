@@ -54,10 +54,10 @@ public class TableCleaner {
     private List<String> listAllTables(Connection conn, String schema, String tableType) {
         // 获取所有数据表的 sql 语句
         var sql = """
-                SELECT `table_name`
-                FROM `information_schema`.`tables`
-                WHERE `table_schema`=? AND `table_type`=?
-                """;
+            SELECT `table_name`
+            FROM `information_schema`.`tables`
+            WHERE `table_schema`=? AND `table_type`=?
+            """;
 
         var results = new ArrayList<String>();
 
@@ -116,19 +116,19 @@ public class TableCleaner {
 
             // 获取所有待清除的数据表名并执行清除语句
             listAllTables(conn, schema, tableType)
-                    .stream()
-                    // 去除排除的数据表
-                    .filter(t -> !excludeSet.contains(t))
-                    // 对每个数据表进行清除操作
-                    .forEach(t -> {
-                        log.info("Clear table {}", t);
-                        // 执行 truncate 操作
-                        try (var stat = conn.prepareStatement(String.format("TRUNCATE TABLE `%s`", t))) {
-                            stat.execute();
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
+                .stream()
+                // 去除排除的数据表
+                .filter(t -> !excludeSet.contains(t))
+                // 对每个数据表进行清除操作
+                .forEach(t -> {
+                    log.info("Clear table {}", t);
+                    // 执行 truncate 操作
+                    try (var stat = conn.prepareStatement(String.format("TRUNCATE TABLE `%s`", t))) {
+                        stat.execute();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
 
             // 恢复外键约束
             try (var stat = conn.prepareStatement("SET FOREIGN_KEY_CHECKS = 1")) {

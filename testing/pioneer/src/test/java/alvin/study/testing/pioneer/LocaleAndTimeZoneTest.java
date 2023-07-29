@@ -15,6 +15,15 @@ import static org.assertj.core.api.BDDAssertions.then;
  */
 class LocaleAndTimeZoneTest {
     /**
+     * 检查当前的默认时区
+     *
+     * @return 当前默认时区的偏移量是否为 {@code 0} (即是否为 UTC 时区)
+     */
+    static boolean checkTimeZone() {
+        return TimeZone.getDefault().getRawOffset() != 0;
+    }
+
+    /**
      * 测试获取系统默认的国际化标识
      *
      * <p>
@@ -67,15 +76,6 @@ class LocaleAndTimeZoneTest {
                 .setLanguage("zh")
                 .setVariant("chinese")
                 .build());
-    }
-
-    /**
-     * 检查当前的默认时区
-     *
-     * @return 当前默认时区的偏移量是否为 {@code 0} (即是否为 UTC 时区)
-     */
-    static boolean checkTimeZone() {
-        return TimeZone.getDefault().getRawOffset() != 0;
     }
 
     /**

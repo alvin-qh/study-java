@@ -57,9 +57,11 @@ dependencies {
 
 #### 1.1.3. 和 Spring Boot 集成
 
-当 JOOQ 需要和 Spring Boot 集成时, 首先需要将 `org.jooq:jooq` 依赖替换为 `org.springframework.boot:spring-boot-starter-jooq` 依赖
+当 JOOQ 需要和 Spring Boot 集成时, 首先需要将 `org.jooq:jooq`
+依赖替换为 `org.springframework.boot:spring-boot-starter-jooq` 依赖
 
-当 Spring Boot JOOQ 依赖和 Gradle 插件中 JOOQ 的版本不匹配时, 生成的代码和运行时可能会发生不兼容, 可以将 Spring Boot JOOQ 依赖中的 JOOQ 排除, 单独引入高版本的 JOOQ 依赖
+当 Spring Boot JOOQ 依赖和 Gradle 插件中 JOOQ 的版本不匹配时, 生成的代码和运行时可能会发生不兼容, 可以将 Spring Boot
+JOOQ 依赖中的 JOOQ 排除, 单独引入高版本的 JOOQ 依赖
 
 ```groovy
 dependencies {
@@ -221,9 +223,11 @@ sourceSets {
 
 #### 1.2.2. 和 Spring Boot 集成
 
-当 JOOQ 需要和 Spring Boot 集成时, 首先需要将 `org.jooq:jooq` 依赖替换为 `org.springframework.boot:spring-boot-starter-jooq` 依赖
+当 JOOQ 需要和 Spring Boot 集成时, 首先需要将 `org.jooq:jooq`
+依赖替换为 `org.springframework.boot:spring-boot-starter-jooq` 依赖
 
-当 Spring Boot JOOQ 依赖和 Gradle 插件中 JOOQ 的版本不匹配时, 生成的代码和运行时可能会发生不兼容, 可以将 Spring Boot JOOQ 依赖中的 JOOQ 排除, **单独引入高版本的 JOOQ 依赖**
+当 Spring Boot JOOQ 依赖和 Gradle 插件中 JOOQ 的版本不匹配时, 生成的代码和运行时可能会发生不兼容, 可以将 Spring Boot
+JOOQ 依赖中的 JOOQ 排除, **单独引入高版本的 JOOQ 依赖**
 
 ```xml
 <dependency>
@@ -284,7 +288,8 @@ mvn flyway:migrate
 
 #### 1.2.4. 配置 JOOQ 插件
 
-JOOQ Maven 插件的配置分为两种形式, 可以直接集成在 Maven 的 `pom.xml` 文件中, 也可以独立存在于一个 XML 文件中, 两种方式的内容大同小异
+JOOQ Maven 插件的配置分为两种形式, 可以直接集成在 Maven 的 `pom.xml` 文件中, 也可以独立存在于一个 XML 文件中,
+两种方式的内容大同小异
 
 本例中以 Maven 集成的方式进行配置
 
@@ -345,14 +350,15 @@ JOOQ Maven 插件的配置分为两种形式, 可以直接集成在 Maven 的 `p
 
 1. `<jdbc>` 标签, 配置 jdbc 驱动, 包括 URL, 用户名和密码等
 2. `<generator>` 标签, 配置 jooq 代码生成器, 包括:
-    - `<name>` 代码生成器的实现类, 可省略
-    - `<strategy>` 代码生成策略的实现类, 可省略
-    - `<database>` 配置要生成代码的数据库, 包括:
-      - `<name>` 数据库方言处理类
-      - `<includes>` 要生成代码的表名称列表 (支持通配符)
-      - `<excludes>` 不生成代码的表名称列表 (支持通配符)
-    - `<generate>` 配置生成器规则
-    - `<target>` 配置生成代码的规则, 包括代码的包名以及代码生成的位置
+
+- `<name>` 代码生成器的实现类, 可省略
+- `<strategy>` 代码生成策略的实现类, 可省略
+- `<database>` 配置要生成代码的数据库, 包括:
+  - `<name>` 数据库方言处理类
+  - `<includes>` 要生成代码的表名称列表 (支持通配符)
+  - `<excludes>` 不生成代码的表名称列表 (支持通配符)
+- `<generate>` 配置生成器规则
+- `<target>` 配置生成代码的规则, 包括代码的包名以及代码生成的位置
 
 此时, 通过 JOOQ 插件的 `generate` goal 即可自动生成代码
 
@@ -386,7 +392,8 @@ mvn jooq-codegen:generate
 
 ## 2. 基本概念
 
-完成上述配置后, 在 `src/main/resources/migration` 路径下添加 migration 文件 (本例中为 `V20211201_1336__create_init_db.sql` 文件), 之后进行 migration 操作, 生成 JOOQ 代码
+完成上述配置后, 在 `src/main/resources/migration` 路径下添加 migration 文件 (
+本例中为 `V20211201_1336__create_init_db.sql` 文件), 之后进行 migration 操作, 生成 JOOQ 代码
 
 对于 Gradle, 命令如下
 
@@ -428,13 +435,16 @@ mvn jooq-codegen:generate
 
 ### 2.1. POJO 和 Record 类型
 
-当开启 JOOQ generate 的 `pojos` 选项后, 会产生和数据表对应的 POJO 类型, 该类型本质上是普通的 Java 类型, 具备无参构造器, `get/set` 方法, 可以用于作为数据传输的载体
+当开启 JOOQ generate 的 `pojos` 选项后, 会产生和数据表对应的 POJO 类型, 该类型本质上是普通的 Java 类型,
+具备无参构造器, `get/set` 方法, 可以用于作为数据传输的载体
 
-当开启 JOOQ generate 的 `record` 选项后, 会产生和数据表对应的 Record 类型, 该类型相当于数据表的实体映射, 可以对实体进行**增删改查**操作
+当开启 JOOQ generate 的 `record` 选项后, 会产生和数据表对应的 Record 类型, 该类型相当于数据表的实体映射, 可以对实体进行*
+*增删改查**操作
 
 ## 其它
 
-对于 Gradle 工具来说, `generateJooq` 任务会在 `build` 任务之前自动执行, 但对于未修改表结构的情况下, 无需每次均执行 `generateJooq` 任务, 所以可以通过如下方式跳过该任务
+对于 Gradle 工具来说, `generateJooq` 任务会在 `build` 任务之前自动执行, 但对于未修改表结构的情况下,
+无需每次均执行 `generateJooq` 任务, 所以可以通过如下方式跳过该任务
 
 ```bash
 ./gradlew build -x generateJooq

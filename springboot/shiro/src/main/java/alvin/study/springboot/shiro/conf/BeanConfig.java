@@ -1,21 +1,19 @@
 package alvin.study.springboot.shiro.conf;
 
+import alvin.study.springboot.shiro.util.security.Jwt;
+import alvin.study.springboot.shiro.util.security.PasswordEncoder;
+import com.auth0.jwt.algorithms.Algorithm;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
 import java.time.Duration;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-import com.auth0.jwt.algorithms.Algorithm;
-
-import alvin.study.springboot.shiro.util.security.Jwt;
-import alvin.study.springboot.shiro.util.security.PasswordEncoder;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 配置需被容器管理的 Bean 对象

@@ -44,6 +44,20 @@ public class ObjectOf<T, R> extends TypeSafeDiagnosingMatcher<T> {
     }
 
     /**
+     * 构造一个 {@link Matcher} 对象, 将 {@code mapper} 参数的返回值通过 {@code matcher}
+     * 参数进行匹配后返回匹配结果
+     *
+     * @param <T>     原始对象类型, 通过 {@code mapper} 参数转化为 {@code <R>} 类型对象
+     * @param <R>     要匹配的对象类型
+     * @param mapper  用于对象转换的 {@link Function} 对象
+     * @param matcher 用于对转换后结果进行匹配的 {@link Matcher} 对象
+     * @return {@link ObjectOf} 类型对象
+     */
+    public static <T, R> Matcher<T> objectOf(Function<? super T, ? extends R> mapper, Matcher<? extends R> matcher) {
+        return new ObjectOf<>(mapper, matcher);
+    }
+
+    /**
      * 将当前匹配失败的信息拼入整体匹配失败信息流中
      *
      * <p>
@@ -75,19 +89,5 @@ public class ObjectOf<T, R> extends TypeSafeDiagnosingMatcher<T> {
         // 设置匹配结果值
         matcher.describeMismatch(obj, mismatch);
         return result;
-    }
-
-    /**
-     * 构造一个 {@link Matcher} 对象, 将 {@code mapper} 参数的返回值通过 {@code matcher}
-     * 参数进行匹配后返回匹配结果
-     *
-     * @param <T>     原始对象类型, 通过 {@code mapper} 参数转化为 {@code <R>} 类型对象
-     * @param <R>     要匹配的对象类型
-     * @param mapper  用于对象转换的 {@link Function} 对象
-     * @param matcher 用于对转换后结果进行匹配的 {@link Matcher} 对象
-     * @return {@link ObjectOf} 类型对象
-     */
-    public static <T, R> Matcher<T> objectOf(Function<? super T, ? extends R> mapper, Matcher<? extends R> matcher) {
-        return new ObjectOf<>(mapper, matcher);
     }
 }

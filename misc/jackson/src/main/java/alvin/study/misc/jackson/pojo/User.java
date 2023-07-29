@@ -66,12 +66,12 @@ public class User {
      */
     @JsonCreator
     @SneakyThrows
-    @SuppressWarnings({"java:S6437", "java:S3329"})
+    @SuppressWarnings({ "java:S6437", "java:S3329" })
     public User(
-            @JsonProperty("id") Long id,
-            @JsonProperty("username") String username,
-            @JsonProperty("mobile") String mobile,
-            @JsonProperty("encodedMobile") String encodedMobile) {
+        @JsonProperty("id") Long id,
+        @JsonProperty("username") String username,
+        @JsonProperty("mobile") String mobile,
+        @JsonProperty("encodedMobile") String encodedMobile) {
         this.id = id;
         this.username = username;
 

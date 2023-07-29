@@ -65,6 +65,55 @@ public class AssistedInjectModule extends AbstractModule {
     }
 
     /**
+     * 参数辅助注入类型的工厂
+     *
+     * <p>
+     * 对构造器方法具备 {@link AssistedInject @AssistedInject} 注解的类型, 由于一部分参数需要注入, 所以无法直接通过
+     * {@code new} 操作符创建实例, 需要创建如下工厂接口, 并在 {@link AbstractModule#configure()} 方法中通过
+     * {@code install(new FactoryModuleBuilder().build(ConnectionFactory.class))}
+     * 安装为子模块
+     * </p>
+     */
+    interface ConnectionFactory {
+        /**
+         * 创建 {@link Connection} 类型对象的工厂方法
+         *
+         * <p>
+         * 工厂方法的方法名可以为任意名称, 如何匹配目标类型构造器构建对象是由工厂方法的参数来决定的
+         * </p>
+         *
+         * <p>
+         * 标记为 {@link Assisted @Assisted} 注解的参数为需要传递给 {@link Connection}
+         * 类型构造器的参数, 其余构造器参数通过注入传递
+         * </p>
+         *
+         * <p>
+         * 该方法对应 {@link Connection#Connection(String, int, String, String)} 构造器方法
+         * </p>
+         *
+         * @param account  对应 {@link Connection} 类型的 {@code account} 参数
+         * @param password 对应 {@link Connection} 类型的 {@code password} 参数
+         */
+        Connection create(
+            @Assisted("account") String account,
+            @Assisted("password") String password);
+
+        /**
+         * 创建 {@link Connection} 类型对象
+         *
+         * <p>
+         * 工厂方法的方法名可以为任意名称, 如何匹配目标类型构造器构建对象是由工厂方法的参数来决定的
+         * </p>
+         *
+         * <p>
+         * 无参方法, 对应 {@link Connection#Connection(String, int)} 构造器方法, 即类型无需手动传参的构造器
+         * (均为自动注入参数或无参数)
+         * </p>
+         */
+        Connection createAnonymous();
+    }
+
+    /**
      * 需要进行辅助注入的类
      */
     static class Connection {
@@ -116,54 +165,5 @@ public class AssistedInjectModule extends AbstractModule {
             }
             return String.format("%s:%s@%s?timeout=%s", account, password, url, timeout);
         }
-    }
-
-    /**
-     * 参数辅助注入类型的工厂
-     *
-     * <p>
-     * 对构造器方法具备 {@link AssistedInject @AssistedInject} 注解的类型, 由于一部分参数需要注入, 所以无法直接通过
-     * {@code new} 操作符创建实例, 需要创建如下工厂接口, 并在 {@link AbstractModule#configure()} 方法中通过
-     * {@code install(new FactoryModuleBuilder().build(ConnectionFactory.class))}
-     * 安装为子模块
-     * </p>
-     */
-    interface ConnectionFactory {
-        /**
-         * 创建 {@link Connection} 类型对象的工厂方法
-         *
-         * <p>
-         * 工厂方法的方法名可以为任意名称, 如何匹配目标类型构造器构建对象是由工厂方法的参数来决定的
-         * </p>
-         *
-         * <p>
-         * 标记为 {@link Assisted @Assisted} 注解的参数为需要传递给 {@link Connection}
-         * 类型构造器的参数, 其余构造器参数通过注入传递
-         * </p>
-         *
-         * <p>
-         * 该方法对应 {@link Connection#Connection(String, int, String, String)} 构造器方法
-         * </p>
-         *
-         * @param account  对应 {@link Connection} 类型的 {@code account} 参数
-         * @param password 对应 {@link Connection} 类型的 {@code password} 参数
-         */
-        Connection create(
-            @Assisted("account") String account,
-            @Assisted("password") String password);
-
-        /**
-         * 创建 {@link Connection} 类型对象
-         *
-         * <p>
-         * 工厂方法的方法名可以为任意名称, 如何匹配目标类型构造器构建对象是由工厂方法的参数来决定的
-         * </p>
-         *
-         * <p>
-         * 无参方法, 对应 {@link Connection#Connection(String, int)} 构造器方法, 即类型无需手动传参的构造器
-         * (均为自动注入参数或无参数)
-         * </p>
-         */
-        Connection createAnonymous();
     }
 }

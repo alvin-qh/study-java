@@ -28,7 +28,7 @@ import static org.assertj.core.api.BDDAssertions.then;
  * {@link ConcurrentHashMap.KeySetView} 以及 {@link CopyOnWriteArraySet} 等 {@link java.util.Set Set} 类型集合的方法
  * </p>
  */
-@SuppressWarnings({"OverwrittenKey", "StringOperationCanBeSimplified"})
+@SuppressWarnings({ "OverwrittenKey", "StringOperationCanBeSimplified" })
 class SetUtilsTest {
     /**
      * 创建 {@link java.util.Set Set} 集合对象

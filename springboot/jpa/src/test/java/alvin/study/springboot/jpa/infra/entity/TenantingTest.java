@@ -7,8 +7,6 @@ import alvin.study.springboot.jpa.builder.UserBuilder;
 import alvin.study.springboot.jpa.core.context.Context;
 import alvin.study.springboot.jpa.core.context.CustomRequestAttributes;
 import alvin.study.springboot.jpa.core.context.WebContext;
-import alvin.study.springboot.jpa.infra.entity.Org;
-import alvin.study.springboot.jpa.infra.entity.User;
 import alvin.study.springboot.jpa.infra.entity.common.TenantedEntityListener;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

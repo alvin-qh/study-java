@@ -1,4 +1,3 @@
-
 /**
  * 通过 {@link org.hibernate.annotations.FilterDef @FilterDef} 注解, 定义过滤器的名称和用于过滤的参数名和类型
  *

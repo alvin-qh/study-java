@@ -1,11 +1,10 @@
 package alvin.study.springboot.kickstart.builder;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import alvin.study.springboot.kickstart.infra.entity.DepartmentEmployee;
 import alvin.study.springboot.kickstart.infra.mapper.DepartmentEmployeeMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * 构建部门职员关系实体

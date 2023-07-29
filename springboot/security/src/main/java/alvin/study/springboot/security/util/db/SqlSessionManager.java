@@ -1,14 +1,13 @@
 package alvin.study.springboot.security.util.db;
 
-import java.sql.Connection;
-
+import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.SqlSessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import lombok.RequiredArgsConstructor;
+import java.sql.Connection;
 
 /**
  * 用于 mybatis 的 {@link SqlSession} 对象管理器

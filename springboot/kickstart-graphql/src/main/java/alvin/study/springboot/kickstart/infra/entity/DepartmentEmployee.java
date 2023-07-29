@@ -3,7 +3,6 @@ package alvin.study.springboot.kickstart.infra.entity;
 import alvin.study.springboot.kickstart.infra.entity.common.AuditedEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

@@ -1,9 +1,8 @@
 package alvin.study.springboot.kickstart.core.graphql.dataloader;
 
 import alvin.study.springboot.kickstart.conf.GraphqlConfig;
-import org.dataloader.DataLoader;
-
 import alvin.study.springboot.kickstart.core.graphql.annotation.DataLoaderCreator;
+import org.dataloader.DataLoader;
 
 /**
  * {@link DataLoader} 类型对象提供器

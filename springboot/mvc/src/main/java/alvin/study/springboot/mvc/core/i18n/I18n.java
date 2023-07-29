@@ -1,7 +1,5 @@
 package alvin.study.springboot.mvc.core.i18n;
 
-import alvin.study.springboot.mvc.conf.WebConfig;
-
 import java.util.Locale;
 
 /**

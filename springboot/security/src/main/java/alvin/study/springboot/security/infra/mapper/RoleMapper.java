@@ -1,18 +1,17 @@
 package alvin.study.springboot.security.infra.mapper;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-
 import alvin.study.springboot.security.infra.entity.Role;
 import alvin.study.springboot.security.infra.entity.common.AuditedEntity;
 import alvin.study.springboot.security.infra.handler.EntityFieldHandler;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * 对 {@link Role} 实体进行操作的 Mapper 类型

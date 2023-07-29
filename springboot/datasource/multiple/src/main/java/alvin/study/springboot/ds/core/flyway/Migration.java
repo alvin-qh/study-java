@@ -1,16 +1,14 @@
 package alvin.study.springboot.ds.core.flyway;
 
-import java.util.List;
-
-import javax.sql.DataSource;
-
+import lombok.RequiredArgsConstructor;
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.stereotype.Component;
 
-import lombok.RequiredArgsConstructor;
+import javax.sql.DataSource;
+import java.util.List;
 
 /**
  * 手动进行数据库 migrate 操作
@@ -35,12 +33,12 @@ public class Migration {
             // 注意, 这里要过滤掉 AbstractRoutingDataSource 这个动态数据源, 因为它不是实际的数据源
             if (!(ds instanceof AbstractRoutingDataSource)) {
                 Flyway.configure()
-                        .dataSource(ds)
-                        .baselineOnMigrate(true)
-                        .locations("classpath:/migration")
-                        .table("schema_version")
-                        .load()
-                        .migrate();
+                    .dataSource(ds)
+                    .baselineOnMigrate(true)
+                    .locations("classpath:/migration")
+                    .table("schema_version")
+                    .load()
+                    .migrate();
             }
         }
     }

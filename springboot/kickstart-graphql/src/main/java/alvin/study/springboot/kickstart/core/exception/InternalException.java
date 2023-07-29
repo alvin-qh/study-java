@@ -1,10 +1,9 @@
 package alvin.study.springboot.kickstart.core.exception;
 
-import java.util.Map;
-
 import com.google.common.base.Strings;
-
 import graphql.ErrorType;
+
+import java.util.Map;
 
 /**
  * 调用 API 时因为内部错误导致异常

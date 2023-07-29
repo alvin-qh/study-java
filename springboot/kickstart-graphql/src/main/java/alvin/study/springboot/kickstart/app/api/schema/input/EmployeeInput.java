@@ -1,12 +1,12 @@
 package alvin.study.springboot.kickstart.app.api.schema.input;
 
-import java.util.List;
-import java.util.Map;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 变更雇员信息的输入类

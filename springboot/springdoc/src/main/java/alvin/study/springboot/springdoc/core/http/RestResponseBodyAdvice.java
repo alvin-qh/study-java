@@ -58,6 +58,15 @@ import java.util.stream.Collectors;
 @RestControllerAdvice(basePackages = "alvin.study.app")
 public class RestResponseBodyAdvice implements ResponseBodyAdvice<Object> {
     /**
+     * 以警告级别记录异常日志
+     *
+     * @param e 异常对象
+     */
+    private static void warnLog(Exception e) {
+        log.warn("Some error raised and will return to client", e);
+    }
+
+    /**
      * 返回 {@code true} 或 {@code false}, 以决定 {@code beforeBodyWrite} 方法是否需要执行
      *
      * <p>
@@ -107,15 +116,6 @@ public class RestResponseBodyAdvice implements ResponseBodyAdvice<Object> {
         @NotNull ServerHttpRequest request,
         @NotNull ServerHttpResponse response) {
         return ResponseWrapper.success(body);
-    }
-
-    /**
-     * 以警告级别记录异常日志
-     *
-     * @param e 异常对象
-     */
-    private static void warnLog(Exception e) {
-        log.warn("Some error raised and will return to client", e);
     }
 
     /**

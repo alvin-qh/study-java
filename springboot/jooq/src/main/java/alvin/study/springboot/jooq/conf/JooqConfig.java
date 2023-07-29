@@ -103,10 +103,10 @@ public class JooqConfig {
     @Bean
     DSLContext dslContext(DataSourceConnectionProvider connectionProvider) {
         var config = new DefaultConfiguration()
-                .set(connectionProvider)
-                .set(SQLDialect.MYSQL)
-                .set((RecordListenerProvider) auditRecordListener)
-                .set((VisitListenerProvider) tentedVisitListener);
+            .set(connectionProvider)
+            .set(SQLDialect.MYSQL)
+            .set((RecordListenerProvider) auditRecordListener)
+            .set((VisitListenerProvider) tentedVisitListener);
 
         return DSL.using(config);
     }

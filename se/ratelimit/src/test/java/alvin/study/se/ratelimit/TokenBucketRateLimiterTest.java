@@ -1,10 +1,10 @@
 package alvin.study.se.ratelimit;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link TokenBucketRateLimiter} 类型, 通过令牌桶进行限流

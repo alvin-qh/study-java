@@ -1,20 +1,18 @@
 package alvin.study.springboot.kickstart.app.api.schema.loader;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
-
 import alvin.study.springboot.kickstart.core.context.Context;
 import alvin.study.springboot.kickstart.core.context.CustomRequestAttributes;
 import alvin.study.springboot.kickstart.core.graphql.annotation.DataLoaderCreator;
 import alvin.study.springboot.kickstart.core.graphql.dataloader.DataLoaderProvider;
 import alvin.study.springboot.kickstart.infra.entity.Org;
 import alvin.study.springboot.kickstart.infra.mapper.OrgMapper;
+import com.google.common.base.Functions;
+import lombok.RequiredArgsConstructor;
 import org.dataloader.DataLoader;
 import org.dataloader.DataLoaderFactory;
 
-import com.google.common.base.Functions;
-
-import lombok.RequiredArgsConstructor;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 /**
  * 用户读取 {@link DataLoader} 提供器
@@ -45,7 +43,7 @@ public class OrgLoaderProvider implements DataLoaderProvider<Long, Org> {
                 try (var ignore = CustomRequestAttributes.scopedRegister(context)) {
                     // 根据 id 集合查询 Org 对象集合, 并转为 OrgType 对象
                     return orgMapper.selectBatchIds(orgIds).stream()
-                            .collect(Collectors.toMap(Org::getId, Functions.identity()));
+                        .collect(Collectors.toMap(Org::getId, Functions.identity()));
                 }
             });
         });

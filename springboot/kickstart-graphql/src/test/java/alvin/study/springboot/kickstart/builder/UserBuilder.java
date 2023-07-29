@@ -1,14 +1,13 @@
 package alvin.study.springboot.kickstart.builder;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import alvin.study.springboot.kickstart.infra.entity.User;
 import alvin.study.springboot.kickstart.infra.entity.UserGroup;
 import alvin.study.springboot.kickstart.infra.mapper.UserMapper;
 import alvin.study.springboot.kickstart.util.security.PasswordUtil;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 用户实体构建器类

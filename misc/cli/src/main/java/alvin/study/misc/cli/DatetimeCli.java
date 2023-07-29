@@ -75,7 +75,7 @@ public final class DatetimeCli implements Callable<Integer> {
      * 其余属性参考 {@link Option @Option} 注解
      * </p>
      */
-    @Option(names = {"-d", "--date"}, description = "Show the date of today")
+    @Option(names = { "-d", "--date" }, description = "Show the date of today")
     private boolean date;
 
     /**
@@ -97,8 +97,21 @@ public final class DatetimeCli implements Callable<Integer> {
      * 其余属性参考 {@link Option @Option} 注解
      * </p>
      */
-    @Option(names = {"-t", "--time"}, description = "Show the time of now")
+    @Option(names = { "-t", "--time" }, description = "Show the time of now")
     private boolean time;
+
+    /**
+     * 修改获取当前时间的 {@link Clock} 对象
+     *
+     * <p>
+     * 在编写单元测试时, 通过默认的 {@link Clock} 对象获取的
+     * </p>
+     *
+     * @param clock {@link Clock} 类型对象
+     */
+    public static void setClock(Clock clock) {
+        DatetimeCli.clock = clock;
+    }
 
     /**
      * 执行命令的方法
@@ -129,18 +142,5 @@ public final class DatetimeCli implements Callable<Integer> {
 
         // 返回值作为进程返回值
         return 0;
-    }
-
-    /**
-     * 修改获取当前时间的 {@link Clock} 对象
-     *
-     * <p>
-     * 在编写单元测试时, 通过默认的 {@link Clock} 对象获取的
-     * </p>
-     *
-     * @param clock {@link Clock} 类型对象
-     */
-    public static void setClock(Clock clock) {
-        DatetimeCli.clock = clock;
     }
 }

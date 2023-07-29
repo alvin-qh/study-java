@@ -74,6 +74,43 @@ class AnnotationTest {
     }
 
     /**
+     * 在所有测试方法执行完毕后执行一次
+     *
+     * <p>
+     * 相关的几个方法的执行顺序为:
+     * <ol>
+     * <li>
+     * 在所有测试方法执行前, {@link BeforeAll @BeforeAll} 注解的方法会预先执行一次;
+     * </li>
+     * <li>
+     * 在每次测试方法执行前, {@link BeforeEach @BeforeEach} 注解的方法会预先执行;
+     * </li>
+     * <li>
+     * 在每个测试方法执行之后, {@link AfterEach @AfterEach} 注解的方法会被执行;
+     * </li>
+     * <li>
+     * 在所有测试执行完毕后, {@link AfterAll @AfterAll} 注解的方法会被执行一次;
+     * </li>
+     * </ol>
+     * </p>
+     */
+    @AfterAll
+    static void afterAll() {
+        TEST_LIST.add("afterAll");
+
+        assertEquals(List.of(
+            "beforeAll",
+            "beforeEach",
+            "runTest1",
+            "afterEach",
+            "beforeEach",
+            "runTest2",
+            "afterEach",
+            "afterAll"
+        ), TEST_LIST);
+    }
+
+    /**
      * 在每个测试执行前执行
      *
      * <p>
@@ -266,42 +303,5 @@ class AnnotationTest {
     @AfterEach
     void afterEach() {
         TEST_LIST.add("afterEach");
-    }
-
-    /**
-     * 在所有测试方法执行完毕后执行一次
-     *
-     * <p>
-     * 相关的几个方法的执行顺序为:
-     * <ol>
-     * <li>
-     * 在所有测试方法执行前, {@link BeforeAll @BeforeAll} 注解的方法会预先执行一次;
-     * </li>
-     * <li>
-     * 在每次测试方法执行前, {@link BeforeEach @BeforeEach} 注解的方法会预先执行;
-     * </li>
-     * <li>
-     * 在每个测试方法执行之后, {@link AfterEach @AfterEach} 注解的方法会被执行;
-     * </li>
-     * <li>
-     * 在所有测试执行完毕后, {@link AfterAll @AfterAll} 注解的方法会被执行一次;
-     * </li>
-     * </ol>
-     * </p>
-     */
-    @AfterAll
-    static void afterAll() {
-        TEST_LIST.add("afterAll");
-
-        assertEquals(List.of(
-            "beforeAll",
-            "beforeEach",
-            "runTest1",
-            "afterEach",
-            "beforeEach",
-            "runTest2",
-            "afterEach",
-            "afterAll"
-        ), TEST_LIST);
     }
 }

@@ -39,6 +39,20 @@ public interface Context {
     String KEY_USER_ID = "USER_ID";
 
     /**
+     * 获取当前请求范围内注册的 {@link Context} 对象
+     *
+     * @return 当前请求范围内注册的 {@link Context} 对象
+     * @see ScopedProxyUtils#getTargetBeanName(String)
+     * @see RequestContextHolder#currentRequestAttributes()
+     */
+    public static Context current() {
+        // 获取当前请求上下文属性集合
+        var attributes = RequestContextHolder.currentRequestAttributes();
+        // 从属性集合中根据 Context 对象的 Key 获取 Context 对象
+        return (Context) attributes.getAttribute(KEY, RequestAttributes.SCOPE_REQUEST);
+    }
+
+    /**
      * 当前接口实现类的所给的名称
      *
      * @return 名称字符串
@@ -99,19 +113,4 @@ public interface Context {
      * @return {@code Value} 值
      */
     <T> T getOrDefault(String name, T defaultValue);
-
-    /**
-     * 获取当前请求范围内注册的 {@link Context} 对象
-     *
-     * @return 当前请求范围内注册的 {@link Context} 对象
-     *
-     * @see ScopedProxyUtils#getTargetBeanName(String)
-     * @see RequestContextHolder#currentRequestAttributes()
-     */
-    public static Context current() {
-        // 获取当前请求上下文属性集合
-        var attributes = RequestContextHolder.currentRequestAttributes();
-        // 从属性集合中根据 Context 对象的 Key 获取 Context 对象
-        return (Context) attributes.getAttribute(KEY, RequestAttributes.SCOPE_REQUEST);
-    }
 }

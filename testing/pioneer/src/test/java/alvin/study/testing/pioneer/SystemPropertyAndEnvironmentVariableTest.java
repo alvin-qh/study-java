@@ -161,7 +161,7 @@ class SystemPropertyAndEnvironmentVariableTest {
      * 测试通过 {@link ClearSystemProperties @ClearSystemProperties} 注解批量删除指定的系统属性
      */
     @Test
-    @ClearSystemProperties(value = {@ClearSystemProperty(key = "os.name"), @ClearSystemProperty(key = "user.name")})
+    @ClearSystemProperties(value = { @ClearSystemProperty(key = "os.name"), @ClearSystemProperty(key = "user.name") })
     void clearSystemProperties_shouldValuesAreNull() {
         // 确认多个系统属性不存在
         then(System.getProperty("os.name")).isNull();
@@ -172,7 +172,7 @@ class SystemPropertyAndEnvironmentVariableTest {
      * 测试通过 {@link SetSystemProperties @SetSystemProperties} 注解批量设置新的系统属性值
      */
     @Test
-    @SetSystemProperties(value = {@SetSystemProperty(key = "os.name", value = "macOS"), @SetSystemProperty(key = "user.name", value = "Alvin")})
+    @SetSystemProperties(value = { @SetSystemProperty(key = "os.name", value = "macOS"), @SetSystemProperty(key = "user.name", value = "Alvin") })
     void setSystemProperties_shouldSetNewValues() {
         // 确认多个系统属性值为新设置的值
         then(System.getProperty("os.name")).isEqualTo("macOS");
@@ -212,7 +212,7 @@ class SystemPropertyAndEnvironmentVariableTest {
      * 测试通过 {@link ClearEnvironmentVariables @ClearEnvironmentVariables} 注解批量删除指定环境变量值
      */
     @Test
-    @ClearEnvironmentVariables({@ClearEnvironmentVariable(key = "PATH"), @ClearEnvironmentVariable(key = "HOME")})
+    @ClearEnvironmentVariables({ @ClearEnvironmentVariable(key = "PATH"), @ClearEnvironmentVariable(key = "HOME") })
     void clearEnvironmentVariables_shouldValuesAreNull() {
         // 确认指定的环境变量不存在
         then(System.getenv("PATH")).isNull();
@@ -223,7 +223,7 @@ class SystemPropertyAndEnvironmentVariableTest {
      * 测试通过 {@link SetEnvironmentVariables @SetEnvironmentVariables} 注解批量设置新的环境变量值
      */
     @Test
-    @SetEnvironmentVariables({@SetEnvironmentVariable(key = "PATH", value = "/opt/jvm/jdk-17"), @SetEnvironmentVariable(key = "HOME", value = "/home/alvin")})
+    @SetEnvironmentVariables({ @SetEnvironmentVariable(key = "PATH", value = "/opt/jvm/jdk-17"), @SetEnvironmentVariable(key = "HOME", value = "/home/alvin") })
     void setEnvironmentVariables_shouldSetNewValues() {
         // 确认环境变量为新设置的值
         then(System.getenv("PATH")).isEqualTo("/opt/jvm/jdk-17");

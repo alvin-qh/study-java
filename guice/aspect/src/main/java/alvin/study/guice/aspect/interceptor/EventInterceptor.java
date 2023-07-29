@@ -37,6 +37,29 @@ public class EventInterceptor implements MethodInterceptor {
     private Map<String, EventHandler> handlers;
 
     /**
+     * 从 {@link EventHandler} 接口对象的
+     * {@link EventHandler#handler(Object, Method, Object[])
+     * EventHandler.handler(...)} 方法上获取
+     * {@link Handler @Handler} 注解的 {@code name} 属性值
+     *
+     * <p>
+     * {@link Handler @Handler} 注解的 {@code name} 属性值表示该事件处理方法的一个名字, 用来和
+     * {@link Event @Event} 注解的 {@code handler} 属性值对应
+     * </p>
+     *
+     * @param handler {@link EventHandler} 接口对象
+     * @return {@link EventHandler#handler(Object, Method, Object[])
+     * EventHandler.handler(...)} 方法上 {@link Handler @Handler} 注解的
+     * {@code name} 属性值
+     */
+    @SneakyThrows
+    private static String getHandlerName(EventHandler handler) {
+        var method = handler.getClass().getMethod("handler", Object.class, Method.class, Object[].class);
+        var annotation = method.getAnnotation(Handler.class);
+        return annotation.name();
+    }
+
+    /**
      * 执行方法拦截
      */
     @Override
@@ -71,33 +94,10 @@ public class EventInterceptor implements MethodInterceptor {
     @Inject
     public void setHandlers(@Named("Handlers") Set<EventHandler> handlers) {
         this.handlers = handlers.stream().collect(
-                Collectors.toMap(
-                        EventInterceptor::getHandlerName,
-                        Function.identity()
-                )
+            Collectors.toMap(
+                EventInterceptor::getHandlerName,
+                Function.identity()
+            )
         );
-    }
-
-    /**
-     * 从 {@link EventHandler} 接口对象的
-     * {@link EventHandler#handler(Object, Method, Object[])
-     * EventHandler.handler(...)} 方法上获取
-     * {@link Handler @Handler} 注解的 {@code name} 属性值
-     *
-     * <p>
-     * {@link Handler @Handler} 注解的 {@code name} 属性值表示该事件处理方法的一个名字, 用来和
-     * {@link Event @Event} 注解的 {@code handler} 属性值对应
-     * </p>
-     *
-     * @param handler {@link EventHandler} 接口对象
-     * @return {@link EventHandler#handler(Object, Method, Object[])
-     * EventHandler.handler(...)} 方法上 {@link Handler @Handler} 注解的
-     * {@code name} 属性值
-     */
-    @SneakyThrows
-    private static String getHandlerName(EventHandler handler) {
-        var method = handler.getClass().getMethod("handler", Object.class, Method.class, Object[].class);
-        var annotation = method.getAnnotation(Handler.class);
-        return annotation.name();
     }
 }

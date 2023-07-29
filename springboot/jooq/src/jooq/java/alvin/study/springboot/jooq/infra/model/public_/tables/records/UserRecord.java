@@ -6,14 +6,13 @@ package alvin.study.springboot.jooq.infra.model.public_.tables.records;
 
 import alvin.study.springboot.jooq.infra.model.UserType;
 import alvin.study.springboot.jooq.infra.model.public_.tables.User;
-
-import java.time.LocalDateTime;
-
 import org.jooq.Field;
 import org.jooq.Record10;
 import org.jooq.Record2;
 import org.jooq.Row10;
 import org.jooq.impl.UpdatableRecordImpl;
+
+import java.time.LocalDateTime;
 
 
 /**
@@ -25,11 +24,50 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>PUBLIC.USER.ID</code>.
+     * Create a detached UserRecord
      */
-    public UserRecord setId(Long value) {
-        set(0, value);
-        return this;
+    public UserRecord() {
+        super(User.USER);
+    }
+
+    /**
+     * Create a detached, initialised UserRecord
+     */
+    public UserRecord(Long id, Long orgId, String account, String password, UserType type, Long deleted, Long createdBy, Long updatedBy, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(User.USER);
+
+        setId(id);
+        setOrgId(orgId);
+        setAccount(account);
+        setPassword(password);
+        setType(type);
+        setDeleted(deleted);
+        setCreatedBy(createdBy);
+        setUpdatedBy(updatedBy);
+        setCreatedAt(createdAt);
+        setUpdatedAt(updatedAt);
+        resetChangedOnNotNull();
+    }
+
+    /**
+     * Create a detached, initialised UserRecord
+     */
+    public UserRecord(alvin.study.springboot.jooq.infra.model.public_.tables.pojos.User value) {
+        super(User.USER);
+
+        if (value != null) {
+            setId(value.getId());
+            setOrgId(value.getOrgId());
+            setAccount(value.getAccount());
+            setPassword(value.getPassword());
+            setType(value.getType());
+            setDeleted(value.getDeleted());
+            setCreatedBy(value.getCreatedBy());
+            setUpdatedBy(value.getUpdatedBy());
+            setCreatedAt(value.getCreatedAt());
+            setUpdatedAt(value.getUpdatedAt());
+            resetChangedOnNotNull();
+        }
     }
 
     /**
@@ -40,10 +78,10 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
     }
 
     /**
-     * Setter for <code>PUBLIC.USER.ORG_ID</code>.
+     * Setter for <code>PUBLIC.USER.ID</code>.
      */
-    public UserRecord setOrgId(Long value) {
-        set(1, value);
+    public UserRecord setId(Long value) {
+        set(0, value);
         return this;
     }
 
@@ -55,10 +93,10 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
     }
 
     /**
-     * Setter for <code>PUBLIC.USER.ACCOUNT</code>.
+     * Setter for <code>PUBLIC.USER.ORG_ID</code>.
      */
-    public UserRecord setAccount(String value) {
-        set(2, value);
+    public UserRecord setOrgId(Long value) {
+        set(1, value);
         return this;
     }
 
@@ -70,10 +108,10 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
     }
 
     /**
-     * Setter for <code>PUBLIC.USER.PASSWORD</code>.
+     * Setter for <code>PUBLIC.USER.ACCOUNT</code>.
      */
-    public UserRecord setPassword(String value) {
-        set(3, value);
+    public UserRecord setAccount(String value) {
+        set(2, value);
         return this;
     }
 
@@ -85,10 +123,10 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
     }
 
     /**
-     * Setter for <code>PUBLIC.USER.TYPE</code>.
+     * Setter for <code>PUBLIC.USER.PASSWORD</code>.
      */
-    public UserRecord setType(UserType value) {
-        set(4, value);
+    public UserRecord setPassword(String value) {
+        set(3, value);
         return this;
     }
 
@@ -100,10 +138,10 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
     }
 
     /**
-     * Setter for <code>PUBLIC.USER.DELETED</code>.
+     * Setter for <code>PUBLIC.USER.TYPE</code>.
      */
-    public UserRecord setDeleted(Long value) {
-        set(5, value);
+    public UserRecord setType(UserType value) {
+        set(4, value);
         return this;
     }
 
@@ -115,10 +153,10 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
     }
 
     /**
-     * Setter for <code>PUBLIC.USER.CREATED_BY</code>.
+     * Setter for <code>PUBLIC.USER.DELETED</code>.
      */
-    public UserRecord setCreatedBy(Long value) {
-        set(6, value);
+    public UserRecord setDeleted(Long value) {
+        set(5, value);
         return this;
     }
 
@@ -130,10 +168,10 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
     }
 
     /**
-     * Setter for <code>PUBLIC.USER.UPDATED_BY</code>.
+     * Setter for <code>PUBLIC.USER.CREATED_BY</code>.
      */
-    public UserRecord setUpdatedBy(Long value) {
-        set(7, value);
+    public UserRecord setCreatedBy(Long value) {
+        set(6, value);
         return this;
     }
 
@@ -145,10 +183,10 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
     }
 
     /**
-     * Setter for <code>PUBLIC.USER.CREATED_AT</code>.
+     * Setter for <code>PUBLIC.USER.UPDATED_BY</code>.
      */
-    public UserRecord setCreatedAt(LocalDateTime value) {
-        set(8, value);
+    public UserRecord setUpdatedBy(Long value) {
+        set(7, value);
         return this;
     }
 
@@ -159,13 +197,21 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
         return (LocalDateTime) get(8);
     }
 
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
+
     /**
-     * Setter for <code>PUBLIC.USER.UPDATED_AT</code>.
+     * Setter for <code>PUBLIC.USER.CREATED_AT</code>.
      */
-    public UserRecord setUpdatedAt(LocalDateTime value) {
-        set(9, value);
+    public UserRecord setCreatedAt(LocalDateTime value) {
+        set(8, value);
         return this;
     }
+
+    // -------------------------------------------------------------------------
+    // Record10 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>PUBLIC.USER.UPDATED_AT</code>.
@@ -174,18 +220,18 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
         return (LocalDateTime) get(9);
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
+    /**
+     * Setter for <code>PUBLIC.USER.UPDATED_AT</code>.
+     */
+    public UserRecord setUpdatedAt(LocalDateTime value) {
+        set(9, value);
+        return this;
+    }
 
     @Override
     public Record2<Long, Long> key() {
         return (Record2) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record10 type implementation
-    // -------------------------------------------------------------------------
 
     @Override
     public Row10<Long, Long, String, String, UserType, Long, Long, Long, LocalDateTime, LocalDateTime> fieldsRow() {
@@ -395,6 +441,10 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     @Override
     public UserRecord value9(LocalDateTime value) {
         setCreatedAt(value);
@@ -420,56 +470,5 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
         value9(value9);
         value10(value10);
         return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached UserRecord
-     */
-    public UserRecord() {
-        super(User.USER);
-    }
-
-    /**
-     * Create a detached, initialised UserRecord
-     */
-    public UserRecord(Long id, Long orgId, String account, String password, UserType type, Long deleted, Long createdBy, Long updatedBy, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        super(User.USER);
-
-        setId(id);
-        setOrgId(orgId);
-        setAccount(account);
-        setPassword(password);
-        setType(type);
-        setDeleted(deleted);
-        setCreatedBy(createdBy);
-        setUpdatedBy(updatedBy);
-        setCreatedAt(createdAt);
-        setUpdatedAt(updatedAt);
-        resetChangedOnNotNull();
-    }
-
-    /**
-     * Create a detached, initialised UserRecord
-     */
-    public UserRecord(alvin.study.springboot.jooq.infra.model.public_.tables.pojos.User value) {
-        super(User.USER);
-
-        if (value != null) {
-            setId(value.getId());
-            setOrgId(value.getOrgId());
-            setAccount(value.getAccount());
-            setPassword(value.getPassword());
-            setType(value.getType());
-            setDeleted(value.getDeleted());
-            setCreatedBy(value.getCreatedBy());
-            setUpdatedBy(value.getUpdatedBy());
-            setCreatedAt(value.getCreatedAt());
-            setUpdatedAt(value.getUpdatedAt());
-            resetChangedOnNotNull();
-        }
     }
 }

@@ -7,10 +7,10 @@ import alvin.study.springboot.kickstart.common.GraphQLTestTemplateBuilder;
 import alvin.study.springboot.kickstart.common.TableCleaner;
 import alvin.study.springboot.kickstart.common.TestingTransaction;
 import alvin.study.springboot.kickstart.common.TestingTransactionManager;
-import alvin.study.springboot.kickstart.conf.TestingConfig;
-import alvin.study.springboot.kickstart.conf.TestingContextInitializer;
 import alvin.study.springboot.kickstart.conf.BeanConfig;
 import alvin.study.springboot.kickstart.conf.ContextConfig;
+import alvin.study.springboot.kickstart.conf.TestingConfig;
+import alvin.study.springboot.kickstart.conf.TestingContextInitializer;
 import alvin.study.springboot.kickstart.core.context.Context;
 import alvin.study.springboot.kickstart.core.context.CustomRequestAttributes;
 import alvin.study.springboot.kickstart.core.context.WebContext;
@@ -301,7 +301,7 @@ public abstract class IntegrationTest {
     protected GraphQLResponse graphql(String resource, String operationName, ObjectNode variables) throws IOException {
         // 创建一个 GraphQLTestTemplate 类型对象并设置所需的 Http header 值
         var template = testTemplateBuilder.build()
-                .withAdditionalHeader(Headers.AUTHORIZATION, Headers.BEARER + " " + makeBearerToken());
+            .withAdditionalHeader(Headers.AUTHORIZATION, Headers.BEARER + " " + makeBearerToken());
 
         try {
             // 拼装完整的资源路径和资源名, 对应 classpath:graphql/xxx.graphql 文件
@@ -314,7 +314,7 @@ public abstract class IntegrationTest {
             return template.perform(resource, operationName, variables);
         } finally {
             log.info("GraphQL={} request send, account={}, user={}",
-                    resource, currentOrg.getName(), currentUser.getAccount());
+                resource, currentOrg.getName(), currentUser.getAccount());
         }
     }
 
@@ -348,15 +348,15 @@ public abstract class IntegrationTest {
      */
     protected GraphQLResponse graphql(String query, ObjectNode variables) {
         var template = testTemplateBuilder.build()
-                // 设置 Http header
-                .withAdditionalHeader(Headers.AUTHORIZATION, Headers.BEARER + " " + makeBearerToken());
+            // 设置 Http header
+            .withAdditionalHeader(Headers.AUTHORIZATION, Headers.BEARER + " " + makeBearerToken());
 
         try {
             // 执行查询
             return template.postMultipart(query, variables.toPrettyString());
         } finally {
             log.info("GraphQL={} request send, account={}, user={}",
-                    query, currentOrg.getName(), currentUser.getAccount());
+                query, currentOrg.getName(), currentUser.getAccount());
         }
     }
 

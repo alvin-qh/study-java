@@ -41,6 +41,24 @@ public class IsTruly<T> extends BaseMatcher<T> {
     }
 
     /**
+     * 构造一个 {@link Matcher} 对象, 用于匹配一个对象值是否表示 {@code true}
+     *
+     * @return {@link IsTruly} 类型对象
+     */
+    public static <T> Matcher<T> truly() {
+        return new IsTruly<>();
+    }
+
+    /**
+     * 构造一个 {@link Matcher} 对象, 用于匹配一个对象值是否表示 {@code false}
+     *
+     * @return {@link org.hamcrest.core.IsNot IsNot(IsTruly)} 类型对象
+     */
+    public static <T> Matcher<T> falsely() {
+        return not(truly());
+    }
+
+    /**
      * 进行匹配操作
      *
      * @param item 要匹配的目标参数
@@ -78,23 +96,5 @@ public class IsTruly<T> extends BaseMatcher<T> {
     @Override
     public void describeTo(Description description) {
         description.appendText("<true>");
-    }
-
-    /**
-     * 构造一个 {@link Matcher} 对象, 用于匹配一个对象值是否表示 {@code true}
-     *
-     * @return {@link IsTruly} 类型对象
-     */
-    public static <T> Matcher<T> truly() {
-        return new IsTruly<>();
-    }
-
-    /**
-     * 构造一个 {@link Matcher} 对象, 用于匹配一个对象值是否表示 {@code false}
-     *
-     * @return {@link org.hamcrest.core.IsNot IsNot(IsTruly)} 类型对象
-     */
-    public static <T> Matcher<T> falsely() {
-        return not(truly());
     }
 }

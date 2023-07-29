@@ -18,7 +18,7 @@ import static org.assertj.core.api.BDDAssertions.thenThrownBy;
  * {@link Iterators} 工具类提供了一组对 {@link java.util.Iterator Iterator} 迭代器对象进行操作的辅助方法
  * </p>
  */
-@SuppressWarnings({"Guava", "OptionalGetWithoutIsPresent"})
+@SuppressWarnings({ "Guava", "OptionalGetWithoutIsPresent" })
 class IteratorUtilsTest {
     /**
      * 将一个迭代器对象内的元素添加到另一个集合中

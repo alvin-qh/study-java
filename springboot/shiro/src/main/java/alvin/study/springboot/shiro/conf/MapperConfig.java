@@ -1,14 +1,13 @@
 package alvin.study.springboot.shiro.conf;
 
+import alvin.study.springboot.shiro.infra.entity.Permission;
+import alvin.study.springboot.shiro.infra.entity.Role;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration.AccessLevel;
 import org.modelmapper.convention.NameTokenizers;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import alvin.study.springboot.shiro.infra.entity.Permission;
-import alvin.study.springboot.shiro.infra.entity.Role;
 
 /**
  * 配置对象之间相互 mapping 的配置类

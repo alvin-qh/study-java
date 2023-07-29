@@ -45,7 +45,8 @@ make
 
 将生成的 `libjni_demo_lib.so` 动态库文件复制到 `src/main/resources/native` 路径下, 最终通过 Maven 或 Gradle 打包在一起
 
-注意, 如果使用 Maven 进行打包, 且要将 `so` 这种二进制文件作为 Java 资源保存, 需要使用 `maven-surefire-plugin` 插件来确保 Maven 不会对资源内容进行转码, 即
+注意, 如果使用 Maven 进行打包, 且要将 `so` 这种二进制文件作为 Java 资源保存, 需要使用 `maven-surefire-plugin` 插件来确保
+Maven 不会对资源内容进行转码, 即
 
 ```xml
 <plugin>
@@ -60,4 +61,5 @@ make
 </plugin>
 ```
 
-至于如何将 `so` 文件从 Java 资源中释放出来, 请参考 [alvin.study.se.runtime.LoadLibrary.java](../src/main/java/alvin/study/misc/LoadLibrary.java) 文件
+至于如何将 `so` 文件从 Java 资源中释放出来,
+请参考 [alvin.study.se.runtime.LoadLibrary.java](../src/main/java/alvin/study/misc/LoadLibrary.java) 文件

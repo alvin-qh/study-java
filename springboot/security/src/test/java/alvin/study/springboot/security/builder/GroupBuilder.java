@@ -1,11 +1,10 @@
 package alvin.study.springboot.security.builder;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import alvin.study.springboot.security.infra.entity.Group;
 import alvin.study.springboot.security.infra.mapper.GroupMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 用户组实体构建器类

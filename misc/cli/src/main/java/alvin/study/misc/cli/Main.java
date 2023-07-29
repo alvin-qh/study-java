@@ -15,10 +15,54 @@ import java.util.concurrent.Callable;
  * 命令行的入口类
  */
 @Command(name = "cli", description = "Demo of java cli command")
-@SuppressWarnings({"FieldMayBeFinal"})
+@SuppressWarnings({ "FieldMayBeFinal" })
 public class Main implements Callable<Integer> {
-    @Option(names = {"-p", "--plain"}, description = "If show text as plain text")
+    @Option(names = { "-p", "--plain" }, description = "If show text as plain text")
     private boolean plain = false;
+
+    /**
+     * Java 入口方法, 所有的命令均从此入口开始执行
+     *
+     * <p>
+     * 本例中一共创建了三条命令
+     *
+     * <pre>
+     * java -jar cli.jar                # 由 Main.call() 方法执行的命令
+     * </pre>
+     *
+     * <pre>
+     * java -jar cli.jar echo ...       # 由 Main.echo(...) 方法执行的命令
+     * </pre>
+     *
+     * <pre>
+     * java -jar cli.jar datetime ...   # 由 DatetimeCli.call() 方法执行的命令
+     * </pre>
+     * </p>
+     *
+     * @param args 命令行参数
+     */
+    public static void main(String[] args) {
+        // 创建色彩配置
+        var colorSchema = new ColorScheme.Builder().ansi(Ansi.ON)
+            .commands(Style.bold, Style.underline)
+            .options(Style.fg_yellow)
+            .parameters(Style.fg_yellow)
+            .optionParams(Style.italic)
+            .errors(Style.fg_red, Style.bold)
+            .stackTraces(Style.italic)
+            .build();
+
+        // 添加 Main 类为根命令 (会自动添加 echo 为子命令) 以及 DatetimeCli 为子命令
+        var exitCode = new CommandLine(new Main())
+            .setColorScheme(colorSchema)
+            // 添加子命令对象
+            .addSubcommand(new DatetimeCli())
+            // 执行命令行命令
+            .execute(args);
+
+        // 以命令返回值作为进程返回值
+        System.exit(exitCode);
+    }
 
     /**
      * 根名令, 通过 {@code java -jar cli.jar} 直接执行, 无需额外命令名称
@@ -118,10 +162,10 @@ public class Main implements Callable<Integer> {
      * @param text      要输出的文本字符串, 如果该参数
      */
     @Command(name = "echo", mixinStandardHelpOptions = true, version = "echo 1.0", description = "Output string")
-    void echo(@Option(names = {"-e", "--err"}, description = "If output text into System.err stream") boolean err,
-              @Option(names = {"-c", "--color"}, description = "Set the font color") String color,
-              @Option(names = {"-b", "--bold"}, description = "Set the font bolder") boolean bold,
-              @Option(names = {"-u", "--underline"}, description = "Set font with underline") boolean underline,
+    void echo(@Option(names = { "-e", "--err" }, description = "If output text into System.err stream") boolean err,
+              @Option(names = { "-c", "--color" }, description = "Set the font color") String color,
+              @Option(names = { "-b", "--bold" }, description = "Set the font bolder") boolean bold,
+              @Option(names = { "-u", "--underline" }, description = "Set font with underline") boolean underline,
               @Parameters String[] text) {
         // 按照 color, bold, underline 的顺序组成格式参数
         var formatter = new ArrayList<String>();
@@ -150,49 +194,5 @@ public class Main implements Callable<Integer> {
         } else {
             System.out.println(outputText);
         }
-    }
-
-    /**
-     * Java 入口方法, 所有的命令均从此入口开始执行
-     *
-     * <p>
-     * 本例中一共创建了三条命令
-     *
-     * <pre>
-     * java -jar cli.jar                # 由 Main.call() 方法执行的命令
-     * </pre>
-     *
-     * <pre>
-     * java -jar cli.jar echo ...       # 由 Main.echo(...) 方法执行的命令
-     * </pre>
-     *
-     * <pre>
-     * java -jar cli.jar datetime ...   # 由 DatetimeCli.call() 方法执行的命令
-     * </pre>
-     * </p>
-     *
-     * @param args 命令行参数
-     */
-    public static void main(String[] args) {
-        // 创建色彩配置
-        var colorSchema = new ColorScheme.Builder().ansi(Ansi.ON)
-            .commands(Style.bold, Style.underline)
-            .options(Style.fg_yellow)
-            .parameters(Style.fg_yellow)
-            .optionParams(Style.italic)
-            .errors(Style.fg_red, Style.bold)
-            .stackTraces(Style.italic)
-            .build();
-
-        // 添加 Main 类为根命令 (会自动添加 echo 为子命令) 以及 DatetimeCli 为子命令
-        var exitCode = new CommandLine(new Main())
-            .setColorScheme(colorSchema)
-            // 添加子命令对象
-            .addSubcommand(new DatetimeCli())
-            // 执行命令行命令
-            .execute(args);
-
-        // 以命令返回值作为进程返回值
-        System.exit(exitCode);
     }
 }

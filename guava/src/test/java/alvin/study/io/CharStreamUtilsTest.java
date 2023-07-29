@@ -195,7 +195,7 @@ class CharStreamUtilsTest {
                             Thread.sleep(500);
                             po.write("Hello Guava".getBytes(Charsets.UTF_8));
                         }
-                    } catch (IOException | InterruptedException ignored) {}
+                    } catch (IOException | InterruptedException ignored) { }
                 });
 
                 // 启动线程, 开始管道操作

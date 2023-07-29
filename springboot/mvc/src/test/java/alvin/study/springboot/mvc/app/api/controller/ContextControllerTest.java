@@ -16,7 +16,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 class ContextControllerTest extends WebTest {
     // 定义正确的响应类型
     private static final ParameterizedTypeReference<ResponseWrapper<ContextDto>> SUCCESS_TYPE
-        = new ParameterizedTypeReference<>() {};
+        = new ParameterizedTypeReference<>() { };
 
     @Autowired
     private Jwt jwt;
@@ -34,10 +34,10 @@ class ContextControllerTest extends WebTest {
 
         // 发起 GET 测试请求
         var resp = getJson("/api/context")
-                .header("Authorization", "Bearer " + token).exchange()
-                .expectStatus().isOk() // 返回成功
-                .expectBody(SUCCESS_TYPE).returnResult() // 获取响应结果
-                .getResponseBody(); // 获取响应结果的 body
+            .header("Authorization", "Bearer " + token).exchange()
+            .expectStatus().isOk() // 返回成功
+            .expectBody(SUCCESS_TYPE).returnResult() // 获取响应结果
+            .getResponseBody(); // 获取响应结果的 body
 
         // 确认返回响应内容
         then(resp).isNotNull();
@@ -59,10 +59,10 @@ class ContextControllerTest extends WebTest {
     void get_shouldGet400ErrorWhenTokenMissed() {
         // 发起 GET 测试请求
         var resp = getJson("/api/context")
-                .exchange()
-                .expectStatus().is4xxClientError() // 返回 400 错误
-                .expectBody(ERROR_TYPE).returnResult() // 获取响应结果
-                .getResponseBody(); // 获取响应结果的 body
+            .exchange()
+            .expectStatus().is4xxClientError() // 返回 400 错误
+            .expectBody(ERROR_TYPE).returnResult() // 获取响应结果
+            .getResponseBody(); // 获取响应结果的 body
 
         // 确认返回响应内容
         then(resp).isNotNull();
@@ -83,11 +83,11 @@ class ContextControllerTest extends WebTest {
     void get_shouldGet400ErrorWhenTokenIsInvalid() {
         // 发起 GET 测试请求
         var resp = getJson("/api/context")
-                .header("Authorization", "abcd")
-                .exchange()
-                .expectStatus().is4xxClientError() // 返回 400 错误
-                .expectBody(ERROR_TYPE).returnResult() // 获取响应结果
-                .getResponseBody(); // 获取响应结果的 body
+            .header("Authorization", "abcd")
+            .exchange()
+            .expectStatus().is4xxClientError() // 返回 400 错误
+            .expectBody(ERROR_TYPE).returnResult() // 获取响应结果
+            .getResponseBody(); // 获取响应结果的 body
 
         // 确认返回响应内容
         then(resp).isNotNull();

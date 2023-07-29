@@ -1,12 +1,11 @@
 package alvin.study.springboot.kickstart.builder;
 
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import alvin.study.springboot.kickstart.infra.entity.Employee;
 import alvin.study.springboot.kickstart.infra.mapper.EmployeeMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 职员实体构建器类

@@ -40,6 +40,18 @@ public interface Context {
     String DISABLE_TENANT = "_DISABLE_TENANT";
 
     /**
+     * 获取当前请求范围内注册的 {@link Context} 对象
+     *
+     * @return 当前请求范围内注册的 {@link Context} 对象
+     * @see org.springframework.aop.scope.ScopedProxyUtils#getTargetBeanName(String)
+     * @see org.springframework.web.context.request.RequestContextHolder#currentRequestAttributes()
+     */
+    public static Context current() {
+        var attributes = RequestContextHolder.currentRequestAttributes();
+        return (Context) attributes.getAttribute(KEY, RequestAttributes.SCOPE_REQUEST);
+    }
+
+    /**
      * 当前接口实现类的所给的名称
      *
      * @return 名称字符串
@@ -99,16 +111,4 @@ public interface Context {
      * @return {@code Value} 值
      */
     void set(String key, Object value);
-
-    /**
-     * 获取当前请求范围内注册的 {@link Context} 对象
-     *
-     * @return 当前请求范围内注册的 {@link Context} 对象
-     * @see org.springframework.aop.scope.ScopedProxyUtils#getTargetBeanName(String)
-     * @see org.springframework.web.context.request.RequestContextHolder#currentRequestAttributes()
-     */
-    public static Context current() {
-        var attributes = RequestContextHolder.currentRequestAttributes();
-        return (Context) attributes.getAttribute(KEY, RequestAttributes.SCOPE_REQUEST);
-    }
 }

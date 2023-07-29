@@ -51,8 +51,8 @@ import org.springframework.test.context.ContextConfiguration;
  * </p>
  */
 @ActiveProfiles("test")
-@SpringBootTest(classes = {TestingConfig.class})
-@ContextConfiguration(initializers = {TestingContextInitializer.class})
+@SpringBootTest(classes = { TestingConfig.class })
+@ContextConfiguration(initializers = { TestingContextInitializer.class })
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public abstract class IntegrationTest {
     /**

@@ -223,20 +223,6 @@ public final class ProcessUtil {
         private final Duration cpuTime;
 
         /**
-         * 重写 {@link Object#toString()} 方法
-         *
-         * <p>
-         * 结果中包含进程 {@code id} 和进程的 {@code commandLine} 两项内容
-         * </p>
-         *
-         * @return 表示对象的字符串
-         */
-        @Override
-        public String toString() {
-            return String.format("pid=%d, command-line=\"%s\"", pid, commandLine);
-        }
-
-        /**
          * 通过 {@link ProcessHandle} 对象创建当前类型对象
          *
          * @param handle {@link ProcessHandle} 对象
@@ -253,6 +239,20 @@ public final class ProcessUtil {
                 handle.info().startInstant().orElse(null),
                 handle.info().totalCpuDuration().orElse(null)
             );
+        }
+
+        /**
+         * 重写 {@link Object#toString()} 方法
+         *
+         * <p>
+         * 结果中包含进程 {@code id} 和进程的 {@code commandLine} 两项内容
+         * </p>
+         *
+         * @return 表示对象的字符串
+         */
+        @Override
+        public String toString() {
+            return String.format("pid=%d, command-line=\"%s\"", pid, commandLine);
         }
     }
 }

@@ -40,9 +40,9 @@ public class GraphQLTestTemplateBuilder {
     @SneakyThrows
     public GraphQLTestTemplate build() {
         return new GraphQLTestTemplate(
-                (ResourceLoader) fieldResourceLoader.get(originalGraphQLTestTemplate),
-                (TestRestTemplate) fieldRestTemplate.get(originalGraphQLTestTemplate),
-                (String) fieldGraphqlMapping.get(originalGraphQLTestTemplate),
-                (ObjectMapper) fieldObjectMapper.get(originalGraphQLTestTemplate));
+            (ResourceLoader) fieldResourceLoader.get(originalGraphQLTestTemplate),
+            (TestRestTemplate) fieldRestTemplate.get(originalGraphQLTestTemplate),
+            (String) fieldGraphqlMapping.get(originalGraphQLTestTemplate),
+            (ObjectMapper) fieldObjectMapper.get(originalGraphQLTestTemplate));
     }
 }

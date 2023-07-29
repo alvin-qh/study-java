@@ -5,7 +5,6 @@ import alvin.study.springboot.jpa.builder.OrgBuilder;
 import alvin.study.springboot.jpa.builder.UserBuilder;
 import alvin.study.springboot.jpa.infra.entity.Org;
 import alvin.study.springboot.jpa.infra.entity.User;
-import alvin.study.springboot.jpa.infra.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;

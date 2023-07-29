@@ -24,6 +24,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 @TestInstance(Lifecycle.PER_CLASS)
 class RetryingFailingTest {
     private int retryTimes1 = 1;
+    private int retryTimes2 = 1;
+    private long lastTimestamp = 0;
+    private int retryTimes3 = 1;
 
     /**
      * 测试在测试失败时进行重试
@@ -42,8 +45,6 @@ class RetryingFailingTest {
         // 最后一次测试成功
     }
 
-    private int retryTimes2 = 1;
-
     /**
      * 测试至少需要成功两次
      *
@@ -60,8 +61,6 @@ class RetryingFailingTest {
 
         // 后两次测试成功
     }
-
-    private long lastTimestamp = 0;
 
     /**
      * 测试重试间隔
@@ -82,8 +81,6 @@ class RetryingFailingTest {
             .isGreaterThanOrEqualTo(300)
             .isLessThan(350);
     }
-
-    private int retryTimes3 = 1;
 
     /**
      * 测试以特定异常作为失败依据

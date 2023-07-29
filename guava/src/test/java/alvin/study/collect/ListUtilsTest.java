@@ -39,11 +39,11 @@ class ListUtilsTest {
     @Test
     void asList_shouldCreateListObject() {
         {
-            var list = Lists.asList(1, new Integer[]{2, 3, 4});
+            var list = Lists.asList(1, new Integer[]{ 2, 3, 4 });
             then(list).containsExactly(1, 2, 3, 4);
         }
         {
-            var list = Lists.asList(1, 2, new Integer[]{3, 4});
+            var list = Lists.asList(1, 2, new Integer[]{ 3, 4 });
             then(list).containsExactly(1, 2, 3, 4);
         }
     }

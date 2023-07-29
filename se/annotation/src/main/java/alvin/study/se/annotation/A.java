@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
  * </p>
  */
 @Documented
-@Target({ElementType.TYPE})
+@Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface A {
     /**

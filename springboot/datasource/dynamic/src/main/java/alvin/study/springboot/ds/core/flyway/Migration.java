@@ -1,12 +1,11 @@
 package alvin.study.springboot.ds.core.flyway;
 
-import javax.sql.DataSource;
-
+import alvin.study.springboot.ds.core.data.DataSourceContext;
+import lombok.RequiredArgsConstructor;
 import org.flywaydb.core.Flyway;
 import org.springframework.stereotype.Component;
 
-import alvin.study.springboot.ds.core.data.DataSourceContext;
-import lombok.RequiredArgsConstructor;
+import javax.sql.DataSource;
 
 /**
  * 手动进行数据库 migrate 操作
@@ -29,12 +28,12 @@ public class Migration {
     public void migrateBusinessDB(String dbName) {
         try (var ignore = DataSourceContext.switchTo(dbName)) {
             Flyway.configure()
-                    .dataSource(dataSource)
-                    .baselineOnMigrate(true)
-                    .locations("classpath:/migration/business")
-                    .table("schema_version")
-                    .load()
-                    .migrate();
+                .dataSource(dataSource)
+                .baselineOnMigrate(true)
+                .locations("classpath:/migration/business")
+                .table("schema_version")
+                .load()
+                .migrate();
         }
     }
 
@@ -44,12 +43,12 @@ public class Migration {
     public void migrateCommonDB() {
         try (var ignore = DataSourceContext.switchToDefault()) {
             Flyway.configure()
-                    .dataSource(dataSource)
-                    .baselineOnMigrate(true)
-                    .locations("classpath:/migration/common")
-                    .table("schema_version")
-                    .load()
-                    .migrate();
+                .dataSource(dataSource)
+                .baselineOnMigrate(true)
+                .locations("classpath:/migration/common")
+                .table("schema_version")
+                .load()
+                .migrate();
         }
     }
 }

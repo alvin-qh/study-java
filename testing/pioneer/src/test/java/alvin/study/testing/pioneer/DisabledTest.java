@@ -131,7 +131,7 @@ class DisabledTest {
      *
      * @param x 通过 {@link ValueSource} 注解注入的一系列参数
      */
-    @ValueSource(ints = {1, 2, 3, 4, 5})
+    @ValueSource(ints = { 1, 2, 3, 4, 5 })
     @ParameterizedTest(name = "Enabled test with x={0}")
     @DisableIfDisplayName(matches = ".*?x=(1|3|5).*")
     void disabled_shouldDisableTestByDisplayName(int x) {
@@ -155,9 +155,9 @@ class DisabledTest {
      *
      * @param x 通过 {@link CsvSource} 注解注入的一系列参数
      */
-    @CsvSource({"a", "b", "c"})
+    @CsvSource({ "a", "b", "c" })
     @ParameterizedTest
-    @DisableIfArgument(name = "x", contains = {"a", "c"})
+    @DisableIfArgument(name = "x", contains = { "a", "c" })
     void disabled_shouldDisableForSpecificArgument(String x) {
         // 确认只有特定参数的测试可以被执行
         then(x).isEqualTo("b");
@@ -177,9 +177,9 @@ class DisabledTest {
      *
      * @param x 通过 {@link CsvSource} 注解注入的一系列参数
      */
-    @CsvSource({"a", "b", "c"})
+    @CsvSource({ "a", "b", "c" })
     @ParameterizedTest
-    @DisableIfArgument(index = 0, contains = {"a", "c"})
+    @DisableIfArgument(index = 0, contains = { "a", "c" })
     void disabled_shouldDisableForSpecificArgumentByIndex(String x) {
         // 确认只有特定参数的测试可以被执行
         then(x).isEqualTo("b");
@@ -191,7 +191,7 @@ class DisabledTest {
      *
      * @param x 通过 {@link CsvSource} 注解注入的一系列参数
      */
-    @CsvSource({"a", "b", "c"})
+    @CsvSource({ "a", "b", "c" })
     @ParameterizedTest
     @DisableIfArguments({
         @DisableIfArgument(name = "x", contains = "a"),
@@ -212,9 +212,9 @@ class DisabledTest {
      * @param x 通过 {@link CsvSource} 注解注入的一系列参数
      * @param n 通过 {@link CsvSource} 注解注入的一系列参数
      */
-    @CsvSource({"a,1", "b,2", "c,3"})
+    @CsvSource({ "a,1", "b,2", "c,3" })
     @ParameterizedTest
-    @DisableIfAnyArgument(contains = {"a", "3"})
+    @DisableIfAnyArgument(contains = { "a", "3" })
     void disabled_shouldDisableForAnyArgumentsByContains(String x, int n) {
         // 确认只有特定参数的测试可以被执行
         then(tuple(x, n)).isEqualTo(tuple("b", 2));
@@ -230,7 +230,7 @@ class DisabledTest {
      * @param x 通过 {@link CsvSource} 注解注入的一系列参数
      * @param n 通过 {@link CsvSource} 注解注入的一系列参数
      */
-    @CsvSource({"a,1", "b,2", "c,3"})
+    @CsvSource({ "a,1", "b,2", "c,3" })
     @ParameterizedTest
     @DisableIfAllArguments(matches = "^[a-z]|\\d$")
     void disabled_shouldDisableForAllArgumentsByContains(String x, int n) {

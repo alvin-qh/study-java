@@ -14,7 +14,7 @@ import static org.assertj.core.api.BDDAssertions.thenThrownBy;
  * {@code false} 则抛出 {@link VerifyException} 异常
  * </p>
  */
-@SuppressWarnings({"ConstantValue", "DataFlowIssue"})
+@SuppressWarnings({ "ConstantValue", "DataFlowIssue" })
 class VerifyTest {
     /**
      * 对条件表达式进行检验

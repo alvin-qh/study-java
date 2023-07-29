@@ -1,8 +1,8 @@
 package alvin.study.se.reflect.generic;
 
 import alvin.study.se.reflect.scan.ClassScanner;
-import alvin.study.se.reflect.scan.match.Matchers;
 import alvin.study.se.reflect.scan.match.Matcher;
+import alvin.study.se.reflect.scan.match.Matchers;
 import org.junit.jupiter.api.Test;
 
 import java.lang.annotation.Documented;

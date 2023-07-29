@@ -55,36 +55,6 @@ import static org.awaitility.Awaitility.await;
  */
 class ForkJoinTest {
     /**
-     * 自定义 Fork/Join 工作线程类型
-     */
-    static class CustomWorkerThread extends ForkJoinWorkerThread {
-        /**
-         * 构造器, 通过 Fork/Join 线程池创建工作线程对象
-         *
-         * @param pool Fork/Join 线程池对象
-         */
-        CustomWorkerThread(ForkJoinPool pool) {
-            super(pool);
-        }
-    }
-
-    /**
-     * 自定义 Fork/Join 线程工厂类型
-     */
-    static class CustomWorkerThreadFactory implements ForkJoinWorkerThreadFactory {
-        /**
-         * 创建新的 Fork/Join 工作线程对象
-         *
-         * @param pool Fork/Join 工作线程池对象
-         * @return 新的 Fork/Join 工作线程池对象, 或者 {@code null} 表示拒绝产生新线程
-         */
-        @Override
-        public ForkJoinWorkerThread newThread(ForkJoinPool pool) {
-            return new CustomWorkerThread(pool);
-        }
-    }
-
-    /**
      * 测试创建 Fork/Join 线程池并提交任务
      *
      * <p>
@@ -425,5 +395,35 @@ class ForkJoinTest {
 
         // 确认计算结果为 5000 个数值, 且均为偶数
         then(task.get()).hasSize(5000).allMatch(n -> n % 2 == 0);
+    }
+
+    /**
+     * 自定义 Fork/Join 工作线程类型
+     */
+    static class CustomWorkerThread extends ForkJoinWorkerThread {
+        /**
+         * 构造器, 通过 Fork/Join 线程池创建工作线程对象
+         *
+         * @param pool Fork/Join 线程池对象
+         */
+        CustomWorkerThread(ForkJoinPool pool) {
+            super(pool);
+        }
+    }
+
+    /**
+     * 自定义 Fork/Join 线程工厂类型
+     */
+    static class CustomWorkerThreadFactory implements ForkJoinWorkerThreadFactory {
+        /**
+         * 创建新的 Fork/Join 工作线程对象
+         *
+         * @param pool Fork/Join 工作线程池对象
+         * @return 新的 Fork/Join 工作线程池对象, 或者 {@code null} 表示拒绝产生新线程
+         */
+        @Override
+        public ForkJoinWorkerThread newThread(ForkJoinPool pool) {
+            return new CustomWorkerThread(pool);
+        }
     }
 }

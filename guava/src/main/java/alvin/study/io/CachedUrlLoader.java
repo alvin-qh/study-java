@@ -41,10 +41,6 @@ public class CachedUrlLoader implements AutoCloseable {
     // 定义一个当前用户可读写的文件权限集
     private static final FileAttribute<Set<PosixFilePermission>> FILE_ATTR_RW
         = PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rw-------"));
-
-    // 定义保存缓存对象的 Map
-    private Map<URI, CacheInfo> cacheMap = new ConcurrentHashMap<>();
-
     // 定义更新缓存使用的线程池
     private final Executor executor = new ThreadPoolExecutor(
         1,
@@ -53,6 +49,8 @@ public class CachedUrlLoader implements AutoCloseable {
         TimeUnit.SECONDS,
         new ArrayBlockingQueue<>(100),
         new ThreadPoolExecutor.AbortPolicy());
+    // 定义保存缓存对象的 Map
+    private Map<URI, CacheInfo> cacheMap = new ConcurrentHashMap<>();
 
     /**
      * 从网络或缓存中读取数据

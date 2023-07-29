@@ -523,9 +523,9 @@ public class Ciphers {
         // 产生非对称密钥
         var keyPair = keyPairGenerator.generateKeyPair();
         return new SecretKeyPairSpec(
-                algorithm.algorithm(),
-                keyPair.getPrivate().getEncoded(),
-                keyPair.getPublic().getEncoded());
+            algorithm.algorithm(),
+            keyPair.getPrivate().getEncoded(),
+            keyPair.getPublic().getEncoded());
     }
 
     /**

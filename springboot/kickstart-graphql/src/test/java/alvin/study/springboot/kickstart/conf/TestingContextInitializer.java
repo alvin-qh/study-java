@@ -40,8 +40,8 @@ public class TestingContextInitializer implements ApplicationContextInitializer<
     public void initialize(@NotNull ConfigurableApplicationContext applicationContext) {
         // 获取 Main 类中定义的额外的 Spring 配置项
         var properties = Main.getDefaultProperties(
-                // Pair.of("spring.datasource.hikari.pool-name", "cp-alvin-study-test"),
-                // Pair.of("spring.jpa.show-sql", "true")
+            // Pair.of("spring.datasource.hikari.pool-name", "cp-alvin-study-test"),
+            // Pair.of("spring.jpa.show-sql", "true")
         );
 
         // 对 Gradle 多进程测试配置不同的数据源
@@ -101,10 +101,10 @@ public class TestingContextInitializer implements ApplicationContextInitializer<
     private @NotNull String makeJDBCUrlByExecutionNo(String jdbcUrl, int executionNo) {
         // 获取数据库连接的主体部分和参数部分
         var parts = Splitter.on(";")
-                .omitEmptyStrings()
-                .trimResults()
-                .limit(2)
-                .splitToList(jdbcUrl);
+            .omitEmptyStrings()
+            .trimResults()
+            .limit(2)
+            .splitToList(jdbcUrl);
 
         var newParts = IntStream.range(0, parts.size()).mapToObj(i -> {
             if (i == 0) {

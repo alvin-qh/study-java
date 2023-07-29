@@ -37,7 +37,7 @@ class SimpleIssueProcessor implements IssueProcessor {
 /**
  * 测试 Pioneer 库的其它功能
  */
-@SuppressWarnings({"java:S2699", "java:S2925"})
+@SuppressWarnings({ "java:S2699", "java:S2925" })
 class MiscTest {
     @BeforeAll
     static void beforeAll() {

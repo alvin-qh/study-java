@@ -36,6 +36,22 @@ class CacheTest {
     private final UserRepository repository = new UserRepository();
 
     /**
+     * 将 {@link Cache#stats()} 返回的 {@link com.google.common.cache.CacheStats CacheStats} 对象转为字符串
+     *
+     * @param cache {@link Cache} 类对象
+     * @return 包含 {@link com.google.common.cache.CacheStats CacheStats} 对象转为的字符串
+     */
+    private static String formatCacheStat(Cache<?, ?> cache) {
+        var stat = cache.stats();
+        // 将缓存命中率, 数据源读取成功次数以及缓存项淘汰个数三个指标项格式化为字符串返回
+        return String.format(
+            "hit rate = %.1f%%, load success count = %d, eviction count = %d",
+            stat.hitRate() * 100,
+            stat.loadSuccessCount(),
+            stat.evictionCount());
+    }
+
+    /**
      * 测试 {@link Cache} 类型对象, 对指定类型的键值对进行缓存
      *
      * <p>
@@ -680,22 +696,6 @@ class CacheTest {
         // 确认缓存中只剩余 2 项
         then(cache.size()).isEqualTo(2);
         then(cache.getIfPresent(2L)).isNull();
-    }
-
-    /**
-     * 将 {@link Cache#stats()} 返回的 {@link com.google.common.cache.CacheStats CacheStats} 对象转为字符串
-     *
-     * @param cache {@link Cache} 类对象
-     * @return 包含 {@link com.google.common.cache.CacheStats CacheStats} 对象转为的字符串
-     */
-    private static String formatCacheStat(Cache<?, ?> cache) {
-        var stat = cache.stats();
-        // 将缓存命中率, 数据源读取成功次数以及缓存项淘汰个数三个指标项格式化为字符串返回
-        return String.format(
-            "hit rate = %.1f%%, load success count = %d, eviction count = %d",
-            stat.hitRate() * 100,
-            stat.loadSuccessCount(),
-            stat.evictionCount());
     }
 
     /**

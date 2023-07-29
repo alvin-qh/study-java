@@ -1,7 +1,5 @@
 package alvin.study.misc.cli;
 
-import alvin.study.misc.cli.DatetimeCli;
-import alvin.study.misc.cli.Main;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -27,6 +27,15 @@ public class MenuService {
     private final Cache cache;
 
     /**
+     * 获取当前用户的角色权限列表
+     *
+     * @return 当前用户的角色权限列表集合
+     */
+    private static Authentication getAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+
+    /**
      * 读取菜单
      *
      * @return 菜单实体集合
@@ -36,9 +45,9 @@ public class MenuService {
         // 先从 cache 中获取菜单缓存, 如不存在, 则进一步从数据库中获取
         return cache.loadMenus(userId).orElseGet(() -> {
             var menus = menuMapper.selectWithRoleAndPermission().stream()
-                    .filter(m -> checkRoleMatched(m.getRole()))
-                    .filter(m -> checkPermissionMatched(m.getPermission()))
-                    .toList();
+                .filter(m -> checkRoleMatched(m.getRole()))
+                .filter(m -> checkPermissionMatched(m.getPermission()))
+                .toList();
 
             // 写入缓存
             return cache.saveMenus(userId, menus);
@@ -69,15 +78,6 @@ public class MenuService {
             return true;
         }
         return new AclPermissionEvaluator().hasPermission(
-                getAuthentication(), permission.getTarget(), permission.getAction());
-    }
-
-    /**
-     * 获取当前用户的角色权限列表
-     *
-     * @return 当前用户的角色权限列表集合
-     */
-    private static Authentication getAuthentication() {
-        return SecurityContextHolder.getContext().getAuthentication();
+            getAuthentication(), permission.getTarget(), permission.getAction());
     }
 }

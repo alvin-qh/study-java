@@ -53,6 +53,56 @@ public class RSAKeyLoader {
     }
 
     /**
+     * 将给定的密钥文本字符串转为公钥字节串
+     *
+     * @param keyString 密钥文本字符串
+     * @return 公钥字节串
+     */
+    @VisibleForTesting
+    static byte[] decodePublicKey(String keyString) {
+        return Base64.decodeBase64(fixKeyString(keyString, PUB_KEY_START, PUB_KEY_END));
+    }
+
+    /**
+     * 将给定的密钥文本字符串转为私钥字节串
+     *
+     * @param keyString 密钥文本字符串
+     * @return 私钥字节串
+     */
+    @VisibleForTesting
+    static byte[] decodePrivateKey(String keyString) {
+        return Base64.decodeBase64(fixKeyString(keyString, PRI_KEY_START, PRI_KEY_END));
+    }
+
+    /**
+     * 将密钥定义文本中有效的部分取出
+     *
+     * @param keyString 密钥定义文本字符串
+     * @param beginLine 密钥起始标识符
+     * @param endLine   密钥结束标识符
+     * @return 密钥的有效部分
+     */
+    private static String fixKeyString(String keyString, String beginLine, String endLine) {
+        /// 定位到密钥有效部分的起始位置
+        var start = keyString.indexOf(beginLine);
+        if (start < 0) {
+            start = 0;
+        } else {
+            start += beginLine.length();
+        }
+
+        /// 定位到密钥有效部分的结束位置
+        var end = keyString.lastIndexOf(endLine);
+        if (end < 0) {
+            end = keyString.length() - 1;
+        }
+
+        /// 去除密钥中的空白字符
+        var matcher = BLANK_REG.matcher(keyString.substring(start, end));
+        return matcher.replaceAll("");
+    }
+
+    /**
      * 将给定的字节串转化为 {@link java.security.interfaces.RSAPublicKey RSAPublicKey} 对象
      *
      * @param keyData 保存密钥的字节串
@@ -79,17 +129,6 @@ public class RSAKeyLoader {
      */
     public PublicKey loadPublicKey(String keyString) throws InvalidKeySpecException {
         return loadPublicKey(decodePublicKey(keyString));
-    }
-
-    /**
-     * 将给定的密钥文本字符串转为公钥字节串
-     *
-     * @param keyString 密钥文本字符串
-     * @return 公钥字节串
-     */
-    @VisibleForTesting
-    static byte[] decodePublicKey(String keyString) {
-        return Base64.decodeBase64(fixKeyString(keyString, PUB_KEY_START, PUB_KEY_END));
     }
 
     /**
@@ -134,44 +173,5 @@ public class RSAKeyLoader {
      */
     public PrivateKey loadPrivateKey(String keyString) throws InvalidKeySpecException {
         return loadPrivateKey(decodePrivateKey(keyString));
-    }
-
-    /**
-     * 将给定的密钥文本字符串转为私钥字节串
-     *
-     * @param keyString 密钥文本字符串
-     * @return 私钥字节串
-     */
-    @VisibleForTesting
-    static byte[] decodePrivateKey(String keyString) {
-        return Base64.decodeBase64(fixKeyString(keyString, PRI_KEY_START, PRI_KEY_END));
-    }
-
-    /**
-     * 将密钥定义文本中有效的部分取出
-     *
-     * @param keyString 密钥定义文本字符串
-     * @param beginLine 密钥起始标识符
-     * @param endLine   密钥结束标识符
-     * @return 密钥的有效部分
-     */
-    private static String fixKeyString(String keyString, String beginLine, String endLine) {
-        /// 定位到密钥有效部分的起始位置
-        var start = keyString.indexOf(beginLine);
-        if (start < 0) {
-            start = 0;
-        } else {
-            start += beginLine.length();
-        }
-
-        /// 定位到密钥有效部分的结束位置
-        var end = keyString.lastIndexOf(endLine);
-        if (end < 0) {
-            end = keyString.length() - 1;
-        }
-
-        /// 去除密钥中的空白字符
-        var matcher = BLANK_REG.matcher(keyString.substring(start, end));
-        return matcher.replaceAll("");
     }
 }

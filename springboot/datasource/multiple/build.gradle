@@ -97,21 +97,21 @@ flyway {
  * 处理默认数据库
  */
 task migrateDB(type: org.flywaydb.gradle.task.FlywayMigrateTask) {
-    url = "${DB_URL};MODE=MYSQL"
+  url = "${DB_URL};MODE=MYSQL"
 }
 
 /**
  * 处理 db1 数据库
  */
 task migrateDB1(type: org.flywaydb.gradle.task.FlywayMigrateTask) {
-    url = "${DB_URL}1;MODE=MYSQL"
+  url = "${DB_URL}1;MODE=MYSQL"
 }
 
 /**
  * 处理 db2 数据库
  */
 task migrateDB2(type: org.flywaydb.gradle.task.FlywayMigrateTask) {
-    url = "${DB_URL}2;MODE=MYSQL"
+  url = "${DB_URL}2;MODE=MYSQL"
 }
 
 /**

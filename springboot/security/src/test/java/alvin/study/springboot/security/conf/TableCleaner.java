@@ -1,19 +1,18 @@
 package alvin.study.springboot.security.conf;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
+import alvin.study.springboot.security.util.db.SqlSessionManager;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import alvin.study.springboot.security.util.db.SqlSessionManager;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 在每次测试执行前, 将测试数据库的表清空
@@ -78,7 +77,6 @@ public class TableCleaner {
      * 清除所有的数据表
      *
      * @param exclude 要排除的数据表名称
-     *
      * @see alvin.study.springboot.security.util.db.SqlSessionManager.SqlSessionHolder
      */
     @SneakyThrows
@@ -109,19 +107,19 @@ public class TableCleaner {
 
             // 获取所有待清除的数据表名并执行清除语句
             listAllTables(conn, schema, tableType)
-                    .stream()
-                    // 去除排除的数据表
-                    .filter(t -> !excludeSet.contains(t))
-                    // 对每个数据表进行清除操作
-                    .forEach(t -> {
-                        log.info("Clear table {}", t);
-                        // 执行 truncate 操作
-                        try (var stat = conn.prepareStatement(String.format("TRUNCATE TABLE `%s`", t))) {
-                            stat.execute();
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
+                .stream()
+                // 去除排除的数据表
+                .filter(t -> !excludeSet.contains(t))
+                // 对每个数据表进行清除操作
+                .forEach(t -> {
+                    log.info("Clear table {}", t);
+                    // 执行 truncate 操作
+                    try (var stat = conn.prepareStatement(String.format("TRUNCATE TABLE `%s`", t))) {
+                        stat.execute();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
 
             // 恢复外键约束
             try (var stat = conn.prepareStatement("SET FOREIGN_KEY_CHECKS = 1")) {

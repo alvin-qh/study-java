@@ -7,7 +7,6 @@ import alvin.study.springboot.jpa.builder.OrgBuilder;
 import alvin.study.springboot.jpa.infra.entity.Department;
 import alvin.study.springboot.jpa.infra.entity.Employee;
 import alvin.study.springboot.jpa.infra.entity.Org;
-import alvin.study.springboot.jpa.infra.repository.EmployeeRepository;
 import alvin.study.springboot.jpa.infra.repository.ext.EmployeeRepositoryExt;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

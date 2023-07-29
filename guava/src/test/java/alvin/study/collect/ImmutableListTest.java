@@ -33,7 +33,7 @@ import static org.assertj.core.api.BDDAssertions.thenThrownBy;
  * JDK 9 以后, JDK 本身提供了 {@link java.util.List#of(Object) List.of(T...)} 方法, 可以取代 Guava 库的使用
  * </p>
  */
-@SuppressWarnings({"deprecation", "DataFlowIssue"})
+@SuppressWarnings({ "deprecation", "DataFlowIssue" })
 class ImmutableListTest {
     /**
      * 通过指定元素构建不变集合

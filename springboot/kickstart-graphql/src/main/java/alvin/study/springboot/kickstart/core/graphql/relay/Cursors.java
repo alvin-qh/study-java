@@ -1,17 +1,16 @@
 package alvin.study.springboot.kickstart.core.graphql.relay;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-
 import alvin.study.springboot.kickstart.core.exception.FieldError;
 import alvin.study.springboot.kickstart.core.exception.InputException;
 import com.google.common.base.Strings;
-
 import graphql.relay.ConnectionCursor;
 import graphql.relay.DefaultConnectionCursor;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 /**
  * 对查询结果在整体记录集合的位置 (游标) 进行编解码操作的类型
@@ -27,7 +26,7 @@ public class Cursors {
     // 游标前缀
     private static final String DUMMY_CURSOR_PREFIX = "alvin_study_";
 
-    private Cursors() {}
+    private Cursors() { }
 
     /**
      * 从 Base64 字符串中解析游标的值

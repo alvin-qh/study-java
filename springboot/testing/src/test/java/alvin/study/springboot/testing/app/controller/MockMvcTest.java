@@ -1,6 +1,5 @@
 package alvin.study.springboot.testing.app.controller;
 
-import alvin.study.springboot.testing.app.controller.TestController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

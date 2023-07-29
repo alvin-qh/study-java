@@ -33,8 +33,8 @@ class AnnotationDemo {
     /**
      * 测试在方法上设置注解
      */
-    @C({"MethodAnnotation-B1", "MethodAnnotation-B2"})
-    public void method() {}
+    @C({ "MethodAnnotation-B1", "MethodAnnotation-B2" })
+    public void method() { }
 }
 
 /**

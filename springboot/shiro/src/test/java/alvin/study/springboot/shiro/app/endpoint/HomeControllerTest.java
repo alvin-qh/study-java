@@ -1,12 +1,12 @@
 package alvin.study.springboot.shiro.app.endpoint;
 
+import alvin.study.springboot.shiro.IntegrationTest;
+import alvin.study.springboot.shiro.app.endpoint.model.HomeDto;
 import alvin.study.springboot.shiro.builder.MenuBuilder;
 import alvin.study.springboot.shiro.builder.PermissionBuilder;
 import alvin.study.springboot.shiro.builder.RoleBuilder;
 import alvin.study.springboot.shiro.builder.RoleGrantBuilder;
 import alvin.study.springboot.shiro.builder.RolePermissionBuilder;
-import alvin.study.springboot.shiro.IntegrationTest;
-import alvin.study.springboot.shiro.app.endpoint.model.HomeDto;
 import alvin.study.springboot.shiro.infra.entity.RoleGrantType;
 import alvin.study.springboot.shiro.util.collection.PathMap;
 import org.junit.jupiter.api.Test;

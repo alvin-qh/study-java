@@ -47,15 +47,15 @@ public final class SecretKeyParameterSpec {
     public String toString() {
         if (iv != null) {
             return String.format(
-                    "algorithm=%s, key=%s, iv=%s",
-                    algorithm,
-                    Hex.encodeHexString(key),
-                    Hex.encodeHexString(iv));
+                "algorithm=%s, key=%s, iv=%s",
+                algorithm,
+                Hex.encodeHexString(key),
+                Hex.encodeHexString(iv));
         }
 
         return String.format(
-                "algorithm=%s, key=%s",
-                algorithm,
-                Hex.encodeHexString(key));
+            "algorithm=%s, key=%s",
+            algorithm,
+            Hex.encodeHexString(key));
     }
 }

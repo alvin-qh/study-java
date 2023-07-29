@@ -1,11 +1,5 @@
 package alvin.study.springboot.kickstart.app.service;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import alvin.study.springboot.kickstart.core.exception.InputException;
 import alvin.study.springboot.kickstart.infra.entity.Department;
 import alvin.study.springboot.kickstart.infra.entity.DepartmentEmployee;
@@ -13,13 +7,17 @@ import alvin.study.springboot.kickstart.infra.entity.Employee;
 import alvin.study.springboot.kickstart.infra.mapper.DepartmentEmployeeMapper;
 import alvin.study.springboot.kickstart.infra.mapper.DepartmentMapper;
 import alvin.study.springboot.kickstart.infra.mapper.EmployeeMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-
-import lombok.RequiredArgsConstructor;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 部门服务类
@@ -96,7 +94,7 @@ public class EmployeeService {
             // 删除之前的关联关系
             departmentEmployeeMapper.delete(
                 Wrappers.lambdaQuery(DepartmentEmployee.class)
-                        .eq(DepartmentEmployee::getEmployeeId, employee.getId()));
+                    .eq(DepartmentEmployee::getEmployeeId, employee.getId()));
 
             // 建立新的关联关系
             bindWithDepartments(originalEmployee, new HashSet<>(departmentIds));
@@ -137,7 +135,7 @@ public class EmployeeService {
         // 删除之前的关联关系
         departmentEmployeeMapper.delete(
             Wrappers.lambdaQuery(DepartmentEmployee.class)
-                    .eq(DepartmentEmployee::getEmployeeId, id));
+                .eq(DepartmentEmployee::getEmployeeId, id));
 
         return employeeMapper.deleteById(id) > 0;
     }

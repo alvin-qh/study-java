@@ -1,17 +1,16 @@
 package alvin.study.springboot.security.infra.mapper;
 
-import java.util.Optional;
-
 import alvin.study.springboot.security.infra.entity.RoleGrant;
 import alvin.study.springboot.security.infra.entity.RoleGrantType;
 import alvin.study.springboot.security.infra.entity.common.AuditedEntity;
 import alvin.study.springboot.security.infra.handler.EntityFieldHandler;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import java.util.Optional;
 
 /**
  * 对 {@link RoleGrant} 实体进行操作的 Mapper 类型
@@ -89,7 +88,7 @@ public interface RoleGrantMapper extends BaseMapper<RoleGrant> {
         where user_or_group_id = #{userOrGroupId} and type = #{type} and role_id = #{roleId}
         """)
     Optional<RoleGrant> selectByUserOrGroupIdAndType(
-            @Param("userOrGroupId") Long userOrGroupId,
-            @Param("type") RoleGrantType type,
-            @Param("roleId") Long roleId);
+        @Param("userOrGroupId") Long userOrGroupId,
+        @Param("type") RoleGrantType type,
+        @Param("roleId") Long roleId);
 }

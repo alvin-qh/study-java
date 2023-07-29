@@ -1,9 +1,9 @@
 package alvin.study.springboot.kickstart.core.exception;
 
+import graphql.ErrorType;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import graphql.ErrorType;
 
 /**
  * 调用 API 时导致的异常类型

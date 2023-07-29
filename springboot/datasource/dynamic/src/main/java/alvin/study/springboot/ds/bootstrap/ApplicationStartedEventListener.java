@@ -1,16 +1,14 @@
 package alvin.study.springboot.ds.bootstrap;
 
-import java.util.TimeZone;
-
+import alvin.study.springboot.ds.core.flyway.Migration;
+import com.google.common.base.Strings;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import com.google.common.base.Strings;
-
-import alvin.study.springboot.ds.core.flyway.Migration;
-import lombok.extern.slf4j.Slf4j;
+import java.util.TimeZone;
 
 /**
  * 应用处理启动监听器
@@ -32,8 +30,8 @@ public class ApplicationStartedEventListener implements ApplicationListener<Appl
      * 构造器, 获取配置中定义的时区
      */
     public ApplicationStartedEventListener(
-            @Value("${application.zone}") String timezone,
-            Migration migration) {
+        @Value("${application.zone}") String timezone,
+        Migration migration) {
         this.timezone = Strings.isNullOrEmpty(timezone) ? "UTC" : timezone;
         this.migration = migration;
     }

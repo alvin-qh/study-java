@@ -1,8 +1,7 @@
 package alvin.study.springboot.ds.core.data;
 
-import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
-
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
 /**
  * 动态数据源类型

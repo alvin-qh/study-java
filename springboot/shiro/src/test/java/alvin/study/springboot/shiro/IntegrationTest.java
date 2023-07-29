@@ -88,7 +88,16 @@ public abstract class IntegrationTest {
      * 默认测试用户的原始密码
      */
     protected static final String RAW_PASSWORD = "1234567890";
-
+    /**
+     * 注入角色 Mapper 类
+     */
+    @Autowired
+    protected RoleMapper roleMapper;
+    /**
+     * 注入权限 Mapper 类
+     */
+    @Autowired
+    protected PermissionMapper permissionMapper;
     /**
      * 注入测试用事务管理器对象
      *
@@ -102,7 +111,6 @@ public abstract class IntegrationTest {
      */
     @Autowired
     private TestingTransactionManager txManager;
-
     /**
      * 注入 mybatis Session 对象
      *
@@ -112,7 +120,6 @@ public abstract class IntegrationTest {
      */
     @Autowired
     private SqlSession sqlSession;
-
     /**
      * Bean 工厂类
      *
@@ -123,7 +130,6 @@ public abstract class IntegrationTest {
      */
     @Autowired
     private AutowireCapableBeanFactory beanFactory;
-
     /**
      * 用于在每次测试开始前, 将测试数据表全部清空
      *
@@ -131,7 +137,6 @@ public abstract class IntegrationTest {
      */
     @Autowired
     private TableCleaner tableCleaner;
-
     /**
      * 注入 Jwt 对象
      *
@@ -139,31 +144,16 @@ public abstract class IntegrationTest {
      */
     @Autowired
     private Jwt jwt;
-
     /**
      * 测试客户端, 模拟发送请求
      */
     @Autowired
     private WebTestClient client;
-
     /**
      * Servlet 上下文对象
      */
     @Autowired
     private ServletContext servletContext;
-
-    /**
-     * 注入角色 Mapper 类
-     */
-    @Autowired
-    protected RoleMapper roleMapper;
-
-    /**
-     * 注入权限 Mapper 类
-     */
-    @Autowired
-    protected PermissionMapper permissionMapper;
-
     /**
      * 注入角色授予 Mapper 类
      */

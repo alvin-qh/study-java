@@ -25,38 +25,6 @@ public class MessageI18n implements I18n {
     private final Locale locale;
 
     /**
-     * 根据指定的本地化对象获取文本
-     */
-    @Override
-    public String getMessage(Locale locale, String key, String defaultMessage, Object... args) {
-        return messageSource.getMessage(key, args, defaultMessage, locale);
-    }
-
-    /**
-     * 根据请求中指定的本地化对象获取文本
-     */
-    @Override
-    public String getMessage(String key, Object... args) {
-        return getMessage(locale, key, key, args);
-    }
-
-    /**
-     * 获取文本, 当 key 不存在时返回默认值
-     */
-    @Override
-    public String getMessageOrElse(String key, String defaultMessage, Object... args) {
-        return getMessage(locale, key, defaultMessage, args);
-    }
-
-    /**
-     * 返回本地化语言对象
-     *
-     * @return 本地化语言对象
-     */
-    @Override
-    public Locale getLocale() { return locale; }
-
-    /**
      * 获取 {@link java.util.Locale Locale} 对象
      *
      * <p>
@@ -101,4 +69,36 @@ public class MessageI18n implements I18n {
         // 也可以通过 LocaleContextHolder 获取 Locale 对象, 原理和上面类似
         // return LocaleContextHolder.getLocale();
     }
+
+    /**
+     * 根据指定的本地化对象获取文本
+     */
+    @Override
+    public String getMessage(Locale locale, String key, String defaultMessage, Object... args) {
+        return messageSource.getMessage(key, args, defaultMessage, locale);
+    }
+
+    /**
+     * 根据请求中指定的本地化对象获取文本
+     */
+    @Override
+    public String getMessage(String key, Object... args) {
+        return getMessage(locale, key, key, args);
+    }
+
+    /**
+     * 获取文本, 当 key 不存在时返回默认值
+     */
+    @Override
+    public String getMessageOrElse(String key, String defaultMessage, Object... args) {
+        return getMessage(locale, key, defaultMessage, args);
+    }
+
+    /**
+     * 返回本地化语言对象
+     *
+     * @return 本地化语言对象
+     */
+    @Override
+    public Locale getLocale() { return locale; }
 }

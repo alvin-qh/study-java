@@ -6,6 +6,6 @@
     type="alvin.study.springboot.security.infra.entity.UserGroup"
     autoMapping="true"
   >
-    <id property="id" column="id" />
+    <id property="id" column="id"/>
   </resultMap>
 </mapper>

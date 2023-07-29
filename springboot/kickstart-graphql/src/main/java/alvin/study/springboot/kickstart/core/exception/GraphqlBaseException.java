@@ -1,12 +1,12 @@
 package alvin.study.springboot.kickstart.core.exception;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import alvin.study.springboot.kickstart.core.graphql.handler.GraphQLErrorHandler;
 import graphql.ErrorClassification;
 import graphql.GraphQLException;
 import lombok.Getter;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * 所有和 Graphql 相关的异常类超类

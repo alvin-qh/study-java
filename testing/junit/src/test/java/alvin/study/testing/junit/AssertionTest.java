@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * 测试 junit 框架的断言方法
  */
-@SuppressWarnings({"EmptyTryBlock", "SimplifiableAssertion", "ConstantValue"})
+@SuppressWarnings({ "EmptyTryBlock", "SimplifiableAssertion", "ConstantValue" })
 class AssertionTest {
     /**
      * 演示输出"断言信息"
@@ -140,8 +140,8 @@ class AssertionTest {
      */
     @Test
     void equalsOrNot_shouldAssertArrayOrIterableEquals() {
-        var nums = new Integer[]{1, 2, 3};
-        assertArrayEquals(new Integer[]{1, 2, 3}, nums);
+        var nums = new Integer[]{ 1, 2, 3 };
+        assertArrayEquals(new Integer[]{ 1, 2, 3 }, nums);
 
         var chars = List.of('A', 'B', 'C');
         assertIterableEquals(List.of('A', 'B', 'C'), chars);

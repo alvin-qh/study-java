@@ -1,13 +1,12 @@
 package alvin.study.springboot.kickstart.core.exception;
 
-import javax.validation.ConstraintViolation;
-
 import com.google.common.base.Joiner;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.validation.ConstraintViolation;
 
 /**
  * 表示一个错误字段的类型

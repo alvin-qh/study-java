@@ -1,10 +1,9 @@
 package alvin.study.springboot.shiro.app.endpoint.common;
 
+import alvin.study.springboot.shiro.infra.entity.User;
 import org.apache.shiro.util.ThreadContext;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import alvin.study.springboot.shiro.infra.entity.User;
 
 /**
  * 所有 Controller 类型的超类
@@ -15,18 +14,6 @@ public class BaseController {
      */
     @Autowired
     private ModelMapper modelMapper;
-
-    /**
-     * 将原对象按照所给类型转为目标对象类型
-     *
-     * @param <T>        目标对象类型
-     * @param src        原对象实例
-     * @param targetType 目标对象类型
-     * @return 目标类型对象
-     */
-    protected <T> T mapper(Object src, Class<T> targetType) {
-        return modelMapper.map(src, targetType);
-    }
 
     /**
      * 获取当前登录的用户对象
@@ -45,5 +32,17 @@ public class BaseController {
             return null;
         }
         return (User) subject.getPrincipals().getPrimaryPrincipal();
+    }
+
+    /**
+     * 将原对象按照所给类型转为目标对象类型
+     *
+     * @param <T>        目标对象类型
+     * @param src        原对象实例
+     * @param targetType 目标对象类型
+     * @return 目标类型对象
+     */
+    protected <T> T mapper(Object src, Class<T> targetType) {
+        return modelMapper.map(src, targetType);
     }
 }

@@ -37,12 +37,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ServletGraphQLContextResolver implements GraphQLContextResolver {
     /**
-     * 从配置文件中读取 JWT ID
-     */
-    @Value("${application.security.jwt.jti}")
-    private String jti;
-
-    /**
      * Spring Context 上下文对象
      *
      * <p>
@@ -51,7 +45,6 @@ public class ServletGraphQLContextResolver implements GraphQLContextResolver {
      * </p>
      */
     private final Context context;
-
     /**
      * Jwt token 编解码对象
      *
@@ -61,16 +54,19 @@ public class ServletGraphQLContextResolver implements GraphQLContextResolver {
      * </p>
      */
     private final Jwt jwt;
-
     /**
      * 用户服务类
      */
     private final UserService userService;
-
     /**
      * 组织服务类
      */
     private final OrgService orgService;
+    /**
+     * 从配置文件中读取 JWT ID
+     */
+    @Value("${application.security.jwt.jti}")
+    private String jti;
 
     /**
      * 从 {@link GraphQLContext} 对象中获取 Bearer token, 并进行解析得到 userId 和 orgCode 值,

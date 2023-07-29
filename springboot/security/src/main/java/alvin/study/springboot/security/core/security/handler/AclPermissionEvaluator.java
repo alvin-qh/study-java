@@ -29,7 +29,7 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
      */
     public boolean hasRole(@NotNull Authentication authentication, String role) {
         return authentication.getAuthorities().stream()
-                .anyMatch(it -> checkIfRoleMatch(role, it.getAuthority()));
+            .anyMatch(it -> checkIfRoleMatch(role, it.getAuthority()));
     }
 
     /**
@@ -202,7 +202,7 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
 
     @Override
     public boolean hasPermission(
-            Authentication authentication, Serializable targetId, String targetType, Object permission) {
+        Authentication authentication, Serializable targetId, String targetType, Object permission) {
         throw new UnsupportedOperationException("Use hasPermission(String, String) instead of");
     }
 }

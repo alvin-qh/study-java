@@ -1,20 +1,18 @@
 package alvin.study.springboot.kickstart.app.api.schema.loader;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
-
 import alvin.study.springboot.kickstart.core.context.Context;
 import alvin.study.springboot.kickstart.core.context.CustomRequestAttributes;
 import alvin.study.springboot.kickstart.core.graphql.annotation.DataLoaderCreator;
 import alvin.study.springboot.kickstart.core.graphql.dataloader.DataLoaderProvider;
 import alvin.study.springboot.kickstart.infra.entity.User;
 import alvin.study.springboot.kickstart.infra.mapper.UserMapper;
+import com.google.common.base.Functions;
+import lombok.RequiredArgsConstructor;
 import org.dataloader.DataLoader;
 import org.dataloader.DataLoaderFactory;
 
-import com.google.common.base.Functions;
-
-import lombok.RequiredArgsConstructor;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 /**
  * 用户读取 {@link DataLoader} 提供器
@@ -45,7 +43,7 @@ public class UserLoaderProvider implements DataLoaderProvider<Long, User> {
                 try (var ignore = CustomRequestAttributes.scopedRegister(context)) {
                     // 根据 id 集合查询 User 对象集合, 并转为 UserType 对象
                     return userMapper.selectBatchIds(userIds).stream()
-                            .collect(Collectors.toMap(User::getId, Functions.identity()));
+                        .collect(Collectors.toMap(User::getId, Functions.identity()));
                 }
             });
         });

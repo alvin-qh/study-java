@@ -37,13 +37,12 @@ public class BeanConfig {
      * @param algorithm 加密算法名称, 从 {@code application.yml} 文件中获得
      * @param key       散列信息认证码, 从 {@code application.yml} 文件中获得
      * @return {@link PasswordEncoder} 对象
-     *
      * @see PasswordEncoder#matches(CharSequence, String)
      */
     @Bean
     PasswordEncoder passwordEncoder(
-            @Value("${application.security.hash.algorithm}") String algorithm,
-            @Value("${application.security.hash.key}") String key) {
+        @Value("${application.security.hash.algorithm}") String algorithm,
+        @Value("${application.security.hash.key}") String key) {
         var encoder = new PasswordEncoder(algorithm, key);
         log.info("[CONF] PasswordEncoder object created, algorithm=\"{}\", hmacKey=\"{}\"", algorithm, key);
         return encoder;

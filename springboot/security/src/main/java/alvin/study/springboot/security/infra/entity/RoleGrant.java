@@ -1,9 +1,8 @@
 package alvin.study.springboot.security.infra.entity;
 
+import alvin.study.springboot.security.infra.entity.common.AuditedEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-
-import alvin.study.springboot.security.infra.entity.common.AuditedEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

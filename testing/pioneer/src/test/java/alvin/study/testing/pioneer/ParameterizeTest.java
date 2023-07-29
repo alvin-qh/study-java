@@ -64,6 +64,35 @@ import static org.assertj.core.api.BDDAssertions.then;
 }
 
 /**
+ * 该注解用于测试方法, 指定该方法所有参数值的生成规则
+ *
+ * <p>
+ * {@link CartesianArgumentsSource @CartesianArgumentsSource} 注解用于指定实际生成参数值的类, 本例中通过
+ * {@link NumberArgumentSourceProvider} 类来实际产生参数值
+ * </p>
+ *
+ * <p>
+ * 为了简单起见, 本例只使用一种参数产生规则 {@link NumberArgumentSource#value()}, 实际使用时, 可以定义任意属性来产生所需的参数值
+ * </p>
+ *
+ * <p>
+ * 参考 {@link ParameterizeTest#cartesian_shouldGenerateAllArgumentsByAnnotation(int, int)} 测试方法
+ * </p>
+ */
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@CartesianArgumentsSource(NumberArgumentSourceProvider.class)
+@interface NumberArgumentSource {
+    /**
+     * 参数值集合, 每次从该集合中产生一个参数值
+     *
+     * @return 参数值集合
+     */
+    int[] value();
+}
+
+/**
  * 为 {@link NumberSource @NumberSource} 注解实际产生参数值的类
  *
  * <p>
@@ -93,35 +122,6 @@ class NumberSourceProvider implements CartesianParameterArgumentsProvider<Intege
         // 注意, 集合元素不能为值类型, 这里使用了 boxed 方法将值类型转为引用类型
         return Arrays.stream(Objects.requireNonNull(anno.value())).boxed();
     }
-}
-
-/**
- * 该注解用于测试方法, 指定该方法所有参数值的生成规则
- *
- * <p>
- * {@link CartesianArgumentsSource @CartesianArgumentsSource} 注解用于指定实际生成参数值的类, 本例中通过
- * {@link NumberArgumentSourceProvider} 类来实际产生参数值
- * </p>
- *
- * <p>
- * 为了简单起见, 本例只使用一种参数产生规则 {@link NumberArgumentSource#value()}, 实际使用时, 可以定义任意属性来产生所需的参数值
- * </p>
- *
- * <p>
- * 参考 {@link ParameterizeTest#cartesian_shouldGenerateAllArgumentsByAnnotation(int, int)} 测试方法
- * </p>
- */
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-@CartesianArgumentsSource(NumberArgumentSourceProvider.class)
-@interface NumberArgumentSource {
-    /**
-     * 参数值集合, 每次从该集合中产生一个参数值
-     *
-     * @return 参数值集合
-     */
-    int[] value();
 }
 
 /**
@@ -188,6 +188,68 @@ class NumberArgumentSourceProvider implements CartesianMethodArgumentsProvider,
 @SuppressWarnings({ "unused", "DefaultAnnotationParam" })
 class ParameterizeTest {
     /**
+     * 为 {@link #cartesian_shouldGenerateArgumentsByFactoryMethod(int, String, TestEnum)} 测试方法提供测试参数
+     *
+     * <p>
+     * 注意, 通过 {@link IntStream#range(int, int)} 得到的结果无法作为参数传递, 需要通过 {@link IntStream#boxed()} 方法转为
+     * {@code Stream<Integer>} 类型
+     * </p>
+     *
+     * <p>
+     * 本方法需要声明为 {@code static} 静态方法, 如果要设置为非静态, 则测试类上必须标记
+     * {@link org.junit.jupiter.api.TestInstance @TestInstance} 注解, 且
+     * {@code value} 属性必须为 {@link org.junit.jupiter.api.TestInstance.Lifecycle#PER_CLASS Lifecycle.PER_CLASS}, 即:
+     * {@code @TestInstance(Lifecycle#PER_CLASS)}
+     * </p>
+     *
+     * <p>
+     * 关于 {@code PER_CLASS} 生命周期的说明, 请参见 {@code LifecycleTest} 范例
+     * </p>
+     *
+     * @return {@link ArgumentSets} 参数集合对象
+     */
+    static ArgumentSets argumentsGenerator() {
+        return ArgumentSets
+            .argumentsForFirstParameter(IntStream.range(1, 3).boxed())
+            .argumentsForNextParameter("A", "B")
+            .argumentsForNextParameter(TestEnum.values());
+    }
+
+    /**
+     * 在所有测试执行前, 创建一个文件并写入 JSON 内容
+     *
+     * <p>
+     * 本方法为 {@link #json_shouldDeserializedObjectFromJsonInFile(User)} 方法提供前置文件
+     * </p>
+     */
+    @BeforeAll
+    static void createJsonFile() throws Exception {
+        var file = new File("user.json");
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+
+        try (var out = new FileOutputStream(file, false)) {
+            out.write("{\"id\": 1001, \"name\": \"Alvin\"}".getBytes(StandardCharsets.UTF_8));
+        }
+    }
+
+    /**
+     * 在所有测试执行完毕后, 删除之前创建的 JSON 文件
+     *
+     * <p>
+     * 本方法为 {@link #json_shouldDeserializedObjectFromJsonInFile(User)} 清理创建的文件
+     * </p>
+     */
+    @AfterAll
+    static void deleteJsonFile() {
+        var file = new File("user.json");
+        if (file.exists()) {
+            file.delete();
+        }
+    }
+
+    /**
      * 以笛卡尔积将设定的参数进行组合传递
      *
      * <p>
@@ -215,11 +277,6 @@ class ParameterizeTest {
         };
 
         then(new int[]{ x, y }).isIn(expected);
-    }
-
-    enum TestEnum {
-        FIRST,
-        SECOND
     }
 
     /**
@@ -295,34 +352,6 @@ class ParameterizeTest {
         };
 
         then(new Object[]{ x, s, e }).isIn(expected);
-    }
-
-    /**
-     * 为 {@link #cartesian_shouldGenerateArgumentsByFactoryMethod(int, String, TestEnum)} 测试方法提供测试参数
-     *
-     * <p>
-     * 注意, 通过 {@link IntStream#range(int, int)} 得到的结果无法作为参数传递, 需要通过 {@link IntStream#boxed()} 方法转为
-     * {@code Stream<Integer>} 类型
-     * </p>
-     *
-     * <p>
-     * 本方法需要声明为 {@code static} 静态方法, 如果要设置为非静态, 则测试类上必须标记
-     * {@link org.junit.jupiter.api.TestInstance @TestInstance} 注解, 且
-     * {@code value} 属性必须为 {@link org.junit.jupiter.api.TestInstance.Lifecycle#PER_CLASS Lifecycle.PER_CLASS}, 即:
-     * {@code @TestInstance(Lifecycle#PER_CLASS)}
-     * </p>
-     *
-     * <p>
-     * 关于 {@code PER_CLASS} 生命周期的说明, 请参见 {@code LifecycleTest} 范例
-     * </p>
-     *
-     * @return {@link ArgumentSets} 参数集合对象
-     */
-    static ArgumentSets argumentsGenerator() {
-        return ArgumentSets
-            .argumentsForFirstParameter(IntStream.range(1, 3).boxed())
-            .argumentsForNextParameter("A", "B")
-            .argumentsForNextParameter(TestEnum.values());
     }
 
     /**
@@ -469,40 +498,6 @@ class ParameterizeTest {
     }
 
     /**
-     * 在所有测试执行前, 创建一个文件并写入 JSON 内容
-     *
-     * <p>
-     * 本方法为 {@link #json_shouldDeserializedObjectFromJsonInFile(User)} 方法提供前置文件
-     * </p>
-     */
-    @BeforeAll
-    static void createJsonFile() throws Exception {
-        var file = new File("user.json");
-        if (!file.exists()) {
-            file.createNewFile();
-        }
-
-        try (var out = new FileOutputStream(file, false)) {
-            out.write("{\"id\": 1001, \"name\": \"Alvin\"}".getBytes(StandardCharsets.UTF_8));
-        }
-    }
-
-    /**
-     * 在所有测试执行完毕后, 删除之前创建的 JSON 文件
-     *
-     * <p>
-     * 本方法为 {@link #json_shouldDeserializedObjectFromJsonInFile(User)} 清理创建的文件
-     * </p>
-     */
-    @AfterAll
-    static void deleteJsonFile() {
-        var file = new File("user.json");
-        if (file.exists()) {
-            file.delete();
-        }
-    }
-
-    /**
      * 测试通过指定 JSON 文件内容反序列化为指定类型对象
      *
      * <p>
@@ -564,5 +559,10 @@ class ParameterizeTest {
         // 确认 JSON 反序列化结果正确
         then(id).isIn(1001001, 1001002);
         then(name).isIn("Alvin", "Emma");
+    }
+
+    enum TestEnum {
+        FIRST,
+        SECOND
     }
 }

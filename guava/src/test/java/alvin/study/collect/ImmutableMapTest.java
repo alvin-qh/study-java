@@ -31,7 +31,7 @@ import static org.assertj.core.api.BDDAssertions.thenThrownBy;
  * JDK 9 以后, JDK 本身提供了 {@link java.util.Map#of(Object, Object) Map.of(K1, V1, ..., Vn, Vn)} 方法, 可以取代 Guava 库的使用
  * </p>
  */
-@SuppressWarnings({"DataFlowIssue", "deprecation"})
+@SuppressWarnings({ "DataFlowIssue", "deprecation" })
 class ImmutableMapTest {
     /**
      * 通过指定键值对构建不变 Map 对象

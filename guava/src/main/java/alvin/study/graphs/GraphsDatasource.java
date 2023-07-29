@@ -19,98 +19,6 @@ import java.util.stream.Stream;
  * "图"结构数据源, 用于测试"图"类型和"网络"类型
  */
 public class GraphsDatasource<N, E> {
-    /**
-     * 定义"图"的"边"数据的类型
-     *
-     * <p>
-     * 每个"边"数据由两个节点值及边权重值组成
-     * </p>
-     *
-     * <p>
-     * 对于构建无权重图 ({@link com.google.common.graph.Graph Graph}) 类型来说, 只有两个节点值有效, 边权重值的类型总是为
-     * {@link Void} 且其值为 {@code null}
-     * </p>
-     *
-     * <p>
-     * 对于构建有权重图 ({@link com.google.common.graph.ValueGraph ValueGraph}) 和网络
-     * ({@link com.google.common.graph.Network Network}) 来说, 需要同时包括两个节点值和边权重值
-     * </p>
-     */
-    public static class Edge<N, E> {
-        // 节点 1
-        private final N node1;
-        // 节点 2
-        private final N node2;
-        // 节点值
-        private final E weight;
-
-        /**
-         * 构造器, 用于构造一个边数据对象
-         *
-         * @param node1  节点 1 对象引用
-         * @param node2  节点 2 对象引用
-         * @param weight 边权重
-         */
-        private Edge(N node1, N node2, E weight) {
-            this.node1 = node1;
-            this.node2 = node2;
-            this.weight = weight;
-        }
-
-        /**
-         * 获取边中节点 1 的值
-         *
-         * @return 节点 1 的值
-         */
-        public N node1() {
-            return node1;
-        }
-
-        /**
-         * 获取边中节点 2 的值
-         *
-         * @return 节点 2 的值
-         */
-        public N node2() {
-            return node2;
-        }
-
-        /**
-         * 获取边的权重值
-         *
-         * @return 边的权重值
-         */
-        public E weight() {
-            return weight;
-        }
-
-        /**
-         * 通过两个节点值来构建边数据对象
-         *
-         * @param <N>   节点值类型
-         * @param node1 节点 1 的值
-         * @param node2 节点 2 的值
-         * @return 边数据对象
-         */
-        public static <N> Edge<N, Void> of(N node1, N node2) {
-            return new Edge<>(node1, node2, null);
-        }
-
-        /**
-         * 通过两个节点值来构建边数据对象
-         *
-         * @param <N>   节点值类型
-         * @param <E>   边权重值类型
-         * @param node1 节点 1 的值
-         * @param node2 节点 2 的值
-         * @param value 边的值
-         * @return 边数据对象
-         */
-        public static <N, E> Edge<N, E> of(N node1, N node2, E value) {
-            return new Edge<>(node1, node2, value);
-        }
-    }
-
     // 保存"边"的集合
     private final List<Edge<N, E>> edges;
 
@@ -386,5 +294,97 @@ public class GraphsDatasource<N, E> {
             }
         }
         return result;
+    }
+
+    /**
+     * 定义"图"的"边"数据的类型
+     *
+     * <p>
+     * 每个"边"数据由两个节点值及边权重值组成
+     * </p>
+     *
+     * <p>
+     * 对于构建无权重图 ({@link com.google.common.graph.Graph Graph}) 类型来说, 只有两个节点值有效, 边权重值的类型总是为
+     * {@link Void} 且其值为 {@code null}
+     * </p>
+     *
+     * <p>
+     * 对于构建有权重图 ({@link com.google.common.graph.ValueGraph ValueGraph}) 和网络
+     * ({@link com.google.common.graph.Network Network}) 来说, 需要同时包括两个节点值和边权重值
+     * </p>
+     */
+    public static class Edge<N, E> {
+        // 节点 1
+        private final N node1;
+        // 节点 2
+        private final N node2;
+        // 节点值
+        private final E weight;
+
+        /**
+         * 构造器, 用于构造一个边数据对象
+         *
+         * @param node1  节点 1 对象引用
+         * @param node2  节点 2 对象引用
+         * @param weight 边权重
+         */
+        private Edge(N node1, N node2, E weight) {
+            this.node1 = node1;
+            this.node2 = node2;
+            this.weight = weight;
+        }
+
+        /**
+         * 通过两个节点值来构建边数据对象
+         *
+         * @param <N>   节点值类型
+         * @param node1 节点 1 的值
+         * @param node2 节点 2 的值
+         * @return 边数据对象
+         */
+        public static <N> Edge<N, Void> of(N node1, N node2) {
+            return new Edge<>(node1, node2, null);
+        }
+
+        /**
+         * 通过两个节点值来构建边数据对象
+         *
+         * @param <N>   节点值类型
+         * @param <E>   边权重值类型
+         * @param node1 节点 1 的值
+         * @param node2 节点 2 的值
+         * @param value 边的值
+         * @return 边数据对象
+         */
+        public static <N, E> Edge<N, E> of(N node1, N node2, E value) {
+            return new Edge<>(node1, node2, value);
+        }
+
+        /**
+         * 获取边中节点 1 的值
+         *
+         * @return 节点 1 的值
+         */
+        public N node1() {
+            return node1;
+        }
+
+        /**
+         * 获取边中节点 2 的值
+         *
+         * @return 节点 2 的值
+         */
+        public N node2() {
+            return node2;
+        }
+
+        /**
+         * 获取边的权重值
+         *
+         * @return 边的权重值
+         */
+        public E weight() {
+            return weight;
+        }
     }
 }

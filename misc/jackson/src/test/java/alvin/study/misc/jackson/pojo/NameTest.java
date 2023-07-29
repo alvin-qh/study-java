@@ -18,7 +18,7 @@ class NameTest {
 
     // 定义未通过过滤器时期待的 JSON 字符串
     private static final String JSON_NO_FILTER
-            = "{\"fullName\":\"Alvin·Qu\",\"firstName\":\"Alvin\",\"lastName\":\"Qu\",\"middot\":\"·\"}";
+        = "{\"fullName\":\"Alvin·Qu\",\"firstName\":\"Alvin\",\"lastName\":\"Qu\",\"middot\":\"·\"}";
 
     // 定义通过过滤器时期待的 JSON 字符串
     private static final String JSON_FILTERED = "{\"fullName\":\"Alvin·Qu\"}";

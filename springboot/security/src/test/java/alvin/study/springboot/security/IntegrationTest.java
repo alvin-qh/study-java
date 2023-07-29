@@ -8,12 +8,12 @@ import alvin.study.springboot.security.builder.RoleGrantBuilder;
 import alvin.study.springboot.security.builder.RolePermissionBuilder;
 import alvin.study.springboot.security.builder.UserBuilder;
 import alvin.study.springboot.security.builder.UserGroupBuilder;
+import alvin.study.springboot.security.conf.BeanConfig;
 import alvin.study.springboot.security.conf.TableCleaner;
-import alvin.study.springboot.security.conf.TestingTransaction;
-import alvin.study.springboot.security.conf.TestingTransactionManager;
 import alvin.study.springboot.security.conf.TestingConfig;
 import alvin.study.springboot.security.conf.TestingContextInitializer;
-import alvin.study.springboot.security.conf.BeanConfig;
+import alvin.study.springboot.security.conf.TestingTransaction;
+import alvin.study.springboot.security.conf.TestingTransactionManager;
 import alvin.study.springboot.security.core.cache.Cache;
 import alvin.study.springboot.security.core.security.auth.NameAndPasswordAuthenticationToken;
 import alvin.study.springboot.security.infra.entity.Group;
@@ -45,7 +45,6 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.reactive.server.WebTestClient.RequestBodySpec;
 import org.springframework.test.web.reactive.server.WebTestClient.RequestHeadersSpec;
 import org.springframework.test.web.reactive.server.WebTestClient.RequestHeadersUriSpec;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
@@ -76,8 +75,8 @@ import java.util.List;
  * </p>
  */
 @ActiveProfiles("test")
-@SpringBootTest(classes = {TestingConfig.class}, webEnvironment = WebEnvironment.RANDOM_PORT)
-@ContextConfiguration(initializers = {TestingContextInitializer.class})
+@SpringBootTest(classes = { TestingConfig.class }, webEnvironment = WebEnvironment.RANDOM_PORT)
+@ContextConfiguration(initializers = { TestingContextInitializer.class })
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @AutoConfigureWebTestClient
 public abstract class IntegrationTest {
@@ -85,7 +84,16 @@ public abstract class IntegrationTest {
      * 默认测试用户的原始密码
      */
     protected static final String RAW_PASSWORD = "1234567890";
-
+    /**
+     * 注入角色 Mapper 类
+     */
+    @Autowired
+    protected RoleMapper roleMapper;
+    /**
+     * 注入权限 Mapper 类
+     */
+    @Autowired
+    protected PermissionMapper permissionMapper;
     /**
      * 注入测试用事务管理器对象
      *
@@ -98,7 +106,6 @@ public abstract class IntegrationTest {
      */
     @Autowired
     private TestingTransactionManager txManager;
-
     /**
      * 注入 mybatis Session 对象
      *
@@ -108,7 +115,6 @@ public abstract class IntegrationTest {
      */
     @Autowired
     private SqlSession sqlSession;
-
     /**
      * Bean 工厂类
      *
@@ -119,7 +125,6 @@ public abstract class IntegrationTest {
      */
     @Autowired
     private AutowireCapableBeanFactory beanFactory;
-
     /**
      * 用于在每次测试开始前, 将测试数据表全部清空
      *
@@ -127,7 +132,6 @@ public abstract class IntegrationTest {
      */
     @Autowired
     private TableCleaner tableCleaner;
-
     /**
      * 注入 Jwt 对象
      *
@@ -135,7 +139,6 @@ public abstract class IntegrationTest {
      */
     @Autowired
     private Jwt jwt;
-
     /**
      * 预设的测试用当前用户
      *
@@ -144,36 +147,20 @@ public abstract class IntegrationTest {
      * </p>
      */
     private User currentUser;
-
     /**
      * 当前用户所在的组
      */
     private Group adminGroup;
-
     /**
      * 测试客户端, 模拟发送请求
      */
     @Autowired
     private WebTestClient client;
-
     /**
      * Servlet 上下文对象
      */
     @Autowired
     private ServletContext servletContext;
-
-    /**
-     * 注入角色 Mapper 类
-     */
-    @Autowired
-    protected RoleMapper roleMapper;
-
-    /**
-     * 注入权限 Mapper 类
-     */
-    @Autowired
-    protected PermissionMapper permissionMapper;
-
     /**
      * 注入角色授予 Mapper 类
      */

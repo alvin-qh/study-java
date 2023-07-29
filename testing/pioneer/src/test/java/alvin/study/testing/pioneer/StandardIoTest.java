@@ -81,7 +81,7 @@ class StandardIoTest {
      * @param in {@link StdIn} 对象, 用于读取 {@link System#in} 输入的内容
      */
     @Test
-    @StdIo({"Hello", "World"})
+    @StdIo({ "Hello", "World" })
     void stdin_shouldSetContentIntoOutputStream(StdIn in) throws Exception {
         var lines = new ArrayList<String>();
 

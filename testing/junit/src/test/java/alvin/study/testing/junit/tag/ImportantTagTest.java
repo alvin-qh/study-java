@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
  */
 @Tag("important")
 @Test
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target({ ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface ImportantTagTest {

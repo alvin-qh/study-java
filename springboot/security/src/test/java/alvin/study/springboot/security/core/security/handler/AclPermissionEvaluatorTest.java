@@ -1,15 +1,13 @@
 package alvin.study.springboot.security.core.security.handler;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import java.util.List;
-
-import alvin.study.springboot.security.core.security.handler.AclPermissionEvaluator;
+import alvin.study.springboot.security.core.security.auth.NameAndPasswordAuthenticationToken;
 import alvin.study.springboot.security.infra.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import alvin.study.springboot.security.core.security.auth.NameAndPasswordAuthenticationToken;
+import java.util.List;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link AclPermissionEvaluator} 类型, 对用于具备的角色或权限进行匹配
@@ -26,11 +24,11 @@ class AclPermissionEvaluatorTest {
     @Test
     void hasRole_shouldCheckRole() {
         var token = new NameAndPasswordAuthenticationToken(
-                new User(),
-                "",
-                List.of(
-                        new SimpleGrantedAuthority("ROLE_A"),
-                        new SimpleGrantedAuthority("ROLE_B")));
+            new User(),
+            "",
+            List.of(
+                new SimpleGrantedAuthority("ROLE_A"),
+                new SimpleGrantedAuthority("ROLE_B")));
 
         var r = evaluator.hasRole(token, "A");
         then(r).isTrue();
@@ -48,15 +46,15 @@ class AclPermissionEvaluatorTest {
     @Test
     void hasPermission_shouldCheckPermissions() {
         var token = new NameAndPasswordAuthenticationToken(
-                new User(),
-                "",
-                List.of(
-                        new SimpleGrantedAuthority("A:X:R"),
-                        new SimpleGrantedAuthority("A:Y:R"),
-                        new SimpleGrantedAuthority("A:Z:W"),
-                        new SimpleGrantedAuthority("B:X:W"),
-                        new SimpleGrantedAuthority("B:Y:W"),
-                        new SimpleGrantedAuthority("C:Z:W")));
+            new User(),
+            "",
+            List.of(
+                new SimpleGrantedAuthority("A:X:R"),
+                new SimpleGrantedAuthority("A:Y:R"),
+                new SimpleGrantedAuthority("A:Z:W"),
+                new SimpleGrantedAuthority("B:X:W"),
+                new SimpleGrantedAuthority("B:Y:W"),
+                new SimpleGrantedAuthority("C:Z:W")));
 
         var r = evaluator.hasPermission(token, "A:X", "R");
         then(r).isTrue();

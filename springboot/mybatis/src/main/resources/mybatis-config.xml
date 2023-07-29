@@ -7,14 +7,14 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
   <!-- 声明属性文件的 key/value, 内容会被 .properties 文件覆盖 -->
-  <properties />
+  <properties/>
 
   <!-- 全局配置 -->
   <settings>
     <!-- 是否使用缓存 -->
-    <setting name="cacheEnabled" value="true" />
+    <setting name="cacheEnabled" value="true"/>
     <!-- 是否是懒记载 -->
-    <setting name="lazyLoadingEnabled" value="true" />
+    <setting name="lazyLoadingEnabled" value="true"/>
     <!-- <setting name="multipleResultSetsEnabled" value="true" /> -->
     <!-- <setting name="useColumnLabel" value="true" /> -->
     <!-- <setting name="useGeneratedKeys" value="false" /> -->

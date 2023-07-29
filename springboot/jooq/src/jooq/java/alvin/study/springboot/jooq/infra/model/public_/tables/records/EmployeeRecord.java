@@ -6,14 +6,13 @@ package alvin.study.springboot.jooq.infra.model.public_.tables.records;
 
 import alvin.study.springboot.jooq.infra.model.EmployeeInfo;
 import alvin.study.springboot.jooq.infra.model.public_.tables.Employee;
-
-import java.time.LocalDateTime;
-
 import org.jooq.Field;
 import org.jooq.Record11;
 import org.jooq.Record2;
 import org.jooq.Row11;
 import org.jooq.impl.UpdatableRecordImpl;
+
+import java.time.LocalDateTime;
 
 
 /**
@@ -25,11 +24,52 @@ public class EmployeeRecord extends UpdatableRecordImpl<EmployeeRecord> implemen
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>PUBLIC.EMPLOYEE.ID</code>.
+     * Create a detached EmployeeRecord
      */
-    public EmployeeRecord setId(Long value) {
-        set(0, value);
-        return this;
+    public EmployeeRecord() {
+        super(Employee.EMPLOYEE);
+    }
+
+    /**
+     * Create a detached, initialised EmployeeRecord
+     */
+    public EmployeeRecord(Long id, Long orgId, String name, String email, String title, EmployeeInfo info, Long deleted, Long createdBy, Long updatedBy, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(Employee.EMPLOYEE);
+
+        setId(id);
+        setOrgId(orgId);
+        setName(name);
+        setEmail(email);
+        setTitle(title);
+        setInfo(info);
+        setDeleted(deleted);
+        setCreatedBy(createdBy);
+        setUpdatedBy(updatedBy);
+        setCreatedAt(createdAt);
+        setUpdatedAt(updatedAt);
+        resetChangedOnNotNull();
+    }
+
+    /**
+     * Create a detached, initialised EmployeeRecord
+     */
+    public EmployeeRecord(alvin.study.springboot.jooq.infra.model.public_.tables.pojos.Employee value) {
+        super(Employee.EMPLOYEE);
+
+        if (value != null) {
+            setId(value.getId());
+            setOrgId(value.getOrgId());
+            setName(value.getName());
+            setEmail(value.getEmail());
+            setTitle(value.getTitle());
+            setInfo(value.getInfo());
+            setDeleted(value.getDeleted());
+            setCreatedBy(value.getCreatedBy());
+            setUpdatedBy(value.getUpdatedBy());
+            setCreatedAt(value.getCreatedAt());
+            setUpdatedAt(value.getUpdatedAt());
+            resetChangedOnNotNull();
+        }
     }
 
     /**
@@ -40,10 +80,10 @@ public class EmployeeRecord extends UpdatableRecordImpl<EmployeeRecord> implemen
     }
 
     /**
-     * Setter for <code>PUBLIC.EMPLOYEE.ORG_ID</code>.
+     * Setter for <code>PUBLIC.EMPLOYEE.ID</code>.
      */
-    public EmployeeRecord setOrgId(Long value) {
-        set(1, value);
+    public EmployeeRecord setId(Long value) {
+        set(0, value);
         return this;
     }
 
@@ -55,10 +95,10 @@ public class EmployeeRecord extends UpdatableRecordImpl<EmployeeRecord> implemen
     }
 
     /**
-     * Setter for <code>PUBLIC.EMPLOYEE.NAME</code>.
+     * Setter for <code>PUBLIC.EMPLOYEE.ORG_ID</code>.
      */
-    public EmployeeRecord setName(String value) {
-        set(2, value);
+    public EmployeeRecord setOrgId(Long value) {
+        set(1, value);
         return this;
     }
 
@@ -70,10 +110,10 @@ public class EmployeeRecord extends UpdatableRecordImpl<EmployeeRecord> implemen
     }
 
     /**
-     * Setter for <code>PUBLIC.EMPLOYEE.EMAIL</code>.
+     * Setter for <code>PUBLIC.EMPLOYEE.NAME</code>.
      */
-    public EmployeeRecord setEmail(String value) {
-        set(3, value);
+    public EmployeeRecord setName(String value) {
+        set(2, value);
         return this;
     }
 
@@ -85,10 +125,10 @@ public class EmployeeRecord extends UpdatableRecordImpl<EmployeeRecord> implemen
     }
 
     /**
-     * Setter for <code>PUBLIC.EMPLOYEE.TITLE</code>.
+     * Setter for <code>PUBLIC.EMPLOYEE.EMAIL</code>.
      */
-    public EmployeeRecord setTitle(String value) {
-        set(4, value);
+    public EmployeeRecord setEmail(String value) {
+        set(3, value);
         return this;
     }
 
@@ -100,10 +140,10 @@ public class EmployeeRecord extends UpdatableRecordImpl<EmployeeRecord> implemen
     }
 
     /**
-     * Setter for <code>PUBLIC.EMPLOYEE.INFO</code>.
+     * Setter for <code>PUBLIC.EMPLOYEE.TITLE</code>.
      */
-    public EmployeeRecord setInfo(EmployeeInfo value) {
-        set(5, value);
+    public EmployeeRecord setTitle(String value) {
+        set(4, value);
         return this;
     }
 
@@ -115,10 +155,10 @@ public class EmployeeRecord extends UpdatableRecordImpl<EmployeeRecord> implemen
     }
 
     /**
-     * Setter for <code>PUBLIC.EMPLOYEE.DELETED</code>.
+     * Setter for <code>PUBLIC.EMPLOYEE.INFO</code>.
      */
-    public EmployeeRecord setDeleted(Long value) {
-        set(6, value);
+    public EmployeeRecord setInfo(EmployeeInfo value) {
+        set(5, value);
         return this;
     }
 
@@ -130,10 +170,10 @@ public class EmployeeRecord extends UpdatableRecordImpl<EmployeeRecord> implemen
     }
 
     /**
-     * Setter for <code>PUBLIC.EMPLOYEE.CREATED_BY</code>.
+     * Setter for <code>PUBLIC.EMPLOYEE.DELETED</code>.
      */
-    public EmployeeRecord setCreatedBy(Long value) {
-        set(7, value);
+    public EmployeeRecord setDeleted(Long value) {
+        set(6, value);
         return this;
     }
 
@@ -145,10 +185,10 @@ public class EmployeeRecord extends UpdatableRecordImpl<EmployeeRecord> implemen
     }
 
     /**
-     * Setter for <code>PUBLIC.EMPLOYEE.UPDATED_BY</code>.
+     * Setter for <code>PUBLIC.EMPLOYEE.CREATED_BY</code>.
      */
-    public EmployeeRecord setUpdatedBy(Long value) {
-        set(8, value);
+    public EmployeeRecord setCreatedBy(Long value) {
+        set(7, value);
         return this;
     }
 
@@ -160,10 +200,10 @@ public class EmployeeRecord extends UpdatableRecordImpl<EmployeeRecord> implemen
     }
 
     /**
-     * Setter for <code>PUBLIC.EMPLOYEE.CREATED_AT</code>.
+     * Setter for <code>PUBLIC.EMPLOYEE.UPDATED_BY</code>.
      */
-    public EmployeeRecord setCreatedAt(LocalDateTime value) {
-        set(9, value);
+    public EmployeeRecord setUpdatedBy(Long value) {
+        set(8, value);
         return this;
     }
 
@@ -174,13 +214,21 @@ public class EmployeeRecord extends UpdatableRecordImpl<EmployeeRecord> implemen
         return (LocalDateTime) get(9);
     }
 
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
+
     /**
-     * Setter for <code>PUBLIC.EMPLOYEE.UPDATED_AT</code>.
+     * Setter for <code>PUBLIC.EMPLOYEE.CREATED_AT</code>.
      */
-    public EmployeeRecord setUpdatedAt(LocalDateTime value) {
-        set(10, value);
+    public EmployeeRecord setCreatedAt(LocalDateTime value) {
+        set(9, value);
         return this;
     }
+
+    // -------------------------------------------------------------------------
+    // Record11 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>PUBLIC.EMPLOYEE.UPDATED_AT</code>.
@@ -189,18 +237,18 @@ public class EmployeeRecord extends UpdatableRecordImpl<EmployeeRecord> implemen
         return (LocalDateTime) get(10);
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
+    /**
+     * Setter for <code>PUBLIC.EMPLOYEE.UPDATED_AT</code>.
+     */
+    public EmployeeRecord setUpdatedAt(LocalDateTime value) {
+        set(10, value);
+        return this;
+    }
 
     @Override
     public Record2<Long, Long> key() {
         return (Record2) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record11 type implementation
-    // -------------------------------------------------------------------------
 
     @Override
     public Row11<Long, Long, String, String, String, EmployeeInfo, Long, Long, Long, LocalDateTime, LocalDateTime> fieldsRow() {
@@ -431,6 +479,10 @@ public class EmployeeRecord extends UpdatableRecordImpl<EmployeeRecord> implemen
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     @Override
     public EmployeeRecord value10(LocalDateTime value) {
         setCreatedAt(value);
@@ -457,58 +509,5 @@ public class EmployeeRecord extends UpdatableRecordImpl<EmployeeRecord> implemen
         value10(value10);
         value11(value11);
         return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached EmployeeRecord
-     */
-    public EmployeeRecord() {
-        super(Employee.EMPLOYEE);
-    }
-
-    /**
-     * Create a detached, initialised EmployeeRecord
-     */
-    public EmployeeRecord(Long id, Long orgId, String name, String email, String title, EmployeeInfo info, Long deleted, Long createdBy, Long updatedBy, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        super(Employee.EMPLOYEE);
-
-        setId(id);
-        setOrgId(orgId);
-        setName(name);
-        setEmail(email);
-        setTitle(title);
-        setInfo(info);
-        setDeleted(deleted);
-        setCreatedBy(createdBy);
-        setUpdatedBy(updatedBy);
-        setCreatedAt(createdAt);
-        setUpdatedAt(updatedAt);
-        resetChangedOnNotNull();
-    }
-
-    /**
-     * Create a detached, initialised EmployeeRecord
-     */
-    public EmployeeRecord(alvin.study.springboot.jooq.infra.model.public_.tables.pojos.Employee value) {
-        super(Employee.EMPLOYEE);
-
-        if (value != null) {
-            setId(value.getId());
-            setOrgId(value.getOrgId());
-            setName(value.getName());
-            setEmail(value.getEmail());
-            setTitle(value.getTitle());
-            setInfo(value.getInfo());
-            setDeleted(value.getDeleted());
-            setCreatedBy(value.getCreatedBy());
-            setUpdatedBy(value.getUpdatedBy());
-            setCreatedAt(value.getCreatedAt());
-            setUpdatedAt(value.getUpdatedAt());
-            resetChangedOnNotNull();
-        }
     }
 }

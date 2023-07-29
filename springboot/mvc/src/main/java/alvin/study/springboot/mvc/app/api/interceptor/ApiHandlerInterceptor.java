@@ -59,7 +59,7 @@ public class ApiHandlerInterceptor implements PathsHandlerInterceptor {
      * </p>
      */
     @Override
-    public String[] getPathPatterns() { return new String[] { "/api/**" }; }
+    public String[] getPathPatterns() { return new String[]{ "/api/**" }; }
 
     /**
      * 对请求进行拦截
@@ -69,7 +69,7 @@ public class ApiHandlerInterceptor implements PathsHandlerInterceptor {
      * </p>
      *
      * @see org.springframework.web.servlet.HandlerInterceptor#preHandle(HttpServletRequest,
-     *      HttpServletResponse, Object)
+     * HttpServletResponse, Object)
      */
     @Override
     public boolean preHandle(

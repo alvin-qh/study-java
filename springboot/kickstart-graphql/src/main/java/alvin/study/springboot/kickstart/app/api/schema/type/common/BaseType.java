@@ -1,11 +1,11 @@
 package alvin.study.springboot.kickstart.app.api.schema.type.common;
 
-import java.io.Serializable;
-
 import alvin.study.springboot.kickstart.infra.entity.common.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 /**
  * 所有具备主键 id 的 Type 类型超类

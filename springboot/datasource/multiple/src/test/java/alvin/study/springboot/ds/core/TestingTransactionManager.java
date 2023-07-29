@@ -1,11 +1,9 @@
 package alvin.study.springboot.ds.core;
 
-import alvin.study.springboot.ds.conf.TestingConfig;
+import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
-
-import lombok.RequiredArgsConstructor;
 
 /**
  * 测试用手动事务管理器
@@ -29,6 +27,16 @@ import lombok.RequiredArgsConstructor;
 public class TestingTransactionManager {
     // Spring 事务管理接口对象
     private final PlatformTransactionManager tm;
+
+    /**
+     * 启动事务, 即实例化一个 {@link TestingTransaction} 类型对象并返回
+     *
+     * @param readOnly 事务的只读性
+     * @return {@link TestingTransaction} 类型事务对象
+     */
+    public TestingTransaction begin(boolean readOnly) {
+        return new TestingTransactionImpl(readOnly);
+    }
 
     /**
      * 实现 {@link TestingTransaction} 接口, 通过 {@link PlatformTransactionManager}
@@ -60,15 +68,5 @@ public class TestingTransactionManager {
                 status = null;
             }
         }
-    }
-
-    /**
-     * 启动事务, 即实例化一个 {@link TestingTransaction} 类型对象并返回
-     *
-     * @param readOnly 事务的只读性
-     * @return {@link TestingTransaction} 类型事务对象
-     */
-    public TestingTransaction begin(boolean readOnly) {
-        return new TestingTransactionImpl(readOnly);
     }
 }

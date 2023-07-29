@@ -49,6 +49,54 @@ public class GraphQLErrorHandler implements GraphQLQueryResolver {
     private static final String UNKNOWN_ERROR_REASON = "Unknown error reason";
 
     /**
+     * 将异常转为 {@link GraphQLError} 对象, 统一错误格式
+     *
+     * @param errorContext        错误上下文对象
+     * @param message             错误信息
+     * @param extensions          额外的错误信息
+     * @param errorClassification 错误分类
+     * @return {@link GraphQLError} 对象
+     */
+    private static GraphQLError makeGraphQLError(
+        @NotNull ErrorContext errorContext,
+        String message,
+        Map<String, Object> extensions,
+        ErrorClassification errorClassification) {
+        errorClassification = errorClassification == null ? errorContext.getErrorType() : errorClassification;
+
+        if (errorContext.getExtensions() != null) {
+            extensions = Streams
+                .concat(extensions.entrySet().stream(), errorContext.getExtensions().entrySet().stream())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        }
+
+        return GraphqlErrorBuilder.newError()
+            .message(message)
+            .extensions(extensions)
+            .errorType(errorClassification)
+            .locations(errorContext.getLocations())
+            .path(errorContext.getPath())
+            .build();
+    }
+
+    /**
+     * 对异常记录日志
+     *
+     * @param t     异常对象
+     * @param error Graphql 错误对象
+     */
+    private static void log(Throwable t, GraphQLError error) {
+        log.info("Graphql error handler: {} handled, "
+                + "client message=<message={}, errorType={}, locations={}, extensions={}, path={}>",
+            t.getClass().getName(),
+            error.getMessage(),
+            error.getErrorType(),
+            error.getLocations(),
+            error.getExtensions(),
+            error.getPath());
+    }
+
+    /**
      * 处理所有未处理异常
      *
      * @param e            {@link Exception} 类型异常
@@ -135,53 +183,5 @@ public class GraphQLErrorHandler implements GraphQLQueryResolver {
             ErrorType.ValidationError);
         log(e, err);
         return err;
-    }
-
-    /**
-     * 将异常转为 {@link GraphQLError} 对象, 统一错误格式
-     *
-     * @param errorContext        错误上下文对象
-     * @param message             错误信息
-     * @param extensions          额外的错误信息
-     * @param errorClassification 错误分类
-     * @return {@link GraphQLError} 对象
-     */
-    private static GraphQLError makeGraphQLError(
-        @NotNull ErrorContext errorContext,
-        String message,
-        Map<String, Object> extensions,
-        ErrorClassification errorClassification) {
-        errorClassification = errorClassification == null ? errorContext.getErrorType() : errorClassification;
-
-        if (errorContext.getExtensions() != null) {
-            extensions = Streams
-                .concat(extensions.entrySet().stream(), errorContext.getExtensions().entrySet().stream())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-        }
-
-        return GraphqlErrorBuilder.newError()
-            .message(message)
-            .extensions(extensions)
-            .errorType(errorClassification)
-            .locations(errorContext.getLocations())
-            .path(errorContext.getPath())
-            .build();
-    }
-
-    /**
-     * 对异常记录日志
-     *
-     * @param t     异常对象
-     * @param error Graphql 错误对象
-     */
-    private static void log(Throwable t, GraphQLError error) {
-        log.info("Graphql error handler: {} handled, "
-                + "client message=<message={}, errorType={}, locations={}, extensions={}, path={}>",
-            t.getClass().getName(),
-            error.getMessage(),
-            error.getErrorType(),
-            error.getLocations(),
-            error.getExtensions(),
-            error.getPath());
     }
 }

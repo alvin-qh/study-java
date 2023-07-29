@@ -1,10 +1,10 @@
 package alvin.study.se.ratelimit;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link FixedWindowRateLimiter} 类型, 通过固定窗口限流类型

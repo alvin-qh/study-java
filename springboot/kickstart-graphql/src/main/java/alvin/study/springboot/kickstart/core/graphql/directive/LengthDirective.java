@@ -1,10 +1,5 @@
 package alvin.study.springboot.kickstart.core.graphql.directive;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CompletionStage;
-
 import alvin.study.springboot.kickstart.conf.GraphqlConfig;
 import graphql.Assert;
 import graphql.GraphQLError;
@@ -21,6 +16,11 @@ import graphql.schema.GraphQLInputType;
 import graphql.schema.GraphQLTypeUtil;
 import graphql.schema.idl.SchemaDirectiveWiring;
 import graphql.schema.idl.SchemaDirectiveWiringEnvironment;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletionStage;
 
 /**
  * 定义 {@code @len} 字段处理器
@@ -68,6 +68,112 @@ public class LengthDirective implements SchemaDirectiveWiring {
 
     // directive 的 max 参数名
     private static final String DIRECTIVE_ARG_MAX = "max";
+
+    /**
+     * 将处理器参数解析为整数型 ({@code min} 和 {@code max}) 参数
+     *
+     * @param directive    处理器标识对象
+     * @param argumentName 处理器标识参数名
+     * @return 处理器对象参数值
+     */
+    @SuppressWarnings("java:S1192")
+    private static Integer parseArgument(GraphQLAppliedDirective directive, String argumentName) {
+        // 根据参数名获取处理器标识的参数值
+        var argument = directive.getArgument(argumentName);
+        if (argument == null) {
+            throw new IllegalArgumentException("directive");
+        }
+
+        // 获取参数值, 参数值为 InputValueWithState 类型对象
+        var valueWithState = argument.getArgumentValue();
+        if (!valueWithState.isSet()) {
+            throw new IllegalArgumentException("directive");
+        }
+
+        // 获取参数的实际值
+        var value = valueWithState.getValue();
+        if (!(value instanceof IntValue v)) {
+            throw new IllegalArgumentException("directive");
+        }
+
+        // 返回整数类型的 Java 对象值
+        return v.getValue().intValue();
+    }
+
+    /**
+     * 获取参数的实际类型
+     *
+     * @param inputType 输入的 {@code Input} 对象类型
+     * @return {@link GraphQLInputType} 对象
+     */
+    private static GraphQLInputType unwrapNonNull(GraphQLInputType inputType) {
+        var type = GraphQLTypeUtil.unwrapNonNull(inputType);
+        if (type instanceof GraphQLInputType qlInputType) {
+            return qlInputType;
+        }
+
+        var argType = GraphQLTypeUtil.simplePrint(inputType);
+        return Assert.assertShouldNeverHappen("You have a wrapped type that is in fact not a input type : %s", argType);
+    }
+
+    /**
+     * 包装字段返回值
+     *
+     * <p>
+     * 根据字段返回值的不同, 采用不同方式获取字段返回的实际信息, 并包装为 {@link DataFetcherResult} 对象返回
+     * </p>
+     *
+     * @param errors 字段错误信息
+     * @param value  字段实际值
+     * @return {@link DataFetcherResult} 类型对象
+     */
+    private static Object makeDFRFromFetchedResult(List<GraphQLError> errors, Object value) {
+        // 判断字段值类型是否为 CompletionStage, 这是一个异步字段值包装对象, 需要进一步获取其本身的值
+        if (value instanceof CompletionStage<?> stage) {
+            // 异步回调, 进一步获取字段返回值 (递归调用)
+            return stage.thenApply(v -> makeDFRFromFetchedResult(errors, v));
+        }
+
+        // 判断字段值是否为 DataFetcherResult 对象, 这是 graphql 字段值的包装对象, 可以直接获取字段返回的信息
+        if (value instanceof DataFetcherResult<?> df) {
+            // 设置字段的原始值, 合并错误信息
+            return makeDFR(df.getData(), concat(errors, df.getErrors()), df.getLocalContext());
+        }
+
+        // 如果字段值为其它类型对象, 则直接包装为 DataFetcherResult 类型并返回
+        return makeDFR(value, errors, null);
+    }
+
+    /**
+     * 产生一个 {@link DataFetcherResult} 对象, 即 {@code graphql} 查询字段的返回值
+     *
+     * @param value        返回值的实际对象值
+     * @param errors       返回值包含的错误信息
+     * @param localContext 相关上下文对象
+     * @return {@link DataFetcherResult} 对象
+     */
+    private static DataFetcherResult<Object> makeDFR(Object value, List<GraphQLError> errors, Object localContext) {
+        return DataFetcherResult.newResult()
+            .data(value)
+            .errors(errors)
+            .localContext(localContext)
+            .build();
+    }
+
+    /**
+     * 合并两个 {@link List} 集合
+     *
+     * @param <T> 集合元素类型
+     * @param l1  集合 1
+     * @param l2  集合 2
+     * @return 两个集合合并的结果
+     */
+    private static <T> List<T> concat(List<T> l1, List<T> l2) {
+        var errors = new ArrayList<T>();
+        errors.addAll(l1);
+        errors.addAll(l2);
+        return errors;
+    }
 
     /**
      * 当查询到标注指定处理器的字段时, 执行的方法
@@ -171,15 +277,15 @@ public class LengthDirective implements SchemaDirectiveWiring {
                 if (inputType instanceof GraphQLInputObjectType inputObjType) {
                     // 获取 Input 参数的字段定义
                     inputObjType.getFieldDefinitions().stream()
-                            // 判断字段是否包含指定的处理器标识
-                            .filter(this::appliesTo)
-                            // 遍历所有 Input 字段
-                            .forEach(io -> {
-                                // 获取 Input 字段值
-                                var value = env.<Map<String, Object>>getArgument(it.getName());
-                                // 获取 Input 字段值, 处理字段值, 并记录返回的错误
-                                errors.addAll(apply(io, env, value.get(io.getName())));
-                            });
+                        // 判断字段是否包含指定的处理器标识
+                        .filter(this::appliesTo)
+                        // 遍历所有 Input 字段
+                        .forEach(io -> {
+                            // 获取 Input 字段值
+                            var value = env.<Map<String, Object>>getArgument(it.getName());
+                            // 获取 Input 字段值, 处理字段值, 并记录返回的错误
+                            errors.addAll(apply(io, env, value.get(io.getName())));
+                        });
                 }
             });
 
@@ -219,111 +325,5 @@ public class LengthDirective implements SchemaDirectiveWiring {
             return List.of(GraphqlErrorBuilder.newError(env).message(err).build());
         }
         return List.of();
-    }
-
-    /**
-     * 将处理器参数解析为整数型 ({@code min} 和 {@code max}) 参数
-     *
-     * @param directive    处理器标识对象
-     * @param argumentName 处理器标识参数名
-     * @return 处理器对象参数值
-     */
-    @SuppressWarnings("java:S1192")
-    private static Integer parseArgument(GraphQLAppliedDirective directive, String argumentName) {
-        // 根据参数名获取处理器标识的参数值
-        var argument = directive.getArgument(argumentName);
-        if (argument == null) {
-            throw new IllegalArgumentException("directive");
-        }
-
-        // 获取参数值, 参数值为 InputValueWithState 类型对象
-        var valueWithState = argument.getArgumentValue();
-        if (!valueWithState.isSet()) {
-            throw new IllegalArgumentException("directive");
-        }
-
-        // 获取参数的实际值
-        var value = valueWithState.getValue();
-        if (!(value instanceof IntValue v)) {
-            throw new IllegalArgumentException("directive");
-        }
-
-        // 返回整数类型的 Java 对象值
-        return v.getValue().intValue();
-    }
-
-    /**
-     * 获取参数的实际类型
-     *
-     * @param inputType 输入的 {@code Input} 对象类型
-     * @return {@link GraphQLInputType} 对象
-     */
-    private static GraphQLInputType unwrapNonNull(GraphQLInputType inputType) {
-        var type = GraphQLTypeUtil.unwrapNonNull(inputType);
-        if (type instanceof GraphQLInputType qlInputType) {
-            return qlInputType;
-        }
-
-        var argType = GraphQLTypeUtil.simplePrint(inputType);
-        return Assert.assertShouldNeverHappen("You have a wrapped type that is in fact not a input type : %s", argType);
-    }
-
-    /**
-     * 包装字段返回值
-     *
-     * <p>
-     * 根据字段返回值的不同, 采用不同方式获取字段返回的实际信息, 并包装为 {@link DataFetcherResult} 对象返回
-     * </p>
-     *
-     * @param errors 字段错误信息
-     * @param value  字段实际值
-     * @return {@link DataFetcherResult} 类型对象
-     */
-    private static Object makeDFRFromFetchedResult(List<GraphQLError> errors, Object value) {
-        // 判断字段值类型是否为 CompletionStage, 这是一个异步字段值包装对象, 需要进一步获取其本身的值
-        if (value instanceof CompletionStage<?> stage) {
-            // 异步回调, 进一步获取字段返回值 (递归调用)
-            return stage.thenApply(v -> makeDFRFromFetchedResult(errors, v));
-        }
-
-        // 判断字段值是否为 DataFetcherResult 对象, 这是 graphql 字段值的包装对象, 可以直接获取字段返回的信息
-        if (value instanceof DataFetcherResult<?> df) {
-            // 设置字段的原始值, 合并错误信息
-            return makeDFR(df.getData(), concat(errors, df.getErrors()), df.getLocalContext());
-        }
-
-        // 如果字段值为其它类型对象, 则直接包装为 DataFetcherResult 类型并返回
-        return makeDFR(value, errors, null);
-    }
-
-    /**
-     * 产生一个 {@link DataFetcherResult} 对象, 即 {@code graphql} 查询字段的返回值
-     *
-     * @param value        返回值的实际对象值
-     * @param errors       返回值包含的错误信息
-     * @param localContext 相关上下文对象
-     * @return {@link DataFetcherResult} 对象
-     */
-    private static DataFetcherResult<Object> makeDFR(Object value, List<GraphQLError> errors, Object localContext) {
-        return DataFetcherResult.newResult()
-                .data(value)
-                .errors(errors)
-                .localContext(localContext)
-                .build();
-    }
-
-    /**
-     * 合并两个 {@link List} 集合
-     *
-     * @param <T> 集合元素类型
-     * @param l1  集合 1
-     * @param l2  集合 2
-     * @return 两个集合合并的结果
-     */
-    private static <T> List<T> concat(List<T> l1, List<T> l2) {
-        var errors = new ArrayList<T>();
-        errors.addAll(l1);
-        errors.addAll(l2);
-        return errors;
     }
 }

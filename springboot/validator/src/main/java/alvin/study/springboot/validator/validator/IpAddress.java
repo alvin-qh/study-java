@@ -18,9 +18,9 @@ import java.lang.annotation.Target;
  * </p>
  */
 @Documented
-@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Target({ ElementType.FIELD, ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = {IpAddressValidator.class}) // 执行校验的校验类
+@Constraint(validatedBy = { IpAddressValidator.class }) // 执行校验的校验类
 public @interface IpAddress {
     /**
      * 设置 IP 版本号, 4 表示 ipv4, 6 表示 ipv6
@@ -56,7 +56,7 @@ public @interface IpAddress {
      *
      * @return 用于对校验注解分组的类型标志
      */
-    Class<?>[] groups() default {};
+    Class<?>[] groups() default { };
 
     /**
      * 一个作为载荷传递给校验结果的类型
@@ -69,5 +69,5 @@ public @interface IpAddress {
      *
      * @return {@link Payload} 类型 {@link Class} 对象
      */
-    Class<? extends Payload>[] payload() default {};
+    Class<? extends Payload>[] payload() default { };
 }

@@ -1,10 +1,10 @@
 package alvin.study.springboot.jooq.infra.model;
 
-import java.time.LocalDate;
-
 import alvin.study.springboot.jooq.infra.converter.EmployeeInfoConverter;
 import lombok.Data;
 import lombok.experimental.Accessors;
+
+import java.time.LocalDate;
 
 /**
  * 雇员信息类型

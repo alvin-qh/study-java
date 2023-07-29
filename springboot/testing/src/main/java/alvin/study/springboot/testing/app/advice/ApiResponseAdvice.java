@@ -60,6 +60,15 @@ import static alvin.study.springboot.testing.common.ResponseWrapper.success;
 @RestControllerAdvice(basePackages = "alvin.study.springboot.testing.app")
 public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
     /**
+     * 以警告级别显示异常日志
+     *
+     * @param e 异常对象
+     */
+    private static void warnLog(Exception e) {
+        log.warn("Some error raised and will return to client", e);
+    }
+
+    /**
      * 返回 {@code true} 或 {@code false}, 以决定 {@code beforeBodyWrite} 方法是否需要执行
      *
      * <p>
@@ -156,15 +165,6 @@ public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
             HttpStatus.BAD_REQUEST.value(), // 为此种错误定义代码和错误信息, 此处暂用 400 类型错误代码和信息
             "missing_request_args",
             ErrorDetail.withErrorFields(err));
-    }
-
-    /**
-     * 以警告级别显示异常日志
-     *
-     * @param e 异常对象
-     */
-    private static void warnLog(Exception e) {
-        log.warn("Some error raised and will return to client", e);
     }
 
     /**

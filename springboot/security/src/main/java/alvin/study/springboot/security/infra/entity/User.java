@@ -1,12 +1,11 @@
 package alvin.study.springboot.security.infra.entity;
 
+import alvin.study.springboot.security.infra.entity.common.AuditedEntity;
 import alvin.study.springboot.security.infra.mapper.UserMapper;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import alvin.study.springboot.security.infra.entity.common.AuditedEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

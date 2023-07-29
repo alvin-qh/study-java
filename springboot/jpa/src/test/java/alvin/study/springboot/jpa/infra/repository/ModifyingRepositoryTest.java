@@ -2,7 +2,6 @@ package alvin.study.springboot.jpa.infra.repository;
 
 import alvin.study.springboot.jpa.IntegrationTest;
 import alvin.study.springboot.jpa.builder.UserBuilder;
-import alvin.study.springboot.jpa.infra.repository.ModifyingRepository;
 import alvin.study.springboot.jpa.util.security.PasswordUtil;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;

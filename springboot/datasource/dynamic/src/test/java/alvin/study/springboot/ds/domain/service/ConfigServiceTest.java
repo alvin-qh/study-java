@@ -1,18 +1,17 @@
 package alvin.study.springboot.ds.domain.service;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.BadSqlGrammarException;
-
 import alvin.study.springboot.ds.IntegrationTest;
 import alvin.study.springboot.ds.app.domain.service.ConfigService;
 import alvin.study.springboot.ds.core.data.DataSourceContext;
 import alvin.study.springboot.ds.core.data.DefaultDataSource;
 import alvin.study.springboot.ds.infra.entity.DataEntity;
 import alvin.study.springboot.ds.infra.repository.DataRepository;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.BadSqlGrammarException;
+
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 /**
  * 测试 {@link ConfigService} 类型
@@ -55,10 +54,10 @@ class ConfigServiceTest extends IntegrationTest {
 
             // 确认查询结果
             then(datas)
-                    .hasSize(1)
-                    .singleElement()
-                    .extracting("name", "value")
-                    .contains("test-name-" + config.getDbName(), "test-value-" + config.getDbName());
+                .hasSize(1)
+                .singleElement()
+                .extracting("name", "value")
+                .contains("test-name-" + config.getDbName(), "test-value-" + config.getDbName());
         }
     }
 }

@@ -218,17 +218,6 @@ public final class CRC16 {
         }
 
         /**
-         * 计算一个字节的 crc 值
-         *
-         * @param crc 上一次 crc 计算结果
-         * @param b   要计算的 {@code byte} 值
-         * @return crc 计算结果
-         */
-        public int exec(int crc, byte b) {
-            return func.apply(crc, b);
-        }
-
-        /**
          * 通过查表法计算 crc 值
          *
          * @param crc 上一次 crc 计算结果
@@ -263,6 +252,17 @@ public final class CRC16 {
                 }
             }
             return crc;
+        }
+
+        /**
+         * 计算一个字节的 crc 值
+         *
+         * @param crc 上一次 crc 计算结果
+         * @param b   要计算的 {@code byte} 值
+         * @return crc 计算结果
+         */
+        public int exec(int crc, byte b) {
+            return func.apply(crc, b);
         }
     }
 }

@@ -32,6 +32,16 @@ public class TestingTransactionManager {
     private final PlatformTransactionManager tm;
 
     /**
+     * 启动事务, 即实例化一个 {@link TestingTransaction} 类型对象并返回
+     *
+     * @param readOnly 事务的只读性
+     * @return {@link TestingTransaction} 类型事务对象
+     */
+    public TestingTransaction begin(boolean readOnly) {
+        return new TestingTransactionImpl(readOnly);
+    }
+
+    /**
      * 实现 {@link TestingTransaction} 接口, 通过 {@link PlatformTransactionManager}
      * 对象完成实际的事务启动和提交操作
      */
@@ -61,15 +71,5 @@ public class TestingTransactionManager {
                 status = null;
             }
         }
-    }
-
-    /**
-     * 启动事务, 即实例化一个 {@link TestingTransaction} 类型对象并返回
-     *
-     * @param readOnly 事务的只读性
-     * @return {@link TestingTransaction} 类型事务对象
-     */
-    public TestingTransaction begin(boolean readOnly) {
-        return new TestingTransactionImpl(readOnly);
     }
 }

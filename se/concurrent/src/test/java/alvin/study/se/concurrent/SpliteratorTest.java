@@ -61,6 +61,31 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 class SpliteratorTest {
     /**
+     * 将多个 {@link Spliterator} 对象合并到一个 {@link List} 集合对象中
+     *
+     * <p>
+     * 通过 {@link StreamSupport#stream(Spliterator, boolean)} 方法可以将一个 {@link Spliterator} 对象转为
+     * {@link Stream} 类型对象, 其中包含了 {@link Spliterator} 对象中剩余的元素
+     * </p>
+     *
+     * <p>
+     * {@link StreamSupport#stream(Spliterator, boolean)} 方法和 {@link Stream#spliterator()} 方法相互为逆操作
+     * </p>
+     *
+     * @param <T>          集合元素类型
+     * @param spliterators 多个 {@link Spliterator} 对象
+     * @return 包含所有 {@link Spliterator} 对象元素的 {@link List} 集合对象
+     */
+    @SafeVarargs
+    private static <T> List<T> toList(Spliterator<T>... spliterators) {
+        var result = new ArrayList<T>();
+        for (var sp : spliterators) {
+            sp.forEachRemaining(result::add);
+        }
+        return result;
+    }
+
+    /**
      * 获取 {@link Spliterator} 类型对象的特性
      *
      * <p>
@@ -165,7 +190,7 @@ class SpliteratorTest {
         then(sp.getExactSizeIfKnown()).isEqualTo(sp.estimateSize()).isEqualTo(10);
 
         // 处理掉一个元素
-        sp.tryAdvance(n -> {});
+        sp.tryAdvance(n -> { });
         // 确认 getExactSizeIfKnown 方法的结果和 estimateSize 一致
         then(sp.getExactSizeIfKnown()).isEqualTo(sp.estimateSize()).isEqualTo(9);
     }
@@ -257,31 +282,6 @@ class SpliteratorTest {
 
         // 确认分割后的两部分合并在一起为原本集合的全部元素
         then(toList(part1, part2)).containsExactlyInAnyOrder(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
-    }
-
-    /**
-     * 将多个 {@link Spliterator} 对象合并到一个 {@link List} 集合对象中
-     *
-     * <p>
-     * 通过 {@link StreamSupport#stream(Spliterator, boolean)} 方法可以将一个 {@link Spliterator} 对象转为
-     * {@link Stream} 类型对象, 其中包含了 {@link Spliterator} 对象中剩余的元素
-     * </p>
-     *
-     * <p>
-     * {@link StreamSupport#stream(Spliterator, boolean)} 方法和 {@link Stream#spliterator()} 方法相互为逆操作
-     * </p>
-     *
-     * @param <T>          集合元素类型
-     * @param spliterators 多个 {@link Spliterator} 对象
-     * @return 包含所有 {@link Spliterator} 对象元素的 {@link List} 集合对象
-     */
-    @SafeVarargs
-    private static <T> List<T> toList(Spliterator<T>... spliterators) {
-        var result = new ArrayList<T>();
-        for (var sp : spliterators) {
-            sp.forEachRemaining(result::add);
-        }
-        return result;
     }
 
     /**
@@ -403,7 +403,7 @@ class SpliteratorTest {
      */
     @Test
     void primitive_shouldCreatePrimitiveSpliterator() {
-        var sp = Arrays.stream(new int[]{1, 2, 3}).spliterator();
+        var sp = Arrays.stream(new int[]{ 1, 2, 3 }).spliterator();
 
         sp.tryAdvance((IntConsumer) n -> then(n).isEqualTo(1));
         sp.forEachRemaining((IntConsumer) n -> then(n).isIn(2, 3));
@@ -528,7 +528,7 @@ class SpliteratorTest {
             // 基于引用类型数组创建 Spliterator 对象
             {
                 // 基于数组创建 Spliterator 对象, 并附加 SORTED 属性
-                var sp = Spliterators.spliterator(new String[]{"A", "B", "C", "D", "E"}, Spliterator.SORTED);
+                var sp = Spliterators.spliterator(new String[]{ "A", "B", "C", "D", "E" }, Spliterator.SORTED);
 
                 // 确认产生的 Spliterator 对象具备除附加的 SORTED 属性外, 还包括 SIZED 和 SUBSIZED 属性
                 then(sp.characteristics()).isEqualTo(Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.SORTED);
@@ -538,7 +538,7 @@ class SpliteratorTest {
             // 基于 int[] 类型数组创建 Spliterator 对象
             {
                 // 基于数组创建 Spliterator 对象, 并附加 SORTED 属性
-                var sp = Spliterators.spliterator(new int[]{1, 2, 3, 4, 5}, Spliterator.SORTED);
+                var sp = Spliterators.spliterator(new int[]{ 1, 2, 3, 4, 5 }, Spliterator.SORTED);
 
                 // 确认产生的 Spliterator 对象具备除附加的 SORTED 属性外, 还包括 SIZED 和 SUBSIZED 属性
                 then(sp.characteristics()).isEqualTo(Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.SORTED);
@@ -550,7 +550,7 @@ class SpliteratorTest {
             // 基于 long[] 类型数组创建 Spliterator 对象
             {
                 // 基于数组创建 Spliterator 对象, 并附加 SORTED 属性
-                var sp = Spliterators.spliterator(new long[]{1, 2, 3, 4, 5}, Spliterator.SORTED);
+                var sp = Spliterators.spliterator(new long[]{ 1, 2, 3, 4, 5 }, Spliterator.SORTED);
 
                 // 确认产生的 Spliterator 对象具备除附加的 SORTED 属性外, 还包括 SIZED 和 SUBSIZED 属性
                 then(sp.characteristics()).isEqualTo(Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.SORTED);
@@ -562,7 +562,7 @@ class SpliteratorTest {
             // 基于 double[] 类型数组创建 Spliterator 对象
             {
                 // 基于数组创建 Spliterator 对象, 并附加 SORTED 属性
-                var sp = Spliterators.spliterator(new double[]{1.1, 1.2, 1.3, 1.4, 1.5}, Spliterator.SORTED);
+                var sp = Spliterators.spliterator(new double[]{ 1.1, 1.2, 1.3, 1.4, 1.5 }, Spliterator.SORTED);
 
                 // 确认产生的 Spliterator 对象具备除附加的 SORTED 属性外, 还包括 SIZED 和 SUBSIZED 属性
                 then(sp.characteristics()).isEqualTo(Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.SORTED);

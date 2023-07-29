@@ -1,16 +1,15 @@
 package alvin.study.springboot.kickstart.infra.entity;
 
-import java.time.Instant;
-
 import alvin.study.springboot.kickstart.infra.entity.common.BaseEntity;
 import alvin.study.springboot.kickstart.infra.mapper.OrgMapper;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.time.Instant;
 
 /**
  * 组织实体, 同时表示租户, 对应 {@code org} 表

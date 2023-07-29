@@ -30,6 +30,57 @@ public class SessionUtil {
     private final Jwt jwt;
 
     /**
+     * 将对象序列化为字符串
+     *
+     * @param obj 对象, 需要实现 {@link java.io.Serializable Serializable} 接口
+     * @return 序列化结果
+     */
+    public static String objectToString(Object obj) {
+        if (obj == null) {
+            return "";
+        }
+
+        // 创建一个内存输出流
+        try (var bo = new ByteArrayOutputStream()) {
+            // 创建一个对象输出流
+            try (var oo = new ObjectOutputStream(bo)) {
+                // 将对象进行序列化
+                oo.writeObject(obj);
+            }
+            bo.flush();
+
+            // 对序列化结果进行 Base64 编码并返回
+            return Base64.getEncoder().encodeToString(bo.toByteArray());
+        } catch (IOException e) {
+            log.error("Cannot deserialize object", e);
+            return null;
+        }
+    }
+
+    /**
+     * 将字符串反序列化为对象
+     *
+     * @param value 字符串值, 该字符串是通过 {@link #objectToString(Object)} 得到
+     * @return 原对象
+     */
+    public static Object stringToObject(String value) {
+        if (Strings.isNullOrEmpty(value)) {
+            return null;
+        }
+
+        // 将字符串进行 Base64 解码, 并输入内存流进行读取
+        try (var bi = new ByteArrayInputStream(Base64.getDecoder().decode(value))) {
+            // 从输入流中读取对象并返回
+            try (var oi = new ObjectInputStream(bi)) {
+                return oi.readObject();
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            log.error("Cannot deserialize object", e);
+            return null;
+        }
+    }
+
+    /**
      * 从请求中获取 JWT 字符串
      *
      * @param request 请求对象
@@ -88,56 +139,5 @@ public class SessionUtil {
         session.setId(sessionId);
 
         return session;
-    }
-
-    /**
-     * 将对象序列化为字符串
-     *
-     * @param obj 对象, 需要实现 {@link java.io.Serializable Serializable} 接口
-     * @return 序列化结果
-     */
-    public static String objectToString(Object obj) {
-        if (obj == null) {
-            return "";
-        }
-
-        // 创建一个内存输出流
-        try (var bo = new ByteArrayOutputStream()) {
-            // 创建一个对象输出流
-            try (var oo = new ObjectOutputStream(bo)) {
-                // 将对象进行序列化
-                oo.writeObject(obj);
-            }
-            bo.flush();
-
-            // 对序列化结果进行 Base64 编码并返回
-            return Base64.getEncoder().encodeToString(bo.toByteArray());
-        } catch (IOException e) {
-            log.error("Cannot deserialize object", e);
-            return null;
-        }
-    }
-
-    /**
-     * 将字符串反序列化为对象
-     *
-     * @param value 字符串值, 该字符串是通过 {@link #objectToString(Object)} 得到
-     * @return 原对象
-     */
-    public static Object stringToObject(String value) {
-        if (Strings.isNullOrEmpty(value)) {
-            return null;
-        }
-
-        // 将字符串进行 Base64 解码, 并输入内存流进行读取
-        try (var bi = new ByteArrayInputStream(Base64.getDecoder().decode(value))) {
-            // 从输入流中读取对象并返回
-            try (var oi = new ObjectInputStream(bi)) {
-                return oi.readObject();
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            log.error("Cannot deserialize object", e);
-            return null;
-        }
     }
 }

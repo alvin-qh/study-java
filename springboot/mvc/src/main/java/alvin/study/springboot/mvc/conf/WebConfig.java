@@ -69,7 +69,7 @@ public class WebConfig implements WebMvcConfigurer, WebServerFactoryCustomizer<C
     // private static final int STATIC_RESOURCE_CACHE_PERIOD = 3600;
 
     // 默认的拦截器忽略路径
-    private static final String[] DEFAULT_EXCLUDE_PATTERNS = new String[] {
+    private static final String[] DEFAULT_EXCLUDE_PATTERNS = new String[]{
         "/d/**",
         "/static/**",
         "/favicon.ico"
@@ -115,10 +115,8 @@ public class WebConfig implements WebMvcConfigurer, WebServerFactoryCustomizer<C
      *
      * @see WebMvcConfigurer#addInterceptors(InterceptorRegistry)
      * @see InterceptorRegistry#addInterceptor(org.springframework.web.servlet.HandlerInterceptor)
-     *
      * @see org.springframework.web.servlet.config.annotation.InterceptorRegistration#addPathPatterns(String...)
      * @see org.springframework.web.servlet.config.annotation.InterceptorRegistration#excludePathPatterns(String...)
-     *
      * @see PathsHandlerInterceptor
      * @see PathsHandlerInterceptor#getPathPatterns()
      * @see PathsHandlerInterceptor#getExcludePathPatterns()
@@ -146,12 +144,12 @@ public class WebConfig implements WebMvcConfigurer, WebServerFactoryCustomizer<C
 
             // 添加拦截器
             registry
-                    // 添加拦截器
-                    .addInterceptor(interceptor)
-                    // 添加拦截器要拦截的 url 范围
-                    .addPathPatterns(pathPattern)
-                    // 添加拦截器要排除的 url 范围
-                    .excludePathPatterns(excludePathPatterns);
+                // 添加拦截器
+                .addInterceptor(interceptor)
+                // 添加拦截器要拦截的 url 范围
+                .addPathPatterns(pathPattern)
+                // 添加拦截器要排除的 url 范围
+                .excludePathPatterns(excludePathPatterns);
 
             log.info("[CONF] Add new interceptor \"{}\" on {} and exclude {}",
                 interceptor.getClass().getName(), pathPattern, excludePathPatterns);
@@ -163,8 +161,8 @@ public class WebConfig implements WebMvcConfigurer, WebServerFactoryCustomizer<C
         interceptor.setParamName("lang");
         // 注册拦截器, 并设置该拦截器的作用范围
         registry.addInterceptor(interceptor)
-                .addPathPatterns("/web/**")
-                .excludePathPatterns(DEFAULT_EXCLUDE_PATTERNS);
+            .addPathPatterns("/web/**")
+            .excludePathPatterns(DEFAULT_EXCLUDE_PATTERNS);
 
         log.info("[CONF] Add locale change interceptor \"{}\" on {} and exclude {}, lang param is \"{}\"",
             interceptor.getClass().getName(), "/web/**", DEFAULT_EXCLUDE_PATTERNS, interceptor.getParamName());
@@ -184,22 +182,22 @@ public class WebConfig implements WebMvcConfigurer, WebServerFactoryCustomizer<C
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
-                // 设置静态资源 URL 访问路径
-                .addResourceHandler("/static/**")
-                // 设置静态资源本地存储路径, 即将 URL 路径转换为本地路径
-                .addResourceLocations("classpath:/static/")
-                // 添加客户端缓存配置
-                // .setCacheControl(CacheControl.maxAge(10, TimeUnit.MINUTES).cachePrivate())
-                // 设置静态资源缓存时间
-                // .setCachePeriod(STATIC_RESOURCE_CACHE_PERIOD)
-                // 开启缓存
-                .resourceChain(false)
-                // 添加路径资源处理器
-                .addResolver(new PathResourceResolver())
-                // 添加编码后资源处理器, 包括 gzip 编码
-                .addResolver(new EncodedResourceResolver())
-                // 添加 MD5 版本处理器
-                .addResolver(new VersionResourceResolver().addContentVersionStrategy("/**"));
+            // 设置静态资源 URL 访问路径
+            .addResourceHandler("/static/**")
+            // 设置静态资源本地存储路径, 即将 URL 路径转换为本地路径
+            .addResourceLocations("classpath:/static/")
+            // 添加客户端缓存配置
+            // .setCacheControl(CacheControl.maxAge(10, TimeUnit.MINUTES).cachePrivate())
+            // 设置静态资源缓存时间
+            // .setCachePeriod(STATIC_RESOURCE_CACHE_PERIOD)
+            // 开启缓存
+            .resourceChain(false)
+            // 添加路径资源处理器
+            .addResolver(new PathResourceResolver())
+            // 添加编码后资源处理器, 包括 gzip 编码
+            .addResolver(new EncodedResourceResolver())
+            // 添加 MD5 版本处理器
+            .addResolver(new VersionResourceResolver().addContentVersionStrategy("/**"));
 
         log.info("[CONF] The static resources was setup");
     }

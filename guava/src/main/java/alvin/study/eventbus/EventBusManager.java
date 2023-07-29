@@ -24,12 +24,10 @@ public final class EventBusManager implements Closeable {
 
     // 当前类型的单例对象
     private static final EventBusManager INSTANCE = new EventBusManager();
-
-    // 异步线程执行器
-    private ExecutorService executorService = null;
-
     // 存储 EventBus 对象的 Map 对象
     private final Map<String, EventBus> eventBusMap = new ConcurrentHashMap<>();
+    // 异步线程执行器
+    private ExecutorService executorService = null;
 
     /**
      * 构造器, 创建管理器对象
@@ -40,6 +38,15 @@ public final class EventBusManager implements Closeable {
      */
     private EventBusManager() {
         eventBusMap.put(BUS_NAME_COMMON, new EventBus());
+    }
+
+    /**
+     * 获取单例的 {@link EventBusManager} 类型对象
+     *
+     * @return 单例 {@link EventBusManager} 类型对象
+     */
+    public static EventBusManager getInstance() {
+        return INSTANCE;
     }
 
     /**
@@ -163,14 +170,5 @@ public final class EventBusManager implements Closeable {
             executorService.shutdown();
             executorService = null;
         }
-    }
-
-    /**
-     * 获取单例的 {@link EventBusManager} 类型对象
-     *
-     * @return 单例 {@link EventBusManager} 类型对象
-     */
-    public static EventBusManager getInstance() {
-        return INSTANCE;
     }
 }

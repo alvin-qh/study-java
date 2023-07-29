@@ -1,17 +1,16 @@
 package alvin.study.springboot.kickstart.app.service;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Optional;
-
 import alvin.study.springboot.kickstart.infra.entity.User;
 import alvin.study.springboot.kickstart.infra.mapper.UserMapper;
+import alvin.study.springboot.kickstart.util.security.PasswordUtil;
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import alvin.study.springboot.kickstart.util.security.PasswordUtil;
-import lombok.RequiredArgsConstructor;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Optional;
 
 /**
  * 用户服务类

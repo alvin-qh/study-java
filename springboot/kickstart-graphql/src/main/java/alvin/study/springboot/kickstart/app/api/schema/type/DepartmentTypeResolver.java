@@ -1,13 +1,8 @@
 package alvin.study.springboot.kickstart.app.api.schema.type;
 
-import java.util.concurrent.CompletableFuture;
-
+import alvin.study.springboot.kickstart.app.api.schema.loader.DepartmentLoaderProvider;
 import alvin.study.springboot.kickstart.app.api.schema.type.common.AuditedResolver;
 import alvin.study.springboot.kickstart.app.api.schema.type.common.TenantedResolver;
-import org.dataloader.DataLoader;
-import org.modelmapper.ModelMapper;
-
-import alvin.study.springboot.kickstart.app.api.schema.loader.DepartmentLoaderProvider;
 import alvin.study.springboot.kickstart.app.service.DepartmentService;
 import alvin.study.springboot.kickstart.app.service.EmployeeService;
 import alvin.study.springboot.kickstart.core.graphql.annotation.Resolver;
@@ -18,6 +13,10 @@ import alvin.study.springboot.kickstart.infra.entity.Department;
 import alvin.study.springboot.kickstart.infra.entity.Employee;
 import graphql.schema.DataFetchingEnvironment;
 import lombok.RequiredArgsConstructor;
+import org.dataloader.DataLoader;
+import org.modelmapper.ModelMapper;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * 对 {@link DepartmentType} 类型补充 {@code parent}, {@code children},
@@ -46,7 +45,6 @@ public class DepartmentTypeResolver implements AuditedResolver<DepartmentType>, 
      * @param env      {@link DataFetchingEnvironment} 对象, 用于获取指定的
      *                 {@link DataLoader} 对象
      * @return 一个异步函数, 将通过每个 id 获取对象的处理延时执行, 转化为批量处理
-     *
      * @see DepartmentLoaderProvider
      */
     public CompletableFuture<DepartmentType> getParent(DepartmentType instance, DataFetchingEnvironment env) {
@@ -70,13 +68,12 @@ public class DepartmentTypeResolver implements AuditedResolver<DepartmentType>, 
      * @param env      {@link DataFetchingEnvironment} 对象, 用于获取指定的
      *                 {@link ModelMapper} 对象
      * @return 一个异步函数, 将通过每个 id 获取对象的处理延时执行, 转化为批量处理
-     *
      * @see Pagination
      * @see alvin.study.core.graphql.relay.Page
      * @see ConnectionBuilder
      */
     public Connection<DepartmentType> getChildren(
-            DepartmentType instance, String first, Integer after, DataFetchingEnvironment env) {
+        DepartmentType instance, String first, Integer after, DataFetchingEnvironment env) {
         var mapper = (ModelMapper) env.getGraphQlContext().get(ModelMapper.class);
 
         // 构建分页对象
@@ -96,13 +93,12 @@ public class DepartmentTypeResolver implements AuditedResolver<DepartmentType>, 
      * @param env      {@link DataFetchingEnvironment} 对象, 用于获取指定的
      *                 {@link ModelMapper} 对象
      * @return 一个异步函数, 将通过每个 id 获取对象的处理延时执行, 转化为批量处理
-     *
      * @see Pagination
      * @see alvin.study.core.graphql.relay.Page
      * @see ConnectionBuilder
      */
     public Connection<EmployeeType> getEmployees(
-            DepartmentType instance, String first, Integer after, DataFetchingEnvironment env) {
+        DepartmentType instance, String first, Integer after, DataFetchingEnvironment env) {
         var mapper = (ModelMapper) env.getGraphQlContext().get(ModelMapper.class);
 
         // 构建分页对象

@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 /**
  * 用于标识一个方法为事件处理方法的注解
- *
+ * <p>
  * 参考 {@code HandlerDemo} 类
  */
 @Documented

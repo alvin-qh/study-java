@@ -202,7 +202,7 @@ class DepartmentMapperTest extends IntegrationTest {
         var results = mapper.selectByEmployee(employee);
         then(results).hasSize(2);
 
-        var resultType = new TypeToken<List<Department>>() {}.getType();
+        var resultType = new TypeToken<List<Department>>() { }.getType();
         // 通过 ModelMapper 将 Map 对象转化为 Department 对象
         var departments = (List<Department>) modelMapper.map(results, resultType);
 

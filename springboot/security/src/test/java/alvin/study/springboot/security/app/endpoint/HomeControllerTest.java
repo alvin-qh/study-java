@@ -39,10 +39,10 @@ class HomeControllerTest extends IntegrationTest {
 
         // 访问 HOME 资源并设置 Authorization HTTP 头
         var resp = getJson("/")
-                .exchange()
-                .expectStatus().is2xxSuccessful()
-                .expectBody(HomeDto.class).returnResult()
-                .getResponseBody();
+            .exchange()
+            .expectStatus().is2xxSuccessful()
+            .expectBody(HomeDto.class).returnResult()
+            .getResponseBody();
 
         then(Objects.requireNonNull(resp).getWelcome()).isEqualTo("Welcome " + currentUser().getAccount());
     }
@@ -64,10 +64,10 @@ class HomeControllerTest extends IntegrationTest {
 
         // 访问 HOME 资源, 但不设置 Authorization HTTP 头
         client().get()
-                .uri("/")
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus().isUnauthorized();
+            .uri("/")
+            .accept(MediaType.APPLICATION_JSON)
+            .exchange()
+            .expectStatus().isUnauthorized();
     }
 
     /**
@@ -86,8 +86,8 @@ class HomeControllerTest extends IntegrationTest {
 
         // 访问 HOME 资源并设置 Authorization HTTP 头, 但因为角色不匹配, 会返回 403 错误
         getJson("/")
-                .exchange()
-                .expectStatus().isUnauthorized();
+            .exchange()
+            .expectStatus().isUnauthorized();
     }
 
     /**
@@ -140,106 +140,106 @@ class HomeControllerTest extends IntegrationTest {
             // 随机将角色授予用户或用户所在的组
             if ((int) (Math.random() * 2) == 0) {
                 newBuilder(RoleGrantBuilder.class)
-                        .withRoleId(role.getId())
-                        .withType(RoleGrantType.USER)
-                        .withUserOrGroupId(currentUser().getId())
-                        .create();
+                    .withRoleId(role.getId())
+                    .withType(RoleGrantType.USER)
+                    .withUserOrGroupId(currentUser().getId())
+                    .create();
             } else {
                 newBuilder(RoleGrantBuilder.class)
-                        .withRoleId(role.getId())
-                        .withType(RoleGrantType.GROUP)
-                        .withUserOrGroupId(adminGroup().getId())
-                        .create();
+                    .withRoleId(role.getId())
+                    .withType(RoleGrantType.GROUP)
+                    .withUserOrGroupId(adminGroup().getId())
+                    .create();
             }
 
             // 为角色设置权限
             var permission = newBuilder(PermissionBuilder.class)
-                    .withName("COMMON")
-                    .withResource("MENU")
-                    .withAction("READ")
-                    .create();
+                .withName("COMMON")
+                .withResource("MENU")
+                .withAction("READ")
+                .create();
 
             newBuilder(RolePermissionBuilder.class)
-                    .withPermissionId(permission.getId())
-                    .withRoleId(role.getId())
-                    .create();
+                .withPermissionId(permission.getId())
+                .withRoleId(role.getId())
+                .create();
 
             var permissionI = newBuilder(PermissionBuilder.class)
-                    .withName("MENU")
-                    .withResource("I")
-                    .withAction("READ")
-                    .create();
+                .withName("MENU")
+                .withResource("I")
+                .withAction("READ")
+                .create();
 
             newBuilder(RolePermissionBuilder.class)
-                    .withPermissionId(permissionI.getId())
-                    .withRoleId(role.getId())
-                    .create();
+                .withPermissionId(permissionI.getId())
+                .withRoleId(role.getId())
+                .create();
 
             var permissionII = newBuilder(PermissionBuilder.class)
-                    .withName("MENU")
-                    .withResource("II")
-                    .withAction("READ")
-                    .create();
+                .withName("MENU")
+                .withResource("II")
+                .withAction("READ")
+                .create();
 
             // 构建菜单数据并为每个菜单设置角色和权限情况
             var menu1 = newBuilder(MenuBuilder.class).withText("I").withRoleId(role.getId()).create();
             newBuilder(MenuBuilder.class)
-                    .withText("I-I")
-                    .withParentId(menu1.getId())
-                    .create();
+                .withText("I-I")
+                .withParentId(menu1.getId())
+                .create();
             newBuilder(MenuBuilder.class).withText("I-II")
-                    .withParentId(menu1.getId())
-                    .withPermissionId(permissionI.getId())
-                    .create();
+                .withParentId(menu1.getId())
+                .withPermissionId(permissionI.getId())
+                .create();
             newBuilder(MenuBuilder.class).withText("I-III")
-                    .withParentId(menu1.getId())
-                    .withPermissionId(permissionI.getId())
-                    .create();
+                .withParentId(menu1.getId())
+                .withPermissionId(permissionI.getId())
+                .create();
 
             var menu2 = newBuilder(MenuBuilder.class)
-                    .withText("II")
-                    .withRoleId(role.getId())
-                    .create();
+                .withText("II")
+                .withRoleId(role.getId())
+                .create();
             newBuilder(MenuBuilder.class)
-                    .withText("II-I")
-                    .withParentId(menu2.getId())
-                    .create();
+                .withText("II-I")
+                .withParentId(menu2.getId())
+                .create();
 
             var menu2_2 = newBuilder(MenuBuilder.class)
-                    .withText("II-II")
-                    .withParentId(menu2.getId())
-                    .create();
+                .withText("II-II")
+                .withParentId(menu2.getId())
+                .create();
             newBuilder(MenuBuilder.class)
-                    .withText("II-II-I")
-                    .withParentId(menu2_2.getId())
-                    .withPermissionId(permissionII.getId())
-                    .create();
+                .withText("II-II-I")
+                .withParentId(menu2_2.getId())
+                .withPermissionId(permissionII.getId())
+                .create();
             newBuilder(MenuBuilder.class)
-                    .withText("II-II-II")
-                    .withParentId(menu2_2.getId())
-                    .withPermissionId(permissionI.getId())
-                    .create();
+                .withText("II-II-II")
+                .withParentId(menu2_2.getId())
+                .withPermissionId(permissionI.getId())
+                .create();
             newBuilder(MenuBuilder.class)
-                    .withText("II-II-III")
-                    .withParentId(menu2_2.getId())
-                    .withPermissionId(permissionII.getId())
-                    .create();
+                .withText("II-II-III")
+                .withParentId(menu2_2.getId())
+                .withPermissionId(permissionII.getId())
+                .create();
 
             newBuilder(MenuBuilder.class)
-                    .withText("II-III")
-                    .withParentId(menu2.getId())
-                    .withPermissionId(permissionII.getId())
-                    .create();
+                .withText("II-III")
+                .withParentId(menu2.getId())
+                .withPermissionId(permissionII.getId())
+                .create();
         }
 
         // 访问 3 次以查看缓存的使用情况
         for (var i = 0; i < 3; i++) {
             // 访问服务器获取菜单, 并确认该用户智能获取到角色权限允许的那部分菜单项
             var json = getJson("/menu")
-                    .exchange()
-                    .expectStatus().isOk()
-                    .expectBody(PathMap.class).returnResult()
-                    .getResponseBody();
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(PathMap.class).returnResult()
+                .getResponseBody();
 
             then(json).isNotNull();
 

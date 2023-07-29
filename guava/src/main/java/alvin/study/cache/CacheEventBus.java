@@ -27,6 +27,15 @@ public final class CacheEventBus implements SubscriberExceptionHandler {
     private final EventBus eventBus = new EventBus(this);
 
     /**
+     * 获取单例对象
+     *
+     * @return 当前类型的单例对象
+     */
+    public static CacheEventBus getInstance() {
+        return INSTANCE;
+    }
+
+    /**
      * 统一事件异常处理
      *
      * <p>
@@ -71,14 +80,5 @@ public final class CacheEventBus implements SubscriberExceptionHandler {
      */
     public void register(CacheObserver observer) {
         eventBus.register(observer);
-    }
-
-    /**
-     * 获取单例对象
-     *
-     * @return 当前类型的单例对象
-     */
-    public static CacheEventBus getInstance() {
-        return INSTANCE;
     }
 }

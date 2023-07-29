@@ -27,32 +27,28 @@ import static alvin.study.springboot.jooq.infra.model.public_.Tables.USER;
  * 集成测试超类, 所有需要数据库集成测试, 需要继承此类
  */
 @ActiveProfiles("test")
-@SpringBootTest(classes = {TestConfig.class})
-@ContextConfiguration(initializers = {TestContextInitializer.class})
+@SpringBootTest(classes = { TestConfig.class })
+@ContextConfiguration(initializers = { TestContextInitializer.class })
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public abstract class IntegrationTest {
     // 用于产生不重复名称的原子整数对象
     protected static final AtomicInteger SEQUENCE = new AtomicInteger();
-
-    // 注入数据表清理器对象
-    @Autowired
-    private TableCleaner tableCleaner;
-
     // DSLContext 管理器
     @Autowired
     protected JdbcDSLContextManager contextManager;
-
     /**
      * Jooq DSL Context 对象
      */
     @Autowired
     protected DSLContext dsl;
-
     /**
      * 密码加密计算工具对象
      */
     @Autowired
     protected PasswordUtil passwordUtil;
+    // 注入数据表清理器对象
+    @Autowired
+    private TableCleaner tableCleaner;
 
     /**
      * 每次测试执行前执行

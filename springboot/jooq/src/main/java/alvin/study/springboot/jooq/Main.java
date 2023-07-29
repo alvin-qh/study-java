@@ -1,12 +1,11 @@
 package alvin.study.springboot.jooq;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import alvin.study.springboot.jooq.util.collection.Pair;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import alvin.study.springboot.jooq.util.collection.Pair;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 应用程序主配置和启动类

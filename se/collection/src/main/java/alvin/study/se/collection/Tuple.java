@@ -18,6 +18,17 @@ public final class Tuple<E> implements Iterable<E> {
         this.elements = List.copyOf(elements);
     }
 
+    @Contract(value = "_ -> new", pure = true)
+    @SafeVarargs
+    public static <T> @NotNull Tuple<T> of(T... elements) {
+        return new Tuple<>(elements);
+    }
+
+    @Contract("_ -> new")
+    public static <T> @NotNull Tuple<T> of(Collection<T> elements) {
+        return new Tuple<>(elements);
+    }
+
     public E get(int index) {
         return elements.get(index);
     }
@@ -60,16 +71,5 @@ public final class Tuple<E> implements Iterable<E> {
 
     public List<E> toList() {
         return elements;
-    }
-
-    @Contract(value = "_ -> new", pure = true)
-    @SafeVarargs
-    public static <T> @NotNull Tuple<T> of(T... elements) {
-        return new Tuple<>(elements);
-    }
-
-    @Contract("_ -> new")
-    public static <T> @NotNull Tuple<T> of(Collection<T> elements) {
-        return new Tuple<>(elements);
     }
 }

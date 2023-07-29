@@ -1,12 +1,12 @@
 package alvin.study.testing.junit;
 
 
-import alvin.study.testing.testcase.model.User;
-import alvin.study.testing.testcase.service.NumberService;
 import alvin.study.testing.junit.parameterized.BlankStringsArgumentsProvider;
 import alvin.study.testing.junit.parameterized.SlashyDateConverter;
 import alvin.study.testing.junit.parameterized.UserAggregator;
 import alvin.study.testing.junit.parameterized.VariableSource;
+import alvin.study.testing.testcase.model.User;
+import alvin.study.testing.testcase.service.NumberService;
 import com.google.common.base.Strings;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -58,6 +58,42 @@ import static org.assertj.core.api.BDDAssertions.then;
  */
 @SuppressWarnings("JUnitMalformedDeclaration")
 class ParameterizeTest {
+    /**
+     * 定义一个成员字段, 作为假设值, 通过 {@link VariableSource @VariableSource} 注解进行使用
+     */
+    @SuppressWarnings("unused")
+    private static final Stream<Arguments> variableSourceArguments = Stream.of(
+        Arguments.of(null, true),
+        Arguments.of("", true),
+        Arguments.of("not blank", false));
+
+    /**
+     * 为 {@link #methodSource_shouldReturnTrueForNullOrBlankStringsByMethod(String, boolean)}
+     * 测试方法提供测试参数的方法
+     *
+     * @return 包含一组 {@link Arguments} 对象的流对象, 每个 {@link Arguments} 对象作为一组传递给测试方法的参数
+     */
+    private static Stream<? extends Arguments> methodSource_shouldReturnTrueForNullOrBlankStringsByMethod() {
+        return Stream.of(
+            // 每个 Arguments 对象均包含两个参数值
+            Arguments.of(null, true),
+            Arguments.of("", true),
+            Arguments.of("not blank", false));
+    }
+
+    /**
+     * 该方法必须和 {@link #methodSource_shouldDisplayName(char, int)} 具备相同名称
+     *
+     * @return 传递给 {@link #methodSource_shouldDisplayName(char, int)} 方法的参数值
+     */
+    private static @NotNull Stream<Arguments> methodSource_shouldDisplayName() {
+        return Stream.of(
+            Arguments.of('A', 65),
+            Arguments.of('B', 66),
+            Arguments.of('C', 67),
+            Arguments.of('D', 68));
+    }
+
     /**
      * 对 {@link NumberService#isOdd(int)} 方法进行测试
      *
@@ -207,20 +243,6 @@ class ParameterizeTest {
     }
 
     /**
-     * 为 {@link #methodSource_shouldReturnTrueForNullOrBlankStringsByMethod(String, boolean)}
-     * 测试方法提供测试参数的方法
-     *
-     * @return 包含一组 {@link Arguments} 对象的流对象, 每个 {@link Arguments} 对象作为一组传递给测试方法的参数
-     */
-    private static Stream<? extends Arguments> methodSource_shouldReturnTrueForNullOrBlankStringsByMethod() {
-        return Stream.of(
-            // 每个 Arguments 对象均包含两个参数值
-            Arguments.of(null, true),
-            Arguments.of("", true),
-            Arguments.of("not blank", false));
-    }
-
-    /**
      * 如果参数生成器方法不在当前类中, 则可以通过 {@link MethodSource @MethodSource} 注解的 {@code value}
      * 属性指定方法的具体位置
      *
@@ -255,15 +277,6 @@ class ParameterizeTest {
         var actual = Strings.isNullOrEmpty(input);
         then(actual).isTrue();
     }
-
-    /**
-     * 定义一个成员字段, 作为假设值, 通过 {@link VariableSource @VariableSource} 注解进行使用
-     */
-    @SuppressWarnings("unused")
-    private static final Stream<Arguments> variableSourceArguments = Stream.of(
-        Arguments.of(null, true),
-        Arguments.of("", true),
-        Arguments.of("not blank", false));
 
     /**
      * 通过一个注解指定一个保存假设参数列表的字段, 作为测试参数
@@ -427,18 +440,5 @@ class ParameterizeTest {
     @ParameterizedTest(name = "{index}: {0} test completed")
     void methodSource_shouldDisplayName(char input, int expected) {
         then((int) input).isEqualTo(expected);
-    }
-
-    /**
-     * 该方法必须和 {@link #methodSource_shouldDisplayName(char, int)} 具备相同名称
-     *
-     * @return 传递给 {@link #methodSource_shouldDisplayName(char, int)} 方法的参数值
-     */
-    private static @NotNull Stream<Arguments> methodSource_shouldDisplayName() {
-        return Stream.of(
-            Arguments.of('A', 65),
-            Arguments.of('B', 66),
-            Arguments.of('C', 67),
-            Arguments.of('D', 68));
     }
 }

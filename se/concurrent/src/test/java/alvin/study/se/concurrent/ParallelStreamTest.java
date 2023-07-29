@@ -1,12 +1,12 @@
 package alvin.study.se.concurrent;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.awaitility.Awaitility.await;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.awaitility.Awaitility.await;
 
 /**
  * 测试在并发环境下的 {@link java.util.stream.Stream Stream} 对象
@@ -34,11 +34,10 @@ class ParallelStreamTest {
     void parallelStream_shouldCalculateByParallelStream() {
         // 用于保存数据和线程 ID 的类型
         class Record {
-            // 处理该对象的线程 ID
-            long threadId;
-
             // 该对象的值
             final int value;
+            // 处理该对象的线程 ID
+            long threadId;
 
             public Record(int value) {
                 this.value = value;

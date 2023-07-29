@@ -36,7 +36,7 @@ import java.time.Instant;
 @Table(name = "org")
 @Where(clause = "deleted = 0")
 @SQLDelete(sql = "UPDATE org SET deleted = id WHERE id = ?")
-@EntityListeners({AuditingEntityListener.class})
+@EntityListeners({ AuditingEntityListener.class })
 public class Org extends BaseEntity {
     /**
      * 组织名称

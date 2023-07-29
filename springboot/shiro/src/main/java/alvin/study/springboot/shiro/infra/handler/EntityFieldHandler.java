@@ -47,6 +47,19 @@ public class EntityFieldHandler implements MetaObjectHandler {
     private static final String FIELD_CREATED_AT = "createdAt";
 
     /**
+     * 获取当前登录用户
+     *
+     * @return 当前登录用户 {@link User} 对象
+     */
+    private static User getCurrentLoginUser() {
+        var subject = ThreadContext.getSubject();
+        if (subject == null || subject.getPrincipals() == null) {
+            return null;
+        }
+        return (User) subject.getPrincipals().getPrimaryPrincipal();
+    }
+
+    /**
      * 对插入的实体对象字段进行填充
      */
     @Override
@@ -92,18 +105,5 @@ public class EntityFieldHandler implements MetaObjectHandler {
             // 则实体的 updatedBy 字段设置为当前登录用户 id 值
             strictInsertFill(metaObject, FIELD_UPDATED_BY, Long.class, user.getId());
         }
-    }
-
-    /**
-     * 获取当前登录用户
-     *
-     * @return 当前登录用户 {@link User} 对象
-     */
-    private static User getCurrentLoginUser() {
-        var subject = ThreadContext.getSubject();
-        if (subject == null || subject.getPrincipals() == null) {
-            return null;
-        }
-        return (User) subject.getPrincipals().getPrimaryPrincipal();
     }
 }

@@ -18,13 +18,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @NoArgsConstructor
 public class BlockedService {
-    // 模型类型
-    public record Model(long id, String name) {
-    }
-
     // 每次操作需要等待的时间, 单位毫秒
     private static final long DELAY_MILLS = 1000;
-
     // 保存 id 和模型对象对应关系的 Map 对象
     private final Map<Long, Model> modelMap = new ConcurrentHashMap<>();
 
@@ -71,5 +66,9 @@ public class BlockedService {
     @SneakyThrows
     private void delay() {
         Thread.sleep(DELAY_MILLS);
+    }
+
+    // 模型类型
+    public record Model(long id, String name) {
     }
 }

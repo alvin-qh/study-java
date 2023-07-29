@@ -1,15 +1,15 @@
 package alvin.study.springboot.ds.infra.repository;
 
-import java.sql.Statement;
-import java.time.Instant;
-import java.util.Optional;
-
 import alvin.study.springboot.ds.infra.entity.ConfigEntity;
 import alvin.study.springboot.ds.infra.repository.common.BaseRepository;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
+
+import java.sql.Statement;
+import java.time.Instant;
+import java.util.Optional;
 
 /**
  * {@link ConfigEntity} 实体类型的持久化操作类
@@ -56,8 +56,8 @@ public class ConfigRepository extends BaseRepository {
 
         // 获取返回的自增 id 属性值
         entity.setId(Optional.ofNullable(keyHolder.getKeys())
-                .map(h -> (Long) h.get("id"))
-                .orElseThrow());
+            .map(h -> (Long) h.get("id"))
+            .orElseThrow());
         return entity;
     }
 

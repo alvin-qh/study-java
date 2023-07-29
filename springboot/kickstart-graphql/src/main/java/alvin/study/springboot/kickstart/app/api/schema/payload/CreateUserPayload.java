@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateUserPayload  {
+public class CreateUserPayload {
     /**
      * 所创建的用户实体对象
      */

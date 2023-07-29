@@ -1,19 +1,17 @@
 package alvin.study.springboot.shiro.app.endpoint.mapper;
 
+import alvin.study.springboot.shiro.app.endpoint.model.MenuDto;
+import alvin.study.springboot.shiro.app.endpoint.model.MenuDto.MenuItemDto;
+import alvin.study.springboot.shiro.infra.entity.Menu;
+import com.google.common.base.Functions;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
-
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Component;
-
-import com.google.common.base.Functions;
-
-import alvin.study.springboot.shiro.app.endpoint.model.MenuDto;
-import alvin.study.springboot.shiro.app.endpoint.model.MenuDto.MenuItemDto;
-import alvin.study.springboot.shiro.infra.entity.Menu;
-import lombok.RequiredArgsConstructor;
 
 /**
  * 菜单对象类型转换

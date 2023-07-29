@@ -1,7 +1,7 @@
 package alvin.study.springboot.ds.app.endpoint;
 
-import alvin.study.springboot.ds.app.domain.service.ConfigService;
 import alvin.study.springboot.ds.app.domain.model.ConfigDto;
+import alvin.study.springboot.ds.app.domain.service.ConfigService;
 import alvin.study.springboot.ds.core.http.common.ResponseDto;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;

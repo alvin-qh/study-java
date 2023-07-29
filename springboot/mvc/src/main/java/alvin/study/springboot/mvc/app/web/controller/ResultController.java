@@ -1,13 +1,12 @@
 package alvin.study.springboot.mvc.app.web.controller;
 
+import alvin.study.springboot.mvc.app.web.model.Form;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import alvin.study.springboot.mvc.app.web.model.Form;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 展示表单提交结果的页面请求
@@ -43,10 +42,10 @@ public class ResultController {
      */
     @GetMapping
     String get(
-            @RequestParam("name") String name,
-            @RequestParam("age") Integer age,
-            @RequestParam("gender") String gender,
-            Model model) {
+        @RequestParam("name") String name,
+        @RequestParam("age") Integer age,
+        @RequestParam("gender") String gender,
+        Model model) {
         log.info("GET method of ResultController was called");
 
         // 设置表单填写结果

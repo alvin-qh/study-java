@@ -1,15 +1,13 @@
 package alvin.study.springboot.security.infra.handler;
 
-import java.time.Instant;
-
+import alvin.study.springboot.security.infra.entity.User;
+import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-
-import alvin.study.springboot.security.infra.entity.User;
-import lombok.RequiredArgsConstructor;
+import java.time.Instant;
 
 /**
  * 声明实体字段的自动填充处理类
@@ -47,6 +45,16 @@ public class EntityFieldHandler implements MetaObjectHandler {
     private static final String FIELD_CREATED_BY = "createdBy";
     private static final String FIELD_UPDATED_AT = "updatedAt";
     private static final String FIELD_UPDATED_BY = "updatedBy";
+
+    /**
+     * 获取当前登录用户
+     *
+     * @return 当前登录用户 {@link User} 对象
+     */
+    private static User getCurrentLoginUser() {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth == null ? null : (User) auth.getPrincipal();
+    }
 
     /**
      * 对插入的实体对象字段进行填充
@@ -94,15 +102,5 @@ public class EntityFieldHandler implements MetaObjectHandler {
             // 则实体的 updatedBy 字段设置为当前登录用户 id 值
             strictInsertFill(metaObject, FIELD_UPDATED_BY, Long.class, user.getId());
         }
-    }
-
-    /**
-     * 获取当前登录用户
-     *
-     * @return 当前登录用户 {@link User} 对象
-     */
-    private static User getCurrentLoginUser() {
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        return auth == null ? null : (User) auth.getPrincipal();
     }
 }

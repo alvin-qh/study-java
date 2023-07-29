@@ -57,10 +57,10 @@ class MultiBinderModuleTest extends BaseModuleTest {
     @Test
     void bind_shouldGetObjectByInjector() {
         var boundSet = injector.getInstance(
-                Key.get(new TypeLiteral<Set<Integer>>() { }, Names.named("boundSet")));
+            Key.get(new TypeLiteral<Set<Integer>>() { }, Names.named("boundSet")));
 
         var boundMap = injector.getInstance(
-                Key.get(new TypeLiteral<Map<String, BindDemo>>() { }, Names.named("boundMap")));
+            Key.get(new TypeLiteral<Map<String, BindDemo>>() { }, Names.named("boundMap")));
 
         then(boundSet).isEqualTo(this.boundSet);
         then(boundMap).isEqualTo(this.boundMap);

@@ -101,71 +101,6 @@ public final class GraphPaths {
     }
 
     /**
-     * 用于记录路径距离的类型
-     *
-     * <p>
-     * 对于求"最短路径", 需要记录路径和该条路径的距离
-     * </p>
-     */
-    public static class PathValue<N> implements Comparable<PathValue<N>> {
-        // 路径集合, 记录路径上经过的节点
-        private List<N> path;
-
-        // 该路径的距离, 默认为无穷大, 表示该路径距尚未连通
-        private int distance = Integer.MAX_VALUE;
-
-        @Override
-        public int compareTo(@NotNull PathValue<N> o) {
-            return Integer.compare(distance, o.distance);
-        }
-
-        /**
-         * 获取路径
-         *
-         * @return 保存路径的集合, 如果为空, 表示路径不存在
-         */
-        public List<N> getPath() {
-            return path == null ? List.of() : path;
-        }
-
-        /**
-         * 获取路径距离
-         *
-         * @return 路径的距离
-         */
-        public int getDistance() {
-            return distance;
-        }
-
-        /**
-         * 设置路径
-         *
-         * <p>
-         * 在计算过程中, 如果形成路径, 或者找到距离更短的路径, 则需要重新设置路径
-         * </p>
-         *
-         * @param path 新路径
-         */
-        void reset(List<N> path, int distance) {
-            this.path = path;
-            this.distance = distance;
-        }
-
-        /**
-         * 复制当前对象, 并在路径中增加终止节点
-         *
-         * @param lastNode 终止节点
-         * @return 当前对象的拷贝, 且路径中增加了终结节点
-         */
-        PathValue<N> copy(N lastNode) {
-            var val = new PathValue<N>();
-            val.distance = this.distance;
-            val.path = Stream.concat(getPath().stream(), Stream.of(lastNode)).toList();
-            return val;
-        }
-    }
-
-    /**
      * 求 {@link ValueGraph} 类型图对象指定两个节点间的"最短路径"
      *
      * <p>
@@ -278,5 +213,70 @@ public final class GraphPaths {
             return Optional.empty();
         }
         return Optional.of(result.copy(toNode));
+    }
+
+    /**
+     * 用于记录路径距离的类型
+     *
+     * <p>
+     * 对于求"最短路径", 需要记录路径和该条路径的距离
+     * </p>
+     */
+    public static class PathValue<N> implements Comparable<PathValue<N>> {
+        // 路径集合, 记录路径上经过的节点
+        private List<N> path;
+
+        // 该路径的距离, 默认为无穷大, 表示该路径距尚未连通
+        private int distance = Integer.MAX_VALUE;
+
+        @Override
+        public int compareTo(@NotNull PathValue<N> o) {
+            return Integer.compare(distance, o.distance);
+        }
+
+        /**
+         * 获取路径
+         *
+         * @return 保存路径的集合, 如果为空, 表示路径不存在
+         */
+        public List<N> getPath() {
+            return path == null ? List.of() : path;
+        }
+
+        /**
+         * 获取路径距离
+         *
+         * @return 路径的距离
+         */
+        public int getDistance() {
+            return distance;
+        }
+
+        /**
+         * 设置路径
+         *
+         * <p>
+         * 在计算过程中, 如果形成路径, 或者找到距离更短的路径, 则需要重新设置路径
+         * </p>
+         *
+         * @param path 新路径
+         */
+        void reset(List<N> path, int distance) {
+            this.path = path;
+            this.distance = distance;
+        }
+
+        /**
+         * 复制当前对象, 并在路径中增加终止节点
+         *
+         * @param lastNode 终止节点
+         * @return 当前对象的拷贝, 且路径中增加了终结节点
+         */
+        PathValue<N> copy(N lastNode) {
+            var val = new PathValue<N>();
+            val.distance = this.distance;
+            val.path = Stream.concat(getPath().stream(), Stream.of(lastNode)).toList();
+            return val;
+        }
     }
 }

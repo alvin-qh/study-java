@@ -1,21 +1,21 @@
 package alvin.study.springboot.mybatis;
 
-import alvin.study.springboot.mybatis.conf.ContextConfig;
-import alvin.study.springboot.mybatis.infra.entity.common.AuditedEntity;
-import alvin.study.springboot.mybatis.infra.entity.common.TenantedEntity;
 import alvin.study.springboot.mybatis.builder.Builder;
 import alvin.study.springboot.mybatis.builder.OrgBuilder;
 import alvin.study.springboot.mybatis.builder.UserBuilder;
-import alvin.study.springboot.mybatis.core.context.ContextSwitcher;
+import alvin.study.springboot.mybatis.conf.ContextConfig;
+import alvin.study.springboot.mybatis.conf.TestingConfig;
+import alvin.study.springboot.mybatis.conf.TestingContextInitializer;
 import alvin.study.springboot.mybatis.core.TableCleaner;
 import alvin.study.springboot.mybatis.core.TestingTransaction;
 import alvin.study.springboot.mybatis.core.TestingTransactionManager;
-import alvin.study.springboot.mybatis.conf.TestingConfig;
-import alvin.study.springboot.mybatis.conf.TestingContextInitializer;
 import alvin.study.springboot.mybatis.core.context.Context;
+import alvin.study.springboot.mybatis.core.context.ContextSwitcher;
 import alvin.study.springboot.mybatis.core.context.WebContext;
 import alvin.study.springboot.mybatis.infra.entity.Org;
 import alvin.study.springboot.mybatis.infra.entity.User;
+import alvin.study.springboot.mybatis.infra.entity.common.AuditedEntity;
+import alvin.study.springboot.mybatis.infra.entity.common.TenantedEntity;
 import lombok.SneakyThrows;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.jupiter.api.AfterEach;
@@ -52,8 +52,8 @@ import org.springframework.transaction.annotation.Transactional;
  * </p>
  */
 @ActiveProfiles("test")
-@SpringBootTest(classes = {TestingConfig.class})
-@ContextConfiguration(initializers = {TestingContextInitializer.class})
+@SpringBootTest(classes = { TestingConfig.class })
+@ContextConfiguration(initializers = { TestingContextInitializer.class })
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public abstract class IntegrationTest {
     /**
@@ -158,7 +158,7 @@ public abstract class IntegrationTest {
      * 每次测试结束, 进行清理工作
      */
     @AfterEach
-    protected void afterEach() {}
+    protected void afterEach() { }
 
     protected Org currentOrg() {
         return org;

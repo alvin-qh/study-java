@@ -1,11 +1,10 @@
 package alvin.study.springboot.kickstart.builder;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import alvin.study.springboot.kickstart.infra.entity.Org;
 import alvin.study.springboot.kickstart.infra.mapper.OrgMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 组织实体构建器类

@@ -18,7 +18,8 @@
 
 ### 1.1. `execution`
 
-由于 Spring 切面粒度最小是达到方法级别, 而 `execution` 表达式可以用于明确指定方法返回**类型, 类名, 方法名和参数名**等与方法相关的部件,
+由于 Spring 切面粒度最小是达到方法级别, 而 `execution` 表达式可以用于明确指定方法返回**类型, 类名, 方法名和参数名**
+等与方法相关的部件,
 并且在 Spring 中, 大部分需要使用 AOP 的业务场景也只需要达到方法级别即可, 因而 `execution` 表达式的使用是最为广泛的
 
 如下是 `execution` 表达式的语法:
@@ -42,18 +43,20 @@ execution(modifiers-pattern? ret-type-pattern declaring-type-pattern?name-patter
 execution(public * alvin.study.service.BusinessService.business(java.lang.String, ..))
 ```
 
-上述切点表达式将会匹配使用 `public` 修饰, 返回值为**任意类型**, 并且是 `alvin.study.service.BusinessService` 类中名称为 `business`
-的方法, 方法可以有多个参数, 但是第一个参数必须是 `java.lang.String` 类型的方法。上述示例中使用了 `..` 通配符, 关于通配符的类型, 主要有两种:
+上述切点表达式将会匹配使用 `public` 修饰, 返回值为**任意类型**, 并且是 `alvin.study.service.BusinessService`
+类中名称为 `business`
+的方法, 方法可以有多个参数, 但是第一个参数必须是 `java.lang.String` 类型的方法。上述示例中使用了 `..` 通配符, 关于通配符的类型,
+主要有两种:
 
 - `*` 通配符, 该通配符主要用于匹配单个单词, 或者是以某个词为前缀或后缀的单词
 
-    如下示例表示返回值为任意类型, 在 `alvin.study.service.BusinessService` 类中, 并且参数个数为零的方法:
+  如下示例表示返回值为任意类型, 在 `alvin.study.service.BusinessService` 类中, 并且参数个数为零的方法:
 
     ```plaintext
     execution(* alvin.study.service.BusinessService.*())
     ```
 
-    下述示例表示返回值为任意类型, 在 `alvin.study.service` 包中, 以 `Business` 为前缀的类, 并且是类中参数个数为零方法:
+  下述示例表示返回值为任意类型, 在 `alvin.study.service` 包中, 以 `Business` 为前缀的类, 并且是类中参数个数为零方法:
 
     ```plaintext
     execution(* alvin.study.service.Business*.*())
@@ -62,17 +65,21 @@ execution(public * alvin.study.service.BusinessService.business(java.lang.String
 - `..` 通配符, 该通配符表示 `0` 个或多个项, 主要用于 `declaring-type-pattern` 和 `param-pattern` 中,
   如果用于 `declaring-type-pattern` 中, 则表示匹配当前包及其子包, 如果用于 `param-pattern` 中, 则表示匹配 `0` 个或多个参数
 
-    如下示例表示匹配返回值为任意类型, 是 `alvin.study.service` 包及其子包下的任意类的名称为 `business` 的方法, 而且该方法不能有任何参数:
+  如下示例表示匹配返回值为任意类型, 是 `alvin.study.service` 包及其子包下的任意类的名称为 `business` 的方法,
+  而且该方法不能有任何参数:
 
     ```plaintext
     execution(* alvin.study.service..*.business())
     ```
 
-    这里需要说明的是, 包路径 `alvin.study.service..*.business()` 中的 `..` 应该理解为延续前面的 `service` 路径, 表示到 `service`
-    路径为止, 或者继续延续 `service` 路径, 从而包括其子包路径; 后面的 `*.business()`, 这里的 `*` 表示匹配一个单词, 因为是在方法名前,
-    因而表示匹配任意的类
+  这里需要说明的是, 包路径 `alvin.study.service..*.business()` 中的 `..` 应该理解为延续前面的 `service` 路径,
+  表示到 `service`
+  路径为止, 或者继续延续 `service` 路径, 从而包括其子包路径; 后面的 `*.business()`, 这里的 `*` 表示匹配一个单词,
+  因为是在方法名前,
+  因而表示匹配任意的类
 
-    如下示例是使用 `..` 表示任意个数的参数的示例, 需要注意, 表示参数的时候可以在括号中事先指定某些类型的参数, 而其余的参数则由 `..` 进行匹配:
+  如下示例是使用 `..` 表示任意个数的参数的示例, 需要注意, 表示参数的时候可以在括号中事先指定某些类型的参数,
+  而其余的参数则由 `..` 进行匹配:
 
     ```plaintext
     execution(* alvin.study.service.BusinessService.business(java.lang.String, ..))
@@ -80,7 +87,8 @@ execution(public * alvin.study.service.BusinessService.business(java.lang.String
 
 ### 1.2. `within`
 
-`within` 表达式的粒度为类, 其参数为全路径的类名 (可使用通配符), 表示匹配当前表达式的所有类都将被当前方法环绕。如下是 `within` 表达式的语法:
+`within` 表达式的粒度为类, 其参数为全路径的类名 (可使用通配符),
+表示匹配当前表达式的所有类都将被当前方法环绕。如下是 `within` 表达式的语法:
 
 ```plaintext
 within(declaring-type-pattern)
@@ -92,7 +100,8 @@ within(declaring-type-pattern)
 within(alvin.study.service.BusinessService)
 ```
 
-`within` 表达式路径和类名都可以使用通配符进行匹配, 比如如下表达式将匹配 `alvin.study.service` 包下的所有类, 不包括子包中的类:
+`within` 表达式路径和类名都可以使用通配符进行匹配, 比如如下表达式将匹配 `alvin.study.service` 包下的所有类,
+不包括子包中的类:
 
 ```plaintext
 within(alvin.study.service.*)
@@ -106,7 +115,8 @@ within(alvin.study.service..*)
 
 ### 1.3. `args`
 
-`args` 表达式的作用是匹配指定参数类型和指定参数数量的方法, 无论其类路径或者是方法名是什么. 这里需要注意的是, `args` 指定的参数必须是全路径的
+`args` 表达式的作用是匹配指定参数类型和指定参数数量的方法, 无论其类路径或者是方法名是什么. 这里需要注意的是, `args`
+指定的参数必须是全路径的
 
 如下是 `args` 表达式的语法:
 
@@ -120,7 +130,8 @@ args(param-pattern)
 args(java.lang.String)
 ````
 
-也可以使用通配符, 但这里通配符只能使用 `..`, 而不能使用 `*`. 如下是使用通配符的实例, 该切点表达式将匹配第一个参数为 `java.lang.String`,
+也可以使用通配符, 但这里通配符只能使用 `..`, 而不能使用 `*`. 如下是使用通配符的实例,
+该切点表达式将匹配第一个参数为 `java.lang.String`,
 最后一个参数为 `java.lang.Integer`, 并且中间可以有任意个数和类型参数的方法:
 
 ```plaintext
@@ -129,17 +140,21 @@ args(java.lang.String, .., java.lang.Integer)
 
 ### 1.4. `this` 和 `target`
 
-`this` 和 `target` 需要放在一起进行讲解, 主要目的是对其进行区别. `this` 和 `target` 表达式中都只能指定类或者接口, 在面向切面编程规范中,
+`this` 和 `target` 需要放在一起进行讲解, 主要目的是对其进行区别. `this` 和 `target` 表达式中都只能指定类或者接口,
+在面向切面编程规范中,
 `this` 表示匹配调用当前切点表达式所指代对象方法的对象, `target` 表示匹配切点表达式指定类型的对象
 
-比如有两个类 `A` 和 `B`, 并且 `A` 调用了 `B` 的某个方法, 如果切点表达式为 `this(B)`, 那么 `A` 的实例将会被匹配, 也即其会被使用当前切点
-表达式的 `Advice` 环绕; 如果这里切点表达式为 `target(B)`, 那么 `B` 的实例也即被匹配, 其将会被使用当前切点表达式的 `Advice` 环绕
+比如有两个类 `A` 和 `B`, 并且 `A` 调用了 `B` 的某个方法, 如果切点表达式为 `this(B)`, 那么 `A` 的实例将会被匹配,
+也即其会被使用当前切点
+表达式的 `Advice` 环绕; 如果这里切点表达式为 `target(B)`, 那么 `B` 的实例也即被匹配,
+其将会被使用当前切点表达式的 `Advice` 环绕
 
 在介绍 Spring 中的 `this` 和 `target` 的使用之前, 首先需要讲解一个概念: **业务对象 (目标对象)**和**代理对象**
 
 对于切面编程, 有一个目标对象, 也有一个代理对象, 目标对象是声明的业务逻辑对象, 而代理对象是使用切面逻辑对业务逻辑进行包裹之后生成的对象
 
-如果使用的是 JDK 动态代理, 那么业务对象和代理对象将是两个对象, 在调用代理对象逻辑时, 其切面逻辑中会调用目标对象的逻辑; 如果使用的是 Cglib 代理,
+如果使用的是 JDK 动态代理, 那么业务对象和代理对象将是两个对象, 在调用代理对象逻辑时, 其切面逻辑中会调用目标对象的逻辑;
+如果使用的是 Cglib 代理,
 由于是使用的子类进行切面逻辑织入的, 那么只有一个对象, 即织入了代理逻辑的业务类的子类对象, 此时不会生成业务类的对象
 
 在 Spring 中, 其对 `this` 的语义进行了改写, 即如果当前对象生成的代理对象符合 `this` 指定的类型, 那么就为其织入切面逻辑
@@ -158,13 +173,16 @@ target(alvin.study.service.BusinessService)
 
 通过上面的讲解可以看出, `this` 和 `target` 的使用区别其实不大, 大部分情况下其使用效果是一样的, 但其区别也还是有的
 
-Spring 使用的代理方式主要有两种: JDK 代理和 Cglib 代理 (关于这两种代理方式的讲解可以查看本人的文章代理模式实现方式及优缺点对比)
+Spring 使用的代理方式主要有两种: JDK 代理和 Cglib 代理 (
+关于这两种代理方式的讲解可以查看本人的文章代理模式实现方式及优缺点对比)
 
 针对这两种代理类型, 关于目标对象与代理对象, 理解如下两点是非常重要的:
 
-- 如果目标对象被代理的方法是其实现的某个接口的方法, 那么将会使用 JDK 代理生成代理对象, 此时代理对象和目标对象是两个对象, 并且都实现了该接口
+- 如果目标对象被代理的方法是其实现的某个接口的方法, 那么将会使用 JDK 代理生成代理对象, 此时代理对象和目标对象是两个对象,
+  并且都实现了该接口
 
-- 如果目标对象是一个类, 并且其没有实现任意接口, 那么将会使用 Cglib 代理生成代理对象, 并且只会生成一个对象, 即 Cglib 生成的代理类的对象
+- 如果目标对象是一个类, 并且其没有实现任意接口, 那么将会使用 Cglib 代理生成代理对象, 并且只会生成一个对象, 即 Cglib
+  生成的代理类的对象
 
 结合上述两点说明, 这里理解 `this` 和 `target` 的异同就相对比较简单了
 
@@ -338,7 +356,8 @@ this is after around advice
 @annotation(alvin.study.annotation.BusinessAspect)
 ```
 
-这里继续复用 [1.5. `@within`](#15-within) 节使用的例子进行讲解 `@annotation` 的用法, 只是这里需要对 `Apple` 和 `MyAspect`
+这里继续复用 [1.5. `@within`](#15-within) 节使用的例子进行讲解 `@annotation` 的用法, 只是这里需要对 `Apple`
+和 `MyAspect`
 使用和指定注解的方式进行修改, `FruitAspect` 不用修改的原因是声明该注解时已经指定了其可以使用在类, 方法和参数上:
 
 ```java
@@ -446,7 +465,8 @@ this is after around advice
 `@DeclareParents` 也称为 `Introduction` (引入), 表示为指定的目标类引入新的属性和方法
 
 关于 `@DeclareParents` 的原理其实比较好理解, 因为无论是 JDK 代理还是 Cglib 代理, 想要引入新的方法,
-只需要通过一定的方式将新声明的方法织入到代理类中即可, 因为代理类都是新生成的类, 因而织入过程也比较方便。如下是 `@DeclareParents` 的使用语法:
+只需要通过一定的方式将新声明的方法织入到代理类中即可, 因为代理类都是新生成的类,
+因而织入过程也比较方便。如下是 `@DeclareParents` 的使用语法:
 
 ```java
 @DeclareParents(value = "TargetType", defaultImpl = WeaverType.class)
@@ -512,7 +532,8 @@ public class MyAspect {
 
 ### 1.9. `perthis` 和 `pertarget`
 
-在 Spring AOP 中, 切面类的实例只有一个, 比如前面一直使用的 `MyAspect` 类, 假设使用的切面类需要具有某种状态, 以适用某些特殊情况的使用,
+在 Spring AOP 中, 切面类的实例只有一个, 比如前面一直使用的 `MyAspect` 类, 假设使用的切面类需要具有某种状态,
+以适用某些特殊情况的使用,
 比如多线程环境, 此时单例的切面类就不符合要求了
 
 在 Spring AOP 中, 切面类默认都是单例的, 但其还支持另外两种多例的切面实例的切面, 即 `perthis` 和 `pertarget`,
@@ -584,10 +605,12 @@ public class MyAspect {
 }
 ```
 
-这里使用的切面表达式语法为 `perthis(this(com.spring.service.Apple))`, 这里 `this` 表示匹配代理类是 `Apple` 类型的类, `perthis` 则
+这里使用的切面表达式语法为 `perthis(this(com.spring.service.Apple))`, 这里 `this` 表示匹配代理类是 `Apple`
+类型的类, `perthis` 则
 表示会为这些类的每个实例都创建一个切面类
 
-由于 `Apple` 实现了 `Fruit` 接口, 因而 Spring 使用 JDK 动态代理为其生成代理类, 也就是说代理类与 `Apple` 都实现了 `Fruit` 接口,
+由于 `Apple` 实现了 `Fruit` 接口, 因而 Spring 使用 JDK 动态代理为其生成代理类, 也就是说代理类与 `Apple` 都实现了 `Fruit`
+接口,
 但是代理类不是 `Apple` 类型, 因而这里声明的切面不会匹配到 `Apple` 类
 
 执行上述驱动类, 结果如下:

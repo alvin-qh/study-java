@@ -1,12 +1,12 @@
 package alvin.study.springboot.kickstart.app.api.schema.type.common;
 
-import java.time.OffsetDateTime;
-
 import alvin.study.springboot.kickstart.infra.entity.common.AuditedEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.time.OffsetDateTime;
 
 /**
  * 所有具备审计字段的 Type 类超类

@@ -1,20 +1,19 @@
 package alvin.study.springboot.shiro.app.endpoint;
 
+import alvin.study.springboot.shiro.app.domain.service.MenuService;
 import alvin.study.springboot.shiro.app.endpoint.common.BaseController;
 import alvin.study.springboot.shiro.app.endpoint.mapper.MenuEntityMapper;
 import alvin.study.springboot.shiro.app.endpoint.model.HomeDto;
 import alvin.study.springboot.shiro.app.endpoint.model.MenuDto;
 import alvin.study.springboot.shiro.conf.ShiroConfig;
 import alvin.study.springboot.shiro.core.shiro.CustomerRealm;
+import lombok.RequiredArgsConstructor;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import alvin.study.springboot.shiro.app.domain.service.MenuService;
-import lombok.RequiredArgsConstructor;
 
 /**
  * Home 页控制器类型

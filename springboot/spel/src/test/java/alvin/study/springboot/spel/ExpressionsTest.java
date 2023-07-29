@@ -222,7 +222,7 @@ public class ExpressionsTest {
         var context = SimpleEvaluationContext.forReadOnlyDataBinding().build();
 
         // 实例化整型数组对象
-        var nums = new int[]{1, 2, 3, 4};
+        var nums = new int[]{ 1, 2, 3, 4 };
 
         // 通过 root 对象下标访问数组元素
         var expression = parser.parseExpression("#{ [0] }:#{ [1] }:#{ [2] }");
@@ -233,7 +233,7 @@ public class ExpressionsTest {
         var users = new User[]{
             User.builder().id(1L).name("U-1").birthday(LocalDate.of(1981, 3, 17)).build(),
             User.builder().id(2L).name("U-2").birthday(LocalDate.of(1982, 3, 17)).build(),
-            User.builder().id(3L).name("U-3").birthday(LocalDate.of(1983, 3, 17)).build()};
+            User.builder().id(3L).name("U-3").birthday(LocalDate.of(1983, 3, 17)).build() };
 
         // 通过 root 对象下标访问数组元素的属性值
         expression = parser.parseExpression("#{ [1].id }:#{ [1].name }:#{ [1].birthday.dayOfMonth }");
@@ -531,8 +531,8 @@ public class ExpressionsTest {
         expression = parser.parseExpression("#{ new int[2][3] }");
         var arrays = expression.getValue(context, int[][].class);
         then(arrays).hasNumberOfRows(2)
-            .contains(new int[]{0, 0, 0}, atIndex(0))
-            .contains(new int[]{0, 0, 0}, atIndex(1));
+            .contains(new int[]{ 0, 0, 0 }, atIndex(0))
+            .contains(new int[]{ 0, 0, 0 }, atIndex(1));
     }
 
     /**

@@ -5,14 +5,13 @@ package alvin.study.springboot.jooq.infra.model.public_.tables.records;
 
 
 import alvin.study.springboot.jooq.infra.model.public_.tables.Department;
-
-import java.time.LocalDateTime;
-
 import org.jooq.Field;
 import org.jooq.Record2;
 import org.jooq.Record9;
 import org.jooq.Row9;
 import org.jooq.impl.UpdatableRecordImpl;
+
+import java.time.LocalDateTime;
 
 
 /**
@@ -24,11 +23,48 @@ public class DepartmentRecord extends UpdatableRecordImpl<DepartmentRecord> impl
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>PUBLIC.DEPARTMENT.ID</code>.
+     * Create a detached DepartmentRecord
      */
-    public DepartmentRecord setId(Long value) {
-        set(0, value);
-        return this;
+    public DepartmentRecord() {
+        super(Department.DEPARTMENT);
+    }
+
+    /**
+     * Create a detached, initialised DepartmentRecord
+     */
+    public DepartmentRecord(Long id, Long orgId, String name, Long parentId, Long deleted, Long createdBy, Long updatedBy, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(Department.DEPARTMENT);
+
+        setId(id);
+        setOrgId(orgId);
+        setName(name);
+        setParentId(parentId);
+        setDeleted(deleted);
+        setCreatedBy(createdBy);
+        setUpdatedBy(updatedBy);
+        setCreatedAt(createdAt);
+        setUpdatedAt(updatedAt);
+        resetChangedOnNotNull();
+    }
+
+    /**
+     * Create a detached, initialised DepartmentRecord
+     */
+    public DepartmentRecord(alvin.study.springboot.jooq.infra.model.public_.tables.pojos.Department value) {
+        super(Department.DEPARTMENT);
+
+        if (value != null) {
+            setId(value.getId());
+            setOrgId(value.getOrgId());
+            setName(value.getName());
+            setParentId(value.getParentId());
+            setDeleted(value.getDeleted());
+            setCreatedBy(value.getCreatedBy());
+            setUpdatedBy(value.getUpdatedBy());
+            setCreatedAt(value.getCreatedAt());
+            setUpdatedAt(value.getUpdatedAt());
+            resetChangedOnNotNull();
+        }
     }
 
     /**
@@ -39,10 +75,10 @@ public class DepartmentRecord extends UpdatableRecordImpl<DepartmentRecord> impl
     }
 
     /**
-     * Setter for <code>PUBLIC.DEPARTMENT.ORG_ID</code>.
+     * Setter for <code>PUBLIC.DEPARTMENT.ID</code>.
      */
-    public DepartmentRecord setOrgId(Long value) {
-        set(1, value);
+    public DepartmentRecord setId(Long value) {
+        set(0, value);
         return this;
     }
 
@@ -54,10 +90,10 @@ public class DepartmentRecord extends UpdatableRecordImpl<DepartmentRecord> impl
     }
 
     /**
-     * Setter for <code>PUBLIC.DEPARTMENT.NAME</code>.
+     * Setter for <code>PUBLIC.DEPARTMENT.ORG_ID</code>.
      */
-    public DepartmentRecord setName(String value) {
-        set(2, value);
+    public DepartmentRecord setOrgId(Long value) {
+        set(1, value);
         return this;
     }
 
@@ -69,10 +105,10 @@ public class DepartmentRecord extends UpdatableRecordImpl<DepartmentRecord> impl
     }
 
     /**
-     * Setter for <code>PUBLIC.DEPARTMENT.PARENT_ID</code>.
+     * Setter for <code>PUBLIC.DEPARTMENT.NAME</code>.
      */
-    public DepartmentRecord setParentId(Long value) {
-        set(3, value);
+    public DepartmentRecord setName(String value) {
+        set(2, value);
         return this;
     }
 
@@ -84,10 +120,10 @@ public class DepartmentRecord extends UpdatableRecordImpl<DepartmentRecord> impl
     }
 
     /**
-     * Setter for <code>PUBLIC.DEPARTMENT.DELETED</code>.
+     * Setter for <code>PUBLIC.DEPARTMENT.PARENT_ID</code>.
      */
-    public DepartmentRecord setDeleted(Long value) {
-        set(4, value);
+    public DepartmentRecord setParentId(Long value) {
+        set(3, value);
         return this;
     }
 
@@ -99,10 +135,10 @@ public class DepartmentRecord extends UpdatableRecordImpl<DepartmentRecord> impl
     }
 
     /**
-     * Setter for <code>PUBLIC.DEPARTMENT.CREATED_BY</code>.
+     * Setter for <code>PUBLIC.DEPARTMENT.DELETED</code>.
      */
-    public DepartmentRecord setCreatedBy(Long value) {
-        set(5, value);
+    public DepartmentRecord setDeleted(Long value) {
+        set(4, value);
         return this;
     }
 
@@ -114,10 +150,10 @@ public class DepartmentRecord extends UpdatableRecordImpl<DepartmentRecord> impl
     }
 
     /**
-     * Setter for <code>PUBLIC.DEPARTMENT.UPDATED_BY</code>.
+     * Setter for <code>PUBLIC.DEPARTMENT.CREATED_BY</code>.
      */
-    public DepartmentRecord setUpdatedBy(Long value) {
-        set(6, value);
+    public DepartmentRecord setCreatedBy(Long value) {
+        set(5, value);
         return this;
     }
 
@@ -129,10 +165,10 @@ public class DepartmentRecord extends UpdatableRecordImpl<DepartmentRecord> impl
     }
 
     /**
-     * Setter for <code>PUBLIC.DEPARTMENT.CREATED_AT</code>.
+     * Setter for <code>PUBLIC.DEPARTMENT.UPDATED_BY</code>.
      */
-    public DepartmentRecord setCreatedAt(LocalDateTime value) {
-        set(7, value);
+    public DepartmentRecord setUpdatedBy(Long value) {
+        set(6, value);
         return this;
     }
 
@@ -143,13 +179,21 @@ public class DepartmentRecord extends UpdatableRecordImpl<DepartmentRecord> impl
         return (LocalDateTime) get(7);
     }
 
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
+
     /**
-     * Setter for <code>PUBLIC.DEPARTMENT.UPDATED_AT</code>.
+     * Setter for <code>PUBLIC.DEPARTMENT.CREATED_AT</code>.
      */
-    public DepartmentRecord setUpdatedAt(LocalDateTime value) {
-        set(8, value);
+    public DepartmentRecord setCreatedAt(LocalDateTime value) {
+        set(7, value);
         return this;
     }
+
+    // -------------------------------------------------------------------------
+    // Record9 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>PUBLIC.DEPARTMENT.UPDATED_AT</code>.
@@ -158,18 +202,18 @@ public class DepartmentRecord extends UpdatableRecordImpl<DepartmentRecord> impl
         return (LocalDateTime) get(8);
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
+    /**
+     * Setter for <code>PUBLIC.DEPARTMENT.UPDATED_AT</code>.
+     */
+    public DepartmentRecord setUpdatedAt(LocalDateTime value) {
+        set(8, value);
+        return this;
+    }
 
     @Override
     public Record2<Long, Long> key() {
         return (Record2) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record9 type implementation
-    // -------------------------------------------------------------------------
 
     @Override
     public Row9<Long, Long, String, Long, Long, Long, Long, LocalDateTime, LocalDateTime> fieldsRow() {
@@ -358,6 +402,10 @@ public class DepartmentRecord extends UpdatableRecordImpl<DepartmentRecord> impl
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     @Override
     public DepartmentRecord value8(LocalDateTime value) {
         setCreatedAt(value);
@@ -382,54 +430,5 @@ public class DepartmentRecord extends UpdatableRecordImpl<DepartmentRecord> impl
         value8(value8);
         value9(value9);
         return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached DepartmentRecord
-     */
-    public DepartmentRecord() {
-        super(Department.DEPARTMENT);
-    }
-
-    /**
-     * Create a detached, initialised DepartmentRecord
-     */
-    public DepartmentRecord(Long id, Long orgId, String name, Long parentId, Long deleted, Long createdBy, Long updatedBy, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        super(Department.DEPARTMENT);
-
-        setId(id);
-        setOrgId(orgId);
-        setName(name);
-        setParentId(parentId);
-        setDeleted(deleted);
-        setCreatedBy(createdBy);
-        setUpdatedBy(updatedBy);
-        setCreatedAt(createdAt);
-        setUpdatedAt(updatedAt);
-        resetChangedOnNotNull();
-    }
-
-    /**
-     * Create a detached, initialised DepartmentRecord
-     */
-    public DepartmentRecord(alvin.study.springboot.jooq.infra.model.public_.tables.pojos.Department value) {
-        super(Department.DEPARTMENT);
-
-        if (value != null) {
-            setId(value.getId());
-            setOrgId(value.getOrgId());
-            setName(value.getName());
-            setParentId(value.getParentId());
-            setDeleted(value.getDeleted());
-            setCreatedBy(value.getCreatedBy());
-            setUpdatedBy(value.getUpdatedBy());
-            setCreatedAt(value.getCreatedAt());
-            setUpdatedAt(value.getUpdatedAt());
-            resetChangedOnNotNull();
-        }
     }
 }

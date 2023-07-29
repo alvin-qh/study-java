@@ -1,17 +1,15 @@
 package alvin.study.springboot.security.infra.mapper;
 
-import java.util.List;
-
 import alvin.study.springboot.security.infra.entity.Group;
 import alvin.study.springboot.security.infra.entity.common.AuditedEntity;
 import alvin.study.springboot.security.infra.handler.EntityFieldHandler;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import io.lettuce.core.dynamic.annotation.Param;
 import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-
-import io.lettuce.core.dynamic.annotation.Param;
+import java.util.List;
 
 /**
  * 对 {@link Group} 实体进行操作的 Mapper 类型

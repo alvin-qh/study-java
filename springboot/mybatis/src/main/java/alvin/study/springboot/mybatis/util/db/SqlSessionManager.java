@@ -94,7 +94,7 @@ public class SqlSessionManager {
          *
          * @return {@link SqlSession} 对象
          */
-        public SqlSession getSqlSession() {return sqlSession;}
+        public SqlSession getSqlSession() { return sqlSession; }
 
         /**
          * 获取 {@link Connection} 对象
@@ -105,6 +105,6 @@ public class SqlSessionManager {
          *
          * @return {@link Connection} 对象
          */
-        public Connection getConnection() {return sqlSession.getConnection();}
+        public Connection getConnection() { return sqlSession.getConnection(); }
     }
 }

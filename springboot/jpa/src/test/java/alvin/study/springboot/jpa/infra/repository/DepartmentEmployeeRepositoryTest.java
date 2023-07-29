@@ -8,8 +8,6 @@ import alvin.study.springboot.jpa.infra.entity.Department;
 import alvin.study.springboot.jpa.infra.entity.DepartmentEmployee;
 import alvin.study.springboot.jpa.infra.entity.Employee;
 import alvin.study.springboot.jpa.infra.entity.Org;
-import alvin.study.springboot.jpa.infra.repository.DepartmentEmployeeRepository;
-import alvin.study.springboot.jpa.infra.repository.DepartmentRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;

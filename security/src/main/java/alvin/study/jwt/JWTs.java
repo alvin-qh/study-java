@@ -38,6 +38,47 @@ public class JWTs {
     }
 
     /**
+     * 根据 HMAC-SHA256 摘要算法创建 JWT 工具对象
+     *
+     * @param secret 密钥字节串
+     * @return {@link JWTs} 类型对象
+     */
+    public static JWTs createByHS(byte[] secret) {
+        return new JWTs(Algorithm.HMAC256(secret));
+    }
+
+    /**
+     * 根据 HMAC-SHA256 摘要算法创建 JWT 工具对象
+     *
+     * @param secret 密钥字符串
+     * @return {@link JWTs} 类型对象
+     */
+    public static JWTs createByHS(String secret) {
+        return new JWTs(Algorithm.HMAC256(secret));
+    }
+
+    /**
+     * 根据 SHA256withRSA 签名算法创建 JWT 工具对象
+     *
+     * @param secret 密钥对象, 在创建 JWT 字符串时应为 {@link java.security.interfaces.RSAPrivateKey RSAPrivateKey}, 在校验
+     *               JWT 字符串时应为 {@link java.security.interfaces.RSAPublicKey RSAPublicKey}
+     * @return {@link JWTs} 类型对象
+     */
+    public static JWTs createByRS(RSAKey secret) {
+        return new JWTs(Algorithm.RSA256(secret));
+    }
+
+    /**
+     * 测试用方法, 更换产生当前时间的 {@code Clock} 对象
+     *
+     * @param clock 产生当前时间的 {@code Clock} 对象
+     */
+    @VisibleForTesting
+    static void changeClock(Clock clock) {
+        JWTs.clock = clock;
+    }
+
+    /**
      * 编码生成一个 JWT 字符串
      *
      * <p>
@@ -91,23 +132,23 @@ public class JWTs {
      * @return JWT 字符串
      */
     public String encode(
-            String issuer,
-            String[] audiences,
-            String subject,
-            String org,
-            String type,
-            Instant expiredAt) {
+        String issuer,
+        String[] audiences,
+        String subject,
+        String org,
+        String type,
+        Instant expiredAt) {
         return JWT.create()
-                .withJWTId(UUID.randomUUID().toString())
-                .withIssuer(issuer)
-                .withAudience(audiences)
-                .withSubject(subject)
-                .withClaim(CLAIM_ORG_CODE, org)
-                .withClaim(CLAIM_USER_TYPE, type)
-                .withIssuedAt(Instant.now(clock))
-                .withExpiresAt(expiredAt)
-                // 根据所给的签名算法进行签名, 生成 JWT 字符串
-                .sign(algorithm);
+            .withJWTId(UUID.randomUUID().toString())
+            .withIssuer(issuer)
+            .withAudience(audiences)
+            .withSubject(subject)
+            .withClaim(CLAIM_ORG_CODE, org)
+            .withClaim(CLAIM_USER_TYPE, type)
+            .withIssuedAt(Instant.now(clock))
+            .withExpiresAt(expiredAt)
+            // 根据所给的签名算法进行签名, 生成 JWT 字符串
+            .sign(algorithm);
 
     }
 
@@ -165,53 +206,12 @@ public class JWTs {
      * @throws JWTVerificationException                                以上任意异常
      */
     public DecodedJWT verify(String token, String[] audiences, String org, String type)
-            throws JWTVerificationException {
+        throws JWTVerificationException {
         return JWT.require(algorithm)
-                .withAudience(audiences)
-                .withClaim(CLAIM_ORG_CODE, org)
-                .withClaim(CLAIM_USER_TYPE, type)
-                .build()
-                .verify(token);
-    }
-
-    /**
-     * 根据 HMAC-SHA256 摘要算法创建 JWT 工具对象
-     *
-     * @param secret 密钥字节串
-     * @return {@link JWTs} 类型对象
-     */
-    public static JWTs createByHS(byte[] secret) {
-        return new JWTs(Algorithm.HMAC256(secret));
-    }
-
-    /**
-     * 根据 HMAC-SHA256 摘要算法创建 JWT 工具对象
-     *
-     * @param secret 密钥字符串
-     * @return {@link JWTs} 类型对象
-     */
-    public static JWTs createByHS(String secret) {
-        return new JWTs(Algorithm.HMAC256(secret));
-    }
-
-    /**
-     * 根据 SHA256withRSA 签名算法创建 JWT 工具对象
-     *
-     * @param secret 密钥对象, 在创建 JWT 字符串时应为 {@link java.security.interfaces.RSAPrivateKey RSAPrivateKey}, 在校验
-     *               JWT 字符串时应为 {@link java.security.interfaces.RSAPublicKey RSAPublicKey}
-     * @return {@link JWTs} 类型对象
-     */
-    public static JWTs createByRS(RSAKey secret) {
-        return new JWTs(Algorithm.RSA256(secret));
-    }
-
-    /**
-     * 测试用方法, 更换产生当前时间的 {@code Clock} 对象
-     *
-     * @param clock 产生当前时间的 {@code Clock} 对象
-     */
-    @VisibleForTesting
-    static void changeClock(Clock clock) {
-        JWTs.clock = clock;
+            .withAudience(audiences)
+            .withClaim(CLAIM_ORG_CODE, org)
+            .withClaim(CLAIM_USER_TYPE, type)
+            .build()
+            .verify(token);
     }
 }

@@ -52,20 +52,20 @@ class JWTsTest {
 
         // 编码一个 JWT 字符串
         var token = jwt.encode(
-                "Alvin",
-                new String[]{"third-part"},
-                "u_b989c9ea-e07b-4263-ae98-11d6b1b0e327",
-                "o_a4ef30",
-                "EMPLOYEE",
-                Instant.parse("2286-11-20T17:46:39Z"));
+            "Alvin",
+            new String[]{ "third-part" },
+            "u_b989c9ea-e07b-4263-ae98-11d6b1b0e327",
+            "o_a4ef30",
+            "EMPLOYEE",
+            Instant.parse("2286-11-20T17:46:39Z"));
         then(token).isNotEmpty();
 
         // 验证 JWT 字符串, 确认验证结果正确
         var payload = jwt.verify(
-                token,
-                new String[]{"third-part"},
-                "o_a4ef30",
-                "EMPLOYEE");
+            token,
+            new String[]{ "third-part" },
+            "o_a4ef30",
+            "EMPLOYEE");
         then(payload.getId()).matches("^[a-f0-9]{8}-([a-f0-9]{4}-){3}[a-f0-9]{12}$");
         then(payload.getIssuer()).isEqualTo("Alvin");
         then(payload.getAudience()).containsExactly("third-part");
@@ -89,21 +89,21 @@ class JWTsTest {
         // 通过一个私钥对象创建 JWT 工具类, 并编码 JWT 字符串
         var jwt = JWTs.createByRS(keyReader.readPrivateKey());
         var token = jwt.encode(
-                "Alvin",
-                new String[]{"third-part"},
-                "u_b989c9ea-e07b-4263-ae98-11d6b1b0e327",
-                "o_a4ef30",
-                "EMPLOYEE",
-                Instant.parse("2286-11-20T17:46:39Z"));
+            "Alvin",
+            new String[]{ "third-part" },
+            "u_b989c9ea-e07b-4263-ae98-11d6b1b0e327",
+            "o_a4ef30",
+            "EMPLOYEE",
+            Instant.parse("2286-11-20T17:46:39Z"));
         then(token).isNotEmpty();
 
         // 通过一个公钥对象创建 JWT 工具类, 并验证 JWT 字符串
         jwt = JWTs.createByRS(keyReader.readPublicKey());
         var payload = jwt.verify(
-                token,
-                new String[]{"third-part"},
-                "o_a4ef30",
-                "EMPLOYEE");
+            token,
+            new String[]{ "third-part" },
+            "o_a4ef30",
+            "EMPLOYEE");
         then(payload.getId()).matches("^[a-f0-9]{8}-([a-f0-9]{4}-){3}[a-f0-9]{12}$");
         then(payload.getIssuer()).isEqualTo("Alvin");
         then(payload.getAudience()).containsExactly("third-part");

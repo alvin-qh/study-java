@@ -1,8 +1,8 @@
 package alvin.study.springboot.ds.core.http.handler;
 
-import java.lang.reflect.Method;
-import java.util.Optional;
-
+import alvin.study.springboot.ds.core.http.common.ClientError;
+import alvin.study.springboot.ds.core.http.common.ResponseDto;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.filters.AddDefaultCharsetFilter.ResponseWrapper;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
@@ -18,9 +18,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
-import alvin.study.springboot.ds.core.http.common.ClientError;
-import alvin.study.springboot.ds.core.http.common.ResponseDto;
-import lombok.extern.slf4j.Slf4j;
+import java.lang.reflect.Method;
+import java.util.Optional;
 
 /**
  * 对 Controller 的返回结果进行处理
@@ -85,12 +84,12 @@ public class RestResponseAdvice implements ResponseBodyAdvice<Object> {
      */
     @Override
     public ResponseDto<?> beforeBodyWrite(
-            Object body,
-            MethodParameter returnType,
-            MediaType selectedContentType,
-            Class<? extends HttpMessageConverter<?>> selectedConverterType,
-            ServerHttpRequest request,
-            ServerHttpResponse response) {
+        Object body,
+        MethodParameter returnType,
+        MediaType selectedContentType,
+        Class<? extends HttpMessageConverter<?>> selectedConverterType,
+        ServerHttpRequest request,
+        ServerHttpResponse response) {
         return ResponseDto.success(body);
     }
 

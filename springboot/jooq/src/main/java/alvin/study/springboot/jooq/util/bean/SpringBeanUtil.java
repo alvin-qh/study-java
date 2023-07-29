@@ -15,6 +15,11 @@ public class SpringBeanUtil implements ApplicationContextAware {
     private static ApplicationContext context;
 
     /**
+     * 获取 {@link ApplicationContext} 对象
+     */
+    public static ApplicationContext getApplicationContext() { return context; }
+
+    /**
      * 注入 {@link ApplicationContext} 对象
      */
     @Override
@@ -23,11 +28,6 @@ public class SpringBeanUtil implements ApplicationContextAware {
             context = applicationContext;
         }
     }
-
-    /**
-     * 获取 {@link ApplicationContext} 对象
-     */
-    public static ApplicationContext getApplicationContext() {return context;}
 
     /**
      * 通过名称获取 Bean

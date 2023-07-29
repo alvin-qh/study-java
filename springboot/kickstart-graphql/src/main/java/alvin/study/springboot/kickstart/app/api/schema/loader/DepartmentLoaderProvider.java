@@ -1,20 +1,18 @@
 package alvin.study.springboot.kickstart.app.api.schema.loader;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
-
 import alvin.study.springboot.kickstart.core.context.Context;
 import alvin.study.springboot.kickstart.core.context.CustomRequestAttributes;
 import alvin.study.springboot.kickstart.core.graphql.annotation.DataLoaderCreator;
 import alvin.study.springboot.kickstart.core.graphql.dataloader.DataLoaderProvider;
 import alvin.study.springboot.kickstart.infra.entity.Department;
 import alvin.study.springboot.kickstart.infra.mapper.DepartmentMapper;
+import com.google.common.base.Functions;
+import lombok.RequiredArgsConstructor;
 import org.dataloader.DataLoader;
 import org.dataloader.DataLoaderFactory;
 
-import com.google.common.base.Functions;
-
-import lombok.RequiredArgsConstructor;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 /**
  * 部门读取 {@link DataLoader} 提供器
@@ -46,7 +44,7 @@ public class DepartmentLoaderProvider implements DataLoaderProvider<Long, Depart
                 try (var ignore = CustomRequestAttributes.scopedRegister(context)) {
                     // 根据 id 集合查询 Org 对象集合, 并转为 OrgType 对象
                     return departmentMapper.selectBatchIds(departmentIds).stream()
-                            .collect(Collectors.toMap(Department::getId, Functions.identity()));
+                        .collect(Collectors.toMap(Department::getId, Functions.identity()));
                 }
             });
         });

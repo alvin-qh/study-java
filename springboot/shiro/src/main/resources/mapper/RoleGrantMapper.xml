@@ -6,6 +6,6 @@
     type="alvin.study.springboot.shiro.infra.entity.RoleGrant"
     autoMapping="true"
   >
-    <id property="id" column="id" />
+    <id property="id" column="id"/>
   </resultMap>
 </mapper>

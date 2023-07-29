@@ -63,7 +63,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @MappedSuperclass
-@EntityListeners({AuditingEntityListener.class})
+@EntityListeners({ AuditingEntityListener.class })
 public abstract class AuditedEntity extends TenantedEntity {
     /**
      * 记录实体创建者

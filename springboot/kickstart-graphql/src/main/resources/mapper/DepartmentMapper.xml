@@ -8,6 +8,6 @@
     type="alvin.study.springboot.kickstart.infra.entity.Department"
     autoMapping="true"
   >
-    <id property="id" column="id" />
+    <id property="id" column="id"/>
   </resultMap>
 </mapper>

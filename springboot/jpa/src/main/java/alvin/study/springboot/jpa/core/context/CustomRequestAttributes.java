@@ -24,6 +24,24 @@ public class CustomRequestAttributes implements RequestAttributes {
     private final Map<String, Object> attributes = new HashMap<>();
 
     /**
+     * 将 Context 对象注册到当前请求属性对象中
+     */
+    public static Context register(Context context) {
+        var cra = new CustomRequestAttributes();
+        cra.setAttribute(Context.KEY, context, SCOPE_REQUEST);
+        RequestContextHolder.setRequestAttributes(cra);
+        return context;
+    }
+
+    /**
+     * 取消当前 Context 对象的注册
+     */
+    public static void unregister() {
+        var attributes = RequestContextHolder.currentRequestAttributes();
+        attributes.removeAttribute(Context.KEY, SCOPE_REQUEST);
+    }
+
+    /**
      * 获取请求属性值
      */
     @Override
@@ -86,23 +104,5 @@ public class CustomRequestAttributes implements RequestAttributes {
     @Override
     public @NotNull Object getSessionMutex() {
         return this;
-    }
-
-    /**
-     * 将 Context 对象注册到当前请求属性对象中
-     */
-    public static Context register(Context context) {
-        var cra = new CustomRequestAttributes();
-        cra.setAttribute(Context.KEY, context, SCOPE_REQUEST);
-        RequestContextHolder.setRequestAttributes(cra);
-        return context;
-    }
-
-    /**
-     * 取消当前 Context 对象的注册
-     */
-    public static void unregister() {
-        var attributes = RequestContextHolder.currentRequestAttributes();
-        attributes.removeAttribute(Context.KEY, SCOPE_REQUEST);
     }
 }

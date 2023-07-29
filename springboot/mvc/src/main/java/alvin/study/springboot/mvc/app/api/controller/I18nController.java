@@ -37,8 +37,8 @@ import java.util.List;
  *
  * <p>
  * 测试调用: <a href="http://localhost:8080/api/i18n?key=application.name&args=MVC">
- *     http://localhost:8080/api/i18n?key=application.name&args=MVC
- *     </a>
+ * http://localhost:8080/api/i18n?key=application.name&args=MVC
+ * </a>
  * </p>
  *
  * <p>
@@ -81,14 +81,13 @@ public class I18nController {
      * @param key  {@code /i18n/message.properties} 文件的 Key
      * @param args 格式化 i18n 字符串的参数
      * @return {@link I18nDto} 对象, 包含请求的 Key 和 生成的 Message
-     *
      * @see I18n#getMessage(String, Object...)
      */
     @GetMapping
     @ResponseBody
     I18nDto get(
-            @RequestParam("key") @NotBlank String key,
-            @RequestParam(name = "args", defaultValue = "", required = false) List<String> args) {
+        @RequestParam("key") @NotBlank String key,
+        @RequestParam(name = "args", defaultValue = "", required = false) List<String> args) {
         log.info("GET method of I18nController was called, key=\"{}\"", key);
 
         // 返回成功响应

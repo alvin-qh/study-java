@@ -5,7 +5,6 @@ package alvin.study.springboot.jooq.infra.model.public_;
 
 
 import alvin.study.springboot.jooq.infra.model.public_.tables.DepartmentEmployee;
-
 import org.jooq.Index;
 import org.jooq.OrderField;
 import org.jooq.impl.DSL;
@@ -22,6 +21,6 @@ public class Indexes {
     // INDEX definitions
     // -------------------------------------------------------------------------
 
-    public static final Index IX_DEPARTMENT_EMPLOYEE_DEPARTMENT_ID = Internal.createIndex(DSL.name("IX_DEPARTMENT_EMPLOYEE_DEPARTMENT_ID"), DepartmentEmployee.DEPARTMENT_EMPLOYEE, new OrderField[] { DepartmentEmployee.DEPARTMENT_EMPLOYEE.ORG_ID, DepartmentEmployee.DEPARTMENT_EMPLOYEE.DEPARTMENT_ID }, false);
-    public static final Index IX_DEPARTMENT_EMPLOYEE_EMPLOYEE_ID = Internal.createIndex(DSL.name("IX_DEPARTMENT_EMPLOYEE_EMPLOYEE_ID"), DepartmentEmployee.DEPARTMENT_EMPLOYEE, new OrderField[] { DepartmentEmployee.DEPARTMENT_EMPLOYEE.ORG_ID, DepartmentEmployee.DEPARTMENT_EMPLOYEE.EMPLOYEE_ID }, false);
+    public static final Index IX_DEPARTMENT_EMPLOYEE_DEPARTMENT_ID = Internal.createIndex(DSL.name("IX_DEPARTMENT_EMPLOYEE_DEPARTMENT_ID"), DepartmentEmployee.DEPARTMENT_EMPLOYEE, new OrderField[]{ DepartmentEmployee.DEPARTMENT_EMPLOYEE.ORG_ID, DepartmentEmployee.DEPARTMENT_EMPLOYEE.DEPARTMENT_ID }, false);
+    public static final Index IX_DEPARTMENT_EMPLOYEE_EMPLOYEE_ID = Internal.createIndex(DSL.name("IX_DEPARTMENT_EMPLOYEE_EMPLOYEE_ID"), DepartmentEmployee.DEPARTMENT_EMPLOYEE, new OrderField[]{ DepartmentEmployee.DEPARTMENT_EMPLOYEE.ORG_ID, DepartmentEmployee.DEPARTMENT_EMPLOYEE.EMPLOYEE_ID }, false);
 }

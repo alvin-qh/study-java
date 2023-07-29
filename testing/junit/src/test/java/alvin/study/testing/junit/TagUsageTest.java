@@ -1,4 +1,3 @@
-
 package alvin.study.testing.junit;
 
 import alvin.study.testing.junit.tag.ImportantTagTest;

@@ -41,66 +41,12 @@ import java.util.concurrent.atomic.AtomicInteger;
  * </p>
  */
 public class SlidingWindowRateLimiter implements RateLimiter {
-    /**
-     * 记录"块"的类型
-     */
-    private static class Window {
-        // 块的起始时间
-        private final long startTime;
-
-        // 块内的调用次数
-        private final AtomicInteger count;
-
-        /**
-         * 构造器, 构造一个块
-         *
-         * @param startTime 起始时间
-         * @param count     调用次数
-         */
-        public Window(long startTime, int count) {
-            this.startTime = startTime;
-            this.count = new AtomicInteger(count);
-        }
-
-        /**
-         * 为当前块增加调用次数
-         *
-         * @param n 调用次数
-         * @return 增加后的结果
-         */
-        @SuppressWarnings("UnusedReturnValue")
-        public int add(int n) {
-            return count.addAndGet(n);
-        }
-
-        /**
-         * 获取块起始时间, 单位毫秒
-         *
-         * @return 块起始时间
-         */
-        public long getStartTime() {
-            return startTime;
-        }
-
-        /**
-         * 获取块中记录的调用次数
-         *
-         * @return 块中记录的调用次数
-         */
-        public int getCount() {
-            return count.get();
-        }
-    }
-
     // 总窗口大小, 单位毫秒
     private final int windowUnit;
-
     // 窗口中每个块的大小
     private final int windowBlockUnit;
-
     // 调用数量上限
     private final int threshold;
-
     // 记录窗口块的双端队列
     private final Deque<Window> windowQueue = new ArrayDeque<>();
 
@@ -163,5 +109,56 @@ public class SlidingWindowRateLimiter implements RateLimiter {
             count += win.getCount();
         }
         return count;
+    }
+
+    /**
+     * 记录"块"的类型
+     */
+    private static class Window {
+        // 块的起始时间
+        private final long startTime;
+
+        // 块内的调用次数
+        private final AtomicInteger count;
+
+        /**
+         * 构造器, 构造一个块
+         *
+         * @param startTime 起始时间
+         * @param count     调用次数
+         */
+        public Window(long startTime, int count) {
+            this.startTime = startTime;
+            this.count = new AtomicInteger(count);
+        }
+
+        /**
+         * 为当前块增加调用次数
+         *
+         * @param n 调用次数
+         * @return 增加后的结果
+         */
+        @SuppressWarnings("UnusedReturnValue")
+        public int add(int n) {
+            return count.addAndGet(n);
+        }
+
+        /**
+         * 获取块起始时间, 单位毫秒
+         *
+         * @return 块起始时间
+         */
+        public long getStartTime() {
+            return startTime;
+        }
+
+        /**
+         * 获取块中记录的调用次数
+         *
+         * @return 块中记录的调用次数
+         */
+        public int getCount() {
+            return count.get();
+        }
     }
 }

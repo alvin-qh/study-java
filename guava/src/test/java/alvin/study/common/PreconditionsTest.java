@@ -29,7 +29,7 @@ import static org.assertj.core.api.BDDAssertions.thenThrownBy;
  * 以及 {@link java.util.Objects#checkFromIndexSize(int, int, int) Objects.checkFromIndexSize(int, int, int)} 等
  * </p>
  */
-@SuppressWarnings({"DataFlowIssue", "ConstantValue"})
+@SuppressWarnings({ "DataFlowIssue", "ConstantValue" })
 class PreconditionsTest {
     /**
      * 通过一个条件表达式, 对参数值进行检查

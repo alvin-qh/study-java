@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateOrgPayload  {
+public class UpdateOrgPayload {
     /**
      * 更新后的组织实体
      */

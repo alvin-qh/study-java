@@ -14,18 +14,15 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class EmployeeBuilder extends Builder<Employee> {
     private final static AtomicInteger SEQUENCE = new AtomicInteger();
-
-    @Autowired
-    private EmployeeMapper mapper;
-
-    private String name = "Employee" + SEQUENCE.incrementAndGet();
-    private String email = String.format("employee%d@fakemail.com", SEQUENCE.incrementAndGet());
-    private String title = "Staff";
-
     private final EmployeeInfo info = new EmployeeInfo()
         .setGender(Gender.MALE)
         .setBirthday(LocalDate.parse("1981-03-17"))
         .setTelephone("13999999011");
+    @Autowired
+    private EmployeeMapper mapper;
+    private String name = "Employee" + SEQUENCE.incrementAndGet();
+    private String email = String.format("employee%d@fakemail.com", SEQUENCE.incrementAndGet());
+    private String title = "Staff";
 
     /**
      * 设置职员姓名

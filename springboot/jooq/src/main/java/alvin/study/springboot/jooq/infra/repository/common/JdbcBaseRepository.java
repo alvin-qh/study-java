@@ -17,15 +17,14 @@ import java.util.function.Consumer;
  */
 public abstract class JdbcBaseRepository<R extends Record> {
     /**
+     * 实体对应的 {@link Table} 类型
+     */
+    protected final Table<? extends R> table;
+    /**
      * 注入 {@link JdbcDSLContextManager} 类型, 用于演示通过 JDBC 创建并使用 Jooq 框架的方法
      */
     @Autowired
     protected JdbcDSLContextManager contextManager;
-
-    /**
-     * 实体对应的 {@link Table} 类型
-     */
-    protected final Table<? extends R> table;
 
     /**
      * 构造器, 实例化当前 Repository 类型

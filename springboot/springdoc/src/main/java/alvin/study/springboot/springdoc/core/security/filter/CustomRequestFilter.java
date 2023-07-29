@@ -107,6 +107,24 @@ public class CustomRequestFilter extends OncePerRequestFilter {
     }
 
     /**
+     * 检测一个 {@link HttpServletRequest} 对象是否匹配指定的 URL 匹配模式
+     *
+     * @param matchers URL 匹配模式对象数组
+     * @param request  请求对象
+     * @return 是否匹配成功
+     */
+    private static boolean checkIfMatcherMatches(
+        AntPathRequestMatcher @NotNull [] matchers,
+        HttpServletRequest request) {
+        for (var matcher : matchers) {
+            if (matcher.matches(request)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * 进行拦截操作
      *
      * @param request  请求对象
@@ -148,24 +166,6 @@ public class CustomRequestFilter extends OncePerRequestFilter {
             // 通过过滤器链调用下一个过滤器
             chain.doFilter(request, response);
         }
-    }
-
-    /**
-     * 检测一个 {@link HttpServletRequest} 对象是否匹配指定的 URL 匹配模式
-     *
-     * @param matchers URL 匹配模式对象数组
-     * @param request  请求对象
-     * @return 是否匹配成功
-     */
-    private static boolean checkIfMatcherMatches(
-        AntPathRequestMatcher @NotNull [] matchers,
-        HttpServletRequest request) {
-        for (var matcher : matchers) {
-            if (matcher.matches(request)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

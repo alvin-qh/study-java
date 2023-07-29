@@ -1,15 +1,14 @@
 package alvin.study.springboot.kickstart.core.context;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 自定义请求属性对象 (请求上下文)
@@ -27,6 +26,30 @@ import lombok.RequiredArgsConstructor;
 public class CustomRequestAttributes implements RequestAttributes {
     // 存储属性值的 Map 对象
     private final Map<String, Object> attributes = new HashMap<>();
+
+    /**
+     * 将 Context 对象注册到当前请求属性对象中
+     */
+    public static Context register(Context context) {
+        var cra = new CustomRequestAttributes();
+        cra.setAttribute(Context.KEY, context, SCOPE_REQUEST);
+        RequestContextHolder.setRequestAttributes(cra);
+        return context;
+    }
+
+    /**
+     * 取消当前 Context 对象的注册
+     */
+    public static void unregister() {
+        var attributes = RequestContextHolder.currentRequestAttributes();
+        attributes.removeAttribute(Context.KEY, SCOPE_REQUEST);
+    }
+
+    @Contract("_ -> new")
+    public static @NotNull ContextCleaner scopedRegister(Context context) {
+        register(context);
+        return new ContextCleaner(context);
+    }
 
     /**
      * 获取请求属性值
@@ -91,30 +114,6 @@ public class CustomRequestAttributes implements RequestAttributes {
     @Override
     public @NotNull Object getSessionMutex() {
         return this;
-    }
-
-    /**
-     * 将 Context 对象注册到当前请求属性对象中
-     */
-    public static Context register(Context context) {
-        var cra = new CustomRequestAttributes();
-        cra.setAttribute(Context.KEY, context, SCOPE_REQUEST);
-        RequestContextHolder.setRequestAttributes(cra);
-        return context;
-    }
-
-    /**
-     * 取消当前 Context 对象的注册
-     */
-    public static void unregister() {
-        var attributes = RequestContextHolder.currentRequestAttributes();
-        attributes.removeAttribute(Context.KEY, SCOPE_REQUEST);
-    }
-
-    @Contract("_ -> new")
-    public static @NotNull ContextCleaner scopedRegister(Context context) {
-        register(context);
-        return new ContextCleaner(context);
     }
 
     @Getter

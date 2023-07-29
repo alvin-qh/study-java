@@ -118,7 +118,8 @@ graphql:
 
 ### 3.1. 开启 Graph*i*ql
 
-如果在 `application.yml` 文件中配置了 `graphql.graphiql.enabled=true`, 则可以开启 Graph*i*QL 客户端, 默认的访问 URL 路径为 `/graphiql`
+如果在 `application.yml` 文件中配置了 `graphql.graphiql.enabled=true`, 则可以开启 Graph*i*QL 客户端, 默认的访问 URL
+路径为 `/graphiql`
 
 注意: 默认情况下, Graph*i*QL 访问 GraphQL servlet 暴露的路径为 `/graphql/*`, 可以通过配置修改
 
@@ -155,7 +156,8 @@ graphql:
 
 ### 3.2. 开启 Altair
 
-如果在 `application.yml` 文件中配置了 `graphql.altair.enabled=true`, 则可以开启 Altair 客户端, 默认的访问 URL 路径为 `/altair`
+如果在 `application.yml` 文件中配置了 `graphql.altair.enabled=true`, 则可以开启 Altair 客户端, 默认的访问 URL
+路径为 `/altair`
 
 注意: 默认情况下, Altair 访问 GraphQL Servlet 暴露的路径为 `/graphql/*`
 
@@ -193,7 +195,8 @@ graphql:
 
 ### 3.3. 开启 GraphQL Playground
 
-如果在 `application.yml` 文件中配置了 `graphql.altair.enabled=true`, 则可以开启 Altair 客户端, 默认的访问 URL 路径为 `/playground`
+如果在 `application.yml` 文件中配置了 `graphql.altair.enabled=true`, 则可以开启 Altair 客户端, 默认的访问 URL
+路径为 `/playground`
 
 常用的 Spring Boot 配置 (`application.yml`) 如下:
 
@@ -240,7 +243,8 @@ graphql:
 
 其常用配置如下:
 
-`mapping`, `endpoint` 和 `subscriptionEndpoint` 的配置项分别默认为 `/playground`, `/graphql` 和 `/subscriptions`, 这些配置项不应该为空
+`mapping`, `endpoint` 和 `subscriptionEndpoint` 的配置项分别默认为 `/playground`, `/graphql` 和 `/subscriptions`,
+这些配置项不应该为空
 
 `enabled` 配置项的默认值为 `true`, 也就是说 Playground 会在工程引入依赖库后默认生效
 
@@ -261,7 +265,8 @@ CDN 配置项默认是关闭的
 
 ### 3.3.3. 开启 GraphQL Voyager
 
-如果在 `application.yml` 文件中配置了 `graphql.voyager.enabled=true`, 则可以开启 Voyager 客户端, 默认的访问 URL 路径为 `/voyager`
+如果在 `application.yml` 文件中配置了 `graphql.voyager.enabled=true`, 则可以开启 Voyager 客户端, 默认的访问 URL
+路径为 `/voyager`
 
 常用的 Spring Boot 配置 (`application.yml`) 如下:
 
@@ -295,7 +300,8 @@ graphql:
 
 其它配置内容请参考 [GraphQL Voyager Readme](https://github.com/APIs-guru/graphql-voyager#properties)
 
-可以通过 `displayOptions`, `hideDocs` 和 `hideSettings` 配置项对 Voyager 进行自定义配置, 具体方法可参考 [GraphQL Voyager Readme](https://github.com/APIs-guru/graphql-voyager#properties)
+可以通过 `displayOptions`, `hideDocs` 和 `hideSettings` 配置项对 Voyager 进行自定义配置,
+具体方法可参考 [GraphQL Voyager Readme](https://github.com/APIs-guru/graphql-voyager#properties)
 
 ## 4. 对 GraphQL-Java 库的支持
 
@@ -303,7 +309,8 @@ graphql:
 
 [https://github.com/graphql-java-kickstart/graphql-java-tools](https://github.com/graphql-java-kickstart/graphql-java-tools)
 
-通过定义 `*.graphqls` 文件来描述 GraphQL 的 Schema, 包括 `Type`, `Scalar`, `Enum` 等并自动映射到对应的 Java 类型上, 具体参考 [Readme](https://github.com/graphql-java-kickstart/graphql-java-tools#usage) 文档
+通过定义 `*.graphqls` 文件来描述 GraphQL 的 Schema, 包括 `Type`, `Scalar`, `Enum` 等并自动映射到对应的 Java 类型上,
+具体参考 [Readme](https://github.com/graphql-java-kickstart/graphql-java-tools#usage) 文档
 
 相关 `application.yml` 中的配置如下:
 
@@ -346,7 +353,8 @@ graphql:
 
 #### 4.2.2. Interfaces
 
-至少有一个方法标记为 `@GraphQLField` 注解的接口被认为是 GraphQL interface, 并且这些接口的实现类会自动的加入 GraphQL schema 中, 另外, 需要给 GraphQL interface 增加注解 `@GraphQLTypeResolver(GraphQLInterfaceTypeResolver.class)`
+至少有一个方法标记为 `@GraphQLField` 注解的接口被认为是 GraphQL interface, 并且这些接口的实现类会自动的加入 GraphQL
+schema 中, 另外, 需要给 GraphQL interface 增加注解 `@GraphQLTypeResolver(GraphQLInterfaceTypeResolver.class)`
 
 #### 4.2.3. 自定义 scalars 和 type
 
@@ -358,7 +366,8 @@ graphql:
 
 ### 4.3. 扩展 scalars
 
-[扩展 scalars](https://github.com/graphql-java/graphql-java-extended-scalars) 提供了对标准 GraphQL 类型的扩展, 可以通过 `application.yml` 文件的 `graphql.extended-scalars` 配置进行声明
+[扩展 scalars](https://github.com/graphql-java/graphql-java-extended-scalars) 提供了对标准 GraphQL 类型的扩展,
+可以通过 `application.yml` 文件的 `graphql.extended-scalars` 配置进行声明
 
 ```yml
 graphql:
@@ -367,7 +376,9 @@ graphql:
 
 该扩展库目前提供了如下扩展 Scalars 类型:
 
-`BigDecimal`, `BigInteger`, `Byte`, `Char`, `Date`, `DateTime`, `JSON`, `LocalTime` (since 13.0.0), `Locale`, `Long`, `NegativeFloat`, `NegativeInt`, `NonNegativeFloat`, `NonNegativeInt`, `NonPositiveFloat`, `NonPositiveInt`, `Object`, `PositiveFloat`, `PositiveInt`, `Short`, `Time`, `UUID` (since 13.0.0), `Url`
+`BigDecimal`, `BigInteger`, `Byte`, `Char`, `Date`, `DateTime`, `JSON`, `LocalTime` (since
+13.0.0), `Locale`, `Long`, `NegativeFloat`, `NegativeInt`, `NonNegativeFloat`, `NonNegativeInt`, `NonPositiveFloat`, `NonPositiveInt`, `Object`, `PositiveFloat`, `PositiveInt`, `Short`, `Time`, `UUID` (
+since 13.0.0), `Url`
 
 该配置对 GraphQL Java Tools 和 GraphQL 注解两种方式均有效
 

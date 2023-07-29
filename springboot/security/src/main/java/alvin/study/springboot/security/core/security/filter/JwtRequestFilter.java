@@ -45,9 +45,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
      */
     @Override
     protected void doFilterInternal(
-            @NotNull HttpServletRequest request,
-            @NotNull HttpServletResponse response,
-            @NotNull FilterChain chain) throws ServletException, IOException {
+        @NotNull HttpServletRequest request,
+        @NotNull HttpServletResponse response,
+        @NotNull FilterChain chain) throws ServletException, IOException {
         // 判断安全上下文中是否已经存储用户信息
         var context = SecurityContextHolder.getContext();
 
@@ -63,9 +63,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 var user = authService.decodeJwtToken(jwt);
 
                 var auth = new NameAndPasswordAuthenticationToken(
-                        user,
-                        jwt,
-                        authService.findPermissionsByUserId(user.getId())
+                    user,
+                    jwt,
+                    authService.findPermissionsByUserId(user.getId())
                 );
 
                 // 设置登录详细信息

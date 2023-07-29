@@ -1,16 +1,15 @@
 package alvin.study.springboot.kickstart.app.api.schema.type.common;
 
-import java.util.concurrent.CompletableFuture;
-
-import alvin.study.springboot.kickstart.conf.GraphqlConfig;
-import org.dataloader.DataLoader;
-import org.modelmapper.ModelMapper;
-
 import alvin.study.springboot.kickstart.app.api.schema.loader.UserLoaderProvider;
 import alvin.study.springboot.kickstart.app.api.schema.type.UserType;
+import alvin.study.springboot.kickstart.conf.GraphqlConfig;
 import alvin.study.springboot.kickstart.infra.entity.User;
 import graphql.kickstart.tools.GraphQLResolver;
 import graphql.schema.DataFetchingEnvironment;
+import org.dataloader.DataLoader;
+import org.modelmapper.ModelMapper;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * 定义 Graphql Type 解析器, 解析 {@link AuditedType} 未包含的额外的字段值
@@ -46,7 +45,6 @@ public interface AuditedResolver<T extends AuditedType> extends GraphQLResolver<
      * @param env      {@link DataFetchingEnvironment} 对象, 用于获取指定的
      *                 {@link DataLoader} 对象
      * @return 一个异步函数, 将通过每个 id 获取对象的处理延时执行, 转化为批量处理
-     *
      * @see UserLoaderProvider
      */
     default CompletableFuture<UserType> getCreatedByUser(T instance, DataFetchingEnvironment env) {
@@ -64,7 +62,6 @@ public interface AuditedResolver<T extends AuditedType> extends GraphQLResolver<
      * @param env      {@link DataFetchingEnvironment} 对象, 用于获取指定的
      *                 {@link DataLoader} 对象
      * @return 一个异步函数, 将通过每个 id 获取对象的处理延时执行, 转化为批量处理
-     *
      * @see UserLoaderProvider
      */
     default CompletableFuture<UserType> getUpdatedByUser(T instance, DataFetchingEnvironment env) {

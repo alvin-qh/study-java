@@ -57,15 +57,15 @@ class StringUtilsTest {
         then(s).isEqualTo("A>>B>>C");
 
         // 通过 >> 连接符连接数组中的所有元素
-        s = Joiner.on(">>").join(new String[]{"A", "B", "C"});
+        s = Joiner.on(">>").join(new String[]{ "A", "B", "C" });
         then(s).isEqualTo("A>>B>>C");
 
         // 在连接过程中, 忽略所有为 null 的元素
-        s = Joiner.on(">>").skipNulls().join(new String[]{"A", "B", null, "C"});
+        s = Joiner.on(">>").skipNulls().join(new String[]{ "A", "B", null, "C" });
         then(s).isEqualTo("A>>B>>C");
 
         // 在连接过程中, 将值为 null 的元素替换为给定的字符串
-        s = Joiner.on(">>").useForNull("null").join(new String[]{"A", "B", null, "C"});
+        s = Joiner.on(">>").useForNull("null").join(new String[]{ "A", "B", null, "C" });
         then(s).isEqualTo("A>>B>>null>>C");
 
         // 在连接过程中, 将值为 null 的元素替换为给定的字符串
@@ -256,7 +256,7 @@ class StringUtilsTest {
     @Test
     void charsets_shouldUseStandardCharset() {
         var bytes = "Hello World".getBytes(Charsets.UTF_8);
-        then(bytes).isEqualTo(new byte[]{72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100});
+        then(bytes).isEqualTo(new byte[]{ 72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100 });
     }
 
     /**

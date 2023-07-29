@@ -1,8 +1,8 @@
 package alvin.study.springboot.mybatis.infra.handler;
 
+import alvin.study.springboot.mybatis.core.context.Context;
 import alvin.study.springboot.mybatis.infra.entity.Org;
 import alvin.study.springboot.mybatis.infra.entity.User;
-import alvin.study.springboot.mybatis.core.context.Context;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.reflection.MetaObject;

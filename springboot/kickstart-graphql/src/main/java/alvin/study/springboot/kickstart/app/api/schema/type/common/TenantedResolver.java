@@ -1,16 +1,15 @@
 package alvin.study.springboot.kickstart.app.api.schema.type.common;
 
-import java.util.concurrent.CompletableFuture;
-
-import alvin.study.springboot.kickstart.conf.GraphqlConfig;
-import org.dataloader.DataLoader;
-import org.modelmapper.ModelMapper;
-
 import alvin.study.springboot.kickstart.app.api.schema.loader.OrgLoaderProvider;
 import alvin.study.springboot.kickstart.app.api.schema.type.OrgType;
+import alvin.study.springboot.kickstart.conf.GraphqlConfig;
 import alvin.study.springboot.kickstart.infra.entity.Org;
 import graphql.kickstart.tools.GraphQLResolver;
 import graphql.schema.DataFetchingEnvironment;
+import org.dataloader.DataLoader;
+import org.modelmapper.ModelMapper;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * 定义 Graphql Type 解析器, 解析 {@link TenantedType} 未包含的额外的字段值

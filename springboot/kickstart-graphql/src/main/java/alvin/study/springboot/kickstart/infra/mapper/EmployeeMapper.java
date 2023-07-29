@@ -1,17 +1,15 @@
 package alvin.study.springboot.kickstart.infra.mapper;
 
+import alvin.study.springboot.kickstart.infra.entity.Employee;
 import alvin.study.springboot.kickstart.infra.entity.common.AuditedEntity;
 import alvin.study.springboot.kickstart.infra.entity.common.TenantedEntity;
 import alvin.study.springboot.kickstart.infra.handler.EntityFieldHandler;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-
-import alvin.study.springboot.kickstart.infra.entity.Employee;
 
 /**
  * 该 Mapper 类型通过 {@code classpath:/mapper/DepartmentMapper.xml} 来设定要执行的 SQL 语句

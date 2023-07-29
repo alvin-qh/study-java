@@ -1,13 +1,13 @@
 package alvin.study.springboot.kickstart.app.api.schema.type;
 
-import java.util.Map;
-
 import alvin.study.springboot.kickstart.app.api.schema.type.common.AuditedType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.util.Map;
 
 /**
  * 部门类型

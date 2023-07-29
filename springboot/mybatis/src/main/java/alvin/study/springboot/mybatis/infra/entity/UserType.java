@@ -1,6 +1,5 @@
 package alvin.study.springboot.mybatis.infra.entity;
 
-import alvin.study.springboot.mybatis.conf.JacksonConfig;
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
 
@@ -35,7 +34,7 @@ public enum UserType {
         this.code = code;
     }
 
-    public String getCode() {return code;}
+    public String getCode() { return code; }
 
-    public String getName() {return name;}
+    public String getName() { return name; }
 }

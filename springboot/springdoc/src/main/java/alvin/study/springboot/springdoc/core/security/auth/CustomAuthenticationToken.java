@@ -15,10 +15,9 @@ import java.util.List;
  */
 @Getter
 public class CustomAuthenticationToken implements Authentication, CredentialsContainer {
+    private final Type type;
     // 用户信息主体, 本例中可以为用户名, User 对象或 UserDetails 对象
     private Object principal;
-
-    private final Type type;
 
     /**
      * 构造器, 对所有的字段进行初始化

@@ -118,9 +118,9 @@ public class GraphqlConfig implements Instrumentation, GraphQLServletContextBuil
         // 将 DataLoaderRegistry 对象存入 GraphQLKickstartContext 对象中
         // 将 request 和 response 对象以其类型为 key 存入 GraphQLKickstartContext 对象中
         return GraphQLKickstartContext.of(buildDataLoaders(),
-                Map.of(HttpServletRequest.class, request,
-                        HttpServletResponse.class, response,
-                        ModelMapper.class, modelMapper));
+            Map.of(HttpServletRequest.class, request,
+                HttpServletResponse.class, response,
+                ModelMapper.class, modelMapper));
     }
 
     /**
@@ -145,9 +145,9 @@ public class GraphqlConfig implements Instrumentation, GraphQLServletContextBuil
     @Override
     public GraphQLKickstartContext build(Session session, HandshakeRequest request) {
         return GraphQLKickstartContext.of(buildDataLoaders(),
-                Map.of(Session.class, session,
-                        HandshakeRequest.class, request,
-                        ModelMapper.class, modelMapper));
+            Map.of(Session.class, session,
+                HandshakeRequest.class, request,
+                ModelMapper.class, modelMapper));
     }
 
     /**
@@ -189,12 +189,12 @@ public class GraphqlConfig implements Instrumentation, GraphQLServletContextBuil
      */
     @Override
     public @NotNull InstrumentationContext<ExecutionResult> beginExecution(
-            InstrumentationExecutionParameters parameters, InstrumentationState state) {
+        InstrumentationExecutionParameters parameters, InstrumentationState state) {
         if (log.isDebugEnabled()) {
             log.info(">>> Begin graphql executor\n\tquery=\"{}\"\n\toperation=\"{}\"\n\tvariables=\"{}\"",
-                    parameters.getQuery().trim().replace("\n", "\n\t"),
-                    parameters.getOperation(),
-                    formatGraphqlVariables(parameters.getVariables()));
+                parameters.getQuery().trim().replace("\n", "\n\t"),
+                parameters.getOperation(),
+                formatGraphqlVariables(parameters.getVariables()));
         }
 
         // 将 Graphql 请求上下文对象注入到 Spring web 请求上下文内
@@ -230,8 +230,8 @@ public class GraphqlConfig implements Instrumentation, GraphQLServletContextBuil
         }
         try {
             return objectMapper.writerWithDefaultPrettyPrinter()
-                    .writeValueAsString(variables)
-                    .replace("\n", "\n\t");
+                .writeValueAsString(variables)
+                .replace("\n", "\n\t");
         } catch (JsonProcessingException e) {
             return "Unsupported format variables";
         }
@@ -258,8 +258,8 @@ public class GraphqlConfig implements Instrumentation, GraphQLServletContextBuil
                     ps.printf("\t[%d]. {%s}: ", i, error.getErrorType());
                     ps.printf("\t\t%s", error.getMessage());
                     ps.printf("\t\t%s",
-                            objectMapper.writerWithDefaultPrettyPrinter()
-                                    .writeValueAsString(error.getExtensions()));
+                        objectMapper.writerWithDefaultPrettyPrinter()
+                            .writeValueAsString(error.getExtensions()));
                     ps.println();
                 }
             }
@@ -282,8 +282,8 @@ public class GraphqlConfig implements Instrumentation, GraphQLServletContextBuil
                     try (var ps = new PrintStream(stream)) {
                         ps.println("<<< Complete graphql executor success");
                         ps.printf("\tresult: \"%s\"", objectMapper.writerWithDefaultPrettyPrinter()
-                                .writeValueAsString(data)
-                                .replace("\n", "\n\t"));
+                            .writeValueAsString(data)
+                            .replace("\n", "\n\t"));
                     }
                     log.info(stream.toString(StandardCharsets.UTF_8));
                 }
@@ -321,45 +321,45 @@ public class GraphqlConfig implements Instrumentation, GraphQLServletContextBuil
     GraphQLScalarType[] graphQLScalarTypes() {
         // 新增 Graphql Scalar 类型 (Void 类型)
         var voidType = GraphQLScalarType.newScalar()
-                .name("Void")
-                .description("An Void scalar that means nothing")
-                .coercing(new Coercing<Void, Void>() {
-                    // 该类用于演示 Scalar 的定义, 该方法不会被调用, 正常情况下不应该返回 null 值
-                    @Override
-                    public @Nullable Void parseLiteral(
-                            @NotNull Value<?> input,
-                            @NotNull CoercedVariables variables,
-                            @NotNull GraphQLContext graphQLContext,
-                            @NotNull Locale locale) throws CoercingParseLiteralException {
-                        return null;
-                    }
+            .name("Void")
+            .description("An Void scalar that means nothing")
+            .coercing(new Coercing<Void, Void>() {
+                // 该类用于演示 Scalar 的定义, 该方法不会被调用, 正常情况下不应该返回 null 值
+                @Override
+                public @Nullable Void parseLiteral(
+                    @NotNull Value<?> input,
+                    @NotNull CoercedVariables variables,
+                    @NotNull GraphQLContext graphQLContext,
+                    @NotNull Locale locale) throws CoercingParseLiteralException {
+                    return null;
+                }
 
-                    @Override
-                    public @Nullable Void parseValue(
-                            @NotNull Object input,
-                            @NotNull GraphQLContext graphQLContext,
-                            @NotNull Locale locale) throws CoercingParseValueException {
-                        return null;
-                    }
+                @Override
+                public @Nullable Void parseValue(
+                    @NotNull Object input,
+                    @NotNull GraphQLContext graphQLContext,
+                    @NotNull Locale locale) throws CoercingParseValueException {
+                    return null;
+                }
 
-                    @Override
-                    public @Nullable Void serialize(
-                            @NotNull Object dataFetcherResult,
-                            @NotNull GraphQLContext graphQLContext,
-                            @NotNull Locale locale) throws CoercingSerializeException {
-                        return null;
-                    }
-                })
-                .build();
+                @Override
+                public @Nullable Void serialize(
+                    @NotNull Object dataFetcherResult,
+                    @NotNull GraphQLContext graphQLContext,
+                    @NotNull Locale locale) throws CoercingSerializeException {
+                    return null;
+                }
+            })
+            .build();
 
         var scalarTypes = new GraphQLScalarType[]{
-                ExtendedScalars.Object,
-                ExtendedScalars.Json,
-                ExtendedScalars.DateTime,
-                ExtendedScalars.Url,
-                ExtendedScalars.GraphQLLong,
-                ExtendedScalars.Locale,
-                voidType
+            ExtendedScalars.Object,
+            ExtendedScalars.Json,
+            ExtendedScalars.DateTime,
+            ExtendedScalars.Url,
+            ExtendedScalars.GraphQLLong,
+            ExtendedScalars.Locale,
+            voidType
         };
 
         log.info("[CONF] GraphQL scalar types registered: {}", Joiner.on(", ").join(scalarTypes));

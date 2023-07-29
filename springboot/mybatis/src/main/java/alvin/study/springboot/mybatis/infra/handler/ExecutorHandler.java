@@ -76,14 +76,14 @@ import org.apache.ibatis.session.RowBounds;
             RowBounds.class,
             ResultHandler.class,
             CacheKey.class,
-            BoundSql.class}),
+            BoundSql.class }),
     @Signature(type = Executor.class,
         method = "query",
         args = {
             MappedStatement.class,
             Object.class,
             RowBounds.class,
-            ResultHandler.class}),
+            ResultHandler.class }),
 })
 public class ExecutorHandler implements Interceptor {
     /**

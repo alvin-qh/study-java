@@ -33,30 +33,6 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  */
 @Configuration("core/redis")
 public class RedisConfig {
-    /**
-     * 产生一个以字符串为 Key 的 {@link RedisTemplate} 对象
-     *
-     * @param connectionFactory Redis 连接工厂对象
-     * @param objectMapper      用于 JSON 序列化的对象
-     * @return {@link RedisTemplate} 对象
-     */
-    @Bean
-    RedisTemplate<String, Object> redisTemplate(
-        LettuceConnectionFactory connectionFactory, ObjectMapper objectMapper) {
-        // 克隆一个新的 ObjectMapper 用于 redis 序列化操作
-        objectMapper = objectMapper.copy();
-        // 设置 JSON 序列化时对源对象内容的可见性
-        objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        // 在 JSON 中包含源对象类型信息
-        objectMapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL);
-
-        // Redis Key 存储序列化对象
-        var stringSerializer = new StringRedisSerializer();
-
-        // Redis Value 存储序列化对象
-        return getStringObjectRedisTemplate(connectionFactory, objectMapper, stringSerializer);
-    }
-
     @NotNull
     private static RedisTemplate<String, Object> getStringObjectRedisTemplate(
         LettuceConnectionFactory connectionFactory,
@@ -81,5 +57,29 @@ public class RedisConfig {
 
         template.afterPropertiesSet();
         return template;
+    }
+
+    /**
+     * 产生一个以字符串为 Key 的 {@link RedisTemplate} 对象
+     *
+     * @param connectionFactory Redis 连接工厂对象
+     * @param objectMapper      用于 JSON 序列化的对象
+     * @return {@link RedisTemplate} 对象
+     */
+    @Bean
+    RedisTemplate<String, Object> redisTemplate(
+        LettuceConnectionFactory connectionFactory, ObjectMapper objectMapper) {
+        // 克隆一个新的 ObjectMapper 用于 redis 序列化操作
+        objectMapper = objectMapper.copy();
+        // 设置 JSON 序列化时对源对象内容的可见性
+        objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        // 在 JSON 中包含源对象类型信息
+        objectMapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL);
+
+        // Redis Key 存储序列化对象
+        var stringSerializer = new StringRedisSerializer();
+
+        // Redis Value 存储序列化对象
+        return getStringObjectRedisTemplate(connectionFactory, objectMapper, stringSerializer);
     }
 }

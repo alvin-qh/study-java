@@ -1,9 +1,8 @@
 package alvin.study.springboot.kickstart.app.api.common;
 
+import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import graphql.kickstart.tools.GraphQLQueryResolver;
 
 /**
  * 所有查询 schema 类型的超类

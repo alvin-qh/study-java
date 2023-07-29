@@ -116,7 +116,7 @@ public class Department extends AuditedEntity {
      * </p>
      */
     @OrderBy("id asc")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent", cascade = { CascadeType.ALL }, orphanRemoval = true)
     private List<Department> children = new ArrayList<>();
 
     /**
@@ -178,7 +178,7 @@ public class Department extends AuditedEntity {
      * </p>
      */
     @OrderBy("id asc")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "department", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "department", cascade = { CascadeType.ALL }, orphanRemoval = true)
     private List<DepartmentEmployee> departmentEmployees = new ArrayList<>();
 
     /**

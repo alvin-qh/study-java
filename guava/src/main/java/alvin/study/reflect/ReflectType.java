@@ -23,8 +23,8 @@ public final class ReflectType {
      * @return {@code List<T>} 泛型类型
      */
     public static <T> TypeToken<List<T>> listOf(Class<T> elementType) {
-        return (new TypeToken<List<T>>() {})
-            .where(new TypeParameter<>() {}, elementType);
+        return (new TypeToken<List<T>>() { })
+            .where(new TypeParameter<>() { }, elementType);
     }
 
     /**
@@ -35,8 +35,8 @@ public final class ReflectType {
      * @return {@code List<T>} 泛型类型
      */
     public static <T> TypeToken<List<T>> listOf(TypeToken<T> elementType) {
-        return (new TypeToken<List<T>>() {})
-            .where(new TypeParameter<>() {}, elementType);
+        return (new TypeToken<List<T>>() { })
+            .where(new TypeParameter<>() { }, elementType);
     }
 
     /**
@@ -51,8 +51,8 @@ public final class ReflectType {
      * @return {@code Map<K, V>} 泛型类型
      */
     public static <K, V> TypeToken<Map<K, V>> mapOf(Class<K> keyType, Class<V> valueType) {
-        return (new TypeToken<Map<K, V>>() {})
-            .where(new TypeParameter<>() {}, keyType)
-            .where(new TypeParameter<>() {}, valueType);
+        return (new TypeToken<Map<K, V>>() { })
+            .where(new TypeParameter<>() { }, keyType)
+            .where(new TypeParameter<>() { }, valueType);
     }
 }

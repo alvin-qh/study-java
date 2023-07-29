@@ -28,6 +28,20 @@ public final class ContextSwitcher implements AutoCloseable {
     private final Context precedingContext;
 
     /**
+     * 进行 {@link Context} 对象切换
+     *
+     * @param context 新的 {@link Context} 对象
+     * @return 当前类型对象, 用于恢复原 {@link Context} 对象
+     */
+    public static ContextSwitcher doSwitch(Context context) {
+        // 获取现有的 Context 对象并保存
+        var currentContext = Context.current();
+        // 切换新的 Context 对象
+        CustomRequestAttributes.register(context);
+        return new ContextSwitcher(currentContext);
+    }
+
+    /**
      * 关闭资源对象, 意味着操作结束, 此时切换回原来的 {@link Context} 对象
      *
      * <pre>
@@ -45,19 +59,5 @@ public final class ContextSwitcher implements AutoCloseable {
             // 注册之前的 Context 对象以取代现有的 Context 对象
             CustomRequestAttributes.register(precedingContext);
         }
-    }
-
-    /**
-     * 进行 {@link Context} 对象切换
-     *
-     * @param context 新的 {@link Context} 对象
-     * @return 当前类型对象, 用于恢复原 {@link Context} 对象
-     */
-    public static ContextSwitcher doSwitch(Context context) {
-        // 获取现有的 Context 对象并保存
-        var currentContext = Context.current();
-        // 切换新的 Context 对象
-        CustomRequestAttributes.register(context);
-        return new ContextSwitcher(currentContext);
     }
 }

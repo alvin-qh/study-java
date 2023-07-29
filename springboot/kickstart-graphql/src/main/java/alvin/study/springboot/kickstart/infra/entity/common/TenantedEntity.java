@@ -3,7 +3,6 @@ package alvin.study.springboot.kickstart.infra.entity.common;
 import alvin.study.springboot.kickstart.infra.handler.EntityFieldHandler;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

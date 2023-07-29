@@ -1,8 +1,8 @@
 package alvin.study.springboot.mybatis.infra.mapper;
 
-import java.util.Collection;
-
 import org.apache.ibatis.annotations.Param;
+
+import java.util.Collection;
 
 @SuppressWarnings("MybatisXMapperMethodInspection")
 public interface BaseMapper<T> extends com.baomidou.mybatisplus.core.mapper.BaseMapper<T> {

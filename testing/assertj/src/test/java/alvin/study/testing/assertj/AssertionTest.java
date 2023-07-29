@@ -21,7 +21,7 @@ import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 /**
  * 测试 AssertJ 断言库
  */
-@SuppressWarnings({"StringOperationCanBeSimplified", "ConstantValue", "ReassignedVariable"})
+@SuppressWarnings({ "StringOperationCanBeSimplified", "ConstantValue", "ReassignedVariable" })
 class AssertionTest {
     /**
      * 断言值是否为 {@code true} 或 {@code false}
@@ -212,7 +212,7 @@ class AssertionTest {
      */
     @Test
     void arrays_shouldAssertArrayMatchedMatches() {
-        var array = new int[]{1, 2, 3, 3};
+        var array = new int[]{ 1, 2, 3, 3 };
 
         // 断言一个数组的长度
         then(array).hasSize(4);

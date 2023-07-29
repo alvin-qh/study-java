@@ -16,48 +16,6 @@ import java.util.stream.Collectors;
  * 代理 {@link LinkedHashMap} 类型的类型
  */
 public class IdMap extends ForwardingMap<Long, String> {
-    /**
-     * 代理 {@link Map.Entry} 类型
-     */
-    static class IdMapEntry extends ForwardingMapEntry<Long, String> {
-        // 被代理的 Map.Entry 对象
-        private final Map.Entry<Long, String> delegatedEntry;
-
-        /**
-         * 构造器, 设置被代理的 {@link Map.Entry} 类型对象
-         *
-         * @param delegatedEntry {@link Map.Entry} 类型对象
-         */
-        IdMapEntry(Entry<Long, String> delegatedEntry) {
-            this.delegatedEntry = delegatedEntry;
-        }
-
-        /**
-         * 获取被代理的 {@link Map.Entry} 类型对象
-         *
-         * @return {@link Map.Entry} 类型对象
-         */
-        @Override
-        protected @NotNull Entry<Long, String> delegate() {
-            return delegatedEntry;
-        }
-
-        /**
-         * 构造一个 {@link IdMapEntry} 类型对象
-         *
-         * @param key   键值
-         * @param value value 值
-         * @return {@link IdMapEntry} 对象
-         */
-        public static Entry<Long, String> entry(Long key, String value) {
-            Preconditions.checkNotNull(key);
-            if (Strings.isNullOrEmpty(value)) {
-                throw new IllegalArgumentException("value argument cannot be null or empty");
-            }
-            return new IdMapEntry(Map.entry(key, value));
-        }
-    }
-
     // 设置被代理的对象
     private final Map<Long, String> delegatedMap = new LinkedHashMap<>();
 
@@ -123,5 +81,47 @@ public class IdMap extends ForwardingMap<Long, String> {
         return delegatedMap.entrySet().stream()
             .map(IdMapEntry::new)
             .collect(Collectors.toSet());
+    }
+
+    /**
+     * 代理 {@link Map.Entry} 类型
+     */
+    static class IdMapEntry extends ForwardingMapEntry<Long, String> {
+        // 被代理的 Map.Entry 对象
+        private final Map.Entry<Long, String> delegatedEntry;
+
+        /**
+         * 构造器, 设置被代理的 {@link Map.Entry} 类型对象
+         *
+         * @param delegatedEntry {@link Map.Entry} 类型对象
+         */
+        IdMapEntry(Entry<Long, String> delegatedEntry) {
+            this.delegatedEntry = delegatedEntry;
+        }
+
+        /**
+         * 构造一个 {@link IdMapEntry} 类型对象
+         *
+         * @param key   键值
+         * @param value value 值
+         * @return {@link IdMapEntry} 对象
+         */
+        public static Entry<Long, String> entry(Long key, String value) {
+            Preconditions.checkNotNull(key);
+            if (Strings.isNullOrEmpty(value)) {
+                throw new IllegalArgumentException("value argument cannot be null or empty");
+            }
+            return new IdMapEntry(Map.entry(key, value));
+        }
+
+        /**
+         * 获取被代理的 {@link Map.Entry} 类型对象
+         *
+         * @return {@link Map.Entry} 类型对象
+         */
+        @Override
+        protected @NotNull Entry<Long, String> delegate() {
+            return delegatedEntry;
+        }
     }
 }

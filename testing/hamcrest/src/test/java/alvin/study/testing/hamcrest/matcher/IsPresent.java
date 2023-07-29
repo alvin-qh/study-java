@@ -51,6 +51,41 @@ public class IsPresent<T> extends TypeSafeDiagnosingMatcher<Optional<? extends T
     }
 
     /**
+     * 构造一个 {@link Matcher} 对象, 用于匹配 {@link Optional#isPresent()} 是否为 {@code true}
+     *
+     * @param <T> 任意类型
+     * @return {@link IsPresent} 类型对象
+     */
+    @Contract(" -> new")
+    public static <T> @NotNull Matcher<Optional<? extends T>> present() {
+        return new IsPresent<>(null);
+    }
+
+    /**
+     * 构造一个 {@link Matcher} 对象, 用于匹配 {@link Optional#isPresent()} 是否为 {@code false}
+     *
+     * @param <T> 任意类型
+     * @return {@link org.hamcrest.core.IsNot IsNot(IsPresent)} 类型对象
+     */
+    @Contract(" -> new")
+    public static <T> @NotNull Matcher<Optional<? extends T>> notPresent() {
+        return not(present());
+    }
+
+    /**
+     * 构造一个 {@link Matcher} 对象, 用于匹配 {@link Optional#isPresent()} 是否为 {@code true},
+     * 且在匹配成功后执行下级 {@link Matcher} 集合进一步进行匹配
+     *
+     * @param <T> 任意类型
+     * @return {@link IsPresent} 类型对象
+     */
+    @Contract("_ -> new")
+    @SafeVarargs
+    public static <T> @NotNull Matcher<Optional<? extends T>> presentThen(Matcher<? extends T>... matcher) {
+        return new IsPresent<>(List.of(matcher));
+    }
+
+    /**
      * 将当前匹配失败的信息拼入整体匹配失败信息流中
      *
      * <p>
@@ -120,40 +155,5 @@ public class IsPresent<T> extends TypeSafeDiagnosingMatcher<Optional<? extends T
         // 设置匹配结果结束文本
         mismatch.appendText(">");
         return result;
-    }
-
-    /**
-     * 构造一个 {@link Matcher} 对象, 用于匹配 {@link Optional#isPresent()} 是否为 {@code true}
-     *
-     * @param <T> 任意类型
-     * @return {@link IsPresent} 类型对象
-     */
-    @Contract(" -> new")
-    public static <T> @NotNull Matcher<Optional<? extends T>> present() {
-        return new IsPresent<>(null);
-    }
-
-    /**
-     * 构造一个 {@link Matcher} 对象, 用于匹配 {@link Optional#isPresent()} 是否为 {@code false}
-     *
-     * @param <T> 任意类型
-     * @return {@link org.hamcrest.core.IsNot IsNot(IsPresent)} 类型对象
-     */
-    @Contract(" -> new")
-    public static <T> @NotNull Matcher<Optional<? extends T>> notPresent() {
-        return not(present());
-    }
-
-    /**
-     * 构造一个 {@link Matcher} 对象, 用于匹配 {@link Optional#isPresent()} 是否为 {@code true},
-     * 且在匹配成功后执行下级 {@link Matcher} 集合进一步进行匹配
-     *
-     * @param <T> 任意类型
-     * @return {@link IsPresent} 类型对象
-     */
-    @Contract("_ -> new")
-    @SafeVarargs
-    public static <T> @NotNull Matcher<Optional<? extends T>> presentThen(Matcher<? extends T>... matcher) {
-        return new IsPresent<>(List.of(matcher));
     }
 }

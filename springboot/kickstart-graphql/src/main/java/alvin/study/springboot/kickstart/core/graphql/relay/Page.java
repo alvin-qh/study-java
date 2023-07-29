@@ -1,10 +1,10 @@
 package alvin.study.springboot.kickstart.core.graphql.relay;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 兼容 Mybatis-Plus 分页插件的分页类型

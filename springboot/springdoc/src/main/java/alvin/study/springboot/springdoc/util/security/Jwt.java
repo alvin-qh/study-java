@@ -78,6 +78,13 @@ public class Jwt {
     }
 
     /**
+     * 获取过期时间
+     *
+     * @return token 过期时间
+     */
+    public Duration getPeriod() { return period; }
+
+    /**
      * 保持 token 结构的类型
      */
     @Getter
@@ -93,11 +100,4 @@ public class Jwt {
          */
         private final Instant expiresAt;
     }
-
-    /**
-     * 获取过期时间
-     *
-     * @return token 过期时间
-     */
-    public Duration getPeriod() { return period; }
 }

@@ -1,10 +1,9 @@
 package alvin.study.se.binary;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
+import com.google.common.base.Charsets;
 import org.junit.jupiter.api.Test;
 
-import com.google.common.base.Charsets;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link Hex} 类型, 将 16 进制字符串和 {@code byte} 数组相互转换
@@ -37,7 +36,7 @@ class HexTest {
      */
     @Test
     void toBytes_shouldConvertByteArrayToHexString() {
-        var data = new byte[] { 0x12, 0x34, 0x56, 0x78, (byte) 0x90 };
+        var data = new byte[]{ 0x12, 0x34, 0x56, 0x78, (byte) 0x90 };
 
         // 转换单一字节为 16 进制字符串
         then(Hex.toString(data[0])).isEqualTo("12");
@@ -65,7 +64,7 @@ class HexTest {
      */
     @Test
     void toStringWithWhiteSpace_shouldConvertBytesArrayToHexString() {
-        var data = new byte[] { (byte) 0xAB, (byte) 0xCD, (byte) 0xEF };
+        var data = new byte[]{ (byte) 0xAB, (byte) 0xCD, (byte) 0xEF };
 
         // 将字节数组全部转为 16 进制字符串
         then(Hex.toStringWithWhiteSpace(data)).isEqualTo("AB CD EF");

@@ -1,13 +1,12 @@
 package alvin.study.springboot.security.util.security;
 
-import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import org.apache.commons.codec.binary.Hex;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.commons.codec.binary.Hex;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * 密码加密处理工具类
@@ -29,7 +28,6 @@ public class PasswordEncoder implements org.springframework.security.crypto.pass
      *
      * @param algorithm 加密算法名称
      * @param hmacKey   用于密钥认证的 hmac (散列信息认证码)
-     *
      * @see SecretKeySpec#SecretKeySpec(byte[], String)
      */
     public PasswordEncoder(String algorithm, String hmacKey) {
@@ -41,10 +39,8 @@ public class PasswordEncoder implements org.springframework.security.crypto.pass
      * 获取密钥的 HMAC 对象 (表示散列信息认证的对象)
      *
      * @return {@link javax.crypto.Mac Mac} 对象
-     *
      * @throws NoSuchAlgorithmException 指定的加密算法无效
      * @throws InvalidKeyException      所给的 {@link SecretKeySpec} 对象表示的密钥无效
-     *
      * @see Mac#getInstance(String)
      * @see Mac#init(java.security.Key)
      */
@@ -61,7 +57,6 @@ public class PasswordEncoder implements org.springframework.security.crypto.pass
      *
      * @param rawPassword 待加密的字符串内容
      * @return 加密后的结果转化为 16 进制字符串
-     *
      * @see Mac#doFinal(byte[])
      * @see Hex#encodeHexString(byte[])
      */

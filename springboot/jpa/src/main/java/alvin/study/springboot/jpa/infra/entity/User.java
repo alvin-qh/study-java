@@ -1,14 +1,13 @@
 package alvin.study.springboot.jpa.infra.entity;
 
 import alvin.study.springboot.jpa.infra.entity.common.AuditedEntity;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 /**
  * 用户实体, 对应 {@code user} 表

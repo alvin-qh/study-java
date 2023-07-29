@@ -1,8 +1,8 @@
 package alvin.study.se.io;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link PathUtil} 路径工具类

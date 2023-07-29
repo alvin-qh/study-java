@@ -19,6 +19,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class CollsTest {
     /**
+     * 过滤掉整数集合中的偶数项, 并将整数以字符串形式返回
+     *
+     * @param n 整数元素项
+     * @return 如果 {@code n} 是偶数, 则返回 {@code null}, 否则返回该整数的字符串形式
+     */
+    private static String filterOdd(Integer n) {
+        if (n % 2 == 0) {
+            return null;
+        }
+        return String.valueOf(n);
+    }
+
+    /**
      * 测试 {@link Colls#isEmpty(Collection)} 方法
      */
     @Test
@@ -556,19 +569,6 @@ class CollsTest {
             entry("C", 3),
             entry("D", 4),
             entry("E", 5));
-    }
-
-    /**
-     * 过滤掉整数集合中的偶数项, 并将整数以字符串形式返回
-     *
-     * @param n 整数元素项
-     * @return 如果 {@code n} 是偶数, 则返回 {@code null}, 否则返回该整数的字符串形式
-     */
-    private static String filterOdd(Integer n) {
-        if (n % 2 == 0) {
-            return null;
-        }
-        return String.valueOf(n);
     }
 
     /**

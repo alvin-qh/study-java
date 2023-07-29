@@ -1,16 +1,15 @@
 package alvin.study.springboot.kickstart.infra.entity;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import alvin.study.springboot.kickstart.infra.entity.common.AuditedEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 雇员实体, 对应 {@code employee} 表

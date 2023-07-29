@@ -56,6 +56,66 @@ public final class ClassScanner {
     }
 
     /**
+     * 将 {@link URL} 对象转为路径
+     *
+     * <p>
+     * 这一步主要是为了跨平台, 不同平台的路径分隔符不同 (例如 Linux 为 {@code /} 而 Windows 为 {@code \})
+     * </p>
+     *
+     * @param url {@link URL} 对象, 表示资源的定位
+     * @return 转换成的路径
+     */
+    private static @NotNull String toPath(@NotNull URL url) {
+        // 从资源 URL 中获取路径名, 该路径
+        var path = url.getPath();
+
+        var buf = new StringBuilder();
+        // 遍历路径字符, 进行跨平台处理
+        for (int i = 0, length = path.length(); i < length; i++) {
+            var c = path.charAt(i);
+            if (c == '/') {
+                // 将路径分隔符转为跨平台分隔符
+                buf.append(File.separatorChar);
+            } else if (c == '%' && i < length - 2) {
+                // 对于编码字符, 处理为 Java UNICODE 字符 (char 字符)
+                buf.append((char) Integer.parseInt(path.substring(++i, ++i + 1), 16));
+            } else {
+                buf.append(c);
+            }
+        }
+        return buf.toString();
+    }
+
+    /**
+     * 根据包路径名, 从当前的类加载器中获取对应的资源 URL
+     *
+     * @param packageDirName 包路径名
+     * @return 对应的类加载器资源 URL 的迭代器
+     */
+    private static Enumeration<URL> findPackageDirs(String packageDirName) {
+        try {
+            // 获取当前线程的类加载器, 并将包路径读取为资源 URL
+            return Thread.currentThread().getContextClassLoader().getResources(packageDirName);
+        } catch (IOException e) {
+            throw new PackageScanFailedException("Could not read from package directory: " + packageDirName, e);
+        }
+    }
+
+    /**
+     * 通过资源 URL 获取 {@link JarFile} 对象
+     *
+     * @param packageDir Jar 文件的资源 URL
+     * @return {@link JarFile} 对象
+     */
+    private static JarFile packageDirToJarFile(@NotNull URL packageDir) {
+        try {
+            return ((JarURLConnection) packageDir.openConnection()).getJarFile();
+        } catch (IOException e) {
+            throw new PackageScanFailedException("Could not read from jar url: " + packageDir, e);
+        }
+    }
+
+    /**
      * 指定要扫描的包
      *
      * <p>
@@ -148,52 +208,6 @@ public final class ClassScanner {
     }
 
     /**
-     * 将 {@link URL} 对象转为路径
-     *
-     * <p>
-     * 这一步主要是为了跨平台, 不同平台的路径分隔符不同 (例如 Linux 为 {@code /} 而 Windows 为 {@code \})
-     * </p>
-     *
-     * @param url {@link URL} 对象, 表示资源的定位
-     * @return 转换成的路径
-     */
-    private static @NotNull String toPath(@NotNull URL url) {
-        // 从资源 URL 中获取路径名, 该路径
-        var path = url.getPath();
-
-        var buf = new StringBuilder();
-        // 遍历路径字符, 进行跨平台处理
-        for (int i = 0, length = path.length(); i < length; i++) {
-            var c = path.charAt(i);
-            if (c == '/') {
-                // 将路径分隔符转为跨平台分隔符
-                buf.append(File.separatorChar);
-            } else if (c == '%' && i < length - 2) {
-                // 对于编码字符, 处理为 Java UNICODE 字符 (char 字符)
-                buf.append((char) Integer.parseInt(path.substring(++i, ++i + 1), 16));
-            } else {
-                buf.append(c);
-            }
-        }
-        return buf.toString();
-    }
-
-    /**
-     * 根据包路径名, 从当前的类加载器中获取对应的资源 URL
-     *
-     * @param packageDirName 包路径名
-     * @return 对应的类加载器资源 URL 的迭代器
-     */
-    private static Enumeration<URL> findPackageDirs(String packageDirName) {
-        try {
-            // 获取当前线程的类加载器, 并将包路径读取为资源 URL
-            return Thread.currentThread().getContextClassLoader().getResources(packageDirName);
-        } catch (IOException e) {
-            throw new PackageScanFailedException("Could not read from package directory: " + packageDirName, e);
-        }
-    }
-
-    /**
      * 在包路径下查找所有符合匹配规则的类
      *
      * @param packageName 要查找的包名, 表示在该包下查找类
@@ -235,20 +249,6 @@ public final class ClassScanner {
                     }
                 }
             }
-        }
-    }
-
-    /**
-     * 通过资源 URL 获取 {@link JarFile} 对象
-     *
-     * @param packageDir Jar 文件的资源 URL
-     * @return {@link JarFile} 对象
-     */
-    private static JarFile packageDirToJarFile(@NotNull URL packageDir) {
-        try {
-            return ((JarURLConnection) packageDir.openConnection()).getJarFile();
-        } catch (IOException e) {
-            throw new PackageScanFailedException("Could not read from jar url: " + packageDir, e);
         }
     }
 

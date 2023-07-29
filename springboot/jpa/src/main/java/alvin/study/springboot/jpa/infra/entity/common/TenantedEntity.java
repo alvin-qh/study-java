@@ -83,7 +83,7 @@ import org.hibernate.annotations.Filter;
 @Setter
 @Filter(name = "tenantFilter", condition = "org_id = :orgId")
 @MappedSuperclass
-@EntityListeners({TenantedEntityListener.class})
+@EntityListeners({ TenantedEntityListener.class })
 public abstract class TenantedEntity extends BaseEntity {
     /**
      * 租户字段

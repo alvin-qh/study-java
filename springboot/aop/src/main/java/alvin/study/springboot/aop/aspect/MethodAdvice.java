@@ -1,10 +1,11 @@
 package alvin.study.springboot.aop.aspect;
 
-import java.util.Map;
-import java.util.concurrent.BlockingQueue;
-
+import alvin.study.springboot.aop.aspect.Message.Step;
 import alvin.study.springboot.aop.domain.model.Worker;
 import alvin.study.springboot.aop.domain.service.WorkingService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -18,11 +19,8 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import alvin.study.springboot.aop.aspect.Message.Step;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Map;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * 定义用于拦截具备指定特征方法的切面类型

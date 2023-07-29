@@ -1,8 +1,7 @@
 package alvin.study.springboot.shiro.conf;
 
-import java.time.Duration;
-import java.util.Map;
-
+import alvin.study.springboot.shiro.app.domain.service.AuthService;
+import alvin.study.springboot.shiro.app.domain.service.SessionService;
 import alvin.study.springboot.shiro.core.shiro.CustomerCredentialsMatcher;
 import alvin.study.springboot.shiro.core.shiro.CustomerRealm;
 import alvin.study.springboot.shiro.core.shiro.RedisCacheManager;
@@ -10,6 +9,8 @@ import alvin.study.springboot.shiro.core.shiro.RedisSessionDAO;
 import alvin.study.springboot.shiro.core.shiro.RedisSessionManager;
 import alvin.study.springboot.shiro.core.shiro.SessionUtil;
 import alvin.study.springboot.shiro.core.shiro.TokenAuthenticationFilter;
+import alvin.study.springboot.shiro.util.security.PasswordEncoder;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
@@ -30,11 +31,8 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import alvin.study.springboot.shiro.app.domain.service.AuthService;
-import alvin.study.springboot.shiro.app.domain.service.SessionService;
-import alvin.study.springboot.shiro.util.security.PasswordEncoder;
+import java.time.Duration;
+import java.util.Map;
 
 /**
  * 对 Shiro 框架进行配置

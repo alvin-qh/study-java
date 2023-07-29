@@ -1,11 +1,10 @@
 package alvin.study.springboot.mvc.bootstrap;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 应用监听器, 当应用初始化完毕后执行一次

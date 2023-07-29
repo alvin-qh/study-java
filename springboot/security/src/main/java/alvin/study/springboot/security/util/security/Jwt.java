@@ -1,14 +1,13 @@
 package alvin.study.springboot.security.util.security;
 
-import java.time.Duration;
-import java.time.Instant;
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.time.Duration;
+import java.time.Instant;
 
 /**
  * Jwt 令牌处理类型
@@ -42,13 +41,13 @@ public class Jwt {
 
         // 创建 token
         var token = JWT.create()
-                .withAudience(aud) // 设置 token 的接收方
-                .withIssuer(userId) // 设置 token 的发行方
-                .withIssuedAt(now) // 设置 token 的发行时间
-                .withNotBefore(now) // 设置 token 的生效时间
-                .withExpiresAt(expiresAt) // 设置 token 的失效时间
-                .withJWTId(jwtId) // 设置 token 的标识 id
-                .sign(algorithm); // 对 token 进行签名操作, 产生完整的 token 字符串
+            .withAudience(aud) // 设置 token 的接收方
+            .withIssuer(userId) // 设置 token 的发行方
+            .withIssuedAt(now) // 设置 token 的发行时间
+            .withNotBefore(now) // 设置 token 的生效时间
+            .withExpiresAt(expiresAt) // 设置 token 的失效时间
+            .withJWTId(jwtId) // 设置 token 的标识 id
+            .sign(algorithm); // 对 token 进行签名操作, 产生完整的 token 字符串
 
         // 返回 token 对象
         return new JwtToken(token, expiresAt);
@@ -72,11 +71,18 @@ public class Jwt {
      */
     public DecodedJWT verify(String token) {
         return JWT.require(algorithm)
-                .withAudience(aud)
-                .withJWTId(jwtId)
-                .build()
-                .verify(token);
+            .withAudience(aud)
+            .withJWTId(jwtId)
+            .build()
+            .verify(token);
     }
+
+    /**
+     * 获取过期时间
+     *
+     * @return token 过期时间
+     */
+    public Duration getPeriod() { return period; }
 
     /**
      * 保持 token 结构的类型
@@ -94,11 +100,4 @@ public class Jwt {
          */
         private final Instant expiresAt;
     }
-
-    /**
-     * 获取过期时间
-     *
-     * @return token 过期时间
-     */
-    public Duration getPeriod() { return period; }
 }

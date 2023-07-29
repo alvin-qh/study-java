@@ -23,14 +23,14 @@ import static org.assertj.core.api.BDDAssertions.then;
 class UserTest {
     // 要序列化的对象
     private static final User OBJECT = new User(
-            1L,
-            "Alvin",
-            "13991312123",
-            "");
+        1L,
+        "Alvin",
+        "13991312123",
+        "");
 
     // 期待的通过 PublicView 视图类型得到的序列化结果
     private static final String PUBLIC_VIEW_JSON // cspell: disable-next-line
-            = "{\"id\":1,\"username\":\"Alvin\",\"encodedMobile\":\"D1K1YwoZk5efKfWUrcIwig==\"}";
+        = "{\"id\":1,\"username\":\"Alvin\",\"encodedMobile\":\"D1K1YwoZk5efKfWUrcIwig==\"}";
 
     // 期待的通过 InternalView 视图类型得到的序列化结果
     private static final String INTERNAL_VIEW_JSON = "{\"id\":1,\"username\":\"Alvin\",\"mobile\":\"13991312123\"}";

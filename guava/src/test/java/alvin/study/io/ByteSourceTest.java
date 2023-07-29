@@ -296,7 +296,7 @@ class ByteSourceTest {
         then(source.sizeIfKnown().get()).isZero();
 
         // 确认读取的数据为空
-        then(source.read()).isEqualTo(new byte[]{});
+        then(source.read()).isEqualTo(new byte[]{ });
     }
 
     /**

@@ -112,7 +112,7 @@ public class Employee extends AuditedEntity {
      * {@link OrderBy @OrderBy} 注解表示查询级联集合时采用的排序规则
      * </p>
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee", cascade = { CascadeType.ALL }, orphanRemoval = true)
     @OrderBy("id asc")
     private List<DepartmentEmployee> departmentEmployees = new ArrayList<>();
 

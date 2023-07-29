@@ -59,7 +59,7 @@ public interface PathsHandlerInterceptor extends HandlerInterceptor {
      * InterceptorRegistration.addPathPatterns(String...)} 方法
      * </p>
      */
-    default String[] getPathPatterns() { return new String[] { "/**" }; }
+    default String[] getPathPatterns() { return new String[]{ "/**" }; }
 
     /**
      * 获取不允许当前拦截器生效的 url 路径模式
@@ -74,5 +74,5 @@ public interface PathsHandlerInterceptor extends HandlerInterceptor {
      * InterceptorRegistration.excludePathPatterns(String...)} 方法
      * </p>
      */
-    default String[] getExcludePathPatterns() { return new String[] {}; }
+    default String[] getExcludePathPatterns() { return new String[]{ }; }
 }

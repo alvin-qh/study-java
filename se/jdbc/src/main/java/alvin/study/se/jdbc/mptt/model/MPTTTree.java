@@ -21,55 +21,8 @@ import java.util.Optional;
  * </p>
  */
 public class MPTTTree implements Iterable<MPTT> {
-    /**
-     * {@link MPTTTree} 节点类型
-     */
-    private static class Node {
-        // 节点值
-        MPTT value;
-
-        // 父节点引用
-        Node parent;
-
-        // 子节点集合
-        List<Node> children;
-
-        /**
-         * 构造器, 通过 {@link MPTT} 类型对象构建节点对象
-         *
-         * @param value {@link MPTT} 类型对象
-         */
-        Node(MPTT value) {
-            this.value = value;
-        }
-
-        /**
-         * 向当前节点对象添加一个子节点对象
-         *
-         * @param child 子节点对象
-         */
-        public void addChildren(Node child) {
-            if (children == null) {
-                // 使用链表结构避免内存损耗
-                children = new LinkedList<>();
-            }
-            // 添加子节点
-            children.add(child);
-        }
-
-        /**
-         * 获取当前节点的子节点集合
-         *
-         * @return 当前节点的子节点集合
-         */
-        public List<Node> getChildren() {
-            return children == null ? List.of() : children;
-        }
-    }
-
     // 根节点对象
     private final Node root;
-
     // 保存 MPTT 对象和其对应节点的 Map 对象
     private final Map<MPTT, Node> nodeMap;
 
@@ -82,6 +35,70 @@ public class MPTTTree implements Iterable<MPTT> {
     private MPTTTree(Node root, Map<MPTT, Node> nodeMap) {
         this.root = root;
         this.nodeMap = nodeMap;
+    }
+
+    /**
+     * 通过一个 {@link MPTT} 类型对象集合创建 {@link MPTTTree} 类型对象
+     *
+     * @param vals {@link MPTT} 类型对象集合
+     * @return {@link MPTTTree} 类型对象
+     */
+    @Contract("_ -> new")
+    public static @NotNull MPTTTree build(@NotNull List<MPTT> vals) {
+        // 将 vals 参数中的元素进行排序
+        // 根据对象的 lft 字段排序, 结果为上级节点在前, 下级节点在后
+        // 并且将所有的 MPTT 对象包装为 Node 对象
+        var nodes = vals.stream().sorted((l, r) -> (int) (l.getLft() - r.getLft())).map(Node::new).toList();
+
+        // 定义用于查找父节点的栈
+        var stack = new ArrayDeque<>(List.of(nodes.get(0)));
+
+        // 定义 MPTT => Node 对应关系的
+        var nodeMap = new HashMap<MPTT, Node>();
+
+        // 遍历节点集合
+        nodes.forEach(n -> {
+            // 查找该节点的父节点
+            var parent = findParent(stack, n.value);
+            if (parent != null) {
+                // 当前节点引用到父节点
+                n.parent = parent;
+                // 为父节点增加子节点
+                parent.addChildren(n);
+            }
+
+            // 将该节点入栈
+            stack.push(n);
+            // 记录节点值和节点的对应关系
+            nodeMap.put(n.value, n);
+        });
+
+        return new MPTTTree(nodes.get(0), Map.copyOf(nodeMap));
+    }
+
+    /**
+     * 根据 {@link MPTT} 对象值获取其对应节点的父节点
+     *
+     * @param stack 保存已访问节点的栈
+     * @param val   当前节点的 {@link MPTT} 对象值
+     * @return {@link MPTT} 对象对应对象的父节点对象
+     */
+    private static @Nullable Node findParent(@NotNull ArrayDeque<Node> stack, MPTT val) {
+        // 按照栈的顺序查找已经访问过的节点
+        // 因为遍历 MPTT 记录的顺序时按照 lft 节点排序结果进行的, 所以子节点一定会在父节点之后
+        while (!stack.isEmpty()) {
+            // 获取栈顶元素
+            var node = stack.peek();
+            // 查看栈顶元素是否为当前节点的父节点, 即当前节点的 lft 和 rht 在父节点对象 lft 和 rht 范围内
+            if (node.value.getLft() < val.getLft() && node.value.getRht() > val.getRht()) {
+                // 返回父节点
+                return node;
+            }
+
+            // 如果栈顶元素不是当前节点的父节点, 说明栈顶元素已经不可能再有子节点, 将其弹出
+            stack.pop();
+        }
+        return null;
     }
 
     /**
@@ -162,66 +179,48 @@ public class MPTTTree implements Iterable<MPTT> {
     }
 
     /**
-     * 通过一个 {@link MPTT} 类型对象集合创建 {@link MPTTTree} 类型对象
-     *
-     * @param vals {@link MPTT} 类型对象集合
-     * @return {@link MPTTTree} 类型对象
+     * {@link MPTTTree} 节点类型
      */
-    @Contract("_ -> new")
-    public static @NotNull MPTTTree build(@NotNull List<MPTT> vals) {
-        // 将 vals 参数中的元素进行排序
-        // 根据对象的 lft 字段排序, 结果为上级节点在前, 下级节点在后
-        // 并且将所有的 MPTT 对象包装为 Node 对象
-        var nodes = vals.stream().sorted((l, r) -> (int) (l.getLft() - r.getLft())).map(Node::new).toList();
+    private static class Node {
+        // 节点值
+        MPTT value;
 
-        // 定义用于查找父节点的栈
-        var stack = new ArrayDeque<>(List.of(nodes.get(0)));
+        // 父节点引用
+        Node parent;
 
-        // 定义 MPTT => Node 对应关系的
-        var nodeMap = new HashMap<MPTT, Node>();
+        // 子节点集合
+        List<Node> children;
 
-        // 遍历节点集合
-        nodes.forEach(n -> {
-            // 查找该节点的父节点
-            var parent = findParent(stack, n.value);
-            if (parent != null) {
-                // 当前节点引用到父节点
-                n.parent = parent;
-                // 为父节点增加子节点
-                parent.addChildren(n);
-            }
-
-            // 将该节点入栈
-            stack.push(n);
-            // 记录节点值和节点的对应关系
-            nodeMap.put(n.value, n);
-        });
-
-        return new MPTTTree(nodes.get(0), Map.copyOf(nodeMap));
-    }
-
-    /**
-     * 根据 {@link MPTT} 对象值获取其对应节点的父节点
-     *
-     * @param stack 保存已访问节点的栈
-     * @param val   当前节点的 {@link MPTT} 对象值
-     * @return {@link MPTT} 对象对应对象的父节点对象
-     */
-    private static @Nullable Node findParent(@NotNull ArrayDeque<Node> stack, MPTT val) {
-        // 按照栈的顺序查找已经访问过的节点
-        // 因为遍历 MPTT 记录的顺序时按照 lft 节点排序结果进行的, 所以子节点一定会在父节点之后
-        while (!stack.isEmpty()) {
-            // 获取栈顶元素
-            var node = stack.peek();
-            // 查看栈顶元素是否为当前节点的父节点, 即当前节点的 lft 和 rht 在父节点对象 lft 和 rht 范围内
-            if (node.value.getLft() < val.getLft() && node.value.getRht() > val.getRht()) {
-                // 返回父节点
-                return node;
-            }
-
-            // 如果栈顶元素不是当前节点的父节点, 说明栈顶元素已经不可能再有子节点, 将其弹出
-            stack.pop();
+        /**
+         * 构造器, 通过 {@link MPTT} 类型对象构建节点对象
+         *
+         * @param value {@link MPTT} 类型对象
+         */
+        Node(MPTT value) {
+            this.value = value;
         }
-        return null;
+
+        /**
+         * 向当前节点对象添加一个子节点对象
+         *
+         * @param child 子节点对象
+         */
+        public void addChildren(Node child) {
+            if (children == null) {
+                // 使用链表结构避免内存损耗
+                children = new LinkedList<>();
+            }
+            // 添加子节点
+            children.add(child);
+        }
+
+        /**
+         * 获取当前节点的子节点集合
+         *
+         * @return 当前节点的子节点集合
+         */
+        public List<Node> getChildren() {
+            return children == null ? List.of() : children;
+        }
     }
 }

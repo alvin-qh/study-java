@@ -1,15 +1,14 @@
 package alvin.study.springboot.shiro.app.domain.service;
 
-import java.util.Collection;
-
+import alvin.study.springboot.shiro.infra.entity.Menu;
+import alvin.study.springboot.shiro.infra.mapper.MenuMapper;
+import lombok.RequiredArgsConstructor;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.cache.CacheManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import alvin.study.springboot.shiro.infra.entity.Menu;
-import alvin.study.springboot.shiro.infra.mapper.MenuMapper;
-import lombok.RequiredArgsConstructor;
+import java.util.Collection;
 
 /**
  * 菜单服务类

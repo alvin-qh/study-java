@@ -30,34 +30,34 @@ public class Pair<F, S> implements Map.Entry<F, S> {
      *
      * @return 第一个值
      */
-    public F getFirst() {return first;}
+    public F getFirst() { return first; }
 
     /**
      * 设置第一个值
      *
      * @param first 第一个值
      */
-    public void setFirst(F first) {this.first = first;}
+    public void setFirst(F first) { this.first = first; }
 
     /**
      * 获取第二个值
      *
      * @return 第二个值
      */
-    public S getSecond() {return second;}
+    public S getSecond() { return second; }
 
     /**
      * 设置第二个值
      *
      * @param first 第二个值
      */
-    public void setSecond(S second) {this.second = second;}
+    public void setSecond(S second) { this.second = second; }
 
     @Override
-    public F getKey() {return this.first;}
+    public F getKey() { return this.first; }
 
     @Override
-    public S getValue() {return this.second;}
+    public S getValue() { return this.second; }
 
     @Override
     public S setValue(S second) {

@@ -46,10 +46,10 @@ public class Name {
      */
     @JsonCreator
     public Name(
-            @JsonProperty("fullName") String fullName,
-            @JsonProperty("firstName") String firstName,
-            @JsonProperty("lastName") String lastName,
-            @JsonProperty(value = "middot", defaultValue = "·") String middot) {
+        @JsonProperty("fullName") String fullName,
+        @JsonProperty("firstName") String firstName,
+        @JsonProperty("lastName") String lastName,
+        @JsonProperty(value = "middot", defaultValue = "·") String middot) {
 
         // 判断 fullName 参数是否有效
         if (Strings.isNullOrEmpty(fullName)) {
@@ -73,7 +73,7 @@ public class Name {
      * @return 数组, 为 {@code [firstName, middot, lastName]} 组成
      */
     private static String[] splitFullName(String fullName) {
-        var result = new String[]{"", "", ""};
+        var result = new String[]{ "", "", "" };
 
         var m = NAME_PATTERN.matcher(fullName.trim());
         if (m.find()) {

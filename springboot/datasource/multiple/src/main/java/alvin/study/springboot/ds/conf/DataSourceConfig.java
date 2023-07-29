@@ -1,9 +1,8 @@
 package alvin.study.springboot.ds.conf;
 
-import java.util.Map;
-
-import javax.sql.DataSource;
-
+import alvin.study.springboot.ds.core.data.DataSourceContext;
+import alvin.study.springboot.ds.core.data.DataSourceTarget;
+import alvin.study.springboot.ds.core.data.DynamicDataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -12,9 +11,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import alvin.study.springboot.ds.core.data.DataSourceContext;
-import alvin.study.springboot.ds.core.data.DataSourceTarget;
-import alvin.study.springboot.ds.core.data.DynamicDataSource;
+import javax.sql.DataSource;
+import java.util.Map;
 
 /**
  * 数据源相关配置类
@@ -73,8 +71,8 @@ public class DataSourceConfig {
     @Bean("dynamicDataSource")
     @Primary
     DataSource dynamicDataSource(
-            @Qualifier("db1DataSource") DataSource db1DataSource,
-            @Qualifier("db2DataSource") DataSource db2DataSource) {
+        @Qualifier("db1DataSource") DataSource db1DataSource,
+        @Qualifier("db2DataSource") DataSource db2DataSource) {
         // 实例化对象
         var ds = new DynamicDataSource();
 

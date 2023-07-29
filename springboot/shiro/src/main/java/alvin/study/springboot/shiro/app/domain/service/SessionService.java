@@ -1,24 +1,22 @@
 package alvin.study.springboot.shiro.app.domain.service;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.util.List;
-import java.util.concurrent.Executor;
-
 import alvin.study.springboot.shiro.conf.BeanConfig;
+import alvin.study.springboot.shiro.core.shiro.SessionUtil;
+import alvin.study.springboot.shiro.infra.entity.Session;
+import alvin.study.springboot.shiro.infra.mapper.SessionMapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.util.ThreadContext;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-
-import alvin.study.springboot.shiro.core.shiro.SessionUtil;
-import alvin.study.springboot.shiro.infra.entity.Session;
-import alvin.study.springboot.shiro.infra.mapper.SessionMapper;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
+import java.util.concurrent.Executor;
 
 /**
  * 对用户 Session 在数据库中进行持久化操作的服务类型

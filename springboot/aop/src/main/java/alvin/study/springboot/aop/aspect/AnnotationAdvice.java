@@ -1,10 +1,11 @@
 package alvin.study.springboot.aop.aspect;
 
-import java.util.Map;
-import java.util.concurrent.BlockingQueue;
-
+import alvin.study.springboot.aop.aspect.Message.Step;
 import alvin.study.springboot.aop.domain.model.Worker;
 import alvin.study.springboot.aop.domain.service.WorkingService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -18,11 +19,8 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import alvin.study.springboot.aop.aspect.Message.Step;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Map;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * 定义用于拦截具备指定注解方法的切面类型
@@ -147,7 +145,7 @@ public class AnnotationAdvice {
      * </p>
      */
     @Pointcut("@annotation(alvin.study.springboot.aop.aspect.Transactional)")
-    public void point() {}
+    public void point() { }
 
     /**
      * 在目标方法执行前进行拦截的方法
@@ -272,7 +270,7 @@ public class AnnotationAdvice {
         var result = jp.proceed();
         if (result instanceof String r) {
             try {
-                var json = objectMapper.readValue(r, new TypeReference<Map<String, Object>>() {});
+                var json = objectMapper.readValue(r, new TypeReference<Map<String, Object>>() { });
                 json.put("addition", this.getClass().getSimpleName());
 
                 result = objectMapper.writeValueAsString(json);

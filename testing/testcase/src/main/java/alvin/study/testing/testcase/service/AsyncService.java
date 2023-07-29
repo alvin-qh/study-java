@@ -18,93 +18,18 @@ import java.util.concurrent.atomic.AtomicReference;
  * </p>
  */
 public class AsyncService {
-    // 异步线程执行器
-    private final Executor executor = queuedExecutor(1, 10);
-
     // 执行普通方法需等待的时长
     private static final int DELAY = 1000;
-
     // 初始化方法需等待的时长
     private static final int INIT_DELAY = 2000;
-
-    // 是否初始化完毕的标记量
-    private volatile boolean initialized = false;
-
+    // 异步线程执行器
+    private final Executor executor = queuedExecutor(1, 10);
     // Value 值
     private final AtomicLong value = new AtomicLong(0);
-
     // User 值
     private final AtomicReference<User> userRef = new AtomicReference<>();
-
-    /**
-     * 初始化方法
-     *
-     * <p>
-     * 初始化方法耗时 {@link #INIT_DELAY} 毫秒, 通过 {@link #isInitialized()} 方法判断是否初始化完毕
-     * </p>
-     */
-    public void initialize() {
-        executor.execute(() -> {
-            delay(INIT_DELAY);
-            initialized = true;
-        });
-    }
-
-    /**
-     * 获取是否初始化完毕
-     *
-     * @return {@code true} 表示初始化完毕
-     */
-    public boolean isInitialized() {
-        return initialized;
-    }
-
-    /**
-     * 设置一个值
-     *
-     * @param value 要设置的整数值
-     */
-    public void setValue(long value) {
-        executor.execute(() -> {
-            delay(DELAY);
-            this.value.set(value);
-        });
-    }
-
-    /**
-     * 获取已设置的值
-     *
-     * @return 之前设置的整数值
-     */
-    public long getValue() {
-        return value.get();
-    }
-
-    /**
-     * 设置一个 {@link User} 对象
-     *
-     * @param user {@link User} 对象
-     */
-    public void setUser(User user) {
-        executor.execute(() -> {
-            delay(DELAY);
-            userRef.set(user);
-        });
-    }
-
-    /**
-     * 获取已设置的 {@link User} 对象
-     *
-     * @return 已设置的 {@link User} 对象
-     * @throws IllegalStateException @{@link User} 对象值尚未设置或未设置完毕
-     */
-    public User getUser() {
-        var user = userRef.get();
-        if (user == null) {
-            throw new IllegalStateException("Object not ready");
-        }
-        return user;
-    }
+    // 是否初始化完毕的标记量
+    private volatile boolean initialized = false;
 
     /**
      * 实例化一个执行器 ({@link Executor} 对象
@@ -136,5 +61,75 @@ public class AsyncService {
     @SneakyThrows
     private static void delay(int mills) {
         Thread.sleep(mills);
+    }
+
+    /**
+     * 初始化方法
+     *
+     * <p>
+     * 初始化方法耗时 {@link #INIT_DELAY} 毫秒, 通过 {@link #isInitialized()} 方法判断是否初始化完毕
+     * </p>
+     */
+    public void initialize() {
+        executor.execute(() -> {
+            delay(INIT_DELAY);
+            initialized = true;
+        });
+    }
+
+    /**
+     * 获取是否初始化完毕
+     *
+     * @return {@code true} 表示初始化完毕
+     */
+    public boolean isInitialized() {
+        return initialized;
+    }
+
+    /**
+     * 获取已设置的值
+     *
+     * @return 之前设置的整数值
+     */
+    public long getValue() {
+        return value.get();
+    }
+
+    /**
+     * 设置一个值
+     *
+     * @param value 要设置的整数值
+     */
+    public void setValue(long value) {
+        executor.execute(() -> {
+            delay(DELAY);
+            this.value.set(value);
+        });
+    }
+
+    /**
+     * 获取已设置的 {@link User} 对象
+     *
+     * @return 已设置的 {@link User} 对象
+     * @throws IllegalStateException @{@link User} 对象值尚未设置或未设置完毕
+     */
+    public User getUser() {
+        var user = userRef.get();
+        if (user == null) {
+            throw new IllegalStateException("Object not ready");
+        }
+        return user;
+    }
+
+    /**
+     * 设置一个 {@link User} 对象
+     *
+     * @param user {@link User} 对象
+     */
+    public void setUser(User user) {
+        executor.execute(() -> {
+            delay(DELAY);
+            userRef.set(user);
+        });
     }
 }

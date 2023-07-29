@@ -18,15 +18,14 @@ import java.util.function.Consumer;
  */
 public abstract class BaseRepository<R extends Record> {
     /**
+     * 当前 Repository 类型要操作的数据表
+     */
+    private final Table<? extends R> table;
+    /**
      * 注入 {@link DSLContext} 对象
      */
     @Autowired
     private DSLContext dsl;
-
-    /**
-     * 当前 Repository 类型要操作的数据表
-     */
-    private final Table<? extends R> table;
 
     /**
      * 构造器

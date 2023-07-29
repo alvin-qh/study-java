@@ -15,6 +15,11 @@ public final class DataSourceBuilder {
     private DataSourceBuilder() {
     }
 
+    @Contract(value = " -> new", pure = true)
+    public static @NotNull DataSourceBuilder newBuilder() {
+        return new DataSourceBuilder();
+    }
+
     public DataSourceBuilder url(String url) {
         this.url = url;
         return this;
@@ -46,10 +51,5 @@ public final class DataSourceBuilder {
         conf.setPassword(password);
 
         return new HikariDataSource(conf);
-    }
-
-    @Contract(value = " -> new", pure = true)
-    public static @NotNull DataSourceBuilder newBuilder() {
-        return new DataSourceBuilder();
     }
 }

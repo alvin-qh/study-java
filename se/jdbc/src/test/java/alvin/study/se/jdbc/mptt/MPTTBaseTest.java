@@ -35,14 +35,6 @@ abstract class MPTTBaseTest extends JDBCBaseTest {
     }
 
     /**
-     * 定义树节点以存储测试数据
-     *
-     * @param value    节点名称
-     * @param children 子节点集合
-     */
-    private record TreeNode(String value, List<TreeNode> children) { }
-
-    /**
      * 创建测试用的树形结构数据
      *
      * @return 表示树形结构的根节点的 {@link TreeNode} 类型对象
@@ -108,4 +100,12 @@ abstract class MPTTBaseTest extends JDBCBaseTest {
             throw new SQLException(e);
         }
     }
+
+    /**
+     * 定义树节点以存储测试数据
+     *
+     * @param value    节点名称
+     * @param children 子节点集合
+     */
+    private record TreeNode(String value, List<TreeNode> children) { }
 }
