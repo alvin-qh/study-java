@@ -1,0 +1,75 @@
+spring:
+  main:
+    banner-mode: off
+
+  # 设置默认使用的配置名
+  profiles:
+    active: server-01
+
+# 配置 Actuator 状态检查
+management:
+  endpoints:
+    # 配置 Web 访问点
+    web:
+      exposure:
+        # 开放所有访问点
+        include: "*"
+        # 关闭 /loggers 访问点
+        exclude: loggers
+
+---
+
+# 服务端节点 1 配置
+# 服务端用于接收客户端的服务注册, 以及向客户端提供服务注册列表
+spring:
+  application:
+    # 服务端的应用名, 一个集群中所有节点的应用名需要相同
+    name: eureka-server-01
+
+  config:
+    activate:
+      # 指定使用此配置的配置名
+      on-profile: server-01
+
+server:
+  # 服务端口号, 本例中因为要在同一个机器上启动集群, 所以每个节点的端口号要设置成不同
+  port: 8090
+
+eureka:
+  instance:
+    # 设置本机的域名
+    hostname: local-server-01
+    # 是否以 IP 向集群的其它节点进行注册, 由于本例为单机启动集群, 所以设置为 false 表示以域名进行注册
+    prefer-ip-address: false
+  client:
+    # 是否向其它节点注册本节点, false 表示不注册, 对于单节点需要设置为 false, 对于集群则需要设置为 true (或不设置取默认值)
+    # register-with-eureka: false
+    # 是否从其它节点获取注册信息, false 表示不获取, 对于单节点需要设置为 false, 对于集群则需要设置为 true (或不设置取默认值)
+    # fetch-registry: false
+    service-url:
+      # 设置默认的注册域, 对于单机是当前节点, 对于集群是除本节点的其它节点, 以逗号分隔
+      defaultZone: http://local-server-02:8091/eureka
+
+---
+
+# 服务端节点 2 配置, 参考服务端节点 1 配置
+spring:
+  application:
+    name: eureka-server-02
+
+  config:
+    activate:
+      on-profile: server-02
+
+server:
+  port: 8091
+
+eureka:
+  instance:
+    hostname: local-server-02
+    prefer-ip-address: false
+  client:
+    # register-with-eureka: false
+    # fetch-registry: false
+    service-url:
+      defaultZone: http://local-server-01:8090/eureka

@@ -1,0 +1,54 @@
+spring:
+  main:
+    banner-mode: off
+
+  # 设置默认使用的配置名
+  profiles:
+    active: client
+
+---
+
+# 客户端配置
+# 客户端需要配置到服务端的连接以进行服务注册和服务发现
+spring:
+  application:
+    # 应用名称, 这里作为服务名, 不能和服务端的服务名相同
+    name: eureka-client
+
+  config:
+    activate:
+      # 指定使用此配置的配置名
+      on-profile: [ client, test ]
+
+  cloud:
+    # 配置 OpenFeign Rest 客户端
+    openfeign:
+      httpclient:
+        # 连接超时时间配置
+        connection-timeout: 5000
+        ok-http:
+          # 读取超时时间配置
+          read-timeout: 5000
+
+server:
+  # 指定当前服务绑定的端口号
+  port: 8080
+
+# 配置 Eureka 客户端
+eureka:
+  # 配置要注册的服务实例
+  instance:
+    # 实例 id, 对于同一个服务的多个实例 (高可用配置), 需要指定
+    instance-id: ${spring.application.name}:${random.value}
+    # 服务状态检查地址
+    # status-page-url-path: /info
+    # 指定通过 IP 地址注册服务
+    prefer-ip-address: true
+    # 指定服务状态更新时间和服务失效时间
+    # lease-renewal-interval-in-seconds: 15
+    # lease-expiration-duration-in-seconds: 15
+  # 配置 Eureka 客户端
+  client:
+    # 指定服务端的地址, 如果服务端为集群, 则多个节点地址用逗号分隔
+    service-url:
+      defaultZone: http://local-server-01:8090/eureka,http://local-server-02:8091/eureka

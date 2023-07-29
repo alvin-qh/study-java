@@ -1,8 +1,8 @@
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>study-java-springboot-parent</artifactId>
+  <artifactId>study-java-springcloud-parent</artifactId>
   <name>${project.artifactId}</name>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
@@ -15,30 +15,29 @@
   </parent>
 
   <modules>
-    <module>spel</module>
-    <module>testing</module>
-    <module>aop</module>
-    <module>validator</module>
-    <module>mvc</module>
-    <module>jpa</module>
-    <module>datasource</module>
-    <module>security</module>
-    <!-- Wait Shiro to support SpringBoot 3.0 -->
-    <!-- <module>shiro</module> -->
-    <module>mybatis</module>
-    <module>jooq</module>
-    <module>kickstart-graphql</module>
-    <module>springdoc</module>
-    <module>autoconfig</module>
+    <module>eureka</module>
   </modules>
 
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <!-- Spring Boot Bom -->
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
         <version>${version.spring-boot}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${version.spirng-cloud}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.alibaba.cloud</groupId>
+        <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+        <version>${version.alibaba-clould}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -47,7 +46,6 @@
 
   <dependencies>
     <dependency>
-      <!-- Spring Boot 核心依赖 -->
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
       <exclusions>
@@ -58,22 +56,19 @@
       </exclusions>
     </dependency>
     <dependency>
-      <!-- Spring Boot 热部署插件 -->
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-devtools</artifactId>
-      <optional>true</optional>
-      <scope>runtime</scope>
+      <!-- SpringCloud 依赖 -->
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.logging.log4j</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
-      <!-- Slf4j 依赖 -->
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-    </dependency>
-    <dependency>
-      <!-- Spring Boot Test Starter 依赖 -->
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
       <exclusions>
         <exclusion>
           <groupId>org.mockito</groupId>

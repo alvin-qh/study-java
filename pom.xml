@@ -52,9 +52,8 @@
     <version.flyway>9.19.4</version.flyway>
 
     <version.spring-boot>3.1.2</version.spring-boot>
-    <version.spring-boot2>2.7.7</version.spring-boot2>
-    <version.spirng-cloud>2021.0.5</version.spirng-cloud>
-    <version.alibaba-clould>2021.0.4.0</version.alibaba-clould>
+    <version.spirng-cloud>2022.0.3</version.spirng-cloud>
+    <version.alibaba-clould>2022.0.0.0</version.alibaba-clould>
     <version.kickstart-graphql>15.0.0</version.kickstart-graphql>
     <version.springdoc>2.1.0</version.springdoc>
 
@@ -92,34 +91,13 @@
   <!-- 包含子项目所在的路径名 -->
   <modules>
     <module>se</module>
-    <module>springboot</module>
+    <module>testing</module>
     <module>misc</module>
-    <!-- <module>se</module> -->
-    <!-- <module>testing</module> -->
-    <!-- <module>cli</module> -->
-    <!-- <module>guice</module> -->
-    <!-- <module>guava</module> -->
-    <!-- <module>security</module> -->
-    <!-- <module>jackson</module> -->
-    <!-- <module>async</module> -->
-    <!-- <module>socketio</module> -->
-    <!-- <module>boot-mvc</module> -->
-    <!-- <module>boot-aop</module> -->
-    <!-- <module>boot-spel</module> -->
-    <!-- <module>boot-validator</module> -->
-    <!-- <module>boot-testing</module> -->
-    <!-- <module>boot-jpa</module> -->
-    <!-- <module>boot-mybatis</module> -->
-    <!-- <module>boot-jooq</module> -->
-    <!-- <module>boot-graphql</module> -->
-    <!-- <module>boot-multi-ds</module> -->
-    <!-- <module>boot-dynamic-ds</module> -->
-    <!-- <module>boot-security</module> -->
-    <!-- <module>boot-shiro</module> -->
-    <!-- <module>boot-springdoc</module> -->
-    <!-- <module>cloud-nacos</module> -->
-    <!-- <module>cloud-eureka</module> -->
-    <!-- <module>cloud-gateway</module> -->
+    <module>security</module>
+    <module>guava</module>
+    <module>guice</module>
+    <module>springboot</module>
+    <module>springcloud</module>
   </modules>
 
   <!-- 依赖声明, 所有子项目可使用声明后的依赖 -->
