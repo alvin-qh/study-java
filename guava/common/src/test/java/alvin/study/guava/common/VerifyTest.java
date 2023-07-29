@@ -40,7 +40,7 @@ class VerifyTest {
 
         // 条件表达式为 false 时, 检验失败 抛出异常且定义异常信息
         thenThrownBy(() -> Verify.verify(a > 10, "a must great than %s", 10))
-            .isInstanceOf(VerifyException.class)
-            .hasMessage("a must great than %s", 10);
+                .isInstanceOf(VerifyException.class)
+                .hasMessage("a must great than %s", 10);
     }
 }

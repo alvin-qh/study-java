@@ -25,10 +25,10 @@ public final class ClassFinder {
      */
     public static Set<Class<?>> inPackage(String packageName) throws IOException {
         return ClassPath.from(ClassLoader.getSystemClassLoader())
-            .getAllClasses()
-            .stream()
-            .filter(ci -> ci.getPackageName().startsWith(packageName))
-            .map(ClassPath.ClassInfo::load)
-            .collect(Collectors.toSet());
+                .getAllClasses()
+                .stream()
+                .filter(ci -> ci.getPackageName().startsWith(packageName))
+                .map(ClassPath.ClassInfo::load)
+                .collect(Collectors.toSet());
     }
 }

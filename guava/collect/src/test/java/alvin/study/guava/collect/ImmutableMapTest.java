@@ -46,8 +46,8 @@ class ImmutableMapTest {
         var map = ImmutableMap.of("A", 100, "B", 200);
 
         then(map).containsExactly(
-            entry("A", 100),
-            entry("B", 200));
+                entry("A", 100),
+                entry("B", 200));
 
         // 确认 ImmutableMap 对象不支持修改操作
         thenThrownBy(() -> map.put("C", 300)).isInstanceOf(UnsupportedOperationException.class);
@@ -68,12 +68,12 @@ class ImmutableMapTest {
     @Test
     void ofEntries_shouldCreateImmutableMap() {
         var map = ImmutableMap.ofEntries(
-            Map.entry("A", 100),
-            Map.entry("B", 200));
+                Map.entry("A", 100),
+                Map.entry("B", 200));
 
         then(map).containsExactly(
-            entry("A", 100),
-            entry("B", 200));
+                entry("A", 100),
+                entry("B", 200));
 
         // 确认 ImmutableMap 中不能包含 Key 为 null 的 Entry
         thenThrownBy(() -> ImmutableMap.ofEntries(Map.entry(null, 300))).isInstanceOf(NullPointerException.class);
@@ -134,33 +134,33 @@ class ImmutableMapTest {
     void builder_shouldBuildImmutableMap() {
         // 创建一个 Builder 对象, 分批添加键值对, 构建不变 Map 对象
         var map = ImmutableMap.<String, Integer>builder()
-            .put("A", 100)
-            .put(Map.entry("B", 200))
-            .putAll(ImmutableMap.of("C", 300))
-            .build();
+                .put("A", 100)
+                .put(Map.entry("B", 200))
+                .putAll(ImmutableMap.of("C", 300))
+                .build();
         // 确认创建的 Map 包含正确的键值对
         then(map).containsExactly(
-            entry("A", 100),
-            entry("B", 200),
-            entry("C", 300));
+                entry("A", 100),
+                entry("B", 200),
+                entry("C", 300));
 
         // 确认如果在构建过程中添加了重复的键值, 会导致异常抛出
         thenThrownBy(() -> ImmutableMap.<String, Integer>builder()
-            .put("A", 100)
-            .put("A", 400)
-            .build())
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Multiple entries with same key: A=400 and A=100");
+                .put("A", 100)
+                .put("A", 400)
+                .build())
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Multiple entries with same key: A=400 and A=100");
 
         // 确认如果在构建过程中添加了值为 null 的 key, 会导致异常抛出
         thenThrownBy(() -> ImmutableMap.builder()
-            .put(null, 100).build())
-            .isInstanceOf(NullPointerException.class);
+                .put(null, 100).build())
+                .isInstanceOf(NullPointerException.class);
 
         // 确认如果在构建过程中添加了值为 null 的 Value, 会导致异常抛出
         thenThrownBy(() -> ImmutableMap.builder()
-            .put("A", null).build())
-            .isInstanceOf(NullPointerException.class);
+                .put("A", null).build())
+                .isInstanceOf(NullPointerException.class);
     }
 
     /**
@@ -179,26 +179,26 @@ class ImmutableMapTest {
     void builder_shouldBuildImmutableMapAndKeepLastValueIfKeyDuplicate() {
         // 通过 buildKeepingLast 方法, 不会因为添加了重复键导致异常
         var map = ImmutableMap.<String, Integer>builderWithExpectedSize(3)
-            .put("A", 100)
-            .put(Map.entry("B", 200))
-            .putAll(ImmutableMap.of("C", 300))
-            .put("B", 400)
-            .buildKeepingLast();
+                .put("A", 100)
+                .put(Map.entry("B", 200))
+                .putAll(ImmutableMap.of("C", 300))
+                .put("B", 400)
+                .buildKeepingLast();
 
         // 确认重复键对应为最后一次添加的键值对
         then(map).contains(
-            entry("A", 100),
-            entry("B", 400),
-            entry("C", 300));
+                entry("A", 100),
+                entry("B", 400),
+                entry("C", 300));
 
         // 确认如果在构建过程中添加了值为 null 的 key, 会导致异常抛出
         thenThrownBy(() -> ImmutableMap.builder()
-            .put(null, 100).buildKeepingLast())
-            .isInstanceOf(NullPointerException.class);
+                .put(null, 100).buildKeepingLast())
+                .isInstanceOf(NullPointerException.class);
 
         // 确认如果在构建过程中添加了值为 null 的 Value, 会导致异常抛出
         thenThrownBy(() -> ImmutableMap.builder()
-            .put("A", null).buildKeepingLast())
-            .isInstanceOf(NullPointerException.class);
+                .put("A", null).buildKeepingLast())
+                .isInstanceOf(NullPointerException.class);
     }
 }

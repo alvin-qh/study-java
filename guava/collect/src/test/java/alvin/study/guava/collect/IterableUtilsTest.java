@@ -367,7 +367,7 @@ class IterableUtilsTest {
 
             // 因可迭代对象包含多个元素, 获取唯一元素时抛出异常
             thenThrownBy(() -> Iterables.getOnlyElement(list, null))
-                .isInstanceOf(IllegalArgumentException.class);
+                    .isInstanceOf(IllegalArgumentException.class);
         }
 
         {

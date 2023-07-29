@@ -90,15 +90,15 @@ class FileTraverserTest {
     void createFileTree() throws IOException {
         // 定义要创建的文件列表
         var files = new File[]{
-            new File(parent, "1.txt"),
-            new File(parent, "2.txt"),
-            new File(parent, "a/a1.txt"),
-            new File(parent, "a/a2.txt"),
-            new File(parent, "a/aa/aa1.txt"),
-            new File(parent, "a/aa/aaa/aaa1.txt"),
-            new File(parent, "b/b1.txt"),
-            new File(parent, "b/bb/bb1.txt"),
-            new File(parent, "c/cc/ccc/ccc1.txt")
+                new File(parent, "1.txt"),
+                new File(parent, "2.txt"),
+                new File(parent, "a/a1.txt"),
+                new File(parent, "a/a2.txt"),
+                new File(parent, "a/aa/aa1.txt"),
+                new File(parent, "a/aa/aaa/aaa1.txt"),
+                new File(parent, "b/b1.txt"),
+                new File(parent, "b/bb/bb1.txt"),
+                new File(parent, "c/cc/ccc/ccc1.txt")
         };
 
         // 创建测试目录, 并在测试目录中创建一系列子目录和文件
@@ -162,23 +162,23 @@ class FileTraverserTest {
 
         // 确认遍历结果
         then(files).map(File::toString).containsExactly(
-            parent + "/a/aa/aaa/aaa1.txt",
-            parent + "/a/aa/aaa",
-            parent + "/a/aa/aa1.txt",
-            parent + "/a/aa",
-            parent + "/a/a1.txt",
-            parent + "/a/a2.txt",
-            parent + "/a",
-            parent + "/b/bb/bb1.txt",
-            parent + "/b/bb",
-            parent + "/b/b1.txt",
-            parent + "/b",
-            parent + "/c/cc/ccc/ccc1.txt",
-            parent + "/c/cc/ccc",
-            parent + "/c/cc",
-            parent + "/c",
-            parent + "/1.txt",
-            parent + "/2.txt");
+                parent + "/a/aa/aaa/aaa1.txt",
+                parent + "/a/aa/aaa",
+                parent + "/a/aa/aa1.txt",
+                parent + "/a/aa",
+                parent + "/a/a1.txt",
+                parent + "/a/a2.txt",
+                parent + "/a",
+                parent + "/b/bb/bb1.txt",
+                parent + "/b/bb",
+                parent + "/b/b1.txt",
+                parent + "/b",
+                parent + "/c/cc/ccc/ccc1.txt",
+                parent + "/c/cc/ccc",
+                parent + "/c/cc",
+                parent + "/c",
+                parent + "/1.txt",
+                parent + "/2.txt");
     }
 
     /**
@@ -217,24 +217,24 @@ class FileTraverserTest {
 
         // 确认遍历结果和其顺序
         then(files).map(File::toString).containsExactly(
-            parent.toString(),
-            parent + "/a",
-            parent + "/b",
-            parent + "/c",
-            parent + "/1.txt",
-            parent + "/2.txt",
-            parent + "/a/aa",
-            parent + "/a/a1.txt",
-            parent + "/a/a2.txt",
-            parent + "/b/bb",
-            parent + "/b/b1.txt",
-            parent + "/c/cc",
-            parent + "/a/aa/aaa",
-            parent + "/a/aa/aa1.txt",
-            parent + "/b/bb/bb1.txt",
-            parent + "/c/cc/ccc",
-            parent + "/a/aa/aaa/aaa1.txt",
-            parent + "/c/cc/ccc/ccc1.txt");
+                parent.toString(),
+                parent + "/a",
+                parent + "/b",
+                parent + "/c",
+                parent + "/1.txt",
+                parent + "/2.txt",
+                parent + "/a/aa",
+                parent + "/a/a1.txt",
+                parent + "/a/a2.txt",
+                parent + "/b/bb",
+                parent + "/b/b1.txt",
+                parent + "/c/cc",
+                parent + "/a/aa/aaa",
+                parent + "/a/aa/aa1.txt",
+                parent + "/b/bb/bb1.txt",
+                parent + "/c/cc/ccc",
+                parent + "/a/aa/aaa/aaa1.txt",
+                parent + "/c/cc/ccc/ccc1.txt");
     }
 
     /**
@@ -262,9 +262,9 @@ class FileTraverserTest {
                 if (subFiles != null) {
                     // 将目录的下级内容排序后入栈
                     Arrays
-                        .stream(Objects.requireNonNull(file.listFiles()))
-                        .sorted(fileOrdering)
-                        .forEach(stack::push);
+                            .stream(Objects.requireNonNull(file.listFiles()))
+                            .sorted(fileOrdering)
+                            .forEach(stack::push);
                 }
             }
 
@@ -274,24 +274,24 @@ class FileTraverserTest {
 
         // 确认遍历结果和其顺序
         then(files).map(File::toString).containsExactly(
-            parent.toString(),
-            parent + "/2.txt",
-            parent + "/1.txt",
-            parent + "/c",
-            parent + "/c/cc",
-            parent + "/c/cc/ccc",
-            parent + "/c/cc/ccc/ccc1.txt",
-            parent + "/b",
-            parent + "/b/b1.txt",
-            parent + "/b/bb",
-            parent + "/b/bb/bb1.txt",
-            parent + "/a",
-            parent + "/a/a2.txt",
-            parent + "/a/a1.txt",
-            parent + "/a/aa",
-            parent + "/a/aa/aa1.txt",
-            parent + "/a/aa/aaa",
-            parent + "/a/aa/aaa/aaa1.txt");
+                parent.toString(),
+                parent + "/2.txt",
+                parent + "/1.txt",
+                parent + "/c",
+                parent + "/c/cc",
+                parent + "/c/cc/ccc",
+                parent + "/c/cc/ccc/ccc1.txt",
+                parent + "/b",
+                parent + "/b/b1.txt",
+                parent + "/b/bb",
+                parent + "/b/bb/bb1.txt",
+                parent + "/a",
+                parent + "/a/a2.txt",
+                parent + "/a/a1.txt",
+                parent + "/a/aa",
+                parent + "/a/aa/aa1.txt",
+                parent + "/a/aa/aaa",
+                parent + "/a/aa/aaa/aaa1.txt");
     }
 
     /**
@@ -331,10 +331,10 @@ class FileTraverserTest {
                 try (var s = java.nio.file.Files.newDirectoryStream(path)) {
                     // 从 DirectoryStream 对象创建 Stream 对象, 排序后, 将其内容入队
                     StreamSupport.stream(s.spliterator(), false)
-                        .map(Path::toFile)
-                        .sorted(fileOrdering)
-                        .map(File::toPath)
-                        .forEach(que::offer);
+                            .map(Path::toFile)
+                            .sorted(fileOrdering)
+                            .map(File::toPath)
+                            .forEach(que::offer);
                 }
             }
             // 保存本次遍历的结果
@@ -343,24 +343,24 @@ class FileTraverserTest {
 
         // 确认遍历结果和其顺序
         then(files).map(File::toString).containsExactly(
-            parent.toString(),
-            parent + "/a",
-            parent + "/b",
-            parent + "/c",
-            parent + "/1.txt",
-            parent + "/2.txt",
-            parent + "/a/aa",
-            parent + "/a/a1.txt",
-            parent + "/a/a2.txt",
-            parent + "/b/bb",
-            parent + "/b/b1.txt",
-            parent + "/c/cc",
-            parent + "/a/aa/aaa",
-            parent + "/a/aa/aa1.txt",
-            parent + "/b/bb/bb1.txt",
-            parent + "/c/cc/ccc",
-            parent + "/a/aa/aaa/aaa1.txt",
-            parent + "/c/cc/ccc/ccc1.txt");
+                parent.toString(),
+                parent + "/a",
+                parent + "/b",
+                parent + "/c",
+                parent + "/1.txt",
+                parent + "/2.txt",
+                parent + "/a/aa",
+                parent + "/a/a1.txt",
+                parent + "/a/a2.txt",
+                parent + "/b/bb",
+                parent + "/b/b1.txt",
+                parent + "/c/cc",
+                parent + "/a/aa/aaa",
+                parent + "/a/aa/aa1.txt",
+                parent + "/b/bb/bb1.txt",
+                parent + "/c/cc/ccc",
+                parent + "/a/aa/aaa/aaa1.txt",
+                parent + "/c/cc/ccc/ccc1.txt");
     }
 
     /**
@@ -400,9 +400,9 @@ class FileTraverserTest {
                 try (var s = java.nio.file.Files.list(path)) {
                     // 对 Stream 内容排序后, 将其逐一入队
                     s.map(Path::toFile)
-                        .sorted(fileOrdering)
-                        .map(File::toPath)
-                        .forEach(que::offer);
+                            .sorted(fileOrdering)
+                            .map(File::toPath)
+                            .forEach(que::offer);
                 }
             }
             // 保存本次遍历的结果
@@ -411,24 +411,24 @@ class FileTraverserTest {
 
         // 确认遍历结果和其顺序
         then(files).map(File::toString).containsExactly(
-            parent.toString(),
-            parent + "/a",
-            parent + "/b",
-            parent + "/c",
-            parent + "/1.txt",
-            parent + "/2.txt",
-            parent + "/a/aa",
-            parent + "/a/a1.txt",
-            parent + "/a/a2.txt",
-            parent + "/b/bb",
-            parent + "/b/b1.txt",
-            parent + "/c/cc",
-            parent + "/a/aa/aaa",
-            parent + "/a/aa/aa1.txt",
-            parent + "/b/bb/bb1.txt",
-            parent + "/c/cc/ccc",
-            parent + "/a/aa/aaa/aaa1.txt",
-            parent + "/c/cc/ccc/ccc1.txt");
+                parent.toString(),
+                parent + "/a",
+                parent + "/b",
+                parent + "/c",
+                parent + "/1.txt",
+                parent + "/2.txt",
+                parent + "/a/aa",
+                parent + "/a/a1.txt",
+                parent + "/a/a2.txt",
+                parent + "/b/bb",
+                parent + "/b/b1.txt",
+                parent + "/c/cc",
+                parent + "/a/aa/aaa",
+                parent + "/a/aa/aa1.txt",
+                parent + "/b/bb/bb1.txt",
+                parent + "/c/cc/ccc",
+                parent + "/a/aa/aaa/aaa1.txt",
+                parent + "/c/cc/ccc/ccc1.txt");
     }
 
     /**
@@ -467,24 +467,24 @@ class FileTraverserTest {
 
         // 确认遍历结果和其顺序
         then(files).map(File::toString).containsExactly(
-            parent.toString(),
-            parent + "/a",
-            parent + "/a/aa",
-            parent + "/a/aa/aaa",
-            parent + "/b",
-            parent + "/b/bb",
-            parent + "/c",
-            parent + "/c/cc",
-            parent + "/c/cc/ccc",
-            parent + "/1.txt",
-            parent + "/2.txt",
-            parent + "/a/a1.txt",
-            parent + "/a/a2.txt",
-            parent + "/a/aa/aa1.txt",
-            parent + "/a/aa/aaa/aaa1.txt",
-            parent + "/b/b1.txt",
-            parent + "/b/bb/bb1.txt",
-            parent + "/c/cc/ccc/ccc1.txt");
+                parent.toString(),
+                parent + "/a",
+                parent + "/a/aa",
+                parent + "/a/aa/aaa",
+                parent + "/b",
+                parent + "/b/bb",
+                parent + "/c",
+                parent + "/c/cc",
+                parent + "/c/cc/ccc",
+                parent + "/1.txt",
+                parent + "/2.txt",
+                parent + "/a/a1.txt",
+                parent + "/a/a2.txt",
+                parent + "/a/aa/aa1.txt",
+                parent + "/a/aa/aaa/aaa1.txt",
+                parent + "/b/b1.txt",
+                parent + "/b/bb/bb1.txt",
+                parent + "/c/cc/ccc/ccc1.txt");
     }
 
     /**
@@ -524,15 +524,15 @@ class FileTraverserTest {
 
         // 确认遍历结果和其顺序
         then(files).map(File::toString).containsExactly(
-            parent + "/1.txt",
-            parent + "/2.txt",
-            parent + "/a/a1.txt",
-            parent + "/a/a2.txt",
-            parent + "/a/aa/aa1.txt",
-            parent + "/a/aa/aaa/aaa1.txt",
-            parent + "/b/b1.txt",
-            parent + "/b/bb/bb1.txt",
-            parent + "/c/cc/ccc/ccc1.txt");
+                parent + "/1.txt",
+                parent + "/2.txt",
+                parent + "/a/a1.txt",
+                parent + "/a/a2.txt",
+                parent + "/a/aa/aa1.txt",
+                parent + "/a/aa/aaa/aaa1.txt",
+                parent + "/b/b1.txt",
+                parent + "/b/bb/bb1.txt",
+                parent + "/c/cc/ccc/ccc1.txt");
     }
 
     /**
@@ -586,67 +586,67 @@ class FileTraverserTest {
         // 测试广度优先遍历
         var files = ImmutableList.copyOf(traverser.breadthFirst(parent));
         then(files).map(File::toString).containsExactly(
-            parent.toString(),
-            parent + "/a",
-            parent + "/b",
-            parent + "/c",
-            parent + "/1.txt",
-            parent + "/2.txt",
-            parent + "/a/aa",
-            parent + "/a/a1.txt",
-            parent + "/a/a2.txt",
-            parent + "/b/bb",
-            parent + "/b/b1.txt",
-            parent + "/c/cc",
-            parent + "/a/aa/aaa",
-            parent + "/a/aa/aa1.txt",
-            parent + "/b/bb/bb1.txt",
-            parent + "/c/cc/ccc",
-            parent + "/a/aa/aaa/aaa1.txt",
-            parent + "/c/cc/ccc/ccc1.txt");
+                parent.toString(),
+                parent + "/a",
+                parent + "/b",
+                parent + "/c",
+                parent + "/1.txt",
+                parent + "/2.txt",
+                parent + "/a/aa",
+                parent + "/a/a1.txt",
+                parent + "/a/a2.txt",
+                parent + "/b/bb",
+                parent + "/b/b1.txt",
+                parent + "/c/cc",
+                parent + "/a/aa/aaa",
+                parent + "/a/aa/aa1.txt",
+                parent + "/b/bb/bb1.txt",
+                parent + "/c/cc/ccc",
+                parent + "/a/aa/aaa/aaa1.txt",
+                parent + "/c/cc/ccc/ccc1.txt");
 
         // 测试正序深度优先遍历
         files = ImmutableList.copyOf(traverser.depthFirstPreOrder(parent));
         then(files).map(File::toString).containsExactly(
-            parent.toString(),
-            parent + "/a",
-            parent + "/a/aa",
-            parent + "/a/aa/aaa",
-            parent + "/a/aa/aaa/aaa1.txt",
-            parent + "/a/aa/aa1.txt",
-            parent + "/a/a1.txt",
-            parent + "/a/a2.txt",
-            parent + "/b",
-            parent + "/b/bb",
-            parent + "/b/bb/bb1.txt",
-            parent + "/b/b1.txt",
-            parent + "/c",
-            parent + "/c/cc",
-            parent + "/c/cc/ccc",
-            parent + "/c/cc/ccc/ccc1.txt",
-            parent + "/1.txt",
-            parent + "/2.txt");
+                parent.toString(),
+                parent + "/a",
+                parent + "/a/aa",
+                parent + "/a/aa/aaa",
+                parent + "/a/aa/aaa/aaa1.txt",
+                parent + "/a/aa/aa1.txt",
+                parent + "/a/a1.txt",
+                parent + "/a/a2.txt",
+                parent + "/b",
+                parent + "/b/bb",
+                parent + "/b/bb/bb1.txt",
+                parent + "/b/b1.txt",
+                parent + "/c",
+                parent + "/c/cc",
+                parent + "/c/cc/ccc",
+                parent + "/c/cc/ccc/ccc1.txt",
+                parent + "/1.txt",
+                parent + "/2.txt");
 
         // 测试逆序深度优先遍历
         files = ImmutableList.copyOf(traverser.depthFirstPostOrder(parent));
         then(files).map(File::toString).containsExactly(
-            parent + "/a/aa/aaa/aaa1.txt",
-            parent + "/a/aa/aaa",
-            parent + "/a/aa/aa1.txt",
-            parent + "/a/aa",
-            parent + "/a/a1.txt",
-            parent + "/a/a2.txt",
-            parent + "/a",
-            parent + "/b/bb/bb1.txt",
-            parent + "/b/bb",
-            parent + "/b/b1.txt",
-            parent + "/b",
-            parent + "/c/cc/ccc/ccc1.txt",
-            parent + "/c/cc/ccc",
-            parent + "/c/cc",
-            parent + "/c",
-            parent + "/1.txt",
-            parent + "/2.txt",
-            parent.toString());
+                parent + "/a/aa/aaa/aaa1.txt",
+                parent + "/a/aa/aaa",
+                parent + "/a/aa/aa1.txt",
+                parent + "/a/aa",
+                parent + "/a/a1.txt",
+                parent + "/a/a2.txt",
+                parent + "/a",
+                parent + "/b/bb/bb1.txt",
+                parent + "/b/bb",
+                parent + "/b/b1.txt",
+                parent + "/b",
+                parent + "/c/cc/ccc/ccc1.txt",
+                parent + "/c/cc/ccc",
+                parent + "/c/cc",
+                parent + "/c",
+                parent + "/1.txt",
+                parent + "/2.txt",
+                parent.toString());
     }
 }

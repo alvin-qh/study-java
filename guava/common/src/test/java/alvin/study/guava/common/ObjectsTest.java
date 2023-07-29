@@ -138,8 +138,8 @@ class ObjectsTest {
 
         // 确认如果两个参数均为 null, 则抛出异常
         thenThrownBy(() -> MoreObjects.firstNonNull(null, null))
-            .isInstanceOf(NullPointerException.class)
-            .hasMessage("Both parameters are null");
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("Both parameters are null");
     }
 
     /**
@@ -162,23 +162,23 @@ class ObjectsTest {
 
         // 通过对象参数产生一个字符串
         var s = MoreObjects.toStringHelper(obj)
-            .add("name", "Alvin")
-            .addValue(obj)
-            .toString();
+                .add("name", "Alvin")
+                .addValue(obj)
+                .toString();
         then(s).isEqualTo("Integer{name=Alvin, 100}");
 
         // 通过类型参数产生一个字符串
         s = MoreObjects.toStringHelper(Integer.class)
-            .add("name", "Alvin")
-            .addValue(obj)
-            .toString();
+                .add("name", "Alvin")
+                .addValue(obj)
+                .toString();
         then(s).isEqualTo("Integer{name=Alvin, 100}");
 
         // 通过字符串参数产生一个字符串
         s = MoreObjects.toStringHelper("Integer")
-            .add("name", "Alvin")
-            .addValue(obj)
-            .toString();
+                .add("name", "Alvin")
+                .addValue(obj)
+                .toString();
         then(s).isEqualTo("Integer{name=Alvin, 100}");
     }
 
@@ -213,9 +213,9 @@ class ObjectsTest {
 
         // 定义两级比较条件, 因为 obj1 和 obj2 相等, 所以结果为 obj2 和 obj3 的比较结果
         var r = ComparisonChain.start()
-            .compare(obj1, obj2)
-            .compare(obj2, obj3, Ordering.explicit(obj3, obj2))
-            .result();
+                .compare(obj1, obj2)
+                .compare(obj2, obj3, Ordering.explicit(obj3, obj2))
+                .result();
 
         // 确认最终结果为 obj2 和 obj3 比较的结果
         then(r).isEqualTo(1);

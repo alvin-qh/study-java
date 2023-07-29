@@ -150,7 +150,7 @@ class MultiCollectionTest {
         // 获取集合中存储的 Entry 对象, 并确认每个 Entry 对象符合预期
         var entrySet = mulSet.entrySet();
         then(entrySet).extracting("element", "count")
-            .containsExactly(tuple("A", 2), tuple("B", 3), tuple("C", 1));
+                .containsExactly(tuple("A", 2), tuple("B", 3), tuple("C", 1));
 
         // 为指定元素增加数量 1
         mulSet.add("C", 2);
@@ -261,7 +261,7 @@ class MultiCollectionTest {
         // 将 Multimap 对象转为 Map 对象, 该 Map 对象的 Value 为 List 类型
         var map = mulMap.asMap();
         then(map).contains(
-            entry("A", ImmutableList.of(1, 1, 2)),
-            entry("B", ImmutableList.of(10, 20, 30)));
+                entry("A", ImmutableList.of(1, 1, 2)),
+                entry("B", ImmutableList.of(10, 20, 30)));
     }
 }

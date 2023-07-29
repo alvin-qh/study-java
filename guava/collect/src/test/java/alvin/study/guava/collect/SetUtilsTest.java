@@ -323,30 +323,30 @@ class SetUtilsTest {
     void cartesianProduct_shouldBuildCartesianProductOfSeveralSets() {
         // 计算多个列表集合的笛卡尔积
         var set = Sets.cartesianProduct(
-            ImmutableSet.of(1, 2),
-            ImmutableSet.of(11, 22, 33),
-            ImmutableSet.of(111, 222, 333));
+                ImmutableSet.of(1, 2),
+                ImmutableSet.of(11, 22, 33),
+                ImmutableSet.of(111, 222, 333));
 
         // 确认笛卡尔积结果
         then(set).containsExactly(
-            ImmutableList.of(1, 11, 111),
-            ImmutableList.of(1, 11, 222),
-            ImmutableList.of(1, 11, 333),
-            ImmutableList.of(1, 22, 111),
-            ImmutableList.of(1, 22, 222),
-            ImmutableList.of(1, 22, 333),
-            ImmutableList.of(1, 33, 111),
-            ImmutableList.of(1, 33, 222),
-            ImmutableList.of(1, 33, 333),
-            ImmutableList.of(2, 11, 111),
-            ImmutableList.of(2, 11, 222),
-            ImmutableList.of(2, 11, 333),
-            ImmutableList.of(2, 22, 111),
-            ImmutableList.of(2, 22, 222),
-            ImmutableList.of(2, 22, 333),
-            ImmutableList.of(2, 33, 111),
-            ImmutableList.of(2, 33, 222),
-            ImmutableList.of(2, 33, 333));
+                ImmutableList.of(1, 11, 111),
+                ImmutableList.of(1, 11, 222),
+                ImmutableList.of(1, 11, 333),
+                ImmutableList.of(1, 22, 111),
+                ImmutableList.of(1, 22, 222),
+                ImmutableList.of(1, 22, 333),
+                ImmutableList.of(1, 33, 111),
+                ImmutableList.of(1, 33, 222),
+                ImmutableList.of(1, 33, 333),
+                ImmutableList.of(2, 11, 111),
+                ImmutableList.of(2, 11, 222),
+                ImmutableList.of(2, 11, 333),
+                ImmutableList.of(2, 22, 111),
+                ImmutableList.of(2, 22, 222),
+                ImmutableList.of(2, 22, 333),
+                ImmutableList.of(2, 33, 111),
+                ImmutableList.of(2, 33, 222),
+                ImmutableList.of(2, 33, 333));
     }
 
     /**
@@ -379,9 +379,9 @@ class SetUtilsTest {
             var sets = Sets.combinations(ImmutableSet.of(1, 2, 3), 2);
             // 确认排列结果
             then(sets).containsExactly(
-                ImmutableSet.of(1, 2),
-                ImmutableSet.of(1, 3),
-                ImmutableSet.of(2, 3));
+                    ImmutableSet.of(1, 2),
+                    ImmutableSet.of(1, 3),
+                    ImmutableSet.of(2, 3));
         }
     }
 
@@ -410,14 +410,14 @@ class SetUtilsTest {
 
         // 确认所得子集
         then(subSets).containsExactlyInAnyOrder(
-            ImmutableSet.of(),
-            ImmutableSet.of(1),
-            ImmutableSet.of(2),
-            ImmutableSet.of(3),
-            ImmutableSet.of(1, 2),
-            ImmutableSet.of(1, 3),
-            ImmutableSet.of(2, 3),
-            ImmutableSet.of(1, 2, 3));
+                ImmutableSet.of(),
+                ImmutableSet.of(1),
+                ImmutableSet.of(2),
+                ImmutableSet.of(3),
+                ImmutableSet.of(1, 2),
+                ImmutableSet.of(1, 3),
+                ImmutableSet.of(2, 3),
+                ImmutableSet.of(1, 2, 3));
     }
 
     /**
@@ -503,10 +503,10 @@ class SetUtilsTest {
     void subSet_shouldGetSubSetInGivenRange() {
         // 创建一个元素为 'A'~'Z' 的 TreeSet 集合, 且不包含 'E' 和 'G' 两个元素
         var set = ContiguousSet.closed('A', 'Z')
-            .stream()
-            .map(n -> (char) (n.intValue()))
-            .filter(c -> c != 'G' && c != 'E')
-            .collect(Collectors.toCollection(TreeSet::new));
+                .stream()
+                .map(n -> (char) (n.intValue()))
+                .filter(c -> c != 'G' && c != 'E')
+                .collect(Collectors.toCollection(TreeSet::new));
 
         // 从集合中获取范围为 'D'~'H' 的元素值
         var subSet = Sets.subSet(set, Range.closed('D', 'H'));
@@ -526,9 +526,9 @@ class SetUtilsTest {
     void filter_shouldFilterElements() {
         // 创建一个元素为 'A'~'Z' 的 TreeSet 集合
         var set = ContiguousSet.closed('A', 'Z')
-            .stream()
-            .map(n -> (char) (n.intValue()))
-            .collect(Collectors.toCollection(TreeSet::new));
+                .stream()
+                .map(n -> (char) (n.intValue()))
+                .collect(Collectors.toCollection(TreeSet::new));
 
         // 过滤掉集合中所有的元音字母, 并返回过滤后的结果
         var filteredSet = Sets.filter(set, c -> switch (c) {

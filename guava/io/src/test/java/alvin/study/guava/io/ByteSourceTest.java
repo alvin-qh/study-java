@@ -349,7 +349,7 @@ class ByteSourceTest {
 
             // 等待缓存完毕
             await().atMost(2, TimeUnit.SECONDS)
-                .untilAsserted(() -> then(loader.cacheInfo("https://www.baidu.com")).isPresent());
+                    .untilAsserted(() -> then(loader.cacheInfo("https://www.baidu.com")).isPresent());
 
             // 获取缓存对象
             var cache = loader.cacheInfo("https://www.baidu.com").get();

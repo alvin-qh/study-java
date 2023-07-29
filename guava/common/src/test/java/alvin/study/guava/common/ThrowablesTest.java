@@ -59,11 +59,11 @@ class ThrowablesTest {
 
         // 对于类型不匹配的情况, 不抛出异常
         thenCode(() -> Throwables.throwIfInstanceOf(exception, NullPointerException.class))
-            .doesNotThrowAnyException();
+                .doesNotThrowAnyException();
 
         // 抛出指定类型异常, 最终抛出 exp 为 IOException 类型
         thenThrownBy(() -> Throwables.throwIfInstanceOf(exception, IOException.class))
-            .isInstanceOf(IOException.class);
+                .isInstanceOf(IOException.class);
     }
 
     /**
@@ -106,31 +106,31 @@ class ThrowablesTest {
 
         // 如果异常类型和指定异常类型不匹配, 则不抛出任何异常
         thenCode(() -> Throwables.propagateIfPossible(
-            exception,
-            IndexOutOfBoundsException.class,
-            NoSuchMethodException.class)).doesNotThrowAnyException();
+                exception,
+                IndexOutOfBoundsException.class,
+                NoSuchMethodException.class)).doesNotThrowAnyException();
 
         // 如果异常类型和指定异常类型匹配, 则抛出该异常
         thenThrownBy(() -> Throwables.propagateIfPossible(
-            exception,
-            IndexOutOfBoundsException.class,
-            IOException.class)).isInstanceOf(IOException.class);
+                exception,
+                IndexOutOfBoundsException.class,
+                IOException.class)).isInstanceOf(IOException.class);
 
         var runtimeException = new IllegalArgumentException();
 
         // 如果异常类型为 RuntimeException 类型, 则抛出该异常
         thenThrownBy(() -> Throwables.propagateIfPossible(
-            runtimeException,
-            NullPointerException.class,
-            IOException.class)).isInstanceOf(RuntimeException.class);
+                runtimeException,
+                NullPointerException.class,
+                IOException.class)).isInstanceOf(RuntimeException.class);
 
         var error = new OutOfMemoryError();
 
         // 如果异常类型为 Error 类型, 则抛出该异常
         thenThrownBy(() -> Throwables.propagateIfPossible(
-            error,
-            NullPointerException.class,
-            IOException.class)).isInstanceOf(OutOfMemoryError.class);
+                error,
+                NullPointerException.class,
+                IOException.class)).isInstanceOf(OutOfMemoryError.class);
     }
 
     /**
@@ -142,9 +142,9 @@ class ThrowablesTest {
      * @return {@code raiseType} 参数指定类型的异常对象
      */
     Throwable makeException(
-        Class<? extends Throwable> rootType,
-        Class<? extends Throwable> passingType,
-        Class<? extends Throwable> raiseType) {
+            Class<? extends Throwable> rootType,
+            Class<? extends Throwable> passingType,
+            Class<? extends Throwable> raiseType) {
 
         Throwable result;
 
@@ -218,7 +218,7 @@ class ThrowablesTest {
 
         // 如果期待的类型和实际异常原因类型不符, 则抛出类型转换失败异常
         thenThrownBy(() -> Throwables.getCauseAs(exception, IllegalStateException.class))
-            .isInstanceOf(ClassCastException.class);
+                .isInstanceOf(ClassCastException.class);
     }
 
     /**
@@ -242,7 +242,7 @@ class ThrowablesTest {
         // 获取异常链
         var chain = Throwables.getCausalChain(exception);
         then(chain).map(c -> (Object) c.getClass()).containsExactly(
-            IllegalStateException.class, IOException.class, IllegalArgumentException.class);
+                IllegalStateException.class, IOException.class, IllegalArgumentException.class);
     }
 
     /**
@@ -266,8 +266,8 @@ class ThrowablesTest {
         // 将异常堆栈转化为字符串形式
         var stack = Throwables.getStackTraceAsString(exception);
         then(stack)
-            .contains("java.lang.IllegalArgumentException")
-            .contains("java.io.IOException")
-            .contains("java.lang.IllegalStateException");
+                .contains("java.lang.IllegalArgumentException")
+                .contains("java.io.IOException")
+                .contains("java.lang.IllegalStateException");
     }
 }

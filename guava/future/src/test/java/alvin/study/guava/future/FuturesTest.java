@@ -47,12 +47,12 @@ class FuturesTest {
     void beforeEach() {
         // 创建线程池执行器对象
         executor = new ThreadPoolExecutor(
-            Runtime.getRuntime().availableProcessors(),
-            Runtime.getRuntime().availableProcessors(),
-            0,
-            TimeUnit.SECONDS,
-            new ArrayBlockingQueue<>(100),
-            new ThreadPoolExecutor.AbortPolicy());
+                Runtime.getRuntime().availableProcessors(),
+                Runtime.getRuntime().availableProcessors(),
+                0,
+                TimeUnit.SECONDS,
+                new ArrayBlockingQueue<>(100),
+                new ThreadPoolExecutor.AbortPolicy());
     }
 
     /**
@@ -99,29 +99,29 @@ class FuturesTest {
 
         // 为每个异步计算任务添加回调
         IntStream.range(1, 11).forEach(n -> Futures.addCallback(
-            // 为计算创建异步任务, 并为该任务设置回调
-            listeningDecorator.submit(() -> Fibonacci.calculate(n)),
-            // 回调函数
-            new FutureCallback<>() {
-                /**
-                 * 计算任务处理成功后的回调, 将计算结果作为参数传递
-                 */
-                @Override
-                public void onSuccess(Integer result) {
-                    // 保存计算结果
-                    results[n - 1] = result;
-                }
+                // 为计算创建异步任务, 并为该任务设置回调
+                listeningDecorator.submit(() -> Fibonacci.calculate(n)),
+                // 回调函数
+                new FutureCallback<>() {
+                    /**
+                     * 计算任务处理成功后的回调, 将计算结果作为参数传递
+                     */
+                    @Override
+                    public void onSuccess(Integer result) {
+                        // 保存计算结果
+                        results[n - 1] = result;
+                    }
 
-                /**
-                 * 计算任务处理失败后的回调, 将计算过程中产生的异常作为参数传递
-                 */
-                @Override
-                public void onFailure(@NotNull Throwable t) {
-                    throw new IllegalStateException("Cannot calculate fibonacci value", t);
-                }
-            },
-            // 设置回调方法运行的线程执行器
-            MoreExecutors.directExecutor()));
+                    /**
+                     * 计算任务处理失败后的回调, 将计算过程中产生的异常作为参数传递
+                     */
+                    @Override
+                    public void onFailure(@NotNull Throwable t) {
+                        throw new IllegalStateException("Cannot calculate fibonacci value", t);
+                    }
+                },
+                // 设置回调方法运行的线程执行器
+                MoreExecutors.directExecutor()));
 
         // 等待所有任务执行完毕
         await().atMost(2, TimeUnit.SECONDS).until(() -> Arrays.stream(results).noneMatch(n -> n == 0));
@@ -145,37 +145,37 @@ class FuturesTest {
 
         // 将要计算的参数转为 ListenableFuture 类型对象集合
         var futures = IntStream.range(1, 11)
-            .mapToObj(n -> listeningDecorator.submit(() -> Fibonacci.calculate(n)))
-            .toList();
+                .mapToObj(n -> listeningDecorator.submit(() -> Fibonacci.calculate(n)))
+                .toList();
 
         // 保存计算结果的集合对象
         var numbers = Lists.<Integer>newArrayList();
 
         // 为异步任务添加回调函数, 在其任务执行完毕后进行回调
         Futures.addCallback(
-            // 将 ListenableFuture 集合转为单个 ListenableFuture 对象, 并为该任务添加回调
-            Futures.allAsList(futures),
-            // 回调函数
-            new FutureCallback<>() {
-                /**
-                 * 计算任务处理成功后的回调, 将批量任务计算结果的集合作为参数传递
-                 */
-                @Override
-                public void onSuccess(List<Integer> result) {
-                    // 将计算结果复制到集合对象中
-                    numbers.addAll(result);
-                }
+                // 将 ListenableFuture 集合转为单个 ListenableFuture 对象, 并为该任务添加回调
+                Futures.allAsList(futures),
+                // 回调函数
+                new FutureCallback<>() {
+                    /**
+                     * 计算任务处理成功后的回调, 将批量任务计算结果的集合作为参数传递
+                     */
+                    @Override
+                    public void onSuccess(List<Integer> result) {
+                        // 将计算结果复制到集合对象中
+                        numbers.addAll(result);
+                    }
 
-                /**
-                 * 计算任务处理失败后的回调, 将计算过程中产生的异常作为参数传递
-                 */
-                @Override
-                public void onFailure(@NotNull Throwable t) {
-                    throw new UnsupportedOperationException("Unimplemented method 'onFailure'");
-                }
-            },
-            // 设置回调方法运行的线程执行器
-            MoreExecutors.directExecutor());
+                    /**
+                     * 计算任务处理失败后的回调, 将计算过程中产生的异常作为参数传递
+                     */
+                    @Override
+                    public void onFailure(@NotNull Throwable t) {
+                        throw new UnsupportedOperationException("Unimplemented method 'onFailure'");
+                    }
+                },
+                // 设置回调方法运行的线程执行器
+                MoreExecutors.directExecutor());
 
         // 等待所有任务执行完毕
         await().atMost(2, TimeUnit.SECONDS).until(() -> !numbers.isEmpty());
@@ -209,18 +209,18 @@ class FuturesTest {
 
         // 为异步任务添加监听器
         createTask.addListener(
-            // 设定异步任务完成后执行的 Callable 对象
-            () -> {
-                // 确认异步任务已经完成
-                then(createTask.isDone()).isTrue();
-                try {
-                    // 保存异步任务执行结果
-                    userRef.set(createTask.get());
-                } catch (InterruptedException | ExecutionException ignored) {
-                }
-            },
-            // 设定异步任务的线程执行器
-            MoreExecutors.directExecutor());
+                // 设定异步任务完成后执行的 Callable 对象
+                () -> {
+                    // 确认异步任务已经完成
+                    then(createTask.isDone()).isTrue();
+                    try {
+                        // 保存异步任务执行结果
+                        userRef.set(createTask.get());
+                    } catch (InterruptedException | ExecutionException ignored) {
+                    }
+                },
+                // 设定异步任务的线程执行器
+                MoreExecutors.directExecutor());
 
         // 等待异步任务存入结果
         await().atMost(2, TimeUnit.SECONDS).until(() -> userRef.get() != null);
@@ -272,33 +272,33 @@ class FuturesTest {
 
             // 当所有创建用户异步任务执行成功后, 进行回调, 返回该回调的 ListenableFuture 任务对象
             var createAllTask = Futures.whenAllSucceed(createTask1, createTask2).call(
-                () -> {
-                    // 确认前置任务已经完成
-                    then(createTask1.isDone()).isTrue();
-                    then(createTask2.isDone()).isTrue();
+                    () -> {
+                        // 确认前置任务已经完成
+                        then(createTask1.isDone()).isTrue();
+                        then(createTask2.isDone()).isTrue();
 
-                    // 返回前置任务的执行结果
-                    return ImmutableList.of(createTask1.get(), createTask2.get());
-                },
-                MoreExecutors.directExecutor());
+                        // 返回前置任务的执行结果
+                        return ImmutableList.of(createTask1.get(), createTask2.get());
+                    },
+                    MoreExecutors.directExecutor());
 
             // 对异步任务添加回调
             Futures.addCallback(
-                // 要回调的异步任务
-                createAllTask,
-                // 回调函数
-                new FutureCallback<>() {
-                    @Override
-                    public void onSuccess(ImmutableList<User> result) {
-                        // 将任务执行结果加入集合
-                        createdResults.addAll(result);
-                    }
+                    // 要回调的异步任务
+                    createAllTask,
+                    // 回调函数
+                    new FutureCallback<>() {
+                        @Override
+                        public void onSuccess(ImmutableList<User> result) {
+                            // 将任务执行结果加入集合
+                            createdResults.addAll(result);
+                        }
 
-                    @Override
-                    public void onFailure(@NotNull Throwable t) {
-                    }
-                },
-                MoreExecutors.directExecutor());
+                        @Override
+                        public void onFailure(@NotNull Throwable t) {
+                        }
+                    },
+                    MoreExecutors.directExecutor());
         }
 
         // 测试任务的异步链式调用: 产生一组创建用户的异步任务, 并在任务成功后, 链接一组查询用户信息的异步任务
@@ -310,38 +310,38 @@ class FuturesTest {
 
             // 当所有创建用户异步任务执行成功后, 进行回调, 返回另一组异步任务的 ListenableFuture 任务对象
             var findTasks = Futures.whenAllSucceed(createTask1, createTask2).callAsync(
-                () -> {
-                    // 确认前置任务已经完成
-                    then(createTask1.isDone()).isTrue();
-                    then(createTask2.isDone()).isTrue();
+                    () -> {
+                        // 确认前置任务已经完成
+                        then(createTask1.isDone()).isTrue();
+                        then(createTask2.isDone()).isTrue();
 
-                    // 返回由两个查询任务组成的异步任务
-                    return Futures.allAsList(
-                        service.findUserById(createTask1.get().id()),
-                        service.findUserById(createTask2.get().id()));
-                },
-                MoreExecutors.directExecutor());
+                        // 返回由两个查询任务组成的异步任务
+                        return Futures.allAsList(
+                                service.findUserById(createTask1.get().id()),
+                                service.findUserById(createTask2.get().id()));
+                    },
+                    MoreExecutors.directExecutor());
 
             // 对异步任务添加回调
             Futures.addCallback(
-                // 要回调的异步任务
-                findTasks,
-                // 回调函数
-                new FutureCallback<>() {
-                    @Override
-                    public void onSuccess(List<Optional<User>> result) {
-                        // 将任务执行结果加入集合
-                        result.stream()
-                            .filter(Optional::isPresent)
-                            .map(Optional::get)
-                            .forEach(findResults::add);
-                    }
+                    // 要回调的异步任务
+                    findTasks,
+                    // 回调函数
+                    new FutureCallback<>() {
+                        @Override
+                        public void onSuccess(List<Optional<User>> result) {
+                            // 将任务执行结果加入集合
+                            result.stream()
+                                    .filter(Optional::isPresent)
+                                    .map(Optional::get)
+                                    .forEach(findResults::add);
+                        }
 
-                    @Override
-                    public void onFailure(@NotNull Throwable t) {
-                    }
-                },
-                MoreExecutors.directExecutor());
+                        @Override
+                        public void onFailure(@NotNull Throwable t) {
+                        }
+                    },
+                    MoreExecutors.directExecutor());
         }
 
         // 等待异步任务执行完毕
@@ -349,8 +349,8 @@ class FuturesTest {
 
         // 确认任务执行正确
         then(createdResults).containsAll(findResults)
-            .extracting("id", "name")
-            .contains(tuple(1L, "Alvin"), tuple(2L, "Emma"));
+                .extracting("id", "name")
+                .contains(tuple(1L, "Alvin"), tuple(2L, "Emma"));
     }
 
     /**
@@ -386,32 +386,32 @@ class FuturesTest {
         var createdUsers = Lists.<User>newArrayList();
 
         Futures.addCallback(
-            // 创建用户, 返回异步任务
-            Futures.allAsList(
-                service.createUser(new User(1L, "Alvin")),
-                service.createUser(new User(2L, "Emma"))),
-            // 异步执行完毕后的回调, 传递执行结果
-            new FutureCallback<>() {
-                @Override
-                public void onSuccess(List<User> result) {
-                    // 保存用户创建任务结果
-                    createdUsers.addAll(result);
-                }
+                // 创建用户, 返回异步任务
+                Futures.allAsList(
+                        service.createUser(new User(1L, "Alvin")),
+                        service.createUser(new User(2L, "Emma"))),
+                // 异步执行完毕后的回调, 传递执行结果
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(List<User> result) {
+                        // 保存用户创建任务结果
+                        createdUsers.addAll(result);
+                    }
 
-                @Override
-                public void onFailure(@NotNull Throwable t) {
-                }
-            },
-            // 结果回调所在的线程执行器
-            MoreExecutors.directExecutor());
+                    @Override
+                    public void onFailure(@NotNull Throwable t) {
+                    }
+                },
+                // 结果回调所在的线程执行器
+                MoreExecutors.directExecutor());
 
         // 等待直到创建用户任务完成
         await().atMost(2, TimeUnit.SECONDS).until(() -> createdUsers.size() == 2);
 
         // 确认用户创建结果正确
         then(createdUsers)
-            .extracting("id", "name")
-            .contains(tuple(1L, "Alvin"), tuple(2L, "Emma"));
+                .extracting("id", "name")
+                .contains(tuple(1L, "Alvin"), tuple(2L, "Emma"));
 
         // 测试 transform 方法对异步任务结果进行转化
         // 保存异步任务结果的集合
@@ -419,32 +419,32 @@ class FuturesTest {
         {
             // 创建用户查询任务, 并通过 transform 将结果进行转换, 返回整个链式任务的异步任务对象
             var findUsersTask = Futures.transform(
-                // 合并两个查询任务为一个异步任务
-                Futures.allAsList(service.findUserById(1L), service.findUserById(2L)),
-                // 通过一个 Function 对象对合并查询任务结果进行转换, 该函数返回转换结果
-                opts -> opts.stream()
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .toList(),
-                // 执行转换任务的线程执行器
-                MoreExecutors.directExecutor());
+                    // 合并两个查询任务为一个异步任务
+                    Futures.allAsList(service.findUserById(1L), service.findUserById(2L)),
+                    // 通过一个 Function 对象对合并查询任务结果进行转换, 该函数返回转换结果
+                    opts -> opts.stream()
+                            .filter(Optional::isPresent)
+                            .map(Optional::get)
+                            .toList(),
+                    // 执行转换任务的线程执行器
+                    MoreExecutors.directExecutor());
 
             // 添加回调函数, 对链式任务的执行结果进行处理
             Futures.addCallback(
-                findUsersTask,
-                new FutureCallback<>() {
-                    @Override
-                    public void onSuccess(List<User> result) {
-                        // 保存执行结果
-                        foundUsers.addAll(result);
-                    }
+                    findUsersTask,
+                    new FutureCallback<>() {
+                        @Override
+                        public void onSuccess(List<User> result) {
+                            // 保存执行结果
+                            foundUsers.addAll(result);
+                        }
 
-                    @Override
-                    public void onFailure(@NotNull Throwable t) {
-                    }
-                },
-                // 执行结果回调任务的线程执行器
-                MoreExecutors.directExecutor());
+                        @Override
+                        public void onFailure(@NotNull Throwable t) {
+                        }
+                    },
+                    // 执行结果回调任务的线程执行器
+                    MoreExecutors.directExecutor());
         }
 
         // 测试 transformAsync 方法对异步任务结果进行转化
@@ -453,31 +453,31 @@ class FuturesTest {
         {
             // 创建用户查询任务, 并通过 transform 将结果进行转换, 返回整个链式任务的异步任务对象
             var findUsersTask = Futures.transformAsync(
-                Futures.allAsList(service.findUserById(1L), service.findUserById(2L)),
-                // 通过一个 AsyncFunction 对象对合并查询任务结果进行转换, 该函数返回转换的 ListenableFuture 异步任务对象
-                input -> listeningDecorator.submit(
-                    () -> input.stream()
-                        .filter(Optional::isPresent)
-                        .map(Optional::get)
-                        .toList()),
-                // 执行转换任务的线程执行器
-                MoreExecutors.directExecutor());
+                    Futures.allAsList(service.findUserById(1L), service.findUserById(2L)),
+                    // 通过一个 AsyncFunction 对象对合并查询任务结果进行转换, 该函数返回转换的 ListenableFuture 异步任务对象
+                    input -> listeningDecorator.submit(
+                            () -> input.stream()
+                                    .filter(Optional::isPresent)
+                                    .map(Optional::get)
+                                    .toList()),
+                    // 执行转换任务的线程执行器
+                    MoreExecutors.directExecutor());
 
             // 添加回调函数, 对链式任务的执行结果进行处理
             Futures.addCallback(
-                findUsersTask,
-                new FutureCallback<>() {
-                    @Override
-                    public void onSuccess(List<User> result) {
-                        // 保存执行结果
-                        asyncFoundUsers.addAll(result);
-                    }
+                    findUsersTask,
+                    new FutureCallback<>() {
+                        @Override
+                        public void onSuccess(List<User> result) {
+                            // 保存执行结果
+                            asyncFoundUsers.addAll(result);
+                        }
 
-                    @Override
-                    public void onFailure(@NotNull Throwable t) {
-                    }
-                },
-                MoreExecutors.directExecutor());
+                        @Override
+                        public void onFailure(@NotNull Throwable t) {
+                        }
+                    },
+                    MoreExecutors.directExecutor());
         }
 
         // 等待直到异步任务完成
@@ -485,8 +485,8 @@ class FuturesTest {
 
         // 确认两种方法返回的结果一致
         then(foundUsers).containsExactlyElementsOf(asyncFoundUsers)
-            .extracting("id", "name")
-            .contains(tuple(1L, "Alvin"), tuple(2L, "Emma"));
+                .extracting("id", "name")
+                .contains(tuple(1L, "Alvin"), tuple(2L, "Emma"));
     }
 
     /**
@@ -524,16 +524,16 @@ class FuturesTest {
         {
             // 捕获任务的异常, 对异常进行处理
             var cachingTask = Futures.catching(
-                // 期待抛出异常的任务 (本例中无异常抛出)
-                service.deleteUser(1L),
-                // 期望处理的异常类型
-                Exception.class,
-                // 异常处理回调函数, 对异常进行处理, 并返回原任务结果的备选值
-                ex -> {
-                    throw new AssertionError("Cannot run here", ex);
-                },
-                // 执行异常处理器的线程执行器对象
-                executor);
+                    // 期待抛出异常的任务 (本例中无异常抛出)
+                    service.deleteUser(1L),
+                    // 期望处理的异常类型
+                    Exception.class,
+                    // 异常处理回调函数, 对异常进行处理, 并返回原任务结果的备选值
+                    ex -> {
+                        throw new AssertionError("Cannot run here", ex);
+                    },
+                    // 执行异常处理器的线程执行器对象
+                    executor);
 
             // 保存执行结果的引用对象
             var userRef = new AtomicReference<User>();
@@ -541,23 +541,23 @@ class FuturesTest {
             // 为异常捕获任务添加回调函数
             // 由于本次 deleteUser 方法返回的任务不会抛出异常, 所以 cachingTask 任务相当于 deleteUser 任务
             Futures.addCallback(
-                // 要添加回调的任务对象
-                cachingTask,
-                // 回调函数
-                new FutureCallback<>() {
-                    @Override
-                    public void onSuccess(User result) {
-                        // 保存任务结果
-                        userRef.set(result);
-                    }
+                    // 要添加回调的任务对象
+                    cachingTask,
+                    // 回调函数
+                    new FutureCallback<>() {
+                        @Override
+                        public void onSuccess(User result) {
+                            // 保存任务结果
+                            userRef.set(result);
+                        }
 
-                    @Override
-                    public void onFailure(@NotNull Throwable t) {
-                        fail();
-                    }
-                },
-                // 执行回调函数的线程执行器
-                MoreExecutors.directExecutor());
+                        @Override
+                        public void onFailure(@NotNull Throwable t) {
+                            fail();
+                        }
+                    },
+                    // 执行回调函数的线程执行器
+                    MoreExecutors.directExecutor());
 
             // 等待任务结果返回
             await().atMost(3, TimeUnit.SECONDS).until(() -> userRef.get() != null);
@@ -574,19 +574,19 @@ class FuturesTest {
 
             // 捕获任务的异常, 对异常进行处理
             var cachingTask = Futures.catching(
-                // 期待抛出异常的任务 (本例中抛出 NoSuchElementException 异常)
-                service.deleteUser(2L),
-                // 期望处理的异常类型
-                Exception.class,
-                // 异常处理回调函数, 对异常进行处理, 并返回原任务结果的备选值
-                ex -> {
-                    // 保存异常对象
-                    exceptionRef.set(ex);
-                    // 返回钱一个任务结果的备选值
-                    return new User(0L, "Nobody");
-                },
-                // 执行异常处理器的线程执行器对象
-                MoreExecutors.directExecutor());
+                    // 期待抛出异常的任务 (本例中抛出 NoSuchElementException 异常)
+                    service.deleteUser(2L),
+                    // 期望处理的异常类型
+                    Exception.class,
+                    // 异常处理回调函数, 对异常进行处理, 并返回原任务结果的备选值
+                    ex -> {
+                        // 保存异常对象
+                        exceptionRef.set(ex);
+                        // 返回钱一个任务结果的备选值
+                        return new User(0L, "Nobody");
+                    },
+                    // 执行异常处理器的线程执行器对象
+                    MoreExecutors.directExecutor());
 
             // 保存执行结果的引用对象
             var userRef = new AtomicReference<User>();
@@ -594,22 +594,22 @@ class FuturesTest {
             // 为异常捕获任务添加回调函数
             // 由于本次 deleteUser 方法会抛出异常, 所以 cachingTask 任务相当于执行 deleteUser 任务后执行异常处理回调
             Futures.addCallback(
-                // 要添加回调的任务对象
-                cachingTask,
-                // 回调函数
-                new FutureCallback<>() {
-                    @Override
-                    public void onSuccess(User result) {
-                        userRef.set(result);
-                    }
+                    // 要添加回调的任务对象
+                    cachingTask,
+                    // 回调函数
+                    new FutureCallback<>() {
+                        @Override
+                        public void onSuccess(User result) {
+                            userRef.set(result);
+                        }
 
-                    @Override
-                    public void onFailure(@NotNull Throwable t) {
-                        fail();
-                    }
-                },
-                // 执行回调函数的线程执行器
-                MoreExecutors.directExecutor());
+                        @Override
+                        public void onFailure(@NotNull Throwable t) {
+                            fail();
+                        }
+                    },
+                    // 执行回调函数的线程执行器
+                    MoreExecutors.directExecutor());
 
             // 等待任务结果返回
             await().atMost(3, TimeUnit.SECONDS).until(() -> userRef.get() != null);
@@ -626,16 +626,16 @@ class FuturesTest {
         {
             // 捕获任务的异常, 对异常进行处理
             var cachingTask = Futures.catching(
-                // 要添加回调的任务对象
-                service.deleteUser(2L),
-                // 期望处理的异常类型
-                Exception.class,
-                // 异常处理回调函数, 对异常进行处理, 并返回原任务结果的备选值
-                ex -> {
-                    throw new IllegalArgumentException(ex);
-                },
-                // 执行异常处理器的线程执行器对象
-                MoreExecutors.directExecutor());
+                    // 要添加回调的任务对象
+                    service.deleteUser(2L),
+                    // 期望处理的异常类型
+                    Exception.class,
+                    // 异常处理回调函数, 对异常进行处理, 并返回原任务结果的备选值
+                    ex -> {
+                        throw new IllegalArgumentException(ex);
+                    },
+                    // 执行异常处理器的线程执行器对象
+                    MoreExecutors.directExecutor());
 
             // 保存抛出异常的引用对象
             var exceptionRef = new AtomicReference<Throwable>();
@@ -643,22 +643,22 @@ class FuturesTest {
             // 为异常捕获任务添加回调函数
             // 由于本次 cachingTask 任务抛出了新的异常, 所以 onFailure 方法会被回调
             Futures.addCallback(
-                // 要添加回调的任务对象
-                cachingTask,
-                // 回调函数
-                new FutureCallback<>() {
-                    @Override
-                    public void onSuccess(User result) {
-                        fail();
-                    }
+                    // 要添加回调的任务对象
+                    cachingTask,
+                    // 回调函数
+                    new FutureCallback<>() {
+                        @Override
+                        public void onSuccess(User result) {
+                            fail();
+                        }
 
-                    @Override
-                    public void onFailure(@NotNull Throwable t) {
-                        exceptionRef.set(t);
-                    }
-                },
-                // 执行回调函数的线程执行器
-                MoreExecutors.directExecutor());
+                        @Override
+                        public void onFailure(@NotNull Throwable t) {
+                            exceptionRef.set(t);
+                        }
+                    },
+                    // 执行回调函数的线程执行器
+                    MoreExecutors.directExecutor());
 
             // 等待任务结果返回
             await().atMost(3, TimeUnit.SECONDS).until(() -> exceptionRef.get() != null);
@@ -675,17 +675,17 @@ class FuturesTest {
 
             // 捕获任务的异常, 对异常进行处理
             var cachingTask = Futures.catchingAsync(
-                // 要添加回调的任务对象
-                service.deleteUser(2L),
-                // 期望处理的异常类型
-                Exception.class,
-                // 异常处理回调函数, 对异常进行处理, 并返回产生原任务结果备选值的异步任务
-                ex -> {
-                    exceptionRef.set(ex);
-                    return Futures.immediateFuture(new User(0L, "Nobody"));
-                },
-                // 执行异常处理器的线程执行器对象
-                MoreExecutors.directExecutor());
+                    // 要添加回调的任务对象
+                    service.deleteUser(2L),
+                    // 期望处理的异常类型
+                    Exception.class,
+                    // 异常处理回调函数, 对异常进行处理, 并返回产生原任务结果备选值的异步任务
+                    ex -> {
+                        exceptionRef.set(ex);
+                        return Futures.immediateFuture(new User(0L, "Nobody"));
+                    },
+                    // 执行异常处理器的线程执行器对象
+                    MoreExecutors.directExecutor());
 
             // 保存执行结果的引用对象
             var userRef = new AtomicReference<User>();
@@ -693,22 +693,22 @@ class FuturesTest {
             // 为异常捕获任务添加回调函数
             // 由于本次 deleteUser 方法会抛出异常, 所以 cachingTask 任务相当于执行 deleteUser 任务后执行异常处理回调
             Futures.addCallback(
-                // 要添加回调的任务对象
-                cachingTask,
-                // 回调函数
-                new FutureCallback<>() {
-                    @Override
-                    public void onSuccess(User result) {
-                        userRef.set(result);
-                    }
+                    // 要添加回调的任务对象
+                    cachingTask,
+                    // 回调函数
+                    new FutureCallback<>() {
+                        @Override
+                        public void onSuccess(User result) {
+                            userRef.set(result);
+                        }
 
-                    @Override
-                    public void onFailure(@NotNull Throwable t) {
-                        fail();
-                    }
-                },
-                // 执行回调函数的线程执行器
-                MoreExecutors.directExecutor());
+                        @Override
+                        public void onFailure(@NotNull Throwable t) {
+                            fail();
+                        }
+                    },
+                    // 执行回调函数的线程执行器
+                    MoreExecutors.directExecutor());
 
             // 等待任务结果返回
             await().atMost(3, TimeUnit.SECONDS).until(() -> userRef.get() != null);
@@ -751,12 +751,12 @@ class FuturesTest {
             // 为 createUser 任务设置超时时间
             // createUser 任务执行需要 1s 以上, 这里的设置会导致该任务执行超时
             var timeoutTask = Futures.withTimeout(
-                // 要监控超时的任务对象
-                service.createUser(new User(1L, "Alvin")),
-                // 任务超时时间设置
-                200, TimeUnit.MILLISECONDS,
-                // 执行超时监控的执行器
-                scheduledExecutor);
+                    // 要监控超时的任务对象
+                    service.createUser(new User(1L, "Alvin")),
+                    // 任务超时时间设置
+                    200, TimeUnit.MILLISECONDS,
+                    // 执行超时监控的执行器
+                    scheduledExecutor);
 
             // 保存任务执行中异常的引用对象
             var exceptionRef = new AtomicReference<Throwable>();
@@ -764,18 +764,18 @@ class FuturesTest {
             // 为任务添加回调
             // 由于该任务一定会超时, 所以不会回调 onSuccess, 会在 onFailure 回调中传递 TimeoutException 异常
             Futures.addCallback(
-                timeoutTask,
-                new FutureCallback<>() {
-                    @Override
-                    public void onSuccess(User result) {
-                    }
+                    timeoutTask,
+                    new FutureCallback<>() {
+                        @Override
+                        public void onSuccess(User result) {
+                        }
 
-                    @Override
-                    public void onFailure(@NotNull Throwable t) {
-                        exceptionRef.set(t);
-                    }
-                },
-                MoreExecutors.directExecutor());
+                        @Override
+                        public void onFailure(@NotNull Throwable t) {
+                            exceptionRef.set(t);
+                        }
+                    },
+                    MoreExecutors.directExecutor());
 
             // 等待任务执行完毕
             await().atMost(5, TimeUnit.SECONDS).until(() -> exceptionRef.get() != null);
@@ -789,9 +789,9 @@ class FuturesTest {
             // 为 createUser 任务设置超时时间
             // createUser 任务执行需要 1s 以上, 这里的设置不会导致超时
             var timeoutTask = Futures.withTimeout(
-                service.createUser(new User(1L, "Alvin")),
-                5, TimeUnit.SECONDS,
-                scheduledExecutor);
+                    service.createUser(new User(1L, "Alvin")),
+                    5, TimeUnit.SECONDS,
+                    scheduledExecutor);
 
             // 保存任务执行结果的引用对象
             var userRef = new AtomicReference<User>();
@@ -799,19 +799,19 @@ class FuturesTest {
             // 为任务添加回调
             // 由于该任务不会超时, 所以会回调 onSuccess, 传递任务执行结果
             Futures.addCallback(
-                timeoutTask,
-                new FutureCallback<>() {
-                    @Override
-                    public void onSuccess(User result) {
-                        // 保存任务执行结果
-                        userRef.set(result);
-                    }
+                    timeoutTask,
+                    new FutureCallback<>() {
+                        @Override
+                        public void onSuccess(User result) {
+                            // 保存任务执行结果
+                            userRef.set(result);
+                        }
 
-                    @Override
-                    public void onFailure(@NotNull Throwable t) {
-                    }
-                },
-                MoreExecutors.directExecutor());
+                        @Override
+                        public void onFailure(@NotNull Throwable t) {
+                        }
+                    },
+                    MoreExecutors.directExecutor());
 
             // 等待任务执行完毕
             await().atMost(5, TimeUnit.SECONDS).until(() -> userRef.get() != null);
@@ -881,11 +881,11 @@ class FuturesTest {
             });
             // 检查任务, 如果任务执行完毕且产生了异常, 则抛出该异常
             thenThrownBy(() -> Futures.getChecked(future, IOException.class, 2, TimeUnit.SECONDS))
-                .isInstanceOf(IOException.class);
+                    .isInstanceOf(IOException.class);
 
             // 重复检查任务, 重复抛出异常
             thenThrownBy(() -> Futures.getChecked(future, IOException.class))
-                .isInstanceOf(IOException.class);
+                    .isInstanceOf(IOException.class);
         }
     }
 }

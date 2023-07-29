@@ -48,7 +48,7 @@ class MonitorTest {
 
         // 确认最终计数结果和计算次数有差异
         then(counter.getCount())
-            .isLessThan(100 * 1000);
+                .isLessThan(100 * 1000);
     }
 
     /**

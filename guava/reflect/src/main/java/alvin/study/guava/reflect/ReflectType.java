@@ -27,7 +27,7 @@ public final class ReflectType {
     @Contract("_ -> new")
     public static <T> @NotNull TypeToken<List<T>> listOf(Class<T> elementType) {
         return (new TypeToken<List<T>>() { })
-            .where(new TypeParameter<>() { }, elementType);
+                .where(new TypeParameter<>() { }, elementType);
     }
 
     /**
@@ -40,7 +40,7 @@ public final class ReflectType {
     @Contract("_ -> new")
     public static <T> @NotNull TypeToken<List<T>> listOf(TypeToken<T> elementType) {
         return (new TypeToken<List<T>>() { })
-            .where(new TypeParameter<>() { }, elementType);
+                .where(new TypeParameter<>() { }, elementType);
     }
 
     /**
@@ -57,7 +57,7 @@ public final class ReflectType {
     @Contract("_, _ -> new")
     public static <K, V> @NotNull TypeToken<Map<K, V>> mapOf(Class<K> keyType, Class<V> valueType) {
         return (new TypeToken<Map<K, V>>() { })
-            .where(new TypeParameter<>() { }, keyType)
-            .where(new TypeParameter<>() { }, valueType);
+                .where(new TypeParameter<>() { }, keyType)
+                .where(new TypeParameter<>() { }, valueType);
     }
 }

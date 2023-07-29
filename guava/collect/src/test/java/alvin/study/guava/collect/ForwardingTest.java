@@ -136,21 +136,21 @@ class ForwardingTest {
         // 测试代理对象的 putAll 方法
         map.putAll(ImmutableMap.of(2L, "B", 3L, "C"));
         then(map).hasSize(3).containsExactly(
-            entry(1L, "A"),
-            entry(2L, "B"),
-            entry(3L, "C"));
+                entry(1L, "A"),
+                entry(2L, "B"),
+                entry(3L, "C"));
 
         // 确认代理对象的 putAll 方法无法添加包含空字符串或 null 元素为 value 的 Map 集合对象
         thenThrownBy(() -> map.putAll(ImmutableMap.of(4L, "", 5L, "")))
-            .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(IllegalArgumentException.class);
 
         // 确认通过 entrySet 方法获取的为 IdMap.IdMapEntry 类型的 Set 集合
         then(map.entrySet())
-            .containsExactly(
-                IdMapEntry.entry(1L, "A"),
-                IdMapEntry.entry(2L, "B"),
-                IdMapEntry.entry(3L, "C"))
-            .map(e -> (Object) e.getClass())
-            .containsExactly(IdMapEntry.class, IdMapEntry.class, IdMapEntry.class);
+                .containsExactly(
+                        IdMapEntry.entry(1L, "A"),
+                        IdMapEntry.entry(2L, "B"),
+                        IdMapEntry.entry(3L, "C"))
+                .map(e -> (Object) e.getClass())
+                .containsExactly(IdMapEntry.class, IdMapEntry.class, IdMapEntry.class);
     }
 }

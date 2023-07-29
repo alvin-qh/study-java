@@ -21,8 +21,8 @@ class ClassFinderTest {
 
         // 确认结果正确
         then(classes)
-            .isNotEmpty()
-            .hasSize(1)
-            .contains(User.class);
+                .isNotEmpty()
+                .hasSize(1)
+                .contains(User.class);
     }
 }

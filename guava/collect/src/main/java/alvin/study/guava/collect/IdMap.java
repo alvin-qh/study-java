@@ -79,8 +79,8 @@ public class IdMap extends ForwardingMap<Long, String> {
     @Override
     public Set<Entry<Long, String>> entrySet() {
         return delegatedMap.entrySet().stream()
-            .map(IdMapEntry::new)
-            .collect(Collectors.toSet());
+                .map(IdMapEntry::new)
+                .collect(Collectors.toSet());
     }
 
     /**

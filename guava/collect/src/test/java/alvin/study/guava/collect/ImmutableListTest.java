@@ -113,9 +113,9 @@ class ImmutableListTest {
     void builder_shouldCreateImmutableListByBuilder() {
         // 创建 Builder 对象, 逐步添加元素, 构建不变集合对象
         var list = ImmutableList.builder()
-            .add(1, 2, 3)
-            .addAll(Sets.newHashSet(4, 5, 6))
-            .build();
+                .add(1, 2, 3)
+                .addAll(Sets.newHashSet(4, 5, 6))
+                .build();
 
         then(list).containsExactly(1, 2, 3, 4, 5, 6);
     }
@@ -136,16 +136,16 @@ class ImmutableListTest {
     void builder_shouldCreateImmutableListByBuilderWithCapacity() {
         // 预期 5 个元素, 实际添加元素个数 <= 5, 构建不变集合
         var list = ImmutableList.builderWithExpectedSize(5)
-            .add(1, 2, 3)
-            .addAll(Sets.newHashSet(4, 5))
-            .build();
+                .add(1, 2, 3)
+                .addAll(Sets.newHashSet(4, 5))
+                .build();
         then(list).containsExactly(1, 2, 3, 4, 5);
 
         // 预期 5 个元素, 实际添加元素个数 > 5, 构建不变集合
         list = ImmutableList.builderWithExpectedSize(5)
-            .add(1, 2, 3)
-            .addAll(Sets.newHashSet(4, 5, 6))
-            .build();
+                .add(1, 2, 3)
+                .addAll(Sets.newHashSet(4, 5, 6))
+                .build();
         then(list).containsExactly(1, 2, 3, 4, 5, 6);
     }
 }

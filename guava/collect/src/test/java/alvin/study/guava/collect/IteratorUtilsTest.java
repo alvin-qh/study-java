@@ -373,7 +373,7 @@ class IteratorUtilsTest {
 
             // 因迭代器包含多个元素, 获取唯一元素时抛出异常
             thenThrownBy(() -> Iterators.getOnlyElement(list.iterator(), null))
-                .isInstanceOf(IllegalArgumentException.class);
+                    .isInstanceOf(IllegalArgumentException.class);
         }
 
         {

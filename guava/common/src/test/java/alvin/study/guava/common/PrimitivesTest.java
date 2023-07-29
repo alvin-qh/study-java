@@ -126,39 +126,39 @@ class PrimitivesTest {
         {
             // 确认超出 short 最大值时, 转换失败
             thenThrownBy(() -> Shorts.checkedCast((long) Short.MAX_VALUE + 1))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Out of range");
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("Out of range");
 
             // 确认小于 short 最小值时, 转换失败
             thenThrownBy(() -> Shorts.checkedCast((long) Short.MIN_VALUE - 1))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Out of range");
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("Out of range");
         }
 
         // 检查所给整数是否能转化为 int 类型
         {
             // 确认超出 int 最大值时, 转换失败
             thenThrownBy(() -> Ints.checkedCast((long) Integer.MAX_VALUE + 1))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Out of range");
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("Out of range");
 
             // 确认小于 int 最小值时, 转换失败
             thenThrownBy(() -> Ints.checkedCast((long) Integer.MIN_VALUE - 1))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Out of range");
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("Out of range");
         }
 
         // 检查所给整数是否能转化为 char 类型
         {
             // 确认超出 char 最大值时, 转换失败
             thenThrownBy(() -> Chars.checkedCast((long) Character.MAX_VALUE + 1))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Out of range");
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("Out of range");
 
             // 确认小于 char 最小值时, 转换失败
             thenThrownBy(() -> Chars.checkedCast((long) Character.MIN_VALUE - 1))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Out of range");
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("Out of range");
         }
     }
 
@@ -331,14 +331,14 @@ class PrimitivesTest {
         {
             // 将 0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD 和 0xEF 转为 0x1234567890ABCDEF
             var val = Longs.fromBytes(
-                (byte) 0x12, (byte) 0x34, (byte) 0x56, (byte) 0x78,
-                (byte) 0x90, (byte) 0xAB, (byte) 0xCD, (byte) 0xEF);
+                    (byte) 0x12, (byte) 0x34, (byte) 0x56, (byte) 0x78,
+                    (byte) 0x90, (byte) 0xAB, (byte) 0xCD, (byte) 0xEF);
             then(val).isEqualTo(0x1234567890ABCDEFL);
 
             // 将 [0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF] 转为 0x1234567890ABCDEF
             val = Longs.fromByteArray(new byte[]{
-                (byte) 0x12, (byte) 0x34, (byte) 0x56, (byte) 0x78,
-                (byte) 0x90, (byte) 0xAB, (byte) 0xCD, (byte) 0xEF
+                    (byte) 0x12, (byte) 0x34, (byte) 0x56, (byte) 0x78,
+                    (byte) 0x90, (byte) 0xAB, (byte) 0xCD, (byte) 0xEF
             });
             then(val).isEqualTo(0x1234567890ABCDEFL);
         }
@@ -381,8 +381,8 @@ class PrimitivesTest {
             // 将 0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD 和 0xEF 转为 0x1234567890ABCDEF
             var bytes = Longs.toByteArray(0x1234567890ABCDEFL);
             then(bytes).containsExactly(
-                0x12, 0x34, 0x56, 0x78,
-                0x90, 0xAB, 0xCD, 0xEF);
+                    0x12, 0x34, 0x56, 0x78,
+                    0x90, 0xAB, 0xCD, 0xEF);
         }
     }
 
@@ -683,9 +683,9 @@ class PrimitivesTest {
         // 将多个 byte 数组连接为一个 byte 数组
         {
             var array = Bytes.concat(
-                new byte[]{ 0x1, 0x2 },
-                new byte[]{ 0x3, 0x4 },
-                new byte[]{ 0x5 });
+                    new byte[]{ 0x1, 0x2 },
+                    new byte[]{ 0x3, 0x4 },
+                    new byte[]{ 0x5 });
 
             then(array).containsExactly(0x1, 0x2, 0x3, 0x4, 0x5);
         }
@@ -693,9 +693,9 @@ class PrimitivesTest {
         // 将多个 short 数组连接为一个 short 数组
         {
             var array = Shorts.concat(
-                new short[]{ 1, 2 },
-                new short[]{ 3, 4 },
-                new short[]{ 5 });
+                    new short[]{ 1, 2 },
+                    new short[]{ 3, 4 },
+                    new short[]{ 5 });
 
             then(array).containsExactly(1, 2, 3, 4, 5);
         }
@@ -703,9 +703,9 @@ class PrimitivesTest {
         // 将多个 int 数组连接为一个 int 数组
         {
             var array = Ints.concat(
-                new int[]{ 1, 2 },
-                new int[]{ 3, 4 },
-                new int[]{ 5 });
+                    new int[]{ 1, 2 },
+                    new int[]{ 3, 4 },
+                    new int[]{ 5 });
 
             then(array).containsExactly(1, 2, 3, 4, 5);
         }
@@ -713,9 +713,9 @@ class PrimitivesTest {
         // 将多个 long 数组连接为一个 long 数组
         {
             var array = Longs.concat(
-                new long[]{ 1, 2 },
-                new long[]{ 3, 4 },
-                new long[]{ 5 });
+                    new long[]{ 1, 2 },
+                    new long[]{ 3, 4 },
+                    new long[]{ 5 });
 
             then(array).containsExactly(1L, 2L, 3L, 4L, 5L);
         }
@@ -723,9 +723,9 @@ class PrimitivesTest {
         // 将多个 float 数组连接为一个 float 数组
         {
             var array = Floats.concat(
-                new float[]{ 0.1f, 0.2f },
-                new float[]{ 0.3f, 0.4f },
-                new float[]{ 0.5f });
+                    new float[]{ 0.1f, 0.2f },
+                    new float[]{ 0.3f, 0.4f },
+                    new float[]{ 0.5f });
 
             then(array).containsExactly(0.1f, 0.2f, 0.3f, 0.4f, 0.5f);
         }
@@ -733,9 +733,9 @@ class PrimitivesTest {
         // 将多个 double 数组连接为一个 double 数组
         {
             var array = Doubles.concat(
-                new double[]{ 0.1, 0.2 },
-                new double[]{ 0.3, 0.4 },
-                new double[]{ 0.5 });
+                    new double[]{ 0.1, 0.2 },
+                    new double[]{ 0.3, 0.4 },
+                    new double[]{ 0.5 });
 
             then(array).containsExactly(0.1, 0.2, 0.3, 0.4, 0.5);
         }
@@ -743,9 +743,9 @@ class PrimitivesTest {
         // 将多个 char 数组连接为一个 char 数组
         {
             var array = Chars.concat(
-                new char[]{ 'A', 'B' },
-                new char[]{ 'C', 'D' },
-                new char[]{ 'E' });
+                    new char[]{ 'A', 'B' },
+                    new char[]{ 'C', 'D' },
+                    new char[]{ 'E' });
 
             then(array).containsExactly('A', 'B', 'C', 'D', 'E');
         }
@@ -753,9 +753,9 @@ class PrimitivesTest {
         // 将多个 boolean 数组连接为一个 boolean 数组
         {
             var array = Booleans.concat(
-                new boolean[]{ true, false },
-                new boolean[]{ false, true },
-                new boolean[]{ true });
+                    new boolean[]{ true, false },
+                    new boolean[]{ false, true },
+                    new boolean[]{ true });
 
             then(array).containsExactly(true, false, false, true, true);
         }
@@ -1346,8 +1346,8 @@ class PrimitivesTest {
 
             then(comparator.compare(new float[]{ 0.1f, 0.2f, 0.3f }, new float[]{ 0.1f, 0.2f, 0.3f })).isEqualTo(0);
             then(comparator.compare(
-                new float[]{ 0.1f, 0.2f, 0.3f, 0.4f },
-                new float[]{ 0.1f, 0.2f, 0.3f })).isEqualTo(1);
+                    new float[]{ 0.1f, 0.2f, 0.3f, 0.4f },
+                    new float[]{ 0.1f, 0.2f, 0.3f })).isEqualTo(1);
             then(comparator.compare(new float[]{ 0.1f, 0.2f }, new float[]{ 0.1f, 0.2f, 0.3f })).isEqualTo(-1);
         }
 
@@ -1374,11 +1374,11 @@ class PrimitivesTest {
             var comparator = Booleans.lexicographicalComparator();
 
             then(comparator.compare(
-                new boolean[]{ true, false, true },
-                new boolean[]{ true, false, true })).isEqualTo(0);
+                    new boolean[]{ true, false, true },
+                    new boolean[]{ true, false, true })).isEqualTo(0);
             then(comparator.compare(
-                new boolean[]{ true, false, true, false },
-                new boolean[]{ true, false, true })).isEqualTo(1);
+                    new boolean[]{ true, false, true, false },
+                    new boolean[]{ true, false, true })).isEqualTo(1);
             then(comparator.compare(new boolean[]{ true, false }, new boolean[]{ true, false, true })).isEqualTo(-1);
         }
     }

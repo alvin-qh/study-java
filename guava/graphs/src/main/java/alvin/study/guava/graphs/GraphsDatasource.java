@@ -71,19 +71,19 @@ public class GraphsDatasource<N, E> {
      * @return {@link MutableGraph} 对象, 表示一个图对象 (包括"有向图"和"无向图")
      */
     public MutableGraph<N> buildGraph(
-        boolean directed,
-        ElementOrder<N> nodeOrder,
-        ElementOrder<N> incidentEdgeOrder,
-        boolean allowsSelfLoops) {
+            boolean directed,
+            ElementOrder<N> nodeOrder,
+            ElementOrder<N> incidentEdgeOrder,
+            boolean allowsSelfLoops) {
         // 创建无向图
         var graph = (directed ? GraphBuilder.directed() : GraphBuilder.undirected())
-            // 设置"节点"迭代顺序
-            .nodeOrder(nodeOrder)
-            // 设置"边"的迭代顺序
-            .incidentEdgeOrder(incidentEdgeOrder)
-            // 是否允许产生节点自环
-            .allowsSelfLoops(allowsSelfLoops)
-            .build();
+                // 设置"节点"迭代顺序
+                .nodeOrder(nodeOrder)
+                // 设置"边"的迭代顺序
+                .incidentEdgeOrder(incidentEdgeOrder)
+                // 是否允许产生节点自环
+                .allowsSelfLoops(allowsSelfLoops)
+                .build();
 
         // 为无向图添加边
         for (var edge : edges) {
@@ -121,9 +121,9 @@ public class GraphsDatasource<N, E> {
      * @return {@link MutableGraph} 对象, 表示一个图对象 (包括"有向图"和"无向图")
      */
     public MutableGraph<N> buildGraph(
-        boolean directed,
-        ElementOrder<N> nodeOrder,
-        ElementOrder<N> incidentEdgeOrder) {
+            boolean directed,
+            ElementOrder<N> nodeOrder,
+            ElementOrder<N> incidentEdgeOrder) {
         return buildGraph(directed, nodeOrder, incidentEdgeOrder, false);
     }
 
@@ -144,13 +144,13 @@ public class GraphsDatasource<N, E> {
      * @return {@link MutableValueGraph} 对象, 表示一个具有边权重的图对象 (包括"有向图"和"无向图")
      */
     public MutableValueGraph<N, E> buildValueGraph(
-        boolean directed,
-        ElementOrder<N> nodeOrder,
-        ElementOrder<N> incidentEdgeOrder) {
+            boolean directed,
+            ElementOrder<N> nodeOrder,
+            ElementOrder<N> incidentEdgeOrder) {
         var graph = (directed ? ValueGraphBuilder.directed() : ValueGraphBuilder.undirected())
-            .nodeOrder(nodeOrder)
-            .incidentEdgeOrder(incidentEdgeOrder)
-            .<N, E>build();
+                .nodeOrder(nodeOrder)
+                .incidentEdgeOrder(incidentEdgeOrder)
+                .<N, E>build();
 
         for (var edge : edges) {
             graph.putEdgeValue(edge.node1(), edge.node2(), edge.weight());
@@ -180,15 +180,15 @@ public class GraphsDatasource<N, E> {
      * @return {@link MutableNetwork} 对象, 表示一个网络对象 (包括"有向网络"和"无向网络")
      */
     public MutableNetwork<N, E> buildNetwork(
-        boolean directed,
-        ElementOrder<N> nodeOrder,
-        ElementOrder<E> edgeOrder) {
+            boolean directed,
+            ElementOrder<N> nodeOrder,
+            ElementOrder<E> edgeOrder) {
         var network = (directed ? NetworkBuilder.directed() : NetworkBuilder.undirected())
-            .nodeOrder(nodeOrder)
-            .edgeOrder(edgeOrder)
-            // 允许平行边
-            .allowsParallelEdges(true)
-            .build();
+                .nodeOrder(nodeOrder)
+                .edgeOrder(edgeOrder)
+                // 允许平行边
+                .allowsParallelEdges(true)
+                .build();
 
         for (var edge : edges) {
             network.addEdge(edge.node1(), edge.node2(), edge.weight());
@@ -213,7 +213,7 @@ public class GraphsDatasource<N, E> {
      */
     public List<EndpointPair<N>> orderedEdges(boolean inverse) {
         var stream = inverse ? edges.stream().map(e -> EndpointPair.ordered(e.node2(), e.node1()))
-            : edges.stream().map(e -> EndpointPair.ordered(e.node1(), e.node2()));
+                : edges.stream().map(e -> EndpointPair.ordered(e.node1(), e.node2()));
         return stream.toList();
     }
 
@@ -225,7 +225,7 @@ public class GraphsDatasource<N, E> {
      */
     public List<EndpointPair<N>> unOrderedEdges(boolean inverse) {
         var stream = inverse ? edges.stream().map(e -> EndpointPair.unordered(e.node2(), e.node1()))
-            : edges.stream().map(e -> EndpointPair.unordered(e.node1(), e.node2()));
+                : edges.stream().map(e -> EndpointPair.unordered(e.node1(), e.node2()));
         return stream.toList();
     }
 

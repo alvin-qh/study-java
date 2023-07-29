@@ -50,8 +50,8 @@ class PreconditionsTest {
         // 检查参数是否符合要求, 即通过一个条件表达式对参数进行检查,
         thenThrownBy(() -> Preconditions.checkArgument(arg > 10)).isInstanceOf(IllegalArgumentException.class);
         thenThrownBy(() -> Preconditions.checkArgument(arg > 10, "Expect n > 10, but n = %s", arg))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Expect n > 10, but n = %s", arg);
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Expect n > 10, but n = %s", arg);
     }
 
     /**
@@ -77,8 +77,8 @@ class PreconditionsTest {
         // 检查状态是否符合要求, 即通过一个 boolean 表达式对参数进行检查,
         thenThrownBy(() -> Preconditions.checkState(state == 0)).isInstanceOf(IllegalStateException.class);
         thenThrownBy(() -> Preconditions.checkState(state == 0, "Expect n is zero"))
-            .isInstanceOf(IllegalStateException.class)
-            .hasMessage("Expect n is zero");
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("Expect n is zero");
     }
 
     /**
@@ -104,8 +104,8 @@ class PreconditionsTest {
         // 检查一个引用是否不为 null
         thenThrownBy(() -> Preconditions.checkNotNull(nullValue)).isInstanceOf(NullPointerException.class);
         thenThrownBy(() -> Preconditions.checkNotNull(nullValue, "Expect obj not null"))
-            .isInstanceOf(NullPointerException.class)
-            .hasMessage("Expect obj not null");
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("Expect obj not null");
 
         // 检查一个引用是否不为 null, 如果不为 null, 返回该引用本身
         var nonNullValue = new Object();
@@ -130,9 +130,9 @@ class PreconditionsTest {
      * </p>
      */
     @CsvSource({
-        "0,valid",
-        "3,valid",
-        "4,invalid"
+            "0,valid",
+            "3,valid",
+            "4,invalid"
     })
     @ParameterizedTest
     void elementIndex_shouldCheckElementIndexOfList(int index, String state) {
@@ -145,12 +145,12 @@ class PreconditionsTest {
             // 检查一个元素索引值是否正确, 如果不正确, 则抛出 IndexOutOfBoundsException 异常
             // 使用默认索引描述 (默认为 "index")
             thenThrownBy(() -> Preconditions.checkElementIndex(index, list.size()))
-                .isInstanceOf(IndexOutOfBoundsException.class)
-                .hasMessage("index (%s) must be less than size (%s)", index, list.size());
+                    .isInstanceOf(IndexOutOfBoundsException.class)
+                    .hasMessage("index (%s) must be less than size (%s)", index, list.size());
             // 自定义索引描述
             thenThrownBy(() -> Preconditions.checkElementIndex(index, list.size(), "Argument n"))
-                .isInstanceOf(IndexOutOfBoundsException.class)
-                .hasMessage("Argument n (%s) must be less than size (%s)", index, list.size());
+                    .isInstanceOf(IndexOutOfBoundsException.class)
+                    .hasMessage("Argument n (%s) must be less than size (%s)", index, list.size());
         }
     }
 
@@ -171,9 +171,9 @@ class PreconditionsTest {
      * </p>
      */
     @CsvSource({
-        "0,valid",
-        "4,valid",
-        "5,invalid"
+            "0,valid",
+            "4,valid",
+            "5,invalid"
     })
     @ParameterizedTest
     void preconditions_shouldCheckValuesByPreconditions(int index, String state) {
@@ -186,12 +186,12 @@ class PreconditionsTest {
             // 检查一个元素索引值是否正确, 如果不正确, 则抛出 IndexOutOfBoundsException 异常
             // 使用默认索引描述 (默认为 "index")
             thenThrownBy(() -> Preconditions.checkPositionIndex(index, list.size()))
-                .isInstanceOf(IndexOutOfBoundsException.class)
-                .hasMessage("index (%s) must not be greater than size (%s)", index, list.size());
+                    .isInstanceOf(IndexOutOfBoundsException.class)
+                    .hasMessage("index (%s) must not be greater than size (%s)", index, list.size());
             // 自定义索引描述
             thenThrownBy(() -> Preconditions.checkPositionIndex(index, list.size(), "Argument n"))
-                .isInstanceOf(IndexOutOfBoundsException.class)
-                .hasMessage("Argument n (%s) must not be greater than size (%s)", index, list.size());
+                    .isInstanceOf(IndexOutOfBoundsException.class)
+                    .hasMessage("Argument n (%s) must not be greater than size (%s)", index, list.size());
         }
     }
 }

@@ -74,9 +74,9 @@ class StringUtilsTest {
 
         // 在连接过程中, 将 Map 中的所有键值对进行连接, 键值对之间通过指定的分隔符字符串分割
         s = Joiner.on(">>").withKeyValueSeparator(":").join(ImmutableSortedMap.of(
-            "A", 100,
-            "B", 200,
-            "C", 300));
+                "A", 100,
+                "B", 200,
+                "C", 300));
         then(s).isEqualTo("A:100>>B:200>>C:300");
 
         var builder = new StringBuilder();
@@ -162,9 +162,9 @@ class StringUtilsTest {
         // 将字符串通过指定分隔符分割为键值对, 组成 Map 对象, 这里需要指定键值对之间的分隔符
         var map = Splitter.on(">>").withKeyValueSeparator(":").split("A:100>>B:200>>C:300");
         then(map).containsExactly(
-            entry("A", "100"),
-            entry("B", "200"),
-            entry("C", "300"));
+                entry("A", "100"),
+                entry("B", "200"),
+                entry("C", "300"));
 
         // 将字符串分割为 List 对象
         var list = Splitter.on(">>").splitToList("A>>B>>C");
@@ -235,9 +235,9 @@ class StringUtilsTest {
         // negate 表示和前一个匹配器不匹配
         // precomputed 表示优化组合关系
         matcher = CharMatcher.inRange('A', 'C')
-            .or(CharMatcher.inRange('a', 'c'))
-            .and(CharMatcher.whitespace().negate())
-            .precomputed();
+                .or(CharMatcher.inRange('a', 'c'))
+                .and(CharMatcher.whitespace().negate())
+                .precomputed();
         then(matcher.matchesAllOf("ABCabc")).isTrue();
         then(matcher.matchesAllOf(" A")).isFalse();
     }

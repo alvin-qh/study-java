@@ -156,9 +156,9 @@ class RateLimiterTest {
 
         // 确认成功调用次数依次上升
         then(records.get(0).acquired())
-            .isLessThan(records.get(1).acquired())
-            .isLessThan(records.get(2).acquired())
-            .isLessThan(records.get(3).acquired());
+                .isLessThan(records.get(1).acquired())
+                .isLessThan(records.get(2).acquired())
+                .isLessThan(records.get(3).acquired());
 
         // 确认最后一阶段调用已经达到预设的限制值
         then(records.get(3).acquired()).isGreaterThan(45).isLessThanOrEqualTo(50);

@@ -71,10 +71,10 @@ class ClassToInstanceMapTest {
         // 创建对象, 指定对象类型和对象实例必须为 Number 类型的子类型
         // 因为创建的为不可变对象, 所以需要通过 Builder 对象进行创建
         var map = ImmutableClassToInstanceMap.<Number>builder()
-            // 添加类型和实例的对应关系
-            .put(Double.class, 0.1)
-            .put(Integer.class, 100)
-            .build();
+                // 添加类型和实例的对应关系
+                .put(Double.class, 0.1)
+                .put(Integer.class, 100)
+                .build();
 
         // 通过类型获取对应的实力, 确定和存储的实例一致
         then(map.getInstance(Double.class)).isEqualTo(0.1);

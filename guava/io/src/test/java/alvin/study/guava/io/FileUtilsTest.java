@@ -446,11 +446,11 @@ class FileUtilsTest {
 
         // 定义要在父目录中创建的子目录和文件
         var paths = new Path[]{
-            parent.resolve("1.txt"),
-            parent.resolve("2.txt"),
-            parent.resolve("3.txt"),
-            parent.resolve("a"),
-            parent.resolve("b")
+                parent.resolve("1.txt"),
+                parent.resolve("2.txt"),
+                parent.resolve("3.txt"),
+                parent.resolve("a"),
+                parent.resolve("b")
         };
 
         try {

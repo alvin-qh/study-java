@@ -37,9 +37,9 @@ public class Person {
      */
     public static Funnel<Person> makeFunnel() {
         return (person, into) -> into
-            .putLong(person.getId())
-            .putString(person.getName(), StandardCharsets.UTF_8)
-            .putString(person.getBirthday().toString(), StandardCharsets.UTF_8)
-            .putString(person.getLocation(), StandardCharsets.UTF_8);
+                .putLong(person.getId())
+                .putString(person.getName(), StandardCharsets.UTF_8)
+                .putString(person.getBirthday().toString(), StandardCharsets.UTF_8)
+                .putString(person.getLocation(), StandardCharsets.UTF_8);
     }
 }

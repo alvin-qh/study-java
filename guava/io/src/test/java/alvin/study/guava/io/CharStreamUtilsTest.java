@@ -75,10 +75,10 @@ class CharStreamUtilsTest {
     void readLines_shouldReadLinesFromReadable() throws IOException {
         // 测试通过 Reader 读取行字符串集合
         try (var reader = asReader("""
-            Line1
-            Line2
-            Line3
-            """)) {
+                Line1
+                Line2
+                Line3
+                """)) {
             // 读取所有的行, 返回行集合
             var lines = CharStreams.readLines(reader);
             // 确认读取的行集合
@@ -87,10 +87,10 @@ class CharStreamUtilsTest {
 
         // 测试通过 Reader 读取行字符串集合, 并将结果进行转化
         try (var reader = asReader("""
-            Line1
-            Line2
-            Line3
-            """)) {
+                Line1
+                Line2
+                Line3
+                """)) {
             var lines = CharStreams.readLines(reader, new LineProcessor<String>() {
                 // 保存读取结果
                 private final List<String> lines = Lists.newArrayList();

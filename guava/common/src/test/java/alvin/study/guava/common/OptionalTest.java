@@ -23,12 +23,12 @@ import static org.assertj.core.api.BDDAssertions.thenThrownBy;
  * </p>
  */
 @SuppressWarnings({
-    "Guava",
-    "ConstantValue",
-    "DataFlowIssue",
-    "Convert2MethodRef",
-    "ExcessiveLambdaUsage",
-    "OptionalGetWithoutIsPresent"
+        "Guava",
+        "ConstantValue",
+        "DataFlowIssue",
+        "Convert2MethodRef",
+        "ExcessiveLambdaUsage",
+        "OptionalGetWithoutIsPresent"
 })
 class OptionalTest {
     /**
@@ -164,8 +164,8 @@ class OptionalTest {
         // 将 Guava Optional 对象转为 Java Optional 对象
         // 通过 ifPresentOrElse 方法根据 Optional 对象中存储引用的情况执行不同的 Lambda 表达式
         opt.toJavaUtil().ifPresentOrElse(
-            val -> then(val).isEqualTo(100),
-            Assertions::fail);
+                val -> then(val).isEqualTo(100),
+                Assertions::fail);
 
         // 将 Guava Optional 对象转为 Java Optional 对象
         // 通过将 Optional 对象转为 Stream 对象, 利用 Stream 对象的能力完成后续操作

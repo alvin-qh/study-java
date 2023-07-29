@@ -118,10 +118,10 @@ class CharSourceTest {
     void read_shouldReadStringsFromCharSources() throws IOException {
         // 将多行字符串包装为 CharSource 对象
         var source = CharSource.wrap("""
-            Line1
-            Line2
-            Line3
-            """);
+                Line1
+                Line2
+                Line3
+                """);
 
         // 确认读取了 CharSource 中的全部字符内容
         then(source.read()).isEqualTo("Line1\nLine2\nLine3\n");
