@@ -517,13 +517,15 @@ class CollsTest {
     void merge_shouldMergeMultiCollections() {
         var rand = new Random();
 
-        // 产生一个 Collection 对象的数组, 每个 Collection 集合中包含 [1..10) 范围内的若干数值
-        var colls = IntStream.range(0, 5)
-            .mapToObj(n -> rand.ints(5, 1, 10).boxed().toList())
-            .toArray(Collection[]::new);
-
         // 合并多个集合
-        var results = Colls.merge(true, colls);
+        var results = Colls.merge(
+            true,
+            rand.ints(5, 1, 10).boxed().toList(),
+            rand.ints(5, 1, 10).boxed().toList(),
+            rand.ints(5, 1, 10).boxed().toList(),
+            rand.ints(5, 1, 10).boxed().toList(),
+            rand.ints(5, 1, 10).boxed().toList()
+        );
         // 确认合并后的集合大小不会超过 10
         then(results).size().isLessThan(10);
 

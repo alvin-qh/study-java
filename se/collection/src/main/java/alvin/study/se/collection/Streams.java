@@ -160,7 +160,7 @@ public final class Streams {
     private static <T> @NotNull Collector<T, ?, Set<T>> toLinkedSet() {
         return Collector.of(
             // 集合对象创建函数
-            LinkedHashSet::new,
+            LinkedHashSet<T>::new,
             // 元素添加函数
             Set::add,
             // 集合合并函数
