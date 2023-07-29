@@ -97,8 +97,8 @@ public class UserRepository {
      */
     public BloomFilter<Long> toBloomFilter(long expectedInsertions) {
         return userStorage.values()
-                .stream()
-                .map(User::id)
-                .collect(BloomFilter.toBloomFilter((id, into) -> into.putLong(id), expectedInsertions, 0.001));
+            .stream()
+            .map(User::id)
+            .collect(BloomFilter.toBloomFilter((id, into) -> into.putLong(id), expectedInsertions, 0.001));
     }
 }
