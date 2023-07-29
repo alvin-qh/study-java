@@ -19,8 +19,8 @@ import org.springframework.context.annotation.Profile;
  * </p>
  */
 @Profile({
-    "server-01",
-    "server-02"
+        "server-01",
+        "server-02"
 })
 @Configuration("config.eureka.server")
 @EnableEurekaServer

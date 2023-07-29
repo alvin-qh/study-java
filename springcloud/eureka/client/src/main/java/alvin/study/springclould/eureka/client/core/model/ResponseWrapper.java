@@ -49,11 +49,11 @@ public final class ResponseWrapper<T> {
      */
     @JsonCreator
     ResponseWrapper(
-        @JsonProperty("retCode") int retCode,
-        @JsonProperty("errMsg") String errMsg,
-        @JsonProperty("payload") T payload,
-        @JsonProperty("path") String path,
-        @JsonProperty("timestamp") Instant timestamp) {
+            @JsonProperty("retCode") int retCode,
+            @JsonProperty("errMsg") String errMsg,
+            @JsonProperty("payload") T payload,
+            @JsonProperty("path") String path,
+            @JsonProperty("timestamp") Instant timestamp) {
         this.retCode = retCode;
         this.errMsg = errMsg;
         this.payload = payload;

@@ -1,8 +1,8 @@
 package alvin.study.springclould.eureka.client;
 
-import alvin.study.springclould.eureka.client.endpoint.model.HelloDto;
 import alvin.study.springclould.eureka.client.conf.EurekaClientConfig;
 import alvin.study.springclould.eureka.client.core.model.ResponseWrapper;
+import alvin.study.springclould.eureka.client.endpoint.model.HelloDto;
 import alvin.study.springclould.eureka.client.service.HelloService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;

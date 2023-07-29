@@ -60,6 +60,15 @@ import java.util.stream.Collectors;
 @RestControllerAdvice(basePackages = "alvin.study.springclould.eureka.client.endpoint") // 限定 Controller 的范围
 public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
     /**
+     * 以警告记录异常日志
+     *
+     * @param e 异常对象
+     */
+    private static void warnLog(Exception e) {
+        log.warn("Some error raised and will return to client", e);
+    }
+
+    /**
      * 返回 {@code true} 或 {@code false}, 以决定 {@code beforeBodyWrite} 方法是否需要执行
      *
      * <p>
@@ -79,8 +88,8 @@ public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
 
         // 如果 Controller 方法返回类型为 Response 类型, 则返回 false
         return !ResponseWrapper.class.isAssignableFrom(retType)
-            && !ResponseEntity.class.isAssignableFrom(retType)
-            && !CharSequence.class.isAssignableFrom(retType);
+                && !ResponseEntity.class.isAssignableFrom(retType)
+                && !CharSequence.class.isAssignableFrom(retType);
     }
 
     /**
@@ -100,12 +109,12 @@ public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
      */
     @Override
     public Object beforeBodyWrite(
-        Object body, // controller 方法返回的返回值
-        MethodParameter returnType,
-        MediaType selectedContentType,
-        Class<? extends HttpMessageConverter<?>> selectedConverterType,
-        ServerHttpRequest request,
-        ServerHttpResponse response) {
+            Object body, // controller 方法返回的返回值
+            MethodParameter returnType,
+            MediaType selectedContentType,
+            Class<? extends HttpMessageConverter<?>> selectedConverterType,
+            ServerHttpRequest request,
+            ServerHttpResponse response) {
         // 返回表示正确的 Response 对象
         return ResponseWrapper.success(body);
     }
@@ -140,14 +149,14 @@ public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
     @ExceptionHandler(BindException.class)
     public ResponseWrapper<ErrorDetail> handle(BindException e) {
         var fieldErrors = e.getBindingResult().getFieldErrors().stream()
-            .collect(Collectors.toMap(
-                FieldError::getField,
-                r -> new String[]{ r.getDefaultMessage() }));
+                .collect(Collectors.toMap(
+                        FieldError::getField,
+                        r -> new String[]{ r.getDefaultMessage() }));
 
         return ResponseWrapper.error(
-            HttpStatus.BAD_REQUEST.value(),
-            "invalid_request_args",
-            ErrorDetail.withErrorFields(fieldErrors));
+                HttpStatus.BAD_REQUEST.value(),
+                "invalid_request_args",
+                ErrorDetail.withErrorFields(fieldErrors));
     }
 
     /**
@@ -189,15 +198,6 @@ public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
     }
 
     /**
-     * 以警告记录异常日志
-     *
-     * @param e 异常对象
-     */
-    private static void warnLog(Exception e) {
-        log.warn("Some error raised and will return to client", e);
-    }
-
-    /**
      * 处理请求参数校验错误异常
      *
      * <p>
@@ -218,16 +218,16 @@ public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
         warnLog(e);
 
         var err = e.getConstraintViolations() // @Validated 注解的 controller 方法接收到未通过验证的 @RequestParam 参数
-            .stream()
-            .collect(Collectors.toMap( // 将错误信息转换为 Map 对象
-                v -> pathToPropertyName(v.getPropertyPath()), // Key 为参数路径名连接的字符串
-                v -> new String[]{ v.getMessage() } // Value 为错误信息
-            ));
+                .stream()
+                .collect(Collectors.toMap( // 将错误信息转换为 Map 对象
+                        v -> pathToPropertyName(v.getPropertyPath()), // Key 为参数路径名连接的字符串
+                        v -> new String[]{ v.getMessage() } // Value 为错误信息
+                ));
 
         return ResponseWrapper.error(
-            HttpStatus.BAD_REQUEST.value(), // 为此种错误定义代码和错误信息, 此处暂用 400 类型错误代码和信息
-            "invalid_request_args",
-            ErrorDetail.withErrorParameters(err));
+                HttpStatus.BAD_REQUEST.value(), // 为此种错误定义代码和错误信息, 此处暂用 400 类型错误代码和信息
+                "invalid_request_args",
+                ErrorDetail.withErrorParameters(err));
     }
 
     /**
@@ -255,10 +255,10 @@ public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
         warnLog(e);
 
         return ResponseWrapper.error(
-            HttpStatus.BAD_REQUEST.value(), // 为此种错误定义代码和错误信息, 此处暂用 400 类型错误代码和信息
-            "missing_request_args",
-            ErrorDetail.withErrorParameters(
-                Map.of(e.getParameterName(), new String[]{ e.getLocalizedMessage() })));
+                HttpStatus.BAD_REQUEST.value(), // 为此种错误定义代码和错误信息, 此处暂用 400 类型错误代码和信息
+                "missing_request_args",
+                ErrorDetail.withErrorParameters(
+                        Map.of(e.getParameterName(), new String[]{ e.getLocalizedMessage() })));
     }
 
     /**

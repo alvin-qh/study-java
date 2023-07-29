@@ -1,7 +1,7 @@
 package alvin.study.springclould.eureka.client.service;
 
-import alvin.study.springclould.eureka.client.endpoint.model.HelloDto;
 import alvin.study.springclould.eureka.client.core.model.ResponseWrapper;
+import alvin.study.springclould.eureka.client.endpoint.model.HelloDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
