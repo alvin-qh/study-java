@@ -305,7 +305,7 @@ public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
     public ResponseEntity<ResponseWrapper<Void>> handle(RestClientResponseException e) {
         warnLog(e);
 
-        var resp = ResponseWrapper.error(e.getRawStatusCode(), e.getStatusText());
-        return new ResponseEntity<>(resp, HttpStatus.valueOf(e.getRawStatusCode()));
+        var resp = ResponseWrapper.error(e.getStatusCode().value(), e.getStatusText());
+        return new ResponseEntity<>(resp, HttpStatus.valueOf(e.getStatusCode().value()));
     }
 }

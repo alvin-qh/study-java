@@ -185,7 +185,7 @@ class NumberArgumentSourceProvider implements CartesianMethodArgumentsProvider,
 /**
  * 测试 pioneer 库的参数化功能
  */
-@SuppressWarnings({ "unused", "DefaultAnnotationParam" })
+@SuppressWarnings("DefaultAnnotationParam")
 class ParameterizeTest {
     /**
      * 为 {@link #cartesian_shouldGenerateArgumentsByFactoryMethod(int, String, TestEnum)} 测试方法提供测试参数
