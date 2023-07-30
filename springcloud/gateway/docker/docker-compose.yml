@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  # 启动 nacos 实例
+  nacos:
+    image: nacos/nacos-server:v2.2.3
+    hostname: nacos
+    container_name: nacos
+    env_file:
+      # 指定 nacos 启动环境变量
+      - ./env/nacos.env
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+      - "9849:9849"
+    volumes:
+      - ./nacos_logs:/home/nacos/logs
+    privileged: true
+    restart: always

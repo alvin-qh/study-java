@@ -1,5 +1,10 @@
 package alvin.study.testing.junit;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -27,11 +32,6 @@ import org.junit.jupiter.api.condition.EnabledOnJre;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.condition.OS;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 // @formatter:off
 
@@ -98,16 +98,19 @@ class AnnotationTest {
     static void afterAll() {
         TEST_LIST.add("afterAll");
 
-        assertEquals(List.of(
-            "beforeAll",
-            "beforeEach",
-            "runTest1",
-            "afterEach",
-            "beforeEach",
-            "runTest2",
-            "afterEach",
-            "afterAll"
-        ), TEST_LIST);
+        assertEquals(
+            TEST_LIST,
+            List.of(
+                "beforeAll",
+                "beforeEach",
+                "runTest1",
+                "afterEach",
+                "beforeEach",
+                "runTest2",
+                "afterEach",
+                "afterAll"
+            )
+        );
     }
 
     /**
@@ -249,6 +252,7 @@ class AnnotationTest {
      *
      * @return {@code true} 表示允许测试执行
      */
+    @SuppressWarnings("unused")
     private boolean checkTestEnabled() {
         return true;
     }
@@ -262,6 +266,7 @@ class AnnotationTest {
      *
      * @return {@code false} 表示允许测试执行
      */
+    @SuppressWarnings("unused")
     private boolean checkTestDisabled() {
         return false;
     }

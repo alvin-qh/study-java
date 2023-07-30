@@ -1,6 +1,6 @@
 package alvin.study.springclould.eureka.client;
 
-import alvin.study.springclould.eureka.client.conf.EurekaClientConfig;
+import alvin.study.springclould.eureka.client.conf.TestingConfig;
 import alvin.study.springclould.eureka.client.core.model.ResponseWrapper;
 import alvin.study.springclould.eureka.client.endpoint.model.HelloDto;
 import alvin.study.springclould.eureka.client.service.HelloService;
@@ -8,10 +8,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.concurrent.TimeUnit;
+
+import static org.assertj.core.api.Assertions.fail;
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.awaitility.Awaitility.await;
 
 /**
  * 集成测试类的超类
@@ -31,7 +36,7 @@ import static org.assertj.core.api.BDDAssertions.then;
  * </p>
  */
 @ActiveProfiles("test")
-@SpringBootTest(classes = EurekaClientConfig.class)
+@SpringBootTest(classes = TestingConfig.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 public class NamingDiscoveryTest {
     @Autowired
     private RestTemplate restTemplate;
@@ -43,16 +48,22 @@ public class NamingDiscoveryTest {
     private HelloService helloService;
 
     @Test
-    void get_shouldVisitServiceByServiceName() throws InterruptedException {
-        var resp = restTemplate.getForObject("http://eureka-client/api/hello", ResponseWrapper.class);
-        then(resp)
-                .isNotNull()
-                .extracting(ResponseWrapper::getRetCode)
-                .isEqualTo(0);
+    void get_shouldVisitServiceByServiceName() {
+        await().atMost(2, TimeUnit.SECONDS).untilAsserted(() -> {
+            try {
+                var resp = restTemplate.getForObject("http://eureka-client/api/hello", ResponseWrapper.class);
+                then(resp)
+                        .isNotNull()
+                        .extracting(ResponseWrapper::getRetCode)
+                        .isEqualTo(0);
 
-        var dto = objectMapper.convertValue(resp.getPayload(), HelloDto.class);
-        then(dto.getApplicationName()).isEqualTo("eureka-client");
-        then(dto.getContent()).isEqualTo("Hello Eureka");
+                var dto = objectMapper.convertValue(resp.getPayload(), HelloDto.class);
+                then(dto.getApplicationName()).isEqualTo("eureka-client");
+                then(dto.getContent()).isEqualTo("Hello Eureka");
+            } catch (Exception e) {
+                fail(e.getMessage());
+            }
+        });
     }
 
     @Test

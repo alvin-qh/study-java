@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * 服务名通过从 {@code classpath:application.yml} 配置中获取
  * </p>
  */
-@FeignClient("${application.server.name:invalid}")
+@FeignClient("${application.server.name}")
 public interface HelloService {
     /**
      * 访问 {@code /<server_name>/api/hello} 获取响应结果
