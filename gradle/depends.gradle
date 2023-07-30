@@ -1,0 +1,96 @@
+ext {
+  libs = [
+
+    main: [
+
+      jetbrains: [
+        annotation: [
+          "org.jetbrains:annotations:${VER_JETBRAINS_ANNOTATION}"
+        ]
+      ],
+
+      mail: [
+        "jakarta.mail:jakarta.mail-api:${VER_JAKARTA_MAIL}"
+      ],
+
+      picocli: [
+        "info.picocli:picocli:${VER_PICOCLI}"
+      ],
+
+      guice: [
+        "com.google.inject:guice:${VER_GUICE}",
+        "com.google.inject.extensions:guice-persist:${VER_GUICE}",
+        "com.google.inject.extensions:guice-assistedinject:${VER_GUICE}"
+      ],
+
+      guava: [
+        "com.google.guava:guava:${VER_GUAVA}"
+      ],
+
+      slf4j: [
+        "org.slf4j:slf4j-api:${VER_SLF4J}"
+      ],
+
+      log4j: [
+        "org.apache.logging.log4j:log4j-api:${VER_LOG4J}",
+        "org.apache.logging.log4j:log4j-core:${VER_LOG4J}",
+        "org.apache.logging.log4j:log4j-slf4j2-impl:${VER_LOG4J}"
+      ],
+
+      h2: [
+        "com.h2database:h2:${VER_H2_DB}"
+      ],
+
+      flyway: [
+        "org.flywaydb:flyway-core:${VER_FLYWAY}"
+      ],
+
+      hikari: [
+        dependencies.create("com.zaxxer:HikariCP:${VER_HIKARI}") {
+          exclude group: "org.slf4j"
+        }
+      ],
+
+      jwt: [
+        dependencies.create("com.auth0:java-jwt:${VER_AUTH0_JWT}") {
+            exclude group: "com.fasterxml.jackson.core"
+        }
+      ],
+
+      lombok: [
+        "org.projectlombok:lombok:${VER_LOMBOK}"
+      ],
+
+    ],
+
+    test: [
+      junit: [
+        "org.junit.jupiter:junit-jupiter:${VER_JUNIT_ENGINE}"
+      ],
+
+      assertj: [
+        "org.assertj:assertj-core:${VER_ASSERTJ}"
+      ],
+
+      awaitility: [
+        dependencies.create("org.awaitility:awaitility:${VER_AWAITILITY}") {
+          exclude group: "org.hamcrest"
+        }
+      ],
+
+      hamcrest: [
+        "org.hamcrest:hamcrest:${VER_HAMCREST}"
+      ],
+
+      junitPioneer: [
+        "org.junit-pioneer:junit-pioneer:${VER_JUNIT_PIONEER}"
+      ],
+
+      faker: [
+        "com.github.javafaker:javafaker:${VER_JAVAFAKER}"
+      ]
+
+    ]
+
+  ]
+}

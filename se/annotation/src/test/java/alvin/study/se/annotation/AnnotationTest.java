@@ -51,7 +51,7 @@ class AnnotationTest {
     @Test
     void getClassAnnotation_shouldGetAnnotationOnClass() {
         var mayAnno = AnnotationUtil.getClassAnnotation(AnnotationDemo.class, A.class);
-        then(mayAnno.isPresent()).isTrue();
+        then(mayAnno).isPresent();
 
         var anno = mayAnno.get();
         then(anno.value()).isEqualTo("TypeAnnotation");

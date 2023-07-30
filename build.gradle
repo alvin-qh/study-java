@@ -5,7 +5,7 @@
 //   id "org.flywaydb.flyway" version "${VER_FLYWAY}" apply false
 // }
 
-apply from: "${rootDir}/gradle/depends-common.gradle"
+apply from: "${rootDir}/gradle/depends.gradle"
 
 allprojects {
   apply plugin: "java"
@@ -44,7 +44,7 @@ allprojects {
     reports.html.required = false
 
     testLogging {
-      events "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR"
+      events "PASSED", "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR"
       showStackTraces = true
       exceptionFormat = "full"
     }
@@ -70,12 +70,19 @@ subprojects {
   }
 
   dependencies {
-    implementation libs.main.common
-    compileOnly compiles.main.common
-    annotationProcessor annotations.main.common
+    implementation libs.main.jetbrains.annotation,
+      libs.main.lombok,
+      libs.main.guava
 
-    testImplementation libs.test.common
-    testCompileOnly compiles.test.common
-    testAnnotationProcessor annotations.test.common
+    compileOnly libs.main.lombok
+
+    annotationProcessor libs.main.lombok
+
+    testImplementation libs.test.junit,
+      libs.test.assertj,
+      libs.test.awaitility,
+      libs.test.hamcrest
+
+    testAnnotationProcessor libs.main.lombok
   }
 }

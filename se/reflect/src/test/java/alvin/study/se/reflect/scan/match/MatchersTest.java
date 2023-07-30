@@ -180,9 +180,9 @@ class MatchersTest {
     void inSubpackage_shouldMatcherWorked() {
         // 定义一组包名称, 分别表示要检测类型的"所在包", "上一级包" 和 "上两级包"
         String[] packages = {
-            "alvin.study.reflect.scan.match",
-            "alvin.study.reflect.scan",
-            "alvin.study.reflect"
+            "alvin.study.se.reflect.scan.match",
+            "alvin.study.se.reflect.scan",
+            "alvin.study.se.reflect"
         };
 
         for (var packageName : packages) {
@@ -201,7 +201,7 @@ class MatchersTest {
     @Test
     void inPackage_shouldMatcherWorked() {
         // 获取指定的包对象
-        var pack = getClass().getClassLoader().getDefinedPackage("alvin.study.reflect.scan.match");
+        var pack = getClass().getClassLoader().getDefinedPackage("alvin.study.se.reflect.scan.match");
 
         // 实例化匹配器, 设置要匹配的包对象
         var matcher = Matchers.inPackage(pack);
@@ -245,7 +245,7 @@ class MatchersTest {
     @Test
     void and_shouldMatcherWorked() {
         // 定义两个预期会成立的 Matcher 对象
-        var matcherA = Matchers.inSubpackage("alvin.study.reflect.scan.match");
+        var matcherA = Matchers.inSubpackage("alvin.study.se.reflect.scan.match");
         var matcherB = Matchers.annotatedWith(TestAnnotation.class);
 
         // 通过 And 连接两个 Matcher 对象, 确认需要同时满足 matcherA 和 matcherB 方能通过匹配
@@ -264,7 +264,7 @@ class MatchersTest {
     @Test
     void or_shouldMatcherWorked() {
         // 定义两个预期会成立的 Matcher 对象
-        var matcherA = Matchers.inSubpackage("alvin.study.reflect.scan.match");
+        var matcherA = Matchers.inSubpackage("alvin.study.se.reflect.scan.match");
         var matcherB = Matchers.annotatedWith(TestAnnotation.class);
 
         // 通过 And 连接两个 Matcher 对象, 确认需要同时满足 matcherA 和 matcherB 方能通过匹配
