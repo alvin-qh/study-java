@@ -14,3 +14,15 @@ include(
   ":se:runtime",
   ":se:timing",
 )
+
+include(
+  ":guava:cache",
+  ":guava:collect",
+  ":guava:common",
+  ":guava:eventbus",
+  ":guava:future",
+  ":guava:graphs",
+  ":guava:hashing",
+  ":guava:io",
+  ":guava:reflect",
+)
