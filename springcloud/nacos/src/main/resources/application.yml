@@ -27,7 +27,7 @@ spring:
         # 启用配置中心连接
         enabled: true
         # 服务所属命名空间
-        namespace: 25935fce-b849-4882-861a-922232c1e39e
+        # namespace: 25935fce-b849-4882-861a-922232c1e39e
         # 配置所属组名称
         group: STUDY_CONFIG
         # 配置 dataId 默认扩展名 (本例中采用 spring.config.import 方法, 不需要此配置)
@@ -38,7 +38,7 @@ spring:
         # 启用服务发现连接
         enabled: true
         # 服务发现所属命名空间
-        namespace: 25935fce-b849-4882-861a-922232c1e39e
+        # namespace: 25935fce-b849-4882-861a-922232c1e39e
         # 服务发现所属组名称
         group: STUDY_DISCOVERY
 

@@ -1,6 +1,3 @@
-# 当工程以 WEB 应用模式运行时的配置段
-# 如果要在单机启动多个实例组成集群, 则需要传递 --server.port=xxxx 参数
-
 spring:
   main:
     banner-mode: off
@@ -20,6 +17,7 @@ spring:
         group: STUDY_GATEWAY
 
 # 指定 WEB 应用服务绑定的默认端口号
+# 如果要在单机启动多个实例组成集群, 则需要传递 --server.port=xxxx 参数
 server:
   port: 8081
 
