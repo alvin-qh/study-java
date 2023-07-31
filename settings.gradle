@@ -7,9 +7,9 @@ pluginManagement {
   }
 }
 
-//plugins {
-//  id "de.fayard.refreshVersions"
-//}
+// plugins {
+//   id "de.fayard.refreshVersions"
+// }
 
 rootProject.name = "study-java"
 
@@ -32,6 +32,17 @@ include(
   ":testing:testcase",
   ":testing:assertj",
   ":testing:awaitility",
+  ":testing:faker",
+  ":testing:hamcrest",
+  ":testing:junit",
+  ":testing:mock",
+  ":testing:pioneer",
+  ":testing:testng",
+)
+
+include(
+  ":misc:cli",
+  ":misc:jackson",
 )
 
 include(

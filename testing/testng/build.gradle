@@ -1,0 +1,9 @@
+test {
+  useTestNG()
+}
+
+dependencies {
+  implementation libs.main.log4j
+
+  testImplementation libs.test.testng
+}

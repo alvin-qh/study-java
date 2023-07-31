@@ -1,5 +1,6 @@
 test {
   useJUnitPlatform()
+
   reports.html.required = false
 
   testLogging {
@@ -8,10 +9,5 @@ test {
     exceptionFormat "full"
   }
 
-  jvmArgs "--add-opens", "java.base/java.util=ALL-UNNAMED",
-    "--add-opens", "java.base/java.lang=ALL-UNNAMED"
-}
-
-clean {
-//  delete "${projectDir}/src/assertj"
+  failFast = false
 }

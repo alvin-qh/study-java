@@ -1,5 +1,9 @@
 package alvin.study.testing.pioneer;
 
+import static org.assertj.core.api.Assertions.tuple;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -15,10 +19,6 @@ import org.junitpioneer.jupiter.params.DisableIfAnyArgument;
 import org.junitpioneer.jupiter.params.DisableIfArgument;
 import org.junitpioneer.jupiter.params.DisableIfArgument.DisableIfArguments;
 import org.junitpioneer.jupiter.params.DisableIfDisplayName;
-
-import static org.assertj.core.api.Assertions.tuple;
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * 测试通过 Pioneer 库对测试方法进行临时禁用

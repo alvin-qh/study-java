@@ -106,7 +106,7 @@ ext {
     test: [
       // 公共测试依赖
       common: [
-        "org.junit.jupiter:junit-jupiter:${VER_JUNIT_ENGINE}",
+        "org.junit.jupiter:junit-jupiter:${VER_JUNIT}",
         "org.assertj:assertj-core:${VER_ASSERTJ}",
         dependencies.create("org.awaitility:awaitility:${VER_AWAITILITY}") {
           exclude group: "org.hamcrest"

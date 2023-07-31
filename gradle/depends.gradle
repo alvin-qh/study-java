@@ -78,7 +78,11 @@ ext {
 
     test: [
       junit: [
-        "org.junit.jupiter:junit-jupiter:${VER_JUNIT_ENGINE}"
+        "org.junit.jupiter:junit-jupiter:${VER_JUNIT}"
+      ],
+
+      testng: [
+        "org.testng:testng:${VER_TESTNG}"
       ],
 
       assertj: [
@@ -93,6 +97,13 @@ ext {
 
       hamcrest: [
         "org.hamcrest:hamcrest:${VER_HAMCREST}"
+      ],
+
+      mockito: [
+        "org.mockito:mockito-core:${VER_MOCKITO}",
+        dependencies.create("org.mockito:mockito-junit-jupiter:${VER_MOCKITO}") {
+          exclude group: "org.junit.jupiter"
+        }
       ],
 
       junitPioneer: [
