@@ -1,44 +1,10 @@
-plugins {
-  id "com.waftex.assertj-generator" version "${VER_GRADLE_ASSERTJ_GENERATOR}"
-}
-
-assertjGenerator {
-  outputDir = "src/test/assertj"
-  entryPointTypes = ["STANDARD", "BDD", "SOFT"]
-  entryPointPackage = "alvin.study.assertion"
-  classOrPackageNames = ["alvin.study.model.User"]
-}
-
-sourceSets {
-  test {
-    java {
-      srcDirs += ["src/test/assertj"]
-    }
-  }
-}
-
-/**
- * 配置测试插件
- */
 test {
-  // 使用 JUnit5 测试框架
   useJUnitPlatform()
-
-  // 使用 TestNG 测试框架
-  // useTestNG()
-
-  // 禁止生成 HTML 格式的测试报告
   reports.html.required = false
 
-  // 设置测试日志显示
   testLogging {
-    // 要显示的 EVENT 标签
-    events "SKIPPED", "FAILED", "PASSED", "STANDARD_OUT", "STANDARD_ERROR"
-
-    // 测试失败时显示异常堆栈
+    events "PASSED", "SKIPPED", "FAILED", "PASSED", "STANDARD_OUT", "STANDARD_ERROR"
     showStackTraces true
-
-    // 异常显示格式: 全部信息
     exceptionFormat "full"
   }
 
@@ -46,21 +12,6 @@ test {
     "--add-opens", "java.base/java.lang=ALL-UNNAMED"
 }
 
-/**
- * 配置依赖
- */
-dependencies {
-  implementation libs.main.jackson,
-    libs.main.javax.annotation
-
-  testImplementation libs.test.mockito,
-    libs.test.junitPioneer,
-    libs.test.javafaker
-
-  testCompileOnly compiles.test.testng    // 引入 TestNG 测试框架
-  // JUnit5 引入参见 /build.gradle 文件
-}
-
 clean {
-  delete "${projectDir}/src/assertj"
+//  delete "${projectDir}/src/assertj"
 }

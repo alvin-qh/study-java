@@ -1,3 +1,16 @@
+pluginManagement {
+  repositories {
+    gradlePluginPortal()
+  }
+  plugins {
+//    id("de.fayard.refreshVersions") version "${VER_PLUGIN_REFRESH_VERSIONS}"
+  }
+}
+
+//plugins {
+//  id "de.fayard.refreshVersions"
+//}
+
 rootProject.name = "study-java"
 
 include(
@@ -16,6 +29,12 @@ include(
 )
 
 include(
+  ":testing:testcase",
+  ":testing:assertj",
+  ":testing:awaitility",
+)
+
+include(
   ":guava:cache",
   ":guava:collect",
   ":guava:common",
@@ -25,4 +44,12 @@ include(
   ":guava:hashing",
   ":guava:io",
   ":guava:reflect",
+)
+
+include(
+  ":guice:aspect",
+  ":guice:bind",
+  ":guice:inject",
+  ":guice:module",
+  ":guice:singleton",
 )

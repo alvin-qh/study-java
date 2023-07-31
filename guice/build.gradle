@@ -1,6 +1,6 @@
-/**
- * 设置依赖
- */
-dependencies {
-  implementation libs.main.guice
+subprojects {
+  dependencies {
+    implementation libs.main.jakarta.inject,
+      libs.main.guice
+  }
 }

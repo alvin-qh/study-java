@@ -164,7 +164,7 @@ assertjGenerator {
 | `entryPointInherits`  | `boolean`                    | `true`                                    | 生成断言类是否支持继承        |
 | `cleanOutputDir`      | `boolean`                    | `true`                                    | 在生成代码前是否情况目标目录     |
 
-参考本例的 [build.gradle](./build.gradle) 文件
+参考本例的 [build.gradle](./build~.gradle) 文件
 
 通过 `mvn assertj:generate-assertions` 命令执行插件, 生成代码
 

@@ -10,10 +10,10 @@ repositories {
 
 dependencies {
     implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
-    implementation 'io.quarkus:quarkus-arc'
-    implementation 'io.quarkus:quarkus-resteasy-reactive'
-    testImplementation 'io.quarkus:quarkus-junit5'
-    testImplementation 'io.rest-assured:rest-assured'
+    implementation 'io.quarkus:quarkus-arc:_'
+    implementation 'io.quarkus:quarkus-resteasy-reactive:_'
+    testImplementation 'io.quarkus:quarkus-junit5:_'
+    testImplementation 'io.rest-assured:rest-assured:_'
 }
 
 group 'org.acme'

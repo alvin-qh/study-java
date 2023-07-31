@@ -1,11 +1,15 @@
 ext {
   libs = [
-
     main: [
-
       jetbrains: [
         annotation: [
           "org.jetbrains:annotations:${VER_JETBRAINS_ANNOTATION}"
+        ]
+      ],
+
+      jakarta: [
+        inject: [
+          "jakarta.inject:jakarta.inject-api:${VER_JAKARTA_INJECT}"
         ]
       ],
 
@@ -37,6 +41,16 @@ ext {
         "org.apache.logging.log4j:log4j-slf4j2-impl:${VER_LOG4J}"
       ],
 
+      jackson: [
+        "com.fasterxml.jackson.core:jackson-core:${VER_JACKSON}",
+        "com.fasterxml.jackson.core:jackson-databind:${VER_JACKSON}",
+        "com.fasterxml.jackson.core:jackson-annotations:${VER_JACKSON}",
+        "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:${VER_JACKSON}",
+        "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${VER_JACKSON}",
+        "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${VER_JACKSON}",
+        "com.fasterxml.jackson.module:jackson-module-parameter-names:${VER_JACKSON}"
+      ],
+
       h2: [
         "com.h2database:h2:${VER_H2_DB}"
       ],
@@ -60,7 +74,6 @@ ext {
       lombok: [
         "org.projectlombok:lombok:${VER_LOMBOK}"
       ],
-
     ],
 
     test: [

@@ -10,8 +10,10 @@ apply from: "${rootDir}/gradle/depends.gradle"
 allprojects {
   apply plugin: "java"
 
-  sourceCompatibility = 17
-  targetCompatibility = 17
+  java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+  }
 
   ext {
     // 通过环境变量产生版本号
