@@ -18,6 +18,8 @@ import java.util.Map;
 @SpringBootApplication
 public class Main {
     public static void main(String[] args) {
+        System.setProperty("Log4jContextSelector", "org.apache.logging.log4j.core.async.AsyncLoggerContextSelector");
+
         // 创建 Spring Boot Application 对象
         var app = new SpringApplication(Main.class);
         // 设置默认应用属性

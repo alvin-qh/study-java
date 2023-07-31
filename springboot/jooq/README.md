@@ -235,11 +235,7 @@ JOOQ 依赖中的 JOOQ 排除, **单独引入高版本的 JOOQ 依赖**
   <artifactId>spring-boot-starter-jooq</artifactId>
   <exclusions>
     <exclusion>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>*</artifactId>
-    </exclusion>
-    <!-- 排除低版本 jooq 框架 -->
-    <exclusion>
+      <!-- 排除低版本 jooq 框架 -->
       <groupId>org.jooq</groupId>
       <artifactId>*</artifactId>
     </exclusion>

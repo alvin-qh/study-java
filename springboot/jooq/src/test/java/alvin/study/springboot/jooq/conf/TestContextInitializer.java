@@ -1,16 +1,17 @@
 package alvin.study.springboot.jooq.conf;
 
-import alvin.study.springboot.jooq.Main;
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.LoggerContext;
-import lombok.SneakyThrows;
+import java.util.Map;
+
+import org.apache.logging.slf4j.Log4jLoggerFactory;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import java.util.Map;
+import alvin.study.springboot.jooq.Main;
+import lombok.SneakyThrows;
 
 /**
  * 初始化测试上下文
@@ -45,7 +46,7 @@ public class TestContextInitializer implements ApplicationContextInitializer<Con
 
         // 将 Jooq 的日志级别定义为 DEBUG, 可以看到输出的 SQL 语句
         // 也可以在 application.yml 中通过 logging.level 进行设置
-        var lc = (LoggerContext) LoggerFactory.getILoggerFactory();
-        lc.getLogger("org.jooq.tools.LoggerListener").setLevel(Level.DEBUG);
+        var lc = (Log4jLoggerFactory) LoggerFactory.getILoggerFactory();
+        lc.getLogger("org.jooq.tools.LoggerListener").atLevel(Level.DEBUG);
     }
 }

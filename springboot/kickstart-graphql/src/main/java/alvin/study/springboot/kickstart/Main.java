@@ -24,6 +24,8 @@ public class Main {
      * @param args 命令行参数
      */
     public static void main(String[] args) {
+        System.setProperty("Log4jContextSelector", "org.apache.logging.log4j.core.async.AsyncLoggerContextSelector");
+
         var app = new SpringApplication(Main.class);
         app.setDefaultProperties(Map.copyOf(Main.getDefaultProperties()));
         app.run(args);
