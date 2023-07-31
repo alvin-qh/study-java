@@ -38,7 +38,8 @@ ext {
       log4j: [
         "org.apache.logging.log4j:log4j-api:${VER_LOG4J}",
         "org.apache.logging.log4j:log4j-core:${VER_LOG4J}",
-        "org.apache.logging.log4j:log4j-slf4j2-impl:${VER_LOG4J}"
+        "org.apache.logging.log4j:log4j-slf4j2-impl:${VER_LOG4J}",
+        "com.lmax:disruptor:${VER_DISRUPTOR}"
       ],
 
       jackson: [
@@ -74,6 +75,58 @@ ext {
       lombok: [
         "org.projectlombok:lombok:${VER_LOMBOK}"
       ],
+
+      springboot: [
+        starter: [
+          "org.springframework.boot:spring-boot-starter"
+        ],
+        web: [
+          "org.springframework.boot:spring-boot-starter-web"
+        ],
+        thymeleaf: [
+          "org.springframework.boot:spring-boot-starter-thymeleaf"
+        ],
+        validator: [
+          "org.springframework.boot:spring-boot-starter-validation"
+        ],
+        aop: [
+          "org.springframework.boot:spring-boot-starter-aop"
+        ],
+        jpa: [
+          "org.springframework.boot:spring-boot-starter-data-jpa"
+        ],
+        jdbc: [
+          "org.springframework.boot:spring-boot-starter-jdbc"
+        ],
+        shiro: [
+          "org.apache.shiro:shiro-spring-boot-web-starter:${VER_SHIRO}"
+        ],
+        security: [
+          "org.springframework.boot:spring-boot-starter-security"
+        ],
+        actuator: [
+          "org.springframework.boot:spring-boot-starter-actuator"
+        ],
+        redis: [
+          "org.springframework.boot:spring-boot-starter-data-redis"
+        ],
+        mybatisPlus: [
+          "com.baomidou:mybatis-plus-boot-starter:${VER_MYBATIS_PLUS}",
+          "org.springframework.boot:spring-boot-starter-jdbc"
+        ],
+        jooq: [
+          dependencies.create("org.springframework.boot:spring-boot-starter-jooq") {
+            exclude group: "org.jooq" // 排除 低版本的 jooq 框架
+            exclude group: "org.springframework"
+            exclude group: "org.springframework.boot"
+          },
+          "org.jooq:jooq:${VER_JOOQ}",
+          "org.modelmapper.extensions:modelmapper-jooq:${VER_MODELMAPPER}"
+        ],
+        graphql: [
+          "com.graphql-java-kickstart:graphql-spring-boot-starter:${VER_KICKSTART_GRAPHQL}"
+        ]
+      ]
     ],
 
     test: [

@@ -14,6 +14,7 @@
     "assertj",
     "attrappend",
     "authc",
+    "autoconfig",
     "autoconfigure",
     "Autowire",
     "Autowired",
