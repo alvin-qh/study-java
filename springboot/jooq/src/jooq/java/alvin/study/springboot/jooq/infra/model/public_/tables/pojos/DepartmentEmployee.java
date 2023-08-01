@@ -26,7 +26,7 @@ public class DepartmentEmployee implements Serializable {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public DepartmentEmployee() { }
+    public DepartmentEmployee() {}
 
     public DepartmentEmployee(DepartmentEmployee value) {
         this.id = value.id;
@@ -209,47 +209,56 @@ public class DepartmentEmployee implements Serializable {
         if (this.id == null) {
             if (other.id != null)
                 return false;
-        } else if (!this.id.equals(other.id))
+        }
+        else if (!this.id.equals(other.id))
             return false;
         if (this.orgId == null) {
             if (other.orgId != null)
                 return false;
-        } else if (!this.orgId.equals(other.orgId))
+        }
+        else if (!this.orgId.equals(other.orgId))
             return false;
         if (this.employeeId == null) {
             if (other.employeeId != null)
                 return false;
-        } else if (!this.employeeId.equals(other.employeeId))
+        }
+        else if (!this.employeeId.equals(other.employeeId))
             return false;
         if (this.departmentId == null) {
             if (other.departmentId != null)
                 return false;
-        } else if (!this.departmentId.equals(other.departmentId))
+        }
+        else if (!this.departmentId.equals(other.departmentId))
             return false;
         if (this.version == null) {
             if (other.version != null)
                 return false;
-        } else if (!this.version.equals(other.version))
+        }
+        else if (!this.version.equals(other.version))
             return false;
         if (this.createdBy == null) {
             if (other.createdBy != null)
                 return false;
-        } else if (!this.createdBy.equals(other.createdBy))
+        }
+        else if (!this.createdBy.equals(other.createdBy))
             return false;
         if (this.updatedBy == null) {
             if (other.updatedBy != null)
                 return false;
-        } else if (!this.updatedBy.equals(other.updatedBy))
+        }
+        else if (!this.updatedBy.equals(other.updatedBy))
             return false;
         if (this.createdAt == null) {
             if (other.createdAt != null)
                 return false;
-        } else if (!this.createdAt.equals(other.createdAt))
+        }
+        else if (!this.createdAt.equals(other.createdAt))
             return false;
         if (this.updatedAt == null) {
             if (other.updatedAt != null)
                 return false;
-        } else if (!this.updatedAt.equals(other.updatedAt))
+        }
+        else if (!this.updatedAt.equals(other.updatedAt))
             return false;
         return true;
     }

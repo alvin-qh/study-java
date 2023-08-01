@@ -139,7 +139,7 @@ public class GraphqlConfig implements Instrumentation, GraphQLServletContextBuil
      * </p>
      *
      * @param session  WebSocket 上下文对象
-     * @param response WebSocket 响应对象
+     * @param request WebSocket 请求对象
      * @return {@link GraphQLKickstartContext} 对象
      */
     @Override

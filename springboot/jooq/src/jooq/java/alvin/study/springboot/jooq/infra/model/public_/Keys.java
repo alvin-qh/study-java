@@ -14,6 +14,7 @@ import alvin.study.springboot.jooq.infra.model.public_.tables.records.Department
 import alvin.study.springboot.jooq.infra.model.public_.tables.records.EmployeeRecord;
 import alvin.study.springboot.jooq.infra.model.public_.tables.records.OrgRecord;
 import alvin.study.springboot.jooq.infra.model.public_.tables.records.UserRecord;
+
 import org.jooq.TableField;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
@@ -31,18 +32,18 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final UniqueKey<DepartmentRecord> CONSTRAINT_4 = Internal.createUniqueKey(Department.DEPARTMENT, DSL.name("CONSTRAINT_4"), new TableField[]{ Department.DEPARTMENT.ORG_ID, Department.DEPARTMENT.ID }, true);
-    public static final UniqueKey<DepartmentRecord> UX_DEPARTMENT_ID = Internal.createUniqueKey(Department.DEPARTMENT, DSL.name("UX_DEPARTMENT_ID"), new TableField[]{ Department.DEPARTMENT.ID }, true);
-    public static final UniqueKey<DepartmentRecord> UX_DEPARTMENT_NAME = Internal.createUniqueKey(Department.DEPARTMENT, DSL.name("UX_DEPARTMENT_NAME"), new TableField[]{ Department.DEPARTMENT.ORG_ID, Department.DEPARTMENT.NAME, Department.DEPARTMENT.DELETED }, true);
-    public static final UniqueKey<DepartmentEmployeeRecord> CONSTRAINT_C = Internal.createUniqueKey(DepartmentEmployee.DEPARTMENT_EMPLOYEE, DSL.name("CONSTRAINT_C"), new TableField[]{ DepartmentEmployee.DEPARTMENT_EMPLOYEE.ORG_ID, DepartmentEmployee.DEPARTMENT_EMPLOYEE.ID }, true);
-    public static final UniqueKey<DepartmentEmployeeRecord> UX_DEPARTMENT_EMPLOYEE_ID = Internal.createUniqueKey(DepartmentEmployee.DEPARTMENT_EMPLOYEE, DSL.name("UX_DEPARTMENT_EMPLOYEE_ID"), new TableField[]{ DepartmentEmployee.DEPARTMENT_EMPLOYEE.ID }, true);
-    public static final UniqueKey<EmployeeRecord> CONSTRAINT_7 = Internal.createUniqueKey(Employee.EMPLOYEE, DSL.name("CONSTRAINT_7"), new TableField[]{ Employee.EMPLOYEE.ORG_ID, Employee.EMPLOYEE.ID }, true);
-    public static final UniqueKey<EmployeeRecord> UX_EMPLOYEE_EMAIL = Internal.createUniqueKey(Employee.EMPLOYEE, DSL.name("UX_EMPLOYEE_EMAIL"), new TableField[]{ Employee.EMPLOYEE.ORG_ID, Employee.EMPLOYEE.EMAIL, Employee.EMPLOYEE.DELETED }, true);
-    public static final UniqueKey<EmployeeRecord> UX_EMPLOYEE_ID = Internal.createUniqueKey(Employee.EMPLOYEE, DSL.name("UX_EMPLOYEE_ID"), new TableField[]{ Employee.EMPLOYEE.ID }, true);
-    public static final UniqueKey<EmployeeRecord> UX_EMPLOYEE_NAME = Internal.createUniqueKey(Employee.EMPLOYEE, DSL.name("UX_EMPLOYEE_NAME"), new TableField[]{ Employee.EMPLOYEE.ORG_ID, Employee.EMPLOYEE.NAME, Employee.EMPLOYEE.DELETED }, true);
-    public static final UniqueKey<OrgRecord> CONSTRAINT_1 = Internal.createUniqueKey(Org.ORG, DSL.name("CONSTRAINT_1"), new TableField[]{ Org.ORG.ID }, true);
-    public static final UniqueKey<OrgRecord> IX_ORG_NAME = Internal.createUniqueKey(Org.ORG, DSL.name("IX_ORG_NAME"), new TableField[]{ Org.ORG.NAME, Org.ORG.DELETED }, true);
-    public static final UniqueKey<UserRecord> CONSTRAINT_2 = Internal.createUniqueKey(User.USER, DSL.name("CONSTRAINT_2"), new TableField[]{ User.USER.ORG_ID, User.USER.ID }, true);
-    public static final UniqueKey<UserRecord> UX_USER_ACCOUNT = Internal.createUniqueKey(User.USER, DSL.name("UX_USER_ACCOUNT"), new TableField[]{ User.USER.ORG_ID, User.USER.ACCOUNT, User.USER.DELETED }, true);
-    public static final UniqueKey<UserRecord> UX_USER_ID = Internal.createUniqueKey(User.USER, DSL.name("UX_USER_ID"), new TableField[]{ User.USER.ID }, true);
+    public static final UniqueKey<DepartmentRecord> CONSTRAINT_4 = Internal.createUniqueKey(Department.DEPARTMENT, DSL.name("CONSTRAINT_4"), new TableField[] { Department.DEPARTMENT.ORG_ID, Department.DEPARTMENT.ID }, true);
+    public static final UniqueKey<DepartmentRecord> UX_DEPARTMENT_ID = Internal.createUniqueKey(Department.DEPARTMENT, DSL.name("UX_DEPARTMENT_ID"), new TableField[] { Department.DEPARTMENT.ID }, true);
+    public static final UniqueKey<DepartmentRecord> UX_DEPARTMENT_NAME = Internal.createUniqueKey(Department.DEPARTMENT, DSL.name("UX_DEPARTMENT_NAME"), new TableField[] { Department.DEPARTMENT.ORG_ID, Department.DEPARTMENT.NAME, Department.DEPARTMENT.DELETED }, true);
+    public static final UniqueKey<DepartmentEmployeeRecord> CONSTRAINT_C = Internal.createUniqueKey(DepartmentEmployee.DEPARTMENT_EMPLOYEE, DSL.name("CONSTRAINT_C"), new TableField[] { DepartmentEmployee.DEPARTMENT_EMPLOYEE.ORG_ID, DepartmentEmployee.DEPARTMENT_EMPLOYEE.ID }, true);
+    public static final UniqueKey<DepartmentEmployeeRecord> UX_DEPARTMENT_EMPLOYEE_ID = Internal.createUniqueKey(DepartmentEmployee.DEPARTMENT_EMPLOYEE, DSL.name("UX_DEPARTMENT_EMPLOYEE_ID"), new TableField[] { DepartmentEmployee.DEPARTMENT_EMPLOYEE.ID }, true);
+    public static final UniqueKey<EmployeeRecord> CONSTRAINT_7 = Internal.createUniqueKey(Employee.EMPLOYEE, DSL.name("CONSTRAINT_7"), new TableField[] { Employee.EMPLOYEE.ORG_ID, Employee.EMPLOYEE.ID }, true);
+    public static final UniqueKey<EmployeeRecord> UX_EMPLOYEE_EMAIL = Internal.createUniqueKey(Employee.EMPLOYEE, DSL.name("UX_EMPLOYEE_EMAIL"), new TableField[] { Employee.EMPLOYEE.ORG_ID, Employee.EMPLOYEE.EMAIL, Employee.EMPLOYEE.DELETED }, true);
+    public static final UniqueKey<EmployeeRecord> UX_EMPLOYEE_ID = Internal.createUniqueKey(Employee.EMPLOYEE, DSL.name("UX_EMPLOYEE_ID"), new TableField[] { Employee.EMPLOYEE.ID }, true);
+    public static final UniqueKey<EmployeeRecord> UX_EMPLOYEE_NAME = Internal.createUniqueKey(Employee.EMPLOYEE, DSL.name("UX_EMPLOYEE_NAME"), new TableField[] { Employee.EMPLOYEE.ORG_ID, Employee.EMPLOYEE.NAME, Employee.EMPLOYEE.DELETED }, true);
+    public static final UniqueKey<OrgRecord> CONSTRAINT_1 = Internal.createUniqueKey(Org.ORG, DSL.name("CONSTRAINT_1"), new TableField[] { Org.ORG.ID }, true);
+    public static final UniqueKey<OrgRecord> IX_ORG_NAME = Internal.createUniqueKey(Org.ORG, DSL.name("IX_ORG_NAME"), new TableField[] { Org.ORG.NAME, Org.ORG.DELETED }, true);
+    public static final UniqueKey<UserRecord> CONSTRAINT_2 = Internal.createUniqueKey(User.USER, DSL.name("CONSTRAINT_2"), new TableField[] { User.USER.ORG_ID, User.USER.ID }, true);
+    public static final UniqueKey<UserRecord> UX_USER_ACCOUNT = Internal.createUniqueKey(User.USER, DSL.name("UX_USER_ACCOUNT"), new TableField[] { User.USER.ORG_ID, User.USER.ACCOUNT, User.USER.DELETED }, true);
+    public static final UniqueKey<UserRecord> UX_USER_ID = Internal.createUniqueKey(User.USER, DSL.name("UX_USER_ID"), new TableField[] { User.USER.ID }, true);
 }

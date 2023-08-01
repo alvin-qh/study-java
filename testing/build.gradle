@@ -11,3 +11,6 @@ test {
 
   failFast = false
 }
+
+subprojects {
+}

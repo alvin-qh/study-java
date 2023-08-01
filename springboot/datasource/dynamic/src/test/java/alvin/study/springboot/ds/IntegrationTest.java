@@ -17,7 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.reactive.server.WebTestClient.RequestBodySpec;
 import org.springframework.test.web.reactive.server.WebTestClient.RequestHeadersSpec;
@@ -41,11 +40,6 @@ import java.time.Duration;
  * <p>
  * {@link SpringBootTest @SpringBootTest} 注解表示这是一个 Spring Boot 相关的测试, 其
  * {@code classes} 属性指定了该测试相关的配置类
- * </p>
- *
- * <p>
- * {@link ContextConfiguration @ContextConfiguration} 注解用于指定测试上下文配置, 这里使用的
- * {@code initializers} 属性用于指定测试初始化类. 参考 {@link TestingContextInitializer} 类型
  * </p>
  */
 @ActiveProfiles("test")
@@ -75,9 +69,7 @@ public abstract class IntegrationTest {
      * </p>
      *
      * <p>
-     * 该对象由
-     * {@link TestingConfig#testingTransactionManager(org.springframework.transaction.PlatformTransactionManager)
-     * TestingConfig.testingTransactionManager(PlatformTransactionManager)} 方法产生
+     * 该对象由 {@code TestingConfig.testingTransactionManager(PlatformTransactionManager)} 方法产生
      * </p>
      */
     @Autowired

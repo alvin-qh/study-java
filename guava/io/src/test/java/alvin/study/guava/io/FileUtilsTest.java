@@ -5,6 +5,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Files;
 import com.google.common.io.MoreFiles;
+import com.google.common.io.RecursiveDeleteOption;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -46,7 +47,7 @@ class FileUtilsTest {
      * @param dir 表示要删除的目录的 {@link Path} 对象
      */
     static void deleteDirs(Path dir) throws IOException {
-        MoreFiles.deleteRecursively(dir);
+        MoreFiles.deleteRecursively(dir, RecursiveDeleteOption.ALLOW_INSECURE);
         then(dir).doesNotExist();
     }
 

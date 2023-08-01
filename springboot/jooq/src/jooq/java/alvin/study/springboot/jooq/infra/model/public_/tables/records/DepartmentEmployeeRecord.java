@@ -5,13 +5,14 @@ package alvin.study.springboot.jooq.infra.model.public_.tables.records;
 
 
 import alvin.study.springboot.jooq.infra.model.public_.tables.DepartmentEmployee;
+
+import java.time.LocalDateTime;
+
 import org.jooq.Field;
 import org.jooq.Record2;
 import org.jooq.Record9;
 import org.jooq.Row9;
 import org.jooq.impl.UpdatableRecordImpl;
-
-import java.time.LocalDateTime;
 
 
 /**
@@ -23,58 +24,6 @@ public class DepartmentEmployeeRecord extends UpdatableRecordImpl<DepartmentEmpl
     private static final long serialVersionUID = 1L;
 
     /**
-     * Create a detached DepartmentEmployeeRecord
-     */
-    public DepartmentEmployeeRecord() {
-        super(DepartmentEmployee.DEPARTMENT_EMPLOYEE);
-    }
-
-    /**
-     * Create a detached, initialised DepartmentEmployeeRecord
-     */
-    public DepartmentEmployeeRecord(Long id, Long orgId, Long employeeId, Long departmentId, Integer version, Long createdBy, Long updatedBy, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        super(DepartmentEmployee.DEPARTMENT_EMPLOYEE);
-
-        setId(id);
-        setOrgId(orgId);
-        setEmployeeId(employeeId);
-        setDepartmentId(departmentId);
-        setVersion(version);
-        setCreatedBy(createdBy);
-        setUpdatedBy(updatedBy);
-        setCreatedAt(createdAt);
-        setUpdatedAt(updatedAt);
-        resetChangedOnNotNull();
-    }
-
-    /**
-     * Create a detached, initialised DepartmentEmployeeRecord
-     */
-    public DepartmentEmployeeRecord(alvin.study.springboot.jooq.infra.model.public_.tables.pojos.DepartmentEmployee value) {
-        super(DepartmentEmployee.DEPARTMENT_EMPLOYEE);
-
-        if (value != null) {
-            setId(value.getId());
-            setOrgId(value.getOrgId());
-            setEmployeeId(value.getEmployeeId());
-            setDepartmentId(value.getDepartmentId());
-            setVersion(value.getVersion());
-            setCreatedBy(value.getCreatedBy());
-            setUpdatedBy(value.getUpdatedBy());
-            setCreatedAt(value.getCreatedAt());
-            setUpdatedAt(value.getUpdatedAt());
-            resetChangedOnNotNull();
-        }
-    }
-
-    /**
-     * Getter for <code>PUBLIC.DEPARTMENT_EMPLOYEE.ID</code>.
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
      * Setter for <code>PUBLIC.DEPARTMENT_EMPLOYEE.ID</code>.
      */
     public DepartmentEmployeeRecord setId(Long value) {
@@ -83,10 +32,10 @@ public class DepartmentEmployeeRecord extends UpdatableRecordImpl<DepartmentEmpl
     }
 
     /**
-     * Getter for <code>PUBLIC.DEPARTMENT_EMPLOYEE.ORG_ID</code>.
+     * Getter for <code>PUBLIC.DEPARTMENT_EMPLOYEE.ID</code>.
      */
-    public Long getOrgId() {
-        return (Long) get(1);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -98,10 +47,10 @@ public class DepartmentEmployeeRecord extends UpdatableRecordImpl<DepartmentEmpl
     }
 
     /**
-     * Getter for <code>PUBLIC.DEPARTMENT_EMPLOYEE.EMPLOYEE_ID</code>.
+     * Getter for <code>PUBLIC.DEPARTMENT_EMPLOYEE.ORG_ID</code>.
      */
-    public Long getEmployeeId() {
-        return (Long) get(2);
+    public Long getOrgId() {
+        return (Long) get(1);
     }
 
     /**
@@ -113,10 +62,10 @@ public class DepartmentEmployeeRecord extends UpdatableRecordImpl<DepartmentEmpl
     }
 
     /**
-     * Getter for <code>PUBLIC.DEPARTMENT_EMPLOYEE.DEPARTMENT_ID</code>.
+     * Getter for <code>PUBLIC.DEPARTMENT_EMPLOYEE.EMPLOYEE_ID</code>.
      */
-    public Long getDepartmentId() {
-        return (Long) get(3);
+    public Long getEmployeeId() {
+        return (Long) get(2);
     }
 
     /**
@@ -128,10 +77,10 @@ public class DepartmentEmployeeRecord extends UpdatableRecordImpl<DepartmentEmpl
     }
 
     /**
-     * Getter for <code>PUBLIC.DEPARTMENT_EMPLOYEE.VERSION</code>.
+     * Getter for <code>PUBLIC.DEPARTMENT_EMPLOYEE.DEPARTMENT_ID</code>.
      */
-    public Integer getVersion() {
-        return (Integer) get(4);
+    public Long getDepartmentId() {
+        return (Long) get(3);
     }
 
     /**
@@ -143,10 +92,10 @@ public class DepartmentEmployeeRecord extends UpdatableRecordImpl<DepartmentEmpl
     }
 
     /**
-     * Getter for <code>PUBLIC.DEPARTMENT_EMPLOYEE.CREATED_BY</code>.
+     * Getter for <code>PUBLIC.DEPARTMENT_EMPLOYEE.VERSION</code>.
      */
-    public Long getCreatedBy() {
-        return (Long) get(5);
+    public Integer getVersion() {
+        return (Integer) get(4);
     }
 
     /**
@@ -158,10 +107,10 @@ public class DepartmentEmployeeRecord extends UpdatableRecordImpl<DepartmentEmpl
     }
 
     /**
-     * Getter for <code>PUBLIC.DEPARTMENT_EMPLOYEE.UPDATED_BY</code>.
+     * Getter for <code>PUBLIC.DEPARTMENT_EMPLOYEE.CREATED_BY</code>.
      */
-    public Long getUpdatedBy() {
-        return (Long) get(6);
+    public Long getCreatedBy() {
+        return (Long) get(5);
     }
 
     /**
@@ -173,15 +122,11 @@ public class DepartmentEmployeeRecord extends UpdatableRecordImpl<DepartmentEmpl
     }
 
     /**
-     * Getter for <code>PUBLIC.DEPARTMENT_EMPLOYEE.CREATED_AT</code>.
+     * Getter for <code>PUBLIC.DEPARTMENT_EMPLOYEE.UPDATED_BY</code>.
      */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(7);
+    public Long getUpdatedBy() {
+        return (Long) get(6);
     }
-
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
 
     /**
      * Setter for <code>PUBLIC.DEPARTMENT_EMPLOYEE.CREATED_AT</code>.
@@ -191,15 +136,11 @@ public class DepartmentEmployeeRecord extends UpdatableRecordImpl<DepartmentEmpl
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Record9 type implementation
-    // -------------------------------------------------------------------------
-
     /**
-     * Getter for <code>PUBLIC.DEPARTMENT_EMPLOYEE.UPDATED_AT</code>.
+     * Getter for <code>PUBLIC.DEPARTMENT_EMPLOYEE.CREATED_AT</code>.
      */
-    public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(8);
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(7);
     }
 
     /**
@@ -210,10 +151,25 @@ public class DepartmentEmployeeRecord extends UpdatableRecordImpl<DepartmentEmpl
         return this;
     }
 
+    /**
+     * Getter for <code>PUBLIC.DEPARTMENT_EMPLOYEE.UPDATED_AT</code>.
+     */
+    public LocalDateTime getUpdatedAt() {
+        return (LocalDateTime) get(8);
+    }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
+
     @Override
     public Record2<Long, Long> key() {
         return (Record2) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record9 type implementation
+    // -------------------------------------------------------------------------
 
     @Override
     public Row9<Long, Long, Long, Long, Integer, Long, Long, LocalDateTime, LocalDateTime> fieldsRow() {
@@ -402,10 +358,6 @@ public class DepartmentEmployeeRecord extends UpdatableRecordImpl<DepartmentEmpl
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     @Override
     public DepartmentEmployeeRecord value8(LocalDateTime value) {
         setCreatedAt(value);
@@ -430,5 +382,52 @@ public class DepartmentEmployeeRecord extends UpdatableRecordImpl<DepartmentEmpl
         value8(value8);
         value9(value9);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Create a detached DepartmentEmployeeRecord
+     */
+    public DepartmentEmployeeRecord() {
+        super(DepartmentEmployee.DEPARTMENT_EMPLOYEE);
+    }
+
+    /**
+     * Create a detached, initialised DepartmentEmployeeRecord
+     */
+    public DepartmentEmployeeRecord(Long id, Long orgId, Long employeeId, Long departmentId, Integer version, Long createdBy, Long updatedBy, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(DepartmentEmployee.DEPARTMENT_EMPLOYEE);
+
+        setId(id);
+        setOrgId(orgId);
+        setEmployeeId(employeeId);
+        setDepartmentId(departmentId);
+        setVersion(version);
+        setCreatedBy(createdBy);
+        setUpdatedBy(updatedBy);
+        setCreatedAt(createdAt);
+        setUpdatedAt(updatedAt);
+    }
+
+    /**
+     * Create a detached, initialised DepartmentEmployeeRecord
+     */
+    public DepartmentEmployeeRecord(alvin.study.springboot.jooq.infra.model.public_.tables.pojos.DepartmentEmployee value) {
+        super(DepartmentEmployee.DEPARTMENT_EMPLOYEE);
+
+        if (value != null) {
+            setId(value.getId());
+            setOrgId(value.getOrgId());
+            setEmployeeId(value.getEmployeeId());
+            setDepartmentId(value.getDepartmentId());
+            setVersion(value.getVersion());
+            setCreatedBy(value.getCreatedBy());
+            setUpdatedBy(value.getUpdatedBy());
+            setCreatedAt(value.getCreatedAt());
+            setUpdatedAt(value.getUpdatedAt());
+        }
     }
 }

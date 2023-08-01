@@ -10,12 +10,13 @@ import alvin.study.springboot.jooq.infra.model.public_.tables.DepartmentEmployee
 import alvin.study.springboot.jooq.infra.model.public_.tables.Employee;
 import alvin.study.springboot.jooq.infra.model.public_.tables.Org;
 import alvin.study.springboot.jooq.infra.model.public_.tables.User;
-import org.jooq.Catalog;
-import org.jooq.Table;
-import org.jooq.impl.SchemaImpl;
 
 import java.util.Arrays;
 import java.util.List;
+
+import org.jooq.Catalog;
+import org.jooq.Table;
+import org.jooq.impl.SchemaImpl;
 
 
 /**
@@ -24,11 +25,13 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Public extends SchemaImpl {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * The reference instance of <code>PUBLIC</code>
      */
     public static final Public PUBLIC = new Public();
-    private static final long serialVersionUID = 1L;
+
     /**
      * The table <code>PUBLIC.DEPARTMENT</code>.
      */

@@ -1,8 +1,8 @@
-/**
- * 配置依赖
- */
 dependencies {
   implementation libs.main.jwt,
     libs.main.commons.codec,
     libs.main.jackson
+}
+
+subprojects {
 }

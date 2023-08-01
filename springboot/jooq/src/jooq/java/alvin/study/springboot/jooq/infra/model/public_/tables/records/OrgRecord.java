@@ -5,13 +5,14 @@ package alvin.study.springboot.jooq.infra.model.public_.tables.records;
 
 
 import alvin.study.springboot.jooq.infra.model.public_.tables.Org;
+
+import java.time.LocalDateTime;
+
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record5;
 import org.jooq.Row5;
 import org.jooq.impl.UpdatableRecordImpl;
-
-import java.time.LocalDateTime;
 
 
 /**
@@ -23,50 +24,6 @@ public class OrgRecord extends UpdatableRecordImpl<OrgRecord> implements Record5
     private static final long serialVersionUID = 1L;
 
     /**
-     * Create a detached OrgRecord
-     */
-    public OrgRecord() {
-        super(Org.ORG);
-    }
-
-    /**
-     * Create a detached, initialised OrgRecord
-     */
-    public OrgRecord(Long id, String name, Long deleted, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        super(Org.ORG);
-
-        setId(id);
-        setName(name);
-        setDeleted(deleted);
-        setCreatedAt(createdAt);
-        setUpdatedAt(updatedAt);
-        resetChangedOnNotNull();
-    }
-
-    /**
-     * Create a detached, initialised OrgRecord
-     */
-    public OrgRecord(alvin.study.springboot.jooq.infra.model.public_.tables.pojos.Org value) {
-        super(Org.ORG);
-
-        if (value != null) {
-            setId(value.getId());
-            setName(value.getName());
-            setDeleted(value.getDeleted());
-            setCreatedAt(value.getCreatedAt());
-            setUpdatedAt(value.getUpdatedAt());
-            resetChangedOnNotNull();
-        }
-    }
-
-    /**
-     * Getter for <code>PUBLIC.ORG.ID</code>.
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
      * Setter for <code>PUBLIC.ORG.ID</code>.
      */
     public OrgRecord setId(Long value) {
@@ -75,10 +32,10 @@ public class OrgRecord extends UpdatableRecordImpl<OrgRecord> implements Record5
     }
 
     /**
-     * Getter for <code>PUBLIC.ORG.NAME</code>.
+     * Getter for <code>PUBLIC.ORG.ID</code>.
      */
-    public String getName() {
-        return (String) get(1);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -90,10 +47,10 @@ public class OrgRecord extends UpdatableRecordImpl<OrgRecord> implements Record5
     }
 
     /**
-     * Getter for <code>PUBLIC.ORG.DELETED</code>.
+     * Getter for <code>PUBLIC.ORG.NAME</code>.
      */
-    public Long getDeleted() {
-        return (Long) get(2);
+    public String getName() {
+        return (String) get(1);
     }
 
     /**
@@ -105,15 +62,11 @@ public class OrgRecord extends UpdatableRecordImpl<OrgRecord> implements Record5
     }
 
     /**
-     * Getter for <code>PUBLIC.ORG.CREATED_AT</code>.
+     * Getter for <code>PUBLIC.ORG.DELETED</code>.
      */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(3);
+    public Long getDeleted() {
+        return (Long) get(2);
     }
-
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
 
     /**
      * Setter for <code>PUBLIC.ORG.CREATED_AT</code>.
@@ -123,15 +76,11 @@ public class OrgRecord extends UpdatableRecordImpl<OrgRecord> implements Record5
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Record5 type implementation
-    // -------------------------------------------------------------------------
-
     /**
-     * Getter for <code>PUBLIC.ORG.UPDATED_AT</code>.
+     * Getter for <code>PUBLIC.ORG.CREATED_AT</code>.
      */
-    public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(4);
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(3);
     }
 
     /**
@@ -142,10 +91,25 @@ public class OrgRecord extends UpdatableRecordImpl<OrgRecord> implements Record5
         return this;
     }
 
+    /**
+     * Getter for <code>PUBLIC.ORG.UPDATED_AT</code>.
+     */
+    public LocalDateTime getUpdatedAt() {
+        return (LocalDateTime) get(4);
+    }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
+
     @Override
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record5 type implementation
+    // -------------------------------------------------------------------------
 
     @Override
     public Row5<Long, String, Long, LocalDateTime, LocalDateTime> fieldsRow() {
@@ -250,10 +214,6 @@ public class OrgRecord extends UpdatableRecordImpl<OrgRecord> implements Record5
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     @Override
     public OrgRecord value4(LocalDateTime value) {
         setCreatedAt(value);
@@ -274,5 +234,44 @@ public class OrgRecord extends UpdatableRecordImpl<OrgRecord> implements Record5
         value4(value4);
         value5(value5);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Create a detached OrgRecord
+     */
+    public OrgRecord() {
+        super(Org.ORG);
+    }
+
+    /**
+     * Create a detached, initialised OrgRecord
+     */
+    public OrgRecord(Long id, String name, Long deleted, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(Org.ORG);
+
+        setId(id);
+        setName(name);
+        setDeleted(deleted);
+        setCreatedAt(createdAt);
+        setUpdatedAt(updatedAt);
+    }
+
+    /**
+     * Create a detached, initialised OrgRecord
+     */
+    public OrgRecord(alvin.study.springboot.jooq.infra.model.public_.tables.pojos.Org value) {
+        super(Org.ORG);
+
+        if (value != null) {
+            setId(value.getId());
+            setName(value.getName());
+            setDeleted(value.getDeleted());
+            setCreatedAt(value.getCreatedAt());
+            setUpdatedAt(value.getUpdatedAt());
+        }
     }
 }

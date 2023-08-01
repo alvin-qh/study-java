@@ -44,7 +44,7 @@ server:
 logging:
   file:
     path: logs
-  config: classpath:logback-spring.xml
+  config: classpath:log4j2-spring-dev.xml
 
 # 配置 Spring Boot
 spring:

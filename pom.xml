@@ -57,7 +57,6 @@
     <version.alibaba-clould>2022.0.0.0</version.alibaba-clould>
     <version.kickstart-graphql>15.0.0</version.kickstart-graphql>
     <version.springdoc>2.1.0</version.springdoc>
-
     <version.quarkus>3.2.0.Final</version.quarkus>
     <!-- End dev dependencies -->
 

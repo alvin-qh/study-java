@@ -1,9 +1,6 @@
-// plugins {
-//   id 'org.springframework.boot' version "${VER_SPRING_BOOT2}" apply false
-//   id "org.springframework.boot" version "${VER_SPRING_BOOT3}" apply false
-//   id "io.spring.dependency-management" version "${VER_GRADLE_SPRING_DEPENDENCY_MANAGEMENT}" apply false
-//   id "org.flywaydb.flyway" version "${VER_FLYWAY}" apply false
-// }
+plugins {
+  id "org.flywaydb.flyway" version "${VER_FLYWAY}" apply false
+}
 
 apply from: "${rootDir}/gradle/depends.gradle"
 
