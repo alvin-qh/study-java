@@ -1,7 +1,7 @@
 package alvin.study.springboot.jooq.conf;
 
-import java.util.Map;
-
+import alvin.study.springboot.jooq.Main;
+import lombok.SneakyThrows;
 import org.apache.logging.slf4j.Log4jLoggerFactory;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.LoggerFactory;
@@ -10,8 +10,7 @@ import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import alvin.study.springboot.jooq.Main;
-import lombok.SneakyThrows;
+import java.util.Map;
 
 /**
  * 初始化测试上下文

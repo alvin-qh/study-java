@@ -138,7 +138,7 @@ public class GraphqlConfig implements Instrumentation, GraphQLServletContextBuil
      * 可获取到注册的 {@link DataLoader} 对象
      * </p>
      *
-     * @param session  WebSocket 上下文对象
+     * @param session WebSocket 上下文对象
      * @param request WebSocket 请求对象
      * @return {@link GraphQLKickstartContext} 对象
      */

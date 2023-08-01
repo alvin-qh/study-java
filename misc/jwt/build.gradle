@@ -1,8 +1,5 @@
 dependencies {
   implementation libs.main.jwt,
-    libs.main.commons.codec,
+    libs.main.commonsCodec,
     libs.main.jackson
-}
-
-subprojects {
 }

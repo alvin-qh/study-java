@@ -53,6 +53,7 @@ include(
 include(
   ":misc:cli",
   ":misc:jackson",
+  ":misc:jwt",
 )
 
 include(

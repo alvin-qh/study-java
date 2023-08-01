@@ -16,5 +16,6 @@
   <modules>
     <module>cli</module>
     <module>jackson</module>
+    <module>jwt</module>
   </modules>
 </project>

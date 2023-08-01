@@ -1,10 +1,16 @@
-package alvin.study.jwt;
+package alvin.study.misc.jwt;
 
-import alvin.study.util.RSAKeyReader;
+import alvin.study.misc.jwt.util.RSAKeyLoader;
+import com.google.common.io.ByteStreams;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.InvalidKeySpecException;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -21,6 +27,30 @@ class JWTsTest {
 
     // 表示 JWT 创建时间
     private static final Instant EXPECTED_ISSUED_AT = Instant.parse("2023-01-01T12:00:00Z");
+
+    /**
+     * 读取私钥
+     *
+     * @return RSA 私钥 {@link RSAPrivateKey} 对象
+     */
+    private static RSAPrivateKey readPrivateKey() throws IOException, InvalidKeySpecException {
+        try (var is = Objects.requireNonNull(JWTsTest.class.getResourceAsStream("/keyfile/key"))) {
+            var key = new String(ByteStreams.toByteArray(is), StandardCharsets.UTF_8);
+            return (RSAPrivateKey) new RSAKeyLoader().loadPrivateKey(key);
+        }
+    }
+
+    /**
+     * 读取公钥
+     *
+     * @return RSA 公钥 {@link RSAPublicKey} 对象
+     */
+    private static RSAPublicKey readPublicKey() throws IOException, InvalidKeySpecException {
+        try (var is = Objects.requireNonNull(JWTsTest.class.getResourceAsStream("/keyfile/key.pub"))) {
+            var key = new String(ByteStreams.toByteArray(is), StandardCharsets.UTF_8);
+            return (RSAPublicKey) new RSAKeyLoader().loadPublicKey(key);
+        }
+    }
 
     /**
      * 每次测试前执行
@@ -83,11 +113,8 @@ class JWTsTest {
      */
     @Test
     void verify_shouldEncodeJWTByRS256Signature() throws Exception {
-        // 通过一个密钥字符串创建对象, 采用 SHA256withRSA 算法
-        var keyReader = new RSAKeyReader(Objects.requireNonNull(JWTsTest.class.getResource("/keyfile/key")).getFile());
-
         // 通过一个私钥对象创建 JWT 工具类, 并编码 JWT 字符串
-        var jwt = JWTs.createByRS(keyReader.readPrivateKey());
+        var jwt = JWTs.createByRS(readPrivateKey());
         var token = jwt.encode(
             "Alvin",
             new String[]{ "third-part" },
@@ -98,7 +125,7 @@ class JWTsTest {
         then(token).isNotEmpty();
 
         // 通过一个公钥对象创建 JWT 工具类, 并验证 JWT 字符串
-        jwt = JWTs.createByRS(keyReader.readPublicKey());
+        jwt = JWTs.createByRS(readPublicKey());
         var payload = jwt.verify(
             token,
             new String[]{ "third-part" },

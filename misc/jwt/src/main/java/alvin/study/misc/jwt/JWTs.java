@@ -1,4 +1,4 @@
-package alvin.study.jwt;
+package alvin.study.misc.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
