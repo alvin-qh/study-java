@@ -148,10 +148,10 @@ mvn spring-boot:run -Dspring-boot.run.arguments=--spring.profiles.active=client
 1. 启动服务端
 
     ```bash
-    ./gradlew :cloud-eureka:bootRun \
+    ./gradlew :springcloud:eureka:server:bootRun \
         --args="--spring.profiles.active=server-01"
 
-    ./gradlew :cloud-eureka:bootRun \
+    ./gradlew :springcloud:eureka:server:bootRun \
         --args="--spring.profiles.active=server-02"
     ```
 
@@ -160,7 +160,7 @@ mvn spring-boot:run -Dspring-boot.run.arguments=--spring.profiles.active=client
 2. 启动客户端, 注册服务
 
     ```bash
-    ./gradlew :cloud-eureka:bootRun \
+    ./gradlew :springcloud:eureka:client:bootRun \
         --args="--spring.profiles.active=client"
     ```
 
@@ -169,7 +169,7 @@ mvn spring-boot:run -Dspring-boot.run.arguments=--spring.profiles.active=client
 3. 执行测试
 
     ```bash
-    ./gradlew :cloud-eureka:test
+    ./gradlew :springcloud:eureka:client:test
     ```
 
 所有服务启动后, 可以正确执行测试

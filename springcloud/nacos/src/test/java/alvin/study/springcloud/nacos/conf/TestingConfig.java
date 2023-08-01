@@ -26,7 +26,7 @@ public class TestingConfig {
      * @param username   Nacos 登录用户名
      * @param password   Nacos 登陆密码
      * @param serverAddr Nacos 服务地址
-     * @param namespace  Nacos 相关命名空间
+     * @param namingNamespace  Nacos 相关命名空间
      * @return {@link NacosUtil} 类型对象
      */
     @Bean
@@ -57,8 +57,7 @@ public class TestingConfig {
      *
      * <p>
      * 参考
-     * {@link alvin.study.app.endpoint.NacosNamingTest#discover_shouldVisitServiceByName()}
-     * 方法中对 {@link RestTemplate} 对象的使用方法
+     * {@code NacosNamingTest#discover_shouldVisitServiceByName()} 方法中对 {@link RestTemplate} 对象的使用方法
      * </p>
      *
      * @return {@link RestTemplate} 对象

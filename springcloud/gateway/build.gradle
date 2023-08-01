@@ -1,6 +1,6 @@
 subprojects {
   dependencies {
-    implementation libs.main.springboot.web,
+    implementation libs.main.springcloud.nacos.discovery,
       libs.main.springboot.actuator
   }
 }

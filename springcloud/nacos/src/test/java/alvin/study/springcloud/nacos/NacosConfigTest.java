@@ -33,9 +33,7 @@ class NacosConfigTest extends BaseTest {
      * </p>
      *
      * <p>
-     * 参见 {@link NacosUtil} 方法类型, 该类型对象在
-     * {@link alvin.study.conf.NacosConfig#nacosUtil() NacosConfig.nacosUtil()}
-     * 方法中进行实例化
+     * 参见 {@link NacosUtil} 方法类型, 该类型对象在 {@code TestingConfig.nacosUtil()} 方法中进行实例化
      * </p>
      */
     @Autowired
@@ -104,8 +102,7 @@ class NacosConfigTest extends BaseTest {
     }
 
     /**
-     * 测试 {@link alvin.study.app.endpoint.ApplicationConfigController#getConfig()
-     * ApplicationConfigController.getConfig()} 方法, 获取配置信息
+     * 测试 {@code ApplicationConfigController#getConfig()} 方法, 获取配置信息
      */
     @Test
     void getConfig_shouldReturn200Ok() throws NacosException {

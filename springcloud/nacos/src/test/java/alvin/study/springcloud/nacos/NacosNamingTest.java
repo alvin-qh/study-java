@@ -30,12 +30,9 @@ class NacosNamingTest extends BaseTest {
      * 注入 Rest 请求模板对象
      *
      * <p>
-     * 该对象已经开启了服务发现和负载均衡功能, 参考 {@link alvin.study.conf.NacosConfig#restTemplate()
-     * NacosConfig.restTemplate()} 方法以及
+     * 该对象已经开启了服务发现和负载均衡功能, 参考 {@code TestingConfig.restTemplate()} 方法以及
      * {@link org.springframework.cloud.client.discovery.EnableDiscoveryClient @EnableDiscoveryClient}
-     * 和
-     * {@link org.springframework.cloud.client.loadbalancer.LoadBalanced @LoadBalanced}
-     * 注解
+     * 和 {@link org.springframework.cloud.client.loadbalancer.LoadBalanced @LoadBalanced} 注解
      * </p>
      */
     @Autowired

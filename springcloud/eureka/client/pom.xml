@@ -34,15 +34,18 @@
       <!-- Spring Cloud 负载均衡框架 -->
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <!-- Spring Cloud Feign Rest 客户端依赖 -->
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-openfeign</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.awaitility</groupId>
       <artifactId>awaitility</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>

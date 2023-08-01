@@ -43,8 +43,7 @@ class PredicatesTest {
      * 注入 Rest 请求模板对象
      *
      * <p>
-     * 该对象启动了服务发现和负载均衡功能, 参见 {@link alvin.study.conf.TestingConfig#restTemplate()
-     * TestingConfig.restTemplate()} 方法
+     * 该对象启动了服务发现和负载均衡功能, 参见 {@code TestingConfig.restTemplate()} 方法
      * </p>
      */
     @Autowired
@@ -95,8 +94,7 @@ class PredicatesTest {
      * </p>
      *
      * <p>
-     * 参考 {@link alvin.study.core.gateway.predicate.JWTRoutePredicateFactory
-     * JWTRoutePredicateFactory} 断言工厂类
+     * 参考 {@code JWTRoutePredicateFactory} 断言工厂类
      * </p>
      *
      * <p>

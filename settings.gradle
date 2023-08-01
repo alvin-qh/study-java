@@ -92,3 +92,11 @@ include(
   ":springboot:kickstart-graphql",
   ":springboot:springdoc",
 )
+
+include(
+  ":springcloud:nacos",
+  ":springcloud:eureka:server",
+  ":springcloud:eureka:client",
+  ":springcloud:gateway:server",
+  ":springcloud:gateway:client",
+)
