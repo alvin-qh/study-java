@@ -70,17 +70,11 @@ subprojects {
 
   dependencies {
     implementation libs.main.jetbrains.annotation,
-      libs.main.lombok,
-      libs.main.guava
+      libs.main.lombok
 
     compileOnly libs.main.lombok
 
     annotationProcessor libs.main.lombok
-
-    testImplementation libs.test.junit,
-      libs.test.assertj,
-      libs.test.awaitility,
-      libs.test.hamcrest
 
     testAnnotationProcessor libs.main.lombok
   }

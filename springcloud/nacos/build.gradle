@@ -6,7 +6,8 @@ dependencies {
     libs.main.springboot.actuator
 
   testImplementation libs.test.springboot.web,
-    libs.main.springcloud.loadBalancer
+    libs.main.springcloud.loadBalancer,
+    libs.test.awaitility
 }
 
 springBoot {

@@ -362,6 +362,7 @@ public class Ciphers {
      * @param out           输出密文数据的流
      * @return 加密数据的长度
      */
+    @SuppressWarnings("resource")
     public long encrypt(SecretKeySpec keySpec, AlgorithmParameterSpec parameterSpec, InputStream in, OutputStream out) {
         // 实例化密码学对象
         var cipher = makeCipherInstance(Cipher.ENCRYPT_MODE, keySpec, parameterSpec);

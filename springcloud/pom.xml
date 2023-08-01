@@ -23,6 +23,11 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${version.guava}</version>
+      </dependency>
+      <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
         <version>${version.spring-boot}</version>
@@ -48,10 +53,20 @@
         <artifactId>disruptor</artifactId>
         <version>${version.disruptor}</version>
       </dependency>
+
+      <dependency>
+        <groupId>org.awaitility</groupId>
+        <artifactId>awaitility</artifactId>
+        <version>${version.awaitility}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
   <dependencies>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
     <dependency>
       <!-- 排除 spring-boot-starter-logging 的全部依赖 -->
       <groupId>org.springframework.boot</groupId>
@@ -68,7 +83,6 @@
       <artifactId>spring-boot-starter</artifactId>
     </dependency>
     <dependency>
-      <!-- Log4j2 依赖 -->
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-log4j2</artifactId>
     </dependency>
@@ -78,27 +92,14 @@
       <artifactId>disruptor</artifactId>
     </dependency>
     <dependency>
-      <!-- SpringCloud 依赖 -->
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter</artifactId>
     </dependency>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>org.mockito</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.assertj</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.hamcrest</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -116,7 +117,6 @@
 
     <plugins>
       <plugin>
-        <!-- 编译插件 -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
@@ -142,7 +142,6 @@
         </configuration>
       </plugin>
       <plugin>
-        <!-- Spring Boot Maven 插件 -->
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>

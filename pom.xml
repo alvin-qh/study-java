@@ -94,7 +94,6 @@
     <module>se</module>
     <module>testing</module>
     <module>misc</module>
-    <module>security</module>
     <module>guava</module>
     <module>guice</module>
     <module>springboot</module>
@@ -104,12 +103,12 @@
   <!-- 依赖声明, 所有子项目可使用声明后的依赖 -->
   <dependencyManagement>
     <dependencies>
-      <!-- Begin dev dependencies -->
       <dependency>
-        <!-- Guava 依赖 -->
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
-        <version>${version.guava}</version>
+        <!-- Jetbrains 注解依赖 -->
+        <groupId>org.jetbrains</groupId>
+        <artifactId>annotations</artifactId>
+        <version>${version.jetbrains-annotation}</version>
+        <scope>compile</scope>
       </dependency>
       <dependency>
         <!-- Lombok 依赖 -->
@@ -123,107 +122,19 @@
         <artifactId>h2</artifactId>
         <version>${version.h2}</version>
       </dependency>
-      <dependency>
-        <!-- Slf4j 依赖 -->
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-api</artifactId>
-        <version>${version.slf4j}</version>
-      </dependency>
-      <dependency>
-        <!-- Flyway 依赖 -->
-        <groupId>org.flywaydb</groupId>
-        <artifactId>flyway-core</artifactId>
-        <version>${version.flyway}</version>
-      </dependency>
-      <dependency>
-        <!-- Jetbrains 注解依赖 -->
-        <groupId>org.jetbrains</groupId>
-        <artifactId>annotations</artifactId>
-        <version>${version.jetbrains-annotation}</version>
-        <scope>compile</scope>
-      </dependency>
-      <!-- End dev dependencies -->
-
-      <!-- Begin test dependencies -->
-      <dependency>
-        <!-- JUnit 依赖 -->
-        <groupId>org.junit</groupId>
-        <artifactId>junit-bom</artifactId>
-        <version>${version.junit}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <dependency>
-        <!-- Junit 扩展依赖 -->
-        <groupId>org.junit-pioneer</groupId>
-        <artifactId>junit-pioneer</artifactId>
-        <version>${version.junit-pioneer}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <!-- AssertJ 断言库 -->
-        <groupId>org.assertj</groupId>
-        <artifactId>assertj-core</artifactId>
-        <version>${version.assertj}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <!-- Awaitility 异步测试库 -->
-        <groupId>org.awaitility</groupId>
-        <artifactId>awaitility</artifactId>
-        <version>${version.awaitility}</version>
-        <scope>test</scope>
-      </dependency>
-      <!-- End test dependencies -->
     </dependencies>
   </dependencyManagement>
 
   <dependencies>
-    <!-- Begin dev dependencies -->
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-    </dependency>
     <dependency>
       <groupId>org.jetbrains</groupId>
       <artifactId>annotations</artifactId>
       <scope>compile</scope>
     </dependency>
-    <!-- End dev dependencies -->
-
-    <!-- Begin test dependencies -->
     <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter</artifactId>
-      <scope>test</scope>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest</artifactId>
-      <version>${version.hamcrest}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.awaitility</groupId>
-      <artifactId>awaitility</artifactId>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.hamcrest</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <!-- End test dependencies -->
   </dependencies>
 
   <build>

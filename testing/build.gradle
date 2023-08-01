@@ -13,4 +13,13 @@ test {
 }
 
 subprojects {
+  dependencies {
+    implementation libs.main.guava
+
+    testImplementation libs.test.junit,
+        libs.test.assertj,
+        libs.test.junitPioneer,
+        libs.test.awaitility,
+        libs.test.hamcrest
+  }
 }

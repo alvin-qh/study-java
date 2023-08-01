@@ -1,19 +1,19 @@
-<project
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>study-java-quarkus</artifactId>
+  <artifactId>study-java-quarkus-parent</artifactId>
   <name>${project.artifactId}</name>
   <packaging>pom</packaging>
 
-  <!-- 从根项目 pom.xml 继承 -->
   <parent>
     <groupId>alvin.study</groupId>
-    <artifactId>study-java</artifactId>
+    <artifactId>study-java-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <relativePath>./pom.xml</relativePath>
+    <relativePath>../pom.xml</relativePath>
   </parent>
+
+  <modules>
+  </modules>
 
   <dependencyManagement>
     <dependencies>
@@ -21,8 +21,8 @@
         <groupId>io.quarkus.platform</groupId>
         <artifactId>quarkus-bom</artifactId>
         <version>${version.quarkus}</version>
-        <type>pom</type>
-        <scope>import</scope>
+        <scope>pom</scope>
+        <type>import</type>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -47,4 +47,15 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>io.quarkus.platform</groupId>
+          <artifactId>quarkus-maven-plugin</artifactId>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 </project>

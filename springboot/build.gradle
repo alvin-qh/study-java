@@ -23,7 +23,8 @@ subprojects {
 
   dependencies {
     implementation libs.main.springboot.starter,
-      libs.main.springboot.log4j
+      libs.main.springboot.log4j,
+      libs.main.guava
 
     developmentOnly libs.main.springboot.devtools
 

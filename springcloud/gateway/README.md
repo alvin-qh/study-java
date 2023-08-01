@@ -101,13 +101,13 @@ public class ConfigOnGivenProfile {
 通过 Maven 启动项目时, 可以通过 `-Dspring-boot.run.arguments` 参数指定 Java 运行时参数, 例如:
 
 ```bash
-mvn spring-boot:run -Dspring-boot.run.arguments=--spring.profiles.active=client
+mvn spring-boot:run -Dspring-boot.run.arguments="--server.port=8081"
 ```
 
 通过 Gradle 启动项目时, 可以通过 `--args` 参数指定 Java 运行时参数, 例如:
 
 ```bash
-./gradlew bootRun --args='--spring.profiles.active=client'
+./gradlew bootRun --args='--server.port=8081'
 ```
 
 ## 4. 启动本工程
@@ -126,12 +126,12 @@ docker-compose -f cloud-gateway/docker/docker-compose.yml up
 
     ```bash
     mvn spring-boot:run \
-        -Dspring-boot.run.arguments="--spring.profiles.active=web-server --server.port=8081" \
-        -pl cloud-gateway
+        -Dspring-boot.run.arguments="--server.port=8081" \
+        -pl springcloud/gateway/client
 
     mvn spring-boot:run \
-        -Dspring-boot.run.arguments="--spring.profiles.active=web-server --server.port=8082" \
-        -pl cloud-gateway
+        -Dspring-boot.run.arguments="--server.port=8082" \
+        -pl springcloud/gateway/client
     ```
 
    此时在 `8081` 和 `8082` 端口各自启动了一个 Web 服务
@@ -139,9 +139,7 @@ docker-compose -f cloud-gateway/docker/docker-compose.yml up
 2. 启动 Gateway 服务
 
     ```bash
-    mvn spring-boot:run \
-        -Dspring-boot.run.arguments="--spring.profiles.active=gateway" \
-        -pl cloud-gateway
+    mvn spring-boot:run -pl springcloud/gateway/server
     ```
 
    此时在 `8080` 端口上启动了网关服务
@@ -149,7 +147,7 @@ docker-compose -f cloud-gateway/docker/docker-compose.yml up
 3. 执行测试
 
     ```bash
-    mvn test -pl cloud-gateway
+    mvn test -pl springcloud/gateway/client
     ```
 
 以 Gradle 为例
@@ -157,11 +155,9 @@ docker-compose -f cloud-gateway/docker/docker-compose.yml up
 1. 启动应用服务集群
 
     ```bash
-    ./gradlew :cloud-gateway:bootRun \
-        --args="--spring.profiles.active=web-server --server.port=8081"
+    ./gradlew :springcloud:gateway:client:bootRun --args="--server.port=8081"
 
-    ./gradlew :cloud-gateway:bootRun \
-        --args="--spring.profiles.active=web-server --server.port=8082"
+    ./gradlew :springcloud:gateway:client:bootRun --args="--server.port=8082"
     ```
 
    此时在 `8081` 和 `8082` 端口各自启动了一个 Web 服务
@@ -169,8 +165,7 @@ docker-compose -f cloud-gateway/docker/docker-compose.yml up
 2. 启动 Gateway 服务
 
     ```bash
-    ./gradlew :cloud-gateway:bootRun \
-        --args="--spring.profiles.active=gateway"
+    ./gradlew :springcloud:gateway:server:bootRun
     ```
 
    此时在 `8080` 端口上启动了网关服务
@@ -178,7 +173,7 @@ docker-compose -f cloud-gateway/docker/docker-compose.yml up
 3. 执行测试
 
     ```bash
-    ./gradlew :cloud-gateway:test
+    ./gradlew :springcloud:gateway:client:test
     ```
 
 所有服务启动后, 可以正确执行测试
