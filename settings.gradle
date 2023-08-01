@@ -35,6 +35,7 @@ include(
   ":se:reflect",
   ":se:runtime",
   ":se:timing",
+  ":se:security",
 )
 
 include(

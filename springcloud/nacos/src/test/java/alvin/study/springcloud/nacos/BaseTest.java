@@ -63,13 +63,13 @@ abstract class BaseTest {
      */
     protected WebTestClient client() {
         return client
-                // 对 client 字段进行更新操作, 返回
-                // org.springframework.test.web.reactive.server.WebTestClient.Builder 对象
-                .mutate()
-                // 设置请求超时
-                .responseTimeout(Duration.ofMinutes(1))
-                // 创建新的 WebTestClient 对象
-                .build();
+            // 对 client 字段进行更新操作, 返回
+            // org.springframework.test.web.reactive.server.WebTestClient.Builder 对象
+            .mutate()
+            // 设置请求超时
+            .responseTimeout(Duration.ofMinutes(1))
+            // 创建新的 WebTestClient 对象
+            .build();
     }
 
     /**
@@ -84,7 +84,7 @@ abstract class BaseTest {
      */
     @SuppressWarnings("unchecked")
     private <T extends RequestHeadersSpec<?>, R extends RequestHeadersUriSpec<?>> @NotNull T setup(
-            @NotNull R spec, String url, Object... uriVariables) {
+        @NotNull R spec, String url, Object... uriVariables) {
         // 设置访问 URL 地址和必要的 header 信息
         return (T) spec.uri(servletContext.getContextPath() + url, uriVariables);
     }
@@ -98,7 +98,7 @@ abstract class BaseTest {
      */
     protected RequestHeadersSpec<?> getJson(String url, Object... uriVariables) {
         return setup(client().get(), url, uriVariables)
-                .accept(MediaType.APPLICATION_JSON);
+            .accept(MediaType.APPLICATION_JSON);
     }
 
     /**
@@ -110,8 +110,8 @@ abstract class BaseTest {
      */
     protected RequestBodySpec postJson(String url, Object... uriVariables) {
         return ((RequestBodySpec) setup(client().post(), url, uriVariables))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON);
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON);
     }
 
     /**

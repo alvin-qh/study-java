@@ -80,8 +80,8 @@ public class ErrorDetail {
      */
     @JsonCreator
     ErrorDetail(
-            @JsonProperty("errorParameters") Map<String, String[]> errorParameters,
-            @JsonProperty("errorFields") Map<String, String[]> errorFields) {
+        @JsonProperty("errorParameters") Map<String, String[]> errorParameters,
+        @JsonProperty("errorFields") Map<String, String[]> errorFields) {
         this.errorParameters = errorParameters;
         this.errorFields = errorFields;
     }

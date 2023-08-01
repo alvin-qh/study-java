@@ -52,7 +52,7 @@ import org.springframework.web.client.HttpClientErrorException;
  * </li>
  * </ul>
  * </p>
- * */
+ */
 @Slf4j
 @RestController
 @RequestMapping("/auth")
@@ -92,13 +92,13 @@ public class JWTController {
             var payload = JWT.decode(token);
             // 返回 JWT 信息
             return new AuthDto(
-                    payload.getIssuer(),
-                    payload.getAudience().get(0),
-                    payload.getSubject(),
-                    payload.getClaim("sub_org_code").asString(),
-                    payload.getClaim("sub_user_type").asString(),
-                    payload.getIssuedAtAsInstant(),
-                    payload.getExpiresAtAsInstant());
+                payload.getIssuer(),
+                payload.getAudience().get(0),
+                payload.getSubject(),
+                payload.getClaim("sub_org_code").asString(),
+                payload.getClaim("sub_user_type").asString(),
+                payload.getIssuedAtAsInstant(),
+                payload.getExpiresAtAsInstant());
         } catch (JWTDecodeException e) {
             log.error("Invalid JWT {}", token, e);
             throw HttpClientErrorException.create(HttpStatus.UNAUTHORIZED, "invalid_jwt", null, null, null);

@@ -1,8 +1,6 @@
 package alvin.study.springcloud.gateway.server.filter;
 
-import java.net.InetSocketAddress;
-import java.util.Optional;
-
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -11,9 +9,10 @@ import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
-
-import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
+
+import java.net.InetSocketAddress;
+import java.util.Optional;
 
 /**
  * 记录 Log 的全局过滤器
@@ -84,16 +83,16 @@ public class LoggingFilter implements GlobalFilter, Ordered {
 
         // 输出日志
         log.info("""
-            New request coming:
-            Request Path:
-              {}
+                New request coming:
+                Request Path:
+                  {}
 
-            Headers:
-              {}
+                Headers:
+                  {}
 
-            Remote Host:
-              {}:{}
-            """,
+                Remote Host:
+                  {}:{}
+                """,
             // 输出请求的目标路径
             request.getPath().value(),
             // 输出请求的 HTTP 头信息

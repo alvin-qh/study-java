@@ -59,7 +59,7 @@ class NacosConfigTest extends BaseTest {
 
         // 确认配置对象被正确发布
         await().atMost(2, TimeUnit.SECONDS)
-                .until(() -> applicationConfig.getCommon().getSearchUrl(), equalTo("https://www.baidu.com"));
+            .until(() -> applicationConfig.getCommon().getSearchUrl(), equalTo("https://www.baidu.com"));
 
         var event = new Object();
         var changeItems = new ArrayList<>();
@@ -111,15 +111,15 @@ class NacosConfigTest extends BaseTest {
 
         // 发起请求, 获取配置信息
         await().atMost(2, TimeUnit.SECONDS).until(
-                () -> getJson("/api/config")
-                        .exchange()
-                        .expectStatus().isOk()
-                        .expectBody(new ParameterizedTypeReference<ResponseWrapper<ApplicationConfigDto>>() { })
-                        .returnResult()
-                        .getResponseBody(),
-                resp ->
-                        resp.getRetCode() == 0
-                                && resp.getPayload().getCommon().getSearchUrl().equals("https://www.baidu.com"));
+            () -> getJson("/api/config")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(new ParameterizedTypeReference<ResponseWrapper<ApplicationConfigDto>>() { })
+                .returnResult()
+                .getResponseBody(),
+            resp ->
+                resp.getRetCode() == 0
+                    && resp.getPayload().getCommon().getSearchUrl().equals("https://www.baidu.com"));
     }
 
     /**

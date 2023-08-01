@@ -23,19 +23,19 @@ public class TestingConfig {
     /**
      * 产生 {@link NacosUtil} 类型 Bean 对象
      *
-     * @param username   Nacos 登录用户名
-     * @param password   Nacos 登陆密码
-     * @param serverAddr Nacos 服务地址
-     * @param namingNamespace  Nacos 相关命名空间
+     * @param username        Nacos 登录用户名
+     * @param password        Nacos 登陆密码
+     * @param serverAddr      Nacos 服务地址
+     * @param namingNamespace Nacos 相关命名空间
      * @return {@link NacosUtil} 类型对象
      */
     @Bean
     NacosUtil nacosUtil(
-            @Value("${spring.cloud.nacos.username}") String username,
-            @Value("${spring.cloud.nacos.password}") String password,
-            @Value("${spring.cloud.nacos.server-addr}") String serverAddr,
-            @Value("${spring.cloud.nacos.config.namespace:}") String configNamespace,
-            @Value("${spring.cloud.nacos.discovery.namespace:}") String namingNamespace) throws NacosException {
+        @Value("${spring.cloud.nacos.username}") String username,
+        @Value("${spring.cloud.nacos.password}") String password,
+        @Value("${spring.cloud.nacos.server-addr}") String serverAddr,
+        @Value("${spring.cloud.nacos.config.namespace:}") String configNamespace,
+        @Value("${spring.cloud.nacos.discovery.namespace:}") String namingNamespace) throws NacosException {
         // 实例化对象
         return new NacosUtil(username, password, serverAddr, configNamespace, namingNamespace);
     }

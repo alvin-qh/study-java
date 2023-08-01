@@ -34,9 +34,9 @@ class PredicatesTest {
     // cspell: disable
     // 定义 JWT 测试凭证
     private static final String JWT_VALUE = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJ0aGlyZC1wYXJ0Iiwic3ViIjoi"
-            + "dV9iOTg5YzllYS1lMDdiLTQyNjMtYWU5OC0xMWQ2YjFiMGUzMjciLCJpc3MiOiJBbHZpbiIsInN1Yl91c2VyX3R5cGUiOiJlbXBsb3l"
-            + "lZSIsImV4cCI6OTk5OTk5OTk5OSwic3ViX29yZ19jb2RlIjoib19hNGVmMzAiLCJpYXQiOjE1MDI5MzkxNzB9.JxVRbYIyAJisOwncR"
-            + "aisEvL8ge51HDhqfd45SfxLW2I";
+        + "dV9iOTg5YzllYS1lMDdiLTQyNjMtYWU5OC0xMWQ2YjFiMGUzMjciLCJpc3MiOiJBbHZpbiIsInN1Yl91c2VyX3R5cGUiOiJlbXBsb3l"
+        + "lZSIsImV4cCI6OTk5OTk5OTk5OSwic3ViX29yZ19jb2RlIjoib19hNGVmMzAiLCJpYXQiOjE1MDI5MzkxNzB9.JxVRbYIyAJisOwncR"
+        + "aisEvL8ge51HDhqfd45SfxLW2I";
     // cspell: enable
 
     /**
@@ -66,16 +66,16 @@ class PredicatesTest {
             try {
                 // 发起请求
                 var resp = restTemplate.exchange(
-                        "http://gateway/backend/api/info",
-                        HttpMethod.GET,
-                        null,
-                        new ParameterizedTypeReference<ResponseWrapper<AppInfoDto>>() { }
+                    "http://gateway/backend/api/info",
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<ResponseWrapper<AppInfoDto>>() { }
                 ).getBody();
 
                 // 确认响应正确
                 then(resp).isNotNull()
-                        .extracting(ResponseWrapper::getRetCode, ResponseWrapper::getPath)
-                        .contains(0, "/api/info");
+                    .extracting(ResponseWrapper::getRetCode, ResponseWrapper::getPath)
+                    .contains(0, "/api/info");
 
                 // 确认相应内容符合预期
                 var payload = resp.getPayload();
@@ -123,16 +123,16 @@ class PredicatesTest {
             try {
                 // 发起请求
                 var resp = restTemplate.exchange(
-                        "http://gateway/auth",
-                        HttpMethod.GET,
-                        new HttpEntity<>(null, headers),
-                        new ParameterizedTypeReference<ResponseWrapper<AuthDto>>() { }
+                    "http://gateway/auth",
+                    HttpMethod.GET,
+                    new HttpEntity<>(null, headers),
+                    new ParameterizedTypeReference<ResponseWrapper<AuthDto>>() { }
                 ).getBody();
 
                 // 确认响应正确
                 then(resp).isNotNull()
-                        .extracting(ResponseWrapper::getRetCode, ResponseWrapper::getPath)
-                        .contains(0, "/auth");
+                    .extracting(ResponseWrapper::getRetCode, ResponseWrapper::getPath)
+                    .contains(0, "/auth");
 
                 // 确认相应内容符合预期
                 var payload = resp.getPayload();

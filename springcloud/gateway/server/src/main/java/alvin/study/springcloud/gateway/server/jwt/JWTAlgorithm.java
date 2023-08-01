@@ -74,7 +74,7 @@ public enum JWTAlgorithm {
      * @throws InvalidKeySpecException
      */
     private RSAPrivateKey decodeRSAPrivateKey(String securityKey)
-            throws InvalidKeySpecException, NoSuchAlgorithmException {
+        throws InvalidKeySpecException, NoSuchAlgorithmException {
         // 将密钥字符串进行解码, 获取原始 Byte 数据
         var keyData = Base64.decodeBase64(securityKey);
         // 产生 RSA 密钥对象
@@ -90,7 +90,7 @@ public enum JWTAlgorithm {
      * @throws InvalidKeySpecException
      */
     private ECPrivateKey decodeECPrivateKey(String securityKey)
-            throws InvalidKeySpecException, NoSuchAlgorithmException {
+        throws InvalidKeySpecException, NoSuchAlgorithmException {
         // 将密钥字符串进行解码, 获取原始 Byte 数据
         var keyData = Base64.decodeBase64(securityKey);
         // 产生 EC 密钥对象

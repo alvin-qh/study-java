@@ -53,9 +53,9 @@ class NamingDiscoveryTest {
             try {
                 var resp = restTemplate.getForObject("http://eureka-client/api/hello", ResponseWrapper.class);
                 then(resp)
-                        .isNotNull()
-                        .extracting(ResponseWrapper::getRetCode)
-                        .isEqualTo(0);
+                    .isNotNull()
+                    .extracting(ResponseWrapper::getRetCode)
+                    .isEqualTo(0);
 
                 var dto = objectMapper.convertValue(resp.getPayload(), HelloDto.class);
                 then(dto.getApplicationName()).isEqualTo("eureka-client");

@@ -85,12 +85,12 @@ public class JWTRoutePredicateFactory extends AbstractRoutePredicateFactory<JWTR
         if (this.jwtVerifier == null) {
             // 打印配置信息
             log.info("""
-                Get predicate arguments:
-                  Header Name: {}
-                  Algorithm: {}
-                  Security Key: {}
-                  Audience: {}
-                """,
+                    Get predicate arguments:
+                      Header Name: {}
+                      Algorithm: {}
+                      Security Key: {}
+                      Audience: {}
+                    """,
                 config.headerName,
                 config.algorithm.getName(),
                 config.securityKey,
@@ -99,8 +99,8 @@ public class JWTRoutePredicateFactory extends AbstractRoutePredicateFactory<JWTR
 
             // 创建 JWT 验证对象
             this.jwtVerifier = JWT.require(config.algorithm.build(config.securityKey))
-                    .withAudience(config.audience)
-                    .build();
+                .withAudience(config.audience)
+                .build();
         }
 
         // 返回断言对象

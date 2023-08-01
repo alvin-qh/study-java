@@ -77,11 +77,11 @@ class NacosNamingTest extends BaseTest {
 
             // 确认当前服务已被注册
             then(instances)
-                    .hasSize(1)
-                    .singleElement()
-                    .matches(inst -> inst.getServiceName().equals(String.format("%s@@%s", NAMING_GROUP, applicationName))
-                            && Networks.localHostIpAddresses().contains(inst.getIp())
-                            && inst.getPort() == serverPort);
+                .hasSize(1)
+                .singleElement()
+                .matches(inst -> inst.getServiceName().equals(String.format("%s@@%s", NAMING_GROUP, applicationName))
+                    && Networks.localHostIpAddresses().contains(inst.getIp())
+                    && inst.getPort() == serverPort);
         });
     }
 
@@ -98,10 +98,10 @@ class NacosNamingTest extends BaseTest {
             try {
                 // 通过服务名称访问目标服务
                 var resp = (ResponseWrapper<Map<String, ?>>) restTemplate.getForObject(
-                        "http://nacos-client/api/config", ResponseWrapper.class);
+                    "http://nacos-client/api/config", ResponseWrapper.class);
 
                 then(resp).isNotNull()
-                        .extracting(ResponseWrapper::getRetCode).isEqualTo(0);
+                    .extracting(ResponseWrapper::getRetCode).isEqualTo(0);
 
                 var config = objectMapper.convertValue(resp.getPayload(), ApplicationConfigDto.class);
                 then(config.getCommon().getSearchUrl()).isEqualTo("https://www.baidu.com");

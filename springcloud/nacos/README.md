@@ -1,11 +1,11 @@
 # Nacos
 
 - [Nacos](#nacos)
-    - [1. Nacos 集群配置](#1-nacos-集群配置)
-    - [2. Spring Cloud Starter Alibaba Nacos Config 版本差异](#2-spring-cloud-starter-alibaba-nacos-config-版本差异)
-    - [3. 服务发现](#3-服务发现)
-        - [3.1. 服务注册](#31-服务注册)
-        - [3.2. 服务发现](#32-服务发现)
+  - [1. Nacos 集群配置](#1-nacos-集群配置)
+  - [2. Spring Cloud Starter Alibaba Nacos Config 版本差异](#2-spring-cloud-starter-alibaba-nacos-config-版本差异)
+  - [3. 服务发现](#3-服务发现)
+    - [3.1. 服务注册](#31-服务注册)
+    - [3.2. 服务发现](#32-服务发现)
 
 ## 1. Nacos 集群配置
 
@@ -34,13 +34,13 @@
 
    Nacos 对外暴露 3 个端口, 默认为:
 
-    - `8848`: Web 管理端口
-    - `9848,9849`: RPC 访问端口, 必须为 Web 管理端口 (如`8848`) 分别加上 `1000` 和 `1001`, 否则 Nacos 无法正确访问
+  - `8848`: Web 管理端口
+  - `9848,9849`: RPC 访问端口, 必须为 Web 管理端口 (如`8848`) 分别加上 `1000` 和 `1001`, 否则 Nacos 无法正确访问
 
    所以 Nginx 需要全部代理这三个端口, 其中:
 
-    - `8848` 端口需要通过 `http` 协议进行代理
-    - `8849,9849` 端口需要通过 `stream` 协议进行代理 (TCP)
+  - `8848` 端口需要通过 `http` 协议进行代理
+  - `8849,9849` 端口需要通过 `stream` 协议进行代理 (TCP)
 
    具体配置参见 [docker/conf/nginx.conf](docker/conf/nginx.conf) 配置
 

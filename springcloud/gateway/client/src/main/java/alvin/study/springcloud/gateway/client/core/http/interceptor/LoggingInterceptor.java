@@ -47,9 +47,9 @@ public class LoggingInterceptor implements HandlerInterceptor, Ordered {
      */
     @Override
     public boolean preHandle(
-            @NotNull HttpServletRequest request,
-            @NotNull HttpServletResponse response,
-            @NotNull Object handler) {
+        @NotNull HttpServletRequest request,
+        @NotNull HttpServletResponse response,
+        @NotNull Object handler) {
         recordLog(request);
         return true;
     }
@@ -61,16 +61,16 @@ public class LoggingInterceptor implements HandlerInterceptor, Ordered {
      */
     private void recordLog(@NotNull HttpServletRequest request) {
         log.info("""
-            New request coming:
-            Request Path:
-              {}
+                New request coming:
+                Request Path:
+                  {}
 
-            Headers:
-              {}
+                Headers:
+                  {}
 
-            Remote Host:
-              {}:{}
-            """,
+                Remote Host:
+                  {}:{}
+                """,
             request.getRequestURI(),
             resolveHeaders(request),
             request.getRemoteHost(),

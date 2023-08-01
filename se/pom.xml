@@ -22,6 +22,7 @@
     <module>annotation</module>
     <module>reflect</module>
     <module>io</module>
+    <module>security</module>
     <module>process</module>
     <module>concurrent</module>
     <module>mail</module>

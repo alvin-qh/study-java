@@ -18,6 +18,6 @@ public class ApplicationConfigMapper {
      */
     public ApplicationConfigDto toDto(@NotNull ApplicationConfig entity) {
         return new ApplicationConfigDto(
-                new ApplicationConfigDto.Common(entity.getCommon().getSearchUrl()));
+            new ApplicationConfigDto.Common(entity.getCommon().getSearchUrl()));
     }
 }

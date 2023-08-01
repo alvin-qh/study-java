@@ -1,17 +1,18 @@
 package alvin.study.springcloud.gateway.client.endpoint.model;
 
-import java.io.Serializable;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * 应用程序信息 DTO 对象
  *
  * <p>
- * 用于 {@link alvin.study.app.endpoint.BackendController BackendController} 返回数据
+ * 用于 {@link alvin.study.springcloud.gateway.client.endpoint.BackendController
+ * BackendController} 返回数据
  * </p>
  */
 @Data

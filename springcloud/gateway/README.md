@@ -24,7 +24,8 @@
 - `eureka.instance.hostname=<hostname>` 当前节点的域名
 - `eureka.client.fetch-registry=false` 不获取服务注册信息
 - `eureka.client.register-with-eureka=false` 不注册当前服务
-- `eureka.client.service-url.defaultZone=http://${eureka.instance.hostname}:${server.port}/eureka/` 当前服务域为 `http://本机域名:本机端口号/eureka`
+- `eureka.client.service-url.defaultZone=http://${eureka.instance.hostname}:${server.port}/eureka/`
+  当前服务域为 `http://本机域名:本机端口号/eureka`
 
 ### 1.2. 集群配置
 
@@ -32,7 +33,8 @@
 
 - `server.port=<port>` 服务端口号
 - `eureka.instance.hostname=<hostname>` 当前节点的域名
-- `eureka.instance.prefer-ip-address=true` `true` 表示以 IP 注册节点, `false` 表示用域名注册节点 (此时 `eureka.instance.hostname` 必填). 如果在一台机器上启动多个节点, 则此配置必须为 `false`
+- `eureka.instance.prefer-ip-address=true` `true` 表示以 IP 注册节点, `false` 表示用域名注册节点 (
+  此时 `eureka.instance.hostname` 必填). 如果在一台机器上启动多个节点, 则此配置必须为 `false`
 - `eureka.client.fetch-registry=true` 或者省略此配置, 表示当前节点从其它节点获取注册信息
 - `eureka.client.register-with-eureka=true` 或者省略此配置, 标识当前节点注册到集群
 - `eureka.client.service-url.defaultZone=<节点1地址>,<节点2地址>,...,<节点n地址>` 配置为集群除本机外其它所有节点的地址
@@ -55,10 +57,13 @@
 
 客户端配置需要在 `application.yml` 中设置:
 
-- `eureka.instance.instance-id` 所注册的服务实例 id, 对于一个服务名注册多个服务实例的情形 (高可用 + 负载均衡), 需要设置该 id
+- `eureka.instance.instance-id` 所注册的服务实例 id, 对于一个服务名注册多个服务实例的情形 (高可用 + 负载均衡), 需要设置该
+  id
 - `eureka.client.service-url.defaultZone=<所有节点地址>` 所有 Eureka 服务节点的地址, 以 `,` 分隔
 
-注意, 一般情况下, 服务端需要引入 `org.springframework.cloud:spring-cloud-starter-netflix-eureka-server` 依赖, 而客户端需要引入 `org.springframework.cloud:spring-cloud-starter-netflix-eureka-client` 依赖. 但本例中服务端和客户端在同一个工程中, 所以不能引入 `org.springframework.cloud:spring-cloud-starter-netflix-eureka-client` 依赖, 否则会导致依赖冲突问题
+注意, 一般情况下, 服务端需要引入 `org.springframework.cloud:spring-cloud-starter-netflix-eureka-server` 依赖,
+而客户端需要引入 `org.springframework.cloud:spring-cloud-starter-netflix-eureka-client` 依赖. 但本例中服务端和客户端在同一个工程中,
+所以不能引入 `org.springframework.cloud:spring-cloud-starter-netflix-eureka-client` 依赖, 否则会导致依赖冲突问题
 
 ## 3. 多 Profiles 配置
 
@@ -72,11 +77,12 @@
 
 1. 通过 `---` 分隔符
 
-    通过在 `application.yml` 文件中加入 `---` 分隔符, 即可以将配置文件分割为多个部分, 每个部分通过 `spring.config.activate.on-profile` 来指定当前部分属于哪个 profile
+   通过在 `application.yml` 文件中加入 `---` 分隔符, 即可以将配置文件分割为多个部分,
+   每个部分通过 `spring.config.activate.on-profile` 来指定当前部分属于哪个 profile
 
 2. 通过多个配置文件
 
-    通过 `application-<profile>.yml` 定义多个配置文件, 文件名的 `<profile>` 部分表明该配置文件属于哪个 profile
+   通过 `application-<profile>.yml` 定义多个配置文件, 文件名的 `<profile>` 部分表明该配置文件属于哪个 profile
 
 ### 3.2. Java 注解
 
@@ -128,7 +134,7 @@ docker-compose -f cloud-gateway/docker/docker-compose.yml up
         -pl cloud-gateway
     ```
 
-    此时在 `8081` 和 `8082` 端口各自启动了一个 Web 服务
+   此时在 `8081` 和 `8082` 端口各自启动了一个 Web 服务
 
 2. 启动 Gateway 服务
 
@@ -138,7 +144,7 @@ docker-compose -f cloud-gateway/docker/docker-compose.yml up
         -pl cloud-gateway
     ```
 
-    此时在 `8080` 端口上启动了网关服务
+   此时在 `8080` 端口上启动了网关服务
 
 3. 执行测试
 
@@ -158,7 +164,7 @@ docker-compose -f cloud-gateway/docker/docker-compose.yml up
         --args="--spring.profiles.active=web-server --server.port=8082"
     ```
 
-    此时在 `8081` 和 `8082` 端口各自启动了一个 Web 服务
+   此时在 `8081` 和 `8082` 端口各自启动了一个 Web 服务
 
 2. 启动 Gateway 服务
 
@@ -167,7 +173,7 @@ docker-compose -f cloud-gateway/docker/docker-compose.yml up
         --args="--spring.profiles.active=gateway"
     ```
 
-    此时在 `8080` 端口上启动了网关服务
+   此时在 `8080` 端口上启动了网关服务
 
 3. 执行测试
 

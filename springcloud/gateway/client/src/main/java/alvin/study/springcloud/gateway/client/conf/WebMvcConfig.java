@@ -42,9 +42,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         // 添加日志拦截器
         registry.addInterceptor(loggingInterceptor)
-                // 设置拦截器要拦截的访问路径
-                .addPathPatterns("/**")
-                // 设置拦截器不拦截的访问路径
-                .excludePathPatterns("/static/**");
+            // 设置拦截器要拦截的访问路径
+            .addPathPatterns("/**")
+            // 设置拦截器不拦截的访问路径
+            .excludePathPatterns("/static/**");
     }
 }
