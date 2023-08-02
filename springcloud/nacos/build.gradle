@@ -1,9 +1,15 @@
+plugins {
+  id "org.springframework.boot"
+}
+
 dependencies {
   implementation libs.main.springcloud.nacos.config,
     libs.main.springcloud.nacos.discovery,
     libs.main.springboot.web,
     libs.main.springboot.validator,
     libs.main.springboot.actuator
+
+  developmentOnly libs.main.springboot.devtools
 
   testImplementation libs.test.springboot.web,
     libs.main.springcloud.loadBalancer,

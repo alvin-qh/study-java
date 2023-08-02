@@ -1,8 +1,14 @@
+plugins {
+  id "org.springframework.boot"
+}
+
 dependencies {
   implementation libs.main.springboot.web,
     libs.main.springboot.thymeleaf,
     libs.main.springboot.validator,
     libs.main.jwt
+
+  developmentOnly libs.main.springboot.devtools
 
   testImplementation libs.test.springboot.web
 }

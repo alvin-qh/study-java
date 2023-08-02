@@ -1,4 +1,7 @@
-apply plugin: "org.flywaydb.flyway"
+plugins {
+  id "org.springframework.boot"
+  id "org.flywaydb.flyway"
+}
 
 repositories {
   maven {
@@ -12,6 +15,8 @@ dependencies {
     libs.main.modelmapper,
     libs.main.commonsCodec,
     libs.main.h2
+
+  developmentOnly libs.main.springboot.devtools
 
   testImplementation libs.test.p6spy
 

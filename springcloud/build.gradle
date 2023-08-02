@@ -7,7 +7,10 @@ group "alvin.study.springcloud"
 version "1.0-SNAPSHOT"
 
 subprojects {
-  apply plugin: "org.springframework.boot"
+  if (!new File(projectDir, "src").exists()) {
+    return
+  }
+
   apply plugin: "io.spring.dependency-management"
 
   dependencyManagement {
@@ -28,8 +31,6 @@ subprojects {
       libs.main.springboot.starter,
       libs.main.springboot.log4j,
       libs.main.guava
-
-    developmentOnly libs.main.springboot.devtools
 
     annotationProcessor libs.main.springboot.annotationProcessor
 

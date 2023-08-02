@@ -1,4 +1,8 @@
 subprojects {
+  if (!new File(projectDir, "src").exists()) {
+    return
+  }
+
   dependencies {
     implementation libs.main.springcloud.nacos.discovery,
       libs.main.springboot.actuator

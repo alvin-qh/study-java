@@ -1,3 +1,7 @@
+plugins {
+  id "org.springframework.boot"
+}
+
 dependencies {
   implementation libs.main.springboot.jdbc,
     libs.main.h2,

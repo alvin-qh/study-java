@@ -1,5 +1,11 @@
+plugins {
+  id "org.springframework.boot"
+}
+
 dependencies {
   implementation libs.main.springcloud.eureka.server
+
+  developmentOnly libs.main.springboot.devtools
 }
 
 springBoot {

@@ -1,4 +1,7 @@
-apply plugin: "org.flywaydb.flyway"
+plugins {
+  id "org.springframework.boot"
+  id "org.flywaydb.flyway"
+}
 
 dependencies {
   implementation libs.main.springboot.kickstart,
@@ -9,6 +12,8 @@ dependencies {
     libs.main.h2,
     libs.main.jwt,
     libs.main.modelmapper
+
+  developmentOnly libs.main.springboot.devtools
 
   testImplementation libs.test.springboot.kickstart,
     libs.test.springboot.web

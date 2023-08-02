@@ -1,6 +1,7 @@
 // 需要将 Spring 依赖的 JOOQ 版本进行替换, 参见 settings.gradle 中 buildscript 部分的配置
 
 plugins {
+  id "org.springframework.boot"
   id "nu.studer.jooq" version "${VER_GRADLE_JOOQ}"
 }
 
@@ -20,6 +21,8 @@ dependencies {
     libs.main.springboot.jdbc,
     libs.main.commonsCodec,
     libs.main.h2
+
+  developmentOnly libs.main.springboot.devtools
 
   jooqGenerator libs.main.h2
 

@@ -1,7 +1,13 @@
+plugins {
+  id "org.springframework.boot"
+}
+
 dependencies {
   implementation libs.main.springcloud.eureka.client,
     libs.main.springcloud.openFeign,
     libs.main.springboot.validator
+
+  developmentOnly libs.main.springboot.devtools
 
   testImplementation libs.test.springboot.web,
     libs.main.springcloud.loadBalancer

@@ -1,12 +1,17 @@
+plugins {
+  id "org.springframework.boot"
+}
+
 dependencies {
   implementation libs.main.springboot.web,
     libs.main.springboot.validator
+
+  developmentOnly libs.main.springboot.devtools
 
   testImplementation libs.test.springboot.web
 }
 
 springBoot {
-  // 设置入口类
   mainClass = "alvin.study.springboot.testing.Main"
 }
 

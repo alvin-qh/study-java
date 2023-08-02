@@ -1,8 +1,14 @@
+plugins {
+  id "org.springframework.boot"
+}
+
 dependencies {
   implementation libs.main.springcloud.gateway,
     libs.main.springcloud.loadBalancer,
     libs.main.commonsCodec,
     libs.main.jwt
+
+  developmentOnly libs.main.springboot.devtools
 }
 
 springBoot {

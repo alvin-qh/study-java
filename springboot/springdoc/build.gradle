@@ -1,3 +1,7 @@
+plugins {
+  id "org.springframework.boot"
+}
+
 dependencies {
   implementation libs.main.springboot.doc,
     libs.main.springboot.web,
@@ -5,6 +9,8 @@ dependencies {
     libs.main.springboot.validator,
     libs.main.commonsCodec,
     libs.main.jwt
+
+  developmentOnly libs.main.springboot.devtools
 
   testImplementation libs.test.springboot.web
 }

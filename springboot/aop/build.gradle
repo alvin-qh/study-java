@@ -1,6 +1,12 @@
+plugins {
+  id "org.springframework.boot"
+}
+
 dependencies {
   implementation libs.main.springboot.web,
     libs.main.springboot.aop
+
+  developmentOnly libs.main.springboot.devtools
 }
 
 springBoot {
