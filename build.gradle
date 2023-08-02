@@ -28,6 +28,7 @@ allprojects {
       url "https://maven.aliyun.com/nexus/content/groups/public/"
     }
     mavenCentral()
+    mavenLocal()
   }
 
   sourceSets {
@@ -56,6 +57,10 @@ allprojects {
 }
 
 subprojects {
+  if (!new File(projectDir, "src").exists()) {
+    return
+  }
+
   compileJava {
     options.encoding = "UTF-8"
     options.annotationProcessorPath = configurations.annotationProcessor

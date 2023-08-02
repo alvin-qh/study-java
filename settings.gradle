@@ -1,9 +1,12 @@
 pluginManagement {
   repositories {
+    mavenCentral()
     gradlePluginPortal()
+    mavenLocal()
   }
   plugins {
-//    id("de.fayard.refreshVersions") version "${VER_PLUGIN_REFRESH_VERSIONS}"
+    // id("de.fayard.refreshVersions") version "${VER_PLUGIN_REFRESH_VERSIONS}"
+    id "io.quarkus" version "${VAR_QUARKUS_PLUGIN}"
   }
 }
 

@@ -1,0 +1,36 @@
+plugins {
+  id "io.quarkus" apply false
+}
+
+group "alvin.study.quarkus"
+version "1.0-SNAPSHOT"
+
+subprojects {
+  apply plugin: "io.quarkus"
+
+  dependencyManagement {
+    imports {
+      mavenBom "org.springframework.cloud:spring-cloud-dependencies:${VAR_SPRING_CLOUD}"
+      mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:${VAR_ALIBABA_CLOUD}"
+      mavenBom "org.springframework.boot:spring-boot-dependencies:${VER_SPRING_BOOT}"
+    }
+  }
+
+  configurations {
+    providedRuntime
+    all*.exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
+  }
+
+  dependencies {
+    implementation libs.main.springcloud.starter,
+      libs.main.springboot.starter,
+      libs.main.springboot.log4j,
+      libs.main.guava
+
+    developmentOnly libs.main.springboot.devtools
+
+    annotationProcessor libs.main.springboot.annotationProcessor
+
+    testImplementation libs.test.springboot.starter
+  }
+}

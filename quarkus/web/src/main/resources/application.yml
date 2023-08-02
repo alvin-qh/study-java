@@ -1,0 +1,9 @@
+quarkus:
+  http:
+    port: 8080
+    http2: true
+  banner:
+    enabled: false
+
+application:
+  name: Hello Quarkus
