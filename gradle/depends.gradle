@@ -189,6 +189,18 @@ ext {
         gateway: [
           "org.springframework.cloud:spring-cloud-starter-gateway"
         ]
+      ],
+
+      quarkus: [
+        common: [
+          "io.quarkus:quarkus-config-yaml:_"
+        ],
+        reactive: [
+          "io.quarkus:quarkus-resteasy-reactive:_"
+        ],
+        arc: [
+          "io.quarkus:quarkus-arc:_"
+        ]
       ]
     ],
 
@@ -246,6 +258,16 @@ ext {
         ],
         kickstart: [
           "com.graphql-java-kickstart:graphql-spring-boot-starter-test:${VER_KICKSTART_GRAPHQL}"
+        ]
+      ],
+
+      quarkus: [
+        common: [
+          "io.quarkus:quarkus-junit5:_",
+          "io.quarkus:quarkus-junit5-properties:_"
+        ],
+        rest: [
+          "io.rest-assured:rest-assured:_"
         ]
       ]
     ]

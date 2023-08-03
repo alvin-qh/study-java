@@ -1,0 +1,5 @@
+dependencies {
+  implementation libs.main.quarkus.reactive
+
+  testImplementation libs.test.quarkus.rest
+}

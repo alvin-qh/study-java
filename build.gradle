@@ -69,6 +69,11 @@ subprojects {
     options.compilerArgs << "-parameters"
   }
 
+  compileTestJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-parameters"
+  }
+
   tasks.withType(Test) {
     // maxParallelForks = Runtime.runtime.availableProcessors()
   }
