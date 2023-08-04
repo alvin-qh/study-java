@@ -6,4 +6,4 @@ quarkus:
     enabled: false
 
 application:
-  name: Hello Quarkus
+  name: Quarkus
