@@ -1,0 +1,30 @@
+{@alvin.study.quarkus.web.endpoint.model.ErrorDto error}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{error.status} Error</title>
+  <style type="text/css">
+    .error {
+      color: #f00;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="error">
+    <p>
+      <strong>Message:</strong>
+      <span>
+        {error.message}
+      </span>
+    </p>
+    <p>
+      <strong>Details:</strong>
+      <pre>
+        {error.detail.raw}
+      </pre>
+    </p>
+  </div>
+</body>
