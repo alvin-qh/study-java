@@ -7,14 +7,13 @@ import java.util.Objects;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
+import alvin.study.quarkus.util.StringUtil;
 import alvin.study.quarkus.web.endpoint.model.Gender;
 import alvin.study.quarkus.web.endpoint.model.UserDto;
-import alvin.study.quarkus.web.util.ObjectUtil;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.Location;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
-import io.quarkus.runtime.util.StringUtil;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
@@ -76,33 +75,64 @@ public class TemplatedResource {
             name = applicationName;
         }
         try {
+            // 通过模板对象的 data 方法, 传递键值对传递模板参数
             return uncheckedTemplate.data(
                 "name", Objects.requireNonNullElse(name, applicationName),
                 "gender", Gender.valueOf(gender),
-                "birthday", ObjectUtil.nullElse(birthday, () -> LocalDate.parse(birthday)));
+                "birthday", StringUtil.emptyThenMapping(birthday, LocalDate::parse));
         } catch (IllegalArgumentException | DateTimeParseException e) {
             log.warn("Invalid query parameters", e);
             throw new WebApplicationException(e, 400);
         }
     }
 
+    /**
+     * 定义 Checked 模板类
+     *
+     * <p>
+     * Checked 模板可以定义明确的渲染参数 (本例为 {@link UserDto} 类型对象), 对应的模板固定文件路径为
+     * {@code resources:templates/<模板类所在类名>/<模板类方法名>.html}, 本例中为
+     * {@code resources:templates/TemplatedResource/checkedTemplate.html} 文件
+     * </p>
+     */
     @CheckedTemplate
-    public static class Templates {
-        public static native TemplateInstance checkedTemplate(UserDto user);
+    static class Templates {
+        /**
+         * 定义模板渲染参数
+         *
+         * @param user 模板参数
+         * @return 模板对象
+         */
+        static native TemplateInstance checkedTemplate(UserDto user);
     }
 
+    /**
+     * 演示对 {@code resources:templates/TemplatedResource/checkedTemplate.html} 模板进行渲染
+     *
+     * @param name     请求参数, 即请求 URL 中的 {@code ?name=?} 参数
+     * @param gender   请求参数, 同上
+     * @param birthday 请求参数, 同上
+     *
+     * @return 渲染模板的 {@link TemplateInstance} 对象
+     */
     @GET
     @Path("checked")
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance checked(
             @QueryParam("name") String name,
-            @QueryParam("gender") Gender gender,
-            @QueryParam("birthday") LocalDate birthday) {
-        var user = UserDto.builder()
-                .name(Objects.requireNonNullElse(name, applicationName))
-                .gender(gender)
-                .birthday(birthday)
-                .build();
-        return Templates.checkedTemplate(user);
+            @QueryParam("gender") @DefaultValue("MALE") String gender,
+            @QueryParam("birthday") String birthday) {
+        try {
+            var user = UserDto.builder()
+                    .name(Objects.requireNonNullElse(name, applicationName))
+                    .gender(Gender.valueOf(gender))
+                    .birthday(StringUtil.emptyThenMapping(birthday, LocalDate::parse))
+                    .build();
+            // 通过模板对象的渲染方法, 传递确定的对象类型渲染模板
+            return Templates.checkedTemplate(user);
+        } catch (IllegalArgumentException | DateTimeParseException e) {
+            log.warn("Invalid query parameters", e);
+            throw new WebApplicationException(e, 400);
+        }
     }
 }

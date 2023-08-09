@@ -11,7 +11,7 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 
 /**
- *
+ * 测试 Restful 请求
  */
 @Path("restful")
 public class RestfulResource {
@@ -19,6 +19,12 @@ public class RestfulResource {
     @ConfigProperty(name = "application.name", defaultValue = "Hello from RESTEasy Reactive")
     String applicationName;
 
+    /**
+     * 测试基本的 Restful 请求
+     *
+     * @param name 请求参数
+     * @return 返回结果, 本例为字符串结果
+     */
     @GET
     @Path("hello")
     @Produces(MediaType.TEXT_PLAIN)

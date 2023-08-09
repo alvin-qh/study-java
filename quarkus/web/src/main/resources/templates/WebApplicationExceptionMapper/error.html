@@ -1,30 +1,31 @@
 {@alvin.study.quarkus.web.endpoint.model.ErrorDto error}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>{error.status} Error</title>
-  <style type="text/css">
+{! 引入模板并设置插入点 !}
+{! 该页面用于为全局异常处理进行渲染, 参见 WebApplicationExceptionMapper 类型 !}
+{#include layout}
+  {#title}{error.status} Error{/}
+
+  {#css}
     .error {
       color: #f00;
       font-size: 14px;
     }
-  </style>
-</head>
-<body>
-  <div class="error">
-    <p>
-      <strong>Message:</strong>
-      <span>
-        {error.message}
-      </span>
-    </p>
-    <p>
-      <strong>Details:</strong>
-      <pre>
+  {/}
+
+  {#body}
+    <div class="error">
+      <p>
+        <strong>Message:</strong>
+        <span>
+          {error.message}
+        </span>
+      </p>
+      <p>
+        <strong>Details:</strong>
+        <pre>
         {error.detail.raw}
-      </pre>
-    </p>
-  </div>
-</body>
+        </pre>
+      </p>
+    </div>
+  {/}
+{/}

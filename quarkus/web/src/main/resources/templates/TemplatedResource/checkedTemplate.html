@@ -1,13 +1,38 @@
 {@alvin.study.quarkus.web.endpoint.model.UserDto user}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Hello {user.name}</title>
-</head>
-<body>
-  <div>
-    <h1>Hello {user.name}</h1>
-  </div>
-</body>
+{! 引入模板并设置插入点 !}
+{#include layout}
+  {#title}Hello {user.name}{/}
+
+  {#css}
+    .error {
+      color: #f00;
+      font-size: 14px;
+    }
+  {/}
+
+  {#body}
+    <div>
+      <h1>
+        Hello
+        {#if user.gender == Gender:MALE}
+          Mr.
+        {#else if user.isOlderThan(30)}
+          Ms.
+        {#else}
+          Miss.
+        {/if}
+        {user.name}
+      </h1>
+    </div>
+    <div>
+      <ul>
+        <li>Gender: {user.gender.genderChinese}</li>
+        <li>Birthday: {user.birthday.dateChinese}</li>
+      </ul>
+    </div>
+    <div>
+      {#demo name=user.name/}
+    </div>
+  {/}
+{/}

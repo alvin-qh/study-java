@@ -28,7 +28,13 @@ public class WebApplicationExceptionMapper implements ExceptionMapper<WebApplica
      */
     @CheckedTemplate
     static class Templates {
-        public static native TemplateInstance error(ErrorDto error);
+        /**
+         * 模板渲染函数
+         *
+         * @param error 模板参数
+         * @return 模板对象
+         */
+        static native TemplateInstance error(ErrorDto error);
     }
 
     @Override

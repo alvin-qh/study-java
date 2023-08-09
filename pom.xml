@@ -87,6 +87,7 @@
     <version.maven-build-helper>3.4.0</version.maven-build-helper>
     <version.maven-assertj>2.2.0</version.maven-assertj>
     <version.maven-resources>3.3.1</version.maven-resources>
+    <version.maven-jandex>1.2.3</version.maven-jandex>
   </properties>
 
   <!-- 包含子项目所在的路径名 -->
