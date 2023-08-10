@@ -9,36 +9,52 @@ import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
 
+/**
+ * 测试 {@link TemplatedResource} 类, 通过模板渲染响应内容
+ */
 @QuarkusTest
 public class TemplatedResourceTest {
+    /**
+     * 测试 {@link TemplatedResource#unchecked(String, String, String)} 方法
+     *
+     * <p>
+     * 测试 unchecked 模板渲染
+     * </p>
+     */
     @Test
     void unchecked_shouldRenderUncheckedTemplate() {
-        given()
-            .when().get("template/unchecked?name=Alvin&gender=FEMALE&birthday=1999-03-17")
-            .then()
-            .statusCode(200)
-            .body(is("""
-                Hello Alvin
+        given().when()
+                .get("template/unchecked?name=Alvin&gender=MALE&birthday=1999-03-17")
+                .then()
+                .statusCode(200)
+                .body(is("""
+                    Hello Alvin
 
-                - Name: Alvin
-                - Gender: FEMALE
-                - Birthday: 1999-03-17
-                """));
+                    - Name: Alvin
+                    - Gender: MALE
+                    - Birthday: 1999-03-17
+                    """));
     }
 
+    /**
+     * 测试 {@link TemplatedResource#checked(String, String, String)} 方法
+     *
+     * <p>
+     * 测试 checked 模板渲染
+     * </p>
+     */
     @Test
     void checked_shouldRenderCheckedTemplate() {
-        given()
-            .when().get("template/checked?name=Alvin&gender=MALE&birthday=1999-03-17")
-            .then()
-            .statusCode(200)
-            .body(allOf(
-                containsString("Hello"),
-                containsString("Mr."),
-                containsString("Alvin"),
-                containsString("<li>Gender: 男</li>"),
-                containsString("<li>Birthday: 1999年03月17日</li>"),
-                containsString("<span>Name: Alvin</span>")
-            ));
+        given().when()
+                .get("template/checked?name=Alvin&gender=MALE&birthday=1999-03-17")
+                .then()
+                .statusCode(200)
+                .body(allOf(
+                    containsString("Hello"),
+                    containsString("Mr."),
+                    containsString("Alvin"),
+                    containsString("<li>Gender: 男</li>"),
+                    containsString("<li>Birthday: 1999年03月17日</li>"),
+                    containsString("<span>Name: Alvin</span>")));
     }
 }
