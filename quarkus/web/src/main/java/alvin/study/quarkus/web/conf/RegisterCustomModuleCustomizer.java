@@ -1,4 +1,4 @@
-package alvin.study.quarkus.web.endpoint.conf;
+package alvin.study.quarkus.web.conf;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.DeserializationFeature;

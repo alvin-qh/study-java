@@ -1,4 +1,4 @@
-package alvin.study.quarkus.web.endpoint.error;
+package alvin.study.quarkus.web.error;
 
 import java.io.UncheckedIOException;
 import java.util.ArrayList;

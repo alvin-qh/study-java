@@ -1,4 +1,4 @@
-package alvin.study.quarkus.web.endpoint.template;
+package alvin.study.quarkus.web.template;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
