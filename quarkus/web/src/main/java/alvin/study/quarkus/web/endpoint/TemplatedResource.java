@@ -8,8 +8,8 @@ import java.util.Objects;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import alvin.study.quarkus.util.StringUtil;
-import alvin.study.quarkus.web.endpoint.model.Gender;
 import alvin.study.quarkus.web.endpoint.model.UserDto;
+import alvin.study.quarkus.web.persist.entity.Gender;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.Location;
 import io.quarkus.qute.Template;

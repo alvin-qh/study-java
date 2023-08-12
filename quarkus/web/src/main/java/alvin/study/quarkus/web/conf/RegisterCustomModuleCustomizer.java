@@ -8,6 +8,9 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import io.quarkus.jackson.ObjectMapperCustomizer;
 import jakarta.inject.Singleton;
 
+/**
+ * 配置 Jackson JSON 序列号器
+ */
 @Singleton
 public class RegisterCustomModuleCustomizer implements ObjectMapperCustomizer {
     @Override

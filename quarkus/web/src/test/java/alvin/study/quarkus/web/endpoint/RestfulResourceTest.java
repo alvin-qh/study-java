@@ -9,17 +9,25 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import alvin.study.quarkus.web.endpoint.model.Gender;
 import alvin.study.quarkus.web.endpoint.model.UserDto;
 import alvin.study.quarkus.web.interceptor.Response;
+import alvin.study.quarkus.web.persist.DataSource;
+import alvin.study.quarkus.web.persist.entity.Gender;
+import alvin.study.quarkus.web.persist.entity.User;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.common.mapper.TypeRef;
+import io.restassured.http.ContentType;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.core.Response.Status;
 
 /**
  * 测试 {@link RestfulResource} 类, RESTful API 调用
  */
 @QuarkusTest
 public class RestfulResourceTest {
+    @Inject
+    DataSource dataSource;
+
     /**
      * 测试 {@link RestfulResource#hello(String)} 方法
      *
@@ -78,7 +86,61 @@ public class RestfulResourceTest {
 
         then(resp.payload()).hasSize(2)
                 .contains(
-                    new UserDto("Alvin", LocalDate.of(1981, 3, 17), Gender.MALE),
-                    new UserDto("Emma", LocalDate.of(1985, 3, 29), Gender.FEMALE));
+                    new UserDto(
+                        "001",
+                        "Alvin",
+                        LocalDate.of(1981, 3, 17),
+                        Gender.MALE),
+                    new UserDto(
+                        "002",
+                        "Emma",
+                        LocalDate.of(1985, 3, 29),
+                        Gender.FEMALE));
+    }
+
+    /**
+     * 测试通过 RESTful API 创建实体对象
+     */
+    @Test
+    void users_shouldCreateUser() {
+        // 发送 POST 请求
+        var resp = given().when()
+                .contentType(ContentType.JSON)
+                .body(
+                    UserDto.builder()
+                            .birthday(LocalDate.of(1981, 3, 17))
+                            .gender(Gender.MALE)
+                            .build())
+                .post("restful/users")
+                .then()
+                .statusCode(Status.CREATED.getStatusCode()) // 确认返回 201 状态码
+                .extract()
+                .as(new TypeRef<Response<User>>() {});
+
+        // 确认响应结果
+        then(resp)
+                .extracting(Response::ok, Response::path)
+                .contains(true, "/restful/users");
+
+        // 确认返回结果中包含 id 属性
+        var id = resp.payload().id();
+        then(id).isNotEmpty();
+
+        // 通过返回的 id 属性获取存储的实体对象
+        var user = dataSource.<User>get(id);
+        then(user).isNotNull();
+
+        // 确认返回的响应和获取的实体对象一致
+        then(user)
+                .extracting(
+                    User::id,
+                    User::name,
+                    User::birthday,
+                    User::gender)
+                .contains(
+                    resp.payload().id(),
+                    resp.payload().name(),
+                    resp.payload().birthday(),
+                    resp.payload().gender());
     }
 }

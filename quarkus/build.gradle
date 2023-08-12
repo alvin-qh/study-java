@@ -1,13 +1,9 @@
-plugins {
-  id "io.quarkus" apply false
-}
+
 
 group "alvin.study.quarkus"
 version "1.0-SNAPSHOT"
 
 subprojects {
-  apply plugin: "io.quarkus"
-
   test {
     systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
   }
@@ -17,6 +13,7 @@ subprojects {
 
     implementation libs.main.quarkus.common
 
-    testImplementation libs.test.quarkus.common
+    testImplementation libs.test.quarkus.common,
+      libs.test.assertj
   }
 }

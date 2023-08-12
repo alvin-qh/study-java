@@ -4,6 +4,7 @@ quarkus:
     http2: true
   banner:
     enabled: false
+  locales: en-US,zh-CN
 
 application:
   name: Quarkus

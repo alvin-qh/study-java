@@ -3,7 +3,7 @@ package alvin.study.quarkus.web.template;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import alvin.study.quarkus.web.endpoint.model.Gender;
+import alvin.study.quarkus.web.persist.entity.Gender;
 import io.quarkus.qute.TemplateExtension;
 
 /**

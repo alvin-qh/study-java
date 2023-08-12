@@ -6,6 +6,7 @@ import java.time.Instant;
 import org.jetbrains.annotations.NotNull;
 
 import alvin.study.quarkus.web.endpoint.model.ErrorDto;
+import io.quarkus.hibernate.validator.runtime.jaxrs.ViolationReport;
 import io.quarkus.qute.TemplateInstance;
 import io.vertx.core.http.HttpServerRequest;
 import jakarta.ws.rs.WebApplicationException;
@@ -30,11 +31,12 @@ public class ResponseWrapperInterceptor implements WriterInterceptor {
     public void aroundWriteTo(@NotNull WriterInterceptorContext context) throws IOException, WebApplicationException {
         var payload = context.getEntity();
         if (checkPayloadIfDto(payload)) {
+            payload = resolveResponseEntity(payload);
             // 如果响应内容为一个 DTO 对象 (也包括 ErrorDto 对象), 则将其包装为 Response 对象返回
             context.setEntity(
                 Response.builder()
                         .ok(!(payload instanceof ErrorDto))
-                        .payload(context.getEntity())
+                        .payload(payload)
                         .path(request.uri())
                         .timestamp(Instant.now())
                         .build());
@@ -42,6 +44,18 @@ public class ResponseWrapperInterceptor implements WriterInterceptor {
 
         // 处理下一个 WriteInterceptor 拦截器
         context.proceed();
+    }
+
+    private Object resolveResponseEntity(Object payload) {
+        if (payload instanceof ViolationReport vr) {
+            payload = ErrorDto.builder()
+                    .status(vr.getStatus())
+                    .message(vr.getTitle())
+                    .violations(vr.getViolations())
+                    .build();
+        }
+
+        return payload;
     }
 
     /**

@@ -1,4 +1,4 @@
-package alvin.study.quarkus.web.endpoint.model;
+package alvin.study.quarkus.web.persist.entity;
 
 import io.quarkus.qute.TemplateEnum;
 

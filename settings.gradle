@@ -107,5 +107,6 @@ include(
 )
 
 include(
+  ":quarkus:util",
   ":quarkus:web",
 )

@@ -198,8 +198,17 @@ ext {
         reactive: [
           "io.quarkus:quarkus-resteasy-reactive:_"
         ],
+        qute: [
+          "io.quarkus:quarkus-resteasy-reactive-qute:_"
+        ],
+        jackson: [
+          "io.quarkus:quarkus-resteasy-reactive-jackson:_"
+        ],
         arc: [
           "io.quarkus:quarkus-arc:_"
+        ],
+        validtor: [
+          "io.quarkus:quarkus-hibernate-validator:_"
         ]
       ]
     ],
