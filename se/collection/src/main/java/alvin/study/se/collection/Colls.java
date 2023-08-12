@@ -132,8 +132,8 @@ public final class Colls {
         if (isEmpty(coll)) {
             return Optional.empty();
         }
-        if (coll instanceof List<? extends T> l) {
-            return Optional.of(l.get(0));
+        if (coll instanceof List<? extends T> lst) {
+            return Optional.of(lst.get(0));
         }
         return Optional.of(coll.iterator().next());
     }
@@ -165,8 +165,8 @@ public final class Colls {
         if (coll == null || coll.size() != 1) {
             return Optional.empty();
         }
-        if (coll instanceof List<? extends T> l) {
-            return Optional.of(l.get(0));
+        if (coll instanceof List<? extends T> lst) {
+            return Optional.of(lst.get(0));
         }
         return Optional.of(coll.iterator().next());
     }

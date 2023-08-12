@@ -1,9 +1,13 @@
 package alvin.study.quarkus.web.endpoint;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
+import alvin.study.quarkus.web.endpoint.model.Gender;
+import alvin.study.quarkus.web.endpoint.model.UserDto;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -30,5 +34,22 @@ public class RestfulResource {
     @Produces(MediaType.TEXT_PLAIN)
     public String hello(@QueryParam("name") String name) {
         return "Hello " + Objects.requireNonNullElse(name, applicationName);
+    }
+
+    @GET
+    @Path("users")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UserDto> users() {
+        return List.of(
+            UserDto.builder()
+                    .name("Alvin")
+                    .gender(Gender.MALE)
+                    .birthday(LocalDate.of(1981, 3, 17))
+                    .build(),
+            UserDto.builder()
+                    .name("Emma")
+                    .gender(Gender.FEMALE)
+                    .birthday(LocalDate.of(1985, 3, 29))
+                    .build());
     }
 }
