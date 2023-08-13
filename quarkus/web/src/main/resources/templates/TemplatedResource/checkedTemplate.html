@@ -27,12 +27,18 @@
     </div>
     <div>
       <ul>
-        <li>Gender: {user.gender.genderChinese}</li>
-        <li>Birthday: {user.birthday.dateChinese}</li>
+        {#if user.gender}
+          <li>Gender: {user.gender.genderChinese}</li>
+        {/if}
+        {#if user.birthday}
+          <li>Birthday: {user.birthday.dateChinese}</li>
+        {/if}
       </ul>
     </div>
     <div>
       {#demo name=user.name/}
     </div>
+    {! 通过国际化类型获取指定语系的信息, 参考 AppMessage 类的 numbers 方法和 resources:messages 路径下的国际化文件 !}
+    <div>i18n: {msg:numbers().split(",")[5]}</div>
   {/}
 {/}

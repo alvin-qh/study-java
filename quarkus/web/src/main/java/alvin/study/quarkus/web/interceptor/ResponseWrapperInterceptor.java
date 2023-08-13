@@ -46,6 +46,12 @@ public class ResponseWrapperInterceptor implements WriterInterceptor {
         context.proceed();
     }
 
+    /**
+     * 将原本响应返回对象解析为 Response 对象
+     *
+     * @param payload 响应对象
+     * @return 解析后的响应对象
+     */
     private Object resolveResponseEntity(Object payload) {
         if (payload instanceof ViolationReport vr) {
             payload = ErrorDto.builder()

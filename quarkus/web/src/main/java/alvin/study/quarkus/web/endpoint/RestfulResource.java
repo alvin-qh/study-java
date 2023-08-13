@@ -14,6 +14,8 @@ import alvin.study.quarkus.web.persist.DataSource;
 import alvin.study.quarkus.web.persist.entity.Gender;
 import alvin.study.quarkus.web.persist.entity.User;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -52,6 +54,14 @@ public class RestfulResource {
     public String hello(@QueryParam("name") String name) {
         var message = messager.appMessage();
         return message.hello(Objects.requireNonNullElse(name, applicationName));
+    }
+
+    @GET
+    @Path("numbers")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String numbers(@QueryParam("digit") @Min(0) @Max(10) int number) {
+        var message = messager.appMessage();
+        return message.numbers().split(",")[number];
     }
 
     /**
