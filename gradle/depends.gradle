@@ -207,7 +207,7 @@ ext {
         arc: [
           "io.quarkus:quarkus-arc:_"
         ],
-        validtor: [
+        validator: [
           "io.quarkus:quarkus-hibernate-validator:_"
         ]
       ]

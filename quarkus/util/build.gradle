@@ -1,0 +1,7 @@
+plugins {
+  id "java"
+  id "org.kordamp.gradle.jandex" version "1.0.0"
+}
+
+dependencies {
+}
