@@ -18,7 +18,6 @@
     <dependency>
       <groupId>alvin.study</groupId>
       <artifactId>study-java-quarkus-util</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>

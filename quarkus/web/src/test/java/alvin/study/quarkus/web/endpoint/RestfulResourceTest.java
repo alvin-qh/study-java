@@ -29,7 +29,7 @@ import jakarta.ws.rs.core.Response.Status;
  * 测试 {@link RestfulResource} 类, RESTful API 调用
  */
 @QuarkusTest
-public class RestfulResourceTest {
+class RestfulResourceTest {
     // 注入数据源对象
     @Inject
     DataSource dataSource;

@@ -14,7 +14,7 @@ import jakarta.ws.rs.core.HttpHeaders;
  * 测试 {@link TemplatedResource} 类, 通过模板渲染响应内容
  */
 @QuarkusTest
-public class TemplatedResourceTest {
+class TemplatedResourceTest {
     /**
      * 测试 {@link TemplatedResource#unchecked(String, String, String)} 方法
      *

@@ -3,12 +3,12 @@ package alvin.study.quarkus.web.persist;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Singleton;
 
 /**
  * 数据源对象
  */
-@ApplicationScoped
+@Singleton
 public class DataSource {
     // 对象存储
     private final Map<String, Object> data = new ConcurrentHashMap<>();
