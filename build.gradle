@@ -24,11 +24,12 @@ allprojects {
   version = projectVersion.version
 
   repositories {
+    mavenLocal()
     maven {
+      url "https://repo.huaweicloud.com/repository/maven/"
       url "https://maven.aliyun.com/nexus/content/groups/public/"
     }
     mavenCentral()
-    mavenLocal()
   }
 
   sourceSets {

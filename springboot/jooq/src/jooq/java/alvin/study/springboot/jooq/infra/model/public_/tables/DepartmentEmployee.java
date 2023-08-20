@@ -78,7 +78,7 @@ public class DepartmentEmployee extends TableImpl<DepartmentEmployeeRecord> {
     /**
      * The column <code>PUBLIC.DEPARTMENT_EMPLOYEE.VERSION</code>.
      */
-    public final TableField<DepartmentEmployeeRecord, Integer> VERSION = createField(DSL.name("VERSION"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<DepartmentEmployeeRecord, Integer> VERSION = createField(DSL.name("VERSION"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field(DSL.raw("0"), SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>PUBLIC.DEPARTMENT_EMPLOYEE.CREATED_BY</code>.
@@ -93,12 +93,12 @@ public class DepartmentEmployee extends TableImpl<DepartmentEmployeeRecord> {
     /**
      * The column <code>PUBLIC.DEPARTMENT_EMPLOYEE.CREATED_AT</code>.
      */
-    public final TableField<DepartmentEmployeeRecord, LocalDateTime> CREATED_AT = createField(DSL.name("CREATED_AT"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field("CURRENT_TIMESTAMP", SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<DepartmentEmployeeRecord, LocalDateTime> CREATED_AT = createField(DSL.name("CREATED_AT"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>PUBLIC.DEPARTMENT_EMPLOYEE.UPDATED_AT</code>.
      */
-    public final TableField<DepartmentEmployeeRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("UPDATED_AT"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field("CURRENT_TIMESTAMP", SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<DepartmentEmployeeRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("UPDATED_AT"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "");
 
     private DepartmentEmployee(Name alias, Table<DepartmentEmployeeRecord> aliased) {
         this(alias, aliased, null);

@@ -66,17 +66,17 @@ public class Org extends TableImpl<OrgRecord> {
     /**
      * The column <code>PUBLIC.ORG.DELETED</code>.
      */
-    public final TableField<OrgRecord, Long> DELETED = createField(DSL.name("DELETED"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field("0", SQLDataType.BIGINT)), this, "");
+    public final TableField<OrgRecord, Long> DELETED = createField(DSL.name("DELETED"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>PUBLIC.ORG.CREATED_AT</code>.
      */
-    public final TableField<OrgRecord, LocalDateTime> CREATED_AT = createField(DSL.name("CREATED_AT"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field("CURRENT_TIMESTAMP", SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<OrgRecord, LocalDateTime> CREATED_AT = createField(DSL.name("CREATED_AT"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>PUBLIC.ORG.UPDATED_AT</code>.
      */
-    public final TableField<OrgRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("UPDATED_AT"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field("CURRENT_TIMESTAMP", SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<OrgRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("UPDATED_AT"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "");
 
     private Org(Name alias, Table<OrgRecord> aliased) {
         this(alias, aliased, null);

@@ -410,6 +410,7 @@ public class DepartmentEmployeeRecord extends UpdatableRecordImpl<DepartmentEmpl
         setUpdatedBy(updatedBy);
         setCreatedAt(createdAt);
         setUpdatedAt(updatedAt);
+        resetChangedOnNotNull();
     }
 
     /**
@@ -428,6 +429,7 @@ public class DepartmentEmployeeRecord extends UpdatableRecordImpl<DepartmentEmpl
             setUpdatedBy(value.getUpdatedBy());
             setCreatedAt(value.getCreatedAt());
             setUpdatedAt(value.getUpdatedAt());
+            resetChangedOnNotNull();
         }
     }
 }

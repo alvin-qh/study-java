@@ -83,7 +83,7 @@ public class User extends TableImpl<UserRecord> {
     /**
      * The column <code>PUBLIC.USER.DELETED</code>.
      */
-    public final TableField<UserRecord, Long> DELETED = createField(DSL.name("DELETED"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field("0", SQLDataType.BIGINT)), this, "");
+    public final TableField<UserRecord, Long> DELETED = createField(DSL.name("DELETED"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>PUBLIC.USER.CREATED_BY</code>.
@@ -98,12 +98,12 @@ public class User extends TableImpl<UserRecord> {
     /**
      * The column <code>PUBLIC.USER.CREATED_AT</code>.
      */
-    public final TableField<UserRecord, LocalDateTime> CREATED_AT = createField(DSL.name("CREATED_AT"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field("CURRENT_TIMESTAMP", SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<UserRecord, LocalDateTime> CREATED_AT = createField(DSL.name("CREATED_AT"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>PUBLIC.USER.UPDATED_AT</code>.
      */
-    public final TableField<UserRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("UPDATED_AT"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field("CURRENT_TIMESTAMP", SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<UserRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("UPDATED_AT"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "");
 
     private User(Name alias, Table<UserRecord> aliased) {
         this(alias, aliased, null);

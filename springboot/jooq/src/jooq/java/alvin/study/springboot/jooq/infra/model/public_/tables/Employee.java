@@ -83,12 +83,12 @@ public class Employee extends TableImpl<EmployeeRecord> {
     /**
      * The column <code>PUBLIC.EMPLOYEE.INFO</code>.
      */
-    public final TableField<EmployeeRecord, EmployeeInfo> INFO = createField(DSL.name("INFO"), SQLDataType.VARCHAR(2000).nullable(false).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "", new EmployeeInfoConverter());
+    public final TableField<EmployeeRecord, EmployeeInfo> INFO = createField(DSL.name("INFO"), SQLDataType.VARCHAR(2000).nullable(false).defaultValue(DSL.field(DSL.raw("''"), SQLDataType.VARCHAR)), this, "", new EmployeeInfoConverter());
 
     /**
      * The column <code>PUBLIC.EMPLOYEE.DELETED</code>.
      */
-    public final TableField<EmployeeRecord, Long> DELETED = createField(DSL.name("DELETED"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field("0", SQLDataType.BIGINT)), this, "");
+    public final TableField<EmployeeRecord, Long> DELETED = createField(DSL.name("DELETED"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>PUBLIC.EMPLOYEE.CREATED_BY</code>.
@@ -103,12 +103,12 @@ public class Employee extends TableImpl<EmployeeRecord> {
     /**
      * The column <code>PUBLIC.EMPLOYEE.CREATED_AT</code>.
      */
-    public final TableField<EmployeeRecord, LocalDateTime> CREATED_AT = createField(DSL.name("CREATED_AT"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field("CURRENT_TIMESTAMP", SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<EmployeeRecord, LocalDateTime> CREATED_AT = createField(DSL.name("CREATED_AT"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>PUBLIC.EMPLOYEE.UPDATED_AT</code>.
      */
-    public final TableField<EmployeeRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("UPDATED_AT"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field("CURRENT_TIMESTAMP", SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<EmployeeRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("UPDATED_AT"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "");
 
     private Employee(Name alias, Table<EmployeeRecord> aliased) {
         this(alias, aliased, null);

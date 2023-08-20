@@ -449,6 +449,7 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
         setUpdatedBy(updatedBy);
         setCreatedAt(createdAt);
         setUpdatedAt(updatedAt);
+        resetChangedOnNotNull();
     }
 
     /**
@@ -468,6 +469,7 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
             setUpdatedBy(value.getUpdatedBy());
             setCreatedAt(value.getCreatedAt());
             setUpdatedAt(value.getUpdatedAt());
+            resetChangedOnNotNull();
         }
     }
 }

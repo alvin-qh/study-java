@@ -258,6 +258,7 @@ public class OrgRecord extends UpdatableRecordImpl<OrgRecord> implements Record5
         setDeleted(deleted);
         setCreatedAt(createdAt);
         setUpdatedAt(updatedAt);
+        resetChangedOnNotNull();
     }
 
     /**
@@ -272,6 +273,7 @@ public class OrgRecord extends UpdatableRecordImpl<OrgRecord> implements Record5
             setDeleted(value.getDeleted());
             setCreatedAt(value.getCreatedAt());
             setUpdatedAt(value.getUpdatedAt());
+            resetChangedOnNotNull();
         }
     }
 }

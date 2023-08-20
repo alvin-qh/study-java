@@ -76,7 +76,7 @@ public class Department extends TableImpl<DepartmentRecord> {
     /**
      * The column <code>PUBLIC.DEPARTMENT.DELETED</code>.
      */
-    public final TableField<DepartmentRecord, Long> DELETED = createField(DSL.name("DELETED"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field("0", SQLDataType.BIGINT)), this, "");
+    public final TableField<DepartmentRecord, Long> DELETED = createField(DSL.name("DELETED"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>PUBLIC.DEPARTMENT.CREATED_BY</code>.
@@ -91,12 +91,12 @@ public class Department extends TableImpl<DepartmentRecord> {
     /**
      * The column <code>PUBLIC.DEPARTMENT.CREATED_AT</code>.
      */
-    public final TableField<DepartmentRecord, LocalDateTime> CREATED_AT = createField(DSL.name("CREATED_AT"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field("CURRENT_TIMESTAMP", SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<DepartmentRecord, LocalDateTime> CREATED_AT = createField(DSL.name("CREATED_AT"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>PUBLIC.DEPARTMENT.UPDATED_AT</code>.
      */
-    public final TableField<DepartmentRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("UPDATED_AT"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field("CURRENT_TIMESTAMP", SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<DepartmentRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("UPDATED_AT"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "");
 
     private Department(Name alias, Table<DepartmentRecord> aliased) {
         this(alias, aliased, null);

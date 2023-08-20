@@ -487,6 +487,7 @@ public class EmployeeRecord extends UpdatableRecordImpl<EmployeeRecord> implemen
         setUpdatedBy(updatedBy);
         setCreatedAt(createdAt);
         setUpdatedAt(updatedAt);
+        resetChangedOnNotNull();
     }
 
     /**
@@ -507,6 +508,7 @@ public class EmployeeRecord extends UpdatableRecordImpl<EmployeeRecord> implemen
             setUpdatedBy(value.getUpdatedBy());
             setCreatedAt(value.getCreatedAt());
             setUpdatedAt(value.getUpdatedAt());
+            resetChangedOnNotNull();
         }
     }
 }
