@@ -1,10 +1,11 @@
 package alvin.study.quarkus.cdi.inject;
 
+import io.quarkus.arc.DefaultBean;
 import io.quarkus.arc.lookup.LookupIfProperty;
 import io.quarkus.arc.lookup.LookupUnlessProperty;
 import io.quarkus.arc.profile.IfBuildProfile;
 import io.quarkus.arc.profile.UnlessBuildProfile;
-import jakarta.inject.Singleton;
+import jakarta.enterprise.inject.Produces;
 
 /**
  * 演示根据条件产生注入的 Bean 对象
@@ -29,7 +30,7 @@ public class ConditionBeanProduces {
      *
      * @return {@link LookupIfPropertyBean} 类型对象
      */
-    @Singleton
+    @Produces
     @LookupIfProperty(name = "beans.condition.active", stringValue = "A", lookupIfMissing = false)
     LookupIfPropertyBean conditionBeanA() {
         return new LookupIfPropertyBean("A");
@@ -54,10 +55,16 @@ public class ConditionBeanProduces {
      *
      * @return {@link LookupIfPropertyBean} 类型对象
      */
-    @Singleton
-    @LookupUnlessProperty(name = "beans.condition.active", stringValue = "A", lookupIfMissing = false)
-    LookupIfPropertyBean conditionBeanB() {
-        return new LookupIfPropertyBean("B");
+    // @Singleton
+    // @LookupUnlessProperty(name = "beans.condition.active", stringValue = "A", lookupIfMissing = false)
+    // LookupIfPropertyBean conditionBeanB() {
+    //     return new LookupIfPropertyBean("B");
+    // }
+
+    @Produces
+    @DefaultBean
+    LookupIfPropertyBean conditionBeanDefault() {
+        return new LookupIfPropertyBean("DEF");
     }
 
     /**
@@ -76,7 +83,7 @@ public class ConditionBeanProduces {
      *
      * @return {@link IfBuildProfileBean} 类型对象
      */
-    @Singleton
+    @Produces
     @IfBuildProfile("dev")
     IfBuildProfileBean conditionBeanDev() {
         return new IfBuildProfileBean("dev");
@@ -87,8 +94,8 @@ public class ConditionBeanProduces {
      *
      * <p>
      * {@link IfBuildProfile @IfBuildProfile} 注解表示当当前项目的 Profile 值和注解指定的相等时, 则实例化指定的 Bean 对象,
-        * 本方法表示, 当 Profile 值不为 {@code dev} 时, 通过执行本方法实例化 Bean 对象
-  * </p>
+     * 本方法表示, 当 Profile 值不为 {@code dev} 时, 通过执行本方法实例化 Bean 对象
+     * </p>
      *
      * <p>
      * 参考 {@code resources:application.yml} 配置文件中的 {@code quarkus.profile} 配置项.
@@ -98,7 +105,7 @@ public class ConditionBeanProduces {
      *
      * @return {@link IfBuildProfileBean} 类型对象
      */
-    @Singleton
+    @Produces
     @UnlessBuildProfile("dev")
     IfBuildProfileBean conditionBeanTest() {
         return new IfBuildProfileBean("test");

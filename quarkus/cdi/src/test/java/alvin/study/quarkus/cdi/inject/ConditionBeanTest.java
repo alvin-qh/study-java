@@ -25,7 +25,7 @@ class ConditionBeanTest {
      */
     @BeforeAll
     static void beforeAll() {
-        System.setProperty("beans.condition.active", "B");
+        // System.setProperty("beans.condition.active", "B");
     }
 
     /**

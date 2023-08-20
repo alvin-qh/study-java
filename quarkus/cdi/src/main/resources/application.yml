@@ -1,6 +1,6 @@
 quarkus:
   profile: dev
 
-beans:
-  condition:
-    active: A
+# beans:
+#   condition:
+#     active: A
