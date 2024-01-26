@@ -4,10 +4,10 @@ import alvin.study.guava.cache.observer.CacheObserver;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.SubscriberExceptionContext;
 import com.google.common.eventbus.SubscriberExceptionHandler;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * 缓存消息总线类
@@ -69,7 +69,7 @@ public final class CacheEventBus implements SubscriberExceptionHandler {
      *
      * @param event {@link Event} 类型对象, 表示一个事件
      */
-    public void post(Event<?> event) {
+    public void post(@NotNull Event<?> event) {
         eventBus.post(event);
     }
 
@@ -78,7 +78,7 @@ public final class CacheEventBus implements SubscriberExceptionHandler {
      *
      * @param observer 用于对缓存进行后续处理的 {@link CacheObserver} 类型对象
      */
-    public void register(CacheObserver observer) {
+    public void register(@NotNull CacheObserver observer) {
         eventBus.register(observer);
     }
 }

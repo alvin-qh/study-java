@@ -25,7 +25,7 @@ public class IdMap extends ForwardingMap<Long, String> {
      * @return 被代理的 {@link List} 类型对象
      */
     @Override
-    protected @NotNull Map<Long, String> delegate() {
+    protected Map<Long, String> delegate() {
         return delegatedMap;
     }
 
@@ -39,7 +39,7 @@ public class IdMap extends ForwardingMap<Long, String> {
      * @throws IllegalArgumentException 如果 {@code value} 参数为 {@code null} 或空字符串时, 抛出该异常
      */
     @Override
-    public String put(Long key, String value) {
+    public String put(@NotNull Long key, @NotNull String value) {
         Preconditions.checkNotNull(key);
 
         if (Strings.isNullOrEmpty(value)) {

@@ -11,20 +11,20 @@ import alvin.study.springboot.jooq.infra.model.public_.tables.records.Department
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
-import java.util.function.Function;
 
+import org.jooq.Condition;
 import org.jooq.Field;
-import org.jooq.ForeignKey;
-import org.jooq.Function9;
 import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
-import org.jooq.Record;
-import org.jooq.Records;
-import org.jooq.Row9;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.SQL;
 import org.jooq.Schema;
-import org.jooq.SelectField;
+import org.jooq.Select;
+import org.jooq.Stringly;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
@@ -101,11 +101,11 @@ public class DepartmentEmployee extends TableImpl<DepartmentEmployeeRecord> {
     public final TableField<DepartmentEmployeeRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("UPDATED_AT"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "");
 
     private DepartmentEmployee(Name alias, Table<DepartmentEmployeeRecord> aliased) {
-        this(alias, aliased, null);
+        this(alias, aliased, (Field<?>[]) null, null);
     }
 
-    private DepartmentEmployee(Name alias, Table<DepartmentEmployeeRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    private DepartmentEmployee(Name alias, Table<DepartmentEmployeeRecord> aliased, Field<?>[] parameters, Condition where) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table(), where);
     }
 
     /**
@@ -127,10 +127,6 @@ public class DepartmentEmployee extends TableImpl<DepartmentEmployeeRecord> {
      */
     public DepartmentEmployee() {
         this(DSL.name("DEPARTMENT_EMPLOYEE"), null);
-    }
-
-    public <O extends Record> DepartmentEmployee(Table<O> child, ForeignKey<O, DepartmentEmployeeRecord> key) {
-        super(child, key, DEPARTMENT_EMPLOYEE);
     }
 
     @Override
@@ -197,27 +193,87 @@ public class DepartmentEmployee extends TableImpl<DepartmentEmployeeRecord> {
         return new DepartmentEmployee(name.getQualifiedName(), null);
     }
 
-    // -------------------------------------------------------------------------
-    // Row9 type methods
-    // -------------------------------------------------------------------------
-
+    /**
+     * Create an inline derived table from this table
+     */
     @Override
-    public Row9<Long, Long, Long, Long, Integer, Long, Long, LocalDateTime, LocalDateTime> fieldsRow() {
-        return (Row9) super.fieldsRow();
+    public DepartmentEmployee where(Condition condition) {
+        return new DepartmentEmployee(getQualifiedName(), aliased() ? this : null, null, condition);
     }
 
     /**
-     * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
+     * Create an inline derived table from this table
      */
-    public <U> SelectField<U> mapping(Function9<? super Long, ? super Long, ? super Long, ? super Long, ? super Integer, ? super Long, ? super Long, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
-        return convertFrom(Records.mapping(from));
+    @Override
+    public DepartmentEmployee where(Collection<? extends Condition> conditions) {
+        return where(DSL.and(conditions));
     }
 
     /**
-     * Convenience mapping calling {@link SelectField#convertFrom(Class,
-     * Function)}.
+     * Create an inline derived table from this table
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function9<? super Long, ? super Long, ? super Long, ? super Long, ? super Integer, ? super Long, ? super Long, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
-        return convertFrom(toType, Records.mapping(from));
+    @Override
+    public DepartmentEmployee where(Condition... conditions) {
+        return where(DSL.and(conditions));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public DepartmentEmployee where(Field<Boolean> condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public DepartmentEmployee where(SQL condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public DepartmentEmployee where(@Stringly.SQL String condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public DepartmentEmployee where(@Stringly.SQL String condition, Object... binds) {
+        return where(DSL.condition(condition, binds));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public DepartmentEmployee where(@Stringly.SQL String condition, QueryPart... parts) {
+        return where(DSL.condition(condition, parts));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public DepartmentEmployee whereExists(Select<?> select) {
+        return where(DSL.exists(select));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public DepartmentEmployee whereNotExists(Select<?> select) {
+        return where(DSL.notExists(select));
     }
 }

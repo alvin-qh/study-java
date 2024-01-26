@@ -61,7 +61,7 @@ public class StringList extends ForwardingList<String> {
      * @throws IllegalArgumentException 如果 {@code collection} 参数中包含值为空字符串或 {@code null} 的元素 时, 抛出该异常
      */
     @Override
-    public boolean addAll(@NotNull Collection<? extends String> collection) {
+    public boolean addAll(Collection<? extends String> collection) {
         Preconditions.checkNotNull(collection).forEach(v -> {
             if (Strings.isNullOrEmpty(v)) {
                 throw new IllegalArgumentException("collection argument cannot contain null or empty string");

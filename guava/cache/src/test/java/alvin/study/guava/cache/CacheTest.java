@@ -13,7 +13,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.MultimapBuilder;
 import com.google.common.hash.BloomFilter;
 import com.google.common.util.concurrent.UncheckedExecutionException;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
@@ -43,12 +42,13 @@ class CacheTest {
      */
     private static String formatCacheStat(Cache<?, ?> cache) {
         var stat = cache.stats();
+
         // 将缓存命中率, 数据源读取成功次数以及缓存项淘汰个数三个指标项格式化为字符串返回
         return String.format(
-                "hit rate = %.1f%%, load success count = %d, eviction count = %d",
-                stat.hitRate() * 100,
-                stat.loadSuccessCount(),
-                stat.evictionCount());
+            "hit rate = %.1f%%, load success count = %d, eviction count = %d",
+            stat.hitRate() * 100,
+            stat.loadSuccessCount(),
+            stat.evictionCount());
     }
 
     /**
@@ -112,7 +112,7 @@ class CacheTest {
         then(user).isNull();
 
         // 确认根据一系列 Key 批量获取缓存的对象, 只有存在的 Key 对应的缓存对象被返回
-        var users = cache.getAllPresent(ImmutableList.of(1L, 2L));
+        var users = cache.getAllPresent(Objects.requireNonNull(ImmutableList.of(1L, 2L)));
         then(users).containsExactly(entry(user1.id(), user1));
 
         // 清空所有缓存对象
@@ -120,16 +120,16 @@ class CacheTest {
         then(cache.size()).isEqualTo(0);
 
         // 确认批量缓存了键值对
-        cache.putAll(ImmutableMap.of(
-                user1.id(), user1,
-                user2.id(), user2));
+        cache.putAll(Objects.requireNonNull(ImmutableMap.of(
+            user1.id(), user1,
+            user2.id(), user2)));
         then(cache.size()).isEqualTo(2);
 
         // 确认根据批量的 Key 获取缓存对象集合
-        users = cache.getAllPresent(ImmutableList.of(user1.id(), user2.id()));
+        users = cache.getAllPresent(Objects.requireNonNull(ImmutableList.of(user1.id(), user2.id())));
         then(users).containsExactly(
-                entry(user1.id(), user1),
-                entry(user2.id(), user2));
+            entry(user1.id(), user1),
+            entry(user2.id(), user2));
 
         try {
             // 确认通过回调函数, 对不存在的 Key 产生新的缓存对象
@@ -190,7 +190,7 @@ class CacheTest {
         // 构建缓存对象, 并指定 load 方法如何从数据源读取对象
         var cache = CacheBuilder.newBuilder().build(new CacheLoader<Long, User>() {
             @Override
-            public @NotNull User load(@NotNull Long key) {
+            public User load(Long key) {
                 // 从数据源读取对象, 并在无法读取结果时抛出异常
                 return repository.findUserById(key).orElseThrow();
             }
@@ -448,7 +448,7 @@ class CacheTest {
         var cache = CacheBuilder.newBuilder()
                 .build(new CacheLoader<Long, Optional<User>>() {
                     @Override
-                    public @NotNull Optional<User> load(@NotNull Long key) {
+                    public Optional<User> load(Long key) {
                         return repository.findUserById(key);
                     }
                 });
@@ -500,7 +500,7 @@ class CacheTest {
                     private final BloomFilter<Long> bloomFilter = repository.toBloomFilter(1000);
 
                     @Override
-                    public @NotNull User load(@NotNull Long key) {
+                    public User load(Long key) {
                         // 通过布隆过滤器确认数据是否存在
                         if (!bloomFilter.mightContain(key)) {
                             // 数据不存在的清空
@@ -617,7 +617,7 @@ class CacheTest {
                 .refreshAfterWrite(2, TimeUnit.SECONDS)
                 .build(new CacheLoader<Long, User>() {
                     @Override
-                    public @NotNull User load(@NotNull Long key) {
+                    public User load(Long key) {
                         return repository.findUserById(key).orElseThrow();
                     }
                 });
@@ -626,14 +626,13 @@ class CacheTest {
         for (var key : ImmutableList.of(1L, 2L, 3L)) {
             try {
                 cache.get(key);
-            } catch (Exception ignore) {
-            }
+            } catch (Exception ignore) {}
         }
 
         repository.updateUser(new User(2L, "Fiona"));
 
         await().atMost(3, TimeUnit.SECONDS).untilAsserted(
-                () -> then(cache.get(2L)).extracting("id", "name").contains(2L, "Fiona"));
+            () -> then(cache.get(2L)).extracting("id", "name").contains(2L, "Fiona"));
     }
 
     /**
@@ -667,7 +666,7 @@ class CacheTest {
         var cache = CacheBuilder.newBuilder()
                 .build(new CacheLoader<Long, User>() {
                     @Override
-                    public @NotNull User load(@NotNull Long key) {
+                    public User load(Long key) {
                         return repository.findUserById(key).orElseThrow();
                     }
                 });
@@ -679,8 +678,7 @@ class CacheTest {
         for (var key : ImmutableList.of(1L, 2L, 3L)) {
             try {
                 cache.get(key);
-            } catch (Exception ignore) {
-            }
+            } catch (Exception ignore) {}
         }
 
         // 更新实体对象
@@ -723,7 +721,7 @@ class CacheTest {
                 .recordStats()
                 .build(new CacheLoader<Long, User>() {
                     @Override
-                    public @NotNull User load(@NotNull Long key) {
+                    public User load(Long key) {
                         return repository.findUserById(key).orElseThrow();
                     }
                 });
@@ -735,8 +733,7 @@ class CacheTest {
         for (var key : ImmutableList.of(1L, 1L, 1L, 2L, 2L, 3L, 4L)) {
             try {
                 cache.get(key);
-            } catch (Exception ignore) {
-            }
+            } catch (Exception ignore) {}
         }
 
         // 总共从缓存中读取 7 次, 其中 3 次是直接从缓存中得到, 命中率为 42.9%
@@ -807,7 +804,7 @@ class CacheTest {
                 })
                 .build(new CacheLoader<Long, User>() {
                     @Override
-                    public @NotNull User load(@NotNull Long key) {
+                    public User load(Long key) {
                         return repository.findUserById(key).orElseThrow();
                     }
                 });
@@ -818,8 +815,7 @@ class CacheTest {
         for (var key : ImmutableList.of(1L, 2L, 3L)) {
             try {
                 cache.get(key);
-            } catch (Exception ignore) {
-            }
+            } catch (Exception ignore) {}
         }
         // 确认删除了 1 项缓存
         then(removedItems.size()).isEqualTo(1);

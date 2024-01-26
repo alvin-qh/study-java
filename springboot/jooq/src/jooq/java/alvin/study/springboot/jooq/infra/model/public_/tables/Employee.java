@@ -12,19 +12,19 @@ import alvin.study.springboot.jooq.infra.model.public_.tables.records.EmployeeRe
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
-import java.util.function.Function;
 
+import org.jooq.Condition;
 import org.jooq.Field;
-import org.jooq.ForeignKey;
-import org.jooq.Function11;
 import org.jooq.Identity;
 import org.jooq.Name;
-import org.jooq.Record;
-import org.jooq.Records;
-import org.jooq.Row11;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.SQL;
 import org.jooq.Schema;
-import org.jooq.SelectField;
+import org.jooq.Select;
+import org.jooq.Stringly;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
@@ -111,11 +111,11 @@ public class Employee extends TableImpl<EmployeeRecord> {
     public final TableField<EmployeeRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("UPDATED_AT"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "");
 
     private Employee(Name alias, Table<EmployeeRecord> aliased) {
-        this(alias, aliased, null);
+        this(alias, aliased, (Field<?>[]) null, null);
     }
 
-    private Employee(Name alias, Table<EmployeeRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    private Employee(Name alias, Table<EmployeeRecord> aliased, Field<?>[] parameters, Condition where) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table(), where);
     }
 
     /**
@@ -137,10 +137,6 @@ public class Employee extends TableImpl<EmployeeRecord> {
      */
     public Employee() {
         this(DSL.name("EMPLOYEE"), null);
-    }
-
-    public <O extends Record> Employee(Table<O> child, ForeignKey<O, EmployeeRecord> key) {
-        super(child, key, EMPLOYEE);
     }
 
     @Override
@@ -202,27 +198,87 @@ public class Employee extends TableImpl<EmployeeRecord> {
         return new Employee(name.getQualifiedName(), null);
     }
 
-    // -------------------------------------------------------------------------
-    // Row11 type methods
-    // -------------------------------------------------------------------------
-
+    /**
+     * Create an inline derived table from this table
+     */
     @Override
-    public Row11<Long, Long, String, String, String, EmployeeInfo, Long, Long, Long, LocalDateTime, LocalDateTime> fieldsRow() {
-        return (Row11) super.fieldsRow();
+    public Employee where(Condition condition) {
+        return new Employee(getQualifiedName(), aliased() ? this : null, null, condition);
     }
 
     /**
-     * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
+     * Create an inline derived table from this table
      */
-    public <U> SelectField<U> mapping(Function11<? super Long, ? super Long, ? super String, ? super String, ? super String, ? super EmployeeInfo, ? super Long, ? super Long, ? super Long, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
-        return convertFrom(Records.mapping(from));
+    @Override
+    public Employee where(Collection<? extends Condition> conditions) {
+        return where(DSL.and(conditions));
     }
 
     /**
-     * Convenience mapping calling {@link SelectField#convertFrom(Class,
-     * Function)}.
+     * Create an inline derived table from this table
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function11<? super Long, ? super Long, ? super String, ? super String, ? super String, ? super EmployeeInfo, ? super Long, ? super Long, ? super Long, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
-        return convertFrom(toType, Records.mapping(from));
+    @Override
+    public Employee where(Condition... conditions) {
+        return where(DSL.and(conditions));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public Employee where(Field<Boolean> condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public Employee where(SQL condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public Employee where(@Stringly.SQL String condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public Employee where(@Stringly.SQL String condition, Object... binds) {
+        return where(DSL.condition(condition, binds));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public Employee where(@Stringly.SQL String condition, QueryPart... parts) {
+        return where(DSL.condition(condition, parts));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public Employee whereExists(Select<?> select) {
+        return where(DSL.exists(select));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public Employee whereNotExists(Select<?> select) {
+        return where(DSL.notExists(select));
     }
 }

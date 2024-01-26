@@ -211,8 +211,7 @@ public interface DepartmentMapper extends BaseMapper<Department> {
             .WHERE("d.deleted = 0 and e.id = {0}");
 
         // 通过 SqlRunner 对象执行原生 SQL 语句, 返回 Map 类型结果
-        try (var runner = SqlRunner.db(Department.class)) {
-            return runner.selectList(sql.toString(), employee.getId());
-        }
+        var runner = SqlRunner.db(Department.class);
+        return runner.selectList(sql.toString(), employee.getId());
     }
 }

@@ -2,7 +2,6 @@
 .gradle
 .venv
 .vscode
-.settings
 .project
 .classpath
 .history
