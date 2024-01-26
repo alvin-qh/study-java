@@ -1,14 +1,15 @@
 package alvin.study.guava.common;
 
-import com.google.common.base.Optional;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 import java.util.List;
 import java.util.Set;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import com.google.common.base.Optional;
 
 /**
  * 演示 {@link Optional} 的使用
@@ -22,14 +23,6 @@ import static org.assertj.core.api.BDDAssertions.thenThrownBy;
  * {@link java.util.Optional} 工具类
  * </p>
  */
-@SuppressWarnings({
-        "Guava",
-        "ConstantValue",
-        "DataFlowIssue",
-        "Convert2MethodRef",
-        "ExcessiveLambdaUsage",
-        "OptionalGetWithoutIsPresent"
-})
 class OptionalTest {
     /**
      * 将一个非 {@code null} 对象包装为 {@link Optional} 对象

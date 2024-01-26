@@ -1,13 +1,13 @@
 package alvin.study.testing.junit;
 
 
-import alvin.study.testing.junit.parameterized.BlankStringsArgumentsProvider;
-import alvin.study.testing.junit.parameterized.SlashyDateConverter;
-import alvin.study.testing.junit.parameterized.UserAggregator;
-import alvin.study.testing.junit.parameterized.VariableSource;
-import alvin.study.testing.testcase.model.User;
-import alvin.study.testing.testcase.service.NumberService;
-import com.google.common.base.Strings;
+import static org.assertj.core.api.BDDAssertions.then;
+
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.EnumSet;
+import java.util.stream.Stream;
+
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,12 +24,14 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.EnumSet;
-import java.util.stream.Stream;
+import com.google.common.base.Strings;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import alvin.study.testing.junit.parameterized.BlankStringsArgumentsProvider;
+import alvin.study.testing.junit.parameterized.SlashyDateConverter;
+import alvin.study.testing.junit.parameterized.UserAggregator;
+import alvin.study.testing.junit.parameterized.VariableSource;
+import alvin.study.testing.testcase.model.User;
+import alvin.study.testing.testcase.service.NumberService;
 
 /**
  * 参数化测试
@@ -56,7 +58,6 @@ import static org.assertj.core.api.BDDAssertions.then;
  * </ul>
  * </p>
  */
-@SuppressWarnings("JUnitMalformedDeclaration")
 class ParameterizeTest {
     /**
      * 定义一个成员字段, 作为假设值, 通过 {@link VariableSource @VariableSource} 注解进行使用

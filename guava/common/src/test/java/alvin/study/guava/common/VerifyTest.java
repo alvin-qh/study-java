@@ -1,10 +1,11 @@
 package alvin.study.guava.common;
 
-import com.google.common.base.Verify;
-import com.google.common.base.VerifyException;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+import com.google.common.base.Verify;
+import com.google.common.base.VerifyException;
 
 /**
  * 测试运行时条件检验方法
@@ -14,7 +15,6 @@ import static org.assertj.core.api.BDDAssertions.thenThrownBy;
  * {@code false} 则抛出 {@link VerifyException} 异常
  * </p>
  */
-@SuppressWarnings({ "ConstantValue", "DataFlowIssue" })
 class VerifyTest {
     /**
      * 对条件表达式进行检验

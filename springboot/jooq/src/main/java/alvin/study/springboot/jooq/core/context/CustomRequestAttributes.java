@@ -1,11 +1,10 @@
 package alvin.study.springboot.jooq.core.context;
 
-import org.jetbrains.annotations.NotNull;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 /**
  * 自定义请求属性对象 (请求上下文)
@@ -46,7 +45,7 @@ public class CustomRequestAttributes implements RequestAttributes {
      * 获取请求属性值
      */
     @Override
-    public Object getAttribute(@NotNull String name, int scope) {
+    public Object getAttribute(String name, int scope) {
         if (scope != RequestAttributes.SCOPE_REQUEST) {
             return null;
         }
@@ -57,7 +56,7 @@ public class CustomRequestAttributes implements RequestAttributes {
      * 设置请求属性值
      */
     @Override
-    public void setAttribute(@NotNull String name, @NotNull Object value, int scope) {
+    public void setAttribute(String name, Object value, int scope) {
         if (scope == RequestAttributes.SCOPE_REQUEST) {
             this.attributes.put(name, value);
         }
@@ -67,7 +66,7 @@ public class CustomRequestAttributes implements RequestAttributes {
      * 删除请求属性值
      */
     @Override
-    public void removeAttribute(@NotNull String name, int scope) {
+    public void removeAttribute(String name, int scope) {
         if (scope == RequestAttributes.SCOPE_REQUEST) {
             this.attributes.remove(name);
         }
@@ -77,7 +76,7 @@ public class CustomRequestAttributes implements RequestAttributes {
      * 获取请求属性值的 key 集合
      */
     @Override
-    public String @NotNull [] getAttributeNames(int scope) {
+    public String[] getAttributeNames(int scope) {
         if (scope == RequestAttributes.SCOPE_REQUEST) {
             return this.attributes.keySet().toArray(String[]::new);
         }
@@ -88,18 +87,18 @@ public class CustomRequestAttributes implements RequestAttributes {
      * 注册属性并回调函数
      */
     @Override
-    public void registerDestructionCallback(@NotNull String name, @NotNull Runnable callback, int scope) {
+    public void registerDestructionCallback(String name, Runnable callback, int scope) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Object resolveReference(@NotNull String key) {
+    public Object resolveReference(String key) {
         return null;
     }
 
     @Override
-    public @NotNull String getSessionId() { return ""; }
+    public String getSessionId() { return ""; }
 
     @Override
-    public @NotNull Object getSessionMutex() { return this; }
+    public Object getSessionMutex() { return this; }
 }

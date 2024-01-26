@@ -1,19 +1,20 @@
 package alvin.study.guava.graphs;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.MultimapBuilder;
-import com.google.common.collect.Sets;
-import com.google.common.graph.Graph;
-import com.google.common.graph.ValueGraph;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Optional;
 import java.util.PriorityQueue;
 import java.util.function.ToIntFunction;
 import java.util.stream.Stream;
+
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.MultimapBuilder;
+import com.google.common.collect.Sets;
+import com.google.common.graph.Graph;
+import com.google.common.graph.ValueGraph;
 
 /**
  * 计算图路径的类型
@@ -230,7 +231,7 @@ public final class GraphPaths {
         private int distance = Integer.MAX_VALUE;
 
         @Override
-        public int compareTo(@NotNull PathValue<N> o) {
+        public int compareTo(PathValue<N> o) {
             return Integer.compare(distance, o.distance);
         }
 

@@ -1,7 +1,22 @@
 package alvin.study.testing.pioneer;
 
-import alvin.study.testing.testcase.model.Group;
-import alvin.study.testing.testcase.model.User;
+import static org.assertj.core.api.Assertions.tuple;
+import static org.assertj.core.api.BDDAssertions.then;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.Parameter;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -21,22 +36,8 @@ import org.junitpioneer.jupiter.json.JsonSource;
 import org.junitpioneer.jupiter.json.Property;
 import org.junitpioneer.jupiter.params.IntRangeSource;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.reflect.Parameter;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
-import static org.assertj.core.api.Assertions.tuple;
-import static org.assertj.core.api.BDDAssertions.then;
+import alvin.study.testing.testcase.model.Group;
+import alvin.study.testing.testcase.model.User;
 
 /**
  * 该注解用于测试参数, 指定该参数值的生成规则
@@ -185,7 +186,6 @@ class NumberArgumentSourceProvider implements CartesianMethodArgumentsProvider,
 /**
  * 测试 pioneer 库的参数化功能
  */
-@SuppressWarnings("DefaultAnnotationParam")
 class ParameterizeTest {
     /**
      * 为 {@link #cartesian_shouldGenerateArgumentsByFactoryMethod(int, String, TestEnum)} 测试方法提供测试参数

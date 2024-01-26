@@ -5,7 +5,6 @@ import graphql.schema.DataFetcherFactories;
 import graphql.schema.GraphQLFieldDefinition;
 import graphql.schema.idl.SchemaDirectiveWiring;
 import graphql.schema.idl.SchemaDirectiveWiringEnvironment;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * 定义 {@code @uppercase} 字段处理器
@@ -49,7 +48,8 @@ public class UppercaseDirective implements SchemaDirectiveWiring {
      * 当查询到标注指定处理器的字段时, 执行的方法
      */
     @Override
-    public GraphQLFieldDefinition onField(@NotNull SchemaDirectiveWiringEnvironment<GraphQLFieldDefinition> env) {
+    @SuppressWarnings("deprecation")
+    public GraphQLFieldDefinition onField(SchemaDirectiveWiringEnvironment<GraphQLFieldDefinition> env) {
         // 获取 graphql 代码注册表对象
         var registry = env.getCodeRegistry();
 

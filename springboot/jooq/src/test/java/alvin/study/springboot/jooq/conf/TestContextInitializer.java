@@ -1,16 +1,16 @@
 package alvin.study.springboot.jooq.conf;
 
-import alvin.study.springboot.jooq.Main;
-import lombok.SneakyThrows;
+import java.util.Map;
+
 import org.apache.logging.slf4j.Log4jLoggerFactory;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import java.util.Map;
+import alvin.study.springboot.jooq.Main;
+import lombok.SneakyThrows;
 
 /**
  * 初始化测试上下文
@@ -31,7 +31,7 @@ public class TestContextInitializer implements ApplicationContextInitializer<Con
      */
     @Override
     @SneakyThrows
-    public void initialize(@NotNull ConfigurableApplicationContext context) {
+    public void initialize(ConfigurableApplicationContext context) {
         var properties = Main.getDefaultProperties();
 
         // 配置多进程下测试数据库连接

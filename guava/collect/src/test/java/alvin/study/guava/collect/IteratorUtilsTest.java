@@ -1,15 +1,16 @@
 package alvin.study.guava.collect;
 
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+
+import java.util.Iterator;
+
+import org.junit.jupiter.api.Test;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
-import org.junit.jupiter.api.Test;
-
-import java.util.Iterator;
-
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 /**
  * 测试 {@link Iterators} 工具类
@@ -18,7 +19,6 @@ import static org.assertj.core.api.BDDAssertions.thenThrownBy;
  * {@link Iterators} 工具类提供了一组对 {@link java.util.Iterator Iterator} 迭代器对象进行操作的辅助方法
  * </p>
  */
-@SuppressWarnings({ "Guava", "OptionalGetWithoutIsPresent" })
 class IteratorUtilsTest {
     /**
      * 将一个迭代器对象内的元素添加到另一个集合中

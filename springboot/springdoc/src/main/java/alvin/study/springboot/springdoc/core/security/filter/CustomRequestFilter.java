@@ -79,10 +79,11 @@ public class CustomRequestFilter extends OncePerRequestFilter {
      * @param userRepository         用户持久化对象
      */
     public CustomRequestFilter(
-        String[] swaggerUrlPatterns,
-        String[] apiUrlPatterns,
-        String[] excludeRequestMatchers,
-        UserDetailsService userDetailsService, PasswordEncoder passwordEncoder, Jwt jwt, UserRepository userRepository) {
+            String[] swaggerUrlPatterns,
+            String[] apiUrlPatterns,
+            String[] excludeRequestMatchers,
+            UserDetailsService userDetailsService, PasswordEncoder passwordEncoder, Jwt jwt,
+            UserRepository userRepository) {
         this.swaggerUrlMatchers = buildMatchers(swaggerUrlPatterns);
         this.apiUrlMatchers = buildMatchers(apiUrlPatterns);
         this.excludeRequestMatchers = buildMatchers(excludeRequestMatchers);
@@ -114,8 +115,8 @@ public class CustomRequestFilter extends OncePerRequestFilter {
      * @return 是否匹配成功
      */
     private static boolean checkIfMatcherMatches(
-        AntPathRequestMatcher @NotNull [] matchers,
-        HttpServletRequest request) {
+            AntPathRequestMatcher @NotNull [] matchers,
+            HttpServletRequest request) {
         for (var matcher : matchers) {
             if (matcher.matches(request)) {
                 return true;
@@ -133,9 +134,9 @@ public class CustomRequestFilter extends OncePerRequestFilter {
      */
     @Override
     protected void doFilterInternal(
-        @NotNull HttpServletRequest request,
-        @NotNull HttpServletResponse response,
-        @NotNull FilterChain chain) throws ServletException, IOException {
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain chain) throws ServletException, IOException {
         // 是否调用后续的过滤器
         boolean chainNext = true;
 
@@ -177,8 +178,8 @@ public class CustomRequestFilter extends OncePerRequestFilter {
      */
     @SneakyThrows
     private @Nullable CustomAuthenticationToken checkAsBasicAuth(
-        @NotNull HttpServletRequest request,
-        @NotNull HttpServletResponse response) {
+            @NotNull HttpServletRequest request,
+            @NotNull HttpServletResponse response) {
         var token = request.getHeader(Headers.AUTHORIZATION);
         if (Strings.isNullOrEmpty(token)) {
             // 如果 Header 中不包含 Authorization 头信息, 则返回包含 WWW-Authenticate
@@ -236,7 +237,7 @@ public class CustomRequestFilter extends OncePerRequestFilter {
 
         // 查询相关用户信息
         var user = userRepository.selectUserByName(payload.getIssuer())
-            .orElseThrow(() -> new BadCredentialsException("bad_jwt"));
+                .orElseThrow(() -> new BadCredentialsException("bad_jwt"));
 
         // 返回存储 User 对象的新对象
         return new CustomAuthenticationToken(user, Type.USER);

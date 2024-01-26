@@ -1,15 +1,16 @@
 package alvin.study.guava.collect;
 
-import com.google.common.collect.ContiguousSet;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
+
+import com.google.common.collect.ContiguousSet;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 
 /**
  * 演示 Guava 列表集合工具类
@@ -18,7 +19,6 @@ import static org.assertj.core.api.BDDAssertions.then;
  * {@link Lists} 类提供了一系列静态方法用于创建和操作 {@link ArrayList} 和 {@link LinkedList} 类型对象
  * </p>
  */
-@SuppressWarnings("StaticPseudoFunctionalStyleMethod")
 class ListUtilsTest {
     /**
      * 通过指定元素和数组创建 {@link java.util.List List} 集合对象

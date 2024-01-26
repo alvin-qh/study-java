@@ -1,7 +1,8 @@
 package alvin.study.se.concurrent;
 
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -26,9 +27,8 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.awaitility.Awaitility.await;
-import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 /**
  * 测试 {@link Spliterator} 对象, 即可分割迭代器对象
@@ -417,7 +417,6 @@ class SpliteratorTest {
      * </p>
      */
     @Nested
-    @SuppressWarnings("java:S5961")
     class SpliteratorsTest {
         /**
          * 产生不包含任何元素的空 {@link Spliterator} 对象

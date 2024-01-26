@@ -1,13 +1,13 @@
 package alvin.study.se.concurrent;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.LockSupport;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 /**
  * 演示通过 {@link LockSupport} 类型执行更加底层的缩操作
@@ -19,7 +19,6 @@ class LockSupportTest {
      * @param seconds 要转换的秒数
      * @return 转换后的纳秒数
      */
-    @SuppressWarnings("SameParameterValue")
     private static long toNanos(long seconds) {
         return TimeUnit.SECONDS.toNanos(seconds);
     }

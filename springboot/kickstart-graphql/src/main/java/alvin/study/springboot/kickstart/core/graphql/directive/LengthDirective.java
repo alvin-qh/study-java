@@ -1,5 +1,10 @@
 package alvin.study.springboot.kickstart.core.graphql.directive;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletionStage;
+
 import alvin.study.springboot.kickstart.conf.GraphqlConfig;
 import graphql.Assert;
 import graphql.GraphQLError;
@@ -16,11 +21,6 @@ import graphql.schema.GraphQLInputType;
 import graphql.schema.GraphQLTypeUtil;
 import graphql.schema.idl.SchemaDirectiveWiring;
 import graphql.schema.idl.SchemaDirectiveWiringEnvironment;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CompletionStage;
 
 /**
  * 定义 {@code @len} 字段处理器
@@ -76,7 +76,6 @@ public class LengthDirective implements SchemaDirectiveWiring {
      * @param argumentName 处理器标识参数名
      * @return 处理器对象参数值
      */
-    @SuppressWarnings("java:S1192")
     private static Integer parseArgument(GraphQLAppliedDirective directive, String argumentName) {
         // 根据参数名获取处理器标识的参数值
         var argument = directive.getArgument(argumentName);
@@ -235,6 +234,7 @@ public class LengthDirective implements SchemaDirectiveWiring {
      *
      * @param definition
      */
+    @SuppressWarnings("deprecation")
     private void replaceDataFetcher(SchemaDirectiveWiringEnvironment<GraphQLFieldDefinition> env) {
         // 获取原本的 DataFetcher 对象
         var originalFetcher = env.getFieldDataFetcher();

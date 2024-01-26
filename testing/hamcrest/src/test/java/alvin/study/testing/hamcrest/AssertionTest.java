@@ -1,17 +1,5 @@
 package alvin.study.testing.hamcrest;
 
-import alvin.study.testing.testcase.model.User;
-import alvin.study.testing.testcase.service.UserService;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
 import static alvin.study.testing.hamcrest.matcher.IsPresent.notPresent;
 import static alvin.study.testing.hamcrest.matcher.IsPresent.present;
 import static alvin.study.testing.hamcrest.matcher.IsPresent.presentThen;
@@ -52,10 +40,22 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.sameInstance;
 import static org.hamcrest.Matchers.startsWith;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import alvin.study.testing.testcase.model.User;
+import alvin.study.testing.testcase.service.UserService;
+
 /**
  * 测试 hamcrest 框架提供的断言方法
  */
-@SuppressWarnings({ "UnnecessaryBoxing", "StringOperationCanBeSimplified" })
 @ExtendWith(MockitoExtension.class)
 class AssertionTest {
     // mock 一个服务对象

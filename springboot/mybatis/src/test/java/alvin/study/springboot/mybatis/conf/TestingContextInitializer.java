@@ -1,19 +1,20 @@
 package alvin.study.springboot.mybatis.conf;
 
-import alvin.study.springboot.mybatis.Main;
-import com.google.common.base.Joiner;
-import com.google.common.base.Splitter;
-import com.google.common.base.Strings;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
+import java.util.Map;
+import java.util.stream.IntStream;
+
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 
-import java.util.Map;
-import java.util.stream.IntStream;
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
+
+import alvin.study.springboot.mybatis.Main;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 初始化测试上下文
@@ -35,11 +36,11 @@ public class TestingContextInitializer implements ApplicationContextInitializer<
      */
     @Override
     @SneakyThrows
-    public void initialize(@NotNull ConfigurableApplicationContext applicationContext) {
+    public void initialize(ConfigurableApplicationContext applicationContext) {
         // 获取 Main 类中定义的额外的 Spring 配置项
         var properties = Main.getDefaultProperties(
-            // Pair.of("spring.datasource.hikari.pool-name", "cp-alvin-study-test"),
-            // Pair.of("spring.jpa.show-sql", "true")
+        // Pair.of("spring.datasource.hikari.pool-name", "cp-alvin-study-test"),
+        // Pair.of("spring.jpa.show-sql", "true")
         );
 
         // 对 Gradle 多进程测试配置不同的数据源
@@ -96,13 +97,13 @@ public class TestingContextInitializer implements ApplicationContextInitializer<
      * @param executionNo 本次测试的运行号
      * @return 结合运行号的新数据库连接
      */
-    private @NotNull String makeJDBCUrlByExecutionNo(String jdbcUrl, int executionNo) {
+    private String makeJDBCUrlByExecutionNo(String jdbcUrl, int executionNo) {
         // 获取数据库连接的主体部分和参数部分
         var parts = Splitter.on(";")
-            .omitEmptyStrings()
-            .trimResults()
-            .limit(2)
-            .splitToList(jdbcUrl);
+                .omitEmptyStrings()
+                .trimResults()
+                .limit(2)
+                .splitToList(jdbcUrl);
 
         var newParts = IntStream.range(0, parts.size()).mapToObj(i -> {
             if (i == 0) {

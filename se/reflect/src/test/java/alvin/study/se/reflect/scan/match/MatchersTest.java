@@ -1,12 +1,12 @@
 package alvin.study.se.reflect.scan.match;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 /**
  * 测试 {@link Matchers.AnnotatedWith AnnotatedWith} 和
@@ -35,7 +35,6 @@ class TestClass {
      */
     @Override
     @TestAnnotation
-    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     public boolean equals(Object obj) {
         return true;
     }

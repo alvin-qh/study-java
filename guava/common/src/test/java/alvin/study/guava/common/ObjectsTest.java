@@ -1,15 +1,16 @@
 package alvin.study.guava.common;
 
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+
+import java.util.Comparator;
+
+import org.junit.jupiter.api.Test;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
-import org.junit.jupiter.api.Test;
-
-import java.util.Comparator;
-
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 /**
  * 演示对象操作工具类
@@ -48,7 +49,6 @@ import static org.assertj.core.api.BDDAssertions.thenThrownBy;
  * {@link java.util.Comparator} 对象或 {@link Ordering} 对象指定比较规则
  * </p>
  */
-@SuppressWarnings("ConstantValue")
 class ObjectsTest {
     /**
      * 判断两个对象是否相等
@@ -71,6 +71,7 @@ class ObjectsTest {
      * </p>
      */
     @Test
+    @SuppressWarnings("null")
     void equal_shouldCheckTwoObjectsIfEquals() {
         var obj1 = Integer.valueOf(100);
         var obj2 = Integer.valueOf(100);
@@ -125,6 +126,7 @@ class ObjectsTest {
      * </p>
      */
     @Test
+    @SuppressWarnings("null")
     void firstNonNull_shouldGetNotNullBetweenTwoReferences() {
         var obj1 = new Object();
         var obj2 = new Object();

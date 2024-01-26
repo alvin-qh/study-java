@@ -1,17 +1,8 @@
 package alvin.study.guava.collect;
 
-import com.google.common.base.Equivalence;
-import com.google.common.collect.ContiguousSet;
-import com.google.common.collect.HashBiMap;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.ImmutableSortedMap;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Range;
-import com.google.common.primitives.Ints;
-import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.entry;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 import java.time.Month;
 import java.util.Arrays;
@@ -24,9 +15,18 @@ import java.util.Properties;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static org.assertj.core.api.Assertions.entry;
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+import org.junit.jupiter.api.Test;
+
+import com.google.common.base.Equivalence;
+import com.google.common.collect.ContiguousSet;
+import com.google.common.collect.HashBiMap;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableSortedMap;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Range;
+import com.google.common.primitives.Ints;
 
 /**
  * 演示 Guava {@link Map} 对象工具类
@@ -36,7 +36,6 @@ import static org.assertj.core.api.BDDAssertions.thenThrownBy;
  * 以及 {@link ConcurrentHashMap} 等 {@link Map} 类型对象的方法
  * </p>
  */
-@SuppressWarnings("StringOperationCanBeSimplified")
 class MapUtilsTest {
     /**
      * 通过一个 Key 集合创建 {@link Map} 对象
@@ -354,7 +353,7 @@ class MapUtilsTest {
              * @return {@code true} 表示 {@code a} 和 {@code b} 参数相同
              */
             @Override
-            protected boolean doEquivalent(@NotNull Integer a, @NotNull Integer b) {
+            protected boolean doEquivalent(Integer a, Integer b) {
                 return a.intValue() == b.intValue();
             }
 
@@ -364,7 +363,7 @@ class MapUtilsTest {
              * @return 给定 {@code t} 参数的 Hash 值
              */
             @Override
-            protected int doHash(@NotNull Integer t) {
+            protected int doHash(Integer t) {
                 return Ints.hashCode(t);
             }
         });

@@ -3,8 +3,6 @@ package alvin.study.quarkus.web.interceptor;
 import java.io.IOException;
 import java.time.Instant;
 
-import org.jetbrains.annotations.NotNull;
-
 import alvin.study.quarkus.web.endpoint.model.ErrorDto;
 import io.quarkus.hibernate.validator.runtime.jaxrs.ViolationReport;
 import io.quarkus.qute.TemplateInstance;
@@ -28,7 +26,7 @@ public class ResponseWrapperInterceptor implements WriterInterceptor {
     HttpServerRequest request;
 
     @Override
-    public void aroundWriteTo(@NotNull WriterInterceptorContext context) throws IOException, WebApplicationException {
+    public void aroundWriteTo(WriterInterceptorContext context) throws IOException, WebApplicationException {
         var payload = context.getEntity();
         if (checkPayloadIfDto(payload)) {
             payload = resolveResponseEntity(payload);

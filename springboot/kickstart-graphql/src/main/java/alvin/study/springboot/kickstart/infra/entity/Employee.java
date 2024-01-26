@@ -29,7 +29,6 @@ import java.util.Map;
 @Data
 @TableName(value = "employee", autoResultMap = true)
 @EqualsAndHashCode(callSuper = true)
-@SuppressWarnings("java:S1948")
 public class Employee extends AuditedEntity {
     /**
      * 职员名称

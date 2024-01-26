@@ -1,6 +1,5 @@
 package alvin.study.springboot.jooq.util.bean;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -23,7 +22,7 @@ public class SpringBeanUtil implements ApplicationContextAware {
      * 注入 {@link ApplicationContext} 对象
      */
     @Override
-    public void setApplicationContext(@NotNull ApplicationContext applicationContext) throws BeansException {
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         if (context == null) {
             context = applicationContext;
         }

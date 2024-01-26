@@ -1,7 +1,5 @@
 package alvin.study.se.concurrent.delay;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.time.Instant;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.Delayed;
@@ -41,7 +39,7 @@ public class DelayedValue<T> implements Delayed {
      * @param delay 元素延迟时间
      * @param unit  延迟时间的单位
      */
-    public DelayedValue(T value, long delay, @NotNull TimeUnit unit) {
+    public DelayedValue(T value, long delay, TimeUnit unit) {
         this.value = value;
         // 记录当前对象创建时间
         this.createdAt = Instant.now();
@@ -54,12 +52,10 @@ public class DelayedValue<T> implements Delayed {
      *
      * @return 元素值
      */
-    public T getValue() {
-        return value;
-    }
+    public T getValue() { return value; }
 
     @Override
-    public int compareTo(@NotNull Delayed o) {
+    public int compareTo(Delayed o) {
         if (this == o) {
             return 0;
         }
@@ -67,7 +63,7 @@ public class DelayedValue<T> implements Delayed {
     }
 
     @Override
-    public long getDelay(@NotNull TimeUnit unit) {
+    public long getDelay(TimeUnit unit) {
         // 计算要延迟到的时间毫秒值
         var delayedTo = createdAt.toEpochMilli() + delayMillis;
 

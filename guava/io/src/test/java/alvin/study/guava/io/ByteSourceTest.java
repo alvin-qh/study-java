@@ -58,7 +58,6 @@ import static org.awaitility.Awaitility.await;
  * 类型对象来抽象网络资源和缓存文件资源这两种不同的数据源
  * </p>
  */
-@SuppressWarnings("OptionalGetWithoutIsPresent")
 class ByteSourceTest {
     /**
      * 将一个 {@code byte} 数组包装为 {@link ByteSource} 类型对象

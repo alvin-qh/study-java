@@ -1,18 +1,19 @@
 package alvin.study.springboot.mvc.app.api.interceptor;
 
-import alvin.study.springboot.mvc.core.context.Context;
-import alvin.study.springboot.mvc.core.http.PathsHandlerInterceptor;
-import alvin.study.springboot.mvc.util.security.Jwt;
-import com.google.common.base.Strings;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
+
+import com.google.common.base.Strings;
+
+import alvin.study.springboot.mvc.core.context.Context;
+import alvin.study.springboot.mvc.core.http.PathsHandlerInterceptor;
+import alvin.study.springboot.mvc.util.security.Jwt;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 对 {@code /api/**} 路径下的所有请求进行拦截, 并在执行 Controller 方法前对请求进行处理
@@ -31,12 +32,12 @@ import org.springframework.web.client.HttpClientErrorException;
  * </p>
  *
  * @see PathsHandlerInterceptor#preHandle(HttpServletRequest,
- * HttpServletResponse, Object)
+ *      HttpServletResponse, Object)
  * @see PathsHandlerInterceptor#postHandle(HttpServletRequest,
- * HttpServletResponse, Object,
- * org.springframework.web.servlet.ModelAndView)
- * PathsHandlerInterceptor.postHandle(HttpServletRequest,
- * HttpServletResponse, Object, ModelAndView)
+ *      HttpServletResponse, Object,
+ *      org.springframework.web.servlet.ModelAndView)
+ *      PathsHandlerInterceptor.postHandle(HttpServletRequest,
+ *      HttpServletResponse, Object, ModelAndView)
  */
 @Slf4j
 @Component
@@ -59,7 +60,7 @@ public class ApiHandlerInterceptor implements PathsHandlerInterceptor {
      * </p>
      */
     @Override
-    public String[] getPathPatterns() { return new String[]{ "/api/**" }; }
+    public String[] getPathPatterns() { return new String[] { "/api/**" }; }
 
     /**
      * 对请求进行拦截
@@ -69,13 +70,13 @@ public class ApiHandlerInterceptor implements PathsHandlerInterceptor {
      * </p>
      *
      * @see org.springframework.web.servlet.HandlerInterceptor#preHandle(HttpServletRequest,
-     * HttpServletResponse, Object)
+     *      HttpServletResponse, Object)
      */
     @Override
     public boolean preHandle(
-        HttpServletRequest request,
-        @NotNull HttpServletResponse response,
-        @NotNull Object handler) {
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Object handler) {
         log.info("Visiting \"{}\"", request.getRequestURI());
 
         // 从 http 请求头中获取用户 ID
@@ -87,8 +88,7 @@ public class ApiHandlerInterceptor implements PathsHandlerInterceptor {
                     "invalid_bearer_token",
                     HttpHeaders.EMPTY,
                     null,
-                    null
-                );
+                    null);
             }
 
             var token = auth.substring(TOKEN_PREFIX.length()).trim();
@@ -106,8 +106,7 @@ public class ApiHandlerInterceptor implements PathsHandlerInterceptor {
                     "invalid_bearer_token",
                     HttpHeaders.EMPTY,
                     null,
-                    null
-                );
+                    null);
             }
         }
         return true;

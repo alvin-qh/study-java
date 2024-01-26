@@ -1,11 +1,11 @@
 package alvin.study.springboot.springdoc.core.http;
 
-import com.google.common.base.Joiner;
-import io.swagger.v3.oas.annotations.Hidden;
-import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Path;
-import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,11 +24,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import com.google.common.base.Joiner;
+
+import io.swagger.v3.oas.annotations.Hidden;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Path;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 对 Controller 的返回结果进行处理
@@ -81,12 +82,12 @@ public class RestResponseBodyAdvice implements ResponseBodyAdvice<Object> {
      */
     @Override
     public boolean supports(
-        MethodParameter returnType,
-        @NotNull Class<? extends HttpMessageConverter<?>> converterType) {
+            MethodParameter returnType,
+            Class<? extends HttpMessageConverter<?>> converterType) {
         // 获取 controller 方法的返回值类型
         var retType = Optional.ofNullable(returnType.getMethod())
-            .map(Method::getReturnType)
-            .orElseThrow();
+                .map(Method::getReturnType)
+                .orElseThrow();
 
         // 如果 controller 方法返回类型为 Response 类型, 则返回 false
         return ResponseWrapper.class != retType && ResponseEntity.class != retType && String.class != retType;
@@ -109,12 +110,12 @@ public class RestResponseBodyAdvice implements ResponseBodyAdvice<Object> {
      */
     @Override
     public Object beforeBodyWrite(
-        Object body,
-        @NotNull MethodParameter returnType,
-        @NotNull MediaType selectedContentType,
-        @NotNull Class<? extends HttpMessageConverter<?>> selectedConverterType,
-        @NotNull ServerHttpRequest request,
-        @NotNull ServerHttpResponse response) {
+            Object body,
+            MethodParameter returnType,
+            MediaType selectedContentType,
+            Class<? extends HttpMessageConverter<?>> selectedConverterType,
+            ServerHttpRequest request,
+            ServerHttpResponse response) {
         return ResponseWrapper.success(body);
     }
 
@@ -152,9 +153,9 @@ public class RestResponseBodyAdvice implements ResponseBodyAdvice<Object> {
         warnLog(e);
 
         var fieldErrors = e.getBindingResult().getFieldErrors().stream()
-            .collect(Collectors.toMap(
-                FieldError::getField,
-                r -> new String[]{ r.getDefaultMessage() }));
+                .collect(Collectors.toMap(
+                    FieldError::getField,
+                    r -> new String[] { r.getDefaultMessage() }));
 
         return ResponseWrapper.error(
             HttpStatus.BAD_REQUEST.value(),
@@ -183,9 +184,9 @@ public class RestResponseBodyAdvice implements ResponseBodyAdvice<Object> {
         warnLog(e);
 
         var err = e.getConstraintViolations().stream()
-            .collect(Collectors.toMap(
-                v -> pathToPropertyName(v.getPropertyPath()),
-                v -> new String[]{ v.getMessage() }));
+                .collect(Collectors.toMap(
+                    v -> pathToPropertyName(v.getPropertyPath()),
+                    v -> new String[] { v.getMessage() }));
 
         return ResponseWrapper.error(
             HttpStatus.BAD_REQUEST.value(),
@@ -259,7 +260,7 @@ public class RestResponseBodyAdvice implements ResponseBodyAdvice<Object> {
             HttpStatus.BAD_REQUEST.value(), // 为此种错误定义代码和错误信息, 此处暂用 400 类型错误代码和信息
             "missing_request_args",
             ResponseWrapper.ErrorDetail.withErrorParameters(
-                Map.of(e.getParameterName(), new String[]{ e.getLocalizedMessage() })));
+                Map.of(e.getParameterName(), new String[] { e.getLocalizedMessage() })));
     }
 
     /**

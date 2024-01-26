@@ -7,6 +7,7 @@ import org.jooq.DSLContext;
 
 import java.util.List;
 import java.util.Set;
+import java.util.Objects;
 
 import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.table;
@@ -44,11 +45,11 @@ public class TableCleaner {
     public List<String> listAllTables(String schema, String tableType) {
         // 查询元数据表, 获取所需数据表名称
         return dsl.select(field("table_name"))
-            .from(table("information_schema.tables"))
-            .where(field("table_schema").eq(schema))
-            .and(field("table_type").eq(tableType))
-            .fetch()
-            .into(String.class);
+                .from(table("information_schema.tables"))
+                .where(field("table_schema").eq(schema))
+                .and(field("table_type").eq(tableType))
+                .fetch()
+                .into(String.class);
     }
 
     /**
@@ -70,7 +71,7 @@ public class TableCleaner {
 
             // 根据数据库连接 url, 对不同类型的数据库做不同的处理
             if (dbConnectionUrl.startsWith("jdbc:mysql")) {
-                var conn = conf.connectionProvider().acquire();
+                var conn = Objects.requireNonNull(conf.connectionProvider().acquire());
                 schema = conn.getCatalog(); // 获取 schema
                 tableType = "BASE TABLE"; // mysql 表类型
             } else if (dbConnectionUrl.startsWith("jdbc:h2")) {
@@ -85,17 +86,17 @@ public class TableCleaner {
 
             // 列出所有待清理的数据表
             listAllTables(schema, tableType).stream()
-                .filter(t -> { // 排除无需清理的数据表
-                    var ex = excludeSet.contains(t);
-                    if (ex) {
-                        log.debug(String.format("table \"%s\" did not need clean, ignored", t));
-                    }
-                    return !ex;
-                })
-                .forEach(t -> { // 清理所需的数据表
-                    dsl.execute(String.format("TRUNCATE TABLE `%s`", t));
-                    log.debug(String.format("table \"%s\" was cleaned", t));
-                });
+                    .filter(t -> { // 排除无需清理的数据表
+                        var ex = excludeSet.contains(t);
+                        if (ex) {
+                            log.debug(String.format("table \"%s\" did not need clean, ignored", t));
+                        }
+                        return !ex;
+                    })
+                    .forEach(t -> { // 清理所需的数据表
+                        dsl.execute(String.format("TRUNCATE TABLE `%s`", t));
+                        log.debug(String.format("table \"%s\" was cleaned", t));
+                    });
 
             // 恢复外键约束
             dsl.execute("SET FOREIGN_KEY_CHECKS = 1");

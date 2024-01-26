@@ -1,12 +1,13 @@
 package alvin.study.guava.collect;
 
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+
+import org.junit.jupiter.api.Test;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 /**
  * 演示不变集合的使用
@@ -33,7 +34,7 @@ import static org.assertj.core.api.BDDAssertions.thenThrownBy;
  * JDK 9 以后, JDK 本身提供了 {@link java.util.List#of(Object) List.of(T...)} 方法, 可以取代 Guava 库的使用
  * </p>
  */
-@SuppressWarnings({ "deprecation", "DataFlowIssue" })
+@SuppressWarnings("deprecation")
 class ImmutableListTest {
     /**
      * 通过指定元素构建不变集合

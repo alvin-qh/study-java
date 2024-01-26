@@ -1,10 +1,8 @@
 package alvin.study.se.concurrent;
 
-import alvin.study.se.concurrent.service.BlockedService;
-import alvin.study.se.concurrent.service.BlockedService.Model;
-import alvin.study.se.concurrent.util.ExecutorCreator;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.tuple;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +19,12 @@ import java.util.concurrent.locks.LockSupport;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.tuple;
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+
+import alvin.study.se.concurrent.service.BlockedService;
+import alvin.study.se.concurrent.service.BlockedService.Model;
+import alvin.study.se.concurrent.util.ExecutorCreator;
 
 /**
  * 通过 {@link CompletableFuture} 简化异步代码编写
@@ -840,7 +841,6 @@ class CompletableFutureTest {
      * @param count {@link List} 集合中 {@link Model} 元素的个数
      * @return 包含指定数量 {@link Model} 对象的 {@link List} 集合
      */
-    @SuppressWarnings({ "SameParameterValue", "ComparatorMethodParameterNotUsed" })
     private List<Model> generateModels(int count) {
         var rand = new Random();
 

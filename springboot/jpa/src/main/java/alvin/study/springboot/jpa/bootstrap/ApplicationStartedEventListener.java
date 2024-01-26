@@ -1,14 +1,15 @@
 package alvin.study.springboot.jpa.bootstrap;
 
-import com.google.common.base.Strings;
-import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
+import java.util.TimeZone;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import java.util.TimeZone;
+import com.google.common.base.Strings;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 应用处理启动监听器
@@ -40,7 +41,7 @@ public class ApplicationStartedEventListener implements ApplicationListener<Appl
      * </p>
      */
     @Override
-    public void onApplicationEvent(@NotNull ApplicationStartedEvent event) {
+    public void onApplicationEvent(ApplicationStartedEvent event) {
         // 设置上下文环境的时区变量
         TimeZone.setDefault(TimeZone.getTimeZone(this.timezone));
         System.setProperty("user.timezone", this.timezone);

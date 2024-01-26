@@ -1,5 +1,12 @@
 package alvin.study.guava.common;
 
+import static org.assertj.core.api.Assertions.entry;
+import static org.assertj.core.api.BDDAssertions.then;
+
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+
 import com.google.common.base.CaseFormat;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Charsets;
@@ -8,17 +15,10 @@ import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSortedMap;
-import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.entry;
-import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 演示字符串操作工具类
  */
-@SuppressWarnings("ConstantValue")
 class StringUtilsTest {
     /**
      * 测试将对象数组 (或集合) 连接为字符串
@@ -57,15 +57,15 @@ class StringUtilsTest {
         then(s).isEqualTo("A>>B>>C");
 
         // 通过 >> 连接符连接数组中的所有元素
-        s = Joiner.on(">>").join(new String[]{ "A", "B", "C" });
+        s = Joiner.on(">>").join(new String[] { "A", "B", "C" });
         then(s).isEqualTo("A>>B>>C");
 
         // 在连接过程中, 忽略所有为 null 的元素
-        s = Joiner.on(">>").skipNulls().join(new String[]{ "A", "B", null, "C" });
+        s = Joiner.on(">>").skipNulls().join(new String[] { "A", "B", null, "C" });
         then(s).isEqualTo("A>>B>>C");
 
         // 在连接过程中, 将值为 null 的元素替换为给定的字符串
-        s = Joiner.on(">>").useForNull("null").join(new String[]{ "A", "B", null, "C" });
+        s = Joiner.on(">>").useForNull("null").join(new String[] { "A", "B", null, "C" });
         then(s).isEqualTo("A>>B>>null>>C");
 
         // 在连接过程中, 将值为 null 的元素替换为给定的字符串
@@ -74,9 +74,9 @@ class StringUtilsTest {
 
         // 在连接过程中, 将 Map 中的所有键值对进行连接, 键值对之间通过指定的分隔符字符串分割
         s = Joiner.on(">>").withKeyValueSeparator(":").join(ImmutableSortedMap.of(
-                "A", 100,
-                "B", 200,
-                "C", 300));
+            "A", 100,
+            "B", 200,
+            "C", 300));
         then(s).isEqualTo("A:100>>B:200>>C:300");
 
         var builder = new StringBuilder();
@@ -162,9 +162,9 @@ class StringUtilsTest {
         // 将字符串通过指定分隔符分割为键值对, 组成 Map 对象, 这里需要指定键值对之间的分隔符
         var map = Splitter.on(">>").withKeyValueSeparator(":").split("A:100>>B:200>>C:300");
         then(map).containsExactly(
-                entry("A", "100"),
-                entry("B", "200"),
-                entry("C", "300"));
+            entry("A", "100"),
+            entry("B", "200"),
+            entry("C", "300"));
 
         // 将字符串分割为 List 对象
         var list = Splitter.on(">>").splitToList("A>>B>>C");
@@ -256,7 +256,7 @@ class StringUtilsTest {
     @Test
     void charsets_shouldUseStandardCharset() {
         var bytes = "Hello World".getBytes(Charsets.UTF_8);
-        then(bytes).isEqualTo(new byte[]{ 72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100 });
+        then(bytes).isEqualTo(new byte[] { 72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100 });
     }
 
     /**
@@ -329,6 +329,7 @@ class StringUtilsTest {
      * </p>
      */
     @Test
+    @SuppressWarnings("null")
     void emptyToNull_checkStringIfNullOrEmpty() {
         then(Strings.isNullOrEmpty("")).isTrue();
         then(Strings.isNullOrEmpty(null)).isTrue();

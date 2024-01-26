@@ -1,15 +1,16 @@
 package alvin.study.guava.common;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Ordering;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
 
 /**
  * 测试排序对象
@@ -20,7 +21,6 @@ import static org.assertj.core.api.BDDAssertions.then;
  * 进行排序, 也可以通过 {@link Ordering#isOrdered(Iterable)} 方法验证集合是否有序
  * </p>
  */
-@SuppressWarnings("Java8ListSort")
 class OrderingTest {
     /**
      * 测试自然序的排序对象

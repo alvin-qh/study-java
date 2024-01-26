@@ -1,5 +1,9 @@
 package alvin.study.springboot.springdoc.app.interceptor;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 
 import alvin.study.springboot.springdoc.infra.entity.AccessLog;
 import alvin.study.springboot.springdoc.infra.entity.User;
@@ -7,11 +11,6 @@ import alvin.study.springboot.springdoc.infra.repository.AccessLogRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Spring 拦截器, 拦截请求, 记录访问时间
@@ -21,10 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
  * 方法属于后置拦截器, 即所有的 Servlet 处理完毕后, 逐一处理后续的逻辑
  * </p>
  *
- * @see HandlerInterceptor#preHandle(HttpServletRequest, HttpServletResponse,
- * Object)
- * @see HandlerInterceptor#postHandle(HttpServletRequest, HttpServletResponse,
- * Object, ModelAndView)
+ * @see HandlerInterceptor#preHandle(HttpServletRequest, HttpServletResponse, Object)
+ * @see HandlerInterceptor#postHandle(HttpServletRequest, HttpServletResponse, Object, ModelAndView)
  */
 @Component
 @RequiredArgsConstructor
@@ -37,10 +34,10 @@ public class AccessInterceptor implements HandlerInterceptor {
      */
     @Override
     public void postHandle(
-        @NotNull HttpServletRequest request,
-        @NotNull HttpServletResponse response,
-        @NotNull Object handler,
-        ModelAndView modelAndView) {
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Object handler,
+            ModelAndView modelAndView) {
         // 获取登录信息
         var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null) {
@@ -51,6 +48,6 @@ public class AccessInterceptor implements HandlerInterceptor {
         var user = (User) auth.getPrincipal();
         try {
             accessLogRepository.insert(AccessLog.forAccess(user.getUsername()));
-        } catch (Exception ignore) { }
+        } catch (Exception ignore) {}
     }
 }

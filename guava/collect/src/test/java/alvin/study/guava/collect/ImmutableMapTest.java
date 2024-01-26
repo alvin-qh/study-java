@@ -1,14 +1,15 @@
 package alvin.study.guava.collect;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
-import org.junit.jupiter.api.Test;
-
-import java.util.Map;
-
 import static org.assertj.core.api.BDDAssertions.entry;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+
+import java.util.Map;
+
+import org.junit.jupiter.api.Test;
+
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 
 /**
  * 演示不变 Map 的使用
@@ -31,7 +32,7 @@ import static org.assertj.core.api.BDDAssertions.thenThrownBy;
  * JDK 9 以后, JDK 本身提供了 {@link java.util.Map#of(Object, Object) Map.of(K1, V1, ..., Vn, Vn)} 方法, 可以取代 Guava 库的使用
  * </p>
  */
-@SuppressWarnings({ "DataFlowIssue", "deprecation" })
+@SuppressWarnings("deprecation")
 class ImmutableMapTest {
     /**
      * 通过指定键值对构建不变 Map 对象

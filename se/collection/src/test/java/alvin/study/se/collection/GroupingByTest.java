@@ -1,10 +1,6 @@
 package alvin.study.se.collection;
 
-import com.github.javafaker.Faker;
-import lombok.RequiredArgsConstructor;
-import org.assertj.core.api.Condition;
-import org.assertj.core.api.InstanceOfAssertFactories;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Comparator;
 import java.util.EnumMap;
@@ -16,7 +12,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.assertj.core.api.Condition;
+import org.assertj.core.api.InstanceOfAssertFactories;
+import org.junit.jupiter.api.Test;
+
+import com.github.javafaker.Faker;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * 博客帖子分类枚举
@@ -31,20 +33,18 @@ enum BlogPostType {
  * 博客帖子类
  */
 record BlogPost(
-    String title,
-    String author,
-    BlogPostType type,
-    int likes,
-    List<String> comments
-) {
+        String title,
+        String author,
+        BlogPostType type,
+        int likes,
+        List<String> comments) {
     /**
      * 保存联合分组属性的记录类型
      *
      * @param type  帖子类型
      * @param likes 点赞数
      */
-    record TypeAndLikeKey(BlogPostType type, int likes) {
-    }
+    record TypeAndLikeKey(BlogPostType type, int likes) {}
 
     /**
      * 保存多聚合结果的记录属性
@@ -53,8 +53,7 @@ record BlogPost(
      * @param titles    标题集合
      * @param likeStats 点赞数统计信息
      */
-    record PostCountTitlesLikesStats(long postCount, String titles, IntSummaryStatistics likeStats) {
-    }
+    record PostCountTitlesLikesStats(long postCount, String titles, IntSummaryStatistics likeStats) {}
 
     /**
      * 保存标题和点赞数聚合结果
@@ -63,8 +62,7 @@ record BlogPost(
      * @param titles            帖子标题聚合
      * @param boundedSumOfLikes 点赞数聚合
      */
-    record TitlesBoundedSumOfLikes(long postCount, String titles, int boundedSumOfLikes) {
-    }
+    record TitlesBoundedSumOfLikes(long postCount, String titles, int boundedSumOfLikes) {}
 }
 
 /**
@@ -125,18 +123,18 @@ class GroupingByTest {
 
         // 按每个类型要求的帖子数量产生测试数据
         return requiredCounts.entrySet()
-            .stream()
-            .flatMap(e -> IntStream.range(0, e.getValue())
-                .mapToObj(n -> new BlogPost(
-                    faker.funnyName().name(),
-                    faker.name().fullName(),
-                    e.getKey(),
-                    likeHolder.getLikes(),
-                    IntStream.range(0, n + 1)  // 第几个帖子就有几条回复
-                        .mapToObj(ignore -> faker.regexify(
-                            "[A-Za-z\\-,. ]{20,50}"))
-                        .toList())))
-            .toList();
+                .stream()
+                .flatMap(e -> IntStream.range(0, e.getValue())
+                        .mapToObj(n -> new BlogPost(
+                            faker.funnyName().name(),
+                            faker.name().fullName(),
+                            e.getKey(),
+                            likeHolder.getLikes(),
+                            IntStream.range(0, n + 1)  // 第几个帖子就有几条回复
+                                    .mapToObj(ignore -> faker.regexify(
+                                        "[A-Za-z\\-,. ]{20,50}"))
+                                    .toList())))
+                .toList();
     }
 
     /**
@@ -168,9 +166,9 @@ class GroupingByTest {
         then(results).hasSize(3);
 
         // 确认各分组数据
-        then(results).extractingByKey(BlogPostType.NEWS).asList().hasSize(10);
-        then(results).extractingByKey(BlogPostType.REVIEW).asList().hasSize(5);
-        then(results).extractingByKey(BlogPostType.GUIDE).asList().hasSize(8);
+        then(results).extractingByKey(BlogPostType.NEWS).asInstanceOf(InstanceOfAssertFactories.LIST).hasSize(10);
+        then(results).extractingByKey(BlogPostType.REVIEW).asInstanceOf(InstanceOfAssertFactories.LIST).hasSize(5);
+        then(results).extractingByKey(BlogPostType.GUIDE).asInstanceOf(InstanceOfAssertFactories.LIST).hasSize(8);
     }
 
     /**
@@ -255,14 +253,14 @@ class GroupingByTest {
 
         // 确认每个分组都以 Set 集合存储
         then(results)
-            .extractingByKey(BlogPostType.NEWS)
-            .asInstanceOf(InstanceOfAssertFactories.collection(Set.class)).hasSize(10);
+                .extractingByKey(BlogPostType.NEWS)
+                .asInstanceOf(InstanceOfAssertFactories.collection(Set.class)).hasSize(10);
         then(results)
-            .extractingByKey(BlogPostType.REVIEW)
-            .asInstanceOf(InstanceOfAssertFactories.collection(Set.class)).hasSize(5);
+                .extractingByKey(BlogPostType.REVIEW)
+                .asInstanceOf(InstanceOfAssertFactories.collection(Set.class)).hasSize(5);
         then(results)
-            .extractingByKey(BlogPostType.GUIDE)
-            .asInstanceOf(InstanceOfAssertFactories.collection(Set.class)).hasSize(8);
+                .extractingByKey(BlogPostType.GUIDE)
+                .asInstanceOf(InstanceOfAssertFactories.collection(Set.class)).hasSize(8);
     }
 
     /**
@@ -296,17 +294,17 @@ class GroupingByTest {
 
         // 确认每个分组下仍是一个分组的 Map 集合
         then(results)
-            .extractingByKey(BlogPostType.NEWS)
-            .asInstanceOf(InstanceOfAssertFactories.MAP)
-            .containsOnlyKeys(1, 2);
+                .extractingByKey(BlogPostType.NEWS)
+                .asInstanceOf(InstanceOfAssertFactories.MAP)
+                .containsOnlyKeys(1, 2);
         then(results)
-            .extractingByKey(BlogPostType.REVIEW)
-            .asInstanceOf(InstanceOfAssertFactories.MAP)
-            .containsOnlyKeys(1, 2);
+                .extractingByKey(BlogPostType.REVIEW)
+                .asInstanceOf(InstanceOfAssertFactories.MAP)
+                .containsOnlyKeys(1, 2);
         then(results)
-            .extractingByKey(BlogPostType.GUIDE)
-            .asInstanceOf(InstanceOfAssertFactories.MAP)
-            .containsOnlyKeys(1, 2);
+                .extractingByKey(BlogPostType.GUIDE)
+                .asInstanceOf(InstanceOfAssertFactories.MAP)
+                .containsOnlyKeys(1, 2);
     }
 
     /**
@@ -494,10 +492,10 @@ class GroupingByTest {
             @Override
             public boolean matches(IntSummaryStatistics value) {
                 return value.getCount() == count
-                    && value.getAverage() == avg
-                    && value.getSum() == sum
-                    && value.getMax() == max
-                    && value.getMin() == min;
+                       && value.getAverage() == avg
+                       && value.getSum() == sum
+                       && value.getMax() == max
+                       && value.getMin() == min;
             }
         }
 
@@ -533,8 +531,8 @@ class GroupingByTest {
                 list -> {
                     // 将分组中所有帖子的标题连接成一个
                     var titles = list.stream()
-                        .map(BlogPost::title)
-                        .collect(Collectors.joining(":"));
+                            .map(BlogPost::title)
+                            .collect(Collectors.joining(":"));
 
                     // 将分组中所有帖子的点赞数进行统计
                     var summary = list.stream().collect(Collectors.summarizingInt(BlogPost::likes));
@@ -548,14 +546,14 @@ class GroupingByTest {
 
         // 确认每个分组得到的统计指标
         then(results)
-            .extractingByKey(BlogPostType.NEWS)
-            .matches(stats -> stats.postCount() == 10L && stats.likeStats().getAverage() == 1.5);
+                .extractingByKey(BlogPostType.NEWS)
+                .matches(stats -> stats.postCount() == 10L && stats.likeStats().getAverage() == 1.5);
         then(results)
-            .extractingByKey(BlogPostType.REVIEW)
-            .matches(stats -> stats.postCount() == 5L && stats.likeStats().getAverage() == 1.4);
+                .extractingByKey(BlogPostType.REVIEW)
+                .matches(stats -> stats.postCount() == 5L && stats.likeStats().getAverage() == 1.4);
         then(results)
-            .extractingByKey(BlogPostType.GUIDE)
-            .matches(stats -> stats.postCount() == 8L && stats.likeStats().getAverage() == 1.5);
+                .extractingByKey(BlogPostType.GUIDE)
+                .matches(stats -> stats.postCount() == 8L && stats.likeStats().getAverage() == 1.5);
     }
 
     /**
@@ -602,14 +600,14 @@ class GroupingByTest {
 
         // 确认每个分组得到的统计指标
         then(results)
-            .extractingByKey(BlogPostType.NEWS)
-            .matches(stats -> stats.postCount() == 10L && stats.boundedSumOfLikes() == 15);
+                .extractingByKey(BlogPostType.NEWS)
+                .matches(stats -> stats.postCount() == 10L && stats.boundedSumOfLikes() == 15);
         then(results)
-            .extractingByKey(BlogPostType.REVIEW)
-            .matches(stats -> stats.postCount() == 5L && stats.boundedSumOfLikes() == 7);
+                .extractingByKey(BlogPostType.REVIEW)
+                .matches(stats -> stats.postCount() == 5L && stats.boundedSumOfLikes() == 7);
         then(results)
-            .extractingByKey(BlogPostType.GUIDE)
-            .matches(stats -> stats.postCount() == 8L && stats.boundedSumOfLikes() == 12);
+                .extractingByKey(BlogPostType.GUIDE)
+                .matches(stats -> stats.postCount() == 8L && stats.boundedSumOfLikes() == 12);
     }
 
     /**
@@ -643,17 +641,17 @@ class GroupingByTest {
 
         // 确认每个分组得到的字符串连接结构
         then(results)
-            .extractingByKey(BlogPostType.NEWS)
-            .asString()
-            .matches("^Post Titles: \\[([\\w\\s.']+,?){10}]$");
+                .extractingByKey(BlogPostType.NEWS)
+                .asString()
+                .matches("^Post Titles: \\[([\\w\\s.']+,?){10}]$");
         then(results)
-            .extractingByKey(BlogPostType.REVIEW)
-            .asString()
-            .matches("^Post Titles: \\[([\\w\\s.']+,?){5}]$");
+                .extractingByKey(BlogPostType.REVIEW)
+                .asString()
+                .matches("^Post Titles: \\[([\\w\\s.']+,?){5}]$");
         then(results)
-            .extractingByKey(BlogPostType.GUIDE)
-            .asString()
-            .matches("^Post Titles: \\[([\\w\\s.']+,?){8}]$");
+                .extractingByKey(BlogPostType.GUIDE)
+                .asString()
+                .matches("^Post Titles: \\[([\\w\\s.']+,?){8}]$");
     }
 
     /**
@@ -690,9 +688,9 @@ class GroupingByTest {
         then(results).hasSize(3);
 
         // 确认分组结果
-        then(results).extractingByKey(BlogPostType.NEWS).asList().hasSize(10);
-        then(results).extractingByKey(BlogPostType.REVIEW).asList().hasSize(5);
-        then(results).extractingByKey(BlogPostType.GUIDE).asList().hasSize(8);
+        then(results).extractingByKey(BlogPostType.NEWS).asInstanceOf(InstanceOfAssertFactories.LIST).hasSize(10);
+        then(results).extractingByKey(BlogPostType.REVIEW).asInstanceOf(InstanceOfAssertFactories.LIST).hasSize(5);
+        then(results).extractingByKey(BlogPostType.GUIDE).asInstanceOf(InstanceOfAssertFactories.LIST).hasSize(8);
     }
 
     /**
@@ -718,9 +716,9 @@ class GroupingByTest {
         then(results).hasSize(3);
 
         // 确认过滤后的分组结果
-        then(results).extractingByKey(BlogPostType.NEWS).asList().hasSize(5);
-        then(results).extractingByKey(BlogPostType.REVIEW).asList().hasSize(2);
-        then(results).extractingByKey(BlogPostType.GUIDE).asList().hasSize(4);
+        then(results).extractingByKey(BlogPostType.NEWS).asInstanceOf(InstanceOfAssertFactories.LIST).hasSize(5);
+        then(results).extractingByKey(BlogPostType.REVIEW).asInstanceOf(InstanceOfAssertFactories.LIST).hasSize(2);
+        then(results).extractingByKey(BlogPostType.GUIDE).asInstanceOf(InstanceOfAssertFactories.LIST).hasSize(4);
     }
 
     /**
@@ -750,8 +748,26 @@ class GroupingByTest {
         then(results).hasSize(3);
 
         // 确认平铺后后的分组结果
-        then(results).extractingByKey(BlogPostType.NEWS).asList().hasSize(55); // ((10 + 1) * 10) / 2
-        then(results).extractingByKey(BlogPostType.REVIEW).asList().hasSize(15); // ((5 + 1) * 5) / 2
-        then(results).extractingByKey(BlogPostType.GUIDE).asList().hasSize(36); // ((8 + 1) * 8) / 2
+        then(results).extractingByKey(BlogPostType.NEWS).asInstanceOf(InstanceOfAssertFactories.LIST).hasSize(55); // ((10
+                                                                                                                   // +
+                                                                                                                   // 1)
+                                                                                                                   // *
+                                                                                                                   // 10)
+                                                                                                                   // /
+                                                                                                                   // 2
+        then(results).extractingByKey(BlogPostType.REVIEW).asInstanceOf(InstanceOfAssertFactories.LIST).hasSize(15); // ((5
+                                                                                                                     // +
+                                                                                                                     // 1)
+                                                                                                                     // *
+                                                                                                                     // 5)
+                                                                                                                     // /
+                                                                                                                     // 2
+        then(results).extractingByKey(BlogPostType.GUIDE).asInstanceOf(InstanceOfAssertFactories.LIST).hasSize(36); // ((8
+                                                                                                                    // +
+                                                                                                                    // 1)
+                                                                                                                    // *
+                                                                                                                    // 8)
+                                                                                                                    // /
+                                                                                                                    // 2
     }
 }

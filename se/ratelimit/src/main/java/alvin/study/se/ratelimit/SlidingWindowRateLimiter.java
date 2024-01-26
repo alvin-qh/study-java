@@ -138,7 +138,6 @@ public class SlidingWindowRateLimiter implements RateLimiter {
          * @param n 调用次数
          * @return 增加后的结果
          */
-        @SuppressWarnings("UnusedReturnValue")
         public int add(int n) {
             return count.addAndGet(n);
         }

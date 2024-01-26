@@ -1,5 +1,11 @@
 package alvin.study.springboot.jpa.infra.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
+
 import alvin.study.springboot.jpa.infra.entity.common.AuditedEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -10,11 +16,6 @@ import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 雇员实体, 对应 {@code employee} 表
@@ -24,7 +25,7 @@ import java.util.List;
  * </p>
  *
  * <p>
- * 当前类支持软删除: 即并不从数据表中实际删除数据, 而是通过一个标记字段表示一条数据是否可用. 软删除通过 {@link Where @Where}
+ * 当前类支持软删除: 即并不从数据表中实际删除数据, 而是通过一个标记字段表示一条数据是否可用. 软删除通过 {@link SQLRestriction @SQLRestriction}
  * 注解和 {@link SQLDelete @SQLDelete} 注解共同实现, 前者表示当前实体类型对应的查询 SQL 必须附加的查询条件,
  * 后者表示当删除当前实体对象时, 实际执行的 SQL 语句
  * </p>
@@ -33,7 +34,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "employee")
-@Where(clause = "deleted = 0") // 增加逻辑删除查询条件
+@SQLRestriction("deleted = 0") // 增加逻辑删除查询条件
 @SQLDelete(sql = "UPDATE employee SET deleted = id WHERE id = ?") // 增加逻辑删除 SQL 语句
 public class Employee extends AuditedEntity {
     /**

@@ -1,24 +1,26 @@
 package alvin.study.misc.jackson.pojo;
 
-import alvin.study.misc.jackson.encode.Encoder;
-import alvin.study.misc.jackson.pojo.view.InternalView;
-import alvin.study.misc.jackson.pojo.view.PublicView;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.google.common.base.Strings;
+
+import alvin.study.misc.jackson.encode.Encoder;
+import alvin.study.misc.jackson.pojo.view.InternalView;
+import alvin.study.misc.jackson.pojo.view.PublicView;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.ToString;
-
-import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 
 /**
  * 通过视图控制 JSON 序列化结果
@@ -66,12 +68,11 @@ public class User {
      */
     @JsonCreator
     @SneakyThrows
-    @SuppressWarnings({ "java:S6437", "java:S3329" })
     public User(
-        @JsonProperty("id") Long id,
-        @JsonProperty("username") String username,
-        @JsonProperty("mobile") String mobile,
-        @JsonProperty("encodedMobile") String encodedMobile) {
+            @JsonProperty("id") Long id,
+            @JsonProperty("username") String username,
+            @JsonProperty("mobile") String mobile,
+            @JsonProperty("encodedMobile") String encodedMobile) {
         this.id = id;
         this.username = username;
 
@@ -116,7 +117,5 @@ public class User {
      */
     @JsonView(InternalView.class)
     @JsonGetter("mobile")
-    public String getMobile() {
-        return this.mobile;
-    }
+    public String getMobile() { return this.mobile; }
 }

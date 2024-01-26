@@ -1,11 +1,11 @@
 package alvin.study.se.collection;
 
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 public final class Tuple<E> implements Iterable<E> {
     private final List<E> elements;
@@ -43,11 +43,8 @@ public final class Tuple<E> implements Iterable<E> {
         return elements.size();
     }
 
-    public boolean isEmpty() {
-        return elements.isEmpty();
-    }
+    public boolean isEmpty() { return elements.isEmpty(); }
 
-    @SuppressWarnings("SuspiciousMethodCalls")
     public boolean contains(Object o) {
         return elements.contains(o);
     }
@@ -61,7 +58,6 @@ public final class Tuple<E> implements Iterable<E> {
         return elements.toArray(a);
     }
 
-    @SuppressWarnings("SlowListContainsAll")
     public boolean containsAll(Collection<E> c) {
         if (c == null) {
             c = List.of();

@@ -492,8 +492,6 @@ public final class Bytes {
      * @param b8 {@code long} 的低位
      * @return 8 个 {@code byte} 组成的 {@code long} 值
      */
-
-    @SuppressWarnings("java:S107")
     public static long toLong(byte b1, byte b2, byte b3, byte b4, byte b5, byte b6, byte b7, byte b8) {
         return (((long) b1 << 56) & 0xFF00000000000000L)
             | (((long) b2 << 48) & 0xFF000000000000L)

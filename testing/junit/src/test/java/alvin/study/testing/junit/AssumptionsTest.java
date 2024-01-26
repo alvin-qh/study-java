@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assumptions.assumingThat;
  * 跳过的测试会在测试报告中标记为 {@code SKIP}
  * </p>
  */
-@SuppressWarnings("DataFlowIssue")
 class AssumptionsTest {
     /**
      * {@link org.junit.jupiter.api.Assumptions#assumeTrue(boolean)

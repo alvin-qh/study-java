@@ -1,13 +1,14 @@
 package alvin.study.guava.common;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 
 /**
  * 演示 {@link Preconditions} 类, 进行代码执行前置条件的检查
@@ -29,7 +30,6 @@ import static org.assertj.core.api.BDDAssertions.thenThrownBy;
  * 以及 {@link java.util.Objects#checkFromIndexSize(int, int, int) Objects.checkFromIndexSize(int, int, int)} 等
  * </p>
  */
-@SuppressWarnings({ "DataFlowIssue", "ConstantValue" })
 class PreconditionsTest {
     /**
      * 通过一个条件表达式, 对参数值进行检查

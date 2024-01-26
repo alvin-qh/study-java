@@ -1,14 +1,5 @@
 package alvin.study.testing.assertj;
 
-import alvin.study.testing.testcase.model.Group;
-import alvin.study.testing.testcase.model.User;
-import org.assertj.core.api.Condition;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
-import java.util.List;
-import java.util.Map;
-
 import static org.assertj.core.api.Assertions.allOf;
 import static org.assertj.core.api.Assertions.anyOf;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,10 +9,19 @@ import static org.assertj.core.api.Assertions.tuple;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
+import java.util.List;
+import java.util.Map;
+
+import org.assertj.core.api.Condition;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import alvin.study.testing.testcase.model.Group;
+import alvin.study.testing.testcase.model.User;
+
 /**
  * 测试 AssertJ 断言库
  */
-@SuppressWarnings({ "StringOperationCanBeSimplified", "ConstantValue", "ReassignedVariable" })
 class AssertionTest {
     /**
      * 断言值是否为 {@code true} 或 {@code false}

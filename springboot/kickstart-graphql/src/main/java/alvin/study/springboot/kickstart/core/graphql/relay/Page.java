@@ -1,10 +1,10 @@
 package alvin.study.springboot.kickstart.core.graphql.relay;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.metadata.OrderItem;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
 
 /**
  * 兼容 Mybatis-Plus 分页插件的分页类型
@@ -19,7 +19,6 @@ import java.util.List;
  * Graphql 的分页参数 (after/first, before/last 等)
  * </p>
  */
-@SuppressWarnings("java:S1948")
 class Page<T> implements IPage<T> {
     /**
      * 总记录数

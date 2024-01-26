@@ -1,12 +1,6 @@
 package alvin.study.guava.collect;
 
-import com.google.common.collect.ContiguousSet;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Range;
-import com.google.common.collect.Sets;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.time.Month;
 import java.util.Collections;
@@ -18,7 +12,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.stream.Collectors;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
+
+import com.google.common.collect.ContiguousSet;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Range;
+import com.google.common.collect.Sets;
 
 /**
  * 演示 Guava {@link java.util.Set Set} 集合工具类
@@ -28,7 +29,6 @@ import static org.assertj.core.api.BDDAssertions.then;
  * {@link ConcurrentHashMap.KeySetView} 以及 {@link CopyOnWriteArraySet} 等 {@link java.util.Set Set} 类型集合的方法
  * </p>
  */
-@SuppressWarnings({ "OverwrittenKey", "StringOperationCanBeSimplified" })
 class SetUtilsTest {
     /**
      * 创建 {@link java.util.Set Set} 集合对象

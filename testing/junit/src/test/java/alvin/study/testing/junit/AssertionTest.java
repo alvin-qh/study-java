@@ -1,15 +1,5 @@
 package alvin.study.testing.junit;
 
-import alvin.study.testing.testcase.model.User;
-import lombok.SneakyThrows;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.time.Duration;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -26,10 +16,20 @@ import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.time.Duration;
+import java.util.List;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import alvin.study.testing.testcase.model.User;
+import lombok.SneakyThrows;
+
 /**
  * 测试 junit 框架的断言方法
  */
-@SuppressWarnings({ "EmptyTryBlock", "SimplifiableAssertion", "ConstantValue" })
 class AssertionTest {
     /**
      * 演示输出"断言信息"

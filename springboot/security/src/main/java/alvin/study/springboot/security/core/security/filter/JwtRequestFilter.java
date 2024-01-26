@@ -1,23 +1,24 @@
 package alvin.study.springboot.security.core.security.filter;
 
-import alvin.study.springboot.security.app.domain.service.AuthService;
-import alvin.study.springboot.security.conf.SecurityConfig;
-import alvin.study.springboot.security.core.security.auth.NameAndPasswordAuthenticationToken;
-import alvin.study.springboot.security.util.http.Headers;
-import com.google.common.base.Strings;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
+import java.io.IOException;
+
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import java.io.IOException;
+import com.google.common.base.Strings;
+
+import alvin.study.springboot.security.app.domain.service.AuthService;
+import alvin.study.springboot.security.conf.SecurityConfig;
+import alvin.study.springboot.security.core.security.auth.NameAndPasswordAuthenticationToken;
+import alvin.study.springboot.security.util.http.Headers;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 拦截器, 对请求中的 JWT token 进行处理
@@ -45,9 +46,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
      */
     @Override
     protected void doFilterInternal(
-        @NotNull HttpServletRequest request,
-        @NotNull HttpServletResponse response,
-        @NotNull FilterChain chain) throws ServletException, IOException {
+         HttpServletRequest request,
+         HttpServletResponse response,
+         FilterChain chain) throws ServletException, IOException {
         // 判断安全上下文中是否已经存储用户信息
         var context = SecurityContextHolder.getContext();
 

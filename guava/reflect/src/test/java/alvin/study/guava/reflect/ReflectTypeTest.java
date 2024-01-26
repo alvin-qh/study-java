@@ -1,8 +1,6 @@
 package alvin.study.guava.reflect;
 
-import com.google.common.reflect.TypeToken;
-import org.assertj.core.api.InstanceOfAssertFactories;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -10,7 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.assertj.core.api.InstanceOfAssertFactories;
+import org.junit.jupiter.api.Test;
+
+import com.google.common.reflect.TypeToken;
 
 /**
  * 测试 {@link ReflectType} 类型, 产生具备泛型参数的类型
@@ -43,7 +44,7 @@ class ReflectTypeTest {
     @Test
     void listOf_shouldGetListTypeWithNestGenericTypeParameter() {
         // 产生一个 List<Set<String>> 类型, 泛型参数为 Set<String>
-        var type = ReflectType.listOf(new TypeToken<Set<String>>() { });
+        var type = ReflectType.listOf(new TypeToken<Set<String>>() {});
 
         then(type).isNotNull();
 
@@ -59,7 +60,7 @@ class ReflectTypeTest {
     }
 
     /**
-     * 测试 {@link ReflectType#mapOf(Class, Class)} 方法, 产生一个指定泛型参数的 {@link Map} 集合    *
+     * 测试 {@link ReflectType#mapOf(Class, Class)} 方法, 产生一个指定泛型参数的 {@link Map} 集合 *
      */
     @Test
     void mapOf_shouldGetMapTypeWithGenericTypeParamter() {

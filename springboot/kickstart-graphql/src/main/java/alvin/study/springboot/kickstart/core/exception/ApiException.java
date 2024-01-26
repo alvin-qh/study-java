@@ -1,9 +1,9 @@
 package alvin.study.springboot.kickstart.core.exception;
 
-import graphql.ErrorType;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import graphql.ErrorType;
 
 /**
  * 调用 API 时导致的异常类型
@@ -20,7 +20,6 @@ public class ApiException extends GraphqlBaseException {
         super(message, cause, ErrorType.ValidationError);
     }
 
-    @SuppressWarnings("UnusedReturnValue")
     public ApiException addExtension(String key, Object value) {
         this.extensions.put(key, value);
         return this;

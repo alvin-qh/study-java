@@ -1,5 +1,10 @@
 package alvin.study.testing.pioneer;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.util.List;
+import java.util.ServiceLoader;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junitpioneer.jupiter.ExpectedToFail;
@@ -9,11 +14,6 @@ import org.junitpioneer.jupiter.IssueTestSuite;
 import org.junitpioneer.jupiter.ReportEntry;
 import org.junitpioneer.jupiter.ReportEntry.PublishCondition;
 import org.junitpioneer.jupiter.Stopwatch;
-
-import java.util.List;
-import java.util.ServiceLoader;
-
-import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * 定义一个简单的 {@link IssueProcessor} 接口实现类, 用于显示本次测试相关 {@link Issue @Issue} 注解标识的 issues 代码,
@@ -37,7 +37,6 @@ class SimpleIssueProcessor implements IssueProcessor {
 /**
  * 测试 Pioneer 库的其它功能
  */
-@SuppressWarnings({ "java:S2699", "java:S2925" })
 class MiscTest {
     @BeforeAll
     static void beforeAll() {

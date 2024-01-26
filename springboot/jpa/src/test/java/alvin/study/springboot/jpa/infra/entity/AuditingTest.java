@@ -1,5 +1,12 @@
 package alvin.study.springboot.jpa.infra.entity;
 
+import static org.assertj.core.api.BDDAssertions.then;
+
+import java.time.Duration;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import alvin.study.springboot.jpa.IntegrationTest;
 import alvin.study.springboot.jpa.builder.DepartmentBuilder;
 import alvin.study.springboot.jpa.builder.UserBuilder;
@@ -8,12 +15,6 @@ import alvin.study.springboot.jpa.core.context.CustomRequestAttributes;
 import alvin.study.springboot.jpa.infra.entity.common.AuditedEntity;
 import alvin.study.springboot.jpa.infra.entity.common.TenantedEntityListener;
 import lombok.SneakyThrows;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.time.Duration;
-
-import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试实体类型的审计字段是否生效
@@ -77,7 +78,6 @@ class AuditingTest extends IntegrationTest {
      * @see javax.persistence.Column#updatable()
      */
     @Test
-    @SuppressWarnings("java:S2925")
     void auditing_shouldUpdateModifyUpdatedAt() throws Exception {
         Department department;
 

@@ -1,5 +1,13 @@
 package alvin.study.guava.common;
 
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+
+import java.math.BigInteger;
+
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Booleans;
 import com.google.common.primitives.Bytes;
@@ -14,13 +22,6 @@ import com.google.common.primitives.UnsignedInteger;
 import com.google.common.primitives.UnsignedInts;
 import com.google.common.primitives.UnsignedLong;
 import com.google.common.primitives.UnsignedLongs;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
-import java.math.BigInteger;
-
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 /**
  * 针对于简单类型的一组操作方法
@@ -38,7 +39,6 @@ import static org.assertj.core.api.BDDAssertions.thenThrownBy;
  * {@link Doubles}, {@link Chars} 以及 {@link Booleans} 等工具类, 对应不同的简单类型进行操作
  * </p>
  */
-@SuppressWarnings({ "EqualsWithItself", "ConstantValue" })
 class PrimitivesTest {
     /**
      * 将简单类型元素包装为 {@link java.util.List List} 集合

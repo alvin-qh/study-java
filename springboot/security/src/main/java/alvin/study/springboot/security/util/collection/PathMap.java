@@ -1,11 +1,11 @@
 package alvin.study.springboot.security.util.collection;
 
-import com.google.common.base.Splitter;
-
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+
+import com.google.common.base.Splitter;
 
 /**
  * 具备按 Path 找到对应值的 Map 类型
@@ -30,7 +30,7 @@ public class PathMap extends LinkedHashMap<String, Object> {
      * @param path 对应值的路径
      * @return 获取到的值
      */
-    @SuppressWarnings({ "unchecked", "java:S135", "java:S4973" })
+    @SuppressWarnings("unchecked")
     public <T> T getByPath(String path) {
         // 将 path 按 '.' 分割为集合
         var parts = Splitter.on(".").omitEmptyStrings().splitToList(path);
