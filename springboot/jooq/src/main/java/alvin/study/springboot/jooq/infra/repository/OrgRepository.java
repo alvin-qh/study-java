@@ -1,10 +1,6 @@
 package alvin.study.springboot.jooq.infra.repository;
 
-import alvin.study.springboot.jooq.infra.model.public_.tables.records.OrgRecord;
-import alvin.study.springboot.jooq.infra.repository.common.JdbcBaseRepository;
-import org.jooq.DSLContext;
-import org.jooq.exception.DataAccessException;
-import org.springframework.stereotype.Repository;
+import static alvin.study.springboot.jooq.infra.model.public_.Tables.ORG;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -13,7 +9,13 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import static alvin.study.springboot.jooq.infra.model.public_.Tables.ORG;
+import org.jetbrains.annotations.NotNull;
+import org.jooq.DSLContext;
+import org.jooq.exception.DataAccessException;
+import org.springframework.stereotype.Repository;
+
+import alvin.study.springboot.jooq.infra.model.public_.tables.records.OrgRecord;
+import alvin.study.springboot.jooq.infra.repository.common.JdbcBaseRepository;
 
 /**
  * 操作 {@code ORG} 表实体的 Repository 类型
@@ -131,7 +133,7 @@ public class OrgRepository extends JdbcBaseRepository<OrgRecord> {
      * @param id 实体主键
      * @return {@link Optional} 对象, 内部为 {@link OrgRecord} 类型对象
      */
-    public Optional<OrgRecord> selectById(Long id) throws DataAccessException, SQLException {
+    public Optional<@NotNull OrgRecord> selectById(Long id) throws DataAccessException, SQLException {
         // 查询员工记录所有字段
         var orgs = contextManager.get().select()
             .from(ORG)

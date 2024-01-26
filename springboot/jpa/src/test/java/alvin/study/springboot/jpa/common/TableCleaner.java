@@ -1,8 +1,8 @@
 package alvin.study.springboot.jpa.common;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+import java.util.Set;
+
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -10,8 +10,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Set;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 在每次测试执行前, 将测试数据库的表清空
@@ -41,7 +42,6 @@ public class TableCleaner {
      * @param tableType 要清除表的类型
      * @return 要清除的数据表集合
      */
-    @SuppressWarnings("unchecked")
     private List<String> listAllTables(String schema, String tableType) {
         return em.createNativeQuery("""
                 SELECT `table_name`

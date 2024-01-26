@@ -1,17 +1,19 @@
 package alvin.study.springboot.jooq.infra.repository;
 
-import alvin.study.springboot.jooq.infra.model.public_.tables.records.DepartmentRecord;
-import alvin.study.springboot.jooq.infra.model.public_.tables.records.EmployeeRecord;
-import alvin.study.springboot.jooq.infra.repository.common.BaseRepository;
-import org.springframework.stereotype.Repository;
+import static alvin.study.springboot.jooq.infra.model.public_.Tables.DEPARTMENT;
+import static alvin.study.springboot.jooq.infra.model.public_.Tables.DEPARTMENT_EMPLOYEE;
+import static alvin.study.springboot.jooq.infra.model.public_.Tables.EMPLOYEE;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static alvin.study.springboot.jooq.infra.model.public_.Tables.DEPARTMENT;
-import static alvin.study.springboot.jooq.infra.model.public_.Tables.DEPARTMENT_EMPLOYEE;
-import static alvin.study.springboot.jooq.infra.model.public_.Tables.EMPLOYEE;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Repository;
+
+import alvin.study.springboot.jooq.infra.model.public_.tables.records.DepartmentRecord;
+import alvin.study.springboot.jooq.infra.model.public_.tables.records.EmployeeRecord;
+import alvin.study.springboot.jooq.infra.repository.common.BaseRepository;
 
 /**
  * 操作 {@link alvin.study.springboot.jooq.infra.model.public_.tables.Department} 部门实体
@@ -31,7 +33,7 @@ public class DepartmentRepository extends BaseRepository<DepartmentRecord> {
      * @param id 实体主键
      * @return {@link Optional} 对象, 内部为 {@link DepartmentRecord} 类型对象
      */
-    public Optional<DepartmentRecord> selectById(Long id) {
+    public Optional<@NotNull DepartmentRecord> selectById(Long id) {
         // 查询员工记录所有字段
         var departments = dsl()
             .select()
@@ -55,7 +57,7 @@ public class DepartmentRepository extends BaseRepository<DepartmentRecord> {
      * @param name 要查询的部门名称
      * @return 查询结果, 为一个 Map 对象, Key 是 1 对 n 关系中的 1, Value 是 n
      */
-    public Map<DepartmentRecord, List<DepartmentRecord>> selectByNameWithChildren(String name) {
+    public Map<@NotNull DepartmentRecord, List<DepartmentRecord>> selectByNameWithChildren(String name) {
         // 为要进行连接的两个表设置别名
         var p1 = DEPARTMENT.as("p1");
         var p2 = DEPARTMENT.as("p2");
@@ -85,7 +87,7 @@ public class DepartmentRepository extends BaseRepository<DepartmentRecord> {
      * @param id 要查询的部门 ID
      * @return 查询结果, 为一个 Map 对象, Key 是 1 对 n 关系中的 1, Value 是 n
      */
-    public Map<DepartmentRecord, List<EmployeeRecord>> selectByIdWithEmployees(Long id) {
+    public Map<@NotNull DepartmentRecord, List<EmployeeRecord>> selectByIdWithEmployees(Long id) {
         // 为要进行连接的两个表设置别名
         var d = DEPARTMENT.as("d");
         var e = EMPLOYEE.as("e");

@@ -19,6 +19,7 @@ import java.util.concurrent.locks.LockSupport;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -841,7 +842,7 @@ class CompletableFutureTest {
      * @param count {@link List} 集合中 {@link Model} 元素的个数
      * @return 包含指定数量 {@link Model} 对象的 {@link List} 集合
      */
-    private List<Model> generateModels(int count) {
+    private List<@NotNull Model> generateModels(int count) {
         var rand = new Random();
 
         return LongStream
@@ -863,7 +864,7 @@ class CompletableFutureTest {
      * @param models  {@link Model} 对象集合
      * @return 异步任务对象, 执行结果为已保存对象的 id 集合
      */
-    private CompletableFuture<List<Long>> saveModels(BlockedService service, List<Model> models, Executor executor) {
+    private CompletableFuture<List<Long>> saveModels(BlockedService service, List<@NotNull Model> models, Executor executor) {
         // 将模型对象集合转为存储模型对象的任务
         return models.stream().reduce(
             // 用于合并之后任务的异步任务

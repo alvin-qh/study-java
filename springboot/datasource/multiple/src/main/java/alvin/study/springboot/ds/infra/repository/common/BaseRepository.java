@@ -1,13 +1,13 @@
 package alvin.study.springboot.ds.infra.repository.common;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * 持久化操作超类
@@ -33,7 +33,6 @@ public abstract class BaseRepository {
      * @param type  要转换的类型
      * @return 转换结果
      */
-    @SuppressWarnings("unchecked")
     protected static <T> T map(String value, Class<T> type) {
         if (type == Instant.class) {
             // 字符串转为 UTC 日期时间对象

@@ -1,12 +1,14 @@
 package alvin.study.springboot.jooq.infra.repository;
 
-import alvin.study.springboot.jooq.infra.model.public_.tables.records.UserRecord;
-import alvin.study.springboot.jooq.infra.repository.common.BaseRepository;
-import org.springframework.stereotype.Repository;
+import static alvin.study.springboot.jooq.infra.model.public_.Tables.USER;
 
 import java.util.Optional;
 
-import static alvin.study.springboot.jooq.infra.model.public_.Tables.USER;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Repository;
+
+import alvin.study.springboot.jooq.infra.model.public_.tables.records.UserRecord;
+import alvin.study.springboot.jooq.infra.repository.common.BaseRepository;
 
 /**
  * 操作 {@code USER} 表实体的 Repository 类型
@@ -26,7 +28,7 @@ public class UserRepository extends BaseRepository<UserRecord> {
      * @param id 实体主键
      * @return {@link Optional} 对象, 内部为 {@link UserRecord} 类型对象
      */
-    public Optional<UserRecord> selectById(Long id) {
+    public Optional<@NotNull UserRecord> selectById(Long id) {
         // 查询用户记录所有字段
         var users = dsl().select()
             .from(USER)
@@ -45,7 +47,7 @@ public class UserRepository extends BaseRepository<UserRecord> {
      * @param account 账号名称
      * @return {@link Optional} 对象, 内部为 {@link UserRecord} 类型对象
      */
-    public Optional<UserRecord> selectByAccount(String account) {
+    public Optional<@NotNull UserRecord> selectByAccount(String account) {
         // 查询用户记录所有字段
         var users = dsl().select()
             .from(USER)

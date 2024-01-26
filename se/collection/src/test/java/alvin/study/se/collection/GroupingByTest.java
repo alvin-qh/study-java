@@ -14,6 +14,7 @@ import java.util.stream.IntStream;
 
 import org.assertj.core.api.Condition;
 import org.assertj.core.api.InstanceOfAssertFactories;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 import com.github.javafaker.Faker;
@@ -84,7 +85,7 @@ class GroupingByTest {
      * @param requiredCounts 一个 {@link Map} 对象, 设置要生成每个 {@link BlogPostType} 的帖子生成的数量
      * @return 伪造的 {@link BlogPost} 对象集合
      */
-    private static List<BlogPost> makeTestingData(Map<BlogPostType, Integer> requiredCounts) {
+    private static List<@NotNull BlogPost> makeTestingData(Map<BlogPostType, Integer> requiredCounts) {
         // 记录 likes 数值的辅助类
         // 为了让测试数据中的点赞数符合预期, 需要通过本类对象获取生成点赞数, 生成规则是: 按顺序返回 {@code [1..3)} 之间的点赞数
         class LikeHolder {
@@ -131,8 +132,7 @@ class GroupingByTest {
                             e.getKey(),
                             likeHolder.getLikes(),
                             IntStream.range(0, n + 1)  // 第几个帖子就有几条回复
-                                    .mapToObj(ignore -> faker.regexify(
-                                        "[A-Za-z\\-,. ]{20,50}"))
+                                    .mapToObj(ignore -> faker.regexify("[A-Za-z\\-,. ]{20,50}"))
                                     .toList())))
                 .toList();
     }

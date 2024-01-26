@@ -1,13 +1,7 @@
 package alvin.study.springboot.ds;
 
-import alvin.study.springboot.ds.conf.TestingConfig;
-import alvin.study.springboot.ds.core.TableCleaner;
-import alvin.study.springboot.ds.core.TestingTransaction;
-import alvin.study.springboot.ds.core.TestingTransactionManager;
-import alvin.study.springboot.ds.core.data.DataSourceContext;
-import alvin.study.springboot.ds.core.data.DynamicDataSource;
-import alvin.study.springboot.ds.core.http.interceptor.ApiHandlerInterceptor;
-import jakarta.servlet.ServletContext;
+import java.time.Duration;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +16,14 @@ import org.springframework.test.web.reactive.server.WebTestClient.RequestBodySpe
 import org.springframework.test.web.reactive.server.WebTestClient.RequestHeadersSpec;
 import org.springframework.test.web.reactive.server.WebTestClient.RequestHeadersUriSpec;
 
-import java.time.Duration;
+import alvin.study.springboot.ds.conf.TestingConfig;
+import alvin.study.springboot.ds.core.TableCleaner;
+import alvin.study.springboot.ds.core.TestingTransaction;
+import alvin.study.springboot.ds.core.TestingTransactionManager;
+import alvin.study.springboot.ds.core.data.DataSourceContext;
+import alvin.study.springboot.ds.core.data.DynamicDataSource;
+import alvin.study.springboot.ds.core.http.interceptor.ApiHandlerInterceptor;
+import jakarta.servlet.ServletContext;
 
 /**
  * 集成测试类的超类
@@ -153,7 +154,6 @@ public abstract class IntegrationTest {
      * @param uriVariables 在 URL 中包含的请求参数值
      * @return {@link RequestHeadersSpec} 对象, 用于发送测试请求
      */
-    @SuppressWarnings("unchecked")
     private <T extends RequestHeadersSpec<?>, R extends RequestHeadersUriSpec<?>> T setup(
         R spec, String url, Object... uriVariables) {
         // 设置访问 URL 地址和必要的 header 信息

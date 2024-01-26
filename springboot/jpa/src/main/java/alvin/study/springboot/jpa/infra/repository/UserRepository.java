@@ -1,12 +1,13 @@
 package alvin.study.springboot.jpa.infra.repository;
 
-import alvin.study.springboot.jpa.infra.entity.User;
-import jakarta.persistence.OrderBy;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
 
-import java.util.List;
-import java.util.Optional;
+import alvin.study.springboot.jpa.infra.entity.User;
+import jakarta.persistence.OrderBy;
 
 /**
  * 用户实体 {@link User} 类型的存储操作接口类
@@ -34,6 +35,7 @@ public interface UserRepository extends CrudRepository<User, Long>, JpaSpecifica
      *
      * @return 查询到的所有 {@link User} 实体对象集合
      */
+    @Override
     @OrderBy("id asc")
     List<User> findAll();
 

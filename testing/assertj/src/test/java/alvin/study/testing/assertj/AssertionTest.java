@@ -70,18 +70,21 @@ class AssertionTest {
 
         // 定义多个 Condition 对象
         var condId = new Condition<User>() {
+            @Override
             public boolean matches(User value) {
                 return value.getId() == 1;
             }
         };
 
         var condName = new Condition<User>() {
+            @Override
             public boolean matches(User value) {
                 return value.getName().equals("Alvin");
             }
         };
 
         var condBad = new Condition<User>() {
+            @Override
             public boolean matches(User value) {
                 return value == null;
             }

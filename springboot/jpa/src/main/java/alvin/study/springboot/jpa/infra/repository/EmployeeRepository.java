@@ -1,11 +1,12 @@
 package alvin.study.springboot.jpa.infra.repository;
 
+import java.util.List;
+
+import org.springframework.data.repository.CrudRepository;
+
 import alvin.study.springboot.jpa.infra.entity.Employee;
 import alvin.study.springboot.jpa.infra.repository.ext.EmployeeRepositoryExt;
 import jakarta.persistence.OrderBy;
-import org.springframework.data.repository.CrudRepository;
-
-import java.util.List;
 
 /**
  * 职员实体 {@link Employee} 类型的存储操作接口类
@@ -35,6 +36,7 @@ public interface EmployeeRepository extends CrudRepository<Employee, Long>, Empl
      *
      * @return {@link Employee} 实体集合
      */
+    @Override
     @OrderBy("id asc")
     List<Employee> findAll();
 }

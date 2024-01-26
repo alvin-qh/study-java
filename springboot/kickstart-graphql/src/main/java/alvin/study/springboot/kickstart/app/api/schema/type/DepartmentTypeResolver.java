@@ -1,5 +1,12 @@
 package alvin.study.springboot.kickstart.app.api.schema.type;
 
+import java.util.concurrent.CompletableFuture;
+
+import org.dataloader.DataLoader;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.modelmapper.ModelMapper;
+
 import alvin.study.springboot.kickstart.app.api.schema.loader.DepartmentLoaderProvider;
 import alvin.study.springboot.kickstart.app.api.schema.type.common.AuditedResolver;
 import alvin.study.springboot.kickstart.app.api.schema.type.common.TenantedResolver;
@@ -13,10 +20,6 @@ import alvin.study.springboot.kickstart.infra.entity.Department;
 import alvin.study.springboot.kickstart.infra.entity.Employee;
 import graphql.schema.DataFetchingEnvironment;
 import lombok.RequiredArgsConstructor;
-import org.dataloader.DataLoader;
-import org.modelmapper.ModelMapper;
-
-import java.util.concurrent.CompletableFuture;
 
 /**
  * 对 {@link DepartmentType} 类型补充 {@code parent}, {@code children},
@@ -47,7 +50,7 @@ public class DepartmentTypeResolver implements AuditedResolver<DepartmentType>, 
      * @return 一个异步函数, 将通过每个 id 获取对象的处理延时执行, 转化为批量处理
      * @see DepartmentLoaderProvider
      */
-    public CompletableFuture<DepartmentType> getParent(DepartmentType instance, DataFetchingEnvironment env) {
+    public CompletableFuture<@Nullable DepartmentType> getParent(DepartmentType instance, DataFetchingEnvironment env) {
         if (instance.getParentId() == null) {
             return CompletableFuture.completedFuture(null);
         }
@@ -72,7 +75,7 @@ public class DepartmentTypeResolver implements AuditedResolver<DepartmentType>, 
      * @see alvin.study.core.graphql.relay.Page
      * @see ConnectionBuilder
      */
-    public Connection<DepartmentType> getChildren(
+    public Connection<@NotNull DepartmentType> getChildren(
         DepartmentType instance, String first, Integer after, DataFetchingEnvironment env) {
         var mapper = (ModelMapper) env.getGraphQlContext().get(ModelMapper.class);
 
@@ -97,7 +100,7 @@ public class DepartmentTypeResolver implements AuditedResolver<DepartmentType>, 
      * @see alvin.study.core.graphql.relay.Page
      * @see ConnectionBuilder
      */
-    public Connection<EmployeeType> getEmployees(
+    public Connection<@NotNull EmployeeType> getEmployees(
         DepartmentType instance, String first, Integer after, DataFetchingEnvironment env) {
         var mapper = (ModelMapper) env.getGraphQlContext().get(ModelMapper.class);
 

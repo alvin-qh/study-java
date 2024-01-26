@@ -1,15 +1,17 @@
 package alvin.study.springboot.jpa.app.domain.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import com.google.common.base.Strings;
+
 import alvin.study.springboot.jpa.core.context.Context;
 import alvin.study.springboot.jpa.infra.entity.Department;
 import alvin.study.springboot.jpa.infra.entity.Org;
 import alvin.study.springboot.jpa.infra.repository.DepartmentRepository;
-import com.google.common.base.Strings;
 import jakarta.persistence.criteria.Join;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 
 /**
  * 和用户相关的服务类
@@ -84,7 +86,6 @@ public class DepartmentService {
      * @param pageable  分页信息
      * @return 查询结果 {@link Department} 的分页结果
      */
-    @SuppressWarnings("unchecked")
     public Page<Department> searchSubDepartments(String name, String childName, Pageable pageable) {
         // 获取上下文中存储的 Org 对象, 即组织
         var org = context.<Org>get(Context.ORG);

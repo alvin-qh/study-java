@@ -1,11 +1,12 @@
 package alvin.study.springboot.jooq.infra.converter.common;
 
-import alvin.study.springboot.jooq.util.bean.SpringBeanUtil;
+import org.jooq.Converter;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
+
+import alvin.study.springboot.jooq.util.bean.SpringBeanUtil;
 import lombok.SneakyThrows;
-import org.jetbrains.annotations.NotNull;
-import org.jooq.Converter;
 
 /**
  * 将 JSON 类型和 Object 类型互转的转换类
@@ -47,7 +48,7 @@ public abstract class JacksonConverter<T> implements Converter<String, T> {
      * 获取数据表字段类型
      */
     @Override
-    public @NotNull Class<String> fromType() {
+    public Class<String> fromType() {
         return String.class;
     }
 }

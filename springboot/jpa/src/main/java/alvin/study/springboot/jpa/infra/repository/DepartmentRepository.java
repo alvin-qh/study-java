@@ -1,11 +1,12 @@
 package alvin.study.springboot.jpa.infra.repository;
 
-import alvin.study.springboot.jpa.infra.entity.Department;
-import jakarta.persistence.OrderBy;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
 
-import java.util.List;
+import alvin.study.springboot.jpa.infra.entity.Department;
+import jakarta.persistence.OrderBy;
 
 /**
  * 部门实体 {@link Department} 类型的存储操作接口类
@@ -33,6 +34,7 @@ public interface DepartmentRepository extends CrudRepository<Department, Long>, 
      *
      * @return 返回查询结果集合
      */
+    @Override
     @OrderBy("id asc")
     List<Department> findAll();
 }

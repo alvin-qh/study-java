@@ -15,6 +15,7 @@ import java.util.Properties;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 import com.google.common.base.Equivalence;
@@ -263,7 +264,7 @@ class MapUtilsTest {
         // 构建 EnumMap 对象
         {
             // 通过枚举类型构建空 EnumMap 对象
-            var map = Maps.<Month, String>newEnumMap(Month.class);
+            var map = Maps.<@NotNull Month, String>newEnumMap(Month.class);
             then(map).isInstanceOf(EnumMap.class).isEmpty();
 
             // 通过一个现有的 Key 为枚举类型的 Map 对象构建 EnumMap 对象

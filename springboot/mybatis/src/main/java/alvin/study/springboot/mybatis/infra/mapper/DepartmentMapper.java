@@ -1,5 +1,19 @@
 package alvin.study.springboot.mybatis.infra.mapper;
 
+import java.security.Timestamp;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import org.apache.ibatis.annotations.CacheNamespace;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultMap;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.jdbc.SQL;
+
+import com.baomidou.mybatisplus.extension.toolkit.SqlRunner;
+
 import alvin.study.springboot.mybatis.conf.ModelMapperConfig;
 import alvin.study.springboot.mybatis.conf.MyBatisConfig;
 import alvin.study.springboot.mybatis.infra.entity.Department;
@@ -8,18 +22,6 @@ import alvin.study.springboot.mybatis.infra.entity.common.AuditedEntity;
 import alvin.study.springboot.mybatis.infra.entity.common.TenantedEntity;
 import alvin.study.springboot.mybatis.infra.handler.EntityFieldHandler;
 import alvin.study.springboot.mybatis.infra.handler.TimestampTypeHandler;
-import com.baomidou.mybatisplus.extension.toolkit.SqlRunner;
-import org.apache.ibatis.annotations.CacheNamespace;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.jdbc.SQL;
-
-import java.security.Timestamp;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 /**
  * 该 Mapper 类型通过 {@code classpath:/mapper/DepartmentMapper.xml} 来设定要执行的 SQL 语句
@@ -131,6 +133,7 @@ public interface DepartmentMapper extends BaseMapper<Department> {
      * @param entity 要持久化的实体对象
      * @return 影响的行数
      */
+    @Override
     int insert(Department entity);
 
     /**

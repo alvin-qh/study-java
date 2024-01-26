@@ -1,14 +1,16 @@
 package alvin.study.springboot.kickstart.app.api.schema.type;
 
+import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
+import org.modelmapper.ModelMapper;
+
 import alvin.study.springboot.kickstart.app.api.schema.type.common.AuditedResolver;
 import alvin.study.springboot.kickstart.app.api.schema.type.common.TenantedResolver;
 import alvin.study.springboot.kickstart.app.service.DepartmentService;
 import alvin.study.springboot.kickstart.core.graphql.annotation.Resolver;
 import graphql.schema.DataFetchingEnvironment;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-
-import java.util.List;
 
 /**
  * 对 {@link EmployeeType} 类型补充 {@code createdByUser}, {@code updatedByUser} 以及
@@ -30,7 +32,7 @@ public class EmployeeTypeResolver implements AuditedResolver<EmployeeType>, Tena
      * @param instance 雇员对象
      * @return 部门列表集合
      */
-    public List<DepartmentType> departments(EmployeeType instance, DataFetchingEnvironment env) {
+    public List<@NotNull DepartmentType> departments(EmployeeType instance, DataFetchingEnvironment env) {
         var mapper = (ModelMapper) env.getGraphQlContext().get(ModelMapper.class);
 
         return departmentService.listByEmployeeId(instance.getId()).stream()

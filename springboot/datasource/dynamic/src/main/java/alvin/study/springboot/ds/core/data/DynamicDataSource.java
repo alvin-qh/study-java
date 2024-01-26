@@ -1,16 +1,19 @@
 package alvin.study.springboot.ds.core.data;
 
-import com.google.common.base.Strings;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.jdbc.datasource.AbstractDataSource;
-
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.sql.DataSource;
+
+import org.springframework.jdbc.datasource.AbstractDataSource;
+
+import com.google.common.base.Strings;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 动态数据源类型
@@ -84,7 +87,6 @@ public class DynamicDataSource extends AbstractDataSource {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <T> T unwrap(Class<T> iface) throws SQLException {
         if (iface.isInstance(this)) {
             return (T) this;

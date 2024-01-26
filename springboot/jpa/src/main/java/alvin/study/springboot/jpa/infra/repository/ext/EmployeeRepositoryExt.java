@@ -1,12 +1,13 @@
 package alvin.study.springboot.jpa.infra.repository.ext;
 
+import java.util.List;
+
 import alvin.study.springboot.jpa.infra.entity.Department;
 import alvin.study.springboot.jpa.infra.entity.Employee;
 import alvin.study.springboot.jpa.infra.repository.EmployeeRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-
-import java.util.List;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * 定义一个接口来扩充 {@link EmployeeRepository
@@ -55,7 +56,8 @@ public interface EmployeeRepositoryExt {
         private EntityManager em;
 
         @Override
-        public List<Employee> findEmployeesByDepartment(Department department) {
+        @SuppressWarnings("null")
+        public List<@NotNull Employee> findEmployeesByDepartment(Department department) {
             // 通过 JPQL 实现查询
             return em.createQuery("""
                     select e
@@ -68,7 +70,6 @@ public interface EmployeeRepositoryExt {
         }
 
         @Override
-        @SuppressWarnings("unchecked")
         public List<Employee> findEmployeesByDepartmentNative(Department department) {
             // 通过原生 SQL 实现查询
             var sql = """

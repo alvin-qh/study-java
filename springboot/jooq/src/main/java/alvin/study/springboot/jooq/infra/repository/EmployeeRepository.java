@@ -1,17 +1,19 @@
 package alvin.study.springboot.jooq.infra.repository;
 
-import alvin.study.springboot.jooq.infra.model.public_.tables.records.DepartmentRecord;
-import alvin.study.springboot.jooq.infra.model.public_.tables.records.EmployeeRecord;
-import alvin.study.springboot.jooq.infra.repository.common.BaseRepository;
-import org.springframework.stereotype.Repository;
+import static alvin.study.springboot.jooq.infra.model.public_.Tables.DEPARTMENT;
+import static alvin.study.springboot.jooq.infra.model.public_.Tables.DEPARTMENT_EMPLOYEE;
+import static alvin.study.springboot.jooq.infra.model.public_.Tables.EMPLOYEE;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static alvin.study.springboot.jooq.infra.model.public_.Tables.DEPARTMENT;
-import static alvin.study.springboot.jooq.infra.model.public_.Tables.DEPARTMENT_EMPLOYEE;
-import static alvin.study.springboot.jooq.infra.model.public_.Tables.EMPLOYEE;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Repository;
+
+import alvin.study.springboot.jooq.infra.model.public_.tables.records.DepartmentRecord;
+import alvin.study.springboot.jooq.infra.model.public_.tables.records.EmployeeRecord;
+import alvin.study.springboot.jooq.infra.repository.common.BaseRepository;
 
 /**
  * 操作 {@code EMPLOYEE} 表实体的 Repository 类型
@@ -31,7 +33,7 @@ public class EmployeeRepository extends BaseRepository<EmployeeRecord> {
      * @param id 实体主键
      * @return {@link Optional} 对象, 内部为 {@link EmployeeRecord} 类型对象
      */
-    public Optional<EmployeeRecord> selectById(Long id) {
+    public Optional<@NotNull EmployeeRecord> selectById(Long id) {
         // 查询员工记录所有字段
         var employees = dsl()
             .select()
@@ -51,7 +53,7 @@ public class EmployeeRepository extends BaseRepository<EmployeeRecord> {
      * @param id 实体主键
      * @return {@link Optional} 对象, 内部为 {@link EmployeeRecord} 类型对象
      */
-    public Map<EmployeeRecord, List<DepartmentRecord>> selectByIdWithDepartments(Long id) {
+    public Map<@NotNull EmployeeRecord, List<DepartmentRecord>> selectByIdWithDepartments(Long id) {
         var e = EMPLOYEE.as("e");
         var d = DEPARTMENT.as("d");
         var de = DEPARTMENT_EMPLOYEE.as("de");

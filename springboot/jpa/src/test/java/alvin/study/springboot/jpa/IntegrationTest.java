@@ -1,5 +1,15 @@
 package alvin.study.springboot.jpa;
 
+import org.hibernate.Session;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+
 import alvin.study.springboot.jpa.builder.Builder;
 import alvin.study.springboot.jpa.builder.OrgBuilder;
 import alvin.study.springboot.jpa.builder.UserBuilder;
@@ -17,15 +27,6 @@ import alvin.study.springboot.jpa.infra.entity.common.BaseEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.SneakyThrows;
-import org.hibernate.Session;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * 集成测试类的超类
@@ -231,7 +232,6 @@ public abstract class IntegrationTest {
      *
      * @param entity 非受控对象
      */
-    @SuppressWarnings("unchecked")
     protected <T extends BaseEntity> T refreshEntity(T entity) {
         return (T) em.find(entity.getClass(), entity.getId());
     }

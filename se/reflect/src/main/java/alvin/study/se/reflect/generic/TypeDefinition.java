@@ -68,7 +68,6 @@ public abstract class TypeDefinition<T> implements ParameterizedType {
      * @return 泛型参数类型的 {@link Class} 对象
      */
     @Override
-    @SuppressWarnings("unchecked")
     public Class<T> getRawType() { return (Class<T>) genericArgumentType.getRawType(); }
 
     /**

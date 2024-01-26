@@ -1,12 +1,5 @@
 package alvin.study.se.process;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,6 +10,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 进程工具类
@@ -109,7 +110,7 @@ public final class ProcessUtil {
      * @param pid 进程 {@code id}
      * @return 进程信息 {@link ProcessInfo} 对象的 {@link Optional} 包装
      */
-    public static Optional<ProcessInfo> process(long pid) {
+    public static Optional<@NotNull ProcessInfo> process(long pid) {
         // 根据进程 id 获取进程对象实例
         return ProcessHandle.of(pid).map(ProcessInfo::of);
     }
@@ -141,7 +142,7 @@ public final class ProcessUtil {
      * @param condition 过滤条件
      * @return 符合条件的进程对象集合
      */
-    public static List<ProcessInfo> allProcesses(Predicate<ProcessInfo> condition) {
+    public static List<@NotNull ProcessInfo> allProcesses(Predicate<ProcessInfo> condition) {
         var stream = ProcessHandle.allProcesses().map(ProcessInfo::of);
         if (condition != null) {
             stream = stream.filter(condition);
@@ -166,7 +167,7 @@ public final class ProcessUtil {
      * @param condition 匹配进程的条件
      * @return 子进程列表
      */
-    public static List<ProcessInfo> children(long pid, Predicate<ProcessInfo> condition) {
+    public static List<@NotNull ProcessInfo> children(long pid, Predicate<ProcessInfo> condition) {
         // 根据进程 id 查询进程信息
         var stream = ProcessHandle.of(pid)
             // 如果进程存在, 则进一步查询子进程

@@ -1,16 +1,18 @@
 package alvin.study.springboot.jooq.core;
 
+import static org.jooq.impl.DSL.field;
+import static org.jooq.impl.DSL.table;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+
+import org.jetbrains.annotations.NotNull;
+import org.jooq.DSLContext;
+
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.jooq.DSLContext;
-
-import java.util.List;
-import java.util.Set;
-import java.util.Objects;
-
-import static org.jooq.impl.DSL.field;
-import static org.jooq.impl.DSL.table;
 
 /**
  * 数据表清理器
@@ -42,7 +44,7 @@ public class TableCleaner {
      * @return schema 下所有指定类型的表名称
      */
     @SneakyThrows
-    public List<String> listAllTables(String schema, String tableType) {
+    public List<@NotNull String> listAllTables(String schema, String tableType) {
         // 查询元数据表, 获取所需数据表名称
         return dsl.select(field("table_name"))
                 .from(table("information_schema.tables"))

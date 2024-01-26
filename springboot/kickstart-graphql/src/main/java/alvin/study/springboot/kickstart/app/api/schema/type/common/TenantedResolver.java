@@ -1,15 +1,17 @@
 package alvin.study.springboot.kickstart.app.api.schema.type.common;
 
+import java.util.concurrent.CompletableFuture;
+
+import org.dataloader.DataLoader;
+import org.jetbrains.annotations.NotNull;
+import org.modelmapper.ModelMapper;
+
 import alvin.study.springboot.kickstart.app.api.schema.loader.OrgLoaderProvider;
 import alvin.study.springboot.kickstart.app.api.schema.type.OrgType;
 import alvin.study.springboot.kickstart.conf.GraphqlConfig;
 import alvin.study.springboot.kickstart.infra.entity.Org;
 import graphql.kickstart.tools.GraphQLResolver;
 import graphql.schema.DataFetchingEnvironment;
-import org.dataloader.DataLoader;
-import org.modelmapper.ModelMapper;
-
-import java.util.concurrent.CompletableFuture;
 
 /**
  * 定义 Graphql Type 解析器, 解析 {@link TenantedType} 未包含的额外的字段值
@@ -45,7 +47,7 @@ public interface TenantedResolver<T extends TenantedType> extends GraphQLResolve
      *                 {@link DataLoader} 对象
      * @return 一个异步函数, 将通过每个 id 获取对象的处理延时执行, 转化为批量处理
      */
-    default CompletableFuture<OrgType> getOrg(T instance, DataFetchingEnvironment env) {
+    default CompletableFuture<@NotNull OrgType> getOrg(T instance, DataFetchingEnvironment env) {
         var mapper = (ModelMapper) env.getGraphQlContext().get(ModelMapper.class);
 
         DataLoader<Long, Org> loader = env.getDataLoaderRegistry().getDataLoader(OrgLoaderProvider.NAME);

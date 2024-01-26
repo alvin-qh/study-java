@@ -1,8 +1,13 @@
 package alvin.study.springboot.jooq.core.jooq.listener;
 
-import alvin.study.springboot.jooq.core.context.Context;
-import alvin.study.springboot.jooq.infra.model.public_.tables.records.OrgRecord;
-import lombok.RequiredArgsConstructor;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.jetbrains.annotations.NotNull;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -15,13 +20,9 @@ import org.jooq.VisitListener;
 import org.jooq.VisitListenerProvider;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import alvin.study.springboot.jooq.core.context.Context;
+import alvin.study.springboot.jooq.infra.model.public_.tables.records.OrgRecord;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 数据访问处理监听器
@@ -84,7 +85,6 @@ public class TentedVisitListener implements VisitListener, VisitListenerProvider
      *
      * @param context 数据访问上下文对象
      */
-    @SuppressWarnings("unchecked")
     private void walkQueryPars(VisitContext context) {
         // 从请求上下文中获取 orgId 值
         var mayOrgId = Optional.ofNullable(this.context.<OrgRecord>getOrDefault(Context.ORG, null))
@@ -120,7 +120,6 @@ public class TentedVisitListener implements VisitListener, VisitListenerProvider
      * @param context 数据访问上下文对象
      * @return 保存 {@link Field} 对象的 {@link Set} 集合
      */
-    @SuppressWarnings("unchecked")
     private Set<Field<?>> loadUsedFieldSet(VisitContext context) {
         // 从数据访问上下文对象中获取 Set 对象
         var fieldSet = (Set<Field<?>>) context.data("fieldSet");

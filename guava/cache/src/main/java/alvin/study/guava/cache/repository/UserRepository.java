@@ -1,17 +1,19 @@
 package alvin.study.guava.cache.repository;
 
-import alvin.study.guava.cache.CacheEventBus;
-import alvin.study.guava.cache.event.UserDeleteEvent;
-import alvin.study.guava.cache.event.UserUpdateEvent;
-import alvin.study.guava.cache.model.User;
-import com.google.common.cache.LoadingCache;
-import com.google.common.hash.BloomFilter;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.cache.LoadingCache;
+import com.google.common.hash.BloomFilter;
+
+import alvin.study.guava.cache.CacheEventBus;
+import alvin.study.guava.cache.event.UserDeleteEvent;
+import alvin.study.guava.cache.event.UserUpdateEvent;
+import alvin.study.guava.cache.model.User;
 
 /**
  * 用于 {@link User} 对象的持久化类型
@@ -95,6 +97,7 @@ public class UserRepository {
      *
      * @return 布隆过滤器对象
      */
+    @SuppressWarnings("null")
     public BloomFilter<Long> toBloomFilter(long expectedInsertions) {
         return userStorage.values()
                 .stream()

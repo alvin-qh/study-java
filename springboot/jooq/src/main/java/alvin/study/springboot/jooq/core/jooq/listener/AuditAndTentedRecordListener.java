@@ -1,9 +1,9 @@
 package alvin.study.springboot.jooq.core.jooq.listener;
 
-import alvin.study.springboot.jooq.core.context.Context;
-import alvin.study.springboot.jooq.infra.model.public_.tables.records.OrgRecord;
-import alvin.study.springboot.jooq.infra.model.public_.tables.records.UserRecord;
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Objects;
+
 import org.jetbrains.annotations.NotNull;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -12,9 +12,10 @@ import org.jooq.RecordListener;
 import org.jooq.RecordListenerProvider;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.Objects;
+import alvin.study.springboot.jooq.core.context.Context;
+import alvin.study.springboot.jooq.infra.model.public_.tables.records.OrgRecord;
+import alvin.study.springboot.jooq.infra.model.public_.tables.records.UserRecord;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 数据记录处理监听器
@@ -93,7 +94,6 @@ public class AuditAndTentedRecordListener implements RecordListener, RecordListe
      * @param ctx 记录操作上下文对象, 对每一条 SQL 操作的所有监听方法, 共享同一个 {@link RecordContext} 对象
      */
     @Override
-    @SuppressWarnings("unchecked")
     public void insertStart(RecordContext ctx) {
         // 获取要插入的实体对象
         var rec = ctx.record();
@@ -137,7 +137,6 @@ public class AuditAndTentedRecordListener implements RecordListener, RecordListe
      * @param ctx 记录操作上下文对象, 对每一条记录的一次操作的所有监听方法, 共享同一个 {@link RecordContext} 对象
      */
     @Override
-    @SuppressWarnings("unchecked")
     public void updateStart(RecordContext ctx) {
         // 获取要更新的实体对象
         var rec = ctx.record();

@@ -1,21 +1,23 @@
 package alvin.study.guava.collect;
 
-import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
-import com.google.common.collect.ForwardingIterator;
-import com.google.common.collect.ForwardingList;
-import com.google.common.collect.ForwardingListIterator;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
+import com.google.common.collect.ForwardingIterator;
+import com.google.common.collect.ForwardingList;
+import com.google.common.collect.ForwardingListIterator;
+
 /**
  * 代理 {@link ArrayList} 类型的类型
  */
+@SuppressWarnings("all")
 public class StringList extends ForwardingList<String> {
     // 设置被代理的对象
     private final List<String> delegatedList = new ArrayList<>();
