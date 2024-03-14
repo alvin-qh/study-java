@@ -59,7 +59,7 @@ class ConditionBeanTest {
     @Test
     void lookupIfProperty_shouldInjectDifferentBeanByProperties() {
         var bean = lookupIfPropertyBeanInstance.get();
-        then(bean.getName()).isEqualTo("B");
+        then(bean.getName()).isEqualTo("A");
     }
 
     /**

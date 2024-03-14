@@ -1,0 +1,62 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>study-java-opta-planner-parent</artifactId>
+  <name>${project.artifactId}</name>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <parent>
+    <groupId>alvin.study</groupId>
+    <artifactId>study-java-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <modules>
+  </modules>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.optaplanner</groupId>
+        <artifactId>optaplanner-core</artifactId>
+        <version>${version.optaplanner}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.optaplanner</groupId>
+      <artifactId>optaplanner-core</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${version.maven-surefire}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <argLine>--enable-preview</argLine>
+          <systemPropertyVariables>
+            <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+            <maven.home>${maven.home}</maven.home>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

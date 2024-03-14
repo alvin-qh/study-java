@@ -1,10 +1,5 @@
 package alvin.study.se.collection;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -20,6 +15,12 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Streams {
@@ -157,7 +158,7 @@ public final class Streams {
      * @return 能够将 {@link Stream} 对象转为 {@link LinkedHashSet} 对象的 {@link Collector}
      * 对象
      */
-    private static <T> @NotNull Collector<T, ?, Set<T>> toLinkedSet() {
+    private static <T> @NotNull Collector<T, ?, @NotNull Set<T>> toLinkedSet() {
         return Collector.of(
             // 集合对象创建函数
             LinkedHashSet<T>::new,

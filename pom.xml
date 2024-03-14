@@ -52,13 +52,15 @@
     <version.mybatis-plus>3.5.5</version.mybatis-plus>
     <version.flyway>9.19.4</version.flyway>
 
-    <version.spring-boot>3.2.2</version.spring-boot>
+    <version.spring-boot>3.2.3</version.spring-boot>
     <version.spirng-cloud>2023.0.0</version.spirng-cloud>
     <version.alibaba-clould>2022.0.0.0</version.alibaba-clould>
 
     <version.kickstart-graphql>15.1.0</version.kickstart-graphql>
     <version.springdoc>2.3.0</version.springdoc>
-    <version.quarkus>3.6.7</version.quarkus>
+    <version.quarkus>3.8.2</version.quarkus>
+
+    <version.optaplanner>9.44.0.Final</version.optaplanner>
     <!-- End dev dependencies -->
 
     <!-- Begin test dependencies -->
@@ -77,6 +79,7 @@
     <!-- 定义插件版本 -->
     <version.maven-compiler>3.12.1</version.maven-compiler>
     <version.maven-surefire>3.2.5</version.maven-surefire>
+    <version.maven-failsafe>3.2.5</version.maven-failsafe>
     <version.maven-exec>3.1.1</version.maven-exec>
     <version.maven-jar>3.3.0</version.maven-jar>
     <version.maven-dependency>3.6.1</version.maven-dependency>

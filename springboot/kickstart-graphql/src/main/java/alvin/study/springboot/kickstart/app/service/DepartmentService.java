@@ -3,7 +3,6 @@ package alvin.study.springboot.kickstart.app.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -77,7 +76,7 @@ public class DepartmentService {
      * @return 子部门集合
      */
     @Transactional(readOnly = true)
-    public IPage<@NotNull Department> listChildren(long parentId, IPage<Department> page) {
+    public IPage<Department> listChildren(long parentId, IPage<Department> page) {
         var query = Wrappers.lambdaQuery(Department.class).eq(Department::getParentId, parentId);
         return departmentMapper.selectPage(page, query);
     }

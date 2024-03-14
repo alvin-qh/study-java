@@ -60,7 +60,7 @@ class RestfulResourceTest {
     @Test
     void hello_shouldGetHelloResourceByGivenLocale() {
         given().when()
-                .header(HttpHeaders.ACCEPT_LANGUAGE, "zh;q=0.9, en;q=0.8, *;q=0.5")
+                .header(HttpHeaders.ACCEPT_LANGUAGE, "zh;q=0.9,en;q=0.7,*;q=0.5")
                 .get("restful/hello")
                 .then()
                 .statusCode(200)
@@ -93,7 +93,7 @@ class RestfulResourceTest {
     @Test
     void numbers_shouldGetHelloResourceByGivenLocale() {
         given().when()
-                .header(HttpHeaders.ACCEPT_LANGUAGE, "zh;q=0.9, en;q=0.8, *;q=0.5")
+                .header(HttpHeaders.ACCEPT_LANGUAGE, "zh;q=0.9,en;q=0.7,*;q=0.5")
                 .get("restful/numbers?digit=5")
                 .then()
                 .statusCode(200)
@@ -263,7 +263,7 @@ class RestfulResourceTest {
     void users_shouldCreateUserButValidatedFailedWithGivenLocale() {
         // 发送 POST 请求
         var resp = given().when()
-                .header(HttpHeaders.ACCEPT_LANGUAGE, "zh;q=0.9, en;q=0.8, *;q=0.5")
+                .header(HttpHeaders.ACCEPT_LANGUAGE, "zh;q=0.9,en;q=0.7,*;q=0.5")
                 .contentType(ContentType.JSON)
                 .body(
                     // 少传递一个 name 参数, 这样会导致 UserDto 的 name 属性 NotBlank 生效, 导致验证失败

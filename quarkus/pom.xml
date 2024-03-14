@@ -76,7 +76,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>${version.maven-surefire}</version>
+          <version>${version.maven-failsafe}</version>
         </plugin>
       </plugins>
     </pluginManagement>

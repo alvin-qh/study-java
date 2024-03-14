@@ -83,6 +83,7 @@ public class DepartmentTypeResolver implements AuditedResolver<DepartmentType>, 
         var page = pagination.<Department>newBuilder().withQueryParams(env.getArguments()).build();
         // 查询子部门
         page = departmentService.listChildren(instance.getId(), page);
+
         // 结果转为 Connection 对象返回
         return ConnectionBuilder.build(page).mapTo(d -> mapper.map(d, DepartmentType.class));
     }
