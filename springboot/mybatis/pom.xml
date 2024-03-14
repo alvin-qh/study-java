@@ -1,6 +1,6 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>study-java-springboot-mybatis</artifactId>
   <name>${project.artifactId}</name>
@@ -19,6 +19,8 @@
     <jdbc.url>jdbc:h2:${project.basedir}/.data/dev;MODE=MYSQL</jdbc.url>
     <jdbc.user>dev</jdbc.user>
     <jdbc.password>password</jdbc.password>
+    <!-- spring 升级到 3.2 以后, mybatis-plus 的相关组件未跟上升级 -->
+    <version.mybatis-spring>3.0.3</version.mybatis-spring>
   </properties>
 
   <dependencyManagement>
@@ -66,7 +68,18 @@
           <groupId>org.springframework.boot</groupId>
           <artifactId>*</artifactId>
         </exclusion>
+        <!-- spring 升级到 3.2 以后, mybatis-plus 的相关组件未跟上升级 -->
+        <exclusion>
+          <groupId>org.mybatis</groupId>
+          <artifactId>mybatis-spring</artifactId>
+        </exclusion>
       </exclusions>
+    </dependency>
+    <!-- spring 升级到 3.2 以后, mybatis-plus 的相关组件未跟上升级 -->
+    <dependency>
+      <groupId>org.mybatis</groupId>
+      <artifactId>mybatis-spring</artifactId>
+      <version>${version.mybatis-spring}</version>
     </dependency>
     <dependency>
       <!-- Spring Boot Bean 验证依赖 -->
