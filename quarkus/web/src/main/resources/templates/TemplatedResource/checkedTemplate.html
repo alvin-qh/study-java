@@ -1,0 +1,44 @@
+{@alvin.study.quarkus.web.endpoint.model.UserDto user}
+
+{! 引入模板并设置插入点 !}
+{#include layout}
+  {#title}Hello {user.name}{/}
+
+  {#css}
+    .error {
+      color: #f00;
+      font-size: 14px;
+    }
+  {/}
+
+  {#body}
+    <div>
+      <h1>
+        Hello
+        {#if user.gender == Gender:MALE}
+          Mr.
+        {#else if user.isOlderThan(30)}
+          Ms.
+        {#else}
+          Miss.
+        {/if}
+        {user.name}
+      </h1>
+    </div>
+    <div>
+      <ul>
+        {#if user.gender}
+          <li>Gender: {user.gender.genderChinese}</li>
+        {/if}
+        {#if user.birthday}
+          <li>Birthday: {user.birthday.dateChinese}</li>
+        {/if}
+      </ul>
+    </div>
+    <div>
+      {#demo name=user.name/}
+    </div>
+    {! 通过国际化类型获取指定语系的信息, 参考 AppMessage 类的 numbers 方法和 resources:messages 路径下的国际化文件 !}
+    <div>i18n: {msg:numbers().split(",")[5]}</div>
+  {/}
+{/}

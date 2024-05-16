@@ -1,0 +1,59 @@
+{
+  "properties": [
+    {
+      "name": "application.security.hash.algorithm",
+      "type": "java.lang.String",
+      "description": "A description for 'application.security.hash.algorithm'"
+    },
+    {
+      "name": "application.security.hash.key",
+      "type": "java.lang.String",
+      "description": "A description for 'application.security.hash.key'"
+    },
+    {
+      "name": "application.security.jwt.key",
+      "type": "java.lang.String",
+      "description": "A description for 'application.security.jwt.key'"
+    },
+    {
+      "name": "application.security.session.period",
+      "type": "java.lang.String",
+      "description": "A description for 'application.security.session.period'"
+    },
+    {
+      "name": "application.security.jwt.jti",
+      "type": "java.lang.String",
+      "description": "A description for 'application.security.jwt.jti'"
+    },
+    {
+      "name": "application.security.jwt.aud",
+      "type": "java.lang.String",
+      "description": "A description for 'application.security.jwt.aud'"
+    },
+    {
+      "name": "application.zone",
+      "type": "java.lang.String",
+      "description": "A description for 'application.zone'"
+    },
+    {
+      "name": "application.thread-pool.core-pool-size",
+      "type": "java.lang.String",
+      "description": "A description for 'application.thread-pool.core-pool-size'"
+    },
+    {
+      "name": "application.thread-pool.max-pool-size",
+      "type": "java.lang.String",
+      "description": "A description for 'application.thread-pool.max-pool-size'"
+    },
+    {
+      "name": "application.thread-pool.keep-alive",
+      "type": "java.lang.String",
+      "description": "A description for 'application.thread-pool.keep-alive'"
+    },
+    {
+      "name": "application.thread-pool.queue-size",
+      "type": "java.lang.String",
+      "description": "A description for 'application.thread-pool.queue-size'"
+    }
+  ]
+}

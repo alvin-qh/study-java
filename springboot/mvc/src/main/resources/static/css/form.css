@@ -1,0 +1,105 @@
+* {
+    box-sizing: content-box;
+    font-family: -apple-system,
+    "Noto Sans",
+    "Helvetica Neue",
+    Helvetica,
+    "Nimbus Sans L",
+    Arial,
+    "Liberation Sans",
+    "PingFang SC",
+    "Hiragino Sans GB",
+    "Noto Sans CJK SC",
+    "Source Han Sans SC",
+    "Source Han Sans CN",
+    "Microsoft YaHei",
+    "Wenquanyi Micro Hei",
+    "WenQuanYi Zen Hei",
+    "ST Heiti",
+    SimHei,
+    "WenQuanYi Zen Hei Sharp",
+    sans-serif;
+}
+
+.clear-fix::after {
+    display: block;
+    content: "";
+    height: 0;
+    width: 0;
+    visibility: hidden;
+    clear: both;
+}
+
+#main {
+    width: 1000px;
+    margin: 0 auto;
+}
+
+#main .title h1 {
+    float: left;
+}
+
+#main .title .lang {
+    position: relative;
+    top: 33px;
+    float: right;
+}
+
+
+#main form {
+    margin-top: 20px;
+}
+
+#main form .row {
+    margin: 10px auto;
+}
+
+#main form .row .label {
+    display: block;
+    float: left;
+    width: 80px;
+    padding: 6px 10px;
+    text-align: right;
+}
+
+#main form .row .input {
+    float: left;
+    padding: 3px 0;
+}
+
+#main form .row .input input[type=text],
+#main form .row .input input[type=number] {
+    padding: 3px 10px;
+}
+
+#main form .row .input .radio {
+    display: block;
+    float: left;
+    padding-top: 2px;
+    margin-right: 10px;
+}
+
+#main form .row.submit {
+    text-align: right;
+}
+
+#main form .row.submit button {
+    padding: 5px 10px;
+}
+
+#main ul.errors {
+    padding: 0 20px;
+}
+
+#main ul.errors li {
+    padding: 5px 0;
+    font-size: 12px;
+}
+
+#main ul.errors li .field-name {
+    font-weight: 600;
+}
+
+#main ul.errors li .field-error {
+    color: red;
+}

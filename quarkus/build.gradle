@@ -1,0 +1,17 @@
+group "alvin.study.quarkus"
+version "1.0-SNAPSHOT"
+
+subprojects {
+  test {
+    systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
+  }
+
+  dependencies {
+    implementation enforcedPlatform("io.quarkus.platform:quarkus-bom:${VAR_QUARKUS_PLATFORM}")
+
+    implementation libs.main.quarkus.common
+
+    testImplementation libs.test.quarkus.common,
+      libs.test.assertj
+  }
+}

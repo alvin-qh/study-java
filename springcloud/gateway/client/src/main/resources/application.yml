@@ -1,0 +1,27 @@
+spring:
+  main:
+    banner-mode: off
+
+  application:
+    # WEB 应用在服务发现中注册的名称
+    name: gateway-backend
+
+  cloud:
+    # 配置 Nacos 服务发现
+    nacos:
+      server-addr: http://localhost:8848
+      username: nacos
+      password: nacos
+      discovery:
+        enabled: true
+        group: STUDY_GATEWAY
+
+# 指定 WEB 应用服务绑定的默认端口号
+# 如果要在单机启动多个实例组成集群, 则需要传递 --server.port=xxxx 参数
+server:
+  port: 8081
+
+logging:
+  level:
+    com:
+      alibaba: WARN

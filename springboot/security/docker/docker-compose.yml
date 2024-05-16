@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+      - ./conf/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - redis_network
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 65536
+        hard: 65536
+      memlock:
+        soft: -1
+        hard: -1
+    deploy:
+      resources:
+        limits:
+          cpus: "1.00"
+          memory: 1G
+networks:
+  redis_network:
+volumes:
+  redis_data:

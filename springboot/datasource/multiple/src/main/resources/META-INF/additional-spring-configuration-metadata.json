@@ -1,0 +1,124 @@
+{
+  "properties": [
+    {
+      "name": "spring.datasource.db1.type",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.db1.type'"
+    },
+    {
+      "name": "spring.datasource.db2.type",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.db2.type'"
+    },
+    {
+      "name": "spring.datasource.db1.jdbc-url",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.db1.jdbc-url'"
+    },
+    {
+      "name": "spring.datasource.db1.username",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.db1.username'"
+    },
+    {
+      "name": "spring.datasource.db1.password",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.db1.password'"
+    },
+    {
+      "name": "spring.datasource.db1.maximum-pool-size",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.db1.maximum-pool-size'"
+    },
+    {
+      "name": "spring.datasource.db1.connection-timeout",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.db1.connection-timeout'"
+    },
+    {
+      "name": "spring.datasource.db1.idle-timeout",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.db1.idle-timeout'"
+    },
+    {
+      "name": "spring.datasource.db1.connection-test-query",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.db1.connection-test-query'"
+    },
+    {
+      "name": "spring.datasource.db2.jdbc-url",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.db2.jdbc-url'"
+    },
+    {
+      "name": "spring.datasource.db2.username",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.db2.username'"
+    },
+    {
+      "name": "spring.datasource.db1.pool-name",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.db1.pool-name'"
+    },
+    {
+      "name": "spring.datasource.db2.connection-timeout",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.db2.connection-timeout'"
+    },
+    {
+      "name": "spring.datasource.db2.password",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.db2.password'"
+    },
+    {
+      "name": "spring.datasource.db2.max-lifetime",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.db2.max-lifetime'"
+    },
+    {
+      "name": "spring.datasource.db2.connection-test-query",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.db2.connection-test-query'"
+    },
+    {
+      "name": "spring.datasource.db2.maximum-pool-size",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.db2.maximum-pool-size'"
+    },
+    {
+      "name": "spring.datasource.db2.pool-name",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.db2.pool-name'"
+    },
+    {
+      "name": "spring.datasource.db1.max-lifetime",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.db1.max-lifetime'"
+    },
+    {
+      "name": "spring.datasource.db1.minimum-idle",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.db1.minimum-idle'"
+    },
+    {
+      "name": "spring.datasource.db2.minimum-idle",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.db2.minimum-idle'"
+    },
+    {
+      "name": "spring.datasource.db2.idle-timeout",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.db2.idle-timeout'"
+    },
+    {
+      "name": "spring.datasource.db2.idle-timeout",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.db2.idle-timeout'"
+    },
+    {
+      "name": "application.zone",
+      "type": "java.lang.String",
+      "description": "A description for 'application.zone'"
+    }
+  ]
+}

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="alvin.study.springboot.mybatis.infra.mapper.DepartmentMapper">
+  <!--
+  定义查询结果如何映射到实体类对象的规则
+  - resultMap 标签指定查询结果和实体对象的映射关系
+    - id 属性指定了一个标识符, 通过 select 标签的 resultMap 属性进行对应
+    - type 属性指定映射对应的实体类型
+    - autoMapping 表示自动进行字段映射, 表字段和实体字段相等 (例如同一个名称的下划线和驼峰命名视为相等), 则可进行自动映射,
+                  否则需要显式声明映射关系
+
+  resultMap 标签可以通过 select 标签的 resultMap 属性来指定, 也可以在 Mapper 接口类型中, 通过 @ResultMap 注解来指定,
+  参考 DepartmentMapper.selectByName(String) 方法
+  -->
+  <resultMap
+    id="departmentResultMap"
+    type="alvin.study.springboot.mybatis.infra.entity.Department"
+    autoMapping="true"
+  >
+    <!-- id 映射关系需要显式声明 -->
+    <id property="id" column="id"/>
+
+    <!-- 开启 autoMapping 后可以无需逐字段设置
+    <result property="orgId" column="org_id" />
+    <result property="name" column="name" />
+    <result property="deleted" column="deleted" />
+    <result property="createdBy" column="created_by" />
+    <result property="createdAt" column="created_at" />
+    <result property="updatedBy" column="updated_by" />
+    <result property="updatedAt" column="updated_at" />
+    -->
+
+    <!--
+    定义实体中字段的一对一的映射关系
+    - association 标签指定了实体中的一对一映射关系
+      - property 属性指定了实体中一对一的属性名
+      - javaType 属性指定了 property 属性的类型
+      - resultMap 指定了类型如何进行映射, 指向一个已经声明好的 resultMap 标签 id. 如果没有对应的映射关系, 可以在 association 标签内
+        显式通过 id, result 标签声明映射关系
+      - columnPrefix 表示相关的字段统一具备的前缀字符串, 在查询时需要声明该前缀的别名, 例如: p.name as p_name, 会映射到该规则的 name
+        字段上
+    -->
+    <association
+      property="parent"
+      resultMap="departmentResultMap"
+      columnPrefix="p_"
+    />
+
+    <!--
+    定义实体中字段的一对多的映射关系
+    - collection 标签指定了实体中的一对多映射关系
+      - property 属性指定了实体中一对多的属性名
+      - ofType 属性指定了 property 属性的类型
+      - resultMap 指定了类型如何进行映射, 指向一个已经声明好的 resultMap 标签 id. 如果没有对应的映射关系, 可以在 association 标签内
+        显式通过 id, result 标签声明映射关系
+      - columnPrefix 表示相关的字段统一具备的前缀字符串, 在查询时需要声明该前缀的别名, 例如: p.name as p_name, 会映射到该规则的 name
+        字段上
+    -->
+    <collection
+      property="children"
+      resultMap="departmentResultMap"
+      columnPrefix="c_"
+    />
+
+    <!--
+    定义实体中字段的一对多的映射关系
+    - collection 标签指定了实体中的一对多映射关系
+      - property 属性指定了实体中一对多的属性名
+      - ofType 属性指定了 property 属性的类型
+      - resultMap 指定了类型如何进行映射, 指向一个已经声明好的 resultMap 标签 id. 如果没有对应的映射关系, 可以在 association 标签内
+        显式通过 id, result 标签声明映射关系
+      - columnPrefix 表示相关的字段统一具备的前缀字符串, 在查询时需要声明该前缀的别名, 例如: p.name as p_name, 会映射到该规则的 name
+        字段上
+    -->
+    <collection
+      property="employees"
+      resultMap="alvin.study.springboot.mybatis.infra.mapper.EmployeeMapper.employeeResultMap"
+      columnPrefix="e_"
+    />
+  </resultMap>
+
+  <!--
+  对应 alvin.study.infra.mapper.DepartmentMapper.selectByNameWithParentAndChildren 方法
+  - select 标签指定了该方法对应的 select SQL 语句, 其中:
+    - id 属性指定了对应 Mapper 接口的方法名
+    - resultMap 属性对应 resultMap 标签, 指定了返回结果如何和实体类型进行映射
+  -->
+  <select id="selectByNameWithParentAndChildren" resultMap="departmentResultMap">
+    <![CDATA[
+    select d.id,
+           d.org_id,
+           d.name,
+           d.deleted,
+           d.created_by,
+           d.created_at,
+           d.updated_by,
+           d.updated_at,
+           p.id         as p_id,
+           p.org_id     as p_org_id,
+           p.name       as p_name,
+           p.deleted    as p_deleted,
+           p.created_by as p_created_by,
+           p.created_at as p_created_at,
+           p.updated_by as p_updated_by,
+           p.updated_at as p_updated_at,
+           c.id         as c_id,
+           c.org_id     as c_org_id,
+           c.name       as c_name,
+           c.deleted    as c_deleted,
+           c.created_by as c_created_by,
+           c.created_at as c_created_at,
+           c.updated_by as c_updated_by,
+           c.updated_at as c_updated_at
+    from department d
+           left join department p on p.deleted = 0 and d.parent_id = p.id
+           left join department c on c.deleted = 0 and d.id = c.parent_id
+    where d.deleted = 0
+      and d.name = #{name}
+    ]]>
+  </select>
+
+  <!--
+  对应 alvin.study.infra.mapper.DepartmentMapper.selectByNameWithEmployees 方法
+  - select 标签指定了该方法对应的 select SQL 语句, 其中:
+    - id 属性指定了对应 Mapper 接口的方法名
+    - resultMap 属性对应 resultMap 标签, 指定了返回结果如何和实体类型进行映射
+  -->
+  <select id="selectByNameWithEmployees" resultMap="departmentResultMap">
+    <![CDATA[
+    select d.id,
+           d.org_id,
+           d.name,
+           d.deleted,
+           d.created_by,
+           d.created_at,
+           d.updated_by,
+           d.updated_at,
+           e.id         as e_id,
+           e.org_id     as e_org_id,
+           e.name       as e_name,
+           e.email      as e_email,
+           e.title      as e_title,
+           e.deleted    as e_deleted,
+           e.created_by as e_created_by,
+           e.created_at as e_created_at,
+           e.updated_by as e_updated_by,
+           e.updated_at as e_updated_at
+    from department d
+           left join department_employee de on d.id = de.department_id
+           left join employee e on e.deleted = 0 and de.employee_id = e.id
+    where d.deleted = 0
+      and d.name = #{name}
+    ]]>
+  </select>
+
+  <!--
+  对应 alvin.study.infra.mapper.DepartmentMapper.insert 方法
+  - insert 标签指定了该方法对应的 insert SQL 语句, 其中:
+    - id 属性指定了对应 Mapper 接口的方法名
+    - useGeneratedKeys 属性表示需要将插入后数据表产生的 id 值写回实体对象的对应字段中
+    - keyColumn 属性表示数据表的 id 字段名称
+    - keyProperty 属性表示实体对象中的 id 字段名称
+
+  提示: 数据表 parent_id 对应了实体对象的 parent.id 属性值
+  -->
+  <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+    <![CDATA[
+    insert into department (name, org_id, parent_id, created_by, created_at, updated_by, updated_at)
+    values (#{name}, #{orgId}, #{parent.id}, #{createdBy}, #{createdAt}, #{updatedBy}, #{updatedAt})
+    ]]>
+  </insert>
+</mapper>

@@ -1,0 +1,32 @@
+{!
+  定义布局模板, 该模板包含了 title, css, body 三个插入点, 引用改模板并为插入点插入内容, 即可通过该模板生成 HTML 内容
+
+  使用方式如下:
+  {#include /common/layout}
+    {#title}... title here{/}
+
+    {#css}
+      ... css here
+    {/}
+
+    {#body}
+      ... HTML body here
+    {/}
+  {/}
+!}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>{#insert title}No title{/}</title>
+
+  <style type="text/css">{#insert css}{/}</style>
+</head>
+<body>
+  <div class="main">
+    {#insert body}No content{/}
+  </div>
+</body>

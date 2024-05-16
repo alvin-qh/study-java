@@ -1,0 +1,38 @@
+plugins {
+  id "com.waftex.assertj-generator" version "${VER_GRADLE_ASSERTJ_GENERATOR}"
+}
+
+assertjGenerator {
+  outputDir = "src/test/assertj"
+
+  entryPointTypes = [
+    "STANDARD",
+    "BDD",
+    "SOFT"
+  ]
+
+  entryPointPackage = "alvin.study.testing.assertj.assertion"
+
+  classOrPackageNames = [
+    "alvin.study.testing.testcase.model.User"
+  ]
+}
+
+generateAssertions {
+  outputs.upToDateWhen { false }
+}
+
+sourceSets {
+  test {
+    java {
+      srcDirs += [
+        "src/test/assertj"
+      ]
+    }
+  }
+}
+
+dependencies {
+  implementation project(":testing:testcase")
+  testImplementation "javax.annotation:javax.annotation-api:1.3.2"
+}

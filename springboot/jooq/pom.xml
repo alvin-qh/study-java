@@ -1,0 +1,217 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>study-java-springboot-jooq</artifactId>
+  <name>${project.artifactId}</name>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <parent>
+    <groupId>alvin.study</groupId>
+    <artifactId>study-java-springboot-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <!-- 数据库连接配置项 -->
+  <properties>
+    <jdbc.url>jdbc:h2:${project.basedir}/.data/dev;MODE=MYSQL</jdbc.url>
+    <jdbc.user>dev</jdbc.user>
+    <jdbc.password>password</jdbc.password>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.modelmapper.extensions</groupId>
+        <artifactId>modelmapper-jooq</artifactId>
+        <version>${version.modelmapper}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-codec</groupId>
+        <artifactId>commons-codec</artifactId>
+        <version>${version.commons-codec}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <!-- Spring Boot JDBC 依赖 -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-jdbc</artifactId>
+    </dependency>
+    <dependency>
+      <!-- Spring Boot JOOQ 依赖 -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-jooq</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <!-- 排除低版本 JOOQ 框架 -->
+          <groupId>org.jooq</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <!-- 引入高版本的 JOOQ 框架 -->
+      <groupId>org.jooq</groupId>
+      <artifactId>jooq</artifactId>
+      <version>${version.jooq}</version>
+    </dependency>
+    <dependency>
+      <!-- Spring Boot Web 框架 -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <!-- H2 DB 驱动依赖 -->
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+    </dependency>
+    <dependency>
+      <!-- Modelmapper 对象类型转换依赖 -->
+      <groupId>org.modelmapper.extensions</groupId>
+      <artifactId>modelmapper-jooq</artifactId>
+    </dependency>
+    <dependency>
+      <!-- Apache Common Codec 依赖 -->
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+    </dependency>
+    <dependency>
+      <!-- 数据库 Migration 依赖 -->
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <!-- Flyway 插件 -->
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-maven-plugin</artifactId>
+        <configuration>
+          <url>${jdbc.url}</url>
+          <user>${jdbc.user}</user>
+          <password>${jdbc.password}</password>
+          <locations>
+            <location>filesystem:${project.basedir}/src/main/resources/migration</location>
+          </locations>
+          <table>schema_version</table>
+        </configuration>
+      </plugin>
+      <plugin>
+        <!-- JOOQ 代码生成插件 -->
+        <groupId>org.jooq</groupId>
+        <artifactId>jooq-codegen-maven</artifactId>
+        <version>${version.maven-jooq}</version>
+        <configuration>
+          <jdbc>
+            <!-- 数据库连接 -->
+            <url>${jdbc.url}</url>
+            <!-- 用户名 -->
+            <user>${jdbc.user}</user>
+            <!-- 密码 -->
+            <password>${jdbc.password}</password>
+          </jdbc>
+          <generator>
+            <!-- 代码生成器类 -->
+            <name>org.jooq.codegen.JavaGenerator</name>
+            <!-- 代码生成策略类 -->
+            <strategy>
+              <name>org.jooq.codegen.DefaultGeneratorStrategy</name>
+            </strategy>
+            <!-- 数据库配置 -->
+            <database>
+              <name>org.jooq.meta.h2.H2Database</name>
+              <!-- 要生成代码的 schema 集合 -->
+              <includes>PUBLIC.*</includes>
+              <!-- 不生成代码的 schema 集合 -->
+              <excludes>PUBLIC.schema_version | PUBLIC.flyway_schema_history</excludes>
+              <!-- 乐观锁版本控制字段名 -->
+              <recordVersionFields>version</recordVersionFields>
+
+              <!-- 特殊字段类型处理 -->
+              <forcedTypes>
+                <!-- 处理 user.type 字段 -->
+                <forcedType>
+                  <!-- 字段对应的 java 类型 -->
+                  <userType>alvin.study.springboot.jooq.infra.model.UserType</userType>
+                  <!-- 是否为枚举类型, 此时会使用 org.jooq.impl.EnumConverter 转换器进行处理 -->
+                  <enumConverter>true</enumConverter>
+                  <!-- 要处理的字段, 为一个正则表达式, 匹配所有要被处理的字段 -->
+                  <includeExpression>USER\.TYPE</includeExpression>
+                </forcedType>
+
+                <!-- 处理 employee.info 字段 -->
+                <forcedType>
+                  <!-- 字段对应的 java 类型 -->
+                  <userType>alvin.study.springboot.jooq.infra.model.EmployeeInfo</userType>
+                  <!-- 指定类型转换器类型 -->
+                  <converter>alvin.study.springboot.jooq.infra.converter.EmployeeInfoConverter</converter>
+                  <!-- 要处理的字段, 为一个正则表达式, 匹配所有要被处理的字段 -->
+                  <includeExpression>EMPLOYEE\.INFO</includeExpression>
+                </forcedType>
+              </forcedTypes>
+            </database>
+            <generate>
+              <!-- 生成规则配置 -->
+              <deprecated>false</deprecated>
+              <records>true</records>
+              <fluentSetters>true</fluentSetters>
+              <!-- 生成 pojo 类型 -->
+              <pojos>true</pojos>
+              <!-- 令 pojo 类型必须通过构造器创建, 无 set 方法 -->
+              <!-- <immutablePojos>true</immutablePojos> -->
+              <pojosEqualsAndHashCode>true</pojosEqualsAndHashCode>
+              <!-- 生成校验注解 -->
+              <!-- <validationAnnotations>true</validationAnnotations> -->
+              <!-- 不约束 Jooq 的版本号 -->
+              <!-- <jooqVersionReference>false</jooqVersionReference> -->
+              <!-- <daos>true</daos> -->
+              <fluentSetters>true</fluentSetters>
+              <javaTimeTypes>true</javaTimeTypes>
+            </generate>
+            <target>
+              <!-- 代码生成配置 -->
+              <packageName>alvin.study.springboot.jooq.infra.model</packageName>
+              <directory>${project.basedir}/src/jooq/java</directory>
+            </target>
+          </generator>
+        </configuration>
+      </plugin>
+      <plugin>
+        <!-- 辅助构建插件 -->
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <!-- 设置额外的源码路径 -->
+                <source>${project.basedir}/src/jooq/java</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

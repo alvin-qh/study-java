@@ -1,0 +1,135 @@
+#
+# https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#application-properties.core
+#
+# 配置 Spring Boot
+spring:
+  main:
+    banner-mode: off
+
+  application:
+    name: study-springboot-graphql
+
+  # 数据源配置
+  datasource:
+    # 配置 Hikari 数据库连接池
+    # 参考: https://github.com/brettwooldridge/HikariCP
+    hikari:
+      maximum-pool-size: 50
+      connection-timeout: 30000
+      idle-timeout: 30000
+      max-lifetime: 590000
+      minimum-idle: 5
+      connection-test-query: select 1
+
+    url: jdbc:h2:./.data/dev;MODE=MYSQL;NON_KEYWORDS=USER
+    username: dev
+    password: password
+
+  # db migration 配置
+  flyway:
+    locations: classpath:/migration
+    baseline-on-migrate: true
+    table: schema_version
+
+  # web 端分页配置
+  data:
+    web:
+      pageable:
+        default-page-size: 2000
+        max-page-size: 5000
+
+  # 配置 graphql-spring 框架
+  # Kickstart 是基于 org.springframework.boot:spring-boot-starter-graphql 框架建立的, 所以部分配置在 spring.graphql 下
+  graphql:
+    schema:
+      # schema 文件的扩展名
+      file-extensions: graphqls
+      # schema 文件的存放路径
+      locations: classpath*:graphql/**/*.graphqls
+
+# 服务容器 (Tomcat) 配置
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    keep-alive-timeout: 30000
+    max-keep-alive-requests: 10000
+    connection-timeout: 5s
+    threads:
+      max: 256
+      min-spare: 0
+  port: 8080
+  servlet:
+    context-path: /
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  http2:
+    enabled: true
+  compression:
+    enabled: true
+
+# 配置 mybatis
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**.xml
+  type-aliases-package: alvin.study.infra.entity
+  global-config:
+    banner: false
+    enable-sql-runner: true # 启用 SqlRunner 对象
+  configuration:
+    cache-enabled: true
+    map-underscore-to-camel-case: true
+    auto-mapping-behavior: full
+    auto-mapping-unknown-column-behavior: warning
+
+# 配置 Kickstart Graphql 框架
+# See: https://github.com/graphql-java-kickstart/graphql-spring-boot#enable-graphql-servlet
+graphql:
+  # schema-strategy: annotations
+  # annotations:
+  #   base-package: alvin.study
+  extended-scalars:
+    - DateTime
+    - JSON
+    - Long
+  servlet:
+    mapping: /graphql
+    corsEnabled: false
+    # cors:
+    #   allowed-origins: http://some.domain.com
+    #   allowed-methods: GET, HEAD, POST
+    exception-handlers-enabled: true
+    context-setting: PER_REQUEST_WITH_INSTRUMENTATION
+    async:
+      enabled: true
+  tools:
+    introspection-enabled: true
+  graphiql:
+    enabled: true
+    mapping: /graphiql
+    subscriptions:
+      timeout: 30
+      reconnect: false
+    pageTitle: GraphiQL
+    props:
+      variables:
+        editorTheme: solarized dark
+  altair:
+    enabled: false
+  playground:
+    enabled: false
+  voyager:
+    enabled: false
+
+# 应用程序设置
+application:
+  security:
+    hash:
+      algorithm: HmacSHA256
+      key: ndE2jdZNFixH9G6Aidsfyf7lYT3PxW
+    jwt:
+      key: RKZBC62CfMp1Vyfo19K9RE1ZVREaLDFDUVsY7xnQaBMOtodSp7oBa0ZdMeGXa2D6
+      jti: study.alvin.org
+    session:
+      period: PT2H
+  zone: UTC

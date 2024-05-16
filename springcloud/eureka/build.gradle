@@ -1,0 +1,12 @@
+subprojects {
+  if (!new File(projectDir, "src").exists()) {
+    return
+  }
+
+  dependencies {
+    implementation libs.main.springboot.web,
+      libs.main.springboot.actuator
+
+    testImplementation libs.test.awaitility
+  }
+}

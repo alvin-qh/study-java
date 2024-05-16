@@ -1,0 +1,26 @@
+plugins {
+  id "org.springframework.boot"
+}
+
+dependencies {
+  implementation project(":springboot:autoconfig:lib")
+    libs.main.springboot.autoconfigure
+
+  developmentOnly libs.main.springboot.devtools
+}
+
+springBoot {
+  mainClass = "alvin.study.springboot.autoconf.Main"
+}
+
+bootJar {
+  exclude "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA", "META-INF/*.MF"
+
+  manifest {
+    attributes "Implementation-Title": "Study Spring Boot AutoConfig"
+    attributes "Implementation-Version": projectVersion.version
+  }
+
+  archiveBaseName = project.group
+  archiveFileName = "alvin.study.springboot-autoconfig.${archiveExtension.get()}"
+}

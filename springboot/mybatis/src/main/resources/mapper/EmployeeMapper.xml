@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="alvin.study.springboot.mybatis.infra.mapper.EmployeeMapper">
+  <!--
+  定义查询结果如何映射到实体类对象的规则
+  - resultMap 标签指定查询结果和实体对象的映射关系
+    - id 属性指定了一个标识符, 通过 select 标签的 resultMap 属性进行对应
+    - type 属性指定映射对应的实体类型
+    - autoMapping 表示自动进行字段映射, 表字段和实体字段相等 (例如同一个名称的下划线和驼峰命名视为相等), 则可进行自动映射,
+                  否则需要显式声明映射关系
+
+  resultMap 标签可以通过 select 标签的 resultMap 属性来指定, 也可以在 Mapper 接口类型中, 通过 @ResultMap 注解来指定
+  参考 EmployeeMapper.selectBatchNames(Collection) 方法
+  -->
+  <resultMap
+    id="employeeResultMap"
+    type="alvin.study.springboot.mybatis.infra.entity.Employee"
+    autoMapping="true"
+  >
+    <id property="id" column="id"/>
+
+    <!--
+    typeHandler 表示使用当前 resultMap 进行数据表字段和实体对象字段映射时, 当前字段所需的"字段类型处理器"类型
+    JacksonTypeHandler 处理器表示将实体字段转为 JSON 后存入数据表字段, 或从数据表字段将 JSON 字符串转为实体类型
+    -->
+    <result
+      property="info"
+      column="info"
+      typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"
+    />
+
+    <!--
+    <result property="orgId" column="org_id" />
+    <result property="name" column="name" />
+    <result property="email" column="email" />
+    <result property="title" column="title" />
+
+    <result property="deleted" column="deleted" />
+    <result property="createdBy" column="created_by" />
+    <result property="createdAt" column="created_at" />
+    <result property="updatedBy" column="updated_by" />
+    <result property="updatedAt" column="updated_at" />
+    -->
+
+    <!--
+    定义实体中字段的一对多的映射关系
+    - collection 标签指定了实体中的一对多映射关系
+      - property 属性指定了实体中一对多的属性名
+      - ofType 属性指定了 property 属性的类型
+      - resultMap 指定了类型如何进行映射, 指向一个已经声明好的 resultMap 标签 id. 如果没有对应的映射关系, 可以在 association 标签内
+        显式通过 id, result 标签声明映射关系
+      - columnPrefix 表示相关的字段统一具备的前缀字符串, 在查询时需要声明该前缀的别名, 例如: p.name as p_name, 会映射到该规则的 name
+        字段上
+    -->
+    <collection
+      property="departments"
+      resultMap="alvin.study.springboot.mybatis.infra.mapper.DepartmentMapper.departmentResultMap"
+      columnPrefix="d_"
+    />
+  </resultMap>
+
+  <!--
+  一个部分 SQL 的声明, 在其它标签内可以通过 include 标签进行引用, 减少重复书写 SQL 语句段的目的
+  -->
+  <sql id="selectEmployeeJoinDepartment">
+    <![CDATA[
+    select e.id,
+           e.org_id,
+           e.name,
+           e.email,
+           e.title,
+           e.info,
+           e.deleted,
+           e.created_by,
+           e.created_at,
+           e.updated_by,
+           e.updated_at,
+           d.id         as d_id,
+           d.org_id     as d_org_id,
+           d.name       as d_name,
+           d.deleted    as d_deleted,
+           d.created_by as d_created_by,
+           d.created_at as d_created_at,
+           d.updated_by as d_updated_by,
+           d.updated_at as d_updated_at
+    from employee e
+           left join department_employee de on e.id = de.employee_id
+           left join department d on d.deleted = 0 and de.department_id = d.id
+    ]]>
+  </sql>
+
+  <!--
+  对应 alvin.study.infra.mapper.DepartmentMapper.selectByNameWithEmployees 方法
+  - select 标签指定了该方法对应的 select SQL 语句, 其中:
+    - id 属性指定了对应 Mapper 接口的方法名
+    - resultMap 属性对应 resultMap 标签, 指定了返回结果如何和实体类型进行映射
+  -->
+  <select id="selectByNameWithDepartments" resultMap="employeeResultMap">
+    <!--
+    引入预先定义的 SQL 段
+    -->
+    <include refid="selectEmployeeJoinDepartment"/>
+    <![CDATA[
+      where e.deleted = 0 and e.name = #{name}
+    ]]>
+  </select>
+
+  <!--
+  演示通过 foreach 标签拼接 SQL 语句
+  本例中通过 foreach 标签拼接了 (item1, item2, item3) 这类格式的 SQL 语句
+  -->
+  <select id="selectBatchNames" resultMap="employeeResultMap">
+    <![CDATA[
+      select id, org_id, name, email, title, info, deleted, created_by, created_at, updated_by, updated_at
+      from employee
+      where deleted = 0 and name in
+    ]]>
+
+    <!--
+    通过 foreach 标签将传递的集合参数进行逐一迭代处理
+    - collection: 表示传递的集合参数值
+    - item: 每次迭代产生的值, 在 foreach 标签内部使用
+    - open: 整个 foreach 标签产生结果的前缀
+    - close: 整个 foreach 标签产生结果的后缀
+    - separator: 每次迭代输出之间的分隔符
+
+    通过如下 foreach 标签, 最终产生类似 (item1, item2, item3) 格式的 SQL 语句段
+    -->
+    <foreach collection="names" item="name" open="(" close=")" separator=",">
+      #{name}
+    </foreach>
+
+    <![CDATA[
+      order by name
+    ]]>
+  </select>
+
+  <!--
+  动态查询, 根据所给参数的情况, 动态组装 SQL 语句并进行查询
+  - where 标签包含了一组条件片段, 根据 if 标签可以根据不同情况组装不同的 where 语句
+  - bind 标签用于定义一个变量, 可以通过 OGNL 表达式对变量进行赋值, 在之后的条件中通过 #{...} 或者 ${...} 来使用
+
+  注意, 一旦包含了 where 标签, 就不能直接写 where 语句, 会导致生成的 SQL 发生错误
+  -->
+  <select id="selectBySearch" resultMap="employeeResultMap">
+    <!--
+    引入预先定义的 SQL 段
+    -->
+    <include refid="selectEmployeeJoinDepartment"/>
+
+    <!--
+    动态查询, 根据传入参数情况拼装 SQL 语句
+    -->
+    <where>
+      <if test="name != null and name != ''">
+        <!--
+        -->
+        <bind name="nameLike" value="'%' + name.replaceAll('_', '/_') + '%'"/>
+        <![CDATA[
+          and e.name like #{nameLike} escape '/'
+        ]]>
+      </if>
+
+      <if test="email != null and email != ''">
+        <bind name="emailLike" value="'%' + email.replaceAll('_', '/_') + '%'"/>
+        <![CDATA[
+          and e.email like #{emailLike} escape '/'
+        ]]>
+      </if>
+
+      <if test="title != null and title != ''">
+        <![CDATA[
+          and e.title = #{title}
+        ]]>
+      </if>
+
+      <if test="departmentName != null and departmentName != ''">
+        <bind name="departmentNameLike" value="'%' + departmentName.replaceAll('_', '/_') + '%'"/>
+        <![CDATA[
+          and d.name like #{departmentNameLike} escape '/'
+        ]]>
+      </if>
+
+      <![CDATA[
+        and e.deleted = 0
+      ]]>
+    </where>
+
+    <!--
+    where 部分结束后, 继续书写 order by 或者 group by 等子句
+    -->
+    <![CDATA[
+      order by id asc
+    ]]>
+  </select>
+</mapper>

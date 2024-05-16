@@ -1,0 +1,173 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>study-java-springboot-security</artifactId>
+  <name>${project.artifactId}</name>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <!-- 从根项目 pom.xml 继承 -->
+  <parent>
+    <groupId>alvin.study</groupId>
+    <artifactId>study-java-springboot-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <properties>
+    <jdbc.url>jdbc:h2:${project.basedir}/.data/dev;MODE=MYSQL</jdbc.url>
+    <jdbc.user>dev</jdbc.user>
+    <jdbc.password>password</jdbc.password>
+    <!-- spring 升级到 3.2 以后, mybatis-plus 的相关组件未跟上升级 -->
+    <version.mybatis-spring>3.0.3</version.mybatis-spring>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.auth0</groupId>
+        <artifactId>java-jwt</artifactId>
+        <version>${version.auth-jwt}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-codec</groupId>
+        <artifactId>commons-codec</artifactId>
+        <version>${version.commons-codec}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus-boot-starter</artifactId>
+        <version>${version.mybatis-plus}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.modelmapper</groupId>
+        <artifactId>modelmapper</artifactId>
+        <version>${version.modelmapper}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-test</artifactId>
+        <version>${version.spring-security-test}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <!-- Spring Boot Web 依赖 -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <!-- Spring Boot Security 依赖 -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+    <dependency>
+      <!-- JWT 依赖 -->
+      <groupId>com.auth0</groupId>
+      <artifactId>java-jwt</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <!-- Spring Boot JDBC 依赖 -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-jdbc</artifactId>
+    </dependency>
+    <dependency>
+      <!-- Mybatis-Plus 依赖 -->
+      <groupId>com.baomidou</groupId>
+      <artifactId>mybatis-plus-boot-starter</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <!-- spring 升级到 3.2 以后, mybatis-plus 的相关组件未跟上升级 -->
+        <exclusion>
+          <groupId>org.mybatis</groupId>
+          <artifactId>mybatis-spring</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <!-- spring 升级到 3.2 以后, mybatis-plus 的相关组件未跟上升级 -->
+    <dependency>
+      <groupId>org.mybatis</groupId>
+      <artifactId>mybatis-spring</artifactId>
+      <version>${version.mybatis-spring}</version>
+    </dependency>
+    <dependency>
+      <!-- Redis 依赖 -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-redis</artifactId>
+    </dependency>
+    <dependency>
+      <!-- Commons Pool2 依赖, 用于 Redis 连接池管理 -->
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-pool2</artifactId>
+    </dependency>
+    <dependency>
+      <!-- Spring Boot Bean 验证依赖 -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
+    <dependency>
+      <!-- Apache Common Codec 依赖 -->
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+    </dependency>
+    <dependency>
+      <!-- H2 DB 驱动依赖 -->
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+    </dependency>
+    <dependency>
+      <!-- Modelmapper 对象类型转换工具对象 -->
+      <groupId>org.modelmapper</groupId>
+      <artifactId>modelmapper</artifactId>
+    </dependency>
+    <dependency>
+      <!-- 数据库 Migration 依赖 -->
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <!-- Spring Boot Security 测试依赖 -->
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <!-- Spring Boot Webflux Starter, 这里仅用作测试 -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-webflux</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <!-- Flyway 插件 -->
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-maven-plugin</artifactId>
+        <configuration>
+          <url>${jdbc.url}</url>
+          <user>${jdbc.user}</user>
+          <password>${jdbc.password}</password>
+          <locations>
+            <location>classpath:/migration</location>
+          </locations>
+          <table>schema_version</table>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

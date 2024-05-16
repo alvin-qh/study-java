@@ -1,0 +1,20 @@
+spring:
+  main:
+    banner-mode: off
+    allow-bean-definition-overriding: true
+
+  # 测试数据源配置
+  datasource:
+    # 配置默认连接池
+    hikari:
+      pool-name: test
+
+    # 配置默认数据源
+    # MODE=MYSQL 表示语法兼容 MySQL
+    # NON_KEYWORDS=USER 表示 USER 不作为数据库内部关键字使用, 否则在操作 User 实体时会报 expected identifier 错误
+    url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL;NON_KEYWORDS=USER
+    username: test
+    password: password
+
+  jpa:
+    show-sql: true

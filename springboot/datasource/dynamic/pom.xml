@@ -1,0 +1,81 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>study-java-springboot-ds-dynamic</artifactId>
+  <name>${project.artifactId}</name>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <!-- 从根项目 pom.xml 继承 -->
+  <parent>
+    <groupId>alvin.study</groupId>
+    <artifactId>study-java-springboot-ds-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <properties>
+    <jdbc.url>jdbc:h2:${project.basedir}/.data/common;MODE=MYSQL</jdbc.url>
+    <jdbc.user>dev</jdbc.user>
+    <jdbc.password>password</jdbc.password>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <!-- Spring Boot Web 依赖 -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <!-- Spring Boot JDBC 依赖 -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-jdbc</artifactId>
+    </dependency>
+    <dependency>
+      <!-- Spring Boot Bean 验证依赖 -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
+    <dependency>
+      <!-- Spring Boot AOP 依赖 -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-aop</artifactId>
+    </dependency>
+    <dependency>
+      <!-- H2 DB 驱动依赖 -->
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+    </dependency>
+    <dependency>
+      <!-- 数据库 Migration 依赖 -->
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+    </dependency>
+    <dependency>
+      <!-- Spring Boot Webflux Starter, 这里仅用作测试 -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-webflux</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <!-- Flyway 插件 -->
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-maven-plugin</artifactId>
+        <configuration>
+          <url>${jdbc.url}</url>
+          <user>${jdbc.user}</user>
+          <password>${jdbc.password}</password>
+          <locations>
+            <location>classpath:/migration/common</location>
+          </locations>
+          <table>schema_version</table>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

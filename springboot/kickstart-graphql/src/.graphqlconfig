@@ -1,0 +1,15 @@
+{
+  "name": "Study GraphQL",
+  "schemaPath": "src/main/resources/graphql/type.graphqls",
+  "extensions": {
+    "endpoints": {
+      "Local GraphQL Endpoint": {
+        "url": "http://localhost:8080/graphql",
+        "headers": {
+          "user-agent": "Study GraphQL"
+        },
+        "introspect": false
+      }
+    }
+  }
+}

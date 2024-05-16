@@ -1,0 +1,34 @@
+plugins {
+  id "org.springframework.boot"
+}
+
+dependencies {
+  implementation libs.main.springboot.doc,
+    libs.main.springboot.web,
+    libs.main.springboot.security,
+    libs.main.springboot.validator,
+    libs.main.commonsCodec,
+    libs.main.jwt
+
+  developmentOnly libs.main.springboot.devtools
+
+  testImplementation libs.test.springboot.web
+}
+
+springBoot {
+  mainClass = "alvin.study.springboot.springdoc.Main"
+}
+
+bootJar {
+  exclude "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA", "META-INF/*.MF"
+
+  manifest {
+    attributes "Implementation-Title": "Study Spring Boot SpringDoc"
+    attributes "Implementation-Version": projectVersion.version
+  }
+
+  archiveBaseName = project.group
+  archiveFileName = "alvin.study.springboot-doc.${archiveExtension.get()}"
+}
+
+

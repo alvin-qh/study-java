@@ -1,0 +1,28 @@
+plugins {
+  id "org.springframework.boot"
+}
+
+dependencies {
+  implementation libs.main.springcloud.gateway,
+    libs.main.springcloud.loadBalancer,
+    libs.main.commonsCodec,
+    libs.main.jwt
+
+  developmentOnly libs.main.springboot.devtools
+}
+
+springBoot {
+  mainClass = "alvin.study.springcloud.gateway.server.Main"
+}
+
+bootJar {
+  exclude "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA", "META-INF/*.MF"
+
+  manifest {
+    attributes "Implementation-Title": "Study Spring Cloud Gateway Server"
+    attributes "Implementation-Version": projectVersion.version
+  }
+
+  archiveBaseName = project.group
+  archiveFileName = "alvin.study.springcloud-gateway-server.${archiveExtension.get()}"
+}

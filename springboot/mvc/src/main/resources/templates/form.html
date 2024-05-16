@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <link href="/static/css/form.css" rel="stylesheet" type="text/css"/>
+    <title th:text="#{form.title}">请填写表单</title>
+</head>
+
+<body>
+<div id="main">
+    <div class="title clear-fix">
+        <h1 th:text="#{form.title}">请填写表单</h1>
+        <div class="lang">
+            <select name="lang" title="Language">
+                <option value="en-US">English</option>
+                <option value="zh-CN">Chinese</option>
+            </select>
+        </div>
+    </div>
+    <hr/>
+    <form method="post">
+        <div class="row clear-fix">
+            <label class="label" for="name" th:text="|#{form.input.name}: |">
+                姓名:
+            </label>
+            <div class="input">
+                <input id="name" name="name" th:placeholder="#{form.placeholder.name}" th:value="${form.name}"
+                       type="text"/>
+            </div>
+        </div>
+        <div class="row clear-fix">
+            <label class="label" for="age" th:text="|#{form.input.age}: |">
+                年龄:
+            </label>
+            <div class="input">
+                <input id="age" name="age" th:placeholder="#{form.placeholder.age}" th:value="${form.age}"
+                       type="number"/>
+            </div>
+        </div>
+        <div class="row clear-fix">
+            <label class="label" for="gender" th:text="|#{form.input.gender}: |">
+                性别:
+            </label>
+            <div class="input">
+                <label class="radio">
+                    <input name="gender" th:attrappend="checked=${form.gender != 'F'}?checked" type="radio"
+                           value="M"/>
+                    [[#{form.input.gender.M}]]
+                </label>
+                <label class="radio">
+                    <input name="gender" th:attrappend="checked=${form.gender == 'F'}?checked" type="radio"
+                           value="F"/>
+                    [[#{form.input.gender.F}]]
+                </label>
+            </div>
+        </div>
+        <div class="row clear-fix submit">
+            <button th:text="#{form.input.submit}" type="submit">提交</button>
+        </div>
+    </form>
+
+    <block th:if="${error}">
+        <h4 th:text="#{form.error_message}">错误信息</h4>
+        <ul class="errors">
+            <li th:each="err, iterStat:${error.fieldErrors}">
+                <span class="field-name" th:text="${err.field}">字段名</span>:
+                <span class="field-error" th:text="${err.defaultMessage}">错误信息</span>
+            </li>
+        </ul>
+    </block>
+</body>
+</div>
+
+<script src="/static/js/form.js" type="text/javascript"></script>
+
+</html>

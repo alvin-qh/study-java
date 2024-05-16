@@ -1,0 +1,3 @@
+# Set the full name of autoconfig classes, more classes should separated by ','
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=alvin.study.springboot.autoconf.AutoConfiguration
+org.springframework.boot.SpringApplicationRunListener=alvin.study.springboot.autoconf.bootstrap.SpringApplicationListener

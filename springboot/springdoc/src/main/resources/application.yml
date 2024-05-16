@@ -1,0 +1,94 @@
+#
+# https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#application-properties.core
+#
+# 配置 Spring Boot Server
+server:
+  port: 8080
+  max-http-request-header-size: 8KB
+
+
+  # 配置 Spring Boot Servlet
+  servlet:
+    context-path: /
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+  # 启用 Http2
+  http2:
+    enabled: true
+
+  # 启用压缩
+  compression:
+    enabled: true
+
+  # 内置 Tomcat 配置
+  # 参考 https://www.baeldung.com/spring-boot-configure-tomcat
+  tomcat:
+    uri-encoding: UTF-8
+    connection-timeout: 10s
+    max-connections: 10000
+    accept-count: 1000
+    max-swallow-size: 2MB
+    max-http-form-post-size: 5MB
+    keep-alive-timeout: 30000
+    max-keep-alive-requests: 10000
+    threads:
+      max: 256
+      min-spare: 10
+
+# 配置 Spring Boot
+spring:
+  application:
+    name: study-springboot-doc
+
+  # 关闭 banner 显式
+  main:
+    banner-mode: off
+
+  # 配置 Jackson JSON 解析设置
+  jackson:
+    default-property-inclusion: non-null
+    mapper:
+      default-view-inclusion: false
+    generator:
+      ignore-unknown: false
+    serialization:
+      write-dates-as-timestamps: false
+      fail-on-empty-beans: false
+
+  # 配置 Servlet 相关设置
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+# 参考文档: https://springdoc.org/properties.html
+springdoc:
+  packages-to-scan: alvin.study
+  default-produces-media-type: application/json
+  authorization:
+    username: api-doc
+    password: 4VZ5^7uHR2)ctAZmn+
+
+# 应用程序设置
+application:
+  security:
+    hash:
+      algorithm: HmacSHA256
+      key: ndE2jdZNFixH9G6Aidsfyf7lYT3PxW
+    jwt:
+      key: RKZBC62CfMp1Vyfo19K9RE1ZVREaLDFDUVsY7xnQaBMOtodSp7oBa0ZdMeGXa2D6
+      aud: study.alvin
+      jti: study.alvin.org
+    session:
+      period: PT2H
+  access-users:
+    - username: alvin
+      password: o6FvOGmAGC5eMH2
+    - username: emma
+      password: qqh9qZ0pRx0Lxt5
+    - username: lucy
+      password: rwTMhSK7jPDj0Nh
+  zone: UTC

@@ -1,0 +1,13 @@
+subprojects {
+  if (!new File(projectDir, "src").exists()) {
+    return
+  }
+
+  dependencies {
+    implementation libs.main.jakarta.inject,
+      libs.main.guice
+
+    testImplementation libs.test.junit,
+        libs.test.assertj
+  }
+}

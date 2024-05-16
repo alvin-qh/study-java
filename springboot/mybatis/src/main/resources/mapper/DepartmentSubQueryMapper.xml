@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="alvin.study.springboot.mybatis.infra.mapper.DepartmentSubQueryMapper">
+  <!--
+  定义查询结果如何映射到实体类对象的规则
+  - resultMap 标签指定查询结果和实体对象的映射关系
+    - id 属性指定了一个标识符, 通过 select 标签的 resultMap 属性进行对应
+    - type 属性指定映射对应的实体类型
+    - autoMapping 表示自动进行字段映射, 表字段和实体字段相等 (例如同一个名称的下划线和驼峰命名视为相等), 则可进行自动映射,
+                  否则需要显式声明映射关系
+
+  resultMap 标签可以通过 select 标签的 resultMap 属性来指定, 也可以在 Mapper 接口类型中, 通过 @ResultMap 注解来指定,
+  参考 DepartmentMapper.selectByName(String) 方法
+  -->
+  <resultMap
+    id="departmentResultMap"
+    type="alvin.study.springboot.mybatis.infra.entity.Department"
+    autoMapping="true"
+  >
+    <!-- id 映射关系需要显式声明 -->
+    <id property="id" column="id"/>
+
+    <!-- 开启 autoMapping 后可以无需逐字段设置
+    <result property="orgId" column="org_id" />
+    <result property="name" column="name" />
+    <result property="deleted" column="deleted" />
+    <result property="createdBy" column="created_by" />
+    <result property="createdAt" column="created_at" />
+    <result property="updatedBy" column="updated_by" />
+    <result property="updatedAt" column="updated_at" />
+    -->
+
+    <!--
+    定义实体中字段的一对一的映射关系
+    - association 标签指定了实体中的一对一映射关系
+      - property 属性指定了实体中一对一的属性名
+      - select 获取关联对象的查询 id, 参见 "select #id=_selectParentById"
+      - column 指定关联的字段, 这里是 "parent_id", 可以直接写字段名 column="parent_id", 也可以给字段一个别名
+        column="{parentId = parent_id}"
+    -->
+    <association
+      property="parent"
+      select="_selectParentById"
+      column="{parentId = parent_id}"
+    />
+  </resultMap>
+
+  <!--
+  定义关联字段的查询
+  - "null as prent_id" 表示不再继续查询上一级关联, 避免自动引发过多级联查询
+  - "id = #{parentId}" 表示关联关系, parentId 由 association 标签的 column 属性定义, 如果不定义别名即 "column=parent_id",
+    则这里的条件应改为 "id = #{parent_id}"
+  -->
+  <select id="_selectParentById" resultMap="departmentResultMap">
+    <![CDATA[
+    select id,
+           org_id,
+           null as parent_id,
+           name,
+           deleted,
+           created_by,
+           created_at,
+           updated_by,
+           updated_at
+    from department
+    where id = #{parentId}
+    ]]>
+  </select>
+
+  <!--
+  对应 alvin.study.infra.mapper.DepartmentSubQueryMapper.selectWithParentById 方法
+  - select 标签指定了该方法对应的 select SQL 语句, 其中:
+    - id 属性指定了对应 Mapper 接口的方法名
+    - resultMap 属性对应 resultMap 标签, 指定了返回结果如何和实体类型进行映射
+  -->
+  <select id="selectWithParentById" resultMap="departmentResultMap">
+    <![CDATA[
+    select id,
+           org_id,
+           parent_id,
+           name,
+           deleted,
+           created_by,
+           created_at,
+           updated_by,
+           updated_at
+    from department
+    where id = #{id}
+    ]]>
+  </select>
+</mapper>

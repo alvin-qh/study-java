@@ -1,0 +1,35 @@
+[mysqld]
+skip-external-locking
+
+init_connect = 'SET NAMES utf8mb4'
+collation-server = utf8mb4_unicode_ci
+
+character-set-server = utf8mb4
+character-set-client-handshake = FALSE
+
+bind-address = 0.0.0.0
+port = 3306
+
+# general_log = ON
+# general_log=1
+
+# slow_query_log = ON
+
+thread_handling = pool-of-threads # 启动线程池
+default_time_zone = +00:00
+
+net_read_timeout = 28800
+net_write_timeout = 28800
+
+# 使用本地密码方式登录
+default_authentication_plugin = mysql_native_password
+
+# 忽略插件即将过期警告, 例如 sha256_password 插件
+log_error_suppression_list='MY-013360,013746,013602,011323'
+log_error_verbosity=1
+
+[client]
+default-character-set = utf8mb4
+
+[mysql]
+default-character-set = utf8mb4

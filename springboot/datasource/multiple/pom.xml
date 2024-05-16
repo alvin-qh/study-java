@@ -1,0 +1,92 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>study-java-springboot-ds-multipie</artifactId>
+  <name>${project.artifactId}</name>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <!-- 从根项目 pom.xml 继承 -->
+  <parent>
+    <groupId>alvin.study</groupId>
+    <artifactId>study-java-springboot-ds-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <properties>
+    <jdbc.url>jdbc:h2:${project.basedir}/.data/dev;MODE=MYSQL</jdbc.url>
+    <jdbc.url.db1>jdbc:h2:${project.basedir}/.data/dev1;MODE=MYSQL</jdbc.url.db1>
+    <jdbc.url.db2>jdbc:h2:${project.basedir}/.data/dev2;MODE=MYSQL</jdbc.url.db2>
+    <jdbc.user>dev</jdbc.user>
+    <jdbc.password>password</jdbc.password>
+  </properties>
+
+  <!-- 配置依赖 -->
+  <dependencies>
+    <dependency>
+      <!-- Spring Boot Web 依赖 -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <!-- Spring Boot JPA 依赖 -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-jdbc</artifactId>
+    </dependency>
+    <dependency>
+      <!-- H2 DB 驱动依赖 -->
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+    </dependency>
+    <dependency>
+      <!-- 数据库 Migration 依赖 -->
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <!-- Flyway 插件 -->
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-maven-plugin</artifactId>
+        <configuration>
+          <url>${jdbc.url}</url>
+          <user>${jdbc.user}</user>
+          <password>${jdbc.password}</password>
+          <locations>
+            <location>classpath:/migration</location>
+          </locations>
+          <table>schema_version</table>
+        </configuration>
+        <executions>
+          <execution>
+            <!-- 配置 dev1 -->
+            <id>db1</id>
+            <goals>
+              <goal>migrate</goal>
+            </goals>
+            <configuration>
+              <!-- 数据库连接 -->
+              <url>${jdbc.url.db1}</url>
+            </configuration>
+          </execution>
+          <execution>
+            <!-- 配置 dev2 -->
+            <id>db2</id>
+            <goals>
+              <goal>migrate</goal>
+            </goals>
+            <configuration>
+              <!-- 数据库连接 -->
+              <url>${jdbc.url.db2}</url>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

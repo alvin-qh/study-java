@@ -1,0 +1,117 @@
+pluginManagement {
+  repositories {
+    mavenLocal()
+    maven {
+      url "https://repo.huaweicloud.com/repository/maven/"
+      url "https://maven.aliyun.com/nexus/content/groups/public/"
+    }
+    mavenCentral()
+    gradlePluginPortal()
+  }
+  plugins {
+    // id("de.fayard.refreshVersions") version "${VER_PLUGIN_REFRESH_VERSIONS}"
+    id "io.quarkus" version "${VAR_QUARKUS_PLUGIN}"
+  }
+}
+
+// plugins {
+//   id "de.fayard.refreshVersions"
+// }
+
+buildscript {
+  // 遍历所有的依赖
+  configurations["classpath"].resolutionStrategy.eachDependency {
+    if (requested.group == "org.jooq") {
+      useVersion "${VER_JOOQ}" // 将所有对 Jooq 的依赖替换为最新版本
+    }
+  }
+}
+
+rootProject.name = "study-java"
+
+include(
+  ":se:annotation",
+  ":se:binary",
+  ":se:collection",
+  ":se:concurrent",
+  ":se:io",
+  ":se:jdbc",
+  ":se:mail",
+  ":se:process",
+  ":se:ratelimit",
+  ":se:reflect",
+  ":se:runtime",
+  ":se:timing",
+  ":se:security",
+)
+
+include(
+  ":testing:testcase",
+  ":testing:assertj",
+  ":testing:awaitility",
+  ":testing:faker",
+  ":testing:hamcrest",
+  ":testing:junit",
+  ":testing:mock",
+  ":testing:pioneer",
+  ":testing:testng",
+)
+
+include(
+  ":misc:cli",
+  ":misc:jackson",
+  ":misc:jwt",
+)
+
+include(
+  ":guava:cache",
+  ":guava:collect",
+  ":guava:common",
+  ":guava:eventbus",
+  ":guava:future",
+  ":guava:graphs",
+  ":guava:hashing",
+  ":guava:io",
+  ":guava:reflect",
+)
+
+include(
+  ":guice:aspect",
+  ":guice:bind",
+  ":guice:inject",
+  ":guice:module",
+  ":guice:singleton",
+)
+
+include(
+  ":springboot:mvc",
+  ":springboot:spel",
+  ":springboot:testing",
+  ":springboot:validator",
+  ":springboot:aop",
+  ":springboot:jpa",
+  ":springboot:autoconfig:lib",
+  ":springboot:autoconfig:app",
+  ":springboot:datasource:dynamic",
+  ":springboot:datasource:multiple",
+  ":springboot:jooq",
+  ":springboot:mybatis",
+  ":springboot:security",
+//  ":springboot:shiro",
+  ":springboot:kickstart-graphql",
+  ":springboot:springdoc",
+)
+
+include(
+  ":springcloud:nacos",
+  ":springcloud:eureka:server",
+  ":springcloud:eureka:client",
+  ":springcloud:gateway:server",
+  ":springcloud:gateway:client",
+)
+
+include(
+  ":quarkus:util",
+  ":quarkus:web",
+  ":quarkus:cdi",
+)

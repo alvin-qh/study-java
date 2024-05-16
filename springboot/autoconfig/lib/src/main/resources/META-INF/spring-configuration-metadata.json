@@ -1,0 +1,34 @@
+{
+  "groups": [
+    {
+      "name": "autoconfig",
+      "type": "alvin.study.springboot.autoconf.prop.ConfigProperties",
+      "sourceType": "alvin.study.springboot.autoconf.prop.ConfigProperties"
+    },
+    {
+      "name": "autoconfig.common",
+      "type": "alvin.study.springboot.autoconf.prop.ConfigCommonProperties",
+      "sourceType": "alvin.study.springboot.autoconf.prop.ConfigProperties",
+      "sourceMethod": "getCommon()"
+    }
+  ],
+  "properties": [
+    {
+      "name": "autoconfig.time-zone",
+      "type": "java.lang.String",
+      "sourceType": "alvin.study.springboot.autoconf.prop.ConfigProperties"
+    },
+    {
+      "name": "autoconfig.common.name",
+      "type": "java.lang.String",
+      "sourceType": "alvin.study.springboot.autoconf.prop.ConfigCommonProperties",
+      "defaultValue": "Alvin"
+    },
+    {
+      "name": "autoconfig.common.use-module-user",
+      "type": "java.lang.Boolean",
+      "sourceType": "alvin.study.springboot.autoconf.prop.ConfigCommonProperties",
+      "defaultValue": "true"
+    }
+  ]
+}

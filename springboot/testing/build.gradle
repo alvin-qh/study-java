@@ -1,0 +1,30 @@
+plugins {
+  id "org.springframework.boot"
+}
+
+dependencies {
+  implementation libs.main.springboot.web,
+    libs.main.springboot.validator
+
+  developmentOnly libs.main.springboot.devtools
+
+  testImplementation libs.test.springboot.web
+}
+
+springBoot {
+  mainClass = "alvin.study.springboot.testing.Main"
+}
+
+bootJar {
+  exclude "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA", "META-INF/*.MF"
+
+  manifest {
+    attributes "Implementation-Title": "Study Spring Boot Testing"
+    attributes "Implementation-Version": projectVersion.version
+  }
+
+  archiveBaseName = project.group
+  archiveFileName = "alvin.study.springboot-testing.${archiveExtension.get()}"
+}
+
+

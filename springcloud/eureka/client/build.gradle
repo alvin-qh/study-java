@@ -1,0 +1,30 @@
+plugins {
+  id "org.springframework.boot"
+}
+
+dependencies {
+  implementation libs.main.springcloud.eureka.client,
+    libs.main.springcloud.openFeign,
+    libs.main.springboot.validator
+
+  developmentOnly libs.main.springboot.devtools
+
+  testImplementation libs.test.springboot.web,
+    libs.main.springcloud.loadBalancer
+}
+
+springBoot {
+  mainClass = "alvin.study.springcloud.eureka.client.Main"
+}
+
+bootJar {
+  exclude "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA", "META-INF/*.MF"
+
+  manifest {
+    attributes "Implementation-Title": "Study Spring Cloud Eureka Client"
+    attributes "Implementation-Version": projectVersion.version
+  }
+
+  archiveBaseName = project.group
+  archiveFileName = "alvin.study.springcloud-eureka-client.${archiveExtension.get()}"
+}

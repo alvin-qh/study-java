@@ -1,0 +1,37 @@
+plugins {
+  id "application"
+}
+
+dependencies {
+  implementation libs.main.picocli
+}
+
+task exec(type: JavaExec) {
+  group = "Execution"
+  description = "Run cli command"
+  classpath = sourceSets.main.runtimeClasspath
+  mainClass = "alvin.study.misc.cli.Main"
+}
+
+task fatJar(type: Jar) {
+  exclude "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA", "META-INF/*.MF"
+
+  manifest { // Manifest.MF 文件生成规则
+    attributes(
+      "Implementation-Title": "PicoCli Demo",
+      "Implementation-Version": project.version,
+      "Main-Class": "alvin.study.misc.cli.Main",
+    )
+  }
+
+  // 打包文件名
+  archiveFileName = "cli.jar"
+
+  // 将运行时所需的 jar 文件解压缩后放入 jar 包
+  from {
+    configurations.runtimeClasspath.collect {
+      it.isDirectory() ? it : zipTree(it)
+    }
+  }
+  with jar
+}

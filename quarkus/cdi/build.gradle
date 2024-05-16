@@ -1,0 +1,8 @@
+plugins {
+  id "io.quarkus"
+}
+
+dependencies {
+  implementation project(":quarkus:util"),
+    libs.main.quarkus.arc
+}

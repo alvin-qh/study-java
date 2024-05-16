@@ -1,0 +1,68 @@
+plugins {
+  id "org.springframework.boot"
+}
+
+dependencies {
+  implementation libs.main.springboot.jdbc,
+    libs.main.h2,
+    libs.main.flyway
+}
+
+springBoot {
+  mainClass = "alvin.study.springboot.ds.Main"
+}
+
+bootJar {
+  exclude "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA", "META-INF/*.MF"
+
+  // 配置 MANIFEST.MF 文件内容
+  manifest {
+    attributes "Implementation-Title": "Study Spring Boot Multiple Datasource"
+    attributes "Implementation-Version": projectVersion.version
+  }
+
+  archiveBaseName = project.group
+  archiveFileName = "alvin.study.springboot-multiple-datasource.${archiveExtension.get()}"
+}
+
+def DB_URL = "jdbc:h2:${projectDir}/.data/dev"
+
+flyway {
+  url = "${DB_URL};MODE=MYSQL"
+  user = "dev"
+  password = "password"
+  locations = [
+    "filesystem:${projectDir}/src/main/resources/migration"
+  ]
+  table = "schema_version"
+}
+
+/**
+ * 处理默认数据库
+ */
+task flywayMigrateDefault(type: org.flywaydb.gradle.task.FlywayMigrateTask) {
+  url = "${DB_URL};MODE=MYSQL"
+}
+
+/**
+ * 处理 db1 数据库
+ */
+task flywayMigrateDB1(type: org.flywaydb.gradle.task.FlywayMigrateTask) {
+  url = "${DB_URL}1;MODE=MYSQL"
+}
+
+/**
+ * 处理 db2 数据库
+ */
+task flywayMigrateDB2(type: org.flywaydb.gradle.task.FlywayMigrateTask) {
+  url = "${DB_URL}2;MODE=MYSQL"
+}
+
+/**
+ * 处理全部数据库
+ */
+task flywayMigrateAll(dependsOn: [
+  flywayMigrateDefault,
+  flywayMigrateDB1,
+  flywayMigrateDB2
+])

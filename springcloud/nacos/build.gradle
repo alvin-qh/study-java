@@ -1,0 +1,33 @@
+plugins {
+  id "org.springframework.boot"
+}
+
+dependencies {
+  implementation libs.main.springcloud.nacos.config,
+    libs.main.springcloud.nacos.discovery,
+    libs.main.springboot.web,
+    libs.main.springboot.validator,
+    libs.main.springboot.actuator
+
+  developmentOnly libs.main.springboot.devtools
+
+  testImplementation libs.test.springboot.web,
+    libs.main.springcloud.loadBalancer,
+    libs.test.awaitility
+}
+
+springBoot {
+  mainClass = "alvin.study.springcloud.nacos.Main"
+}
+
+bootJar {
+  exclude "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA", "META-INF/*.MF"
+
+  manifest {
+    attributes "Implementation-Title": "Study Spring Cloud Nacos"
+    attributes "Implementation-Version": projectVersion.version
+  }
+
+  archiveBaseName = project.group
+  archiveFileName = "alvin.study.springcloud-nacos.${archiveExtension.get()}"
+}

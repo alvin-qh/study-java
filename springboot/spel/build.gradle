@@ -1,0 +1,25 @@
+plugins {
+  id "org.springframework.boot"
+}
+
+dependencies {
+  developmentOnly libs.main.springboot.devtools
+}
+
+springBoot {
+  mainClass = "alvin.study.springboot.spel.Main"
+}
+
+bootJar {
+  exclude "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA", "META-INF/*.MF"
+
+  manifest {
+    attributes "Implementation-Title": "Study Spring Boot SpEL"
+    attributes "Implementation-Version": projectVersion.version
+  }
+
+  archiveBaseName = project.group
+  archiveFileName = "alvin.study.springboot-spel.${archiveExtension.get()}"
+}
+
+

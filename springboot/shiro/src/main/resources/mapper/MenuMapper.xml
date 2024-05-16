@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="alvin.study.springboot.shiro.infra.mapper.MenuMapper">
+  <resultMap
+    id="menuResultMap"
+    type="alvin.study.springboot.shiro.infra.entity.Menu"
+    autoMapping="true"
+  >
+    <id property="id" column="id"/>
+
+    <association
+      property="role"
+      resultMap="alvin.study.springboot.shiro.infra.mapper.RoleMapper.roleResultMap"
+      columnPrefix="r_"
+    />
+
+    <association
+      property="permission"
+      resultMap="alvin.study.springboot.shiro.infra.mapper.PermissionMapper.permissionResultMap"
+      columnPrefix="p_"
+    />
+  </resultMap>
+
+  <select id="selectWithRoleAndPermission" resultMap="menuResultMap">
+    <![CDATA[
+    select m.id,
+           m.`order`,
+           m.text,
+           m.icon,
+           m.parent_id,
+           m.role_id,
+           m.permission_id,
+           r.id         as r_id,
+           r.name       as r_name,
+           r.created_at as r_created_at,
+           r.created_by as r_created_by,
+           r.updated_at as r_updated_at,
+           r.updated_by as r_updated_by,
+           p.id,
+           p.name       as p_name,
+           p.resource   as p_resource,
+           p.action     as p_action,
+           p.created_at as p_created_at,
+           p.created_by as p_created_by,
+           p.updated_at as p_updated_at,
+           p.updated_by as p_updated_by
+    from menu m
+           left join role r on r.id = m.role_id
+           left join permission p on p.id = m.permission_id
+    order by m.`order`
+    ]]>
+  </select>
+</mapper>

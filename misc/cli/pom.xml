@@ -1,0 +1,98 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>study-java-misc-cli</artifactId>
+  <name>${project.artifactId}</name>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <parent>
+    <groupId>alvin.study</groupId>
+    <artifactId>study-java-misc-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>info.picocli</groupId>
+        <artifactId>picocli</artifactId>
+        <version>${version.picocli}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>info.picocli</groupId>
+      <artifactId>picocli</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <!-- 执行器插件, 可以通过 mvn clean compile exec:java -Dexec.args="echo hello" 命令测试程序 -->
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>main</id>
+            <goals>
+              <goal>java</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <!-- 指定入口类 -->
+          <mainClass>alvin.study.misc.cli.Main</mainClass>
+          <workingDirectory>${project.root.directory}</workingDirectory>
+        </configuration>
+      </plugin>
+      <plugin>
+        <!-- 打包 Jar 包, 并包含所有依赖 -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>${version.maven-shade}</version>
+        <configuration>
+          <!-- 定义输出的 jar 文件名 -->
+          <finalName>cli</finalName>
+          <!-- 是否创建一个 pom 文件来描述打包的依赖 -->
+          <createDependencyReducedPom>false</createDependencyReducedPom>
+          <transformers>
+            <!-- 处理 META-INF/MANIFEST.MF 文件内容 -->
+            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+              <manifestEntries>
+                <Main-Class>alvin.study.misc.cli.Main</Main-Class>
+              </manifestEntries>
+            </transformer>
+          </transformers>
+          <filters>
+            <!-- 过滤器，在 jar 文件中排除指定的文件 -->
+            <filter>
+              <artifact>*:*</artifact>
+              <excludes>
+                <exclude>META-INF/DEPENDENCIES</exclude>
+                <exclude>META-INF/LICENSE*</exclude>
+                <exclude>META-INF/NOTICE*</exclude>
+                <exclude>META-INF/MANIFEST*</exclude>
+              </excludes>
+            </filter>
+          </filters>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-shade</id>
+            <!-- 附加到 package 任务上 -->
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

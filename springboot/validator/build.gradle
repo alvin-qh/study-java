@@ -1,0 +1,28 @@
+plugins {
+  id "org.springframework.boot"
+  id "org.flywaydb.flyway"
+}
+
+dependencies {
+  implementation libs.main.springboot.validator
+
+  developmentOnly libs.main.springboot.devtools
+}
+
+springBoot {
+  mainClass = "alvin.study.springboot.validator.Main"
+}
+
+bootJar {
+  exclude "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA", "META-INF/*.MF"
+
+  manifest {
+    attributes "Implementation-Title": "Study Spring Boot Validator"
+    attributes "Implementation-Version": projectVersion.version
+  }
+
+  archiveBaseName = project.group
+  archiveFileName = "alvin.study.springboot_validator.${archiveExtension.get()}"
+}
+
+

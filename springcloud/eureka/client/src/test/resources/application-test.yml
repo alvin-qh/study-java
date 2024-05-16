@@ -1,0 +1,15 @@
+# eureka:
+#   client:
+#     # 是否注册本机节点, 如果当前应用不是 Web 服务, 则可以不注册
+#     register-with-eureka: false
+
+application:
+  server:
+    # 要访问的服务名称, OpenFeign 通过此名称进行服务发现
+    # 参见 @FeignClient 注解
+    name: eureka-client
+
+logging:
+  level:
+    com:
+      netflix: DEBUG

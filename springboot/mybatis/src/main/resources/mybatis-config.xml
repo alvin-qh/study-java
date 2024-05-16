@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  如果配合 Spring Boot 使用, 则大多数情况下无需该配置文件参与, 通过 application.yml 配置文件和 Spring Boot Autoconfig 即可完成基本配置,
+  当不使用 Spring Boot 时, 可以通过此配置文件完成 Mybatis 配置
+-->
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <!-- 声明属性文件的 key/value, 内容会被 .properties 文件覆盖 -->
+  <properties/>
+
+  <!-- 全局配置 -->
+  <settings>
+    <!-- 是否使用缓存 -->
+    <setting name="cacheEnabled" value="true"/>
+    <!-- 是否是懒记载 -->
+    <setting name="lazyLoadingEnabled" value="true"/>
+    <!-- <setting name="multipleResultSetsEnabled" value="true" /> -->
+    <!-- <setting name="useColumnLabel" value="true" /> -->
+    <!-- <setting name="useGeneratedKeys" value="false" /> -->
+    <!-- <setting name="autoMappingBehavior" value="PARTIAL" /> -->
+    <!-- <setting name="defaultExecutorType" value="SIMPLE" /> -->
+    <!-- <setting name="defaultStatementTimeout" value="25000" /> -->
+    <!-- <setting name="safeRowBoundsEnabled" value="false" /> -->
+    <!-- <setting name="mapUnderscoreToCamelCase" value="false" /> -->
+    <!-- <setting name="localCacheScope" value="SESSION" /> -->
+    <!-- <setting name="jdbcTypeForNull" value="OTHER" /> -->
+    <!-- <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString" /> -->
+  </settings>
+
+  <!-- 定义类型别名 -->
+  <typeAliases>
+    <!-- <typeAlias type="alvin.study.infra.entity.User" alias="User" /> -->
+  </typeAliases>
+
+  <!-- 定义环境变量 -->
+  <!-- <environments default="development"> -->
+  <!-- <environment id="development"> -->
+  <!-- <transactionManager type="JDBC" /> -->
+  <!-- <dataSource type="POOLED"> -->
+  <!-- <property name="driver" value="org.h2.Driver" /> -->
+  <!-- <property name="url" value="jdbc:h2:./.data/dev;MODE=MYSQL;NON_KEYWORDS=USER" /> -->
+  <!-- <property name="username" value="dev" /> -->
+  <!-- <property name="password" value="password" /> -->
+  <!-- </dataSource> -->
+  <!-- </environment> -->
+  <!-- </environments> -->
+
+  <!-- 定义 Mapper 类型 -->
+  <mappers>
+    <!-- <mapper resource="mapper/DepartmentMapper.xml" /> -->
+    <!-- <mapper resource="mapper/EmployeeMapper.xml" /> -->
+  </mappers>
+</configuration>

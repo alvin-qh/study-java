@@ -1,0 +1,11 @@
+/**
+ * 配置依赖
+ */
+// dependencies {
+//   implementation libs.main.mail,
+//     libs.main.hikariCp,
+//     libs.main.db.h2,
+//     libs.main.db.migration
+
+//   testImplementation libs.test.javafaker
+// }

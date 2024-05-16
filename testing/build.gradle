@@ -1,0 +1,29 @@
+test {
+  useJUnitPlatform()
+
+  reports.html.required = false
+
+  testLogging {
+    events "PASSED", "SKIPPED", "FAILED", "PASSED", "STANDARD_OUT", "STANDARD_ERROR"
+    showStackTraces true
+    exceptionFormat "full"
+  }
+
+  failFast = false
+}
+
+subprojects {
+  if (!new File(projectDir, "src").exists()) {
+    return
+  }
+
+  dependencies {
+    implementation libs.main.guava
+
+    testImplementation libs.test.junit,
+        libs.test.assertj,
+        libs.test.junitPioneer,
+        libs.test.awaitility,
+        libs.test.hamcrest
+  }
+}

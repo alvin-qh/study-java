@@ -1,0 +1,92 @@
+plugins {
+  id "org.flywaydb.flyway" version "${VER_FLYWAY}" apply false
+}
+
+apply from: "${rootDir}/gradle/depends.gradle"
+
+allprojects {
+  apply plugin: "java"
+
+  java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+  }
+
+  ext {
+    // 通过环境变量产生版本号
+    buildNumber = BASE_BUILD_NUMBER.toInteger() + (System.getenv("BUILD_COUNTER") ?: "0").toInteger()
+    projectVersion = [
+      version: "0.1." + buildNumber
+    ]
+  }
+
+  group = "alvin.study"
+  version = projectVersion.version
+
+  repositories {
+    mavenLocal()
+    maven {
+      url "https://repo.huaweicloud.com/repository/maven/"
+      url "https://maven.aliyun.com/nexus/content/groups/public/"
+    }
+    mavenCentral()
+  }
+
+  sourceSets {
+    main {
+      // 设置输出目录
+      output.resourcesDir = java.classesDirectory
+    }
+  }
+
+  test {
+    useJUnitPlatform()
+
+    reports.html.required = false
+
+    testLogging {
+      events "PASSED", "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR"
+      showStackTraces = true
+      exceptionFormat = "full"
+    }
+  }
+
+  clean {
+    delete "${projectDir}/bin"
+    delete "${projectDir}/build"
+  }
+}
+
+subprojects {
+  if (!new File(projectDir, "src").exists()) {
+    return
+  }
+
+  compileJava {
+    options.encoding = "UTF-8"
+    options.annotationProcessorPath = configurations.annotationProcessor
+
+    // 增加编译参数, 以支持编译后仍能通过反射获取参数名, 也可以通过 options.compilerArgs.addAll(["-parameters"]) 语法
+    options.compilerArgs << "-parameters"
+  }
+
+  compileTestJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-parameters"
+  }
+
+  tasks.withType(Test) {
+    // maxParallelForks = Runtime.runtime.availableProcessors()
+  }
+
+  dependencies {
+    implementation libs.main.jetbrains.annotation,
+      libs.main.lombok
+
+    compileOnly libs.main.lombok
+
+    annotationProcessor libs.main.lombok
+
+    testAnnotationProcessor libs.main.lombok
+  }
+}

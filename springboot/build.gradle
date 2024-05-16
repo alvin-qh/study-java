@@ -1,0 +1,36 @@
+plugins {
+  id "org.springframework.boot" version "${VER_SPRING_BOOT}" apply false
+  id "io.spring.dependency-management" version "${VER_GRADLE_SPRING_DEPENDENCY_MANAGEMENT}" apply false
+}
+
+group "alvin.study.springboot"
+version "1.0-SNAPSHOT"
+
+subprojects {
+  if (!new File(projectDir, "src").exists()) {
+    return
+  }
+
+  apply plugin: "io.spring.dependency-management"
+
+  dependencyManagement {
+    imports {
+      mavenBom "org.springframework.boot:spring-boot-dependencies:${VER_SPRING_BOOT}"
+    }
+  }
+
+  configurations {
+    providedRuntime
+    all*.exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
+  }
+
+  dependencies {
+    implementation libs.main.springboot.starter,
+      libs.main.springboot.log4j,
+      libs.main.guava
+
+    annotationProcessor libs.main.springboot.annotationProcessor
+
+    testImplementation libs.test.springboot.starter
+  }
+}

@@ -1,0 +1,26 @@
+plugins {
+  id "org.springframework.boot"
+}
+
+dependencies {
+  implementation libs.main.springboot.web,
+    libs.main.springboot.aop
+
+  developmentOnly libs.main.springboot.devtools
+}
+
+springBoot {
+  mainClass = "alvin.study.springboot.aop.Main"
+}
+
+bootJar {
+  exclude "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA", "META-INF/*.MF"
+
+  manifest {
+    attributes "Implementation-Title": "Study Spring Boot AOP"
+    attributes "Implementation-Version": projectVersion.version
+  }
+
+  archiveBaseName = project.group
+  archiveFileName = "alvin.study.springboot-aop.${archiveExtension.get()}"
+}

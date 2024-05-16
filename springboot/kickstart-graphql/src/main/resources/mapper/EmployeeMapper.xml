@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="alvin.study.springboot.kickstart.infra.mapper.EmployeeMapper">
+  <resultMap
+    id="employeeResultMap"
+    type="alvin.study.springboot.kickstart.infra.entity.Employee"
+    autoMapping="true"
+  >
+    <id property="id" column="id"/>
+  </resultMap>
+</mapper>

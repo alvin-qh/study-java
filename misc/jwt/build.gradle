@@ -1,0 +1,5 @@
+dependencies {
+  implementation libs.main.jwt,
+    libs.main.commonsCodec,
+    libs.main.jackson
+}

@@ -1,0 +1,6 @@
+quarkus:
+  profile: dev
+
+beans:
+  condition:
+    active: A

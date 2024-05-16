@@ -1,0 +1,40 @@
+#
+# https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#application-properties.core
+#
+# 配置 Spring Boot
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: study-springboot-jooq
+  datasource:
+    # 配置 Hikari 数据库连接池
+    # 参考: https://github.com/brettwooldridge/HikariCP
+    hikari:
+      pool-name: dev
+      maximum-pool-size: 50
+      connection-timeout: 30000
+      idle-timeout: 30000
+      max-lifetime: 590000
+      minimum-idle: 5
+      connection-test-query: select 1
+      auto-commit: false
+    url: jdbc:h2:./.data/dev2;MODE=MYSQL;NON_KEYWORDS=USER
+    username: dev
+    password: password
+
+  jooq:
+    sql-dialect: mysql
+
+  flyway:
+    locations: classpath:migration
+    baseline-on-migrate: true
+    table: schema_version
+
+# 应用程序设置
+application:
+  security:
+    hash:
+      algorithm: HmacSHA256
+      key: ndE2jdZNFixH9G6Aidsfyf7lYT3PxW
+  zone: UTC

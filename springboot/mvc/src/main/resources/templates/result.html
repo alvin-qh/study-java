@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <link href="/static/css/result.css" rel="stylesheet" type="text/css"/>
+    <title th:text="#{result.title}">表单填写结果</title>
+</head>
+
+<body>
+<div id="main">
+    <a href="/web/form">←</a>
+    <ul>
+        <li>
+            <span class="label" th:text="|#{result.form.name}: |">姓名:</span>
+            <span class="value" th:text="${form.name}"></span>
+        </li>
+        <li>
+            <span class="label" th:text="|#{result.form.age}: |">年龄:</span>
+            <span class="value" th:text="${form.age}"></span>
+        </li>
+        <li>
+            <span class="label" th:text="|#{result.form.gender}: |">性别:</span>
+            <span class="value" th:text="${form.gender}"></span>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

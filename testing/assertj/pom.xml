@@ -1,0 +1,115 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>study-java-testing-assertj</artifactId>
+  <name>${project.artifactId}</name>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <parent>
+    <groupId>alvin.study</groupId>
+    <artifactId>study-java-testing-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>javax.annotation</groupId>
+        <artifactId>javax.annotation-api</artifactId>
+        <version>${version.javax-annotation}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>javax.annotation-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>alvin.study</groupId>
+      <artifactId>study-java-testing-testcase</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.assertj</groupId>
+          <artifactId>assertj-assertions-generator-maven-plugin</artifactId>
+          <version>${version.maven-assertj}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <!-- AssertJ 自动生成代码插件 -->
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-assertions-generator-maven-plugin</artifactId>
+        <configuration>
+          <!-- 指定断言入口类 -->
+          <entryPointClassPackage>alvin.study.testing.assertj.assertion</entryPointClassPackage>
+          <!-- 指定要生成断言类的类型列表 -->
+          <classes>
+            <param>alvin.study.testing.testcase.model.User</param>
+          </classes>
+          <!-- 生成代码的路径 -->
+          <targetDir>${project.basedir}/src/test/assertj</targetDir>
+          <!-- 生成代码前清空目标目录 -->
+          <cleanTargetDir>true</cleanTargetDir>
+          <!-- 设置要生成那些断言类 -->
+          <generateAssertions>true</generateAssertions>
+          <generateBddAssertions>true</generateBddAssertions>
+          <generateSoftAssertions>true</generateSoftAssertions>
+          <generateJUnitSoftAssertions>true</generateJUnitSoftAssertions>
+        </configuration>
+        <executions>
+          <execution>
+            <id>generate-assertions</id>
+            <!-- 关联到 generate-test-sources 动作 -->
+            <phase>generate-test-sources</phase>
+            <goals>
+              <!-- 执行 generate-assertions goal, 生成 assertion 代码 -->
+              <goal>generate-assertions</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <!-- 设置源码路径插件 -->
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>add-test-source</id>
+            <!-- 指定当前执行要附加到的 phase -->
+            <phase>generate-test-sources</phase>
+            <!-- 指定要执行的 goal, 即在 generate-test-sources 阶段执行 add-test-source 任务 -->
+            <goals>
+              <goal>add-test-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <!-- 设置额外的源码路径 -->
+                <source>${project.basedir}/src/test/assertj/</source>
+                <source>${project.basedir}/src/test/java</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

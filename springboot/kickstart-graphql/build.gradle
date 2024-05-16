@@ -1,0 +1,60 @@
+plugins {
+  id "org.springframework.boot"
+  id "org.flywaydb.flyway"
+}
+
+dependencies {
+  implementation libs.main.springboot.kickstart,
+    libs.main.springboot.web,
+    libs.main.springboot.validator,
+    libs.main.springboot.mybatisPlus,
+    libs.main.commonsCodec,
+    libs.main.h2,
+    libs.main.jwt,
+    libs.main.modelmapper
+
+  developmentOnly libs.main.springboot.devtools
+
+  testImplementation libs.test.springboot.kickstart,
+    libs.test.springboot.web
+
+  runtimeOnly libs.main.flyway
+}
+
+/**
+ * 配置 Spring Boot 插件
+ */
+springBoot {
+  // 设置入口类
+  mainClass = "alvin.study.springboot.kickstart.Main"
+}
+
+/**
+ * 配置 Spring Boot 打包插件
+ */
+bootJar {
+  exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.MF'
+
+  // 配置 MANIFEST.MF 文件内容
+  manifest {
+    attributes 'Implementation-Title': 'Study Spring Boot GraphQL'
+    attributes 'Implementation-Version': projectVersion.version
+  }
+
+  // 配置打包 jar 文件信息
+  archiveBaseName = project.group
+  archiveFileName = "alvin.study.springboot-graphql.${archiveExtension.get()}"
+}
+
+/**
+ * 配置 Flyway 插件, 用于 DB Migration
+ */
+flyway {
+  url = "jdbc:h2:${projectDir}/.data/dev;MODE=MYSQL"
+  user = "dev"
+  password = "password"
+  locations = [
+    "filesystem:${projectDir}/src/main/resources/migration"
+  ]
+  table = "schema_version"
+}

@@ -1,0 +1,49 @@
+#
+# https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#application-properties.core
+#
+# 配置 SpringBoot
+spring:
+  application:
+    name: study-springboot-jpa
+
+  # 配置数据源和 Hikari 连接池
+  # 参考: https://github.com/brettwooldridge/HikariCP
+  datasource:
+    # 配置默认连接池
+    hikari:
+      pool-name: dev
+      maximum-pool-size: 50
+      connection-timeout: 30000
+      idle-timeout: 30000
+      max-lifetime: 590000
+      minimum-idle: 5
+      connection-test-query: select 1
+    # 配置默认数据源
+    url: jdbc:h2:./.data/dev;MODE=MYSQL;NON_KEYWORDS=USER
+    username: dev
+    password: password
+
+  flyway:
+    locations: classpath:/migration
+    baseline-on-migrate: true
+    table: schema_version
+
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+        dialect: org.hibernate.dialect.MySQLDialect
+  data:
+    web:
+      pageable:
+        default-page-size: 2000
+        max-page-size: 5000
+
+# 应用程序设置
+application:
+  security:
+    hash:
+      algorithm: HmacSHA256
+      key: ndE2jdZNFixH9G6Aidsfyf7lYT3PxW
+  zone: UTC

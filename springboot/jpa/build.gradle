@@ -1,0 +1,44 @@
+plugins {
+  id "org.springframework.boot"
+  id "org.flywaydb.flyway"
+}
+
+dependencies {
+  implementation libs.main.springboot.jpa,
+    libs.main.springboot.web,
+    libs.main.commonsCodec,
+    libs.main.h2
+
+  developmentOnly libs.main.springboot.devtools
+
+  testImplementation libs.test.faker
+
+  runtimeOnly libs.main.flyway
+}
+
+springBoot {
+  mainClass = "alvin.study.springboot.jpa.Main"
+}
+
+bootJar {
+  exclude "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA", "META-INF/*.MF"
+
+  // 配置 MANIFEST.MF 文件内容
+  manifest {
+    attributes "Implementation-Title": "Study Spring Boot JPA"
+    attributes "Implementation-Version": projectVersion.version
+  }
+
+  archiveBaseName = project.group
+  archiveFileName = "alvin.study.springboot-jpa.${archiveExtension.get()}"
+}
+
+flyway {
+  url = "jdbc:h2:${projectDir}/.data/dev;MODE=MYSQL"
+  user = "dev"
+  password = "password"
+  locations = [
+    "filesystem:${projectDir}/src/main/resources/migration"
+  ]
+  table = "schema_version"
+}

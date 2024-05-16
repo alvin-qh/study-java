@@ -1,0 +1,16 @@
+.DS_Store
+.gradle
+.venv
+.vscode
+.project
+.classpath
+.history
+.apt_generated
+.apt_generated_tests
+.idea
+.java-version
+
+build
+bin
+target
+*.iml

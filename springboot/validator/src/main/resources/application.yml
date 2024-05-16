@@ -1,0 +1,11 @@
+#
+# https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#application-properties.core
+#
+# 配置 SpringBoot
+spring:
+  application:
+    name: study-springboot-validator
+
+  # 配置i18n
+  messages:
+    basename: i18n.message # 设定 i18n 所在的路径和基础名称, 即 /i18n/message*.properties 文件

@@ -1,0 +1,27 @@
+plugins {
+  id "org.springframework.boot"
+}
+
+dependencies {
+  implementation libs.main.springcloud.eureka.server
+
+  developmentOnly libs.main.springboot.devtools
+}
+
+springBoot {
+  mainClass = "alvin.study.springcloud.eureka.server.Main"
+}
+
+bootJar {
+  exclude "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA", "META-INF/*.MF"
+
+  // 配置 MANIFEST.MF 文件内容
+  manifest {
+    attributes "Implementation-Title": "Study Spring Cloud Eureka Server"
+    attributes "Implementation-Version": projectVersion.version
+  }
+
+  // 配置打包 jar 文件信息
+  archiveBaseName = project.group
+  archiveFileName = "alvin.study.springcloud-eureka-server.${archiveExtension.get()}"
+}

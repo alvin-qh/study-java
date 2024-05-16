@@ -1,0 +1,13 @@
+plugins {
+  id "io.quarkus"
+}
+
+dependencies {
+  implementation project(":quarkus:util"),
+    libs.main.quarkus.reactive,
+    libs.main.quarkus.qute,
+    libs.main.quarkus.jackson,
+    libs.main.quarkus.validator
+
+  testImplementation libs.test.quarkus.rest
+}

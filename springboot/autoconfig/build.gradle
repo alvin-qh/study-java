@@ -1,0 +1,5 @@
+subprojects {
+  if (!new File(projectDir, "src").exists()) {
+    return
+  }
+}

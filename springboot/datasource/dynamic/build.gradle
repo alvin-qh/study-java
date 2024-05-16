@@ -1,0 +1,41 @@
+plugins {
+  id "org.springframework.boot"
+}
+
+dependencies {
+  implementation libs.main.springboot.web,
+    libs.main.springboot.validator,
+    libs.main.springboot.aop,
+    libs.main.springboot.jdbc,
+    libs.main.h2,
+    libs.main.flyway
+
+  testImplementation libs.test.springboot.web
+}
+
+springBoot {
+  mainClass = "alvin.study.springboot.ds.Main"
+}
+
+bootJar {
+  exclude "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA", "META-INF/*.MF"
+
+  // 配置 MANIFEST.MF 文件内容
+  manifest {
+    attributes "Implementation-Title": "Study Spring Boot Dynamic Datasource"
+    attributes "Implementation-Version": projectVersion.version
+  }
+
+  archiveBaseName = project.group
+  archiveFileName = "alvin.study.springboot-dynamic-datasource.${archiveExtension.get()}"
+}
+
+flyway {
+  url = "jdbc:h2:${projectDir}/.data/common;MODE=MYSQL"
+  user = "dev"
+  password = "password"
+  locations = [
+    "filesystem:${projectDir}/src/main/resources/common"
+  ]
+  table = "schema_version"
+}

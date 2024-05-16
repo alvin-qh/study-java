@@ -1,0 +1,6 @@
+spring:
+  main:
+    banner-mode: off
+    allow-bean-definition-overriding: true
+logging:
+  config: classpath:log4j2-spring-test.xml

@@ -1,0 +1,10 @@
+#
+# https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#application-properties.core
+#
+# 配置 Spring Boot
+spring:
+  main:
+    banner-mode: off
+
+  application:
+    name: study-springboot-spel

@@ -1,0 +1,6 @@
+dependencies {
+  implementation project(":testing:testcase")
+
+  testImplementation libs.test.hamcrest,
+    libs.test.mockito
+}

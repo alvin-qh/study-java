@@ -1,0 +1,99 @@
+#
+# https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#application-properties.core
+#
+
+# 配置 Spring Boot Server
+server:
+  port: 8080
+  max-http-request-header-size: 8KB
+
+  # 配置 Spring Boot Servlet
+  servlet:
+    context-path: /
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+  # 启用 Http2
+  http2:
+    enabled: true
+
+  # 启用压缩
+  compression:
+    enabled: true
+
+  # 内置 Tomcat 配置
+  # 参考 https://www.baeldung.com/spring-boot-configure-tomcat
+  tomcat:
+    uri-encoding: UTF-8
+    connection-timeout: 10s
+    max-connections: 10000
+    accept-count: 1000
+    max-swallow-size: 2MB
+    max-http-form-post-size: 5MB
+    keep-alive-timeout: 30000
+    max-keep-alive-requests: 10000
+    mbeanregistry:
+      enabled: true
+    threads:
+      max: 256
+      min-spare: 10
+
+# 配置日志记录
+logging:
+  file:
+    path: logs
+  config: classpath:log4j2-spring-dev.xml
+
+# 配置 Spring Boot
+spring:
+  application:
+    name: study-springboot-mvc
+
+  # 配置 Jackson JSON 解析设置
+  jackson:
+    default-property-inclusion: non-null
+    mapper:
+      default-view-inclusion: false
+    generator:
+      ignore-unknown: false
+    serialization:
+      write-dates-as-timestamps: false
+      fail-on-empty-beans: false
+
+  # 配置 Servlet 相关设置
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+  # profiles:
+  #   active: dev
+
+  # 配置i18n, 该配置已在 alvin.study.conf.WebConfig#messageSource() 方法中以代码形式设置
+  messages:
+    basename: i18n.message # 设定 i18n 所在的路径和基础名称, 即 /i18n/message*.properties 文件
+
+  # 配置模板引擎, 该配置已在 alvin.study.conf.WebConfig#templateResolver() 方法中以代码形式设置
+  thymeleaf:
+    mode: HTML
+    encoding: UTF-8
+    prefix: classpath:/templates/ # 静态页面所在的路径, 一般在 resources 文件加下创建
+    suffix: .html
+
+  # 配置静态资源, 该配置已在 alvin.study.conf.WebConfig#addResourceHandlers(ResourceHandlerRegistry) 方法中以代码形式设置
+  web:
+    resources:
+      static-locations:
+        - classpath:/static
+
+# 应用程序设置
+application:
+  security:
+    jwt:
+      key: RKZBC62CfMp1Vyfo19K9RE1ZVREaLDFDUVsY7xnQaBMOtodSp7oBa0ZdMeGXa2D6
+      jti: study.alvin.org
+    session:
+      period: PT2H
+  zone: Asia/Shanghai

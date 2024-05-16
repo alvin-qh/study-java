@@ -1,0 +1,32 @@
+plugins {
+  id "org.springframework.boot"
+}
+
+dependencies {
+  implementation libs.main.springboot.web,
+    libs.main.springboot.thymeleaf,
+    libs.main.springboot.validator,
+    libs.main.jwt
+
+  developmentOnly libs.main.springboot.devtools
+
+  testImplementation libs.test.springboot.web
+}
+
+springBoot {
+  mainClass = "alvin.study.springboot.mvc.Main"
+}
+
+bootJar {
+  exclude "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA", "META-INF/*.MF"
+
+  manifest {
+    attributes "Implementation-Title": "Study Spring Boot MVC"
+    attributes "Implementation-Version": projectVersion.version
+  }
+
+  archiveBaseName = project.group
+  archiveFileName = "alvin.study.springboot-mvc.${archiveExtension.get()}"
+}
+
+

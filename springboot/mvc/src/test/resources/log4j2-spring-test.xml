@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration>
+  <Properties>
+    <Property name="LOG_PATTERN">
+      [%style{%d{yyyy-MM-dd
+      HH:mm:ss}}{black}][%highlight{%5level}][%style{%t}{bright,black}][%style{%c{1.}}{bright,cyan}]:
+      %highlight{%msg%n%throwable}{FATAL=bright_red,ERROR=red,WARN=yellow,INFO=while,DEBUG=bright_white,TRACE=black}
+    </Property>
+  </Properties>
+
+  <Appenders>
+    <Console name="console" target="SYSTEM_OUT">
+      <PatternLayout pattern="${LOG_PATTERN}"/>
+    </Console>
+  </Appenders>
+
+  <Loggers>
+    <Root>
+      <AppenderRef ref="console"/>
+    </Root>
+  </Loggers>
+</Configuration>

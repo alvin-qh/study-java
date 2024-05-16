@@ -1,0 +1,50 @@
+logging:
+  level:
+    com:
+      alibaba: WARN
+
+spring:
+  main:
+    banner-mode: off
+
+  application:
+    # 应用名称, 在本例中作为服务名称, 即注册服务发现时服务的名称
+    name: nacos-client
+
+  # Spring Cloud 配置
+  cloud:
+    # Nacos 配置
+    nacos:
+      # 服务地址
+      server-addr: http://localhost:8848
+      # 登录用户名
+      username: nacos
+      # 登陆密码
+      password: nacos
+      # secret-key: IYZ74ALZxTrAX7dYQZG4dPe48UeBL6
+      # 配置中心配置
+      config:
+        # 启用配置中心连接
+        enabled: true
+        # 服务所属命名空间
+        # namespace: 25935fce-b849-4882-861a-922232c1e39e
+        # 配置所属组名称
+        group: STUDY_CONFIG
+        # 配置 dataId 默认扩展名 (本例中采用 spring.config.import 方法, 不需要此配置)
+        # file-extension: yml
+        # 配置默认前缀 (本例中采用 spring.config.import 方法, 不需要此配置)
+        # prefix: alvin-study-config
+      discovery:
+        # 启用服务发现连接
+        enabled: true
+        # 服务发现所属命名空间
+        # namespace: 25935fce-b849-4882-861a-922232c1e39e
+        # 服务发现所属组名称
+        group: STUDY_DISCOVERY
+
+  # Spring Config 配置
+  config:
+    # 引入配置列表
+    import:
+      # 引入 Nacos 配置中心配置
+      - optional:nacos:alvin-study-config.yml
