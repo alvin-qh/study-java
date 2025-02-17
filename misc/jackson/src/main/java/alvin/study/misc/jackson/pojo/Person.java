@@ -41,10 +41,10 @@ public class Person {
      */
     @JsonCreator
     public Person(
-        @JsonProperty("id") Long id,
-        @JsonProperty("name") String name,
-        @JsonProperty("gender") String gender,
-        @JsonProperty("birthday") LocalDate birthday) {
+            @JsonProperty("id") Long id,
+            @JsonProperty("name") String name,
+            @JsonProperty("gender") String gender,
+            @JsonProperty("birthday") LocalDate birthday) {
         this.id = id;
         this.gender = gender;
         this.birthday = birthday;
@@ -62,7 +62,7 @@ public class Person {
      * @return 分隔后的名称
      */
     private String[] splitName(String name) {
-        var r = new String[]{ "", "" };
+        var r = new String[] { "", "" };
         // 将名字通过 "." 字符分割为两部分
         var s = name.split("\\.", 2);
         if (s != null) {
@@ -85,7 +85,5 @@ public class Person {
      * </p>
      */
     @JsonGetter("name")
-    public String getName() {
-        return String.format("%s.%s", this.firstName, this.lastName);
-    }
+    public String getName() { return String.format("%s.%s", this.firstName, this.lastName); }
 }

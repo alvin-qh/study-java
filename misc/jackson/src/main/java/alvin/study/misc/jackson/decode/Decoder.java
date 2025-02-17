@@ -37,19 +37,18 @@ public class Decoder {
      */
     private static ObjectMapper buildObjectMapper(boolean unwrapRootValue) {
         var builder = JsonMapper
-            .builder()
-            .addModules(
-                new JavaTimeModule(),
-                new ParameterNamesModule(Mode.PROPERTIES)
-            )
-            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-            .disable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
-            // 允许注释 (非标准)
-            .configure(Feature.ALLOW_COMMENTS, true)
-            // 允许没有引号的字段名 (非标准)
-            .configure(Feature.ALLOW_UNQUOTED_FIELD_NAMES, true)
-            // 允许单引号 (非标准)
-            .configure(Feature.ALLOW_SINGLE_QUOTES, true);
+                .builder()
+                .addModules(
+                    new JavaTimeModule(),
+                    new ParameterNamesModule(Mode.PROPERTIES))
+                .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+                .disable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
+                // 允许注释 (非标准)
+                .configure(Feature.ALLOW_COMMENTS, true)
+                // 允许没有引号的字段名 (非标准)
+                .configure(Feature.ALLOW_UNQUOTED_FIELD_NAMES, true)
+                // 允许单引号 (非标准)
+                .configure(Feature.ALLOW_SINGLE_QUOTES, true);
 
         if (unwrapRootValue) {
             // 支持 @JsonRootName 设置的根属性名

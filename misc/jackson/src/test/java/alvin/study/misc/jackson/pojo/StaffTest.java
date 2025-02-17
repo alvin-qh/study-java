@@ -115,7 +115,7 @@ class StaffTest {
         var dec = new Decoder(false);
 
         // 将 JSON 字符串反序列化为对象, 确认结果符合预期
-        var list = dec.fromJson(LIST_JSON, new TypeReference<List<Staff>>() { });
+        var list = dec.fromJson(LIST_JSON, new TypeReference<List<Staff>>() {});
         BDDAssertions.then(list).containsExactly(OBJECT);
     }
 

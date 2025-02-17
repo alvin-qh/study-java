@@ -132,23 +132,23 @@ public class JWTs {
      * @return JWT 字符串
      */
     public String encode(
-        String issuer,
-        String[] audiences,
-        String subject,
-        String org,
-        String type,
-        Instant expiredAt) {
+            String issuer,
+            String[] audiences,
+            String subject,
+            String org,
+            String type,
+            Instant expiredAt) {
         return JWT.create()
-            .withJWTId(UUID.randomUUID().toString())
-            .withIssuer(issuer)
-            .withAudience(audiences)
-            .withSubject(subject)
-            .withClaim(CLAIM_ORG_CODE, org)
-            .withClaim(CLAIM_USER_TYPE, type)
-            .withIssuedAt(Instant.now(clock))
-            .withExpiresAt(expiredAt)
-            // 根据所给的签名算法进行签名, 生成 JWT 字符串
-            .sign(algorithm);
+                .withJWTId(UUID.randomUUID().toString())
+                .withIssuer(issuer)
+                .withAudience(audiences)
+                .withSubject(subject)
+                .withClaim(CLAIM_ORG_CODE, org)
+                .withClaim(CLAIM_USER_TYPE, type)
+                .withIssuedAt(Instant.now(clock))
+                .withExpiresAt(expiredAt)
+                // 根据所给的签名算法进行签名, 生成 JWT 字符串
+                .sign(algorithm);
 
     }
 
@@ -206,12 +206,12 @@ public class JWTs {
      * @throws JWTVerificationException                                以上任意异常
      */
     public DecodedJWT verify(String token, String[] audiences, String org, String type)
-        throws JWTVerificationException {
+            throws JWTVerificationException {
         return JWT.require(algorithm)
-            .withAudience(audiences)
-            .withClaim(CLAIM_ORG_CODE, org)
-            .withClaim(CLAIM_USER_TYPE, type)
-            .build()
-            .verify(token);
+                .withAudience(audiences)
+                .withClaim(CLAIM_ORG_CODE, org)
+                .withClaim(CLAIM_USER_TYPE, type)
+                .build()
+                .verify(token);
     }
 }

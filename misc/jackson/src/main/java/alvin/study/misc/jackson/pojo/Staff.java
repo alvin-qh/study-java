@@ -69,8 +69,7 @@ public class Staff {
      * 由于 Jackson 是通过反射方式调用该构造器, 所以该构造器可以设置为任意访问修饰符
      * </p>
      */
-    Staff() {
-    }
+    Staff() {}
 
     /**
      * 该构造器用于正常途径构造一个 POJO 对象

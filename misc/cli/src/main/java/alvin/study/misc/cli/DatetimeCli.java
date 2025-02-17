@@ -109,9 +109,7 @@ public final class DatetimeCli implements Callable<Integer> {
      *
      * @param clock {@link Clock} 类型对象
      */
-    public static void setClock(Clock clock) {
-        DatetimeCli.clock = clock;
-    }
+    public static void setClock(Clock clock) { DatetimeCli.clock = clock; }
 
     /**
      * 执行命令的方法

@@ -83,7 +83,7 @@ class JWTsTest {
         // 编码一个 JWT 字符串
         var token = jwt.encode(
             "Alvin",
-            new String[]{ "third-part" },
+            new String[] { "third-part" },
             "u_b989c9ea-e07b-4263-ae98-11d6b1b0e327",
             "o_a4ef30",
             "EMPLOYEE",
@@ -93,7 +93,7 @@ class JWTsTest {
         // 验证 JWT 字符串, 确认验证结果正确
         var payload = jwt.verify(
             token,
-            new String[]{ "third-part" },
+            new String[] { "third-part" },
             "o_a4ef30",
             "EMPLOYEE");
         then(payload.getId()).matches("^[a-f0-9]{8}-([a-f0-9]{4}-){3}[a-f0-9]{12}$");
@@ -117,7 +117,7 @@ class JWTsTest {
         var jwt = JWTs.createByRS(readPrivateKey());
         var token = jwt.encode(
             "Alvin",
-            new String[]{ "third-part" },
+            new String[] { "third-part" },
             "u_b989c9ea-e07b-4263-ae98-11d6b1b0e327",
             "o_a4ef30",
             "EMPLOYEE",
@@ -128,7 +128,7 @@ class JWTsTest {
         jwt = JWTs.createByRS(readPublicKey());
         var payload = jwt.verify(
             token,
-            new String[]{ "third-part" },
+            new String[] { "third-part" },
             "o_a4ef30",
             "EMPLOYEE");
         then(payload.getId()).matches("^[a-f0-9]{8}-([a-f0-9]{4}-){3}[a-f0-9]{12}$");

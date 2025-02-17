@@ -33,10 +33,10 @@ public class Product {
      */
     @JsonCreator
     public Product(
-        @JsonProperty("id") Long id,
-        @JsonProperty("name") String name,
-        @JsonProperty("serialNo") String serialNo,
-        @JsonProperty("date") Instant date) {
+            @JsonProperty("id") Long id,
+            @JsonProperty("name") String name,
+            @JsonProperty("serialNo") String serialNo,
+            @JsonProperty("date") Instant date) {
         this.id = id;
         this.name = name;
         this.serialNo = serialNo;
