@@ -31,9 +31,7 @@ class AnnotationBindingModuleTest extends BaseModuleTest {
     private BindDemo bindDemoB;
 
     @Override
-    protected Module getModule() {
-        return new AnnotationBindingModule();
-    }
+    protected Module getModule() { return new AnnotationBindingModule(); }
 
     /**
      * 测试注入的对象符合预期

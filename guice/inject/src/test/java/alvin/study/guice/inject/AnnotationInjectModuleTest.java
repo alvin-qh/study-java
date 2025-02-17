@@ -25,9 +25,7 @@ class AnnotationInjectModuleTest extends BaseModuleTest {
     private InjectByB injectByB;
 
     @Override
-    protected Module getModule() {
-        return new AnnotationInjectModule();
-    }
+    protected Module getModule() { return new AnnotationInjectModule(); }
 
     /**
      * 确认通过不同注解注入的字段符合预期

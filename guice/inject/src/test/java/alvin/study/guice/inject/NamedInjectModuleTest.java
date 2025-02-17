@@ -30,9 +30,7 @@ class NamedInjectModuleTest extends BaseModuleTest {
     private InjectByB injectByB;
 
     @Override
-    protected Module getModule() {
-        return new NamedInjectModule();
-    }
+    protected Module getModule() { return new NamedInjectModule(); }
 
     /**
      * 确认通过不同名称注入的字段符合预期

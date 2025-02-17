@@ -26,9 +26,7 @@ class ProviderBindingModuleTest extends BaseModuleTest {
     private Provider<BindDemo> provider;
 
     @Override
-    protected Module getModule() {
-        return new ProviderBindingModule();
-    }
+    protected Module getModule() { return new ProviderBindingModule(); }
 
     /**
      * 测试注入的对象符合预期

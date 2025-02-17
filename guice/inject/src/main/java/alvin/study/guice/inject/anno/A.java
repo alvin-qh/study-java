@@ -16,5 +16,4 @@ import java.lang.annotation.RetentionPolicy;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @BindingAnnotation
-public @interface A {
-}
+public @interface A {}

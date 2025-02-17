@@ -79,8 +79,6 @@ public class SimpleInjectModule extends AbstractModule {
          * @param bean 注入的参数
          */
         @Inject
-        public void setInjector(InjectDemo bean) {
-            this.bean = bean;
-        }
+        public void setInjector(InjectDemo bean) { this.bean = bean; }
     }
 }

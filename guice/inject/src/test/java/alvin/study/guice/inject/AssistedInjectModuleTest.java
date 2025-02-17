@@ -23,9 +23,7 @@ class AssistedInjectModuleTest extends BaseModuleTest {
     private ConnectionFactory factory;
 
     @Override
-    protected Module getModule() {
-        return new AssistedInjectModule();
-    }
+    protected Module getModule() { return new AssistedInjectModule(); }
 
     /**
      * 验证通过工厂方法创建 {@link alvin.study.inject.AssistedInjectModule.Connection

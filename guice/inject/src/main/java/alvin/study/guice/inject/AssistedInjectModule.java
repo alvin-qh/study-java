@@ -58,10 +58,10 @@ public class AssistedInjectModule extends AbstractModule {
 
         // 通过指定名称绑定一组值
         bind(String.class).annotatedWith(Names.named("url"))
-            .toInstance("alvin.edu");
+                .toInstance("alvin.edu");
 
         bind(Integer.class).annotatedWith(Names.named("timeout"))
-            .toInstance(1000);
+                .toInstance(1000);
     }
 
     /**
@@ -95,8 +95,8 @@ public class AssistedInjectModule extends AbstractModule {
          * @param password 对应 {@link Connection} 类型的 {@code password} 参数
          */
         Connection create(
-            @Assisted("account") String account,
-            @Assisted("password") String password);
+                @Assisted("account") String account,
+                @Assisted("password") String password);
 
         /**
          * 创建 {@link Connection} 类型对象
@@ -135,10 +135,10 @@ public class AssistedInjectModule extends AbstractModule {
          */
         @AssistedInject
         public Connection(
-            @Named("url") String url,
-            @Named("timeout") int timeout,
-            @Assisted("account") String account,
-            @Assisted("password") String password) {
+                @Named("url") String url,
+                @Named("timeout") int timeout,
+                @Assisted("account") String account,
+                @Assisted("password") String password) {
             this.url = url;
             this.timeout = timeout;
             this.account = account;
@@ -150,8 +150,8 @@ public class AssistedInjectModule extends AbstractModule {
          */
         @AssistedInject
         public Connection(
-            @Named("url") String url,
-            @Named("timeout") int timeout) {
+                @Named("url") String url,
+                @Named("timeout") int timeout) {
             this.url = url;
             this.timeout = timeout;
             this.account = null;

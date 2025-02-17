@@ -108,7 +108,8 @@ public class MultiBinderModule extends AbstractModule {
         var boundMap = MapBinder.newMapBinder(binder(), String.class, BindDemo.class, Names.named("boundMap"));
         boundMap.addBinding("A").toInstance(new BindDemoImpl("toInstanceA")); // 将对象实例绑定在 Key A 上
         boundMap.addBinding("B").to(BindDemoImpl.class); // 将类型绑定在 Key B 上
-        boundMap.addBinding("C").toProvider(() -> new BindDemoImpl("toInstanceC")).asEagerSingleton();   // 将 Provider 绑定在 Key C 上
+        boundMap.addBinding("C").toProvider(() -> new BindDemoImpl("toInstanceC")).asEagerSingleton();   // 将 Provider
+                                                                                                         // 绑定在 Key C 上
     }
 
     /**

@@ -50,8 +50,8 @@ public class SimpleBindingModule implements Module {
     @Override
     public void configure(Binder binder) {
         binder.bind(BindDemo.class)
-            .to(BindDemoImpl.class)
-            .asEagerSingleton();
+                .to(BindDemoImpl.class)
+                .asEagerSingleton();
     }
 
     /**

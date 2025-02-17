@@ -38,9 +38,7 @@ class ProviderInjectModuleTest extends BaseModuleTest {
     private InjectProvider injectProvider;
 
     @Override
-    protected Module getModule() {
-        return new ProviderInjectModule();
-    }
+    protected Module getModule() { return new ProviderInjectModule(); }
 
     /**
      * 确认注入的对象或对象的 {@link jakarta.inject.Provider}

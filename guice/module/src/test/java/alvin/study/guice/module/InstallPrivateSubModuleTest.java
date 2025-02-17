@@ -27,9 +27,7 @@ class InstallPrivateSubModuleTest extends BaseModuleTest {
     // @Named("Hidden")
     // private ModuleDemo hiddenBean;
     @Override
-    protected Module getModule() {
-        return new InstallPrivateSubModule();
-    }
+    protected Module getModule() { return new InstallPrivateSubModule(); }
 
     /**
      * 确认 {@code exposedBean} 字段注入正确

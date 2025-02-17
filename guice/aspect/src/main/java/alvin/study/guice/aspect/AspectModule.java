@@ -91,6 +91,7 @@ public class AspectModule extends AbstractModule {
      * 第一个参数为要拦截的类, 第二个参数为要拦截的方法类型, 后续参数为 1 或多个拦截器实例
      * </p>
      */
+    @SuppressWarnings("unchecked")
     @Override
     @SneakyThrows
     protected void configure() {
@@ -99,17 +100,17 @@ public class AspectModule extends AbstractModule {
 
         // 遍历 alvin.study 下的所有 EventHandler 对象, 并将其加入到 Multibinder 集合中
         ClassPath.from(AspectModule.class.getClassLoader())
-            // 获取所有 ClassInfo 对象
-            .getAllClasses()
-            .stream()
-            // 过滤包名以 alvin.study 起始的 ClassInfo 对象
-            .filter(ci -> ci.getPackageName().startsWith("alvin.study"))
-            // 将 ClassInfo 对象转为 Class 对象
-            .map(ClassInfo::load)
-            // 过滤实现了 EventHandler 接口的 Class 对象
-            .filter(c -> withInterface(c, EventHandler.class))
-            // 将得到的 Class 对象加入到 Multibinder 绑定集合中
-            .forEach(c -> multibinder.addBinding().to((Class<EventHandler>) c));
+                // 获取所有 ClassInfo 对象
+                .getAllClasses()
+                .stream()
+                // 过滤包名以 alvin.study 起始的 ClassInfo 对象
+                .filter(ci -> ci.getPackageName().startsWith("alvin.study"))
+                // 将 ClassInfo 对象转为 Class 对象
+                .map(ClassInfo::load)
+                // 过滤实现了 EventHandler 接口的 Class 对象
+                .filter(c -> withInterface(c, EventHandler.class))
+                // 将得到的 Class 对象加入到 Multibinder 绑定集合中
+                .forEach(c -> multibinder.addBinding().to((Class<EventHandler>) c));
 
         // 实例化拦截器对象并对其进行注入操作
         var interceptor = new EventInterceptor();
@@ -176,8 +177,6 @@ public class AspectModule extends AbstractModule {
          *
          * @return 日志内容
          */
-        public String getLog() {
-            return writer.getBuffer().toString();
-        }
+        public String getLog() { return writer.getBuffer().toString(); }
     }
 }

@@ -19,9 +19,7 @@ class SimpleBindingModuleTest extends BaseModuleTest {
     private BindDemo bindDemo;
 
     @Override
-    protected Module getModule() {
-        return new SimpleBindingModule();
-    }
+    protected Module getModule() { return new SimpleBindingModule(); }
 
     /**
      * 测试注入的对象符合预期

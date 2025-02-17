@@ -37,9 +37,7 @@ class MultiInjectModuleTest extends BaseModuleTest {
     private Map<String, InjectDemo> boundMap;
 
     @Override
-    protected Module getModule() {
-        return new MultiInjectModule();
-    }
+    protected Module getModule() { return new MultiInjectModule(); }
 
     /**
      * 确认注入的集合内容符合设定的绑定关系

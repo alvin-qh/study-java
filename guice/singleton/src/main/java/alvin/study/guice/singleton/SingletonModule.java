@@ -53,8 +53,8 @@ public class SingletonModule extends AbstractModule {
     @Override
     protected void configure() {
         var builder1 = bind(SingletonBean.class)
-            .annotatedWith(Names.named("Bean"))
-            .to(SingletonBean.class);
+                .annotatedWith(Names.named("Bean"))
+                .to(SingletonBean.class);
 
         // 根据不同情况, 将 SingletonBean 绑定为单例或非单例
         if (singleton) {
@@ -62,8 +62,8 @@ public class SingletonModule extends AbstractModule {
         }
 
         var builder2 = bind(SingletonBean.class)
-            .annotatedWith(Names.named("Provider"))
-            .toProvider(SingletonBean::new);
+                .annotatedWith(Names.named("Provider"))
+                .toProvider(SingletonBean::new);
 
         // 根据不同情况, 将 Provider 绑定为单例或非单例
         if (singleton) {

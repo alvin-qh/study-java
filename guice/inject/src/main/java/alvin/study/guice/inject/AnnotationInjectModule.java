@@ -45,8 +45,8 @@ public class AnnotationInjectModule extends AbstractModule {
     protected void configure() {
         // 绑定时使用注解: 将类型通过注解 A 绑定到实例上
         bind(InjectDemo.class)
-            .annotatedWith(A.class)
-            .toInstance(new InjectDemo("inject_by_a"));
+                .annotatedWith(A.class)
+                .toInstance(new InjectDemo("inject_by_a"));
     }
 
     /**

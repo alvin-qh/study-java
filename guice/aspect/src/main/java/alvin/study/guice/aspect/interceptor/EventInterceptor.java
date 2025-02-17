@@ -49,8 +49,8 @@ public class EventInterceptor implements MethodInterceptor {
      *
      * @param handler {@link EventHandler} 接口对象
      * @return {@link EventHandler#handler(Object, Method, Object[])
-     * EventHandler.handler(...)} 方法上 {@link Handler @Handler} 注解的
-     * {@code name} 属性值
+     *         EventHandler.handler(...)} 方法上 {@link Handler @Handler} 注解的
+     *         {@code name} 属性值
      */
     @SneakyThrows
     private static String getHandlerName(EventHandler handler) {
@@ -78,8 +78,7 @@ public class EventInterceptor implements MethodInterceptor {
                     handler.handler(invocation.getThis(), invocation.getMethod(), invocation.getArguments());
                 }
             }
-        } catch (Throwable ignore) {
-        }
+        } catch (Throwable ignore) {}
 
         // 执行被拦截的方法, 返回执行结果
         return invocation.proceed();
@@ -96,8 +95,6 @@ public class EventInterceptor implements MethodInterceptor {
         this.handlers = handlers.stream().collect(
             Collectors.toMap(
                 EventInterceptor::getHandlerName,
-                Function.identity()
-            )
-        );
+                Function.identity()));
     }
 }

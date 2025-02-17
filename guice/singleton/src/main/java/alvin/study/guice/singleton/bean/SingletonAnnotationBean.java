@@ -10,5 +10,4 @@ import jakarta.inject.Singleton;
  * </p>
  */
 @Singleton
-public class SingletonAnnotationBean {
-}
+public class SingletonAnnotationBean {}

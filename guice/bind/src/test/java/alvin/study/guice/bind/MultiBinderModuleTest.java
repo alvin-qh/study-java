@@ -35,9 +35,7 @@ class MultiBinderModuleTest extends BaseModuleTest {
     private Map<String, BindDemo> boundMap;
 
     @Override
-    protected Module getModule() {
-        return new MultiBinderModule();
-    }
+    protected Module getModule() { return new MultiBinderModule(); }
 
     /**
      * 测试注入的对象符合预期
@@ -57,10 +55,10 @@ class MultiBinderModuleTest extends BaseModuleTest {
     @Test
     void bind_shouldGetObjectByInjector() {
         var boundSet = injector.getInstance(
-            Key.get(new TypeLiteral<Set<Integer>>() { }, Names.named("boundSet")));
+            Key.get(new TypeLiteral<Set<Integer>>() {}, Names.named("boundSet")));
 
         var boundMap = injector.getInstance(
-            Key.get(new TypeLiteral<Map<String, BindDemo>>() { }, Names.named("boundMap")));
+            Key.get(new TypeLiteral<Map<String, BindDemo>>() {}, Names.named("boundMap")));
 
         then(boundSet).isEqualTo(this.boundSet);
         then(boundMap).isEqualTo(this.boundMap);

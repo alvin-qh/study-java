@@ -36,9 +36,7 @@ class GenericBindingModuleTest extends BaseModuleTest {
     private Set<String> stringSet;
 
     @Override
-    protected Module getModule() {
-        return new GenericBindingModule();
-    }
+    protected Module getModule() { return new GenericBindingModule(); }
 
     /**
      * 测试注入的对象符合预期
@@ -60,9 +58,9 @@ class GenericBindingModuleTest extends BaseModuleTest {
      */
     @Test
     void bind_shouldGetObjectByInjector() {
-        var intSet = injector.getInstance(Key.get(new TypeLiteral<Set<Integer>>() { }));
-        var doubleSet = injector.getInstance(Key.get(new TypeLiteral<Set<Double>>() { }));
-        var strSet = injector.getInstance(Key.get(new TypeLiteral<Set<String>>() { }));
+        var intSet = injector.getInstance(Key.get(new TypeLiteral<Set<Integer>>() {}));
+        var doubleSet = injector.getInstance(Key.get(new TypeLiteral<Set<Double>>() {}));
+        var strSet = injector.getInstance(Key.get(new TypeLiteral<Set<String>>() {}));
 
         then(intSet).isSameAs(this.intSet);
         then(doubleSet).isSameAs(this.doubleSet);

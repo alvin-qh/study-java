@@ -46,7 +46,7 @@ public class NamedInjectModule extends AbstractModule {
     protected void configure() {
         // 绑定时使用名称: 将类型通过名称 "A" 绑定到实例上
         bind(InjectDemo.class).annotatedWith(Names.named("A"))
-            .toInstance(new InjectDemo("inject_by_a"));
+                .toInstance(new InjectDemo("inject_by_a"));
     }
 
     /**

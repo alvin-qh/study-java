@@ -78,13 +78,13 @@ public class ConstructorBindingModule extends AbstractModule {
             var constructor = BindDemoImpl.class.getConstructor(String.class);
             // 通过构造器将 BindDemo 接口和 BindDemoImpl 类型进行绑定
             bind(BindDemo.class)
-                .toConstructor(constructor)
-                .asEagerSingleton();
+                    .toConstructor(constructor)
+                    .asEagerSingleton();
 
             // 将标记为 "Value" 的字符串注入到 BindDemoImpl 的构造器参数中
             bind(String.class)
-                .annotatedWith(Names.named("Value"))
-                .toInstance("ConstructorBinding");
+                    .annotatedWith(Names.named("Value"))
+                    .toInstance("ConstructorBinding");
         } catch (Exception e) {
             addError(e);
         }

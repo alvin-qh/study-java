@@ -90,13 +90,13 @@ public class GenericBindingModule extends AbstractModule {
     @Override
     protected void configure() {
         // 为 Set<Integer> 泛型接口绑定类型
-        bind(new TypeLiteral<Set<Integer>>() { })
-            .to(new TypeLiteral<HashSet<Integer>>() { })
-            .asEagerSingleton();
+        bind(new TypeLiteral<Set<Integer>>() {})
+                .to(new TypeLiteral<HashSet<Integer>>() {})
+                .asEagerSingleton();
 
         // 为 Set<Double> 泛型接口绑定对象实例
-        bind(new TypeLiteral<Set<Double>>() { })
-            .toInstance(new TreeSet<>(asList(1.1, 1.2, 1.3, 1.4)));
+        bind(new TypeLiteral<Set<Double>>() {})
+                .toInstance(new TreeSet<>(asList(1.1, 1.2, 1.3, 1.4)));
     }
 
     /**

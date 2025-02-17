@@ -89,15 +89,15 @@ public class NamedBindingModule extends AbstractModule {
     protected void configure() {
         // 通过名称 A 将 BindDemo 接口绑定在 BindDemoA 类型
         bind(BindDemo.class)
-            .annotatedWith(Names.named("A"))
-            .to(BindDemoA.class)
-            .asEagerSingleton();
+                .annotatedWith(Names.named("A"))
+                .to(BindDemoA.class)
+                .asEagerSingleton();
 
         // 通过名称 B 将 BindDemo 接口绑定在 BindDemoB 类型
         bind(BindDemo.class)
-            .annotatedWith(Names.named("B"))
-            .to(BindDemoB.class)
-            .asEagerSingleton();
+                .annotatedWith(Names.named("B"))
+                .to(BindDemoB.class)
+                .asEagerSingleton();
     }
 
     /**

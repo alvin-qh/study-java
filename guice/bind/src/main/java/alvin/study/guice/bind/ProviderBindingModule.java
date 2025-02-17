@@ -76,8 +76,8 @@ public class ProviderBindingModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(BindDemo.class)
-            .toProvider(BindDemoProvider.class)
-            .asEagerSingleton();
+                .toProvider(BindDemoProvider.class)
+                .asEagerSingleton();
     }
 
     /**

@@ -19,9 +19,7 @@ class ConstructorBindingModuleTest extends BaseModuleTest {
     private BindDemo bindDemo;
 
     @Override
-    protected Module getModule() {
-        return new ConstructorBindingModule();
-    }
+    protected Module getModule() { return new ConstructorBindingModule(); }
 
     /**
      * 测试注入的对象符合预期

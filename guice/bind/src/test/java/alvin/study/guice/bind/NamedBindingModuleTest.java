@@ -31,9 +31,7 @@ class NamedBindingModuleTest extends BaseModuleTest {
     private BindDemo bindDemoB;
 
     @Override
-    protected Module getModule() {
-        return new NamedBindingModule();
-    }
+    protected Module getModule() { return new NamedBindingModule(); }
 
     /**
      * 测试注入的对象符合预期
