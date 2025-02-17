@@ -1,11 +1,9 @@
 package alvin.study.guava.io;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.io.CharStreams;
 import com.google.common.io.LineProcessor;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -15,7 +13,10 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.Reader;
 import java.nio.CharBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+
+import javax.annotation.Nonnull;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
@@ -38,14 +39,15 @@ class CharStreamUtilsTest {
      * @return 包装了 {@code s} 字符串参数的 {@link Reader} 对象
      */
     private static Reader asReader(String s) {
-        return new InputStreamReader(new ByteArrayInputStream(s.getBytes(Charsets.UTF_8)));
+        return new InputStreamReader(new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8)));
     }
 
     /**
      * 从 {@link Readable} 类型对象中读取字符串
      *
      * <p>
-     * 通过 {@link CharStreams#toString(Readable)} 方法可以将一个 {@link Readable} 对象中的所有字符读出, 组成字符串对象返回
+     * 通过 {@link CharStreams#toString(Readable)} 方法可以将一个 {@link Readable}
+     * 对象中的所有字符读出, 组成字符串对象返回
      * </p>
      */
     @Test
@@ -62,12 +64,14 @@ class CharStreamUtilsTest {
      * 从 {@link Readable} 类型对象中读取所有的行
      *
      * <p>
-     * 通过 {@link CharStreams#readLines(Readable)} 方法可以将一个 {@link Readable} 对象中的内容按行读出,
+     * 通过 {@link CharStreams#readLines(Readable)} 方法可以将一个 {@link Readable}
+     * 对象中的内容按行读出,
      * 返回的字符串集合保存了每行字符串
      * </p>
      *
      * <p>
-     * 通过 {@link CharStreams#readLines(Readable, LineProcessor)} 方法可以将一个 {@link Readable} 对象中的内容按行读出,
+     * 通过 {@link CharStreams#readLines(Readable, LineProcessor)} 方法可以将一个
+     * {@link Readable} 对象中的内容按行读出,
      * 并在读取完毕后, 通过给定的 {@link LineProcessor} 对象转换成所需的对象返回
      * </p>
      */
@@ -75,10 +79,10 @@ class CharStreamUtilsTest {
     void readLines_shouldReadLinesFromReadable() throws IOException {
         // 测试通过 Reader 读取行字符串集合
         try (var reader = asReader("""
-                Line1
-                Line2
-                Line3
-                """)) {
+            Line1
+            Line2
+            Line3
+            """)) {
             // 读取所有的行, 返回行集合
             var lines = CharStreams.readLines(reader);
             // 确认读取的行集合
@@ -87,16 +91,16 @@ class CharStreamUtilsTest {
 
         // 测试通过 Reader 读取行字符串集合, 并将结果进行转化
         try (var reader = asReader("""
-                Line1
-                Line2
-                Line3
-                """)) {
+            Line1
+            Line2
+            Line3
+            """)) {
             var lines = CharStreams.readLines(reader, new LineProcessor<String>() {
                 // 保存读取结果
                 private final List<String> lines = Lists.newArrayList();
 
                 @Override
-                public boolean processLine(@NotNull String line) {
+                public boolean processLine(@Nonnull String line) {
                     // 将读取的结果进行保存
                     return lines.add(line);
                 }
@@ -115,7 +119,8 @@ class CharStreamUtilsTest {
      * 通过一个 {@link java.io.Writer Writer} 对象向指定的 {@link Appendable} 类型对象写入字符串内容
      *
      * <p>
-     * 通过 {@link CharStreams#asWriter(Appendable)} 方法可以创建一个 {@link java.io.Writer Writer} 类型对象,
+     * 通过 {@link CharStreams#asWriter(Appendable)} 方法可以创建一个 {@link java.io.Writer
+     * Writer} 类型对象,
      * 并通过该 {@code Writer} 对象将字符串内容写入 {@code Appendable} 对象
      * </p>
      */
@@ -137,7 +142,8 @@ class CharStreamUtilsTest {
      * 创建一个空 {@link java.io.Writer Writer} 对象
      *
      * <p>
-     * 通过 {@link CharStreams#nullWriter()} 方法可以创建一个"空" {@link java.io.Writer Writer} 对象, 具备
+     * 通过 {@link CharStreams#nullWriter()} 方法可以创建一个"空" {@link java.io.Writer Writer}
+     * 对象, 具备
      * {@code Writer} 接口的所有行为, 但并不会做实际工作
      * </p>
      */
@@ -153,7 +159,8 @@ class CharStreamUtilsTest {
      * 将字符串内容从 {@link Reader} 对象拷贝到 {@link Appendable} 对象
      *
      * <p>
-     * 通过 {@link CharStreams#nullWriter()} 方法可以创建一个"空" {@link java.io.Writer Writer} 对象, 具备
+     * 通过 {@link CharStreams#nullWriter()} 方法可以创建一个"空" {@link java.io.Writer Writer}
+     * 对象, 具备
      * {@code Writer} 接口的所有行为, 但并不会做实际工作
      * </p>
      */
@@ -172,12 +179,14 @@ class CharStreamUtilsTest {
      * 从 {@link Reader} 对象中跳过指定个数的字符
      *
      * <p>
-     * 通过 {@link CharStreams#skipFully(Reader, long)} 方法可以跳过所给 {@link Reader} 的指定字符 (相当于读取这些字符并丢弃),
+     * 通过 {@link CharStreams#skipFully(Reader, long)} 方法可以跳过所给 {@link Reader} 的指定字符
+     * (相当于读取这些字符并丢弃),
      * 以便可以读取后续的字符内容
      * </p>
      *
      * <p>
-     * 如果 {@link Reader} 对象中暂时无法提供足够的字符被跳过, {@code skipFully} 方法会阻塞, 直到读到指定长度字符, 或者因为
+     * 如果 {@link Reader} 对象中暂时无法提供足够的字符被跳过, {@code skipFully} 方法会阻塞, 直到读到指定长度字符,
+     * 或者因为
      * {@link Reader} 对象关闭等原因抛出异常
      * </p>
      */
@@ -193,15 +202,15 @@ class CharStreamUtilsTest {
                         // 分三次向管道写入数据, 每次间隔 500 毫秒
                         for (int i = 0; i < 3; i++) {
                             Thread.sleep(500);
-                            po.write("Hello Guava".getBytes(Charsets.UTF_8));
+                            po.write("Hello Guava".getBytes(StandardCharsets.UTF_8));
                         }
-                    } catch (IOException | InterruptedException ignored) { }
+                    } catch (IOException | InterruptedException ignored) {}
                 });
 
                 // 启动线程, 开始管道操作
                 inputThread.start();
 
-                try (var reader = new InputStreamReader(pi, Charsets.UTF_8)) {
+                try (var reader = new InputStreamReader(pi, StandardCharsets.UTF_8)) {
                     var timestamp = System.currentTimeMillis();
 
                     // 跳过指定的字符数, 如果 Reader 中的数据暂时不足, 则进入阻塞直到有足够的祖父被跳过

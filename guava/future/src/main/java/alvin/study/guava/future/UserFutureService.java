@@ -87,15 +87,14 @@ public class UserFutureService {
     public ListenableFuture<User> deleteUser(long id) {
         // 通过 transformAsync 方法将查询和删除两个部分进行链式调用
         return Futures.transformAsync(
-                // 查询任务
-                findUserById(id),
-                // 查询完成后的回调, 基于查询任务的结果, 创建删除用户任务
-                mayUser -> listeningDecorator.submit(() -> mayUser.map(user -> {
-                    delay();
-                    userMap.remove(user.id());
-                    return user;
-                }).orElseThrow()),
-                MoreExecutors.directExecutor()
-        );
+            // 查询任务
+            findUserById(id),
+            // 查询完成后的回调, 基于查询任务的结果, 创建删除用户任务
+            mayUser -> listeningDecorator.submit(() -> mayUser.map(user -> {
+                delay();
+                userMap.remove(user.id());
+                return user;
+            }).orElseThrow()),
+            MoreExecutors.directExecutor());
     }
 }

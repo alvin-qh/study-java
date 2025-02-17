@@ -314,8 +314,7 @@ class QueueUtilsTest {
                 Thread.sleep(1000);
                 // 向阻塞队列写入一系列无序整数值
                 priQue.addAll(createRangedElements(0, 5, true));
-            } catch (InterruptedException ignored) {
-            }
+            } catch (InterruptedException ignored) {}
         });
 
         // 启动线程, 对队列进行写操作
@@ -373,8 +372,7 @@ class QueueUtilsTest {
                     // 元素入队
                     que.offer(v);
                 }
-            } catch (InterruptedException ignore) {
-            }
+            } catch (InterruptedException ignore) {}
         });
 
         thread.start();
@@ -428,8 +426,7 @@ class QueueUtilsTest {
                     // 元素入队
                     que.offer(v);
                 }
-            } catch (InterruptedException ignore) {
-            }
+            } catch (InterruptedException ignore) {}
         });
 
         thread.start();
@@ -476,8 +473,7 @@ class QueueUtilsTest {
                         // 元素入队
                         que.offer(v);
                     }
-                } catch (InterruptedException ignore) {
-                }
+                } catch (InterruptedException ignore) {}
             });
 
             thread.start();
@@ -507,8 +503,7 @@ class QueueUtilsTest {
                         // 元素入栈
                         deque.push(v);
                     }
-                } catch (InterruptedException ignore) {
-                }
+                } catch (InterruptedException ignore) {}
             });
 
             thread.start();
@@ -557,8 +552,7 @@ class QueueUtilsTest {
                 // 确认入队最少消耗 2 秒
                 // 入队花费时间是因为出队速度慢导致
                 then(System.currentTimeMillis() - ts).isGreaterThanOrEqualTo(2000);
-            } catch (InterruptedException ignore) {
-            }
+            } catch (InterruptedException ignore) {}
         }).start();
 
         var elems = Lists.<Integer>newArrayList();
@@ -604,8 +598,7 @@ class QueueUtilsTest {
                         // 元素入队
                         then(que.offer(v)).isTrue();
                     }
-                } catch (InterruptedException ignore) {
-                }
+                } catch (InterruptedException ignore) {}
             }).start();
 
             // 在另一个线程进行出队操作
@@ -631,8 +624,7 @@ class QueueUtilsTest {
                         // 元素入队
                         then(que.offer(v)).isTrue();
                     }
-                } catch (InterruptedException ignore) {
-                }
+                } catch (InterruptedException ignore) {}
             }).start();
 
             // 在另一个线程进行出队操作

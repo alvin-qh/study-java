@@ -25,7 +25,5 @@ public abstract class SimpleEvent<T> implements Event<T> {
     }
 
     @Override
-    public T getEntry() {
-        return entry;
-    }
+    public T getEntry() { return entry; }
 }

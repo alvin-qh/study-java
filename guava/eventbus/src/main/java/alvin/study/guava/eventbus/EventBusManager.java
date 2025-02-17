@@ -44,9 +44,7 @@ public final class EventBusManager implements Closeable {
      *
      * @return 单例 {@link EventBusManager} 类型对象
      */
-    public static EventBusManager getInstance() {
-        return INSTANCE;
-    }
+    public static EventBusManager getInstance() { return INSTANCE; }
 
     /**
      * 通过一个名称标识注册一个 {@link EventBus} 对象
@@ -123,12 +121,12 @@ public final class EventBusManager implements Closeable {
     private ExecutorService getExecutorService() {
         if (executorService == null) {
             executorService = new ThreadPoolExecutor(
-                    Runtime.getRuntime().availableProcessors(),
-                    Runtime.getRuntime().availableProcessors(),
-                    0L,
-                    TimeUnit.SECONDS,
-                    new SynchronousQueue<>(),
-                    new ThreadPoolExecutor.AbortPolicy());
+                Runtime.getRuntime().availableProcessors(),
+                Runtime.getRuntime().availableProcessors(),
+                0L,
+                TimeUnit.SECONDS,
+                new SynchronousQueue<>(),
+                new ThreadPoolExecutor.AbortPolicy());
         }
         return executorService;
     }

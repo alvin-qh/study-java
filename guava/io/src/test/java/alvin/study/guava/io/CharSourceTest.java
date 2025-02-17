@@ -1,21 +1,22 @@
 package alvin.study.guava.io;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.io.CharSource;
 import com.google.common.io.LineProcessor;
 import com.google.common.io.MoreFiles;
 import com.google.common.io.Resources;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.CharBuffer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.util.List;
+
+import javax.annotation.Nonnull;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
@@ -32,19 +33,23 @@ import static org.assertj.core.api.BDDAssertions.then;
  * <ul>
  * <li>
  * {@link com.google.common.io.Files#asCharSource(java.io.File, java.nio.charset.Charset)
- * Files.asCharSource(File, Charset)} 方法, 用于通过一个 {@link java.io.File File} 对象创建 {@link CharSource} 对象
- * </li>
- * <li>
- * {@link MoreFiles#asCharSource(java.nio.file.Path, java.nio.charset.Charset, java.nio.file.OpenOption...)
- * MoreFiles.asCharSource(Path, Charset, OpenOption...)} 方法, 用于通过一个 {@link java.nio.file.Path Path} 对象创建
+ * Files.asCharSource(File, Charset)} 方法, 用于通过一个 {@link java.io.File File} 对象创建
  * {@link CharSource} 对象
  * </li>
  * <li>
- * {@link Resources#asCharSource(java.net.URL, java.nio.charset.Charset) Resources.asCharSource(URL)} 方法, 用于通过一个
+ * {@link MoreFiles#asCharSource(java.nio.file.Path, java.nio.charset.Charset, java.nio.file.OpenOption...)
+ * MoreFiles.asCharSource(Path, Charset, OpenOption...)} 方法, 用于通过一个
+ * {@link java.nio.file.Path Path} 对象创建
+ * {@link CharSource} 对象
+ * </li>
+ * <li>
+ * {@link Resources#asCharSource(java.net.URL, java.nio.charset.Charset)
+ * Resources.asCharSource(URL)} 方法, 用于通过一个
  * {@link java.net.URL URL} 对象创建 {@link CharSource} 对象
  * </li>
  * <li>
- * {@link com.google.common.io.ByteSource#asCharSource(java.nio.charset.Charset) ByteSource.asCharSource(Charset)} 方法,
+ * {@link com.google.common.io.ByteSource#asCharSource(java.nio.charset.Charset)
+ * ByteSource.asCharSource(Charset)} 方法,
  * 将一个 {@code ByteSource} 类型对象包装为 {@code CharSource} 对象
  * </li>
  * </ul>
@@ -55,22 +60,27 @@ class CharSourceTest {
      * 将一个字符序列对象包装为 {@link CharSource} 类型对象
      *
      * <p>
-     * 通过 {@link CharSource#isEmpty()} 方法可以确定对象中是否包含字符, 返回值为 {@code true} 表示一个空的 {@link CharSource}
+     * 通过 {@link CharSource#isEmpty()} 方法可以确定对象中是否包含字符, 返回值为 {@code true} 表示一个空的
+     * {@link CharSource}
      * 对象
      * </p>
      *
      * <p>
-     * 通过 {@link CharSource#wrap(CharSequence)} 方法可以将一个字符序列包装为 {@link CharSource} 类型对象,
+     * 通过 {@link CharSource#wrap(CharSequence)} 方法可以将一个字符序列包装为 {@link CharSource}
+     * 类型对象,
      * 通过包装后的对象可以读取到被包装的字符序列内容
      * </p>
      *
      * <p>
-     * 通过 {@link CharSource#length()} 方法可以获取 {@link CharSource} 包含字符序列的长度. 但如果当前 {@link CharSource}
-     * 实现类无法获取到自身包含字符序列的长度, 则返回空的 {@link com.google.common.base.Optional Optional} 对象
+     * 通过 {@link CharSource#length()} 方法可以获取 {@link CharSource} 包含字符序列的长度. 但如果当前
+     * {@link CharSource}
+     * 实现类无法获取到自身包含字符序列的长度, 则返回空的 {@link com.google.common.base.Optional Optional}
+     * 对象
      * </p>
      *
      * <p>
-     * 通过 {@link CharSource#lengthIfKnown()} 方法先通过 {@link CharSource#length()} 方法获取字符序列长度, 如果当前
+     * 通过 {@link CharSource#lengthIfKnown()} 方法先通过 {@link CharSource#length()}
+     * 方法获取字符序列长度, 如果当前
      * {@link CharSource} 类型不支持, 则通过完全读取 {@link CharSource} 中的内容来求长度
      * </p>
      */
@@ -93,7 +103,8 @@ class CharSourceTest {
      * 从 {@link CharSource} 中读取字符内容
      *
      * <p>
-     * 通过 {@link CharSource#read()} 方法读取 {@link CharSource} 中包含的全部字符内容, 返回一个字符序列组成的字符串
+     * 通过 {@link CharSource#read()} 方法读取 {@link CharSource} 中包含的全部字符内容,
+     * 返回一个字符序列组成的字符串
      * </p>
      *
      * <p>
@@ -101,27 +112,31 @@ class CharSourceTest {
      * </p>
      *
      * <p>
-     * 通过 {@link CharSource#readLines()} 方法读取 {@link CharSource} 中包含的所有行, 返回一个包含行字符串的集合
+     * 通过 {@link CharSource#readLines()} 方法读取 {@link CharSource} 中包含的所有行,
+     * 返回一个包含行字符串的集合
      * </p>
      *
      * <p>
-     * 通过 {@link CharSource#readLines(LineProcessor)} 方法读取 {@link CharSource} 中包含的所有行, 并通过
+     * 通过 {@link CharSource#readLines(LineProcessor)} 方法读取 {@link CharSource}
+     * 中包含的所有行, 并通过
      * {@link LineProcessor} 对象将读取的行集合转为所需类型的对象
      * </p>
      *
      * <p>
-     * 通过 {@link CharSource#forEachLine(java.util.function.Consumer) CharSource.forEachLine(Consumer)} 方法读取
-     * {@link CharSource} 中包含的所有行, 并通过 {@link java.util.function.Consumer Consumer} 对象对每一行字符串进行回调
+     * 通过 {@link CharSource#forEachLine(java.util.function.Consumer)
+     * CharSource.forEachLine(Consumer)} 方法读取
+     * {@link CharSource} 中包含的所有行, 并通过 {@link java.util.function.Consumer Consumer}
+     * 对象对每一行字符串进行回调
      * </p>
      */
     @Test
     void read_shouldReadStringsFromCharSources() throws IOException {
         // 将多行字符串包装为 CharSource 对象
         var source = CharSource.wrap("""
-                Line1
-                Line2
-                Line3
-                """);
+            Line1
+            Line2
+            Line3
+            """);
 
         // 确认读取了 CharSource 中的全部字符内容
         then(source.read()).isEqualTo("Line1\nLine2\nLine3\n");
@@ -138,7 +153,7 @@ class CharSourceTest {
             private final List<String> lines = Lists.newArrayList();
 
             @Override
-            public boolean processLine(@NotNull String line) {
+            public boolean processLine(@Nonnull String line) {
                 // 将 CharSource 中读取到的行字符串进行保存
                 return lines.add(line);
             }
@@ -165,7 +180,8 @@ class CharSourceTest {
      * 将 {@link CharSource} 对象的内容拷贝到 {@link Appendable} 对象中
      *
      * <p>
-     * 通过 {@link CharSource#copyTo(Appendable) CharSource.copyTo(OutputStream)} 方法可以将 {@link CharSource}
+     * 通过 {@link CharSource#copyTo(Appendable) CharSource.copyTo(OutputStream)}
+     * 方法可以将 {@link CharSource}
      * 对象中包含的字符内容全部复制到 {@link Appendable} 对象中
      * </p>
      */
@@ -184,11 +200,14 @@ class CharSourceTest {
     }
 
     /**
-     * 将 {@link CharSource} 对象的内容拷贝到 {@link com.google.common.io.CharSink CharSink} 对象中
+     * 将 {@link CharSource} 对象的内容拷贝到 {@link com.google.common.io.CharSink CharSink}
+     * 对象中
      *
      * <p>
-     * 通过 {@link CharSource#copyTo(com.google.common.io.CharSink) CharSource.copyTo(CharSink)} 方法可以将
-     * {@link CharSource} 对象的字符内容全部复制到 {@link com.google.common.io.CharSink CharSink} 对象中
+     * 通过 {@link CharSource#copyTo(com.google.common.io.CharSink)
+     * CharSource.copyTo(CharSink)} 方法可以将
+     * {@link CharSource} 对象的字符内容全部复制到 {@link com.google.common.io.CharSink
+     * CharSink} 对象中
      * </p>
      */
     @Test
@@ -202,13 +221,13 @@ class CharSourceTest {
 
         try {
             // 将 Path 对象包装为 CharSink 对象
-            var sink = MoreFiles.asCharSink(file, Charsets.UTF_8, StandardOpenOption.WRITE);
+            var sink = MoreFiles.asCharSink(file, StandardCharsets.UTF_8, StandardOpenOption.WRITE);
 
             // 将 CharSource 的内容拷贝到 CharSink 对象
             source.copyTo(sink);
 
             // 将 Path 对象包装为 CharSource 对象
-            source = MoreFiles.asCharSource(file, Charsets.UTF_8, StandardOpenOption.READ);
+            source = MoreFiles.asCharSource(file, StandardCharsets.UTF_8, StandardOpenOption.READ);
             // 确认文件存储的内容和预期一致
             then(source.read()).isEqualTo("Hello Guava");
         } finally {
@@ -220,7 +239,8 @@ class CharSourceTest {
      * 将多个 {@link CharSource} 对象连接为一个 {@link CharSource} 对象
      *
      * <p>
-     * {@link CharSource#concat(CharSource...)} 方法可以将多个 {@link CharSource} 对象连接为一个, 读取数据的时候按照链接是的顺序,
+     * {@link CharSource#concat(CharSource...)} 方法可以将多个 {@link CharSource} 对象连接为一个,
+     * 读取数据的时候按照链接是的顺序,
      * 依次读取每个 {@link CharSource} 中的内容, 让这些 {@link CharSource} 对象看起来如同一个
      * </p>
      */
@@ -265,7 +285,8 @@ class CharSourceTest {
      * </p>
      *
      * <p>
-     * 通过 {@link CharSource#openBufferedStream()} 方法可以建立一个用于从 {@link CharSource} 读取字符内容的
+     * 通过 {@link CharSource#openBufferedStream()} 方法可以建立一个用于从 {@link CharSource}
+     * 读取字符内容的
      * {@link java.io.BufferedReader BufferedReader} 对象
      * </p>
      */
@@ -289,11 +310,14 @@ class CharSourceTest {
     }
 
     /**
-     * 将 {@link CharSource} 类型对象转为 {@link com.google.common.io.ByteSource ByteSource} 类型对象
+     * 将 {@link CharSource} 类型对象转为 {@link com.google.common.io.ByteSource
+     * ByteSource} 类型对象
      *
      * <p>
-     * 通过 {@link CharSource#asByteSource(java.nio.charset.Charset) CharSource.asByteSource(Charset)}
-     * 方法可以将一个字符数据源 ({@link CharSource}) 转为字节数据源 ({@link com.google.common.io.ByteSource ByteSource}),
+     * 通过 {@link CharSource#asByteSource(java.nio.charset.Charset)
+     * CharSource.asByteSource(Charset)}
+     * 方法可以将一个字符数据源 ({@link CharSource}) 转为字节数据源
+     * ({@link com.google.common.io.ByteSource ByteSource}),
      * 以便直接对数据源存储的字符编码数据以字节进行读取
      * </p>
      */
@@ -302,8 +326,8 @@ class CharSourceTest {
         var cSource = CharSource.wrap("Hello Guava");
 
         // 将字符数据源转为字节数据源对象
-        var bSource = cSource.asByteSource(Charsets.UTF_8);
+        var bSource = cSource.asByteSource(StandardCharsets.UTF_8);
         // 确认从数据源读取到预期的字节数据
-        then(bSource.read()).isEqualTo("Hello Guava".getBytes(Charsets.UTF_8));
+        then(bSource.read()).isEqualTo("Hello Guava".getBytes(StandardCharsets.UTF_8));
     }
 }

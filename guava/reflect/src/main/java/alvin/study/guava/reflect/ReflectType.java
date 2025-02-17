@@ -4,8 +4,6 @@ import com.google.common.reflect.TypeParameter;
 import com.google.common.reflect.TypeToken;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
@@ -24,23 +22,22 @@ public final class ReflectType {
      * @param <T>         泛型参数
      * @return {@code List<T>} 泛型类型
      */
-    @Contract("_ -> new")
-    public static <T> @NotNull TypeToken<List<T>> listOf(Class<T> elementType) {
-        return (new TypeToken<List<T>>() { })
-                .where(new TypeParameter<>() { }, elementType);
+    public static <T> TypeToken<List<T>> listOf(Class<T> elementType) {
+        return (new TypeToken<List<T>>() {})
+                .where(new TypeParameter<>() {}, elementType);
     }
 
     /**
-     * 产生 {@code List<T>} 泛型类型, 通过 {@link TypeToken} 对象来指定 {@code T} 泛型参数类型, 即泛型参数本身也可以为泛型类型
+     * 产生 {@code List<T>} 泛型类型, 通过 {@link TypeToken} 对象来指定 {@code T} 泛型参数类型,
+     * 即泛型参数本身也可以为泛型类型
      *
      * @param elementType 通过 {@link TypeToken} 对象表示的泛型参数类型
      * @param <T>         泛型参数
      * @return {@code List<T>} 泛型类型
      */
-    @Contract("_ -> new")
-    public static <T> @NotNull TypeToken<List<T>> listOf(TypeToken<T> elementType) {
-        return (new TypeToken<List<T>>() { })
-                .where(new TypeParameter<>() { }, elementType);
+    public static <T> TypeToken<List<T>> listOf(TypeToken<T> elementType) {
+        return (new TypeToken<List<T>>() {})
+                .where(new TypeParameter<>() {}, elementType);
     }
 
     /**
@@ -54,10 +51,9 @@ public final class ReflectType {
      * @param <V>       Value 泛型参数
      * @return {@code Map<K, V>} 泛型类型
      */
-    @Contract("_, _ -> new")
-    public static <K, V> @NotNull TypeToken<Map<K, V>> mapOf(Class<K> keyType, Class<V> valueType) {
-        return (new TypeToken<Map<K, V>>() { })
-                .where(new TypeParameter<>() { }, keyType)
-                .where(new TypeParameter<>() { }, valueType);
+    public static <K, V> TypeToken<Map<K, V>> mapOf(Class<K> keyType, Class<V> valueType) {
+        return (new TypeToken<Map<K, V>>() {})
+                .where(new TypeParameter<>() {}, keyType)
+                .where(new TypeParameter<>() {}, valueType);
     }
 }

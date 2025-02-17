@@ -3,6 +3,7 @@ package alvin.study.guava.cache;
 import alvin.study.guava.cache.model.User;
 import alvin.study.guava.cache.observer.CacheObserver;
 import alvin.study.guava.cache.repository.UserRepository;
+
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -21,6 +22,8 @@ import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.Nonnull;
+
 import static org.assertj.core.api.Assertions.entry;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
@@ -35,7 +38,8 @@ class CacheTest {
     private final UserRepository repository = new UserRepository();
 
     /**
-     * 将 {@link Cache#stats()} 返回的 {@link com.google.common.cache.CacheStats CacheStats} 对象转为字符串
+     * 将 {@link Cache#stats()} 返回的 {@link com.google.common.cache.CacheStats
+     * CacheStats} 对象转为字符串
      *
      * @param cache {@link Cache} 类对象
      * @return 包含 {@link com.google.common.cache.CacheStats CacheStats} 对象转为的字符串
@@ -63,13 +67,16 @@ class CacheTest {
      * </p>
      *
      * <p>
-     * {@link Cache#getIfPresent(Object)} 方法用于通过 Key 从缓存中获取对应的 Value. 需要注意的是, 这里的 key 并未被泛型, 是
-     * {@code Object} 类型, 所以错误的类型会导致缓存查询失败. 例如: 如果对 {@code Long} 类型的 Key 错误的使用了 {@code Integer} 类型,
+     * {@link Cache#getIfPresent(Object)} 方法用于通过 Key 从缓存中获取对应的 Value. 需要注意的是, 这里的
+     * key 并未被泛型, 是
+     * {@code Object} 类型, 所以错误的类型会导致缓存查询失败. 例如: 如果对 {@code Long} 类型的 Key 错误的使用了
+     * {@code Integer} 类型,
      * 就会导致查询失败
      * </p>
      *
      * <p>
-     * {@link Cache#get(Object, java.util.concurrent.Callable) Cache.get(Object, Callable)} 方法用于通过 Key
+     * {@link Cache#get(Object, java.util.concurrent.Callable) Cache.get(Object,
+     * Callable)} 方法用于通过 Key
      * 从缓存中获取对应的 Value, 如果查询失败, 则会调用 {@code Callable} 参数得到一个对象, 并对该对象进行缓存后返回, 或抛出
      * {@link ExecutionException} 或 {@link UncheckedExecutionException} 类型的异常
      * <ul>
@@ -77,11 +84,13 @@ class CacheTest {
      * {@code Callable} 参数不能返回 {@code null} 值来表示对应的 Key 未取到对应的对象, 应该抛出异常
      * </li>
      * <li>
-     * 若 {@code Callable} 抛出 {@link Exception} 类型异常, 则会包装为 {@link ExecutionException} 类型异常并通过 {@code get}
+     * 若 {@code Callable} 抛出 {@link Exception} 类型异常, 则会包装为
+     * {@link ExecutionException} 类型异常并通过 {@code get}
      * 方法抛出
      * </li>
      * <li>
-     * 若 {@code Callable} 抛出 {@link RuntimeException} 类型, 则会包装为 {@link UncheckedExecutionException} 类型异常并通过
+     * 若 {@code Callable} 抛出 {@link RuntimeException} 类型, 则会包装为
+     * {@link UncheckedExecutionException} 类型异常并通过
      * {@code get} 方法抛出
      * </li>
      * </ul>
@@ -143,41 +152,51 @@ class CacheTest {
     }
 
     /**
-     * 测试 {@link com.google.common.cache.LoadingCache LoadingCache} 类型对象, 将自动从数据源加载数据并进行缓存
+     * 测试 {@link com.google.common.cache.LoadingCache LoadingCache} 类型对象,
+     * 将自动从数据源加载数据并进行缓存
      *
      * <p>
-     * 通过 {@link CacheBuilder#build(CacheLoader)} 方法可以创建一个 {@link com.google.common.cache.LoadingCache
+     * 通过 {@link CacheBuilder#build(CacheLoader)} 方法可以创建一个
+     * {@link com.google.common.cache.LoadingCache
      * LoadingCache} 类型对象, 表示一个缓存对象, 可以自动从数据源加载被缓存对象
      * </p>
      *
      * <p>
-     * 当指定的 Key 对应的对象尚未被缓存时, 会通过 {@link CacheLoader#load(Object) CacheLoader.load(K)} 方法根据 Key
+     * 当指定的 Key 对应的对象尚未被缓存时, 会通过 {@link CacheLoader#load(Object)
+     * CacheLoader.load(K)} 方法根据 Key
      * 返回从数据源获取待缓存的对象 (或新建待缓存的对象). 注意, 该方法不允许返回 {@code null} 值来表示对应 Key 的数据不存在,
      * 这种情况应该抛出异常, 包括:
      * <ul>
      * <li>
-     * 如果 {@link CacheLoader#load(Object) CacheLoader.load(K)} 方法抛出的异常为 {@link Exception} 类型, 则会包装为
+     * 如果 {@link CacheLoader#load(Object) CacheLoader.load(K)} 方法抛出的异常为
+     * {@link Exception} 类型, 则会包装为
      * {@link ExecutionException} 类型异常抛出
      * </li>
      * <li>
-     * 如果 {@link CacheLoader#load(Object) CacheLoader.load(K)} 方法抛出的异常为 {@link RuntimeException} 类型, 则会包装为
+     * 如果 {@link CacheLoader#load(Object) CacheLoader.load(K)} 方法抛出的异常为
+     * {@link RuntimeException} 类型, 则会包装为
      * {@link UncheckedExecutionException} 类型异常抛出
      * </li>
      * </ul>
      * </p>
      *
      * <p>
-     * {@link com.google.common.cache.LoadingCache#get(Object) LoadingCache.get(K)} 方法用于根据 Key 获取缓存的对象,
+     * {@link com.google.common.cache.LoadingCache#get(Object) LoadingCache.get(K)}
+     * 方法用于根据 Key 获取缓存的对象,
      * 如果指定的 Key 不存在, 则会通过之前定义的 {@link CacheLoader} 对象从数据源加载 (或新产生) 一个对象并返回, 或者抛出
      * {@link ExecutionException} 或 {@link UncheckedExecutionException} 类型的异常
      * </p>
      *
      * <p>
      * 对于其它如
-     * {@link com.google.common.cache.LoadingCache#getIfPresent(Object) LoadingCache.getIfPresent(Object)},
-     * {@link com.google.common.cache.LoadingCache#put(Object, Object) LoadingCache.put(K, V)},
-     * {@link com.google.common.cache.LoadingCache#getAllPresent(Iterable) LoadingCache.getAllPresent(Iterable)} 以及
-     * {@link com.google.common.cache.LoadingCache#putAll(java.util.Map) LoadingCache.putAll(Map)} 等方法,
+     * {@link com.google.common.cache.LoadingCache#getIfPresent(Object)
+     * LoadingCache.getIfPresent(Object)},
+     * {@link com.google.common.cache.LoadingCache#put(Object, Object)
+     * LoadingCache.put(K, V)},
+     * {@link com.google.common.cache.LoadingCache#getAllPresent(Iterable)
+     * LoadingCache.getAllPresent(Iterable)} 以及
+     * {@link com.google.common.cache.LoadingCache#putAll(java.util.Map)
+     * LoadingCache.putAll(Map)} 等方法,
      * 则和 {@link Cache} 类型中对应方法功能一致
      * </p>
      */
@@ -190,7 +209,7 @@ class CacheTest {
         // 构建缓存对象, 并指定 load 方法如何从数据源读取对象
         var cache = CacheBuilder.newBuilder().build(new CacheLoader<Long, User>() {
             @Override
-            public User load(Long key) {
+            public User load(@Nonnull Long key) {
                 // 从数据源读取对象, 并在无法读取结果时抛出异常
                 return repository.findUserById(key).orElseThrow();
             }
@@ -218,7 +237,8 @@ class CacheTest {
             fail();
         }
 
-        // 如果 Key 无法获取到指定数据, 确认会捕获到 UncheckedExecutionException 异常, 且是由于 NoSuchElementException 导致的异常
+        // 如果 Key 无法获取到指定数据, 确认会捕获到 UncheckedExecutionException 异常, 且是由于
+        // NoSuchElementException 导致的异常
         thenThrownBy(() -> cache.get(3L))
                 .isInstanceOf(UncheckedExecutionException.class)
                 .hasCauseExactlyInstanceOf(NoSuchElementException.class);
@@ -241,7 +261,8 @@ class CacheTest {
      * </p>
      *
      * <p>
-     * 本例通过 {@link Cache} 类型的缓存来进行演示, {@link com.google.common.cache.LoadingCache LoadingCache} 类型与其完全一致
+     * 本例通过 {@link Cache} 类型的缓存来进行演示, {@link com.google.common.cache.LoadingCache
+     * LoadingCache} 类型与其完全一致
      * </p>
      */
     @Test
@@ -272,12 +293,14 @@ class CacheTest {
      * 测试以缓存对象的权重和为指标的淘汰策略
      *
      * <p>
-     * {@link CacheBuilder#weigher(com.google.common.cache.Weigher) CacheBuilder.weigher(Weigher)}
+     * {@link CacheBuilder#weigher(com.google.common.cache.Weigher)
+     * CacheBuilder.weigher(Weigher)}
      * 方法用于设置被缓存对象的权重
      * </p>
      *
      * <p>
-     * {@link CacheBuilder#maximumWeight(long)} 方法用于设置总权重的上限, 当被缓存对象的权重之和超过此上限, 则再缓存新对象时,
+     * {@link CacheBuilder#maximumWeight(long)} 方法用于设置总权重的上限, 当被缓存对象的权重之和超过此上限,
+     * 则再缓存新对象时,
      * 会按照早到新的顺序, 从已缓存对象中删除足够的旧对象, 以保证添加新的缓存对象后, 所有被缓存对象的权重和不会超过上限
      * </p>
      *
@@ -318,7 +341,8 @@ class CacheTest {
      * 测试以缓存对象的生存时间为指标的淘汰策略
      *
      * <p>
-     * {@link CacheBuilder#expireAfterWrite(long, TimeUnit)} 方法用于设置被缓存对象的存活时间, 存活时间基于该缓存项的创建时间,
+     * {@link CacheBuilder#expireAfterWrite(long, TimeUnit)} 方法用于设置被缓存对象的存活时间,
+     * 存活时间基于该缓存项的创建时间,
      * 存活时间超过设置时间的将被判定为无效缓存项目
      * </p>
      *
@@ -374,7 +398,8 @@ class CacheTest {
      * </p>
      *
      * <p>
-     * 和 {@link CacheBuilder#expireAfterWrite(long, TimeUnit)} 方法基本类似, 只是每次访问被缓存项后, 该缓存项的存活时间会重新计算,
+     * 和 {@link CacheBuilder#expireAfterWrite(long, TimeUnit)} 方法基本类似, 只是每次访问被缓存项后,
+     * 该缓存项的存活时间会重新计算,
      * 即淘汰冷数据, 保留热数据的意思
      * </p>
      */
@@ -418,18 +443,21 @@ class CacheTest {
      *
      * <p>
      * 无论是 {@link CacheBuilder#build(CacheLoader)} 的参数 {@link CacheLoader} 回调, 还是
-     * {@link Cache#get(Object, java.util.concurrent.Callable) Cache#get(Object, Callable)} 的参数
+     * {@link Cache#get(Object, java.util.concurrent.Callable) Cache#get(Object,
+     * Callable)} 的参数
      * {@link java.util.concurrent.Callable Callable} 回调, 都不允许返回 {@link null} 值
      * </p>
      *
      * <p>
-     * 在前面的例子 ({@link #builder_shouldBuildLoadingCache()}) 中, 若无法根据所给的 Key 值从数据源加载对象,
+     * 在前面的例子 ({@link #builder_shouldBuildLoadingCache()}) 中, 若无法根据所给的 Key
+     * 值从数据源加载对象,
      * 需要通过抛出异常的方法告诉缓存调用方该对象不存在, 但这也导致了"不存在"这个结论并未被缓存, 如果频繁用这个 Key 来获取该"不存在"的对象,
      * 则每次都会从数据源尝试加载并抛出异常, 缓存在这个 Key 上不起任何作用 (俗称被穿透)
      * </p>
      *
      * <p>
-     * 如果将缓存对象类型设置为 {@link Optional} 类型, 则可以部分解决上述问题, 通过返回"非空"和"为空"的 {@link Optional} 类型对象,
+     * 如果将缓存对象类型设置为 {@link Optional} 类型, 则可以部分解决上述问题, 通过返回"非空"和"为空"的
+     * {@link Optional} 类型对象,
      * 一方面可以解决缓存返回结果必须判断 {@code null} 值的问题, 另一方面, 为空的 {@link Optional} 对象也会被缓存,
      * 从而解决缓存穿透的问题
      * </p>
@@ -448,7 +476,7 @@ class CacheTest {
         var cache = CacheBuilder.newBuilder()
                 .build(new CacheLoader<Long, Optional<User>>() {
                     @Override
-                    public Optional<User> load(Long key) {
+                    public Optional<User> load(@Nonnull Long key) {
                         return repository.findUserById(key);
                     }
                 });
@@ -474,7 +502,8 @@ class CacheTest {
      * 在缓存中使用布隆过滤器
      *
      * <p>
-     * 在 {@link #optional_shouldUseOptionalToHandleNullValue()} 范例中, 通过对不存在的对象缓存一个空 {@link Optional}
+     * 在 {@link #optional_shouldUseOptionalToHandleNullValue()} 范例中, 通过对不存在的对象缓存一个空
+     * {@link Optional}
      * 对象来解决缓存穿透的问题, 但也存在存储过多无效缓存项的隐患
      * </p>
      *
@@ -500,7 +529,7 @@ class CacheTest {
                     private final BloomFilter<Long> bloomFilter = repository.toBloomFilter(1000);
 
                     @Override
-                    public User load(Long key) {
+                    public User load(@Nonnull Long key) {
                         // 通过布隆过滤器确认数据是否存在
                         if (!bloomFilter.mightContain(key)) {
                             // 数据不存在的清空
@@ -539,7 +568,8 @@ class CacheTest {
      * 避免内存泄漏
      *
      * <p>
-     * 通过 {@link CacheBuilder#weakKeys()}, {@link CacheBuilder#weakValues()} 以及 {@link CacheBuilder#softValues()}
+     * 通过 {@link CacheBuilder#weakKeys()}, {@link CacheBuilder#weakValues()} 以及
+     * {@link CacheBuilder#softValues()}
      * 这几个方法, 可以指定使用特殊的引用方式存储缓存的键值
      * </p>
      *
@@ -602,7 +632,8 @@ class CacheTest {
      * </p>
      *
      * <p>
-     * 通过 {@link CacheBuilder#refreshAfterWrite(long, TimeUnit)} 方法可以指定一个自动刷新的时间, 当缓存项存在时间超过该时间后,
+     * 通过 {@link CacheBuilder#refreshAfterWrite(long, TimeUnit)} 方法可以指定一个自动刷新的时间,
+     * 当缓存项存在时间超过该时间后,
      * 会自动对缓存项进行刷新
      * </p>
      */
@@ -617,7 +648,7 @@ class CacheTest {
                 .refreshAfterWrite(2, TimeUnit.SECONDS)
                 .build(new CacheLoader<Long, User>() {
                     @Override
-                    public User load(Long key) {
+                    public User load(@Nonnull Long key) {
                         return repository.findUserById(key).orElseThrow();
                     }
                 });
@@ -643,7 +674,8 @@ class CacheTest {
      * </p>
      *
      * <p>
-     * 通过 {@link com.google.common.cache.LoadingCache#refresh(Object) LoadingCache.refresh(K)} 方法可以刷新指定 Key
+     * 通过 {@link com.google.common.cache.LoadingCache#refresh(Object)
+     * LoadingCache.refresh(K)} 方法可以刷新指定 Key
      * 的缓存项, 这种方法一般用于数据源更新后执行
      * </p>
      *
@@ -652,7 +684,8 @@ class CacheTest {
      * </p>
      *
      * <p>
-     * {@link CacheEventBus} 是转为缓存处理设计的消息总线类型, 通过 {@link CacheEventBus#getInstance()} 方法获取其单例对象, 再通过
+     * {@link CacheEventBus} 是转为缓存处理设计的消息总线类型, 通过
+     * {@link CacheEventBus#getInstance()} 方法获取其单例对象, 再通过
      * {@link CacheEventBus#register(CacheObserver)} 方法注册在该消息总线上进行监听的观察者对象
      * </p>
      */
@@ -666,7 +699,7 @@ class CacheTest {
         var cache = CacheBuilder.newBuilder()
                 .build(new CacheLoader<Long, User>() {
                     @Override
-                    public User load(Long key) {
+                    public User load(@Nonnull Long key) {
                         return repository.findUserById(key).orElseThrow();
                     }
                 });
@@ -700,7 +733,8 @@ class CacheTest {
      * 测试获取缓存使用指标
      *
      * <p>
-     * {@link Cache#stats()} 方法用于获取缓存使用过程中的指标信息, 指标信息为一个 {@link com.google.common.cache.CacheStats
+     * {@link Cache#stats()} 方法用于获取缓存使用过程中的指标信息, 指标信息为一个
+     * {@link com.google.common.cache.CacheStats
      * CacheStats} 类型对象
      * </p>
      *
@@ -721,7 +755,7 @@ class CacheTest {
                 .recordStats()
                 .build(new CacheLoader<Long, User>() {
                     @Override
-                    public User load(Long key) {
+                    public User load(@Nonnull Long key) {
                         return repository.findUserById(key).orElseThrow();
                     }
                 });
@@ -746,21 +780,26 @@ class CacheTest {
      * 监听缓存项删除操作
      *
      * <p>
-     * 通过 {@link CacheBuilder#removalListener(RemovalListener)} 方法可以指定一个监听接口, 用于监听从缓存中删除项目的操作
+     * 通过 {@link CacheBuilder#removalListener(RemovalListener)} 方法可以指定一个监听接口,
+     * 用于监听从缓存中删除项目的操作
      * </p>
      *
      * <p>
      * {@link RemovalListener#onRemoval(com.google.common.cache.RemovalNotification)
-     * RemovalListener.onRemoval(RemovalNotification)} 方法通过 {@link com.google.common.cache.RemovalNotification
+     * RemovalListener.onRemoval(RemovalNotification)} 方法通过
+     * {@link com.google.common.cache.RemovalNotification
      * RemovalNotification} 类型参数表明被删除的缓存情况, 包括:
      * <ul>
      * <li>
-     * {@link com.google.common.cache.RemovalNotification#getKey() RemovalNotification.getKey()} 和
-     * {@link com.google.common.cache.RemovalNotification#getValue() RemovalNotification.getValue()}
+     * {@link com.google.common.cache.RemovalNotification#getKey()
+     * RemovalNotification.getKey()} 和
+     * {@link com.google.common.cache.RemovalNotification#getValue()
+     * RemovalNotification.getValue()}
      * 方法可以获取被删除缓存项的键值对
      * </li>
      * <li>
-     * {@link com.google.common.cache.RemovalNotification#getCause() RemovalNotification.getCause()}
+     * {@link com.google.common.cache.RemovalNotification#getCause()
+     * RemovalNotification.getCause()}
      * 方法可以获取该缓存项被删除的原因, 返回一个 {@link RemovalCause} 类型枚举
      * </li>
      * </ul>
@@ -804,7 +843,7 @@ class CacheTest {
                 })
                 .build(new CacheLoader<Long, User>() {
                     @Override
-                    public User load(Long key) {
+                    public User load(@Nonnull Long key) {
                         return repository.findUserById(key).orElseThrow();
                     }
                 });

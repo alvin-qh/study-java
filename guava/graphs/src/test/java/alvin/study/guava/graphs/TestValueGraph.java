@@ -14,21 +14,20 @@ class TestValueGraph {
     // 边集合列表, 图的每个边由相连的两个节点组成
     // 本例中, 节点由整数值表示, 边的权重值也有整数值表示
     private final GraphsDatasource<Integer, Integer> datasource = new GraphsDatasource<>(
-            Edge.of(1, 2, 1),
-            Edge.of(2, 3, 3),
-            Edge.of(2, 4, 5),
-            Edge.of(2, 5, 3),
-            Edge.of(2, 7, 4),
-            Edge.of(3, 8, 2),
-            Edge.of(4, 5, 2),
-            Edge.of(4, 6, 3),
-            Edge.of(4, 8, 6),
-            Edge.of(5, 6, 1),
-            Edge.of(6, 7, 5),
-            Edge.of(7, 8, 3),
-            Edge.of(8, 9, 2),
-            Edge.of(9, 1, 3)
-    );
+        Edge.of(1, 2, 1),
+        Edge.of(2, 3, 3),
+        Edge.of(2, 4, 5),
+        Edge.of(2, 5, 3),
+        Edge.of(2, 7, 4),
+        Edge.of(3, 8, 2),
+        Edge.of(4, 5, 2),
+        Edge.of(4, 6, 3),
+        Edge.of(4, 8, 6),
+        Edge.of(5, 6, 1),
+        Edge.of(6, 7, 5),
+        Edge.of(7, 8, 3),
+        Edge.of(8, 9, 2),
+        Edge.of(9, 1, 3));
 
     /**
      * 测试具有"边权重值"的有向图

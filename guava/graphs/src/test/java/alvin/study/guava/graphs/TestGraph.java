@@ -17,21 +17,20 @@ class TestGraph {
     // 边集合列表, 图的每个边由相连的两个节点组成
     // 本例中, 节点由整数值表示
     private final GraphsDatasource<Integer, ?> datasource = new GraphsDatasource<>(
-            Edge.of(1, 2),
-            Edge.of(2, 3),
-            Edge.of(2, 4),
-            Edge.of(2, 5),
-            Edge.of(2, 7),
-            Edge.of(3, 8),
-            Edge.of(4, 5),
-            Edge.of(4, 6),
-            Edge.of(4, 8),
-            Edge.of(5, 6),
-            Edge.of(6, 7),
-            Edge.of(7, 8),
-            Edge.of(8, 9),
-            Edge.of(9, 1)
-    );
+        Edge.of(1, 2),
+        Edge.of(2, 3),
+        Edge.of(2, 4),
+        Edge.of(2, 5),
+        Edge.of(2, 7),
+        Edge.of(3, 8),
+        Edge.of(4, 5),
+        Edge.of(4, 6),
+        Edge.of(4, 8),
+        Edge.of(5, 6),
+        Edge.of(6, 7),
+        Edge.of(7, 8),
+        Edge.of(8, 9),
+        Edge.of(9, 1));
 
     /**
      * 测试有向图
@@ -262,9 +261,9 @@ class TestGraph {
             var paths = GraphPaths.getPaths(graph, 1, 8);
             // 确认节点间路径结果
             then(paths).containsExactlyInAnyOrder(
-                    List.of(1, 2, 3, 8),
-                    List.of(1, 2, 4, 8),
-                    List.of(1, 2, 7, 8));
+                List.of(1, 2, 3, 8),
+                List.of(1, 2, 4, 8),
+                List.of(1, 2, 7, 8));
         }
     }
 
@@ -498,10 +497,10 @@ class TestGraph {
             var paths = GraphPaths.getPaths(graph, 1, 8);
             // 确认节点间的路径
             then(paths).containsExactlyInAnyOrder(
-                    List.of(1, 9, 8),
-                    List.of(1, 2, 3, 8),
-                    List.of(1, 2, 4, 8),
-                    List.of(1, 2, 7, 8));
+                List.of(1, 9, 8),
+                List.of(1, 2, 3, 8),
+                List.of(1, 2, 4, 8),
+                List.of(1, 2, 7, 8));
         }
     }
 }

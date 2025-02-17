@@ -195,7 +195,9 @@ class ObjectsTest {
      * <p>
      * 比较链的基本规则是, 先按链条上优先的规则进行比较, 如果返回相等的结果, 则再通过之后的规则进行比较, 直到返回非相等结果或链条上所有的规则
      * 都比较完毕, 类似于如下语句:
-     * <blockquote><pre>
+     * <blockquote>
+     * 
+     * <pre>
      * var result = compare1(a, b);
      * if (result == 0) {
      *     result = compare2(c, d);
@@ -204,7 +206,9 @@ class ObjectsTest {
      *     }
      * }
      * return result;
-     * </pre></blockquote>
+     * </pre>
+     * 
+     * </blockquote>
      * </p>
      */
     @Test

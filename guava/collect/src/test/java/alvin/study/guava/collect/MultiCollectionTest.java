@@ -216,8 +216,8 @@ class MultiCollectionTest {
     @Test
     void multimap_shouldStoreKeyWithCollectionValue() {
         // 构建一个 Multimap 对象, 其中:
-        //   Key 的存储方式为 Set
-        //   Value 的存储方式为 List
+        // Key 的存储方式为 Set
+        // Value 的存储方式为 List
         var mulMap = MultimapBuilder.hashKeys().arrayListValues().<String, Integer>build();
 
         // 在集合中添加 5 个键值对, 其中前三个和后两个键各自重复, 所以实际存储的键为 2 个, 前一个对应 3 个 Value, 后一个对应 2 个 Value
@@ -261,7 +261,7 @@ class MultiCollectionTest {
         // 将 Multimap 对象转为 Map 对象, 该 Map 对象的 Value 为 List 类型
         var map = mulMap.asMap();
         then(map).contains(
-                entry("A", ImmutableList.of(1, 1, 2)),
-                entry("B", ImmutableList.of(10, 20, 30)));
+            entry("A", ImmutableList.of(1, 1, 2)),
+            entry("B", ImmutableList.of(10, 20, 30)));
     }
 }

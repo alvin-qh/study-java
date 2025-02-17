@@ -359,7 +359,8 @@ class OrderingTest {
         // 设定两级排序规则
         // 所谓两级排序规则, 即在第一级排序规则的作用下, 如果两个元素相等, 则使用第二级排序规则进行排序
         // 第一级排序按元素值的余数排序 (逆序), 第二级排序按元素值的大小排序 (自然序)
-        var ordering = Ordering.<Integer>from((l, r) -> r % 2 - l % 2).compound(Comparator.comparingInt((Integer l) -> l));
+        var ordering
+            = Ordering.<Integer>from((l, r) -> r % 2 - l % 2).compound(Comparator.comparingInt((Integer l) -> l));
 
         // 对集合进行排序
         var list = Lists.newArrayList(2, 1, 3, 5, 4);
@@ -381,8 +382,8 @@ class OrderingTest {
     void compound_shouldSortListByMultiOrderingRule() {
         // 设定多级排序规则 (两级排序, 规则和前一个例子一致)
         var ordering = Ordering.<Integer>compound(ImmutableList.of(
-                (l, r) -> r % 2 - l % 2,
-                Comparator.comparingInt(l -> l)));
+            (l, r) -> r % 2 - l % 2,
+            Comparator.comparingInt(l -> l)));
 
         // 对集合进行排序
         var list = Lists.newArrayList(2, 1, 3, 5, 4);

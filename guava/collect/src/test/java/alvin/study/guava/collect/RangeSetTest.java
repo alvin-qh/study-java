@@ -220,9 +220,9 @@ class RangeSetTest {
 
         // 确认补集 RangeSet 中包含 (-∞, 1), [20, 50] 以及 (100, ∞) 这三部分区间, 和 [1..20), (50..100] 形成补集
         then(compRangeSet.asRanges()).containsExactly(
-                Range.lessThan(1),
-                Range.closed(20, 50),
-                Range.greaterThan(100));
+            Range.lessThan(1),
+            Range.closed(20, 50),
+            Range.greaterThan(100));
     }
 
     /**
@@ -306,8 +306,8 @@ class RangeSetTest {
         // 获取对象中包含的区间集合
         var ranges = rangeSet.asRanges();
         then(ranges).containsExactly(
-                Range.closedOpen(1, 20),
-                Range.openClosed(50, 100));
+            Range.closedOpen(1, 20),
+            Range.openClosed(50, 100));
     }
 
     /**
@@ -330,8 +330,8 @@ class RangeSetTest {
         // 获取对象中包含的区间集合
         var ranges = rangeSet.asDescendingSetOfRanges();
         then(ranges).containsExactly(
-                Range.openClosed(50, 100),
-                Range.closedOpen(1, 20));
+            Range.openClosed(50, 100),
+            Range.closedOpen(1, 20));
     }
 
     /**
@@ -358,10 +358,10 @@ class RangeSetTest {
 
         // 确认删除区间后, 原区间被拆分的结果
         then(rangeSet.asRanges()).containsExactly(
-                Range.closedOpen(1, 5),
-                Range.closedOpen(8, 20),
-                Range.openClosed(50, 80),
-                Range.closed(90, 100));
+            Range.closedOpen(1, 5),
+            Range.closedOpen(8, 20),
+            Range.openClosed(50, 80),
+            Range.closed(90, 100));
     }
 
     /**
@@ -413,9 +413,9 @@ class RangeSetTest {
         // 获取所有区间包含的整数值, 确认数值为 [1, 2, ..., 19], [51, 52, ..., 100]
         var nums = rangeSet.asSet(DiscreteDomain.integers());
         then(nums).containsExactlyElementsOf(
-                Iterables.concat(
-                        IntStream.range(1, 20).boxed().toList(),
-                        IntStream.range(51, 101).boxed().toList()));
+            Iterables.concat(
+                IntStream.range(1, 20).boxed().toList(),
+                IntStream.range(51, 101).boxed().toList()));
     }
 
     /**
@@ -450,17 +450,17 @@ class RangeSetTest {
         // 求两个集合的并集
         var unionRangeSet = rangeSet1.union(rangeSet2);
         then(unionRangeSet.asRanges()).containsExactly(
-                Range.closedOpen(1, 20),
-                Range.closed(30, 40),
-                Range.closed(50, 100));
+            Range.closedOpen(1, 20),
+            Range.closed(30, 40),
+            Range.closed(50, 100));
 
         // 确认 union 和 addAll 方法的行为类似
         var rangeSet = TreeRangeSet.create(rangeSet1);
         rangeSet.addAll(rangeSet2);
         then(rangeSet.asRanges()).containsExactly(
-                Range.closedOpen(1, 20),
-                Range.closed(30, 40),
-                Range.closed(50, 100));
+            Range.closedOpen(1, 20),
+            Range.closed(30, 40),
+            Range.closed(50, 100));
     }
 
     /**
@@ -496,17 +496,17 @@ class RangeSetTest {
         // 求两个集合的差集
         var dffRangeSet = rangeSet1.difference(rangeSet2);
         then(dffRangeSet.asRanges()).containsExactly(
-                Range.closed(1, 5),
-                Range.closedOpen(15, 20),
-                Range.closed(100, 100));
+            Range.closed(1, 5),
+            Range.closedOpen(15, 20),
+            Range.closed(100, 100));
 
         // 确认 difference 和 removeAll 方法的行为类似
         var rangeSet = TreeRangeSet.create(rangeSet1);
         rangeSet.removeAll(rangeSet2);
         then(rangeSet.asRanges()).containsExactly(
-                Range.closed(1, 5),
-                Range.closedOpen(15, 20),
-                Range.closed(100, 100));
+            Range.closed(1, 5),
+            Range.closedOpen(15, 20),
+            Range.closed(100, 100));
     }
 
     /**
@@ -542,14 +542,14 @@ class RangeSetTest {
         // 求两个集合的交集
         var dffRangeSet = rangeSet1.intersection(rangeSet2);
         then(dffRangeSet.asRanges()).containsExactly(
-                Range.open(5, 15),
-                Range.open(50, 100));
+            Range.open(5, 15),
+            Range.open(50, 100));
 
         // 确认 intersection 和 removeAll(rangeSet.complement()) 方法的行为类似
         var rangeSet = TreeRangeSet.create(rangeSet1);
         rangeSet.removeAll(rangeSet2.complement());
         then(dffRangeSet.asRanges()).containsExactly(
-                Range.open(5, 15),
-                Range.open(50, 100));
+            Range.open(5, 15),
+            Range.open(50, 100));
     }
 }

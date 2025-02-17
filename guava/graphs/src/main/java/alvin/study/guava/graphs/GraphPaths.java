@@ -7,7 +7,7 @@ import java.util.PriorityQueue;
 import java.util.function.ToIntFunction;
 import java.util.stream.Stream;
 
-import org.jetbrains.annotations.NotNull;
+import jakarta.annotation.Nonnull;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -24,8 +24,7 @@ import com.google.common.graph.ValueGraph;
  * </p>
  */
 public final class GraphPaths {
-    private GraphPaths() {
-    }
+    private GraphPaths() {}
 
     /**
      * 获取 {@link Graph} 图对象中两点之间的路径
@@ -35,7 +34,8 @@ public final class GraphPaths {
      * </p>
      *
      * <p>
-     * 为了保证递归可以正常结束, 已经访问过的节点不会再次访问 (通过 {@code visited} 集合), 因为是 BFS 算法, 所以如果一个节点被重复访问,
+     * 为了保证递归可以正常结束, 已经访问过的节点不会再次访问 (通过 {@code visited} 集合), 因为是 BFS 算法,
+     * 所以如果一个节点被重复访问,
      * 其路径长度会比前一次长, 所以最终结果不是全部路径, 而是不重复路径, 且每条路径为其重复路径中访问节点数最少的路径
      * </p>
      *
@@ -44,7 +44,7 @@ public final class GraphPaths {
      * @param toNode   终止节点
      * @return 包含路径的集合
      */
-    public static <N> @NotNull List<List<N>> getPaths(Graph<N> graph, N fromNode, N toNode) {
+    public static <N> List<List<N>> getPaths(Graph<N> graph, N fromNode, N toNode) {
         // 定义 BFS 算法所需的队列
         // 并将起始节点入队
         var que = new ArrayDeque<N>();
@@ -140,14 +140,15 @@ public final class GraphPaths {
      * @param fromNode   起始节点
      * @param toNode     终止节点
      * @param distanceFn 将"边"权重值转换为"距离值"的函数对象
-     * @return {@link Optional} 类型对象, 如果为空, 表示给定的两个节点间不连通; 否则包含一个 {@link PathValue} 类型对象,
-     * 记录了路径和路径距离
+     * @return {@link Optional} 类型对象, 如果为空, 表示给定的两个节点间不连通; 否则包含一个 {@link PathValue}
+     *         类型对象,
+     *         记录了路径和路径距离
      */
     public static <N, E> Optional<PathValue<N>> getShortestPath(
-            @NotNull ValueGraph<N, E> graph,
-            N fromNode,
-            N toNode,
-            ToIntFunction<E> distanceFn) {
+            @Nonnull ValueGraph<N, E> graph,
+            @Nonnull N fromNode,
+            @Nonnull N toNode,
+            @Nonnull ToIntFunction<E> distanceFn) {
         // 记录节点和路径值关系的 Map 对象
         var nodeMap = Maps.<N, PathValue<N>>newHashMap();
 
@@ -240,18 +241,14 @@ public final class GraphPaths {
          *
          * @return 保存路径的集合, 如果为空, 表示路径不存在
          */
-        public List<N> getPath() {
-            return path == null ? List.of() : path;
-        }
+        public List<N> getPath() { return path == null ? List.of() : path; }
 
         /**
          * 获取路径距离
          *
          * @return 路径的距离
          */
-        public int getDistance() {
-            return distance;
-        }
+        public int getDistance() { return distance; }
 
         /**
          * 设置路径

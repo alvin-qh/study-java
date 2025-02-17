@@ -65,16 +65,16 @@ class BiMapTest {
 
         // 确认该 Map 对象包含指定的 Key 和 Value
         then(map).containsExactly(
-                entry("A", 100),
-                entry("B", 200));
+            entry("A", 100),
+            entry("B", 200));
 
         // 对调 BiMap 对象的 Key 和 Value
         var rMap = map.inverse();
 
         // 确认对调后, Map 对象将以原本的 Value 作为 Key, Key 作为 Value
         then(rMap).containsExactly(
-                entry(100, "A"),
-                entry(200, "B"));
+            entry(100, "A"),
+            entry(200, "B"));
 
         // 在 BiMap 中, 如果存储重复 Value 的键值对, 则会引发异常
         thenThrownBy(() -> map.put("C", 200)).isInstanceOf(IllegalArgumentException.class);
@@ -83,7 +83,7 @@ class BiMapTest {
         map.forcePut("C", 200);
         // 确认相同 Value 的键值对 ("B" = 200) 已经被取代 ("C" = 200)
         then(map).containsExactly(
-                entry("A", 100),
-                entry("C", 200));
+            entry("A", 100),
+            entry("C", 200));
     }
 }

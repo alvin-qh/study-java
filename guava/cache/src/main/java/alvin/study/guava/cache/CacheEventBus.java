@@ -9,13 +9,12 @@ import java.util.logging.Logger;
 
 import javax.annotation.Nonnull;
 
-import org.jetbrains.annotations.NotNull;
-
 /**
  * 缓存消息总线类
  *
  * <p>
- * 该消息总线用于发布 {@link Event} 类型消息对象到总线上, 并由 {@link CacheObserver} 类型对象 (如果进行了注册) 对发布的事件进行监听
+ * 该消息总线用于发布 {@link Event} 类型消息对象到总线上, 并由 {@link CacheObserver} 类型对象 (如果进行了注册)
+ * 对发布的事件进行监听
  * </p>
  */
 public final class CacheEventBus implements SubscriberExceptionHandler {
@@ -39,12 +38,14 @@ public final class CacheEventBus implements SubscriberExceptionHandler {
      * 统一事件异常处理
      *
      * <p>
-     * 如果在事件处理方法 (例如 {@link CacheObserver#onUserUpdated(alvin.study.cache.event.UserUpdateEvent)
+     * 如果在事件处理方法 (例如
+     * {@link CacheObserver#onUserUpdated(alvin.study.cache.event.UserUpdateEvent)
      * CacheObserver.onUserUpdated(UserUpdateEvent)} 方法) 中抛出异常, 则该异常统一由该方法处理
      * </p>
      *
      * <p>
-     * 一般情况下为了避免耦合, 事件处理方法的异常需要单独处理, 不会向上传递到事件发布的方法中, 但本例中需要对 {@link RuntimeException}
+     * 一般情况下为了避免耦合, 事件处理方法的异常需要单独处理, 不会向上传递到事件发布的方法中, 但本例中需要对
+     * {@link RuntimeException}
      * 和 {@link Error} 类型异常向上传递, 以保证如果缓存处理失败, 则实体操作方法可以正确的回滚事务
      * </p>
      */
@@ -69,7 +70,7 @@ public final class CacheEventBus implements SubscriberExceptionHandler {
      *
      * @param event {@link Event} 类型对象, 表示一个事件
      */
-    public void post(@NotNull Event<?> event) {
+    public void post(@Nonnull Event<?> event) {
         eventBus.post(event);
     }
 
@@ -78,7 +79,7 @@ public final class CacheEventBus implements SubscriberExceptionHandler {
      *
      * @param observer 用于对缓存进行后续处理的 {@link CacheObserver} 类型对象
      */
-    public void register(@NotNull CacheObserver observer) {
+    public void register(@Nonnull CacheObserver observer) {
         eventBus.register(observer);
     }
 }

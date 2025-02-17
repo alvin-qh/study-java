@@ -1,6 +1,5 @@
 package alvin.study.guava.io;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Files;
@@ -12,6 +11,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel.MapMode;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.attribute.PosixFilePermissions;
 
@@ -25,13 +25,17 @@ import static org.assertj.core.api.BDDAssertions.then;
  * </p>
  *
  * <p>
- * Guava 提供了 {@link MoreFiles} 类, 该类封装了针对于路径对象 ({@link java.nio.file.Path Path} 类型对象) 操作的一系列方法
+ * Guava 提供了 {@link MoreFiles} 类, 该类封装了针对于路径对象 ({@link java.nio.file.Path Path}
+ * 类型对象) 操作的一系列方法
  * </p>
  *
  * <p>
- * 另外, {@link Files} 类以及 {@link MoreFiles} 类还可以和 {@link com.google.common.io.ByteSource ByteSource},
- * {@link com.google.common.io.CharSource CharSource}, {@link com.google.common.io.ByteSink ByteSink} 以及
- * {@link com.google.common.io.CharSink CharSink} 类配合使用, 参考 {@link ByteSourceTest}, {@link CharSourceTest},
+ * 另外, {@link Files} 类以及 {@link MoreFiles} 类还可以和
+ * {@link com.google.common.io.ByteSource ByteSource},
+ * {@link com.google.common.io.CharSource CharSource},
+ * {@link com.google.common.io.ByteSink ByteSink} 以及
+ * {@link com.google.common.io.CharSink CharSink} 类配合使用, 参考
+ * {@link ByteSourceTest}, {@link CharSourceTest},
  * {@link ByteSinkTest} 以及 {@link CharSinkTest} 测试类
  * </p>
  */
@@ -40,8 +44,10 @@ class FileUtilsTest {
      * 删除指定目录, 包括目录下面包含的文件和子目录
      *
      * <p>
-     * 通过 {@link MoreFiles#deleteRecursively(java.nio.file.Path, com.google.common.io.RecursiveDeleteOption...)
-     * MoreFiles.deleteRecursively(Path, RecursiveDeleteOption...)} 方法可以"递归地"删除指定目录下的所有文件和子目录
+     * 通过
+     * {@link MoreFiles#deleteRecursively(java.nio.file.Path, com.google.common.io.RecursiveDeleteOption...)
+     * MoreFiles.deleteRecursively(Path, RecursiveDeleteOption...)}
+     * 方法可以"递归地"删除指定目录下的所有文件和子目录
      * </p>
      *
      * @param dir 表示要删除的目录的 {@link Path} 对象
@@ -68,7 +74,8 @@ class FileUtilsTest {
      * </p>
      *
      * <p>
-     * 例如一个文件 {@code /aa/bb/cc/d.txt}, 则文件所在的目录为 {@code /aa/bb/cc}, 如果该目录不存在, 则 {@code createParentDirs}
+     * 例如一个文件 {@code /aa/bb/cc/d.txt}, 则文件所在的目录为 {@code /aa/bb/cc}, 如果该目录不存在, 则
+     * {@code createParentDirs}
      * 方法可以创建该目录 (包括其上级目录)
      * </p>
      */
@@ -99,7 +106,8 @@ class FileUtilsTest {
      * 测试创建一个文件所在的路径
      *
      * <p>
-     * 通过 {@link MoreFiles#createParentDirectories(Path, java.nio.file.attribute.FileAttribute...)
+     * 通过
+     * {@link MoreFiles#createParentDirectories(Path, java.nio.file.attribute.FileAttribute...)
      * MoreFiles.createParentDirectories(Path, FileAttribute...)} 方法用于创建一个文件所在的路径
      * </p>
      *
@@ -140,7 +148,8 @@ class FileUtilsTest {
      * </p>
      *
      * <p>
-     * 通过 {@link Files#getNameWithoutExtension(String)} 方法用于获取一个文件名的主文件名, 即文件名中去掉了路径和扩展名部分
+     * 通过 {@link Files#getNameWithoutExtension(String)} 方法用于获取一个文件名的主文件名,
+     * 即文件名中去掉了路径和扩展名部分
      * </p>
      */
     @Test
@@ -164,7 +173,8 @@ class FileUtilsTest {
      * </p>
      *
      * <p>
-     * 通过 {@link MoreFiles#getNameWithoutExtension(Path)} 方法用于获取一个 {@link Path} 对象表示文件的主文件名,
+     * 通过 {@link MoreFiles#getNameWithoutExtension(Path)} 方法用于获取一个 {@link Path}
+     * 对象表示文件的主文件名,
      * 即文件名中去掉了路径和扩展名部分
      * </p>
      */
@@ -182,17 +192,22 @@ class FileUtilsTest {
     }
 
     /**
-     * 从 {@link File} 对象创建 {@link java.io.BufferedWriter BufferedWriter} 以及 {@link java.io.BufferedReader
+     * 从 {@link File} 对象创建 {@link java.io.BufferedWriter BufferedWriter} 以及
+     * {@link java.io.BufferedReader
      * BufferedReader} 对象
      *
      * <p>
-     * 通过 {@link Files#newWriter(File, java.nio.charset.Charset) Files.newWriter(File, Charset)} 方法用于通过一个
-     * {@link File} 对象, 创建一个 {@link java.io.BufferedWriter BufferedWriter} 对象, 用于对文件进行写入
+     * 通过 {@link Files#newWriter(File, java.nio.charset.Charset)
+     * Files.newWriter(File, Charset)} 方法用于通过一个
+     * {@link File} 对象, 创建一个 {@link java.io.BufferedWriter BufferedWriter} 对象,
+     * 用于对文件进行写入
      * </p>
      *
      * <p>
-     * 通过 {@link Files#newReader(File, java.nio.charset.Charset) Files.newReader(File, Charset)} 方法用于通过一个
-     * {@link File} 对象, 创建一个 {@link java.io.BufferedReader BufferedReader} 对象, 用于对文件进行读取
+     * 通过 {@link Files#newReader(File, java.nio.charset.Charset)
+     * Files.newReader(File, Charset)} 方法用于通过一个
+     * {@link File} 对象, 创建一个 {@link java.io.BufferedReader BufferedReader} 对象,
+     * 用于对文件进行读取
      * </p>
      */
     @Test
@@ -203,12 +218,12 @@ class FileUtilsTest {
 
         try {
             // 通过文件对象创建 Writer 对象, 写入内容
-            try (var writer = Files.newWriter(file, Charsets.UTF_8)) {
+            try (var writer = Files.newWriter(file, StandardCharsets.UTF_8)) {
                 writer.write("Hello Guava");
             }
 
             // 通过文件对象创建 Reader 对象, 读取内容, 确认读取内容和写入内容一致
-            try (var reader = Files.newReader(file, Charsets.UTF_8)) {
+            try (var reader = Files.newReader(file, StandardCharsets.UTF_8)) {
                 var s = reader.readLine();
                 then(s).isEqualTo("Hello Guava");
             }
@@ -221,20 +236,21 @@ class FileUtilsTest {
      * 从文件中读取多行文本
      *
      * <p>
-     * 通过 {@link Files#readLines(File, java.nio.charset.Charset) Files.readLines(File, Charset)}
+     * 通过 {@link Files#readLines(File, java.nio.charset.Charset)
+     * Files.readLines(File, Charset)}
      * 方法可以从文件中读取多行文本 (行之间通过 {@code \n}) 分隔
      * </p>
      */
     @Test
     void readLines_shouldReadMultiLinesFromFile() throws IOException {
         var file = File.createTempFile("guava-test", ".txt");
-        var sink = Files.asCharSink(file, Charsets.UTF_8);
+        var sink = Files.asCharSink(file, StandardCharsets.UTF_8);
 
         // 写入多行文本
         sink.writeLines(ImmutableList.of("Line1", "Line2", "Line3"));
 
         // 读取多行文本, 确认读取内容和写入内容一致
-        var lines = Files.readLines(file, Charsets.UTF_8);
+        var lines = Files.readLines(file, StandardCharsets.UTF_8);
         then(lines).containsExactly("Line1", "Line2", "Line3");
     }
 
@@ -242,7 +258,8 @@ class FileUtilsTest {
      * 创建内存映射文件
      *
      * <p>
-     * 通过 {@link Files#map(File, MapMode, long)} 方法可以用于创建内存映射文件, 返回一个 {@link java.nio.MappedByteBuffer
+     * 通过 {@link Files#map(File, MapMode, long)} 方法可以用于创建内存映射文件, 返回一个
+     * {@link java.nio.MappedByteBuffer
      * MappedByteBuffer} 对象, 表示一个和文件进行映射的缓冲区对象
      * </p>
      *
@@ -257,13 +274,13 @@ class FileUtilsTest {
         file.deleteOnExit();
 
         // 用于读写的数据
-        var data = "Hello Guava".getBytes(Charsets.UTF_8);
+        var data = "Hello Guava".getBytes(StandardCharsets.UTF_8);
 
         try {
             // 创建内存映射文件, 得到 MappedByteBuffer 对象
             var buf = Files.map(file, MapMode.READ_WRITE, 1024);
             // 向缓冲区写入数据
-            buf.put("Hello Guava".getBytes(Charsets.UTF_8));
+            buf.put("Hello Guava".getBytes(StandardCharsets.UTF_8));
 
             // 反转缓冲区
             buf.flip();
@@ -287,7 +304,8 @@ class FileUtilsTest {
      * 通过 {@link File} 对象创建空文件
      *
      * <p>
-     * 通过 {@link Files#touch(File)} 方法用于新建一个空文件 (当文件不存在时), 类似于 linux 的 {@code touch} 命令
+     * 通过 {@link Files#touch(File)} 方法用于新建一个空文件 (当文件不存在时), 类似于 linux 的 {@code touch}
+     * 命令
      * </p>
      */
     @Test
@@ -310,7 +328,8 @@ class FileUtilsTest {
      * 通过 {@link Path} 对象创建空文件
      *
      * <p>
-     * 通过 {@link MoreFiles#touch(Path)} 方法用于新建一个空文件 (当文件不存在时), 类似于 linux 的 {@code touch} 命令
+     * 通过 {@link MoreFiles#touch(Path)} 方法用于新建一个空文件 (当文件不存在时), 类似于 linux 的
+     * {@code touch} 命令
      * </p>
      */
     @Test
@@ -349,10 +368,12 @@ class FileUtilsTest {
      * 对于路径前包含 {@code "./"} 部分的, 简化后会删除这部分, 例如 {@code "./t.txt"} => {@code "t.txt"}
      * </li>
      * <li>
-     * 对于路径中包括 {@code "../"} 部分的, 简化后会进行展开, 例如 {@code "/aa/bb/../t.txt"} => {@code "/aa/t.txt"}
+     * 对于路径中包括 {@code "../"} 部分的, 简化后会进行展开, 例如 {@code "/aa/bb/../t.txt"} =>
+     * {@code "/aa/t.txt"}
      * </li>
      * <li>
-     * 对于路径中包括多余 {@code "/"} 部分的, 简化后会被删除 (除了最开头的 {@code "/"} 字符), 例如 {@code "//aa//bb/"} =>
+     * 对于路径中包括多余 {@code "/"} 部分的, 简化后会被删除 (除了最开头的 {@code "/"} 字符), 例如
+     * {@code "//aa//bb/"} =>
      * {@code "/aa/bb"}
      * </li>
      * </ul>
@@ -416,7 +437,7 @@ class FileUtilsTest {
     @Test
     void move_shouldWriteAndReadFile() throws IOException {
         // 用于读写的数据
-        var data = "Hello Guava".getBytes(Charsets.UTF_8);
+        var data = "Hello Guava".getBytes(StandardCharsets.UTF_8);
 
         // 创建用于读写的文件
         var file = File.createTempFile("guava-test", ".dat");
@@ -432,7 +453,8 @@ class FileUtilsTest {
      * 列举指定目录中的所有文件和子目录, 指定目录由 {@link Path} 类型对象表示
      *
      * <p>
-     * 通过 {@link MoreFiles#listFiles(Path)} 方法可以列举指定目录中的内容, 包括文件和子目录, 列举的结果为一个 {@link Path}
+     * 通过 {@link MoreFiles#listFiles(Path)} 方法可以列举指定目录中的内容, 包括文件和子目录, 列举的结果为一个
+     * {@link Path}
      * 类型对象集合
      * </p>
      *
@@ -446,12 +468,12 @@ class FileUtilsTest {
         var parent = Path.of("test");
 
         // 定义要在父目录中创建的子目录和文件
-        var paths = new Path[]{
-                parent.resolve("1.txt"),
-                parent.resolve("2.txt"),
-                parent.resolve("3.txt"),
-                parent.resolve("a"),
-                parent.resolve("b")
+        var paths = new Path[] {
+            parent.resolve("1.txt"),
+            parent.resolve("2.txt"),
+            parent.resolve("3.txt"),
+            parent.resolve("a"),
+            parent.resolve("b")
         };
 
         try {

@@ -5,8 +5,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.google.common.cache.LoadingCache;
 import com.google.common.hash.BloomFilter;
 
@@ -14,6 +12,7 @@ import alvin.study.guava.cache.CacheEventBus;
 import alvin.study.guava.cache.event.UserDeleteEvent;
 import alvin.study.guava.cache.event.UserUpdateEvent;
 import alvin.study.guava.cache.model.User;
+import jakarta.annotation.Nonnull;
 
 /**
  * 用于 {@link User} 对象的持久化类型
@@ -44,7 +43,7 @@ public class UserRepository {
      *
      * @param user {@link User} 对象
      */
-    public void insertUser(@NotNull User user) {
+    public void insertUser(@Nonnull User user) {
         userStorage.compute(user.id(), (key, value) -> {
             if (value != null) {
                 throw new IllegalArgumentException("id %d already exists");
@@ -62,7 +61,7 @@ public class UserRepository {
      *
      * @param user {@link User} 对象
      */
-    public void updateUser(@NotNull User user) {
+    public void updateUser(@Nonnull User user) {
         userStorage.compute(user.id(), (key, value) -> {
             if (value == null) {
                 throw new IllegalArgumentException("id %d not exists");

@@ -73,9 +73,9 @@ class RangeMapTest {
 
         // 获取 Map 对象, 确认包含的键值对, 且键集合以区间定义从小到大排列
         then(rangeMap.asMapOfRanges()).containsExactly(
-                entry(Range.openClosed(1, 5), "A"),
-                entry(Range.open(5, 20), "B"),
-                entry(Range.atLeast(30), "C"));
+            entry(Range.openClosed(1, 5), "A"),
+            entry(Range.open(5, 20), "B"),
+            entry(Range.atLeast(30), "C"));
     }
 
     /**
@@ -97,9 +97,9 @@ class RangeMapTest {
 
         // 获取 Map 对象, 确认包含的键值对, 且键集合以区间定义从大到小排列
         then(rangeMap.asDescendingMapOfRanges()).containsExactly(
-                entry(Range.atLeast(30), "C"),
-                entry(Range.open(5, 20), "B"),
-                entry(Range.openClosed(1, 5), "A"));
+            entry(Range.atLeast(30), "C"),
+            entry(Range.open(5, 20), "B"),
+            entry(Range.openClosed(1, 5), "A"));
     }
 
     /**
@@ -130,10 +130,10 @@ class RangeMapTest {
             // 新的键值对中, 键区间和已有键区间连接, 且值已存在, 但仍作为单独一项添加到对象
             rangeMap.put(Range.closed(20, 30), "B");
             then(rangeMap.asMapOfRanges()).containsExactly(
-                    entry(Range.openClosed(1, 5), "A"),
-                    entry(Range.open(5, 20), "B"),
-                    entry(Range.closed(20, 30), "B"),
-                    entry(Range.greaterThan(30), "C"));
+                entry(Range.openClosed(1, 5), "A"),
+                entry(Range.open(5, 20), "B"),
+                entry(Range.closed(20, 30), "B"),
+                entry(Range.greaterThan(30), "C"));
         }
         {
             // 创建对象
@@ -143,9 +143,9 @@ class RangeMapTest {
             // 新的键值对中, 键区间和已有键区间连接, 且值已存在, 和已存在的对应键合并
             rangeMap.putCoalescing(Range.closed(20, 30), "B");
             then(rangeMap.asMapOfRanges()).containsExactly(
-                    entry(Range.openClosed(1, 5), "A"),
-                    entry(Range.openClosed(5, 30), "B"),
-                    entry(Range.greaterThan(30), "C"));
+                entry(Range.openClosed(1, 5), "A"),
+                entry(Range.openClosed(5, 30), "B"),
+                entry(Range.greaterThan(30), "C"));
         }
     }
 
@@ -185,12 +185,12 @@ class RangeMapTest {
             rangeMap.merge(Range.closed(15, 30), "D", (v1, v2) -> v2);
             // 确认合并结果包含的键值对, 包括拆分的区间
             then(rangeMap.asMapOfRanges()).containsExactly(
-                    entry(Range.openClosed(1, 5), "A"),
-                    entry(Range.open(5, 15), "B"),
-                    entry(Range.closedOpen(15, 20), "D"),
-                    entry(Range.closedOpen(20, 30), "D"),
-                    entry(Range.closed(30, 30), "D"),
-                    entry(Range.greaterThan(30), "C"));
+                entry(Range.openClosed(1, 5), "A"),
+                entry(Range.open(5, 15), "B"),
+                entry(Range.closedOpen(15, 20), "D"),
+                entry(Range.closedOpen(20, 30), "D"),
+                entry(Range.closed(30, 30), "D"),
+                entry(Range.greaterThan(30), "C"));
 
             // 确认集合边界值的归属, 重复部分归属于新的键值对区间
             then(rangeMap.get(15)).isEqualTo("D");
@@ -206,10 +206,10 @@ class RangeMapTest {
             rangeMap.merge(Range.closed(15, 30), "D", (v1, v2) -> null);
             // 确认合并结果包含的键值对, 其中重复的部分已被删除, 不同的部分得以保留
             then(rangeMap.asMapOfRanges()).containsExactly(
-                    entry(Range.openClosed(1, 5), "A"),
-                    entry(Range.open(5, 15), "B"),
-                    entry(Range.closedOpen(20, 30), "D"),
-                    entry(Range.greaterThan(30), "C"));
+                entry(Range.openClosed(1, 5), "A"),
+                entry(Range.open(5, 15), "B"),
+                entry(Range.closedOpen(20, 30), "D"),
+                entry(Range.greaterThan(30), "C"));
 
             // 确认边界值的归属, 由于重复部分被删除
             then(rangeMap.get(15)).isNull();
@@ -305,8 +305,8 @@ class RangeMapTest {
         var subRangeMap = rangeMap.subRangeMap(Range.closed(2, 25));
         // 确认交集的结果
         then(subRangeMap.asMapOfRanges()).containsExactly(
-                entry(Range.closed(2, 5), "A"),
-                entry(Range.open(5, 20), "B"));
+            entry(Range.closed(2, 5), "A"),
+            entry(Range.open(5, 20), "B"));
     }
 
     /**
@@ -330,7 +330,7 @@ class RangeMapTest {
         rangeMap.remove(Range.closed(2, 25));
         // 确认交集的结果
         then(rangeMap.asMapOfRanges()).containsExactly(
-                entry(Range.open(1, 2), "A"),
-                entry(Range.atLeast(30), "C"));
+            entry(Range.open(1, 2), "A"),
+            entry(Range.atLeast(30), "C"));
     }
 }

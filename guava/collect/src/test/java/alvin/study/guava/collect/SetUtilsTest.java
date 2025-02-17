@@ -323,30 +323,30 @@ class SetUtilsTest {
     void cartesianProduct_shouldBuildCartesianProductOfSeveralSets() {
         // 计算多个列表集合的笛卡尔积
         var set = Sets.cartesianProduct(
-                ImmutableSet.of(1, 2),
-                ImmutableSet.of(11, 22, 33),
-                ImmutableSet.of(111, 222, 333));
+            ImmutableSet.of(1, 2),
+            ImmutableSet.of(11, 22, 33),
+            ImmutableSet.of(111, 222, 333));
 
         // 确认笛卡尔积结果
         then(set).containsExactly(
-                ImmutableList.of(1, 11, 111),
-                ImmutableList.of(1, 11, 222),
-                ImmutableList.of(1, 11, 333),
-                ImmutableList.of(1, 22, 111),
-                ImmutableList.of(1, 22, 222),
-                ImmutableList.of(1, 22, 333),
-                ImmutableList.of(1, 33, 111),
-                ImmutableList.of(1, 33, 222),
-                ImmutableList.of(1, 33, 333),
-                ImmutableList.of(2, 11, 111),
-                ImmutableList.of(2, 11, 222),
-                ImmutableList.of(2, 11, 333),
-                ImmutableList.of(2, 22, 111),
-                ImmutableList.of(2, 22, 222),
-                ImmutableList.of(2, 22, 333),
-                ImmutableList.of(2, 33, 111),
-                ImmutableList.of(2, 33, 222),
-                ImmutableList.of(2, 33, 333));
+            ImmutableList.of(1, 11, 111),
+            ImmutableList.of(1, 11, 222),
+            ImmutableList.of(1, 11, 333),
+            ImmutableList.of(1, 22, 111),
+            ImmutableList.of(1, 22, 222),
+            ImmutableList.of(1, 22, 333),
+            ImmutableList.of(1, 33, 111),
+            ImmutableList.of(1, 33, 222),
+            ImmutableList.of(1, 33, 333),
+            ImmutableList.of(2, 11, 111),
+            ImmutableList.of(2, 11, 222),
+            ImmutableList.of(2, 11, 333),
+            ImmutableList.of(2, 22, 111),
+            ImmutableList.of(2, 22, 222),
+            ImmutableList.of(2, 22, 333),
+            ImmutableList.of(2, 33, 111),
+            ImmutableList.of(2, 33, 222),
+            ImmutableList.of(2, 33, 333));
     }
 
     /**
@@ -379,9 +379,9 @@ class SetUtilsTest {
             var sets = Sets.combinations(ImmutableSet.of(1, 2, 3), 2);
             // 确认排列结果
             then(sets).containsExactly(
-                    ImmutableSet.of(1, 2),
-                    ImmutableSet.of(1, 3),
-                    ImmutableSet.of(2, 3));
+                ImmutableSet.of(1, 2),
+                ImmutableSet.of(1, 3),
+                ImmutableSet.of(2, 3));
         }
     }
 
@@ -410,14 +410,14 @@ class SetUtilsTest {
 
         // 确认所得子集
         then(subSets).containsExactlyInAnyOrder(
-                ImmutableSet.of(),
-                ImmutableSet.of(1),
-                ImmutableSet.of(2),
-                ImmutableSet.of(3),
-                ImmutableSet.of(1, 2),
-                ImmutableSet.of(1, 3),
-                ImmutableSet.of(2, 3),
-                ImmutableSet.of(1, 2, 3));
+            ImmutableSet.of(),
+            ImmutableSet.of(1),
+            ImmutableSet.of(2),
+            ImmutableSet.of(3),
+            ImmutableSet.of(1, 2),
+            ImmutableSet.of(1, 3),
+            ImmutableSet.of(2, 3),
+            ImmutableSet.of(1, 2, 3));
     }
 
     /**
@@ -532,8 +532,8 @@ class SetUtilsTest {
 
         // 过滤掉集合中所有的元音字母, 并返回过滤后的结果
         var filteredSet = Sets.filter(set, c -> switch (c) {
-            case 'A', 'E', 'I', 'O', 'U' -> false;
-            default -> true;
+        case 'A', 'E', 'I', 'O', 'U' -> false;
+        default -> true;
         });
 
         // 确认结果集合中不包含元音字母元素

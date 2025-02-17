@@ -122,8 +122,7 @@ class RateLimiterTest {
         var rateLimiter = RateLimiter.create(50.0, 2, TimeUnit.SECONDS);
 
         // 记录调用次数的类型, 包括: 总调用次数以及成功的调用次数
-        record CallRecord(long total, long acquired) {
-        }
+        record CallRecord(long total, long acquired) {}
 
         // 记录多次调用情况的集合
         var records = Lists.<CallRecord>newArrayList();

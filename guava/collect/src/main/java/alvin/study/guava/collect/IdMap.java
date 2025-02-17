@@ -4,7 +4,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ForwardingMap;
 import com.google.common.collect.ForwardingMapEntry;
-import org.jetbrains.annotations.NotNull;
+
+import jakarta.annotation.Nonnull;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -36,10 +37,11 @@ public class IdMap extends ForwardingMap<Long, String> {
      * @param value 要添加的 Value 值
      * @return 如果添加成功则返回 {@code true}, 反之返回 {@code false}
      * @throws NullPointerException     如果 {@code key} 参数为 {@code null} 时, 抛出该异常
-     * @throws IllegalArgumentException 如果 {@code value} 参数为 {@code null} 或空字符串时, 抛出该异常
+     * @throws IllegalArgumentException 如果 {@code value} 参数为 {@code null} 或空字符串时,
+     *                                  抛出该异常
      */
     @Override
-    public String put(@NotNull Long key, @NotNull String value) {
+    public String put(@Nonnull Long key, @Nonnull String value) {
         Preconditions.checkNotNull(key);
 
         if (Strings.isNullOrEmpty(value)) {
@@ -53,10 +55,11 @@ public class IdMap extends ForwardingMap<Long, String> {
      * 重写 {@link Map#putAll(Map)} 方法
      *
      * @param map 要添加的元素
-     * @throws IllegalArgumentException 如果 {@code collection} 参数中包含值为空字符串或 {@code null} 的元素 时, 抛出该异常
+     * @throws IllegalArgumentException 如果 {@code collection} 参数中包含值为空字符串或
+     *                                  {@code null} 的元素 时, 抛出该异常
      */
     @Override
-    public void putAll(@NotNull Map<? extends Long, ? extends String> map) {
+    public void putAll(@Nonnull Map<? extends Long, ? extends String> map) {
         Preconditions.checkNotNull(map).forEach((key, value) -> {
             Preconditions.checkNotNull(key);
             if (Strings.isNullOrEmpty(value)) {
@@ -120,7 +123,7 @@ public class IdMap extends ForwardingMap<Long, String> {
          * @return {@link Map.Entry} 类型对象
          */
         @Override
-        protected @NotNull Entry<Long, String> delegate() {
+        protected Entry<Long, String> delegate() {
             return delegatedEntry;
         }
     }

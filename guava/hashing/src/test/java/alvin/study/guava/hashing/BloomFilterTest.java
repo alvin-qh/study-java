@@ -138,13 +138,13 @@ class BloomFilterTest {
     void toBloomFilter_shouldCollectStreamToBloomFilter() {
         // 产生一个目标对象的集合
         var persons = ImmutableList.of(
-                new Person(1L, "Alvin", LocalDate.of(1981, 3, 17), "Shanxi Xi'an"),
-                new Person(2L, "Emma", LocalDate.of(1985, 3, 29), "Shanxi Xi'an"),
-                new Person(3L, "Lucy", LocalDate.of(1992, 1, 8), "Guangdong Shenzhen"));
+            new Person(1L, "Alvin", LocalDate.of(1981, 3, 17), "Shanxi Xi'an"),
+            new Person(2L, "Emma", LocalDate.of(1985, 3, 29), "Shanxi Xi'an"),
+            new Person(3L, "Lucy", LocalDate.of(1992, 1, 8), "Guangdong Shenzhen"));
 
         // 通过 Stream 将目标集合转为布隆过滤器对象
         var filter = persons.stream().collect(
-                BloomFilter.toBloomFilter(Person.makeFunnel(), persons.size(), 0.001));
+            BloomFilter.toBloomFilter(Person.makeFunnel(), persons.size(), 0.001));
 
         // 确认转换的布隆过滤器正确
         then(filter.mightContain(new Person(2L, "Emma", LocalDate.of(1985, 3, 29), "Shanxi Xi'an"))).isTrue();

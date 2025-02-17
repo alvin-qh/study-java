@@ -6,8 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ForwardingIterator;
@@ -17,7 +15,6 @@ import com.google.common.collect.ForwardingListIterator;
 /**
  * 代理 {@link ArrayList} 类型的类型
  */
-@SuppressWarnings("all")
 public class StringList extends ForwardingList<String> {
     // 设置被代理的对象
     private final List<String> delegatedList = new ArrayList<>();
@@ -28,7 +25,7 @@ public class StringList extends ForwardingList<String> {
      * @return 被代理的 {@link List} 类型对象
      */
     @Override
-    protected @NotNull List<String> delegate() {
+    protected List<String> delegate() {
         return delegatedList;
     }
 
@@ -41,7 +38,8 @@ public class StringList extends ForwardingList<String> {
      *
      * @param str 要添加的元素
      * @return 如果添加成功则返回 {@code true}, 反之返回 {@code false}
-     * @throws IllegalArgumentException 如果 {@code element} 参数为 {@code null} 或空字符串时, 抛出该异常
+     * @throws IllegalArgumentException 如果 {@code element} 参数为 {@code null} 或空字符串时,
+     *                                  抛出该异常
      */
     @Override
     public boolean add(String str) {
@@ -60,7 +58,8 @@ public class StringList extends ForwardingList<String> {
      *
      * @param collection 要添加的元素集合
      * @return 如果添加成功则返回 {@code true}, 反之返回 {@code false}
-     * @throws IllegalArgumentException 如果 {@code collection} 参数中包含值为空字符串或 {@code null} 的元素 时, 抛出该异常
+     * @throws IllegalArgumentException 如果 {@code collection} 参数中包含值为空字符串或
+     *                                  {@code null} 的元素 时, 抛出该异常
      */
     @Override
     public boolean addAll(Collection<? extends String> collection) {
@@ -74,7 +73,8 @@ public class StringList extends ForwardingList<String> {
     }
 
     /**
-     * 通过 {@link ForwardingIterator} 接口代理 {@link #delegatedList} 对象的 {@link List#iterator()} 方法返回值
+     * 通过 {@link ForwardingIterator} 接口代理 {@link #delegatedList} 对象的
+     * {@link List#iterator()} 方法返回值
      *
      * @return {@link ForwardingIterator} 类型代理对象
      */
@@ -91,14 +91,15 @@ public class StringList extends ForwardingList<String> {
              * @return 被代理的迭代器对象, 即 {@link #delegatedIterator} 字段的值
              */
             @Override
-            protected @NotNull Iterator<String> delegate() {
+            protected Iterator<String> delegate() {
                 return delegatedIterator;
             }
         };
     }
 
     /**
-     * 通过 {@link ForwardingListIterator} 接口代理 {@link #delegatedList} 对象的 {@link List#listIterator()} 方法返回值
+     * 通过 {@link ForwardingListIterator} 接口代理 {@link #delegatedList} 对象的
+     * {@link List#listIterator()} 方法返回值
      *
      * @return {@link ForwardingListIterator} 类型代理对象
      */
@@ -115,7 +116,7 @@ public class StringList extends ForwardingList<String> {
              * @return 被代理的迭代器对象, 即 {@link #delegatedIterator} 字段的值
              */
             @Override
-            protected @NotNull ListIterator<String> delegate() {
+            protected ListIterator<String> delegate() {
                 return delegatedIterator;
             }
         };

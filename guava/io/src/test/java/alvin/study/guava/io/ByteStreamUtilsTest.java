@@ -1,12 +1,10 @@
 package alvin.study.guava.io;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
 import com.google.common.io.ByteProcessor;
 import com.google.common.io.ByteStreams;
 import lombok.SneakyThrows;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -18,10 +16,13 @@ import java.io.ObjectOutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Arrays;
+
+import javax.annotation.Nonnull;
 
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
@@ -49,7 +50,7 @@ class ByteStreamUtilsTest {
      * @return 包含字符串内容的 {@link InputStream} 对象
      */
     private static InputStream asStream(String s) {
-        return new ByteArrayInputStream(s.getBytes(Charsets.UTF_8));
+        return new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8));
     }
 
     /**
@@ -81,7 +82,8 @@ class ByteStreamUtilsTest {
      * 测试从输入流中读取数据
      *
      * <p>
-     * {@link ByteStreams#read(InputStream, byte[], int, int)} 方法可以从一个 {@link InputStream} 对象中读取字节数据,
+     * {@link ByteStreams#read(InputStream, byte[], int, int)} 方法可以从一个
+     * {@link InputStream} 对象中读取字节数据,
      * 并存入到所给的 byte 数组中, 该方法返回实际读取的字节数
      * </p>
      */
@@ -95,7 +97,7 @@ class ByteStreamUtilsTest {
             then(len).isEqualTo(11);
 
             // 确认实际读取的内容符合预期
-            then(Arrays.copyOf(data, len)).isEqualTo("Hello Guava".getBytes(Charsets.UTF_8));
+            then(Arrays.copyOf(data, len)).isEqualTo("Hello Guava".getBytes(StandardCharsets.UTF_8));
         }
     }
 
@@ -103,7 +105,8 @@ class ByteStreamUtilsTest {
      * 测试从输入流中读取一个对象
      *
      * <p>
-     * {@link ByteStreams#readBytes(InputStream, ByteProcessor)} 方法从给定的输入流中读取数据, 并将读取的结果送入
+     * {@link ByteStreams#readBytes(InputStream, ByteProcessor)} 方法从给定的输入流中读取数据,
+     * 并将读取的结果送入
      * {@link ByteProcessor} 接口对象中进行处理, 最终返回一个对象结果
      * </p>
      *
@@ -126,7 +129,7 @@ class ByteStreamUtilsTest {
                 private final ByteArrayOutputStream bio = new ByteArrayOutputStream();
 
                 @Override
-                public boolean processBytes(byte @NotNull [] buf, int off, int len) {
+                public boolean processBytes(@Nonnull byte[] buf, int off, int len) {
                     // 将输入的数据存储输出字节流对象中
                     bio.write(buf, off, len);
                     return true;
@@ -157,12 +160,14 @@ class ByteStreamUtilsTest {
      *
      * <p>
      * {@link ByteStreams#readFully(InputStream, byte[], int, int)} 方法和
-     * {@link java.io.DataInputStream#readFully(byte[], int, int) DataInputStream.readFully(byte[], int, int)}
+     * {@link java.io.DataInputStream#readFully(byte[], int, int)
+     * DataInputStream.readFully(byte[], int, int)}
      * 方法作用一致
      * </p>
      *
      * <p>
-     * 和 {@link ByteStreams#read(InputStream, byte[], int, int)} 方法不同, 后者结束读取只需要满足: 1. 读取数据达到指定长度; 2.
+     * 和 {@link ByteStreams#read(InputStream, byte[], int, int)} 方法不同, 后者结束读取只需要满足:
+     * 1. 读取数据达到指定长度; 2.
      * 流已经被读完. 而前者则必须读到指定的数据长度, 否则会阻塞等待, 直到流中写入了足够的数据, 或者在流提前结束或关闭时抛出异常
      * </p>
      */
@@ -178,9 +183,8 @@ class ByteStreamUtilsTest {
                     for (int i = 0; i < 3; i++) {
                         try {
                             Thread.sleep(500);
-                            po.write("Hello Guava".getBytes(Charsets.UTF_8));
-                        } catch (IOException | InterruptedException ignored) {
-                        }
+                            po.write("Hello Guava".getBytes(StandardCharsets.UTF_8));
+                        } catch (IOException | InterruptedException ignored) {}
                     }
                 });
 
@@ -198,7 +202,7 @@ class ByteStreamUtilsTest {
                 // 所以 readFully 方法在未读取到指定长度数据前, 会一直阻塞, 直到规定长度的数据都被读取
                 then(System.currentTimeMillis() - timestamp).isGreaterThan(1500L);
                 // 确认读取数据的正确性
-                then(data).isEqualTo("Hello GuavaHello GuavaHello Guava".getBytes(Charsets.UTF_8));
+                then(data).isEqualTo("Hello GuavaHello GuavaHello Guava".getBytes(StandardCharsets.UTF_8));
             }
 
             // 由于流已经读完, 所以即使再多读一个字节都会导致 EOFException 异常
@@ -211,17 +215,20 @@ class ByteStreamUtilsTest {
      * 跳过输入流中指定长度的字节数
      *
      * <p>
-     * {@link ByteStreams#skipFully(InputStream, long)} 方法用于跳过输入流指定长度的数据, 相当于从流中读取了指定长度的数据且丢弃
+     * {@link ByteStreams#skipFully(InputStream, long)} 方法用于跳过输入流指定长度的数据,
+     * 相当于从流中读取了指定长度的数据且丢弃
      * </p>
      *
      * <p>
-     * {@link ByteStreams#readFully(InputStream, byte[], int, int)} 方法类似, {@code skipFully} 方法会跳过指定长度的数据,
+     * {@link ByteStreams#readFully(InputStream, byte[], int, int)} 方法类似,
+     * {@code skipFully} 方法会跳过指定长度的数据,
      * 如果流中的数据暂时不足, 则该方法会被阻塞, 直到流中有足够的数据. 如果流提前结束或关闭, 则抛出异常
      * </p>
      *
      * <p>
      * {@link ByteStreams#skipFully(InputStream, long)} 方法和
-     * {@link java.io.DataInputStream#skipNBytes(long) DataInputStream.skipNBytes(long)} 方法作用一致
+     * {@link java.io.DataInputStream#skipNBytes(long)
+     * DataInputStream.skipNBytes(long)} 方法作用一致
      * </p>
      */
     @Test
@@ -236,10 +243,9 @@ class ByteStreamUtilsTest {
                         // 分三次向管道写入数据, 每次间隔 500 毫秒
                         for (int i = 0; i < 3; i++) {
                             Thread.sleep(500);
-                            po.write("Hello Guava".getBytes(Charsets.UTF_8));
+                            po.write("Hello Guava".getBytes(StandardCharsets.UTF_8));
                         }
-                    } catch (IOException | InterruptedException ignored) {
-                    }
+                    } catch (IOException | InterruptedException ignored) {}
                 });
 
                 // 启动线程, 开始管道操作
@@ -256,7 +262,7 @@ class ByteStreamUtilsTest {
 
                 // 确认整个数据读取持续了 1500 毫秒, 即全部三次写入管道的整体花费时间
                 then(System.currentTimeMillis() - timestamp).isGreaterThan(1500L);
-                then(data).isEqualTo("Hello Guava".getBytes(Charsets.UTF_8));
+                then(data).isEqualTo("Hello Guava".getBytes(StandardCharsets.UTF_8));
             }
 
             // 由于流已经关闭, 所以即使再多读一个字节都会导致 EOFException 异常
@@ -268,7 +274,8 @@ class ByteStreamUtilsTest {
      * 将输入流的全部内容读取到一个字节数组中
      *
      * <p>
-     * {@link ByteStreams#toByteArray(InputStream)} 方法将给定的输入流内容全部读取, 并将读取的结果存入 {@code byte} 数组返回
+     * {@link ByteStreams#toByteArray(InputStream)} 方法将给定的输入流内容全部读取, 并将读取的结果存入
+     * {@code byte} 数组返回
      * </p>
      */
     @Test
@@ -278,7 +285,7 @@ class ByteStreamUtilsTest {
             var bytes = ByteStreams.toByteArray(in);
 
             // 确认得到的数组内容正确
-            then(bytes).isEqualTo("Hello Guava".getBytes(Charsets.UTF_8));
+            then(bytes).isEqualTo("Hello Guava".getBytes(StandardCharsets.UTF_8));
         }
     }
 
@@ -286,7 +293,8 @@ class ByteStreamUtilsTest {
      * 将输入流的全部内容写入输出流中
      *
      * <p>
-     * {@link ByteStreams#copy(InputStream, java.io.OutputStream)} 方法相当于进行流直接的拷贝, 将一个输入流的全部内容进行读取,
+     * {@link ByteStreams#copy(InputStream, java.io.OutputStream)} 方法相当于进行流直接的拷贝,
+     * 将一个输入流的全部内容进行读取,
      * 并写入另一个输出流中. 该方法返回拷贝的字节数
      * </p>
      */
@@ -301,7 +309,7 @@ class ByteStreamUtilsTest {
 
                 out.flush();
                 // 确认拷贝的数据正确性
-                then(out.toByteArray()).isEqualTo("Hello Guava".getBytes(Charsets.UTF_8));
+                then(out.toByteArray()).isEqualTo("Hello Guava".getBytes(StandardCharsets.UTF_8));
             }
         }
     }
@@ -311,16 +319,22 @@ class ByteStreamUtilsTest {
      *
      * <p>
      * {@link ByteStreams#copy(java.nio.channels.ReadableByteChannel, java.nio.channels.WritableByteChannel)
-     * ByteStreams.copy(ReadableByteChannel, WritableByteChannel)} 方法相当于对进行通道间拷贝操作, 将一个
-     * {@link java.nio.channels.ReadableByteChannel ReadableByteChannel} 对象的可读取的全部内容复制到一个
+     * ByteStreams.copy(ReadableByteChannel, WritableByteChannel)} 方法相当于对进行通道间拷贝操作,
+     * 将一个
+     * {@link java.nio.channels.ReadableByteChannel ReadableByteChannel}
+     * 对象的可读取的全部内容复制到一个
      * {@link java.nio.channels.WritableByteChannel WritableByteChannel} 对象中
      * </p>
      *
      * <p>
-     * 为了简单起见, 本例通过 {@link Files#newByteChannel(java.nio.file.Path, java.nio.file.OpenOption...)
-     * Files.newByteChannel(Path, OpenOption...)} 方法从文件中创建 {@link java.nio.channels.SeekableByteChannel
-     * SeekableByteChannel} 对象, 该对象可以表示 {@code ReadableByteChannel} 或 {@code WritableByteChannel}, 主要看
-     * {@code newByteChannel} 方法的 {@code OpenOption} 参数是 {@link StandardOpenOption#READ} 还是
+     * 为了简单起见, 本例通过
+     * {@link Files#newByteChannel(java.nio.file.Path, java.nio.file.OpenOption...)
+     * Files.newByteChannel(Path, OpenOption...)} 方法从文件中创建
+     * {@link java.nio.channels.SeekableByteChannel
+     * SeekableByteChannel} 对象, 该对象可以表示 {@code ReadableByteChannel} 或
+     * {@code WritableByteChannel}, 主要看
+     * {@code newByteChannel} 方法的 {@code OpenOption} 参数是
+     * {@link StandardOpenOption#READ} 还是
      * {@link StandardOpenOption#WRITE}
      * </p>
      */
@@ -335,7 +349,7 @@ class ByteStreamUtilsTest {
         var fileOut = Files.createTempFile("guava-io", ".tmp", fileAttrs);
 
         // 向用于读的文件内写入内容
-        Files.writeString(fileIn, "Hello Guava", Charsets.UTF_8);
+        Files.writeString(fileIn, "Hello Guava", StandardCharsets.UTF_8);
 
         // 通过用于读的文件创建可读通道, StandardOpenOption.READ 表示创建的通道为一个 ReadableByteChannel
         try (var channelIn = Files.newByteChannel(fileIn, StandardOpenOption.READ)) {
@@ -348,7 +362,7 @@ class ByteStreamUtilsTest {
             }
 
             // 确认用于写入的文件中写入了期望的内容
-            var content = Files.readString(fileOut, Charsets.UTF_8);
+            var content = Files.readString(fileOut, StandardCharsets.UTF_8);
             then(content).isEqualTo("Hello Guava");
         } finally {
             Files.delete(fileIn);
@@ -360,7 +374,8 @@ class ByteStreamUtilsTest {
      * 限制输入流的读取长度
      *
      * <p>
-     * 通过 {@link ByteStreams#limit(InputStream, long)} 方法可以限制从一个输入流中读取的字节数, 该方法返回一个代理
+     * 通过 {@link ByteStreams#limit(InputStream, long)} 方法可以限制从一个输入流中读取的字节数,
+     * 该方法返回一个代理
      * {@link InputStream} 对象, 通过该对象最多只能读取规定长度的字节
      * </p>
      */
@@ -373,7 +388,7 @@ class ByteStreamUtilsTest {
             // 从输入流读取数据
             var data = ByteStreams.toByteArray(limitedIn);
             // 确认只读取到了 5 字节数据
-            then(data).isEqualTo("Hello".getBytes(Charsets.UTF_8));
+            then(data).isEqualTo("Hello".getBytes(StandardCharsets.UTF_8));
         }
     }
 
@@ -381,28 +396,34 @@ class ByteStreamUtilsTest {
      * 在连续内存空间中存储数据并读取
      *
      * <p>
-     * {@link ByteStreams#newDataOutput()} 方法产生一个 {@link java.io.DataOutput DataOutput} 接口对象,
+     * {@link ByteStreams#newDataOutput()} 方法产生一个 {@link java.io.DataOutput
+     * DataOutput} 接口对象,
      * 可以将各种类型数据写入一块连续内存中 (即一个 {@code byte} 类型数组), 其中:
      * <ul>
      * <li>
-     * {@code newDataOutput} 方法返回的 {@code DataOutput} 对象底层是通过一个 {@link ByteArrayOutputStream}
+     * {@code newDataOutput} 方法返回的 {@code DataOutput} 对象底层是通过一个
+     * {@link ByteArrayOutputStream}
      * 对象提供数据存储支持的
      * </li>
      * <li>
      * 可以通过 {@link ByteStreams#newDataOutput(int)} 方法设置连续内存的初始大小, 以降低内存重分配的几率, 内部是通过
-     * {@link ByteArrayOutputStream#ByteArrayOutputStream(int)} 构造器构建 {@link ByteArrayOutputStream} 对象
+     * {@link ByteArrayOutputStream#ByteArrayOutputStream(int)} 构造器构建
+     * {@link ByteArrayOutputStream} 对象
      * </li>
      * <li>
-     * 也可以通过 {@link ByteStreams#newDataOutput(ByteArrayOutputStream)} 方法, 用一个已有的 {@link ByteArrayOutputStream}
+     * 也可以通过 {@link ByteStreams#newDataOutput(ByteArrayOutputStream)} 方法, 用一个已有的
+     * {@link ByteArrayOutputStream}
      * 对象提供数据存储支持
      * </li>
      * </ul>
      * </p>
      *
      * <p>
-     * {@link ByteStreams#newDataInput(byte[])} 方法产生一个 {@link java.io.DataInput DataInput} 接口对象,
+     * {@link ByteStreams#newDataInput(byte[])} 方法产生一个 {@link java.io.DataInput
+     * DataInput} 接口对象,
      * 可以从一段连续内存空间 ({@code byte} 数组) 中按顺序读取所需的各种类型数据; 而方法
-     * {@link ByteStreams#newDataInput(ByteArrayInputStream)} 则可以从一个现有的 {@link ByteArrayInputStream}
+     * {@link ByteStreams#newDataInput(ByteArrayInputStream)} 则可以从一个现有的
+     * {@link ByteArrayInputStream}
      * 对象中进行数据读取
      * </p>
      */
@@ -445,7 +466,8 @@ class ByteStreamUtilsTest {
      * 读取并丢弃输入流中的所有数据, 返回读取数据的字节数
      *
      * <p>
-     * {@link ByteStreams#exhaust(InputStream)} 方法用于从所给的输入流中读取所有的数据, 但并不对数据进行存储操作, 而是全部丢弃,
+     * {@link ByteStreams#exhaust(InputStream)} 方法用于从所给的输入流中读取所有的数据, 但并不对数据进行存储操作,
+     * 而是全部丢弃,
      * 最终返回数据的长度
      * </p>
      */
@@ -461,13 +483,14 @@ class ByteStreamUtilsTest {
      * 创建一个空输出流
      *
      * <p>
-     * 通过 {@link ByteStreams#nullOutputStream()} 方法可以产生一个"空"的输出流, 即具备输出流接口的行为, 但并不做实际写入动作
+     * 通过 {@link ByteStreams#nullOutputStream()} 方法可以产生一个"空"的输出流, 即具备输出流接口的行为,
+     * 但并不做实际写入动作
      * </p>
      */
     @Test
     void nullOutputStream_shouldReadAndDiscardAllDataFromInputStream() throws IOException {
         try (var os = ByteStreams.nullOutputStream()) {
-            os.write("Hello Guava".getBytes(Charsets.UTF_8));
+            os.write("Hello Guava".getBytes(StandardCharsets.UTF_8));
         }
     }
 }

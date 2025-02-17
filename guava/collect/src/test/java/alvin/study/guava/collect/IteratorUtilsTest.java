@@ -122,6 +122,7 @@ class IteratorUtilsTest {
      * {@link com.google.common.collect.UnmodifiableIterator#next() UnmodifiableIterator.next()} 时会抛出异常
      * </p>
      */
+    @SuppressWarnings("null")
     @Test
     void consumingIterator_shouldReadAndRemoveElementsByIterator() {
         {
@@ -251,6 +252,7 @@ class IteratorUtilsTest {
      * 查找到的元素或为空
      * </p>
      */
+    @SuppressWarnings("null")
     @Test
     void find_shouldFindElementFromIterator() {
         // 定义集合对象
@@ -288,6 +290,7 @@ class IteratorUtilsTest {
      * {@code [[1, 2], [3, null]]}
      * </p>
      */
+    @SuppressWarnings("null")
     @Test
     void partition_shouldSplitIteratorIntoPartitions() {
         // 定义集合
@@ -332,6 +335,7 @@ class IteratorUtilsTest {
      * 迭代器中唯一的元素, 即迭代器只包含一个元素时, 返回该元素值; 如果迭代器不包含元素, 则返回默认值; 如果迭代器包含多个元素, 则抛出异常
      * </p>
      */
+    @SuppressWarnings("null")
     @Test
     void getElement_shouldGetNeededElementFromIterator() {
         {

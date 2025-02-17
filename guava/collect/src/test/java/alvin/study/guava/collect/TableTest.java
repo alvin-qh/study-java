@@ -184,17 +184,17 @@ class TableTest {
         then(table.get(1, "B")).isEqualTo("B1");
         // 确认根据行标识获取指定行内容的 Map 结果
         then(table.row(2)).containsExactly(
-                entry("A", "A2"),
-                entry("B", "B2"),
-                entry("C", "C2"),
-                entry("D", "D2"));
+            entry("A", "A2"),
+            entry("B", "B2"),
+            entry("C", "C2"),
+            entry("D", "D2"));
         // 确认根据列标识获取指定列内容的 Map 结果
         then(table.column("D")).containsExactly(
-                entry(0, "D0"),
-                entry(1, "D1"),
-                entry(2, "D2"),
-                entry(3, "D3"),
-                entry(4, "D4"));
+            entry(0, "D0"),
+            entry(1, "D1"),
+            entry(2, "D2"),
+            entry(3, "D3"),
+            entry(4, "D4"));
 
         // 根据行列标识确认对应的单元格存在
         then(table.contains(0, "A")).isTrue();
@@ -212,33 +212,33 @@ class TableTest {
 
         // 获取所有的单元格, 为一个 Table.Cell 类型对象, 这里展开成为 Tuple 类型对象进行测试
         then(table.cellSet()).extracting("rowKey", "columnKey", "value").containsExactly(
-                tuple(0, "A", "A0"), tuple(0, "B", "B0"), tuple(0, "C", "C0"), tuple(0, "D", "D0"),
-                tuple(1, "A", "A1"), tuple(1, "B", "B1"), tuple(1, "C", "C1"), tuple(1, "D", "D1"),
-                tuple(2, "A", "A2"), tuple(2, "B", "B2"), tuple(2, "C", "C2"), tuple(2, "D", "D2"),
-                tuple(3, "A", "A3"), tuple(3, "B", "B3"), tuple(3, "C", "C3"), tuple(3, "D", "D3"),
-                tuple(4, "A", "A4"), tuple(4, "B", "B4"), tuple(4, "C", "C4"), tuple(4, "D", "D4"));
+            tuple(0, "A", "A0"), tuple(0, "B", "B0"), tuple(0, "C", "C0"), tuple(0, "D", "D0"),
+            tuple(1, "A", "A1"), tuple(1, "B", "B1"), tuple(1, "C", "C1"), tuple(1, "D", "D1"),
+            tuple(2, "A", "A2"), tuple(2, "B", "B2"), tuple(2, "C", "C2"), tuple(2, "D", "D2"),
+            tuple(3, "A", "A3"), tuple(3, "B", "B3"), tuple(3, "C", "C3"), tuple(3, "D", "D3"),
+            tuple(4, "A", "A4"), tuple(4, "B", "B4"), tuple(4, "C", "C4"), tuple(4, "D", "D4"));
 
         // 获取所有行对应的内容 Map, 为 Map<C, V> 类型, 即列标识和单元格值对应关系
         then(table.rowMap()).containsExactly(
-                entry(0, ImmutableMap.of("A", "A0", "B", "B0", "C", "C0", "D", "D0")),
-                entry(1, ImmutableMap.of("A", "A1", "B", "B1", "C", "C1", "D", "D1")),
-                entry(2, ImmutableMap.of("A", "A2", "B", "B2", "C", "C2", "D", "D2")),
-                entry(3, ImmutableMap.of("A", "A3", "B", "B3", "C", "C3", "D", "D3")),
-                entry(4, ImmutableMap.of("A", "A4", "B", "B4", "C", "C4", "D", "D4")));
+            entry(0, ImmutableMap.of("A", "A0", "B", "B0", "C", "C0", "D", "D0")),
+            entry(1, ImmutableMap.of("A", "A1", "B", "B1", "C", "C1", "D", "D1")),
+            entry(2, ImmutableMap.of("A", "A2", "B", "B2", "C", "C2", "D", "D2")),
+            entry(3, ImmutableMap.of("A", "A3", "B", "B3", "C", "C3", "D", "D3")),
+            entry(4, ImmutableMap.of("A", "A4", "B", "B4", "C", "C4", "D", "D4")));
         // 获取所有列对应的内容 Map, 为 Map<R, V> 类型, 即行标识符和单元格值对应关系
         then(table.columnMap()).containsExactly(
-                entry("A", ImmutableMap.of(0, "A0", 1, "A1", 2, "A2", 3, "A3", 4, "A4")),
-                entry("B", ImmutableMap.of(0, "B0", 1, "B1", 2, "B2", 3, "B3", 4, "B4")),
-                entry("C", ImmutableMap.of(0, "C0", 1, "C1", 2, "C2", 3, "C3", 4, "C4")),
-                entry("D", ImmutableMap.of(0, "D0", 1, "D1", 2, "D2", 3, "D3", 4, "D4")));
+            entry("A", ImmutableMap.of(0, "A0", 1, "A1", 2, "A2", 3, "A3", 4, "A4")),
+            entry("B", ImmutableMap.of(0, "B0", 1, "B1", 2, "B2", 3, "B3", 4, "B4")),
+            entry("C", ImmutableMap.of(0, "C0", 1, "C1", 2, "C2", 3, "C3", 4, "C4")),
+            entry("D", ImmutableMap.of(0, "D0", 1, "D1", 2, "D2", 3, "D3", 4, "D4")));
 
         // 获取 Table 的所有单元格值, 组成集合
         then(table.values()).containsExactly(
-                "A0", "B0", "C0", "D0",
-                "A1", "B1", "C1", "D1",
-                "A2", "B2", "C2", "D2",
-                "A3", "B3", "C3", "D3",
-                "A4", "B4", "C4", "D4");
+            "A0", "B0", "C0", "D0",
+            "A1", "B1", "C1", "D1",
+            "A2", "B2", "C2", "D2",
+            "A3", "B3", "C3", "D3",
+            "A4", "B4", "C4", "D4");
 
         // 根据行列标识符删除对应单元格
         then(table.remove(2, "B")).isEqualTo("B2");
@@ -267,8 +267,8 @@ class TableTest {
         // 创建数组 Table 对象
         // 基于数组的 Table 对象需要在初始化时就明确行数和列数, 指定所有的行标识符和列标识
         var table = ArrayTable.<Integer, String, String>create(
-                ImmutableList.of(0, 1, 2, 3, 4),
-                ImmutableList.of("A", "B", "C", "D"));
+            ImmutableList.of(0, 1, 2, 3, 4),
+            ImmutableList.of("A", "B", "C", "D"));
 
         // 将单元格值填充入 Table 对象, 确认填充正确
         fillTable(table, 0, 5, 'A', 'E');
@@ -282,17 +282,17 @@ class TableTest {
         then(table.get(1, "B")).isEqualTo("B1");
         // 确认根据行标识获取指定行内容的 Map 结果
         then(table.row(2)).containsExactly(
-                entry("A", "A2"),
-                entry("B", "B2"),
-                entry("C", "C2"),
-                entry("D", "D2"));
+            entry("A", "A2"),
+            entry("B", "B2"),
+            entry("C", "C2"),
+            entry("D", "D2"));
         // 确认根据列标识获取指定列内容的 Map 结果
         then(table.column("D")).containsExactly(
-                entry(0, "D0"),
-                entry(1, "D1"),
-                entry(2, "D2"),
-                entry(3, "D3"),
-                entry(4, "D4"));
+            entry(0, "D0"),
+            entry(1, "D1"),
+            entry(2, "D2"),
+            entry(3, "D3"),
+            entry(4, "D4"));
 
         // 根据行列标识确认对应的单元格存在
         then(table.contains(0, "A")).isTrue();
@@ -310,33 +310,33 @@ class TableTest {
 
         // 获取所有的单元格, 为一个 Table.Cell 类型对象, 这里展开成为 Tuple 类型对象进行测试
         then(table.cellSet()).extracting("rowKey", "columnKey", "value").containsExactly(
-                tuple(0, "A", "A0"), tuple(0, "B", "B0"), tuple(0, "C", "C0"), tuple(0, "D", "D0"),
-                tuple(1, "A", "A1"), tuple(1, "B", "B1"), tuple(1, "C", "C1"), tuple(1, "D", "D1"),
-                tuple(2, "A", "A2"), tuple(2, "B", "B2"), tuple(2, "C", "C2"), tuple(2, "D", "D2"),
-                tuple(3, "A", "A3"), tuple(3, "B", "B3"), tuple(3, "C", "C3"), tuple(3, "D", "D3"),
-                tuple(4, "A", "A4"), tuple(4, "B", "B4"), tuple(4, "C", "C4"), tuple(4, "D", "D4"));
+            tuple(0, "A", "A0"), tuple(0, "B", "B0"), tuple(0, "C", "C0"), tuple(0, "D", "D0"),
+            tuple(1, "A", "A1"), tuple(1, "B", "B1"), tuple(1, "C", "C1"), tuple(1, "D", "D1"),
+            tuple(2, "A", "A2"), tuple(2, "B", "B2"), tuple(2, "C", "C2"), tuple(2, "D", "D2"),
+            tuple(3, "A", "A3"), tuple(3, "B", "B3"), tuple(3, "C", "C3"), tuple(3, "D", "D3"),
+            tuple(4, "A", "A4"), tuple(4, "B", "B4"), tuple(4, "C", "C4"), tuple(4, "D", "D4"));
 
         // 获取所有行对应的内容 Map, 为 Map<C, V> 类型
         then(table.rowMap()).containsExactly(
-                entry(0, ImmutableMap.of("A", "A0", "B", "B0", "C", "C0", "D", "D0")),
-                entry(1, ImmutableMap.of("A", "A1", "B", "B1", "C", "C1", "D", "D1")),
-                entry(2, ImmutableMap.of("A", "A2", "B", "B2", "C", "C2", "D", "D2")),
-                entry(3, ImmutableMap.of("A", "A3", "B", "B3", "C", "C3", "D", "D3")),
-                entry(4, ImmutableMap.of("A", "A4", "B", "B4", "C", "C4", "D", "D4")));
+            entry(0, ImmutableMap.of("A", "A0", "B", "B0", "C", "C0", "D", "D0")),
+            entry(1, ImmutableMap.of("A", "A1", "B", "B1", "C", "C1", "D", "D1")),
+            entry(2, ImmutableMap.of("A", "A2", "B", "B2", "C", "C2", "D", "D2")),
+            entry(3, ImmutableMap.of("A", "A3", "B", "B3", "C", "C3", "D", "D3")),
+            entry(4, ImmutableMap.of("A", "A4", "B", "B4", "C", "C4", "D", "D4")));
         // 获取所有列对应的内容 Map, 为 Map<R, V> 类型, 即行标识符和单元格值对应关系
         then(table.columnMap()).containsExactly(
-                entry("A", ImmutableMap.of(0, "A0", 1, "A1", 2, "A2", 3, "A3", 4, "A4")),
-                entry("B", ImmutableMap.of(0, "B0", 1, "B1", 2, "B2", 3, "B3", 4, "B4")),
-                entry("C", ImmutableMap.of(0, "C0", 1, "C1", 2, "C2", 3, "C3", 4, "C4")),
-                entry("D", ImmutableMap.of(0, "D0", 1, "D1", 2, "D2", 3, "D3", 4, "D4")));
+            entry("A", ImmutableMap.of(0, "A0", 1, "A1", 2, "A2", 3, "A3", 4, "A4")),
+            entry("B", ImmutableMap.of(0, "B0", 1, "B1", 2, "B2", 3, "B3", 4, "B4")),
+            entry("C", ImmutableMap.of(0, "C0", 1, "C1", 2, "C2", 3, "C3", 4, "C4")),
+            entry("D", ImmutableMap.of(0, "D0", 1, "D1", 2, "D2", 3, "D3", 4, "D4")));
 
         // 获取 Table 的所有单元格值, 组成集合
         then(table.values()).containsExactly(
-                "A0", "B0", "C0", "D0",
-                "A1", "B1", "C1", "D1",
-                "A2", "B2", "C2", "D2",
-                "A3", "B3", "C3", "D3",
-                "A4", "B4", "C4", "D4");
+            "A0", "B0", "C0", "D0",
+            "A1", "B1", "C1", "D1",
+            "A2", "B2", "C2", "D2",
+            "A3", "B3", "C3", "D3",
+            "A4", "B4", "C4", "D4");
 
         // 基于数组的 Table 无法删除单元格
         thenThrownBy(() -> table.remove(2, "B")).isInstanceOf(UnsupportedOperationException.class);
@@ -386,17 +386,17 @@ class TableTest {
         then(table.get(1, "B")).isEqualTo("B1");
         // 确认根据行标识获取指定行内容的 Map 结果
         then(table.row(2)).containsExactly(
-                entry("A", "A2"),
-                entry("B", "B2"),
-                entry("C", "C2"),
-                entry("D", "D2"));
+            entry("A", "A2"),
+            entry("B", "B2"),
+            entry("C", "C2"),
+            entry("D", "D2"));
         // 确认根据列标识获取指定列内容的 Map 结果
         then(table.column("D")).containsExactly(
-                entry(0, "D0"),
-                entry(1, "D1"),
-                entry(2, "D2"),
-                entry(3, "D3"),
-                entry(4, "D4"));
+            entry(0, "D0"),
+            entry(1, "D1"),
+            entry(2, "D2"),
+            entry(3, "D3"),
+            entry(4, "D4"));
 
         // 根据行列标识确认对应的单元格存在
         then(table.contains(0, "A")).isTrue();
@@ -414,32 +414,32 @@ class TableTest {
 
         // 获取所有的单元格, 为一个 Table.Cell 类型对象, 这里展开成为 Tuple 类型对象进行测试
         then(table.cellSet()).extracting("rowKey", "columnKey", "value").containsExactly(
-                tuple(0, "A", "A0"), tuple(0, "B", "B0"), tuple(0, "C", "C0"), tuple(0, "D", "D0"),
-                tuple(1, "A", "A1"), tuple(1, "B", "B1"), tuple(1, "C", "C1"), tuple(1, "D", "D1"),
-                tuple(2, "A", "A2"), tuple(2, "B", "B2"), tuple(2, "C", "C2"), tuple(2, "D", "D2"),
-                tuple(3, "A", "A3"), tuple(3, "B", "B3"), tuple(3, "C", "C3"), tuple(3, "D", "D3"),
-                tuple(4, "A", "A4"), tuple(4, "B", "B4"), tuple(4, "C", "C4"), tuple(4, "D", "D4"));
+            tuple(0, "A", "A0"), tuple(0, "B", "B0"), tuple(0, "C", "C0"), tuple(0, "D", "D0"),
+            tuple(1, "A", "A1"), tuple(1, "B", "B1"), tuple(1, "C", "C1"), tuple(1, "D", "D1"),
+            tuple(2, "A", "A2"), tuple(2, "B", "B2"), tuple(2, "C", "C2"), tuple(2, "D", "D2"),
+            tuple(3, "A", "A3"), tuple(3, "B", "B3"), tuple(3, "C", "C3"), tuple(3, "D", "D3"),
+            tuple(4, "A", "A4"), tuple(4, "B", "B4"), tuple(4, "C", "C4"), tuple(4, "D", "D4"));
 
         // 获取所有行对应的内容 Map, 为 Map<C, V> 类型
         then(table.rowMap()).containsExactly(
-                entry(0, ImmutableMap.of("A", "A0", "B", "B0", "C", "C0", "D", "D0")),
-                entry(1, ImmutableMap.of("A", "A1", "B", "B1", "C", "C1", "D", "D1")),
-                entry(2, ImmutableMap.of("A", "A2", "B", "B2", "C", "C2", "D", "D2")),
-                entry(3, ImmutableMap.of("A", "A3", "B", "B3", "C", "C3", "D", "D3")),
-                entry(4, ImmutableMap.of("A", "A4", "B", "B4", "C", "C4", "D", "D4")));
+            entry(0, ImmutableMap.of("A", "A0", "B", "B0", "C", "C0", "D", "D0")),
+            entry(1, ImmutableMap.of("A", "A1", "B", "B1", "C", "C1", "D", "D1")),
+            entry(2, ImmutableMap.of("A", "A2", "B", "B2", "C", "C2", "D", "D2")),
+            entry(3, ImmutableMap.of("A", "A3", "B", "B3", "C", "C3", "D", "D3")),
+            entry(4, ImmutableMap.of("A", "A4", "B", "B4", "C", "C4", "D", "D4")));
         // 获取所有列对应的内容 Map, 为 Map<R, V> 类型, 即行标识符和单元格值对应关系
         then(table.columnMap()).containsExactly(
-                entry("A", ImmutableMap.of(0, "A0", 1, "A1", 2, "A2", 3, "A3", 4, "A4")),
-                entry("B", ImmutableMap.of(0, "B0", 1, "B1", 2, "B2", 3, "B3", 4, "B4")),
-                entry("C", ImmutableMap.of(0, "C0", 1, "C1", 2, "C2", 3, "C3", 4, "C4")),
-                entry("D", ImmutableMap.of(0, "D0", 1, "D1", 2, "D2", 3, "D3", 4, "D4")));
+            entry("A", ImmutableMap.of(0, "A0", 1, "A1", 2, "A2", 3, "A3", 4, "A4")),
+            entry("B", ImmutableMap.of(0, "B0", 1, "B1", 2, "B2", 3, "B3", 4, "B4")),
+            entry("C", ImmutableMap.of(0, "C0", 1, "C1", 2, "C2", 3, "C3", 4, "C4")),
+            entry("D", ImmutableMap.of(0, "D0", 1, "D1", 2, "D2", 3, "D3", 4, "D4")));
         // 获取 Table 的所有单元格值, 组成集合
         then(table.values()).containsExactly(
-                "A0", "B0", "C0", "D0",
-                "A1", "B1", "C1", "D1",
-                "A2", "B2", "C2", "D2",
-                "A3", "B3", "C3", "D3",
-                "A4", "B4", "C4", "D4");
+            "A0", "B0", "C0", "D0",
+            "A1", "B1", "C1", "D1",
+            "A2", "B2", "C2", "D2",
+            "A3", "B3", "C3", "D3",
+            "A4", "B4", "C4", "D4");
 
         // 不可变 Table 无法删除单元格
         thenThrownBy(() -> table.remove(2, "B")).isInstanceOf(UnsupportedOperationException.class);

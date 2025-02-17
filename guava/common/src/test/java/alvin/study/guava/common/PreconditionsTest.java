@@ -130,9 +130,9 @@ class PreconditionsTest {
      * </p>
      */
     @CsvSource({
-            "0,valid",
-            "3,valid",
-            "4,invalid"
+        "0,valid",
+        "3,valid",
+        "4,invalid"
     })
     @ParameterizedTest
     void elementIndex_shouldCheckElementIndexOfList(int index, String state) {
@@ -171,9 +171,9 @@ class PreconditionsTest {
      * </p>
      */
     @CsvSource({
-            "0,valid",
-            "4,valid",
-            "5,invalid"
+        "0,valid",
+        "4,valid",
+        "5,invalid"
     })
     @ParameterizedTest
     void preconditions_shouldCheckValuesByPreconditions(int index, String state) {

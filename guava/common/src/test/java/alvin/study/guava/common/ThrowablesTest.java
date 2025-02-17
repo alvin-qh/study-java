@@ -105,32 +105,24 @@ class ThrowablesTest {
         var exception = new IOException();
 
         // 如果异常类型和指定异常类型不匹配, 则不抛出任何异常
-        thenCode(() -> Throwables.propagateIfPossible(
-                exception,
-                IndexOutOfBoundsException.class,
-                NoSuchMethodException.class)).doesNotThrowAnyException();
+        thenCode(() -> Throwables.throwIfInstanceOf(exception, IndexOutOfBoundsException.class))
+                .doesNotThrowAnyException();
 
         // 如果异常类型和指定异常类型匹配, 则抛出该异常
-        thenThrownBy(() -> Throwables.propagateIfPossible(
-                exception,
-                IndexOutOfBoundsException.class,
-                IOException.class)).isInstanceOf(IOException.class);
+        thenThrownBy(() -> Throwables.throwIfInstanceOf(exception, IOException.class))
+                .isInstanceOf(IOException.class);
 
         var runtimeException = new IllegalArgumentException();
 
         // 如果异常类型为 RuntimeException 类型, 则抛出该异常
-        thenThrownBy(() -> Throwables.propagateIfPossible(
-                runtimeException,
-                NullPointerException.class,
-                IOException.class)).isInstanceOf(RuntimeException.class);
+        thenThrownBy(() -> Throwables.throwIfUnchecked(runtimeException))
+                .isInstanceOf(RuntimeException.class);
 
         var error = new OutOfMemoryError();
 
         // 如果异常类型为 Error 类型, 则抛出该异常
-        thenThrownBy(() -> Throwables.propagateIfPossible(
-                error,
-                NullPointerException.class,
-                IOException.class)).isInstanceOf(OutOfMemoryError.class);
+        thenThrownBy(() -> Throwables.throwIfUnchecked(error))
+                .isInstanceOf(OutOfMemoryError.class);
     }
 
     /**
@@ -242,7 +234,7 @@ class ThrowablesTest {
         // 获取异常链
         var chain = Throwables.getCausalChain(exception);
         then(chain).map(c -> (Object) c.getClass()).containsExactly(
-                IllegalStateException.class, IOException.class, IllegalArgumentException.class);
+            IllegalStateException.class, IOException.class, IllegalArgumentException.class);
     }
 
     /**

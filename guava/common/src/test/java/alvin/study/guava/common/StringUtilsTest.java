@@ -3,6 +3,7 @@ package alvin.study.guava.common;
 import static org.assertj.core.api.Assertions.entry;
 import static org.assertj.core.api.BDDAssertions.then;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -255,7 +256,7 @@ class StringUtilsTest {
      */
     @Test
     void charsets_shouldUseStandardCharset() {
-        var bytes = "Hello World".getBytes(Charsets.UTF_8);
+        var bytes = "Hello World".getBytes(StandardCharsets.UTF_8);
         then(bytes).isEqualTo(new byte[] { 72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100 });
     }
 

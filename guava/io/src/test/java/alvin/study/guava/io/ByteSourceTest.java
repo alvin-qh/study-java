@@ -1,18 +1,20 @@
 package alvin.study.guava.io;
 
-import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
 import com.google.common.io.ByteProcessor;
 import com.google.common.io.ByteSource;
 import com.google.common.io.MoreFiles;
 import com.google.common.io.Resources;
 import com.google.common.primitives.Bytes;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
+
 import org.junit.jupiter.api.Test;
 
 import javax.sql.DataSource;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.PosixFilePermissions;
@@ -26,7 +28,8 @@ import static org.awaitility.Awaitility.await;
  * 测试通过 {@link ByteSource} 类型读取数据
  *
  * <p>
- * {@link ByteSource} 类型对象是 Guava 针对一系列字节输入设备的抽象 (例如文件或网络), 理论上, 所有可以读取字节数据的源都可以抽象为
+ * {@link ByteSource} 类型对象是 Guava 针对一系列字节输入设备的抽象 (例如文件或网络), 理论上,
+ * 所有可以读取字节数据的源都可以抽象为
  * {@link ByteSource} 类型对象
  * </p>
  *
@@ -34,21 +37,26 @@ import static org.awaitility.Awaitility.await;
  * Guava 默认提供了四种产生 {@link ByteSource} 对象的方法, 分别为:
  * <ul>
  * <li>
- * {@link com.google.common.io.Files#asByteSource(java.io.File) Files.asByteSource(File)} 方法, 用于通过一个
+ * {@link com.google.common.io.Files#asByteSource(java.io.File)
+ * Files.asByteSource(File)} 方法, 用于通过一个
  * {@link java.io.File File} 对象创建 {@link ByteSource} 对象
  * </li>
  * <li>
  * {@link MoreFiles#asByteSource(java.nio.file.Path, java.nio.file.OpenOption...)
- * MoreFiles.asByteSource(Path, OpenOption...)} 方法, 用于通过一个 {@link java.nio.file.Path Path} 对象创建
+ * MoreFiles.asByteSource(Path, OpenOption...)} 方法, 用于通过一个
+ * {@link java.nio.file.Path Path} 对象创建
  * {@link ByteSource} 对象
  * </li>
  * <li>
- * {@link Resources#asByteSource(java.net.URL) Resources.asByteSource(URL)} 方法, 用于通过一个 {@link java.net.URL URL}
+ * {@link Resources#asByteSource(java.net.URL) Resources.asByteSource(URL)} 方法,
+ * 用于通过一个 {@link java.net.URL URL}
  * 对象创建 {@link ByteSource} 对象
  * </li>
  * <li>
- * {@link com.google.common.io.CharSource#asByteSource(java.nio.charset.Charset) CharSource.asByteSource(Charset)} 方法,
- * 用于通过一个 {@link com.google.common.io.CharSource CharSource} 对象创建 {@link ByteSource} 对象
+ * {@link com.google.common.io.CharSource#asByteSource(java.nio.charset.Charset)
+ * CharSource.asByteSource(Charset)} 方法,
+ * 用于通过一个 {@link com.google.common.io.CharSource CharSource} 对象创建
+ * {@link ByteSource} 对象
  * </li>
  * </ul>
  * </p>
@@ -63,28 +71,32 @@ class ByteSourceTest {
      * 将一个 {@code byte} 数组包装为 {@link ByteSource} 类型对象
      *
      * <p>
-     * 通过 {@link ByteSource#isEmpty()} 方法可以确定对象中是否包含数据, 返回值为 {@code true} 表示一个空的 {@link ByteSource}
+     * 通过 {@link ByteSource#isEmpty()} 方法可以确定对象中是否包含数据, 返回值为 {@code true} 表示一个空的
+     * {@link ByteSource}
      * 对象
      * </p>
      *
      * <p>
-     * 通过 {@link ByteSource#wrap(byte[])} 方法可以将一个 {@code byte} 数组包装为 {@link ByteSource} 类型对象,
+     * 通过 {@link ByteSource#wrap(byte[])} 方法可以将一个 {@code byte} 数组包装为
+     * {@link ByteSource} 类型对象,
      * 通过包装后的对象可以读取到被包装的 {@link byte} 数组内容
      * </p>
      *
      * <p>
-     * 通过 {@link ByteSource#sizeIfKnown()} 方法可以获取 {@link ByteSource} 包含数据的长度. 但如果当前 {@link ByteSource}
+     * 通过 {@link ByteSource#sizeIfKnown()} 方法可以获取 {@link ByteSource} 包含数据的长度. 但如果当前
+     * {@link ByteSource}
      * 实现类无法获取到自身包含数据的长度, 则返回空的 {@link com.google.common.base.Optional Optional} 对象
      * </p>
      *
      * <p>
-     * 通过 {@link ByteSource#size()} 方法先通过 {@link ByteSource#sizeIfKnown()} 方法获取长度, 如果当前 {@link ByteSource}
+     * 通过 {@link ByteSource#size()} 方法先通过 {@link ByteSource#sizeIfKnown()} 方法获取长度,
+     * 如果当前 {@link ByteSource}
      * 类型不支持, 则通过完全读取 {@link ByteSource} 中的内容来求长度
      * </p>
      */
     @Test
     void wrap_shouldWrapByteArrayToByteSource() throws IOException {
-        var data = "Hello Guava".getBytes(Charsets.UTF_8);
+        var data = "Hello Guava".getBytes(StandardCharsets.UTF_8);
         // 将 byte 数组包装为 ByteSource 对象
         var source = ByteSource.wrap(data);
 
@@ -102,17 +114,19 @@ class ByteSourceTest {
      * 从 {@link ByteSource} 中读取数据
      *
      * <p>
-     * 通过 {@link ByteSource#read()} 方法读取 {@link ByteSource} 中包含的全部内容, 返回一个 {@code byte} 数组
+     * 通过 {@link ByteSource#read()} 方法读取 {@link ByteSource} 中包含的全部内容, 返回一个
+     * {@code byte} 数组
      * </p>
      *
      * <p>
-     * 通过 {@link ByteSource#read(ByteProcessor)} 方法读取 {@link ByteSource} 中包含的全部内容, 并将读取的内容进行转化后,
+     * 通过 {@link ByteSource#read(ByteProcessor)} 方法读取 {@link ByteSource} 中包含的全部内容,
+     * 并将读取的内容进行转化后,
      * 返回转化后的对象
      * </p>
      */
     @Test
     void read_shouldReadDataFromByteSources() throws IOException {
-        var data = "Hello Guava".getBytes(Charsets.UTF_8);
+        var data = "Hello Guava".getBytes(StandardCharsets.UTF_8);
         // 将 byte 数组包装为 ByteSource 对象
         var source = ByteSource.wrap(data);
 
@@ -125,7 +139,7 @@ class ByteSourceTest {
             private final ByteArrayOutputStream os = new ByteArrayOutputStream();
 
             @Override
-            public boolean processBytes(byte @NotNull [] buf, int off, int len) {
+            public boolean processBytes(@Nonnull byte[] buf, int off, int len) {
                 // 将每次读取的内容存入 OutputStream 对象
                 os.write(buf, off, len);
                 return true;
@@ -136,7 +150,7 @@ class ByteSourceTest {
                 try {
                     try (os) {
                         // 将 OutputStream 内容转为字符串返回
-                        return os.toString(Charsets.UTF_8);
+                        return os.toString(StandardCharsets.UTF_8);
                     }
                 } catch (Exception e) {
                     throw new IllegalStateException(e);
@@ -149,13 +163,14 @@ class ByteSourceTest {
      * 将 {@link ByteSource} 对象的内容拷贝到 {@link java.io.OutputStream OutputStream} 对象中
      *
      * <p>
-     * 通过 {@link ByteSource#copyTo(java.io.OutputStream) ByteSource.copyTo(OutputStream)} 方法可以将 {@link ByteSource}
+     * 通过 {@link ByteSource#copyTo(java.io.OutputStream)
+     * ByteSource.copyTo(OutputStream)} 方法可以将 {@link ByteSource}
      * 对象的数据全部复制到 {@link java.io.OutputStream OutputStream} 对象中
      * </p>
      */
     @Test
     void copyTo_shouldCopyByteSourceIntoOutputStream() throws IOException {
-        var data = "Hello Guava".getBytes(Charsets.UTF_8);
+        var data = "Hello Guava".getBytes(StandardCharsets.UTF_8);
         // 将 byte 数组包装为 ByteSource 对象
         var source = ByteSource.wrap(data);
 
@@ -170,16 +185,19 @@ class ByteSourceTest {
     }
 
     /**
-     * 将 {@link ByteSource} 对象的内容拷贝到 {@link com.google.common.io.ByteSink ByteSink} 对象中
+     * 将 {@link ByteSource} 对象的内容拷贝到 {@link com.google.common.io.ByteSink ByteSink}
+     * 对象中
      *
      * <p>
-     * 通过 {@link ByteSource#copyTo(com.google.common.io.ByteSink) ByteSource.copyTo(ByteSink)} 方法可以将
-     * {@link ByteSource} 对象的数据全部复制到 {@link com.google.common.io.ByteSink ByteSink} 对象中
+     * 通过 {@link ByteSource#copyTo(com.google.common.io.ByteSink)
+     * ByteSource.copyTo(ByteSink)} 方法可以将
+     * {@link ByteSource} 对象的数据全部复制到 {@link com.google.common.io.ByteSink ByteSink}
+     * 对象中
      * </p>
      */
     @Test
     void copyTo_shouldCopyFromByteSourceToByteSink() throws IOException {
-        var data = "Hello Guava".getBytes(Charsets.UTF_8);
+        var data = "Hello Guava".getBytes(StandardCharsets.UTF_8);
         // 将 byte 数组包装为 ByteSource 对象
         var source = ByteSource.wrap(data);
 
@@ -207,15 +225,16 @@ class ByteSourceTest {
      * 将多个 {@link ByteSource} 对象连接为一个 {@link ByteSource} 对象
      *
      * <p>
-     * {@link ByteSource#concat(ByteSource...)} 方法可以将多个 {@link ByteSource} 对象连接为一个, 读取数据的时候按照链接是的顺序,
+     * {@link ByteSource#concat(ByteSource...)} 方法可以将多个 {@link ByteSource} 对象连接为一个,
+     * 读取数据的时候按照链接是的顺序,
      * 依次读取每个 {@link ByteSource} 中的内容, 让这些 {@link ByteSource} 对象看起来如同一个
      * </p>
      */
     @Test
     void concat_shouldJoinByteResourcesToOne() throws IOException {
-        var data1 = "abc".getBytes(Charsets.UTF_8);
-        var data2 = "def".getBytes(Charsets.UTF_8);
-        var data3 = "ghi".getBytes(Charsets.UTF_8);
+        var data1 = "abc".getBytes(StandardCharsets.UTF_8);
+        var data2 = "def".getBytes(StandardCharsets.UTF_8);
+        var data3 = "ghi".getBytes(StandardCharsets.UTF_8);
 
         // 创建 3 个 ByteSource 对象
         var source1 = ByteSource.wrap(data1);
@@ -232,14 +251,16 @@ class ByteSourceTest {
      * 对 {@link ByteSource} 中的数据求散列值
      *
      * <p>
-     * 通过 {@link ByteSource#hash(com.google.common.hash.HashFunction) ByteSource.hash(HashFunction)} 方法可以对
-     * {@link ByteSource} 对象中的数据求散列, 其中 {@link com.google.common.hash.HashFunction HashFunction} 散列计算对象可以从
+     * 通过 {@link ByteSource#hash(com.google.common.hash.HashFunction)
+     * ByteSource.hash(HashFunction)} 方法可以对
+     * {@link ByteSource} 对象中的数据求散列, 其中 {@link com.google.common.hash.HashFunction
+     * HashFunction} 散列计算对象可以从
      * {@link Hashing} 类中获得 (例如 {@link Hashing#sha256()})
      * </p>
      */
     @Test
     void hash_shouldCalculateHashCodeForByteSource() throws IOException {
-        var data = "Hello Guava".getBytes(Charsets.UTF_8);
+        var data = "Hello Guava".getBytes(StandardCharsets.UTF_8);
         // 将 byte 数组包装为 ByteSource 对象
         var source = ByteSource.wrap(data);
 
@@ -249,20 +270,21 @@ class ByteSourceTest {
         // 通过指定的散列函数计算 DataSource 中数据的散列值
         var hash = source.hash(hashFn);
         // 确认散列值计算正确
-        then(hash).isEqualTo(hashFn.hashString("Hello Guava", Charsets.UTF_8));
+        then(hash).isEqualTo(hashFn.hashString("Hello Guava", StandardCharsets.UTF_8));
     }
 
     /**
      * 测试将一个 {@link ByteSource} 对象进行分割
      *
      * <p>
-     * 通过 {@link ByteSource#slice(long, long)} 方法可以将指定 {@link ByteSource} 的一部分内容分割成为新的 {@link ByteSource}
+     * 通过 {@link ByteSource#slice(long, long)} 方法可以将指定 {@link ByteSource}
+     * 的一部分内容分割成为新的 {@link ByteSource}
      * 对象
      * </p>
      */
     @Test
     void slice_shouldSplitByteSourceIntoMultiple() throws IOException {
-        var data = "1234567890".getBytes(Charsets.UTF_8);
+        var data = "1234567890".getBytes(StandardCharsets.UTF_8);
         // 将 byte 数组包装为 ByteSource 对象
         var source = ByteSource.wrap(data);
 
@@ -275,8 +297,8 @@ class ByteSourceTest {
         then(source2.sizeIfKnown().get()).isEqualTo(5L);
 
         // 确认分割的 DataSource 内容正确
-        then(source1.read()).isEqualTo("12345".getBytes(Charsets.UTF_8));
-        then(source2.read()).isEqualTo("67890".getBytes(Charsets.UTF_8));
+        then(source1.read()).isEqualTo("12345".getBytes(StandardCharsets.UTF_8));
+        then(source2.read()).isEqualTo("67890".getBytes(StandardCharsets.UTF_8));
     }
 
     /**
@@ -295,25 +317,27 @@ class ByteSourceTest {
         then(source.sizeIfKnown().get()).isZero();
 
         // 确认读取的数据为空
-        then(source.read()).isEqualTo(new byte[]{ });
+        then(source.read()).isEqualTo(new byte[] {});
     }
 
     /**
      * 测试通过 {@link ByteSource} 对象创建 {@link java.io.InputStream InputStream} 对象
      *
      * <p>
-     * 通过 {@link ByteSource#openStream()} 方法可以建立一个用于从 {@link ByteSource} 读取数据的 {@link java.io.InputStream
+     * 通过 {@link ByteSource#openStream()} 方法可以建立一个用于从 {@link ByteSource} 读取数据的
+     * {@link java.io.InputStream
      * InputStream} 对象
      * </p>
      *
      * <p>
-     * 通过 {@link ByteSource#openBufferedStream()} 方法可以建立一个用于从 {@link ByteSource} 读取数据的
+     * 通过 {@link ByteSource#openBufferedStream()} 方法可以建立一个用于从 {@link ByteSource}
+     * 读取数据的
      * {@link java.io.BufferedInputStream BufferedInputStream} 对象
      * </p>
      */
     @Test
     void openStream_shouldOpenByteSourceAsInputStream() throws IOException {
-        var data = "Hello Guava".getBytes(Charsets.UTF_8);
+        var data = "Hello Guava".getBytes(StandardCharsets.UTF_8);
         // 将 byte 数组包装为 ByteSource 对象
         var source = ByteSource.wrap(data);
 
@@ -368,20 +392,23 @@ class ByteSourceTest {
     }
 
     /**
-     * 将 {@link ByteSource} 类型对象转为 {@link com.google.common.io.CharSource CharSource} 类型对象
+     * 将 {@link ByteSource} 类型对象转为 {@link com.google.common.io.CharSource
+     * CharSource} 类型对象
      *
      * <p>
-     * 通过 {@link ByteSource#asCharSource(java.nio.charset.Charset) ByteSource.asCharSource(Charset)}
-     * 方法可以将一个字节数据源 ({@link ByteSource}) 转为字符数据源 ({@link com.google.common.io.CharSource CharSource}),
+     * 通过 {@link ByteSource#asCharSource(java.nio.charset.Charset)
+     * ByteSource.asCharSource(Charset)}
+     * 方法可以将一个字节数据源 ({@link ByteSource}) 转为字符数据源
+     * ({@link com.google.common.io.CharSource CharSource}),
      * 以便直接对数据源存储的字节数据以字符编码进行读取
      * </p>
      */
     @Test
     void asCharSource_shouldConvertByteSourceToCharSource() throws IOException {
-        var bSource = ByteSource.wrap("Hello Guava".getBytes(Charsets.UTF_8));
+        var bSource = ByteSource.wrap("Hello Guava".getBytes(StandardCharsets.UTF_8));
 
         // 将字节数据源转为字符数据源对象
-        var cSource = bSource.asCharSource(Charsets.UTF_8);
+        var cSource = bSource.asCharSource(StandardCharsets.UTF_8);
         // 确认从数据源读取到预期的字符串
         then(cSource.read()).isEqualTo("Hello Guava");
     }

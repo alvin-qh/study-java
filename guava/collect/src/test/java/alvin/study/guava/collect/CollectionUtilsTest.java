@@ -80,12 +80,12 @@ class CollectionUtilsTest {
 
         // 确认过滤结果符合过滤条件
         then(permutationList).containsExactlyInAnyOrder(
-                ImmutableList.of(1, 2, 3),
-                ImmutableList.of(1, 3, 2),
-                ImmutableList.of(2, 1, 3),
-                ImmutableList.of(2, 3, 1),
-                ImmutableList.of(3, 1, 2),
-                ImmutableList.of(3, 2, 1));
+            ImmutableList.of(1, 2, 3),
+            ImmutableList.of(1, 3, 2),
+            ImmutableList.of(2, 1, 3),
+            ImmutableList.of(2, 3, 1),
+            ImmutableList.of(3, 1, 2),
+            ImmutableList.of(3, 2, 1));
     }
 
     /**
@@ -115,12 +115,12 @@ class CollectionUtilsTest {
 
         // 确认过滤结果符合过滤条件
         then(permutationList).containsExactlyInAnyOrder(
-                ImmutableList.of(1, 2, 3),
-                ImmutableList.of(1, 3, 2),
-                ImmutableList.of(2, 1, 3),
-                ImmutableList.of(2, 3, 1),
-                ImmutableList.of(3, 1, 2),
-                ImmutableList.of(3, 2, 1));
+            ImmutableList.of(1, 2, 3),
+            ImmutableList.of(1, 3, 2),
+            ImmutableList.of(2, 1, 3),
+            ImmutableList.of(2, 3, 1),
+            ImmutableList.of(3, 1, 2),
+            ImmutableList.of(3, 2, 1));
     }
 
     /**

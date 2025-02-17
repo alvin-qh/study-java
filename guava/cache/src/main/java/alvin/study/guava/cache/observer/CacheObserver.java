@@ -3,20 +3,23 @@ package alvin.study.guava.cache.observer;
 import alvin.study.guava.cache.event.UserDeleteEvent;
 import alvin.study.guava.cache.event.UserUpdateEvent;
 import alvin.study.guava.cache.model.User;
+import jakarta.annotation.Nonnull;
+
 import com.google.common.cache.LoadingCache;
 import com.google.common.eventbus.Subscribe;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * 用于缓存处理的观察者类
  *
  * <p>
- * {@link #onUserUpdated(UserUpdateEvent)} 方法用于监听 {@link UserUpdateEvent} 类型事件, 完成 {@link User}
+ * {@link #onUserUpdated(UserUpdateEvent)} 方法用于监听 {@link UserUpdateEvent} 类型事件,
+ * 完成 {@link User}
  * 实体被更新后的缓存处理工作
  * </p>
  *
  * <p>
- * {@link #onUserDeleted(UserDeleteEvent)} 方法用于监听 {@link UserDeleteEvent} 类型事件, 完成 {@link User}
+ * {@link #onUserDeleted(UserDeleteEvent)} 方法用于监听 {@link UserDeleteEvent} 类型事件,
+ * 完成 {@link User}
  * 实体被删除后的缓存处理工作
  * </p>
  */
@@ -43,7 +46,7 @@ public class CacheObserver {
      * @param event {@link UserUpdateEvent} 事件对象, 表示一个 {@link User} 实体被更新
      */
     @Subscribe
-    public void onUserUpdated(@NotNull UserUpdateEvent event) {
+    public void onUserUpdated(@Nonnull UserUpdateEvent event) {
         var user = event.getEntry();
         cache.refresh(user.id());
     }
@@ -58,7 +61,7 @@ public class CacheObserver {
      * @param event {@link UserDeleteEvent} 事件对象, 表示一个 {@link User} 实体被删除
      */
     @Subscribe
-    public void onUserDeleted(@NotNull UserDeleteEvent event) {
+    public void onUserDeleted(@Nonnull UserDeleteEvent event) {
         var user = event.getEntry();
         cache.invalidate(user.id());
     }

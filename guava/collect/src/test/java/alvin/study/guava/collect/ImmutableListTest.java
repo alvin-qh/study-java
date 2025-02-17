@@ -14,13 +14,15 @@ import com.google.common.collect.Sets;
  *
  * <p>
  * 和 {@link java.util.Collections#unmodifiableCollection(java.util.Collection)
- * Collections.unmodifiableCollection(Collection)} 等方法包装的不可修改集合不同, 它本质上是对现有集合对象的一个代理, 只是禁用了
+ * Collections.unmodifiableCollection(Collection)} 等方法包装的不可修改集合不同,
+ * 它本质上是对现有集合对象的一个代理, 只是禁用了
  * 修改集合元素的一系列方法, 作用是保障代码安全; 而 Guava 提供的不变集合则是从数据结构上不支持修改, 除保障代码安全外, 还可以提供更好的执行
  * 效率和内存空间使用率, 且无需担心线程安全问题
  * </p>
  *
  * <p>
- * 本例中以 {@link ImmutableList} 类型为例, 演示不变集合类型的使用, {@link com.google.common.collect.ImmutableSet
+ * 本例中以 {@link ImmutableList} 类型为例, 演示不变集合类型的使用,
+ * {@link com.google.common.collect.ImmutableSet
  * ImmutableSet} 等集合类型和其使用方法基本类似
  * </p>
  *
@@ -31,22 +33,24 @@ import com.google.common.collect.Sets;
  * </p>
  *
  * <p>
- * JDK 9 以后, JDK 本身提供了 {@link java.util.List#of(Object) List.of(T...)} 方法, 可以取代 Guava 库的使用
+ * JDK 9 以后, JDK 本身提供了 {@link java.util.List#of(Object) List.of(T...)} 方法, 可以取代
+ * Guava 库的使用
  * </p>
  */
-@SuppressWarnings("deprecation")
 class ImmutableListTest {
     /**
      * 通过指定元素构建不变集合
      *
      * <p>
-     * {@link ImmutableList#of(Object) ImmutableList.of(Object...)} 方法可以指定多个元素, 构建一个不变 {@code List} 集合
+     * {@link ImmutableList#of(Object) ImmutableList.of(Object...)} 方法可以指定多个元素,
+     * 构建一个不变 {@code List} 集合
      * </p>
      *
      * <p>
      * {@code ImmutableList.of(...)} 方法具备多个重载形式, 可以支持 1 ~ n 个参数的情况
      * </p>
      */
+    @SuppressWarnings({ "deprecation", "null" })
     @Test
     void of_shouldCreateImmutableListByElements() {
         var list = ImmutableList.of(1, 2, 3, 4);
@@ -64,7 +68,8 @@ class ImmutableListTest {
      * 创建一个集合的不变集合副本
      *
      * <p>
-     * {@link ImmutableList#copyOf(Iterable)} 可以创建现有集合的一个不变副本, 该方法也具备多个重载形式, 可以支持集合的多种形式参数
+     * {@link ImmutableList#copyOf(Iterable)} 可以创建现有集合的一个不变副本, 该方法也具备多个重载形式,
+     * 可以支持集合的多种形式参数
      * </p>
      */
     @Test
@@ -86,7 +91,8 @@ class ImmutableListTest {
      * 创建一个集合的不变集合副本
      *
      * <p>
-     * {@link ImmutableList#sortedCopyOf(java.util.Comparator, Iterable)} 可以创建现有集合的一个不变副本, 且副本元素经过排序
+     * {@link ImmutableList#sortedCopyOf(java.util.Comparator, Iterable)}
+     * 可以创建现有集合的一个不变副本, 且副本元素经过排序
      * </p>
      */
     @Test
@@ -106,7 +112,8 @@ class ImmutableListTest {
      * 通过 {@link ImmutableList.Builder} 构建不变集合对象
      *
      * <p>
-     * {@link ImmutableList#builder()} 可以创建一个 {@link ImmutableList.Builder} 对象, 通过该对象可以分批设置集合元素, 最终构建
+     * {@link ImmutableList#builder()} 可以创建一个 {@link ImmutableList.Builder} 对象,
+     * 通过该对象可以分批设置集合元素, 最终构建
      * 不变集合对象
      * </p>
      */
@@ -125,7 +132,8 @@ class ImmutableListTest {
      * 通过 {@link ImmutableList.Builder} 构建不变集合对象
      *
      * <p>
-     * {@link ImmutableList#builderWithExpectedSize(int)} 可以创建一个 {@link ImmutableList.Builder} 对象, 且通过设置预期元素
+     * {@link ImmutableList#builderWithExpectedSize(int)} 可以创建一个
+     * {@link ImmutableList.Builder} 对象, 且通过设置预期元素
      * 个数预留足够的内存空间, 减少在添加元素过程中因内存预留不足导致的存储区重建消耗
      * </p>
      *

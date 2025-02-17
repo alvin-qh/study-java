@@ -15,21 +15,20 @@ import static org.assertj.core.api.BDDAssertions.then;
 class TestTraverser {
     // 边集合列表, 图的每个边由相连的两个节点组成
     private final GraphsDatasource<Integer, ?> datasource = new GraphsDatasource<>(
-            Edge.of(1, 2),
-            Edge.of(2, 3),
-            Edge.of(2, 4),
-            Edge.of(2, 5),
-            Edge.of(2, 7),
-            Edge.of(3, 8),
-            Edge.of(4, 5),
-            Edge.of(4, 6),
-            Edge.of(4, 8),
-            Edge.of(5, 6),
-            Edge.of(6, 7),
-            Edge.of(7, 8),
-            Edge.of(8, 9),
-            Edge.of(9, 1)
-    );
+        Edge.of(1, 2),
+        Edge.of(2, 3),
+        Edge.of(2, 4),
+        Edge.of(2, 5),
+        Edge.of(2, 7),
+        Edge.of(3, 8),
+        Edge.of(4, 5),
+        Edge.of(4, 6),
+        Edge.of(4, 8),
+        Edge.of(5, 6),
+        Edge.of(6, 7),
+        Edge.of(7, 8),
+        Edge.of(8, 9),
+        Edge.of(9, 1));
 
     /**
      * 演示无向图的遍历, 有向图的遍历何其类似

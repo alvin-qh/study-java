@@ -1,12 +1,12 @@
 package alvin.study.guava.io;
 
-import com.google.common.base.Charsets;
 import com.google.common.io.Closer;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
@@ -14,17 +14,22 @@ import static org.assertj.core.api.BDDAssertions.then;
  * 测试 Guava 的流关闭器
  *
  * <p>
- * 通过 {@link Closer} 类对象可以对实现了 {@link java.io.Closeable Closeable} 接口的对象进行统一的关闭操作, 具体流程如下:
+ * 通过 {@link Closer} 类对象可以对实现了 {@link java.io.Closeable Closeable}
+ * 接口的对象进行统一的关闭操作, 具体流程如下:
  * <ul>
  * <li>
- * 通过 {@link Closer#register(java.io.Closeable) Closer.register(Closeable)} 方法注册所有相关的 {@code Closeable}
+ * 通过 {@link Closer#register(java.io.Closeable) Closer.register(Closeable)}
+ * 方法注册所有相关的 {@code Closeable}
  * 接口对象
  * </li>
  * <li>
- * 当代码执行过程中出现异常, 需要通过 {@link Closer#rethrow(Throwable) Closer.rethrow(Throwable)} 方法对异常进行抛出处理,
- * 抛出方式参见 {@link com.google.common.base.Throwables#propagateIfPossible(Throwable, Class)
+ * 当代码执行过程中出现异常, 需要通过 {@link Closer#rethrow(Throwable)
+ * Closer.rethrow(Throwable)} 方法对异常进行抛出处理,
+ * 抛出方式参见
+ * {@link com.google.common.base.Throwables#propagateIfPossible(Throwable, Class)
  * Throwables.propagateIfPossible(Throwable, Class)} 方法以及
- * {@code ThrowablesTest.propagateIfPossible_shouldThrowSpecifiedExceptionOrUncheckedException()} 演示方法
+ * {@code ThrowablesTest.propagateIfPossible_shouldThrowSpecifiedExceptionOrUncheckedException()}
+ * 演示方法
  * </li>
  * </ul>
  * </p>
@@ -41,7 +46,7 @@ class CloserTest {
         try {
             // 将需要关闭的 Closeable 对象进行注册
             var out = closer.register(new ByteArrayOutputStream());
-            out.write("Hello Guava".getBytes(Charsets.UTF_8));
+            out.write("Hello Guava".getBytes(StandardCharsets.UTF_8));
 
             var data = out.toByteArray();
 

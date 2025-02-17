@@ -213,7 +213,7 @@ public class GraphsDatasource<N, E> {
      */
     public List<EndpointPair<N>> orderedEdges(boolean inverse) {
         var stream = inverse ? edges.stream().map(e -> EndpointPair.ordered(e.node2(), e.node1()))
-                : edges.stream().map(e -> EndpointPair.ordered(e.node1(), e.node2()));
+                             : edges.stream().map(e -> EndpointPair.ordered(e.node1(), e.node2()));
         return stream.toList();
     }
 
@@ -225,7 +225,7 @@ public class GraphsDatasource<N, E> {
      */
     public List<EndpointPair<N>> unOrderedEdges(boolean inverse) {
         var stream = inverse ? edges.stream().map(e -> EndpointPair.unordered(e.node2(), e.node1()))
-                : edges.stream().map(e -> EndpointPair.unordered(e.node1(), e.node2()));
+                             : edges.stream().map(e -> EndpointPair.unordered(e.node1(), e.node2()));
         return stream.toList();
     }
 

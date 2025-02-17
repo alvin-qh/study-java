@@ -21,7 +21,6 @@ class ReflectTypeTest {
      * 测试 {@link ReflectType#listOf(Class)} 方法, 产生一个指定泛型参数的 {@link List} 集合
      */
     @Test
-    @SuppressWarnings("null")
     void listOf_shouldGetListTypeWithGenericTypeParameter() {
         // 产生一个 List<String> 类型, 泛型参数为 String
         var type = ReflectType.listOf(String.class);

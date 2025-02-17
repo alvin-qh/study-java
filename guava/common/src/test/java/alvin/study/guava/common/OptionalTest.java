@@ -39,6 +39,7 @@ class OptionalTest {
      * {@link Optional} 对象的 {@link Optional#get()} 方法返回其包装的引用
      * </p>
      */
+    @SuppressWarnings("null")
     @Test
     void of_shouldWrapNonNullReference() {
         var obj = new Object();
@@ -92,6 +93,7 @@ class OptionalTest {
      * </ul>
      * </p>
      */
+    @SuppressWarnings("null")
     @Test
     void fromNullable_shouldWrapNullableReference() {
         // 通过一个 null 引用构建 Optional 对象
@@ -157,8 +159,8 @@ class OptionalTest {
         // 将 Guava Optional 对象转为 Java Optional 对象
         // 通过 ifPresentOrElse 方法根据 Optional 对象中存储引用的情况执行不同的 Lambda 表达式
         opt.toJavaUtil().ifPresentOrElse(
-                val -> then(val).isEqualTo(100),
-                Assertions::fail);
+            val -> then(val).isEqualTo(100),
+            Assertions::fail);
 
         // 将 Guava Optional 对象转为 Java Optional 对象
         // 通过将 Optional 对象转为 Stream 对象, 利用 Stream 对象的能力完成后续操作

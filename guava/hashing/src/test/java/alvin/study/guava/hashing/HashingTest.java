@@ -182,13 +182,13 @@ class HashingTest {
         // 对字符串输入计算散列值
         var hashCode = hashFn.hashString("HelloWorld", Charsets.UTF_8);
         then(hashCode).hasToString(
-                "6be352acddb34f12af6547ca0d4dd38051bd69303d36888df031cc7f1fa3562a97f16edbb76cdf5a0a3528091fc7dd3ee77bc2466495e876586fc1ad4d83c5a6");
+            "6be352acddb34f12af6547ca0d4dd38051bd69303d36888df031cc7f1fa3562a97f16edbb76cdf5a0a3528091fc7dd3ee77bc2466495e876586fc1ad4d83c5a6");
 
         // 对对象输入计算散列值
         var person = new Person(1L, "Alvin", LocalDate.of(1981, 3, 17), "Shanxi Xi'an");
         hashCode = hashFn.hashObject(person, Person.makeFunnel());
         then(hashCode).hasToString(
-                "89638c96ff035e25b738036e08bc29e6e7286510173eb3eb26aa9d6f7a2e9ce9a1248478b0c8373cafb837c83a964d7ff93e9df259a7c4f1aaf62bda9ae35b30");
+            "89638c96ff035e25b738036e08bc29e6e7286510173eb3eb26aa9d6f7a2e9ce9a1248478b0c8373cafb837c83a964d7ff93e9df259a7c4f1aaf62bda9ae35b30");
     }
 
     /**
@@ -273,7 +273,7 @@ class HashingTest {
         // 对字符串输入计算散列值
         var hashCode = hashFn.hashString("HelloWorld", Charsets.UTF_8);
         then(hashCode).hasToString(
-                "53700d7578c99c7192cfb44e0ddd7db2");
+            "53700d7578c99c7192cfb44e0ddd7db2");
 
         var person = new Person(1L, "Alvin", LocalDate.of(1981, 3, 17), "Shanxi Xi'an");
         // 对对象输入计算散列值
@@ -535,7 +535,8 @@ class HashingTest {
      * 一致性哈希的定义参考:
      * <a href="https://en.wikipedia.org/wiki/Consistent_hashing">https://en.wikipedia.org/wiki/Consistent_hashing</a>;
      * 具体算法参考:
-     * <a href="https://www.codeproject.com/Articles/56138/Consistent-hashing">https://www.codeproject.com/Articles/56138/Consistent-hashing</a>
+     * <a href=
+     * "https://www.codeproject.com/Articles/56138/Consistent-hashing">https://www.codeproject.com/Articles/56138/Consistent-hashing</a>
      * </p>
      */
     @Test
@@ -604,12 +605,12 @@ class HashingTest {
         // 对字符串输入计算散列值
         var hashCode = hashFn.hashString("HelloWorld", Charsets.UTF_8);
         then(hashCode).hasToString(
-                "9a1b31c53def8ce568e109f0f40ca72a15e05cc22786f8e6872e4e50ce9990d8b041330c47c9ddd11bec6b503ae9386a99da8584e9bb12c4");
+            "9a1b31c53def8ce568e109f0f40ca72a15e05cc22786f8e6872e4e50ce9990d8b041330c47c9ddd11bec6b503ae9386a99da8584e9bb12c4");
 
         var person = new Person(1L, "Alvin", LocalDate.of(1981, 3, 17), "Shanxi Xi'an");
         // 对对象输入计算散列值
         hashCode = hashFn.hashObject(person, Person.makeFunnel());
         then(hashCode).hasToString(
-                "33227b6b0652fbdcccac6eea503e5c4ffba468e927a2536566c029029975d82cf86b0b698ec5aecc7c9313e748164d8e8cb89e7f1e322c8c");
+            "33227b6b0652fbdcccac6eea503e5c4ffba468e927a2536566c029029975d82cf86b0b698ec5aecc7c9313e748164d8e8cb89e7f1e322c8c");
     }
 }
