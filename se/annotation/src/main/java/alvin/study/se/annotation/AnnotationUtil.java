@@ -2,7 +2,6 @@ package alvin.study.se.annotation;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -10,6 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * 注解相关的工具类
@@ -31,7 +32,8 @@ public final class AnnotationUtil {
      * @param annotationType 注解类型
      * @return 对象中所有被注解方法以及注解组成的 {@link Map} 对象
      */
-    public static <T extends Annotation> Optional<T> getClassAnnotation(@NotNull Class<?> clazz, Class<T> annotationType) {
+    public static <T extends Annotation> Optional<T> getClassAnnotation(@Nonnull Class<?> clazz,
+            Class<T> annotationType) {
         return Optional.ofNullable(clazz.getAnnotation(annotationType));
     }
 
@@ -45,19 +47,19 @@ public final class AnnotationUtil {
      * @return 所有符合条件的注解对象的集合
      */
     public static <T extends Annotation> List<T> getFieldAnnotation(
-        @NotNull Class<?> clazz,
-        String fieldName,
-        Class<T> annotationType) {
+            @Nonnull Class<?> clazz,
+            String fieldName,
+            Class<T> annotationType) {
 
         return Arrays.stream(clazz.getDeclaredFields())
-            // 按字段名称过滤
-            .filter(f -> f.getName().equals(fieldName))
-            // 按字段上是否具备注解过滤
-            .filter(f -> f.isAnnotationPresent(annotationType))
-            // 转为注解对象
-            .map(f -> f.getAnnotation(annotationType))
-            // 转为集合
-            .toList();
+                // 按字段名称过滤
+                .filter(f -> f.getName().equals(fieldName))
+                // 按字段上是否具备注解过滤
+                .filter(f -> f.isAnnotationPresent(annotationType))
+                // 转为注解对象
+                .map(f -> f.getAnnotation(annotationType))
+                // 转为集合
+                .toList();
     }
 
     /**
@@ -70,18 +72,18 @@ public final class AnnotationUtil {
      * @return 所有符合条件的注解对象的集合
      */
     public static <T extends Annotation> List<T> getMethodAnnotation(
-        @NotNull Class<?> clazz,
-        String methodName,
-        Class<T> annotationType) {
+            @Nonnull Class<?> clazz,
+            String methodName,
+            Class<T> annotationType) {
         // 遍历对象上的所有方法
         return Arrays.stream(clazz.getDeclaredMethods())
-            // 按方法名称过滤
-            .filter(m -> m.getName().equals(methodName))
-            // 按方法上是否具备注解过滤
-            .filter(m -> m.isAnnotationPresent(annotationType))
-            // 转为注解对象
-            .map(m -> m.getAnnotation(annotationType))
-            // 转为集合
-            .toList();
+                // 按方法名称过滤
+                .filter(m -> m.getName().equals(methodName))
+                // 按方法上是否具备注解过滤
+                .filter(m -> m.isAnnotationPresent(annotationType))
+                // 转为注解对象
+                .map(m -> m.getAnnotation(annotationType))
+                // 转为集合
+                .toList();
     }
 }

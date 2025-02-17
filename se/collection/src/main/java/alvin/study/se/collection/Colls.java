@@ -1,10 +1,10 @@
 package alvin.study.se.collection;
 
 import com.google.common.collect.Iterators;
+
+import jakarta.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -126,7 +126,7 @@ public final class Colls {
      * @param <T>  集合元素类型
      * @param coll 集合对象
      * @return 如果集合不为空, 则返回其第一个元素的 {@link Optional} 包装对象, 否则返回
-     * {@link Optional#empty()}
+     *         {@link Optional#empty()}
      */
     public static <T> Optional<T> first(Collection<? extends T> coll) {
         if (isEmpty(coll)) {
@@ -144,7 +144,7 @@ public final class Colls {
      * @param <T> 集合元素类型
      * @param l   集合对象
      * @return 如果集合不为空, 则返回其第一个元素的 {@link Optional} 包装对象, 否则返回
-     * {@link Optional#empty()}
+     *         {@link Optional#empty()}
      */
     public static <T> Optional<T> first(List<? extends T> l) {
         if (isEmpty(l)) {
@@ -159,7 +159,7 @@ public final class Colls {
      * @param <T>  集合元素类型
      * @param coll 集合对象
      * @return 如果集合只有唯一元素, 则返回该元素的 {@link Optional} 包装对象, 否则返回
-     * {@link Optional#empty()}
+     *         {@link Optional#empty()}
      */
     public static <T> Optional<T> only(Collection<? extends T> coll) {
         if (coll == null || coll.size() != 1) {
@@ -177,7 +177,7 @@ public final class Colls {
      * @param <T> 集合元素类型
      * @param l   集合对象
      * @return 如果集合只有唯一元素, 则返回该元素的 {@link Optional} 包装对象, 否则返回
-     * {@link Optional#empty()}
+     *         {@link Optional#empty()}
      */
     public static <T> Optional<T> only(List<? extends T> l) {
         if (l == null || l.size() != 1) {
@@ -205,9 +205,8 @@ public final class Colls {
      * @param elem 集合元素
      * @return {@code elem} 参数转为的 {@link List} 对象
      */
-    @Contract("_ -> new")
     @SafeVarargs
-    public static <T> @NotNull List<T> list(T... elem) {
+    public static <T> List<T> list(T... elem) {
         if (isEmpty(elem)) {
             return new ArrayList<>();
         }
@@ -221,7 +220,7 @@ public final class Colls {
      * @param iter 迭代器对象
      * @return {@code iter} 参数转为的 {@link List} 对象
      */
-    public static <T> @NotNull List<T> list(Iterator<? extends T> iter) {
+    public static <T> List<T> list(Iterator<? extends T> iter) {
         var l = new ArrayList<T>();
         if (iter == null) {
             return l;
@@ -237,7 +236,7 @@ public final class Colls {
      * @param iterable 可迭代集合对象
      * @return {@code iterable} 参数转为的 {@link List} 对象
      */
-    public static <T> @NotNull List<T> list(Iterable<? extends T> iterable) {
+    public static <T> List<T> list(Iterable<? extends T> iterable) {
         if (iterable instanceof Collection<? extends T> coll) {
             return new ArrayList<>(coll);
         }
@@ -254,8 +253,7 @@ public final class Colls {
      * @param coll 集合对象
      * @return {@code coll} 参数转为的 {@link List} 对象
      */
-    @Contract("_ -> new")
-    public static <T> @NotNull List<T> list(Collection<? extends T> coll) {
+    public static <T> List<T> list(Collection<? extends T> coll) {
         if (isEmpty(coll)) {
             return new ArrayList<>();
         }
@@ -269,9 +267,8 @@ public final class Colls {
      * @param elem 不定参数
      * @return 参数 {@code elem} 转为的 {@link Set} 对象
      */
-    @Contract("_ -> new")
     @SafeVarargs
-    public static <T> @NotNull Set<T> set(T... elem) {
+    public static <T> Set<T> set(T... elem) {
         if (isEmpty(elem)) {
             return new LinkedHashSet<>();
         }
@@ -285,7 +282,7 @@ public final class Colls {
      * @param iter 迭代器对象
      * @return 参数 {@code iter} 转换而成的 {@link Set} 对象
      */
-    public static <T> @NotNull Set<T> set(Iterator<? extends T> iter) {
+    public static <T> Set<T> set(Iterator<? extends T> iter) {
         var set = new LinkedHashSet<T>();
         addAll(set, iter);
         return set;
@@ -298,7 +295,7 @@ public final class Colls {
      * @param iterable 可迭代对象
      * @return 参数 {@code iterable} 转换而成的 {@link Set} 对象
      */
-    public static <T> @NotNull Set<T> set(Iterable<? extends T> iterable) {
+    public static <T> Set<T> set(Iterable<? extends T> iterable) {
         if (iterable instanceof Collection<? extends T> coll) {
             return new LinkedHashSet<>(coll);
         }
@@ -315,7 +312,7 @@ public final class Colls {
      * @param coll 集合对象
      * @return 参数 {@code coll} 转换而成的 {@link Set} 对象
      */
-    public static <T> @NotNull Set<T> set(Collection<? extends T> coll) {
+    public static <T> Set<T> set(Collection<? extends T> coll) {
         if (isEmpty(coll)) {
             return new LinkedHashSet<>();
         }
@@ -330,7 +327,7 @@ public final class Colls {
      * @param iter 迭代器对象
      * @return {@code coll} 集合是否被修改
      */
-    public static <T> boolean addAll(Collection<? super T> coll, @NotNull Iterator<? extends T> iter) {
+    public static <T> boolean addAll(Collection<? super T> coll, @Nonnull Iterator<? extends T> iter) {
         boolean wasModified = false;
         while (iter.hasNext()) {
             wasModified |= coll.add(iter.next());
@@ -346,7 +343,7 @@ public final class Colls {
      * @param iter 可迭代对象
      * @return {@code coll} 集合是否被修改
      */
-    public static <T> boolean addAll(Collection<? super T> coll, @NotNull Iterable<? extends T> iter) {
+    public static <T> boolean addAll(Collection<? super T> coll, @Nonnull Iterable<? extends T> iter) {
         boolean wasModified = false;
         for (var e : iter) {
             wasModified |= coll.add(e);
@@ -367,7 +364,7 @@ public final class Colls {
      * @return 包含被添加元素的 {@link Set} 集合
      */
     @SafeVarargs
-    public static <T> @NotNull Set<T> append(Set<? extends T> set, T... items) {
+    public static <T> Set<T> append(Set<? extends T> set, T... items) {
         var result = new LinkedHashSet<T>(set == null ? Set.of() : set);
         result.addAll(Arrays.asList(items));
         return result;
@@ -386,7 +383,7 @@ public final class Colls {
      * @return 包含被添加元素的 {@link List} 集合
      */
     @SafeVarargs
-    public static <T> @NotNull List<T> append(Collection<? extends T> coll, T... items) {
+    public static <T> List<T> append(Collection<? extends T> coll, T... items) {
         var result = new ArrayList<T>(coll == null ? List.of() : coll);
         result.addAll(Arrays.asList(items));
         return result;
@@ -399,7 +396,7 @@ public final class Colls {
      * @param iter 迭代器对象
      * @return {@code true} 表示 {@code iter} 参数中至少一个元素包含在 {@code coll} 参数集合中
      */
-    private static boolean anyInCollection(@NotNull Collection<?> coll, Iterator<?> iter) {
+    private static boolean anyInCollection(@Nonnull Collection<?> coll, Iterator<?> iter) {
         if (coll.size() >= MIN_COLLECTION_SIZE) {
             coll = Set.copyOf(coll);
         }
@@ -451,7 +448,7 @@ public final class Colls {
      * @param iter 迭代器对象
      * @return {@code true} 表示 {@code iter} 参数中的全部元素都包含在 {@code coll} 参数集合中
      */
-    private static boolean allInCollection(@NotNull Collection<?> coll, Iterator<?> iter) {
+    private static boolean allInCollection(@Nonnull Collection<?> coll, Iterator<?> iter) {
         if (coll.size() >= MIN_COLLECTION_SIZE) {
             coll = Set.copyOf(coll);
         }
@@ -643,7 +640,7 @@ public final class Colls {
      * @return {@code iterable} 转换得到的 {@link List} 对象
      */
     public static <T, R> List<R> toList(
-        Iterable<? extends T> iterable, Function<? super T, ? extends R> mapper, boolean omitNull) {
+            Iterable<? extends T> iterable, Function<? super T, ? extends R> mapper, boolean omitNull) {
         return Streams.toList(Streams.stream(iterable), mapper, omitNull);
     }
 
@@ -658,7 +655,7 @@ public final class Colls {
      * @return {@code iter} 转换得到的 {@link List} 对象
      */
     public static <T, R> List<R> toList(
-        Iterator<? extends T> iter, Function<? super T, ? extends R> mapper, boolean omitNull) {
+            Iterator<? extends T> iter, Function<? super T, ? extends R> mapper, boolean omitNull) {
         return Streams.toList(Streams.stream(iter), mapper, omitNull);
     }
 
@@ -673,9 +670,9 @@ public final class Colls {
      * @return {@code iterable} 转换得到的 {@link Set} 对象
      */
     public static <T, R> Set<R> toSet(
-        Iterable<? extends T> iterable,
-        Function<? super T, ? extends R> mapper,
-        boolean omitNull) {
+            Iterable<? extends T> iterable,
+            Function<? super T, ? extends R> mapper,
+            boolean omitNull) {
         return Streams.toSet(Streams.stream(iterable), mapper, omitNull);
     }
 
@@ -690,9 +687,9 @@ public final class Colls {
      * @return {@code iterable} 转换得到的 {@link Set} 对象
      */
     public static <T, R> Set<R> toSet(
-        Iterator<? extends T> iter,
-        Function<? super T, ? extends R> mapper,
-        boolean omitNull) {
+            Iterator<? extends T> iter,
+            Function<? super T, ? extends R> mapper,
+            boolean omitNull) {
         return Streams.toSet(Streams.stream(iter), mapper, omitNull);
     }
 
@@ -709,10 +706,10 @@ public final class Colls {
      * @return {@link Map} 对象
      */
     public static <K, V, U> Map<K, V> toMap(
-        Iterable<? extends U> iterable,
-        Function<? super U, ? extends K> keyMapper,
-        Function<? super U, ? extends V> valueMapper,
-        boolean omitKeyNull) {
+            Iterable<? extends U> iterable,
+            Function<? super U, ? extends K> keyMapper,
+            Function<? super U, ? extends V> valueMapper,
+            boolean omitKeyNull) {
         return Streams.toMap(Streams.stream(iterable), keyMapper, valueMapper, omitKeyNull);
     }
 
@@ -728,9 +725,9 @@ public final class Colls {
      * @return {@link Map} 对象
      */
     public static <K, V> Map<K, V> toMap(
-        Iterable<? extends V> iterable,
-        Function<? super V, ? extends K> keyMapper,
-        boolean omitKeyNull) {
+            Iterable<? extends V> iterable,
+            Function<? super V, ? extends K> keyMapper,
+            boolean omitKeyNull) {
         return toMap(iterable, keyMapper, Function.identity(), omitKeyNull);
     }
 
@@ -747,10 +744,10 @@ public final class Colls {
      * @return {@link Map} 对象
      */
     public static <K, V, U> Map<K, V> toMap(
-        Iterator<? extends U> iter,
-        Function<? super U, ? extends K> keyMapper,
-        Function<? super U, ? extends V> valueMapper,
-        boolean omitKeyNull) {
+            Iterator<? extends U> iter,
+            Function<? super U, ? extends K> keyMapper,
+            Function<? super U, ? extends V> valueMapper,
+            boolean omitKeyNull) {
         return Streams.toMap(Streams.stream(iter), keyMapper, valueMapper, omitKeyNull);
     }
 
@@ -766,9 +763,9 @@ public final class Colls {
      * @return {@link Map} 对象
      */
     public static <K, V> Map<K, V> toMap(
-        Iterator<? extends V> iter,
-        Function<? super V, ? extends K> keyMapper,
-        boolean omitKeyNull) {
+            Iterator<? extends V> iter,
+            Function<? super V, ? extends K> keyMapper,
+            boolean omitKeyNull) {
         return toMap(iter, keyMapper, Function.identity(), omitKeyNull);
     }
 
@@ -783,7 +780,7 @@ public final class Colls {
      * @return 转换后的 {@link List} 对象
      */
     public static <T, R> List<T> flatList(
-        Iterator<? extends R> iter, Function<? super R, Stream<? extends T>> mapper, boolean omitNull) {
+            Iterator<? extends R> iter, Function<? super R, Stream<? extends T>> mapper, boolean omitNull) {
         return Streams.flatList(Streams.stream(iter), mapper, omitNull);
     }
 
@@ -814,7 +811,7 @@ public final class Colls {
      * @return 转换后的 {@link Set} 对象
      */
     public static <T, R> Set<T> flatSet(
-        Iterable<R> iterable, Function<? super R, Stream<? extends T>> mapper, boolean omitNull) {
+            Iterable<R> iterable, Function<? super R, Stream<? extends T>> mapper, boolean omitNull) {
         return Streams.flatSet(Streams.stream(iterable), mapper, omitNull);
     }
 
@@ -829,7 +826,7 @@ public final class Colls {
      * @return 转换后的 {@link Set} 对象
      */
     public static <T, R> Set<T> flatSet(
-        Iterator<R> iter, Function<? super R, Stream<? extends T>> mapper, boolean omitNull) {
+            Iterator<R> iter, Function<? super R, Stream<? extends T>> mapper, boolean omitNull) {
         return Streams.flatSet(Streams.stream(iter), mapper, omitNull);
     }
 }

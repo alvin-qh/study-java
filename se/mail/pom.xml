@@ -17,8 +17,8 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>com.sun.mail</groupId>
-        <artifactId>jakarta.mail</artifactId>
+        <groupId>jakarta.mail</groupId>
+        <artifactId>jakarta.mail-api</artifactId>
         <version>${version.jakarta-mail}</version>
       </dependency>
     </dependencies>
@@ -26,8 +26,8 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.sun.mail</groupId>
-      <artifactId>jakarta.mail</artifactId>
+      <groupId>jakarta.mail</groupId>
+        <artifactId>jakarta.mail-api</artifactId>
     </dependency>
   </dependencies>
 </project>

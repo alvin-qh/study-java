@@ -3,7 +3,6 @@ package alvin.study.se.security.algorithms;
 import alvin.study.se.security.util.DataGenerator;
 import com.google.common.base.Strings;
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
@@ -29,20 +28,24 @@ import java.util.Arrays;
  * 密码应用
  *
  * <p>
- * 密码学中, 分组 (Block) 密码的工作模式 (Mode of Operation) 允许使用同一个分组密码密钥对多于一块的数据进行加密, 并保证其安全性.
+ * 密码学中, 分组 (Block) 密码的工作模式 (Mode of Operation) 允许使用同一个分组密码密钥对多于一块的数据进行加密,
+ * 并保证其安全性.
  * 分组密码自身只能加密长度等于密码分组长度的单块数据, 若要加密变长数据, 则数据必须先被划分为一些单独的密码块.
  * 通常而言, 最后一块数据也需要使用合适填充方式将数据扩展到匹配密码块大小的长度. 一种工作模式描述了加密每一数据块的过程,
  * 并常常使用基于一个通常称为初始化向量的附加输入值以进行随机化, 以保证安全
  * </p>
  *
  * <p>
- * 不同的工作模式的实现细节也不相同, 在Java中, 指定加密算法的字符串是 {@code AES/ECB/PKCS5Padding}, 也就是"算法/模式/填充方式".
- * 而 {@code IV} 就和工作模式有关. 常见的工作模式包括, {@code ECB}, {@code CBC}, {@code PCBC}, {@code CFB}, {@code OFB},
+ * 不同的工作模式的实现细节也不相同, 在Java中, 指定加密算法的字符串是 {@code AES/ECB/PKCS5Padding},
+ * 也就是"算法/模式/填充方式".
+ * 而 {@code IV} 就和工作模式有关. 常见的工作模式包括, {@code ECB}, {@code CBC}, {@code PCBC},
+ * {@code CFB}, {@code OFB},
  * {@code CTR}等
  * </p>
  *
  * <p>
- * 在密码学的领域里, 初始化向量 (Initialization Vector, 即 IV, 或译"初向量", 又称"初始变量" (Starting Variable, 缩写为 SV),
+ * 在密码学的领域里, 初始化向量 (Initialization Vector, 即 IV, 或译"初向量", 又称"初始变量" (Starting
+ * Variable, 缩写为 SV),
  * 是一个固定长度的输入值. 一般的使用上会要求它是随机数或拟随机数 (Pseudorandom). 使用随机数产生的初始化向量才能达到语义安全
  * (散列函数与消息验证码也有相同要求), 并让攻击者难以对同一把密钥的密文进行破解. 在区块加密中, 使用了初始化向量的加密模式被称为区块加密模式
  * </p>
@@ -84,7 +87,8 @@ import java.util.Arrays;
  * </p>
  *
  * <p>
- * 根据上面的图可以看出, {@code ECB} 模式下是不需要 {@code IV} 的, 而 {@code CBC} 和 {@code PCBC} 是需要 {@code PCBC} 的
+ * 根据上面的图可以看出, {@code ECB} 模式下是不需要 {@code IV} 的, 而 {@code CBC} 和 {@code PCBC}
+ * 是需要 {@code PCBC} 的
  * </p>
  *
  * <p>
@@ -109,22 +113,26 @@ import java.util.Arrays;
  * Java 内置的密码学支持包括:
  * <ol>
  * <li>
- * 算法包括: {@code AES}, {@code DES}, {@code DESede} ({@code DES3}) 和 {@code RSA} 四种
+ * 算法包括: {@code AES}, {@code DES}, {@code DESede} ({@code DES3}) 和 {@code RSA}
+ * 四种
  * </li>
  * <li>
- * 模式包括: {@code CBC} (有向量模式) 和 {@code ECB} (无向量模式), 向量模式可以简单理解为偏移量, 使用 {@code CBC} 模式需要定义一个
+ * 模式包括: {@code CBC} (有向量模式) 和 {@code ECB} (无向量模式), 向量模式可以简单理解为偏移量, 使用
+ * {@code CBC} 模式需要定义一个
  * {@link IvParameterSpec} 对象
  * </li>
  * <li>
  * 填充方式包括:
  * <ul>
  * <li>
- * {@code NoPadding}: 加密内容不足 {@code 8/16} 位用指定字节补足 {@code 8/16} 位, {@link Cipher} 类不提供补位功能,
+ * {@code NoPadding}: 加密内容不足 {@code 8/16} 位用指定字节补足 {@code 8/16} 位,
+ * {@link Cipher} 类不提供补位功能,
  * 需自行实现代码给加密内容添加补位, 如 <code>{65, 65, 65, 0, 0, 0, 0, 0}</code>
  * </li>
  * <li>
  * {@code PKCS5Padding}: 加密内容不足 {@code 8/16} 位用余位数补足 {@code 8/16} 位, 如
- * <code>{65, 65, 65, 5, 5, 5, 5, 5} </code> 或 <code>{97, 97, 97, 97, 97, 97, 2, 2}</code>
+ * <code>{65, 65, 65, 5, 5, 5, 5, 5} </code> 或
+ * <code>{97, 97, 97, 97, 97, 97, 2, 2}</code>
  * </li>
  * </ul>
  * </li>
@@ -266,12 +274,13 @@ public class Ciphers {
     /**
      * 产生加密解密算法对象
      *
-     * @param opmode        运算模式, {@link Cipher#ENCRYPT_MODE} 或者 {@link Cipher#DECRYPT_MODE}
+     * @param opmode        运算模式, {@link Cipher#ENCRYPT_MODE} 或者
+     *                      {@link Cipher#DECRYPT_MODE}
      * @param keySpec       密钥对象
      * @param parameterSpec 加密初始化向量对象
      * @return {@link Cipher} 密码学计算对象
      */
-    private @NotNull Cipher makeCipherInstance(int opmode, Key keySpec, AlgorithmParameterSpec parameterSpec) {
+    private Cipher makeCipherInstance(int opmode, Key keySpec, AlgorithmParameterSpec parameterSpec) {
         // 组装加密算法名称, 格式为: 算法名/算法模式/填充方式
         // 如果忽略后两者, 则按缺省情况设置算法, 一般缺省为 算法名/ECB/PKCS5Padding, 表示无需初始向量, 通过 PKCS5 标准填充
         var algorithmName = algorithm.algorithm();
@@ -299,7 +308,8 @@ public class Ciphers {
      * 手动为数据添加 Padding 内容
      *
      * <p>
-     * 对于填充方式为 {@code NoPadding} 时, 算法不会自动为数据进行填充, 此时需要手动填充, 将待加密数据长度填充为 {@code 8/16} 的整数倍
+     * 对于填充方式为 {@code NoPadding} 时, 算法不会自动为数据进行填充, 此时需要手动填充, 将待加密数据长度填充为
+     * {@code 8/16} 的整数倍
      * </p>
      *
      * <p>
@@ -476,7 +486,8 @@ public class Ciphers {
      * 对称解密, 对给定的输入流内容解密后写入给定的输出流
      *
      * <p>
-     * 注意, 如果填充方式为 {@code NoPadding}, 表示算法本身不会处理填充数据, 在加密时, 会把填充数据作为明文一起进行加密, 也就表示解密时
+     * 注意, 如果填充方式为 {@code NoPadding}, 表示算法本身不会处理填充数据, 在加密时, 会把填充数据作为明文一起进行加密,
+     * 也就表示解密时
      * 得到的明文中也包含了填充数据. 此时需要开发者自行处理得到的明文, 以去掉填充数据
      * </p>
      *
@@ -525,9 +536,9 @@ public class Ciphers {
         // 产生非对称密钥
         var keyPair = keyPairGenerator.generateKeyPair();
         return new SecretKeyPairSpec(
-            algorithm.algorithm(),
-            keyPair.getPrivate().getEncoded(),
-            keyPair.getPublic().getEncoded());
+                algorithm.algorithm(),
+                keyPair.getPrivate().getEncoded(),
+                keyPair.getPublic().getEncoded());
     }
 
     /**

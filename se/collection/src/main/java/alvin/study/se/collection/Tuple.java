@@ -4,9 +4,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-
 public final class Tuple<E> implements Iterable<E> {
     private final List<E> elements;
 
@@ -18,14 +15,12 @@ public final class Tuple<E> implements Iterable<E> {
         this.elements = List.copyOf(elements);
     }
 
-    @Contract(value = "_ -> new", pure = true)
     @SafeVarargs
-    public static <T> @NotNull Tuple<T> of(T... elements) {
+    public static <T> Tuple<T> of(T... elements) {
         return new Tuple<>(elements);
     }
 
-    @Contract("_ -> new")
-    public static <T> @NotNull Tuple<T> of(Collection<T> elements) {
+    public static <T> Tuple<T> of(Collection<T> elements) {
         return new Tuple<>(elements);
     }
 
@@ -33,7 +28,6 @@ public final class Tuple<E> implements Iterable<E> {
         return elements.get(index);
     }
 
-    @NotNull
     @Override
     public Iterator<E> iterator() {
         return elements.iterator();
@@ -43,18 +37,19 @@ public final class Tuple<E> implements Iterable<E> {
         return elements.size();
     }
 
-    public boolean isEmpty() { return elements.isEmpty(); }
+    public boolean isEmpty() {
+        return elements.isEmpty();
+    }
 
     public boolean contains(Object o) {
         return elements.contains(o);
     }
 
-    @Contract(pure = true)
-    public Object @NotNull [] toArray() {
+    public Object[] toArray() {
         return elements.toArray();
     }
 
-    public <T> T @NotNull [] toArray(T[] a) {
+    public <T> T[] toArray(T[] a) {
         return elements.toArray(a);
     }
 

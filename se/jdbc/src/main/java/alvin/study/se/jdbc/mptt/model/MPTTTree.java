@@ -1,9 +1,5 @@
 package alvin.study.se.jdbc.mptt.model;
 
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * MPTT 树结构类型
@@ -43,8 +41,7 @@ public class MPTTTree implements Iterable<MPTT> {
      * @param vals {@link MPTT} 类型对象集合
      * @return {@link MPTTTree} 类型对象
      */
-    @Contract("_ -> new")
-    public static @NotNull MPTTTree build(@NotNull List<MPTT> vals) {
+    public static MPTTTree build(@Nonnull List<MPTT> vals) {
         // 将 vals 参数中的元素进行排序
         // 根据对象的 lft 字段排序, 结果为上级节点在前, 下级节点在后
         // 并且将所有的 MPTT 对象包装为 Node 对象
@@ -59,13 +56,12 @@ public class MPTTTree implements Iterable<MPTT> {
         // 遍历节点集合
         nodes.forEach(n -> {
             // 查找该节点的父节点
-            var parent = findParent(stack, n.value);
-            if (parent != null) {
+            findParent(stack, n.value).ifPresent(parent -> {
                 // 当前节点引用到父节点
                 n.parent = parent;
                 // 为父节点增加子节点
                 parent.addChildren(n);
-            }
+            });
 
             // 将该节点入栈
             stack.push(n);
@@ -83,7 +79,7 @@ public class MPTTTree implements Iterable<MPTT> {
      * @param val   当前节点的 {@link MPTT} 对象值
      * @return {@link MPTT} 对象对应对象的父节点对象
      */
-    private static @Nullable Node findParent(@NotNull ArrayDeque<Node> stack, MPTT val) {
+    private static Optional<Node> findParent(@Nonnull ArrayDeque<Node> stack, MPTT val) {
         // 按照栈的顺序查找已经访问过的节点
         // 因为遍历 MPTT 记录的顺序时按照 lft 节点排序结果进行的, 所以子节点一定会在父节点之后
         while (!stack.isEmpty()) {
@@ -92,13 +88,13 @@ public class MPTTTree implements Iterable<MPTT> {
             // 查看栈顶元素是否为当前节点的父节点, 即当前节点的 lft 和 rht 在父节点对象 lft 和 rht 范围内
             if (node.value.getLft() < val.getLft() && node.value.getRht() > val.getRht()) {
                 // 返回父节点
-                return node;
+                return Optional.of(node);
             }
 
             // 如果栈顶元素不是当前节点的父节点, 说明栈顶元素已经不可能再有子节点, 将其弹出
             stack.pop();
         }
-        return null;
+        return Optional.empty();
     }
 
     /**

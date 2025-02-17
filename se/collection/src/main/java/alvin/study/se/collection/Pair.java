@@ -1,8 +1,5 @@
 package alvin.study.se.collection;
 
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Map;
 import java.util.Objects;
 
@@ -26,8 +23,7 @@ public final class Pair<K, V> implements Map.Entry<K, V> {
         this.right = right;
     }
 
-    @Contract(value = "_, _ -> new", pure = true)
-    public static <K, V> @NotNull Pair<K, V> of(K left, V right) {
+    public static <K, V> Pair<K, V> of(K left, V right) {
         return new Pair<>(left, right);
     }
 

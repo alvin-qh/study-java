@@ -16,9 +16,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-
+import jakarta.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -31,9 +29,8 @@ public final class Streams {
      * @param elem 不定参数
      * @return 由 {@code elem} 组成的 {@link Stream} 对象
      */
-    @Contract(pure = true)
     @SafeVarargs
-    public static <T> @NotNull Stream<T> stream(T... elem) {
+    public static <T> Stream<T> stream(T... elem) {
         return Arrays.stream(elem);
     }
 
@@ -143,7 +140,7 @@ public final class Streams {
      * @return {@code stream} 参数转换的 {@link List} 对象
      */
     public static <T, R> List<R> toList(
-        Stream<? extends T> stream, Function<? super T, ? extends R> mapper, boolean omitNull) {
+            Stream<? extends T> stream, Function<? super T, ? extends R> mapper, boolean omitNull) {
         var mappedStream = stream.<R>map(mapper);
         if (omitNull) {
             mappedStream = mappedStream.filter(Objects::nonNull);
@@ -156,19 +153,19 @@ public final class Streams {
      *
      * @param <T> 元素类型
      * @return 能够将 {@link Stream} 对象转为 {@link LinkedHashSet} 对象的 {@link Collector}
-     * 对象
+     *         对象
      */
-    private static <T> @NotNull Collector<T, ?, @NotNull Set<T>> toLinkedSet() {
+    private static <T> Collector<T, ?, Set<T>> toLinkedSet() {
         return Collector.of(
-            // 集合对象创建函数
-            LinkedHashSet<T>::new,
-            // 元素添加函数
-            Set::add,
-            // 集合合并函数
-            (left, right) -> {
-                left.addAll(right);
-                return left;
-            });
+                // 集合对象创建函数
+                LinkedHashSet<T>::new,
+                // 元素添加函数
+                Set::add,
+                // 集合合并函数
+                (left, right) -> {
+                    left.addAll(right);
+                    return left;
+                });
     }
 
     /**
@@ -182,7 +179,9 @@ public final class Streams {
      * @return {@code stream} 转换得到的 {@link Set} 对象
      */
     public static <T, R> Set<R> toSet(
-        @NotNull Stream<? extends T> stream, Function<? super T, ? extends R> mapper, boolean omitNull) {
+            @Nonnull Stream<? extends T> stream,
+            @Nonnull Function<? super T, ? extends R> mapper,
+            boolean omitNull) {
         var rs = stream.map(mapper);
         if (omitNull) {
             rs = rs.filter(Objects::nonNull);
@@ -195,28 +194,28 @@ public final class Streams {
      *
      * @param <T> 元素类型
      * @return 能够将 {@link Stream} 对象转为 {@link LinkedHashMap} 对象的 {@link Collector}
-     * 对象
+     *         对象
      */
-    private static <T, K, U> @NotNull Collector<T, ?, Map<K, U>> toLinkedMap(
-        Function<? super T, ? extends K> keyMapper,
-        Function<? super T, ? extends U> valueMapper,
-        boolean omitKeyNull) {
+    private static <T, K, U> Collector<T, ?, Map<K, U>> toLinkedMap(
+            @Nonnull Function<? super T, ? extends K> keyMapper,
+            @Nonnull Function<? super T, ? extends U> valueMapper,
+            boolean omitKeyNull) {
         return Collector.of(
-            // 集合对象创建函数
-            LinkedHashMap::new,
-            // 集合元素添加函数
-            (map, entity) -> {
-                var key = keyMapper.apply(entity);
-                if (omitKeyNull && key == null) {
-                    return;
-                }
-                map.merge(key, valueMapper.apply(entity), (left, right) -> right);
-            },
-            // 集合合并函数
-            (left, right) -> {
-                left.putAll(right);
-                return left;
-            });
+                // 集合对象创建函数
+                LinkedHashMap::new,
+                // 集合元素添加函数
+                (map, entity) -> {
+                    var key = keyMapper.apply(entity);
+                    if (omitKeyNull && key == null) {
+                        return;
+                    }
+                    map.merge(key, valueMapper.apply(entity), (left, right) -> right);
+                },
+                // 集合合并函数
+                (left, right) -> {
+                    left.putAll(right);
+                    return left;
+                });
     }
 
     /**
@@ -232,10 +231,10 @@ public final class Streams {
      * @return {@link Map} 对象
      */
     public static <K, V, U> Map<K, V> toMap(
-        @NotNull Stream<? extends U> stream,
-        Function<? super U, ? extends K> keyMapper,
-        Function<? super U, ? extends V> valueMapper,
-        boolean omitKeyNull) {
+            @Nonnull Stream<? extends U> stream,
+            @Nonnull Function<? super U, ? extends K> keyMapper,
+            @Nonnull Function<? super U, ? extends V> valueMapper,
+            boolean omitKeyNull) {
         return stream.collect(toLinkedMap(keyMapper, valueMapper, omitKeyNull));
     }
 
@@ -251,9 +250,9 @@ public final class Streams {
      * @return {@link Map} 对象
      */
     public static <K, V> Map<K, V> toMap(
-        Stream<? extends V> stream,
-        Function<? super V, ? extends K> keyMapper,
-        boolean omitKeyNull) {
+            @Nonnull Stream<? extends V> stream,
+            @Nonnull Function<? super V, ? extends K> keyMapper,
+            boolean omitKeyNull) {
         return toMap(stream, keyMapper, Function.identity(), omitKeyNull);
     }
 
@@ -268,9 +267,9 @@ public final class Streams {
      * @return 转换后的 {@link List} 对象
      */
     public static <T, R> List<T> flatList(
-        @NotNull Stream<? extends R> stream,
-        Function<? super R, Stream<? extends T>> mapper,
-        boolean omitNull) {
+            @Nonnull Stream<? extends R> stream,
+            @Nonnull Function<? super R, Stream<? extends T>> mapper,
+            boolean omitNull) {
         var rs = stream.flatMap(mapper);
         if (omitNull) {
             rs = rs.filter(Objects::nonNull);
@@ -289,9 +288,9 @@ public final class Streams {
      * @return 转换后的 {@link Set} 对象
      */
     public static <T, R> Set<T> flatSet(
-        @NotNull Stream<? extends R> stream,
-        Function<? super R, Stream<? extends T>> mapper,
-        boolean omitNull) {
+            @Nonnull Stream<? extends R> stream,
+            @Nonnull Function<? super R, Stream<? extends T>> mapper,
+            boolean omitNull) {
         var rs = stream.flatMap(mapper);
         if (omitNull) {
             rs = rs.filter(Objects::nonNull);

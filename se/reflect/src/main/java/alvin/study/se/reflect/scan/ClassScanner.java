@@ -1,9 +1,7 @@
 package alvin.study.se.reflect.scan;
 
-
 import alvin.study.se.reflect.scan.match.Matcher;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
+import jakarta.annotation.Nonnull;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,8 +48,7 @@ public final class ClassScanner {
      * @param matcher 匹配器对象
      * @return {@link ClassScanner} 对象
      */
-    @Contract(value = "_ -> new", pure = true)
-    public static @NotNull ClassScanner matching(Matcher<? super Class<?>> matcher) {
+    public static ClassScanner matching(Matcher<? super Class<?>> matcher) {
         return new ClassScanner(matcher);
     }
 
@@ -65,7 +62,7 @@ public final class ClassScanner {
      * @param url {@link URL} 对象, 表示资源的定位
      * @return 转换成的路径
      */
-    private static @NotNull String toPath(@NotNull URL url) {
+    private static String toPath(@Nonnull URL url) {
         // 从资源 URL 中获取路径名, 该路径
         var path = url.getPath();
 
@@ -107,7 +104,7 @@ public final class ClassScanner {
      * @param packageDir Jar 文件的资源 URL
      * @return {@link JarFile} 对象
      */
-    private static JarFile packageDirToJarFile(@NotNull URL packageDir) {
+    private static JarFile packageDirToJarFile(@Nonnull URL packageDir) {
         try {
             return ((JarURLConnection) packageDir.openConnection()).getJarFile();
         } catch (IOException e) {
@@ -128,7 +125,7 @@ public final class ClassScanner {
      *                                    文件时发生错误
      * @throws IllegalStateException      当在加载类时发生了一些非常偶然的错误
      */
-    public @NotNull Set<Class<?>> in(Package... packages) {
+    public Set<Class<?>> in(Package... packages) {
         var packs = Arrays.stream(packages).map(Package::getName).toArray(String[]::new);
         return in(packs);
     }
@@ -145,7 +142,7 @@ public final class ClassScanner {
      * @throws PackageScanFailedException 在读取 {@code .class} 文件或者 {@code .jar}
      *                                    文件时发生错误
      */
-    public @NotNull Set<Class<?>> in(String @NotNull ... packageNames) {
+    public Set<Class<?>> in(@Nonnull String... packageNames) {
         // 存放结果的 Set 集合
         var classes = new LinkedHashSet<Class<?>>();
 
@@ -216,10 +213,10 @@ public final class ClassScanner {
      * @param classes     存放查找结果的 {@link Set} 集合
      */
     private void findClassesInDirPackage(
-        String packageName,
-        String packagePath,
-        boolean recursive,
-        Set<Class<?>> classes) {
+            String packageName,
+            String packagePath,
+            boolean recursive,
+            Set<Class<?>> classes) {
         // 根据路径获取相关的 File 对象
         var dir = new File(packagePath);
         if (!dir.exists() || !dir.isDirectory()) {
@@ -235,9 +232,9 @@ public final class ClassScanner {
                 if (file.isDirectory()) {
                     // 如果该 File 对象表示目录, 则递归处理该目录下的内容
                     findClassesInDirPackage(packageName + "." + file.getName(),
-                        file.getAbsolutePath(),
-                        recursive,
-                        classes);
+                            file.getAbsolutePath(),
+                            recursive,
+                            classes);
                 } else {
                     var fileName = file.getName();
                     if (fileName.endsWith(CLASS_FILE_EXT)) {

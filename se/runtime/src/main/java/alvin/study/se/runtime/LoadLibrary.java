@@ -2,8 +2,6 @@ package alvin.study.se.runtime;
 
 import com.google.common.base.Strings;
 import com.google.common.io.ByteStreams;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,7 +22,8 @@ public final class LoadLibrary {
      * JDK 提供了两个方法来读取 C++ 动态库文件, 其中:
      * <ul>
      * <li>
-     * {@link Runtime#loadLibrary(String)} 方法, 以动态库名称为参数, 加载该动态, 要求该动态库文件必须存在于 Classpath 中
+     * {@link Runtime#loadLibrary(String)} 方法, 以动态库名称为参数, 加载该动态, 要求该动态库文件必须存在于
+     * Classpath 中
      * </li>
      * <li>
      * {@link Runtime#load(String)} 方法, 以动态库全路径文件名为参数, 加载该动态, 该动态库可以在任何位置
@@ -33,7 +32,8 @@ public final class LoadLibrary {
      * </p>
      *
      * <p>
-     * {@link System#load(String)} 方法和 {@link System#loadLibrary(String)} 方法和上述两个方法一致
+     * {@link System#load(String)} 方法和 {@link System#loadLibrary(String)}
+     * 方法和上述两个方法一致
      * </p>
      *
      * @param resource 资源名称
@@ -67,8 +67,7 @@ public final class LoadLibrary {
      *
      * @return 表示临时文件夹路径的 {@link File} 对象
      */
-    @Contract(" -> new")
-    private static @NotNull File findTempDir() throws IOException {
+    private static File findTempDir() throws IOException {
         // 获取临时路径字符串
         var tempDirName = System.getProperty("java.io.tmpdir");
         if (Strings.isNullOrEmpty(tempDirName)) {

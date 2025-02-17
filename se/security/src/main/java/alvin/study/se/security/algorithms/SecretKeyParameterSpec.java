@@ -3,9 +3,8 @@ package alvin.study.se.security.algorithms;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.binary.Hex;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import jakarta.annotation.Nullable;
 
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -30,8 +29,7 @@ public final class SecretKeyParameterSpec {
      *
      * @return 密钥对象
      */
-    @Contract(value = " -> new", pure = true)
-    public @NotNull SecretKeySpec getSecretKeySpec() {
+    public SecretKeySpec getSecretKeySpec() {
         return new SecretKeySpec(key, algorithm);
     }
 
@@ -51,15 +49,15 @@ public final class SecretKeyParameterSpec {
     public String toString() {
         if (iv != null) {
             return String.format(
-                "algorithm=%s, key=%s, iv=%s",
-                algorithm,
-                Hex.encodeHexString(key),
-                Hex.encodeHexString(iv));
+                    "algorithm=%s, key=%s, iv=%s",
+                    algorithm,
+                    Hex.encodeHexString(key),
+                    Hex.encodeHexString(iv));
         }
 
         return String.format(
-            "algorithm=%s, key=%s",
-            algorithm,
-            Hex.encodeHexString(key));
+                "algorithm=%s, key=%s",
+                algorithm,
+                Hex.encodeHexString(key));
     }
 }

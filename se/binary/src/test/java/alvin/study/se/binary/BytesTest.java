@@ -1,9 +1,10 @@
 package alvin.study.se.binary;
 
-import com.google.common.base.Charsets;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.BDDAssertions.then;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * 测试 {@link Bytes} 类操作 byte 流
@@ -15,7 +16,7 @@ class BytesTest {
     @Test
     void copy_shouldCopyBytesToEmptyByteArray() {
         // 用来拷贝的原始数组
-        var src = new byte[]{ 0x1, 0x2, 0x3, 0x4, 0x5 };
+        var src = new byte[] { 0x1, 0x2, 0x3, 0x4, 0x5 };
 
         // 将原数组拷贝到长度为 0 的目标数组
         var result = Bytes.copy(new byte[0], src);
@@ -34,7 +35,7 @@ class BytesTest {
     @Test
     void copy_shouldCopyBytesToByteArray() {
         // 用来拷贝的原始数组
-        var src = new byte[]{ 0x1, 0x2, 0x3, 0x4, 0x5 };
+        var src = new byte[] { 0x1, 0x2, 0x3, 0x4, 0x5 };
 
         // 目标数组, 长度比原数组多 1
         var dist = new byte[src.length + 1];
@@ -67,7 +68,7 @@ class BytesTest {
     @Test
     void fill_shouldFillBytesToByteArray() {
         // 要被填充的目标数组
-        var dist = new byte[]{ 0x10, 0x11, 0x12, 0x13 };
+        var dist = new byte[] { 0x10, 0x11, 0x12, 0x13 };
 
         // 将 3 个字节填充到原数组的指定位置上
         dist = Bytes.fill(dist, 1, (byte) 0x1, (byte) 0x2, (byte) 0x3);
@@ -132,23 +133,23 @@ class BytesTest {
     @Test
     void concat_shouldConcatBytesIntoByteArray() {
         // 要被连接的目标数组
-        var dist = new byte[]{ 0x1, 0x2, 0x3 };
+        var dist = new byte[] { 0x1, 0x2, 0x3 };
 
         // 将 3 个字节连接到原 byte 数组指定位置
-        dist = Bytes.concat(dist, 1, new byte[]{ 0x10, 0x11, 0x12 });
+        dist = Bytes.concat(dist, 1, new byte[] { 0x10, 0x11, 0x12 });
         // 确认连接结果
         then(dist).containsExactly(0x1, 0x10, 0x11, 0x12);
 
         // 在原数组基础上, 将 7 个字节连接到原数组末尾
         dist = Bytes.concat(dist,
-            dist.length,
-            new byte[]{ 0x20, 0x21, 0x22 },
-            new byte[]{ 0x30, 0x31, 0x32, 0x33 });
+                dist.length,
+                new byte[] { 0x20, 0x21, 0x22 },
+                new byte[] { 0x30, 0x31, 0x32, 0x33 });
         // 确认连接结果
         then(dist).containsExactly(
-            0x1, 0x10, 0x11, 0x12,
-            0x20, 0x21, 0x22, 0x30,
-            0x31, 0x32, 0x33);
+                0x1, 0x10, 0x11, 0x12,
+                0x20, 0x21, 0x22, 0x30,
+                0x31, 0x32, 0x33);
     }
 
     /**
@@ -157,12 +158,12 @@ class BytesTest {
     @Test
     void append_shouldAppendBytesIntoByteArray() {
         // 要被追加的目标数组
-        var dist = new byte[]{
-            0x0, 0x0, 0x0, 0x0
+        var dist = new byte[] {
+                0x0, 0x0, 0x0, 0x0
         };
 
         // 将 2 个字节追加到原 byte 数组末尾
-        dist = Bytes.append(dist, new byte[]{ 0x10, 0x11 });
+        dist = Bytes.append(dist, new byte[] { 0x10, 0x11 });
         // 确认追加结果
         then(dist).containsExactly(0x0, 0x0, 0x0, 0x0, 0x10, 0x11);
     }
@@ -173,7 +174,7 @@ class BytesTest {
     @Test
     void appendShort_shouldAppendShortIntoBytesArray() {
         // 要被追加的目标数组
-        var dist = new byte[]{ 0x0, 0x0, 0x0, 0x0 };
+        var dist = new byte[] { 0x0, 0x0, 0x0, 0x0 };
 
         // 将 short 值追加到原 byte 数组末尾
         dist = Bytes.appendShort(dist, (short) 0x1234);
@@ -187,7 +188,7 @@ class BytesTest {
     @Test
     void appendInt_shouldAppendIntIntoBytesArray() {
         // 要被追加的目标数组
-        var dist = new byte[]{ 0x0, 0x0, 0x0, 0x0 };
+        var dist = new byte[] { 0x0, 0x0, 0x0, 0x0 };
 
         // 将 int 值追加到原 byte 数组末尾
         dist = Bytes.appendInt(dist, 0x12345678);
@@ -201,13 +202,13 @@ class BytesTest {
     @Test
     void shouldAppendLongIntoArray() {
         // 要被追加的目标数组
-        var dist = new byte[]{ 0x0, 0x0, 0x0, 0x0 };
+        var dist = new byte[] { 0x0, 0x0, 0x0, 0x0 };
 
         // 将 long 值追加到原 byte 数组末尾
         var result = Bytes.appendLong(dist, 0x1234567890ABCDEFL);
         // 确认追加结果
         then(result).containsExactly(
-            0x0, 0x0, 0x0, 0x0, 0x12, 0x34, 0x56, 0x78, (byte) 0x90, (byte) 0xAB, (byte) 0xCD, (byte) 0xEF);
+                0x0, 0x0, 0x0, 0x0, 0x12, 0x34, 0x56, 0x78, (byte) 0x90, (byte) 0xAB, (byte) 0xCD, (byte) 0xEF);
     }
 
     /**
@@ -240,7 +241,7 @@ class BytesTest {
     @Test
     void toBytes_shouldConvertLongToBytesArray() {
         then(Bytes.toBytes(0x1234567890ABCDEFL)).containsExactly(
-            0x12, 0x34, 0x56, 0x78, (byte) 0x90, (byte) 0xAB, (byte) 0xCD, (byte) 0xEF);
+                0x12, 0x34, 0x56, 0x78, (byte) 0x90, (byte) 0xAB, (byte) 0xCD, (byte) 0xEF);
     }
 
     /**
@@ -251,19 +252,20 @@ class BytesTest {
     @Test
     void toShort_shouldBytesToShort() {
         then(Bytes.toShort((byte) 0x12, (byte) 0x34)).isEqualTo(0x1234);
-        then(Bytes.toShort(new byte[]{ 0x12, 0x34 })).isEqualTo(0x1234);
-        then(Bytes.toShort(new byte[]{ 0x0, 0x0, 0x0, 0x12, 0x34 }, 3)).isEqualTo(0x1234);
+        then(Bytes.toShort(new byte[] { 0x12, 0x34 })).isEqualTo(0x1234);
+        then(Bytes.toShort(new byte[] { 0x0, 0x0, 0x0, 0x12, 0x34 }, 3)).isEqualTo(0x1234);
     }
 
     /**
      * 测试 {@link Bytes#toInt(byte, byte, byte, byte)}, {@link Bytes#toInt(byte[])}
-     * 以及 {@link Bytes#toInt(byte[], int)} 方法, 将 4 个 {@code byte} 值转为 {@code int} 整数值
+     * 以及 {@link Bytes#toInt(byte[], int)} 方法, 将 4 个 {@code byte} 值转为 {@code int}
+     * 整数值
      */
     @Test
     void toInt_shouldBytesToInt() {
         then(Bytes.toInt((byte) 0x12, (byte) 0x34, (byte) 0x56, (byte) 0x78)).isEqualTo(0x12345678);
-        then(Bytes.toInt(new byte[]{ 0x12, 0x34, 0x56, 0x78 })).isEqualTo(0x12345678);
-        then(Bytes.toInt(new byte[]{ 0x0, 0x0, 0x0, 0x12, 0x34, 0x56, 0x78 }, 3)).isEqualTo(0x12345678);
+        then(Bytes.toInt(new byte[] { 0x12, 0x34, 0x56, 0x78 })).isEqualTo(0x12345678);
+        then(Bytes.toInt(new byte[] { 0x0, 0x0, 0x0, 0x12, 0x34, 0x56, 0x78 }, 3)).isEqualTo(0x12345678);
     }
 
     /**
@@ -274,38 +276,38 @@ class BytesTest {
     @Test
     void toLong_shouldBytesToLong() {
         then(Bytes.toLong(
-            (byte) 0x12,
-            (byte) 0x34,
-            (byte) 0x56,
-            (byte) 0x78,
-            (byte) 0x90,
-            (byte) 0xAB,
-            (byte) 0xCD,
-            (byte) 0xEF)).isEqualTo(0x1234567890ABCDEFL);
+                (byte) 0x12,
+                (byte) 0x34,
+                (byte) 0x56,
+                (byte) 0x78,
+                (byte) 0x90,
+                (byte) 0xAB,
+                (byte) 0xCD,
+                (byte) 0xEF)).isEqualTo(0x1234567890ABCDEFL);
 
-        then(Bytes.toLong(new byte[]{
-            (byte) 0x12,
-            (byte) 0x34,
-            (byte) 0x56,
-            (byte) 0x78,
-            (byte) 0x90,
-            (byte) 0xAB,
-            (byte) 0xCD,
-            (byte) 0xEF
+        then(Bytes.toLong(new byte[] {
+                (byte) 0x12,
+                (byte) 0x34,
+                (byte) 0x56,
+                (byte) 0x78,
+                (byte) 0x90,
+                (byte) 0xAB,
+                (byte) 0xCD,
+                (byte) 0xEF
         })).isEqualTo(0x1234567890ABCDEFL);
 
-        then(Bytes.toLong(new byte[]{
-            (byte) 0x0,
-            (byte) 0x0,
-            (byte) 0x0,
-            (byte) 0x12,
-            (byte) 0x34,
-            (byte) 0x56,
-            (byte) 0x78,
-            (byte) 0x90,
-            (byte) 0xAB,
-            (byte) 0xCD,
-            (byte) 0xEF
+        then(Bytes.toLong(new byte[] {
+                (byte) 0x0,
+                (byte) 0x0,
+                (byte) 0x0,
+                (byte) 0x12,
+                (byte) 0x34,
+                (byte) 0x56,
+                (byte) 0x78,
+                (byte) 0x90,
+                (byte) 0xAB,
+                (byte) 0xCD,
+                (byte) 0xEF
         }, 3)).isEqualTo(0x1234567890ABCDEFL);
     }
 
@@ -365,14 +367,14 @@ class BytesTest {
      */
     @Test
     void compare_shouldCompareTwoArrays() {
-        var b1 = "Hello".getBytes(Charsets.UTF_8);
-        var b2 = "Hello".getBytes(Charsets.UTF_8);
+        var b1 = "Hello".getBytes(StandardCharsets.UTF_8);
+        var b2 = "Hello".getBytes(StandardCharsets.UTF_8);
         then(Bytes.compare(b1, 0, b2, 0, b1.length)).isTrue();
         then(Bytes.compare(b1, 1, b2, 1, b1.length)).isTrue();
         then(Bytes.compare(b1, 2, b2, 3, 1)).isTrue();
         then(Bytes.compare(b1, 1, b2, 2, b1.length)).isFalse();
 
-        b2 = "HHello".getBytes(Charsets.UTF_8);
+        b2 = "HHello".getBytes(StandardCharsets.UTF_8);
         then(Bytes.compare(b1, 1, b2, 2, b2.length)).isTrue();
     }
 }

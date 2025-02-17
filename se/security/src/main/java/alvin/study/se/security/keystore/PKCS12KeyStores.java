@@ -1,7 +1,5 @@
 package alvin.study.se.security.keystore;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,7 +11,8 @@ import java.security.KeyStore;
  * <p>
  * <ol>
  * <li>
- * 生成 PKCS12 格式的密钥库文件, 保存名为 {@code root} 的密钥对; 每个密钥库可以保存多组密钥对, 用 {@code -alias} 参数明明区分
+ * 生成 PKCS12 格式的密钥库文件, 保存名为 {@code root} 的密钥对; 每个密钥库可以保存多组密钥对, 用 {@code -alias}
+ * 参数明明区分
  *
  * <pre>
  * $ keytool -genkey -v               \
@@ -66,7 +65,7 @@ public class PKCS12KeyStores extends KeyStores {
      * @param storePassword 密钥库文件密码
      * @return {@link KeyStore} 对象
      */
-    private static @NotNull KeyStore createKeyStore(File storeFile, String storePassword) {
+    private static KeyStore createKeyStore(File storeFile, String storePassword) {
         try {
             var store = KeyStore.getInstance("PKCS12");
             try (var input = new BufferedInputStream(new FileInputStream(storeFile))) {

@@ -12,12 +12,14 @@ import static org.awaitility.Awaitility.await;
  * 测试在并发环境下的 {@link java.util.stream.Stream Stream} 对象
  *
  * <p>
- * 通过并发 {@code Stream} 处理集合时, 会将集合进行分组, 发送到多个线程中进行并行处理, 这种方式可以在很多场景中充分利用 CPU 的多核心能力,
+ * 通过并发 {@code Stream} 处理集合时, 会将集合进行分组, 发送到多个线程中进行并行处理, 这种方式可以在很多场景中充分利用 CPU
+ * 的多核心能力,
  * 提升数据处理的效率
  * </p>
  *
  * <p>
- * 通过 {@link java.util.Collection#parallelStream() Collection.parallelStream()} 方法或者第二个参数为 {@code true} 的
+ * 通过 {@link java.util.Collection#parallelStream() Collection.parallelStream()}
+ * 方法或者第二个参数为 {@code true} 的
  * {@link java.util.stream.StreamSupport#stream(java.util.Spliterator, boolean)
  * StreamSupport.stream(Spliterator, boolean)} 方法可以获得并发 {@code Stream} 对象
  * </p>
@@ -46,8 +48,8 @@ class ParallelStreamTest {
 
         // 生成 10 个 Record 对象
         var records = IntStream.range(0, 10)
-            .mapToObj(Record::new)
-            .toList();
+                .mapToObj(Record::new)
+                .toList();
 
         // 记录起始时间
         var ts = System.currentTimeMillis();
@@ -61,7 +63,7 @@ class ParallelStreamTest {
                 // 过滤数据
                 if (r.value % 2 == 0) {
                     // 记录执行该方法的线程 id
-                    r.threadId = Thread.currentThread().getId();
+                    r.threadId = Thread.currentThread().threadId();
                     return true;
                 }
             } catch (InterruptedException ignored) {

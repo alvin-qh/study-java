@@ -1,8 +1,8 @@
 package alvin.study.se.binary;
 
-import com.google.common.base.Charsets;
 import org.junit.jupiter.api.Test;
 
+import java.nio.charset.StandardCharsets;
 import java.util.zip.CRC32;
 
 import static org.assertj.core.api.BDDAssertions.then;
@@ -17,7 +17,7 @@ class CRC32Test {
     @Test
     void crc32_shouldGenerateCRCValue() {
         // 原数据
-        var data = "HelloWorld".getBytes(Charsets.UTF_8); // 对应的 16 机制为 48 65 6C 6C 6F 57 6F 72 6C 64
+        var data = "HelloWorld".getBytes(StandardCharsets.UTF_8); // 对应的 16 机制为 48 65 6C 6C 6F 57 6F 72 6C 64
 
         var crc = new CRC32();
 

@@ -10,7 +10,6 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 import java.util.Properties;
@@ -184,7 +183,7 @@ public class SimpleMailClientBuilder {
      *
      * @return 邮件配置属性
      */
-    private @NotNull Properties makeProperties() {
+    private Properties makeProperties() {
         var props = new Properties();
         props.put("mail.smtp.starttls.enable", startTlsEnable);
         props.put("mail.smtp.host", smtpHost);

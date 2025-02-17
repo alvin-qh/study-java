@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 
 import alvin.study.se.jdbc.JDBCBaseTest;
@@ -42,19 +41,14 @@ abstract class MPTTBaseTest extends JDBCBaseTest {
      * @return 表示树形结构的根节点的 {@link TreeNode} 类型对象
      */
     protected TreeNode buildTree() {
-        return new TreeNode("Food",
-            List.of(
-                new TreeNode("Meat",
-                    List.of(
+        return new TreeNode("Food", List.of(
+                new TreeNode("Meat", List.of(
                         new TreeNode("Pork", List.of()),
                         new TreeNode("Beef", List.of()))),
-                new TreeNode("Fruit",
-                    List.of(
-                        new TreeNode("Yellow",
-                            List.of(
+                new TreeNode("Fruit", List.of(
+                        new TreeNode("Yellow", List.of(
                                 new TreeNode("Banana", List.of()))),
-                        new TreeNode("Red",
-                            List.of(
+                        new TreeNode("Red", List.of(
                                 new TreeNode("Cherry", List.of())))))));
     }
 
@@ -70,7 +64,7 @@ abstract class MPTTBaseTest extends JDBCBaseTest {
             // 创建保存树节点和数据表记录 ID 对应关系的 Map 对象
             // 存储根节点对象, 并保存根节点和数据表 ID 的关系
             var recordIdMap = new HashMap<>(
-                Map.of(root, repository.createAsRoot(new MPTT(root.value())).getId()));
+                    Map.of(root, repository.createAsRoot(new MPTT(root.value())).getId()));
 
             // 构建用于深度优先遍历的栈对象, 并存储根节点
             var stack = new ArrayDeque<>(List.of(root));
@@ -109,5 +103,6 @@ abstract class MPTTBaseTest extends JDBCBaseTest {
      * @param value    节点名称
      * @param children 子节点集合
      */
-    private record TreeNode(String value, List<@NotNull TreeNode> children) { }
+    private record TreeNode(String value, List<TreeNode> children) {
+    }
 }

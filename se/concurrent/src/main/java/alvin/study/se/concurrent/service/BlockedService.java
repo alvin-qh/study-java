@@ -2,7 +2,8 @@ package alvin.study.se.concurrent.service;
 
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
-import org.jetbrains.annotations.NotNull;
+
+import jakarta.annotation.Nonnull;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -38,7 +39,7 @@ public class BlockedService {
      * @param model 要保存的模型对象
      * @return 是否保存成功
      */
-    public boolean saveModel(@NotNull Model model) {
+    public boolean saveModel(@Nonnull Model model) {
         delay();
 
         if (modelMap.containsKey(model.id())) {

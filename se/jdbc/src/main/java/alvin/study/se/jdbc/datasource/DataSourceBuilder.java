@@ -2,8 +2,6 @@ package alvin.study.se.jdbc.datasource;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 import javax.sql.DataSource;
 
@@ -15,8 +13,7 @@ public final class DataSourceBuilder {
     private DataSourceBuilder() {
     }
 
-    @Contract(value = " -> new", pure = true)
-    public static @NotNull DataSourceBuilder newBuilder() {
+    public static DataSourceBuilder newBuilder() {
         return new DataSourceBuilder();
     }
 
@@ -35,8 +32,7 @@ public final class DataSourceBuilder {
         return this;
     }
 
-    @Contract(" -> new")
-    public @NotNull DataSource build() {
+    public DataSource build() {
         var conf = new HikariConfig();
         conf.setPoolName("jdbc-hikari-pool");
         conf.setMaximumPoolSize(50);

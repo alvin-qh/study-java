@@ -1,9 +1,10 @@
 package alvin.study.se.binary;
 
-import com.google.common.base.Charsets;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.BDDAssertions.then;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * 测试 {@link CRC16} 类型, 验证 CRC16 验证码计算
@@ -15,7 +16,7 @@ class CRC16Test {
     @Test
     void tableLookup_shouldGenerateCRCValue() {
         // 原数据
-        var data = "HelloWorld".getBytes(Charsets.UTF_8); // 对应的 16 机制为 48 65 6C 6C 6F 57 6F 72 6C 64
+        var data = "HelloWorld".getBytes(StandardCharsets.UTF_8); // 对应的 16 机制为 48 65 6C 6C 6F 57 6F 72 6C 64
 
         var crc = new CRC16();
 
@@ -34,7 +35,7 @@ class CRC16Test {
     @Test
     void xor_shouldGenerateCRCValue() {
         // 原数据
-        var data = "HelloWorld".getBytes(Charsets.UTF_8); // 对应的 16 机制为 48 65 6C 6C 6F 57 6F 72 6C 64
+        var data = "HelloWorld".getBytes(StandardCharsets.UTF_8); // 对应的 16 机制为 48 65 6C 6C 6F 57 6F 72 6C 64
 
         var crc = new CRC16(CRC16.AlgorithmMode.XOR);
 

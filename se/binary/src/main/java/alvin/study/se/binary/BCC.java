@@ -1,6 +1,6 @@
 package alvin.study.se.binary;
 
-import org.jetbrains.annotations.NotNull;
+import jakarta.annotation.Nonnull;
 
 /**
  * 计算 BCC 校验码
@@ -74,7 +74,7 @@ public final class BCC {
      * @param offset 偏移量, 从偏移量指定的位置开始计算
      * @param length 长度, 即从偏移量开始要计算的字节长度
      */
-    public void update(byte @NotNull [] data, int offset, int length) {
+    public void update(@Nonnull byte[] data, int offset, int length) {
         var lastIndex = Math.min(offset + length, data.length);
         for (var i = offset; i < lastIndex; i++) {
             update(data[i]);

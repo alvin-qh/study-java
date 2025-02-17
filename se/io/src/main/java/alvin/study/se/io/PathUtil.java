@@ -2,7 +2,6 @@ package alvin.study.se.io;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Paths;
 
@@ -22,7 +21,7 @@ public final class PathUtil {
      * @param more  后续的路径部分
      * @return 组合后的路径字符串
      */
-    public static @NotNull String combine(String first, String... more) {
+    public static String combine(String first, String... more) {
         return Paths.get(first, more).toString();
     }
 }

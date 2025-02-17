@@ -2,7 +2,6 @@ package alvin.study.se.security.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 
 import java.security.SecureRandom;
 
@@ -20,7 +19,7 @@ public final class DataGenerator {
      * @param size 数据长度
      * @return 随机字节数据
      */
-    public static byte @NotNull [] generate(int size) {
+    public static byte[] generate(int size) {
         var data = new byte[size];
         RANDOM.nextBytes(data);
         return data;

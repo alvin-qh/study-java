@@ -1,8 +1,10 @@
 package alvin.study.se.security.algorithms;
 
 import com.google.common.annotations.VisibleForTesting;
+
+import jakarta.annotation.Nonnull;
+
 import org.apache.commons.codec.binary.Base64;
-import org.jetbrains.annotations.NotNull;
 
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
@@ -83,7 +85,7 @@ public class RSAKeyLoader {
      * @param endLine   密钥结束标识符
      * @return 密钥的有效部分
      */
-    private static String fixKeyString(@NotNull String keyString, String beginLine, String endLine) {
+    private static String fixKeyString(@Nonnull String keyString, String beginLine, String endLine) {
         /// 定位到密钥有效部分的起始位置
         var start = keyString.indexOf(beginLine);
         if (start < 0) {
@@ -165,7 +167,8 @@ public class RSAKeyLoader {
     }
 
     /**
-     * 将给定的密钥文本字符串转化为 {@link java.security.interfaces.RSAPrivateKey RSAPrivateKey} 私钥对象
+     * 将给定的密钥文本字符串转化为 {@link java.security.interfaces.RSAPrivateKey RSAPrivateKey}
+     * 私钥对象
      *
      * @param keyString 保存密钥定义的文本字符串
      * @return {@link java.security.interfaces.RSAPrivateKey RSAPrivateKey} 私钥对象
