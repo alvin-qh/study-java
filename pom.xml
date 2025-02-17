@@ -55,9 +55,9 @@
     <version.spring-cloud>2023.0.1</version.spring-cloud>
     <version.alibaba-cloud>2023.0.1.0</version.alibaba-cloud>
 
-    <version.kickstart-graphql>16.0.0</version.kickstart-graphql>
+    <version.kickstart-graphql>15.1.0</version.kickstart-graphql>
     <version.springdoc>2.8.5</version.springdoc>
-    <version.quarkus>3.18.3</version.quarkus>
+    <version.quarkus>3.17.8</version.quarkus>
 
     <version.optaplanner>10.0.0</version.optaplanner>
     <!-- End dev dependencies -->
