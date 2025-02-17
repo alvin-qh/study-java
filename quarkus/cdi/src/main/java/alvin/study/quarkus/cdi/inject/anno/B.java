@@ -22,5 +22,4 @@ import jakarta.inject.Qualifier;
 @Retention(RetentionPolicy.RUNTIME)
 @Qualifier
 @Documented
-public @interface B {
-}
+public @interface B {}

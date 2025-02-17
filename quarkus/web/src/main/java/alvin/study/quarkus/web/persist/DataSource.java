@@ -30,6 +30,7 @@ public class DataSource {
      * @param key 对象的 Key
      * @return 和 Key 对应的对象结果
      */
+    @SuppressWarnings("unchecked")
     public <T> T get(String key) {
         return (T) data.get(key);
     }

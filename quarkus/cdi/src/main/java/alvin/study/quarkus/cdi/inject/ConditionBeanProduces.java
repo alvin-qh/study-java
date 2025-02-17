@@ -58,7 +58,7 @@ public class ConditionBeanProduces {
     // @Singleton
     // @LookupUnlessProperty(name = "beans.condition.active", stringValue = "A", lookupIfMissing = false)
     // LookupIfPropertyBean conditionBeanB() {
-    //     return new LookupIfPropertyBean("B");
+    // return new LookupIfPropertyBean("B");
     // }
 
     @Produces
