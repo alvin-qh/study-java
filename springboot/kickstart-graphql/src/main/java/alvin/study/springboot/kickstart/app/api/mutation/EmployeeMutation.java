@@ -72,8 +72,8 @@ public class EmployeeMutation extends BaseMutation {
 
         // 更新雇员实体
         return employeeService.update(Long.parseLong(id), employee, input.getDepartmentIds())
-            .map(u -> new UpdateEmployeePayload(map(u, EmployeeType.class)))
-            .orElseThrow(() -> new InputException("Update Employee not found"));
+                .map(u -> new UpdateEmployeePayload(map(u, EmployeeType.class)))
+                .orElseThrow(() -> new InputException("Update Employee not found"));
     }
 
     /**

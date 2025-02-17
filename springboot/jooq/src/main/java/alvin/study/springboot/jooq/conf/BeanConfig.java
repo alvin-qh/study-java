@@ -37,8 +37,8 @@ public class BeanConfig {
      */
     @Bean
     PasswordUtil passwordUtil(
-        @Value("${application.security.hash.algorithm}") String algorithm,
-        @Value("${application.security.hash.key}") String key) {
+            @Value("${application.security.hash.algorithm}") String algorithm,
+            @Value("${application.security.hash.key}") String key) {
         var password = new PasswordUtil(algorithm, key);
         log.info("[CONF] Password object created, algorithm=\"{}\", hmacKey=\"{}\"", algorithm, key);
         return password;

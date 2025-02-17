@@ -46,7 +46,7 @@ public class EmployeeQuery extends BaseQuery {
     public EmployeeType employee(String id) {
         // 查询组织
         return employeeService.findById(Long.parseLong(id))
-            .map(u -> map(u, EmployeeType.class))
-            .orElseThrow(() -> new InputException("Invalid employee id"));
+                .map(u -> map(u, EmployeeType.class))
+                .orElseThrow(() -> new InputException("Invalid employee id"));
     }
 }

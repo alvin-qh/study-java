@@ -4,7 +4,6 @@ import alvin.study.springboot.jpa.core.context.Context;
 import alvin.study.springboot.jpa.infra.entity.User;
 import alvin.study.springboot.jpa.infra.entity.common.AuditedEntity;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Configuration;
@@ -39,7 +38,7 @@ import java.util.Optional;
  *
  * @see AuditedEntity AuditedEntity
  * @see org.springframework.data.jpa.domain.support.AuditingEntityListener
- * AuditingEntityListener
+ *      AuditingEntityListener
  */
 @Configuration("conf/jpa")
 @EntityScan(basePackages = {
@@ -56,7 +55,7 @@ public class JpaConfig implements AuditorAware<Long> {
      * 获取审计字段 (即数据的创建人 {@code created_by} 和修改人 {@code updated_by}) 对应的用户 {@code id}
      */
     @Override
-    public @NotNull Optional<Long> getCurrentAuditor() {
+    public Optional<Long> getCurrentAuditor() {
         // 如果不存在上下文, 则返回空
         if (context == null) {
             return Optional.empty();

@@ -1,6 +1,6 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>study-java-springboot-kickstart-graphql</artifactId>
   <name>${project.artifactId}</name>
@@ -29,7 +29,12 @@
       </dependency>
       <dependency>
         <groupId>com.baomidou</groupId>
-        <artifactId>mybatis-plus-boot-starter</artifactId>
+        <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+        <version>${version.mybatis-plus}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus-jsqlparser</artifactId>
         <version>${version.mybatis-plus}</version>
       </dependency>
       <dependency>
@@ -75,13 +80,18 @@
     <dependency>
       <!-- Spring Boot Mybatis 依赖 -->
       <groupId>com.baomidou</groupId>
-      <artifactId>mybatis-plus-boot-starter</artifactId>
+      <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
       <exclusions>
         <exclusion>
           <groupId>org.springframework.boot</groupId>
           <artifactId>*</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <!-- Spring Boot Mybatis 分页依赖 -->
+      <groupId>com.baomidou</groupId>
+      <artifactId>mybatis-plus-jsqlparser</artifactId>
     </dependency>
     <dependency>
       <!-- JWT 依赖 -->
@@ -127,7 +137,8 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <!--Spring Boot Graphql 测试依赖 -->
+      <!--Spring
+      Boot Graphql 测试依赖 -->
       <groupId>com.graphql-java-kickstart</groupId>
       <artifactId>graphql-spring-boot-starter-test</artifactId>
       <version>${version.kickstart-graphql}</version>

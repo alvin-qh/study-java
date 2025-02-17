@@ -70,5 +70,4 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 @CacheNamespace
-public interface DepartmentEmployeeMapper extends BaseMapper<DepartmentEmployee> {
-}
+public interface DepartmentEmployeeMapper extends BaseMapper<DepartmentEmployee> {}

@@ -54,10 +54,10 @@ class ConfigServiceTest extends IntegrationTest {
 
             // 确认查询结果
             then(datas)
-                .hasSize(1)
-                .singleElement()
-                .extracting("name", "value")
-                .contains("test-name-" + config.getDbName(), "test-value-" + config.getDbName());
+                    .hasSize(1)
+                    .singleElement()
+                    .extracting("name", "value")
+                    .contains("test-name-" + config.getDbName(), "test-value-" + config.getDbName());
         }
     }
 }

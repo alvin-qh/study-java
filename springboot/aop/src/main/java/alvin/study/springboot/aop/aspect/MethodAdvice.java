@@ -3,6 +3,8 @@ package alvin.study.springboot.aop.aspect;
 import alvin.study.springboot.aop.aspect.Message.Step;
 import alvin.study.springboot.aop.domain.model.Worker;
 import alvin.study.springboot.aop.domain.service.WorkingService;
+import jakarta.annotation.Nonnull;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +17,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -123,8 +124,8 @@ public class MethodAdvice {
      * @param objectMapper 用于对象 JSON 序列化
      */
     public MethodAdvice(
-        @Qualifier("mqForMethodAdvice") BlockingQueue<Message> messageQueue,
-        ObjectMapper objectMapper) {
+            @Qualifier("mqForMethodAdvice") BlockingQueue<Message> messageQueue,
+            ObjectMapper objectMapper) {
         this.messageQueue = messageQueue;
         this.objectMapper = objectMapper;
     }
@@ -160,7 +161,7 @@ public class MethodAdvice {
      * </p>
      */
     @Pointcut("execution(* alvin.study.springboot.aop.domain.service.*.work(..))")
-    public void point() { }
+    public void point() {}
 
     /**
      * 在目标方法执行前进行拦截的方法
@@ -259,7 +260,7 @@ public class MethodAdvice {
      * @throws Throwable 抛出目标方法可能会抛出的异常
      */
     @Around("point()")
-    public Object around(@NotNull ProceedingJoinPoint jp) throws Throwable {
+    public Object around(@Nonnull ProceedingJoinPoint jp) throws Throwable {
         log.info("[MethodAdvice] Method \"{}\" was called, and raised exception is ", jp.getSignature());
 
         messageQueue.add(new Message(
@@ -275,13 +276,12 @@ public class MethodAdvice {
         if (result instanceof String r) {
             // 对原始返回值是字符串类型的, 进行数据加工
             try {
-                var json = objectMapper.readValue(r, new TypeReference<Map<String, Object>>() { });
+                var json = objectMapper.readValue(r, new TypeReference<Map<String, Object>>() {});
                 json.put("addition", this.getClass().getSimpleName());
 
                 // 将原始返回值改为加工后的值
                 result = objectMapper.writeValueAsString(json);
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
         }
         return result;
     }

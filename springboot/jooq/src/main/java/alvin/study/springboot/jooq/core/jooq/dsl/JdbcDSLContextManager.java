@@ -92,10 +92,10 @@ public class JdbcDSLContextManager {
 
         // 创建 JOOQ 配置对象
         var config = new DefaultConfiguration()
-            .set(conn)
-            .set(sqlDialect)
-            .set((RecordListenerProvider) auditAndTentedRecordListener)
-            .set((VisitListenerProvider) tentedVisitListener);
+                .set(conn)
+                .set(sqlDialect)
+                .set((RecordListenerProvider) auditAndTentedRecordListener)
+                .set((VisitListenerProvider) tentedVisitListener);
 
         // 创建 DSLContext 对象
         return DSL.using(config);

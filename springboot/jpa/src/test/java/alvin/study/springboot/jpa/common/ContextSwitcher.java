@@ -4,8 +4,6 @@ import alvin.study.springboot.jpa.core.context.Context;
 import alvin.study.springboot.jpa.core.context.CustomRequestAttributes;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
@@ -42,8 +40,7 @@ public final class ContextSwitcher implements AutoCloseable {
      * @param consumer 恢复原 {@link Context} 对象后执行的回调函数
      * @return 当前类型对象, 用于恢复原 {@link Context} 对象
      */
-    @Contract("_, _ -> new")
-    public static @NotNull ContextSwitcher doSwitch(Context context, Consumer<Context> consumer) {
+    public static ContextSwitcher doSwitch(Context context, Consumer<Context> consumer) {
         // 获取现有的 Context 对象并保存
         var currentContext = Context.current();
         // 切换新的 Context 对象

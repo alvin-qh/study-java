@@ -18,6 +18,7 @@ import graphql.schema.GraphQLDirectiveContainer;
 import graphql.schema.GraphQLFieldDefinition;
 import graphql.schema.GraphQLInputObjectType;
 import graphql.schema.GraphQLInputType;
+import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLTypeUtil;
 import graphql.schema.idl.SchemaDirectiveWiring;
 import graphql.schema.idl.SchemaDirectiveWiringEnvironment;
@@ -153,10 +154,10 @@ public class LengthDirective implements SchemaDirectiveWiring {
      */
     private static DataFetcherResult<Object> makeDFR(Object value, List<GraphQLError> errors, Object localContext) {
         return DataFetcherResult.newResult()
-            .data(value)
-            .errors(errors)
-            .localContext(localContext)
-            .build();
+                .data(value)
+                .errors(errors)
+                .localContext(localContext)
+                .build();
     }
 
     /**
@@ -234,7 +235,6 @@ public class LengthDirective implements SchemaDirectiveWiring {
      *
      * @param definition
      */
-    @SuppressWarnings("deprecation")
     private void replaceDataFetcher(SchemaDirectiveWiringEnvironment<GraphQLFieldDefinition> env) {
         // 获取原本的 DataFetcher 对象
         var originalFetcher = env.getFieldDataFetcher();
@@ -242,8 +242,11 @@ public class LengthDirective implements SchemaDirectiveWiring {
         // 创建一个新的 DataFetcher 对象
         var newFetcher = createDataFetcher(originalFetcher);
 
+        var def = env.getFieldDefinition();
+        var type = def.getType();
+
         // 替换当前字段的 DataFetcher 对象
-        env.getCodeRegistry().dataFetcher(env.getFieldsContainer(), env.getFieldDefinition(), newFetcher);
+        env.getCodeRegistry().dataFetcher((GraphQLObjectType) type, def, newFetcher);
     }
 
     /**
@@ -277,15 +280,15 @@ public class LengthDirective implements SchemaDirectiveWiring {
                 if (inputType instanceof GraphQLInputObjectType inputObjType) {
                     // 获取 Input 参数的字段定义
                     inputObjType.getFieldDefinitions().stream()
-                        // 判断字段是否包含指定的处理器标识
-                        .filter(this::appliesTo)
-                        // 遍历所有 Input 字段
-                        .forEach(io -> {
-                            // 获取 Input 字段值
-                            var value = env.<Map<String, Object>>getArgument(it.getName());
-                            // 获取 Input 字段值, 处理字段值, 并记录返回的错误
-                            errors.addAll(apply(io, env, value.get(io.getName())));
-                        });
+                            // 判断字段是否包含指定的处理器标识
+                            .filter(this::appliesTo)
+                            // 遍历所有 Input 字段
+                            .forEach(io -> {
+                                // 获取 Input 字段值
+                                var value = env.<Map<String, Object>>getArgument(it.getName());
+                                // 获取 Input 字段值, 处理字段值, 并记录返回的错误
+                                errors.addAll(apply(io, env, value.get(io.getName())));
+                            });
                 }
             });
 

@@ -18,9 +18,9 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         // 添加拦截器
         registry.addInterceptor(apiHandlerInterceptor)
-            // 添加拦截器要拦截的 url 范围
-            .addPathPatterns("/api/**")
-            // 添加拦截器要排除的 url 范围
-            .excludePathPatterns("/static/**");
+                // 添加拦截器要拦截的 url 范围
+                .addPathPatterns("/api/**")
+                // 添加拦截器要排除的 url 范围
+                .excludePathPatterns("/static/**");
     }
 }

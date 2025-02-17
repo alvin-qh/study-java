@@ -27,13 +27,13 @@ public class MapperConfig {
 
         // 获取配置对象并进行设置
         modelMapper.getConfiguration()
-            // 通过字段进行映射, 这种方式无需类型具备 setter 方法
-            .setFieldMatchingEnabled(true)
-            .setFieldAccessLevel(AccessLevel.PRIVATE)
-            // .setMatchingStrategy(MatchingStrategies.STANDARD)
-            .setAmbiguityIgnored(true)
-            // 增加名称转换规则
-            .setSourceNameTokenizer(NameTokenizers.UNDERSCORE);
+                // 通过字段进行映射, 这种方式无需类型具备 setter 方法
+                .setFieldMatchingEnabled(true)
+                .setFieldAccessLevel(AccessLevel.PRIVATE)
+                // .setMatchingStrategy(MatchingStrategies.STANDARD)
+                .setAmbiguityIgnored(true)
+                // 增加名称转换规则
+                .setSourceNameTokenizer(NameTokenizers.UNDERSCORE);
 
         modelMapper.addConverter(new AbstractConverter<Instant, OffsetDateTime>() {
             /**

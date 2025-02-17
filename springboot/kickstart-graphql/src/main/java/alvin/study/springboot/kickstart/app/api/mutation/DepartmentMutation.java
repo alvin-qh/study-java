@@ -72,8 +72,8 @@ public class DepartmentMutation extends BaseMutation {
 
         // 更新部门实体
         return departmentService.update(Long.parseLong(id), department)
-            .map(u -> new UpdateDepartmentPayload(map(u, DepartmentType.class)))
-            .orElseThrow(() -> new InputException("Update Department not found"));
+                .map(u -> new UpdateDepartmentPayload(map(u, DepartmentType.class)))
+                .orElseThrow(() -> new InputException("Update Department not found"));
     }
 
     /**

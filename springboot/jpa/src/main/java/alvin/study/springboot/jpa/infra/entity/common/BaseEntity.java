@@ -49,9 +49,7 @@ public abstract class BaseEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
 
     /**
      * 比较两个实体对象, 比较 {@code id} 字段即可

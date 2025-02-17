@@ -16,6 +16,7 @@ public class WebContext implements Context {
         return "Web Context";
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> T getOrDefault(String key, T defaultValue) {
         return (T) this.attributes.getOrDefault(key, defaultValue);

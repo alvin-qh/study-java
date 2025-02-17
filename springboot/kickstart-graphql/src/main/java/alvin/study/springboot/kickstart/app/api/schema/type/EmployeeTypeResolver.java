@@ -2,7 +2,6 @@ package alvin.study.springboot.kickstart.app.api.schema.type;
 
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 
 import alvin.study.springboot.kickstart.app.api.schema.type.common.AuditedResolver;
@@ -32,11 +31,11 @@ public class EmployeeTypeResolver implements AuditedResolver<EmployeeType>, Tena
      * @param instance 雇员对象
      * @return 部门列表集合
      */
-    public List<@NotNull DepartmentType> departments(EmployeeType instance, DataFetchingEnvironment env) {
+    public List<DepartmentType> departments(EmployeeType instance, DataFetchingEnvironment env) {
         var mapper = (ModelMapper) env.getGraphQlContext().get(ModelMapper.class);
 
         return departmentService.listByEmployeeId(instance.getId()).stream()
-            .map(d -> mapper.map(d, DepartmentType.class))
-            .toList();
+                .map(d -> mapper.map(d, DepartmentType.class))
+                .toList();
     }
 }

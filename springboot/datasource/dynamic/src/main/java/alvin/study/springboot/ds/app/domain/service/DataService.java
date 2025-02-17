@@ -35,8 +35,7 @@ public class DataService extends BaseService {
             entity.getName(),
             entity.getValue(),
             entity.getUpdatedAt(),
-            entity.getCreatedAt()
-        );
+            entity.getCreatedAt());
     }
 
     /**
@@ -53,7 +52,6 @@ public class DataService extends BaseService {
             entity.getName(),
             entity.getValue(),
             entity.getUpdatedAt(),
-            entity.getCreatedAt()
-        );
+            entity.getCreatedAt());
     }
 }

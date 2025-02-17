@@ -108,7 +108,7 @@ public abstract class IntegrationTest {
      * </p>
      *
      * @see TestingConfig#testingTransactionManager(org.springframework.transaction.PlatformTransactionManager)
-     * TestingConfig.testingTransactionManager(PlatformTransactionManager)
+     *      TestingConfig.testingTransactionManager(PlatformTransactionManager)
      */
     @Autowired
     private TestingTransactionManager txManager;
@@ -301,7 +301,7 @@ public abstract class IntegrationTest {
     protected GraphQLResponse graphql(String resource, String operationName, ObjectNode variables) throws IOException {
         // 创建一个 GraphQLTestTemplate 类型对象并设置所需的 Http header 值
         var template = testTemplateBuilder.build()
-            .withAdditionalHeader(Headers.AUTHORIZATION, Headers.BEARER + " " + makeBearerToken());
+                .withAdditionalHeader(Headers.AUTHORIZATION, Headers.BEARER + " " + makeBearerToken());
 
         try {
             // 拼装完整的资源路径和资源名, 对应 classpath:graphql/xxx.graphql 文件
@@ -348,8 +348,8 @@ public abstract class IntegrationTest {
      */
     protected GraphQLResponse graphql(String query, ObjectNode variables) {
         var template = testTemplateBuilder.build()
-            // 设置 Http header
-            .withAdditionalHeader(Headers.AUTHORIZATION, Headers.BEARER + " " + makeBearerToken());
+                // 设置 Http header
+                .withAdditionalHeader(Headers.AUTHORIZATION, Headers.BEARER + " " + makeBearerToken());
 
         try {
             // 执行查询

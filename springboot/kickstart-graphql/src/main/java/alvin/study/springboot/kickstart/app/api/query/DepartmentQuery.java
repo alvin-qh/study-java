@@ -46,7 +46,7 @@ public class DepartmentQuery extends BaseQuery {
     public DepartmentType department(String id) {
         // 查询组织
         return departmentService.findById(Long.parseLong(id))
-            .map(u -> map(u, DepartmentType.class))
-            .orElseThrow(() -> new InputException("Invalid department id"));
+                .map(u -> map(u, DepartmentType.class))
+                .orElseThrow(() -> new InputException("Invalid department id"));
     }
 }

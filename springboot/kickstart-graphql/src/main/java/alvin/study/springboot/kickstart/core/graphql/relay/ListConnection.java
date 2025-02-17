@@ -73,8 +73,8 @@ public class ListConnection<T> implements Connection<T> {
      */
     public <R> ListConnection<R> mapTo(Function<T, R> mapper) {
         var newEdges = edges.stream()
-            .map(edge -> (Edge<R>) new DefaultEdge<>(mapper.apply(edge.getNode()), edge.getCursor()))
-            .toList();
+                .map(edge -> (Edge<R>) new DefaultEdge<>(mapper.apply(edge.getNode()), edge.getCursor()))
+                .toList();
         return new ListConnection<>(newEdges, pageInfo, totalCount);
     }
 }

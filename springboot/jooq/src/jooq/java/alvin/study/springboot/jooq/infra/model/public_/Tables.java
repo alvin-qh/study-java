@@ -14,7 +14,7 @@ import alvin.study.springboot.jooq.infra.model.public_.tables.User;
 /**
  * Convenience access to all tables in PUBLIC.
  */
-@SuppressWarnings({ "all", "unchecked", "rawtypes" })
+@SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class Tables {
 
     /**

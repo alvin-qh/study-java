@@ -22,16 +22,11 @@ class PathMapTest {
         map.put("a", "A");
         map.put("b", Map.of("c", "C"));
         map.put("d", List.of(
-                Map.of("e", "E"),
-                Map.of("f", List.of(
-                        Map.of("g", "G"),
-                        Map.of("h", new Map[]{
-                            Map.of("i", "I") }
-                        )
-                    )
-                )
-            )
-        );
+            Map.of("e", "E"),
+            Map.of("f", List.of(
+                Map.of("g", "G"),
+                Map.of("h", new Map[] {
+                    Map.of("i", "I") })))));
 
         // 确认通过 Path 获取 Map 对应的值
         then((Object) map.getByPath("a")).isEqualTo("A");

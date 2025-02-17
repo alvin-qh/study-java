@@ -42,15 +42,16 @@ public class TableCleaner {
      * @param tableType 要清除表的类型
      * @return 要清除的数据表集合
      */
+    @SuppressWarnings("unchecked")
     private List<String> listAllTables(String schema, String tableType) {
         return em.createNativeQuery("""
-                SELECT `table_name`
-                FROM `information_schema`.`tables`
-                WHERE `table_schema`=:schema AND `table_type`=:typeType
-                """)
-            .setParameter("schema", schema)
-            .setParameter("typeType", tableType)
-            .getResultList();
+            SELECT `table_name`
+            FROM `information_schema`.`tables`
+            WHERE `table_schema`=:schema AND `table_type`=:typeType
+            """)
+                .setParameter("schema", schema)
+                .setParameter("typeType", tableType)
+                .getResultList();
     }
 
     /**
@@ -87,14 +88,14 @@ public class TableCleaner {
 
             // 获取所有待清除的数据表名并执行清除语句
             listAllTables(schema, tableType).stream()
-                // 去除排除的数据表
-                .filter(t -> !excludeSet.contains(t))
-                // 对每个数据表进行清除操作
-                .forEach(t -> {
-                    log.info("Clear table {}", t);
-                    // 执行 truncate 操作
-                    em.createNativeQuery(String.format("TRUNCATE TABLE `%s`", t)).executeUpdate();
-                });
+                    // 去除排除的数据表
+                    .filter(t -> !excludeSet.contains(t))
+                    // 对每个数据表进行清除操作
+                    .forEach(t -> {
+                        log.info("Clear table {}", t);
+                        // 执行 truncate 操作
+                        em.createNativeQuery(String.format("TRUNCATE TABLE `%s`", t)).executeUpdate();
+                    });
 
             // 恢复外键约束
             em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1").executeUpdate();

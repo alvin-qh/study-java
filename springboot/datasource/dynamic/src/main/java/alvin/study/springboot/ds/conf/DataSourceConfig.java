@@ -44,8 +44,8 @@ public class DataSourceConfig {
     @Bean
     @Primary
     DataSource dynamicDataSource(
-        @Value("${spring.datasource-template.default-db-name}") String defaultDbName,
-        DataSourceFactory dataSourceFactory) {
+            @Value("${spring.datasource-template.default-db-name}") String defaultDbName,
+            DataSourceFactory dataSourceFactory) {
         return new DynamicDataSource(defaultDbName, dataSourceFactory);
     }
 }

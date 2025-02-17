@@ -93,8 +93,8 @@ class WorkingServiceTest extends IntegrationTest {
     void shouldMethodAdviceWorked() {
         // 期待的被拦截方法的签名
         var signature = "public java.lang.String " +
-            "alvin.study.springboot.aop.domain.service.WorkingService.work" +
-            "(alvin.study.springboot.aop.domain.model.Worker)";
+                        "alvin.study.springboot.aop.domain.service.WorkingService.work" +
+                        "(alvin.study.springboot.aop.domain.model.Worker)";
 
         // 传递给目标方法的参数, 被拦截到的参数也应该是该对象
         var worker = new Worker("Alvin", "Engineer");
@@ -105,20 +105,20 @@ class WorkingServiceTest extends IntegrationTest {
 
         // 确认各个阶段拦截器工作正常
         then(mqForMethodAdvice.poll(0, TimeUnit.SECONDS))
-            .has(new MessageCondition(signature, methodAdvice, Step.AROUND, null, worker));
+                .has(new MessageCondition(signature, methodAdvice, Step.AROUND, null, worker));
         then(mqForMethodAdvice.poll(0, TimeUnit.SECONDS))
-            .has(new MessageCondition(signature, methodAdvice, Step.BEFORE, null, worker));
+                .has(new MessageCondition(signature, methodAdvice, Step.BEFORE, null, worker));
 
         // 确认获取的目标方法原始返回值符合预期
         then(mqForMethodAdvice.poll(0, TimeUnit.SECONDS))
-            .has(new MessageCondition(
-                signature,
-                methodAdvice,
-                Step.AFTER_RETURNING,
-                "{\"name\":\"Alvin\",\"title\":\"Engineer\"}",
-                worker));
+                .has(new MessageCondition(
+                    signature,
+                    methodAdvice,
+                    Step.AFTER_RETURNING,
+                    "{\"name\":\"Alvin\",\"title\":\"Engineer\"}",
+                    worker));
         then(mqForMethodAdvice.poll(0, TimeUnit.SECONDS))
-            .has(new MessageCondition(signature, methodAdvice, Step.AFTER, null, worker));
+                .has(new MessageCondition(signature, methodAdvice, Step.AFTER, null, worker));
 
         // 确认拦截过程中的所有消息均已被消费
         then(mqForMethodAdvice).isEmpty();
@@ -129,8 +129,8 @@ class WorkingServiceTest extends IntegrationTest {
     void shouldMethodAdviceGotException() {
         // 期待的被拦截方法的签名
         var signature = "public java.lang.String " +
-            "alvin.study.springboot.aop.domain.service.WorkingService.work" +
-            "(alvin.study.springboot.aop.domain.model.Worker)";
+                        "alvin.study.springboot.aop.domain.service.WorkingService.work" +
+                        "(alvin.study.springboot.aop.domain.model.Worker)";
 
         // 期待的异常对象
         var exception = new JsonParseException(objectMapper.createParser("{}"), "test");
@@ -149,15 +149,15 @@ class WorkingServiceTest extends IntegrationTest {
 
         // 确认各个阶段拦截器工作正常
         then(mqForMethodAdvice.poll(0, TimeUnit.SECONDS))
-            .has(new MessageCondition(signature, methodAdvice, Step.AROUND, null, worker));
+                .has(new MessageCondition(signature, methodAdvice, Step.AROUND, null, worker));
         then(mqForMethodAdvice.poll(0, TimeUnit.SECONDS))
-            .has(new MessageCondition(signature, methodAdvice, Step.BEFORE, null, worker));
+                .has(new MessageCondition(signature, methodAdvice, Step.BEFORE, null, worker));
 
         // 确认拦截到指定的异常
         then(mqForMethodAdvice.poll(0, TimeUnit.SECONDS))
-            .has(new MessageCondition(signature, methodAdvice, Step.AFTER_THROWING, exception, worker));
+                .has(new MessageCondition(signature, methodAdvice, Step.AFTER_THROWING, exception, worker));
         then(mqForMethodAdvice.poll(0, TimeUnit.SECONDS))
-            .has(new MessageCondition(signature, methodAdvice, Step.AFTER, null, worker));
+                .has(new MessageCondition(signature, methodAdvice, Step.AFTER, null, worker));
 
         // 确认拦截过程中的所有消息均已被消费
         then(mqForMethodAdvice).isEmpty();
@@ -174,8 +174,8 @@ class WorkingServiceTest extends IntegrationTest {
     void shouldAnnotationAdviceWorked() {
         // 期待的被拦截方法的签名
         var signature = "public java.lang.String " +
-            "alvin.study.springboot.aop.domain.service.WorkingService.workWithTransactional" +
-            "(alvin.study.springboot.aop.domain.model.Worker)";
+                        "alvin.study.springboot.aop.domain.service.WorkingService.workWithTransactional" +
+                        "(alvin.study.springboot.aop.domain.model.Worker)";
 
         // 传递给目标方法的参数, 被拦截到的参数也应该是该对象
         var worker = new Worker("Alvin", "Engineer");
@@ -186,20 +186,20 @@ class WorkingServiceTest extends IntegrationTest {
 
         // 确认各个阶段拦截器工作正常
         then(mqForAnnotationAdvice.poll(0, TimeUnit.SECONDS))
-            .has(new MessageCondition(signature, annotationAdvice, Step.AROUND, null, worker));
+                .has(new MessageCondition(signature, annotationAdvice, Step.AROUND, null, worker));
         then(mqForAnnotationAdvice.poll(0, TimeUnit.SECONDS))
-            .has(new MessageCondition(signature, annotationAdvice, Step.BEFORE, null, worker));
+                .has(new MessageCondition(signature, annotationAdvice, Step.BEFORE, null, worker));
 
         // 确认获取的目标方法原始返回值符合预期
         then(mqForAnnotationAdvice.poll(0, TimeUnit.SECONDS))
-            .has(new MessageCondition(
-                signature,
-                annotationAdvice,
-                Step.AFTER_RETURNING,
-                "{\"name\":\"Alvin\",\"title\":\"Engineer\"}",
-                worker));
+                .has(new MessageCondition(
+                    signature,
+                    annotationAdvice,
+                    Step.AFTER_RETURNING,
+                    "{\"name\":\"Alvin\",\"title\":\"Engineer\"}",
+                    worker));
         then(mqForAnnotationAdvice.poll(0, TimeUnit.SECONDS))
-            .has(new MessageCondition(signature, annotationAdvice, Step.AFTER, null, worker));
+                .has(new MessageCondition(signature, annotationAdvice, Step.AFTER, null, worker));
 
         // 确认拦截过程中的所有消息均已被消费
         then(mqForAnnotationAdvice).isEmpty();
@@ -210,8 +210,8 @@ class WorkingServiceTest extends IntegrationTest {
     void shouldAnnotationAdviceGotException() {
         // 期待的被拦截方法的签名
         var signature = "public java.lang.String " +
-            "alvin.study.springboot.aop.domain.service.WorkingService.workWithTransactional" +
-            "(alvin.study.springboot.aop.domain.model.Worker)";
+                        "alvin.study.springboot.aop.domain.service.WorkingService.workWithTransactional" +
+                        "(alvin.study.springboot.aop.domain.model.Worker)";
 
         // 期待的异常对象
         var exception = new JsonParseException(objectMapper.createParser("{}"), "test");
@@ -230,15 +230,15 @@ class WorkingServiceTest extends IntegrationTest {
 
         // 确认各个阶段拦截器工作正常
         then(mqForAnnotationAdvice.poll(0, TimeUnit.SECONDS))
-            .has(new MessageCondition(signature, annotationAdvice, Step.AROUND, null, worker));
+                .has(new MessageCondition(signature, annotationAdvice, Step.AROUND, null, worker));
         then(mqForAnnotationAdvice.poll(0, TimeUnit.SECONDS))
-            .has(new MessageCondition(signature, annotationAdvice, Step.BEFORE, null, worker));
+                .has(new MessageCondition(signature, annotationAdvice, Step.BEFORE, null, worker));
 
         // 确认拦截到指定的异常
         then(mqForAnnotationAdvice.poll(0, TimeUnit.SECONDS))
-            .has(new MessageCondition(signature, annotationAdvice, Step.AFTER_THROWING, exception, worker));
+                .has(new MessageCondition(signature, annotationAdvice, Step.AFTER_THROWING, exception, worker));
         then(mqForAnnotationAdvice.poll(0, TimeUnit.SECONDS))
-            .has(new MessageCondition(signature, annotationAdvice, Step.AFTER, null, worker));
+                .has(new MessageCondition(signature, annotationAdvice, Step.AFTER, null, worker));
 
         // 确认拦截过程中的所有消息均已被消费
         then(mqForAnnotationAdvice).isEmpty();
@@ -259,10 +259,10 @@ class WorkingServiceTest extends IntegrationTest {
         @Override
         public boolean matches(Message value) {
             return Objects.equal(value.getSignature(), signature)
-                && Objects.equal(value.getAdviceObject(), advice)
-                && Objects.equal(value.getStep(), step)
-                && Objects.equal(value.getReturnObject(), returnObj)
-                && List.of(value.getArguments()).contains(worker);
+                   && Objects.equal(value.getAdviceObject(), advice)
+                   && Objects.equal(value.getStep(), step)
+                   && Objects.equal(value.getReturnObject(), returnObj)
+                   && List.of(value.getArguments()).contains(worker);
         }
     }
 }

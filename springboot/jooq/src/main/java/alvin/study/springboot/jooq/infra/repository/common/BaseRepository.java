@@ -71,8 +71,8 @@ public abstract class BaseRepository<R extends Record> {
      */
     protected Long currentOrgId() {
         return Optional.ofNullable(Context.current().<OrgRecord>get(Context.ORG))
-            .map(OrgRecord::getId)
-            .orElse(null);
+                .map(OrgRecord::getId)
+                .orElse(null);
     }
 
     /**
@@ -90,7 +90,7 @@ public abstract class BaseRepository<R extends Record> {
      * @param <T>     集合元素类型
      * @param results 集合参数
      * @return {@link Optional} 对象, 如果集合为空, 则为 {@link Optional#empty()
-     * Optional.empty()}
+     *         Optional.empty()}
      */
     protected <T> Optional<T> asOptional(List<T> results) {
         return results == null || results.isEmpty() ? Optional.empty() : Optional.of(results.get(0));

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import org.jetbrains.annotations.NotNull;
 import org.jooq.DSLContext;
 
 import lombok.RequiredArgsConstructor;
@@ -44,7 +43,7 @@ public class TableCleaner {
      * @return schema 下所有指定类型的表名称
      */
     @SneakyThrows
-    public List<@NotNull String> listAllTables(String schema, String tableType) {
+    public List<String> listAllTables(String schema, String tableType) {
         // 查询元数据表, 获取所需数据表名称
         return dsl.select(field("table_name"))
                 .from(table("information_schema.tables"))

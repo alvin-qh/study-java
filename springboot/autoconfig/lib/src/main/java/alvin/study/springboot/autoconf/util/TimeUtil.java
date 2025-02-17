@@ -24,9 +24,7 @@ public class TimeUtil {
         return oldClock;
     }
 
-    public ZoneId getZoneId() {
-        return zoneId;
-    }
+    public ZoneId getZoneId() { return zoneId; }
 
     public LocalDateTime localNow() {
         return LocalDateTime.ofInstant(utcNow(), zoneId);

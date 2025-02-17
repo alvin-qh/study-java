@@ -28,12 +28,12 @@ public class Migration {
     public void migrateBusinessDB(String dbName) {
         try (var ignore = DataSourceContext.switchTo(dbName)) {
             Flyway.configure()
-                .dataSource(dataSource)
-                .baselineOnMigrate(true)
-                .locations("classpath:/migration/business")
-                .table("schema_version")
-                .load()
-                .migrate();
+                    .dataSource(dataSource)
+                    .baselineOnMigrate(true)
+                    .locations("classpath:/migration/business")
+                    .table("schema_version")
+                    .load()
+                    .migrate();
         }
     }
 
@@ -43,12 +43,12 @@ public class Migration {
     public void migrateCommonDB() {
         try (var ignore = DataSourceContext.switchToDefault()) {
             Flyway.configure()
-                .dataSource(dataSource)
-                .baselineOnMigrate(true)
-                .locations("classpath:/migration/common")
-                .table("schema_version")
-                .load()
-                .migrate();
+                    .dataSource(dataSource)
+                    .baselineOnMigrate(true)
+                    .locations("classpath:/migration/common")
+                    .table("schema_version")
+                    .load()
+                    .migrate();
         }
     }
 }

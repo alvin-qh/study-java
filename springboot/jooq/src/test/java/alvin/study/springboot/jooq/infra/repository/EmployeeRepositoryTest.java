@@ -4,6 +4,8 @@ import alvin.study.springboot.jooq.IntegrationTest;
 import alvin.study.springboot.jooq.infra.model.EmployeeInfo;
 import alvin.study.springboot.jooq.infra.model.Gender;
 import alvin.study.springboot.jooq.infra.repository.common.BaseRepository;
+
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,17 +52,17 @@ class EmployeeRepositoryTest extends IntegrationTest {
         // 持久化实体对象
         var rec = employeeRepository.newRecord(
             e -> e.setName("Alvin")
-                .setEmail("alvin@fakemail.com")
-                .setTitle("Manager")
-                .store());
+                    .setEmail("alvin@fakemail.com")
+                    .setTitle("Manager")
+                    .store());
         then(rec.getId()).isNotNull();
 
         // 确认实体对象已被持久化
         var mayEmployee = employeeRepository.selectById(rec.getId());
         then(mayEmployee).isPresent().get().matches(
             r -> Objects.equals(r.getName(), "Alvin")
-                && Objects.equals(r.getEmail(), "alvin@fakemail.com")
-                && Objects.equals(r.getTitle(), "Manager"));
+                 && Objects.equals(r.getEmail(), "alvin@fakemail.com")
+                 && Objects.equals(r.getTitle(), "Manager"));
     }
 
     /**
@@ -78,9 +80,9 @@ class EmployeeRepositoryTest extends IntegrationTest {
         // 持久化实体对象
         var rec = employeeRepository.newRecord(
             e -> e.setName("Alvin")
-                .setEmail("alvin@fakemail.com")
-                .setTitle("Manager")
-                .store());
+                    .setEmail("alvin@fakemail.com")
+                    .setTitle("Manager")
+                    .store());
         then(rec.getId()).isNotNull();
 
         // 更新实体字段
@@ -91,8 +93,8 @@ class EmployeeRepositoryTest extends IntegrationTest {
         var mayEmployee = employeeRepository.selectById(rec.getId());
         then(mayEmployee).isPresent().get().matches(
             r -> Objects.equals(r.getName(), "Emma")
-                && Objects.equals(r.getEmail(), "emma@fakemail.com")
-                && Objects.equals(r.getTitle(), "Manager"));
+                 && Objects.equals(r.getEmail(), "emma@fakemail.com")
+                 && Objects.equals(r.getTitle(), "Manager"));
     }
 
     /**
@@ -110,9 +112,9 @@ class EmployeeRepositoryTest extends IntegrationTest {
         // 持久化实体对象
         var rec = employeeRepository.newRecord(
             e -> e.setName("Alvin")
-                .setEmail("alvin@fakemail.com")
-                .setTitle("Manager")
-                .store());
+                    .setEmail("alvin@fakemail.com")
+                    .setTitle("Manager")
+                    .store());
         then(rec.getId()).isNotNull();
 
         // 删除实体对象
@@ -132,9 +134,9 @@ class EmployeeRepositoryTest extends IntegrationTest {
         // 持久化雇员实体
         var employee = employeeRepository.newRecord(
             r -> r.setName("Alvin")
-                .setEmail("alvin@fakemail.com")
-                .setTitle("Manager")
-                .store());
+                    .setEmail("alvin@fakemail.com")
+                    .setTitle("Manager")
+                    .store());
 
         // 持久化部门实体
         var department1 = departmentRepository.newRecord(r -> r.setName("Department1").store());
@@ -156,16 +158,16 @@ class EmployeeRepositoryTest extends IntegrationTest {
 
         // 确认雇员实体查询结果
         then(employeeWithDepartments.keySet())
-            .singleElement()
-            .extracting("id")
-            .isEqualTo(employee.getId());
+                .singleElement()
+                .extracting("id")
+                .isEqualTo(employee.getId());
 
         // 确认雇员所属部门结果
         then(employeeWithDepartments.values())
-            .singleElement()
-            .asList()
-            .extracting("id")
-            .contains(department1.getId(), department2.getId());
+                .singleElement()
+                .asInstanceOf(InstanceOfAssertFactories.LIST)
+                .extracting("id")
+                .contains(department1.getId(), department2.getId());
     }
 
     /**
@@ -181,21 +183,21 @@ class EmployeeRepositoryTest extends IntegrationTest {
         // 持久化实体对象
         var rec = employeeRepository.newRecord(
             e -> e.setName("Alvin")
-                .setEmail("alvin@fakemail.com")
-                .setTitle("Manager")
-                // 设置 EmployeeInfo 类型字段, 该字段为 JSON 格式, 会通过 EmployeeInfoConverter 类型给予转换
-                .setInfo(new EmployeeInfo()
-                    .setGender(Gender.MALE)
-                    .setBirthday(LocalDate.of(1981, 3, 17))
-                    .setTelephone("13999999911"))
-                .store());
+                    .setEmail("alvin@fakemail.com")
+                    .setTitle("Manager")
+                    // 设置 EmployeeInfo 类型字段, 该字段为 JSON 格式, 会通过 EmployeeInfoConverter 类型给予转换
+                    .setInfo(new EmployeeInfo()
+                            .setGender(Gender.MALE)
+                            .setBirthday(LocalDate.of(1981, 3, 17))
+                            .setTelephone("13999999911"))
+                    .store());
 
         // 确认 JSON 字符串在读取时可以转为 EmployeeInfo 类型字段
         var mayEmployee = employeeRepository.selectById(rec.getId());
         then(mayEmployee).isPresent().get().matches(
             r -> r.getInfo() != null
-                && Objects.equals(r.getInfo().getGender(), Gender.MALE)
-                && Objects.equals(r.getInfo().getBirthday().toString(), "1981-03-17")
-                && Objects.equals(r.getInfo().getTelephone(), "13999999911"));
+                 && Objects.equals(r.getInfo().getGender(), Gender.MALE)
+                 && Objects.equals(r.getInfo().getBirthday().toString(), "1981-03-17")
+                 && Objects.equals(r.getInfo().getTelephone(), "13999999911"));
     }
 }

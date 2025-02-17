@@ -31,9 +31,9 @@ class UserServiceTest extends IntegrationTest {
         try (var ignore = beginTx(false)) {
             // 根据所给的 account 和 password 创建 User 对象
             user = newBuilder(UserBuilder.class)
-                .withAccount(account)
-                .withPassword(password)
-                .create();
+                    .withAccount(account)
+                    .withPassword(password)
+                    .create();
         }
 
         // 创建分页对象, 当前页为第 1 页 (页码从 0 开始), 每页 20 条记录

@@ -58,25 +58,25 @@ public class GraphQLErrorHandler implements GraphQLQueryResolver {
      * @return {@link GraphQLError} 对象
      */
     private static GraphQLError makeGraphQLError(
-        @NotNull ErrorContext errorContext,
-        String message,
-        Map<String, Object> extensions,
-        ErrorClassification errorClassification) {
+            @NotNull ErrorContext errorContext,
+            String message,
+            Map<String, Object> extensions,
+            ErrorClassification errorClassification) {
         errorClassification = errorClassification == null ? errorContext.getErrorType() : errorClassification;
 
         if (errorContext.getExtensions() != null) {
             extensions = Streams
-                .concat(extensions.entrySet().stream(), errorContext.getExtensions().entrySet().stream())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                    .concat(extensions.entrySet().stream(), errorContext.getExtensions().entrySet().stream())
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         }
 
         return GraphqlErrorBuilder.newError()
-            .message(message)
-            .extensions(extensions)
-            .errorType(errorClassification)
-            .locations(errorContext.getLocations())
-            .path(errorContext.getPath())
-            .build();
+                .message(message)
+                .extensions(extensions)
+                .errorType(errorClassification)
+                .locations(errorContext.getLocations())
+                .path(errorContext.getPath())
+                .build();
     }
 
     /**
@@ -87,7 +87,7 @@ public class GraphQLErrorHandler implements GraphQLQueryResolver {
      */
     private static void log(Throwable t, GraphQLError error) {
         log.info("Graphql error handler: {} handled, "
-                + "client message=<message={}, errorType={}, locations={}, extensions={}, path={}>",
+                 + "client message=<message={}, errorType={}, locations={}, extensions={}, path={}>",
             t.getClass().getName(),
             error.getMessage(),
             error.getErrorType(),
@@ -155,7 +155,7 @@ public class GraphQLErrorHandler implements GraphQLQueryResolver {
         var validations = e.getConstraintViolations();
 
         var fieldErrors = validations == null ? List.of()
-            : e.getConstraintViolations().stream().map(FieldError::from).toList();
+                                              : e.getConstraintViolations().stream().map(FieldError::from).toList();
 
         var err = makeGraphQLError(
             errorContext,

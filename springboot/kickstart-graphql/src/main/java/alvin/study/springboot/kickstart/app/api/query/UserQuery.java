@@ -46,7 +46,7 @@ public class UserQuery extends BaseQuery {
     public UserType user(String id) {
         // 查询用户
         return userService.findById(Long.parseLong(id))
-            .map(u -> map(u, UserType.class))
-            .orElseThrow(() -> new InputException("Invalid user id"));
+                .map(u -> map(u, UserType.class))
+                .orElseThrow(() -> new InputException("Invalid user id"));
     }
 }

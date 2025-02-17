@@ -26,11 +26,11 @@ import org.springframework.web.servlet.HandlerInterceptor;
  * </p>
  *
  * @see HandlerInterceptor#preHandle(HttpServletRequest, HttpServletResponse,
- * Object)
+ *      Object)
  * @see HandlerInterceptor#postHandle(HttpServletRequest, HttpServletResponse,
- * Object, org.springframework.web.servlet.ModelAndView)
- * HandlerInterceptor.postHandle(HttpServletRequest, HttpServletResponse,
- * Object, ModelAndView)
+ *      Object, org.springframework.web.servlet.ModelAndView)
+ *      HandlerInterceptor.postHandle(HttpServletRequest, HttpServletResponse,
+ *      Object, ModelAndView)
  */
 @Slf4j
 @Component
@@ -52,7 +52,7 @@ public class ApiHandlerInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(
-        HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+            HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("Visiting \"{}\"", request.getRequestURI());
 
         // 获取 X-Org-Code 请求头, 获取组织代码

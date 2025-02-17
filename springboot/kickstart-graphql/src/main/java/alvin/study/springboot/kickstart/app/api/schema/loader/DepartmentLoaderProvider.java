@@ -43,8 +43,8 @@ public class DepartmentLoaderProvider implements DataLoaderProvider<Long, Depart
                 // 进入新线程, 重新注册 Context 对象
                 try (var ignore = CustomRequestAttributes.scopedRegister(context)) {
                     // 根据 id 集合查询 Org 对象集合, 并转为 OrgType 对象
-                    return departmentMapper.selectBatchIds(departmentIds).stream()
-                        .collect(Collectors.toMap(Department::getId, Functions.identity()));
+                    return departmentMapper.selectByIds(departmentIds).stream()
+                            .collect(Collectors.toMap(Department::getId, Functions.identity()));
                 }
             });
         });

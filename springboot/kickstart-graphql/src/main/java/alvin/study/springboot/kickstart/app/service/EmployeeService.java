@@ -94,7 +94,7 @@ public class EmployeeService {
             // 删除之前的关联关系
             departmentEmployeeMapper.delete(
                 Wrappers.lambdaQuery(DepartmentEmployee.class)
-                    .eq(DepartmentEmployee::getEmployeeId, employee.getId()));
+                        .eq(DepartmentEmployee::getEmployeeId, employee.getId()));
 
             // 建立新的关联关系
             bindWithDepartments(originalEmployee, new HashSet<>(departmentIds));
@@ -110,7 +110,7 @@ public class EmployeeService {
      * @param departmentIds 所属部门 id 集合
      */
     private void bindWithDepartments(Employee employee, Set<Long> departmentIds) {
-        var departments = departmentMapper.selectBatchIds(departmentIds);
+        var departments = departmentMapper.selectByIds(departmentIds);
         if (departmentIds.size() != departments.size()) {
             departmentIds.removeAll(departments.stream().map(Department::getId).collect(Collectors.toSet()));
             throw new InputException(String.format("Department with id %s ", departmentIds));
@@ -135,7 +135,7 @@ public class EmployeeService {
         // 删除之前的关联关系
         departmentEmployeeMapper.delete(
             Wrappers.lambdaQuery(DepartmentEmployee.class)
-                .eq(DepartmentEmployee::getEmployeeId, id));
+                    .eq(DepartmentEmployee::getEmployeeId, id));
 
         return employeeMapper.deleteById(id) > 0;
     }

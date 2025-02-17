@@ -4,7 +4,6 @@ import static alvin.study.springboot.jooq.infra.model.public_.Tables.USER;
 
 import java.util.Optional;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Repository;
 
 import alvin.study.springboot.jooq.infra.model.public_.tables.records.UserRecord;
@@ -28,15 +27,15 @@ public class UserRepository extends BaseRepository<UserRecord> {
      * @param id 实体主键
      * @return {@link Optional} 对象, 内部为 {@link UserRecord} 类型对象
      */
-    public Optional<@NotNull UserRecord> selectById(Long id) {
+    public Optional<UserRecord> selectById(Long id) {
         // 查询用户记录所有字段
         var users = dsl().select()
-            .from(USER)
-            // 查询条件
-            .where(USER.ID.eq(id))
-            .fetch()
-            // 返回结果转换
-            .into(UserRecord.class);
+                .from(USER)
+                // 查询条件
+                .where(USER.ID.eq(id))
+                .fetch()
+                // 返回结果转换
+                .into(UserRecord.class);
 
         return asOptional(users);
     }
@@ -47,15 +46,15 @@ public class UserRepository extends BaseRepository<UserRecord> {
      * @param account 账号名称
      * @return {@link Optional} 对象, 内部为 {@link UserRecord} 类型对象
      */
-    public Optional<@NotNull UserRecord> selectByAccount(String account) {
+    public Optional<UserRecord> selectByAccount(String account) {
         // 查询用户记录所有字段
         var users = dsl().select()
-            .from(USER)
-            // 查询条件
-            .where(USER.ACCOUNT.eq(account))
-            .fetch()
-            // 返回结果转换
-            .into(UserRecord.class);
+                .from(USER)
+                // 查询条件
+                .where(USER.ACCOUNT.eq(account))
+                .fetch()
+                // 返回结果转换
+                .into(UserRecord.class);
 
         return asOptional(users);
     }

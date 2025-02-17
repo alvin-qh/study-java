@@ -70,5 +70,4 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 @CacheNamespace
-public interface OrgMapper extends BaseMapper<Org> {
-}
+public interface OrgMapper extends BaseMapper<Org> {}

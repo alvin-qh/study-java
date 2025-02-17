@@ -3,6 +3,7 @@ package alvin.study.springboot.kickstart.core.graphql.directive;
 import alvin.study.springboot.kickstart.conf.GraphqlConfig;
 import graphql.schema.DataFetcherFactories;
 import graphql.schema.GraphQLFieldDefinition;
+import graphql.schema.GraphQLObjectType;
 import graphql.schema.idl.SchemaDirectiveWiring;
 import graphql.schema.idl.SchemaDirectiveWiringEnvironment;
 
@@ -48,18 +49,18 @@ public class UppercaseDirective implements SchemaDirectiveWiring {
      * 当查询到标注指定处理器的字段时, 执行的方法
      */
     @Override
-    @SuppressWarnings("deprecation")
     public GraphQLFieldDefinition onField(SchemaDirectiveWiringEnvironment<GraphQLFieldDefinition> env) {
         // 获取 graphql 代码注册表对象
         var registry = env.getCodeRegistry();
 
         // 获取在处理的字段对象
         var field = env.getElement();
+
         // 获取包含指定字段的类型
-        var parentType = env.getFieldsContainer();
+        var parentType = field.getType();
 
         // 获取原本的 dataFetcher 对象
-        var originalFetcher = registry.getDataFetcher(parentType, field);
+        var originalFetcher = registry.getDataFetcher((GraphQLObjectType) parentType, env.getFieldDefinition());
 
         // 定义新的 dataFetcher, 即新的获取字段的方式
         var dataFetcher = DataFetcherFactories.wrapDataFetcher(originalFetcher, (dfEnv, value) -> {
@@ -70,7 +71,7 @@ public class UppercaseDirective implements SchemaDirectiveWiring {
         });
 
         // 注册字段的 dataFetcher 对象
-        registry.dataFetcher(parentType, field, dataFetcher);
+        registry.dataFetcher((GraphQLObjectType) parentType, field, dataFetcher);
         return field;
     }
 }

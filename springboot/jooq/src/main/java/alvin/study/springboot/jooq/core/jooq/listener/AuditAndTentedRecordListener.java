@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Objects;
 
-import org.jetbrains.annotations.NotNull;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.RecordContext;
@@ -93,6 +92,7 @@ public class AuditAndTentedRecordListener implements RecordListener, RecordListe
      *
      * @param ctx 记录操作上下文对象, 对每一条 SQL 操作的所有监听方法, 共享同一个 {@link RecordContext} 对象
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void insertStart(RecordContext ctx) {
         // 获取要插入的实体对象
@@ -114,15 +114,15 @@ public class AuditAndTentedRecordListener implements RecordListener, RecordListe
                     rec.setValue((Field<Long>) field, org.getId());
                 }
             }
-            case "created_at", "updated_at" ->
-                rec.setValue((Field<LocalDateTime>) field, LocalDateTime.now(ZoneOffset.UTC));
+            case "created_at", "updated_at" -> rec.setValue((Field<LocalDateTime>) field,
+                LocalDateTime.now(ZoneOffset.UTC));
             case "created_by", "updated_by" -> {
                 if (user != null) {
                     rec.setValue((Field<Long>) field, user.getId());
                 }
             }
             case "deleted" -> rec.setValue((Field<Long>) field, 0L);
-            default -> { }
+            default -> {}
             }
         }
     }
@@ -136,6 +136,7 @@ public class AuditAndTentedRecordListener implements RecordListener, RecordListe
      *
      * @param ctx 记录操作上下文对象, 对每一条记录的一次操作的所有监听方法, 共享同一个 {@link RecordContext} 对象
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void updateStart(RecordContext ctx) {
         // 获取要更新的实体对象
@@ -157,7 +158,7 @@ public class AuditAndTentedRecordListener implements RecordListener, RecordListe
                     rec.setValue((Field<Long>) field, user.getId());
                 }
             }
-            default -> { }
+            default -> {}
             }
         }
     }
@@ -168,7 +169,7 @@ public class AuditAndTentedRecordListener implements RecordListener, RecordListe
      * @return {@link RecordListener} 对象
      */
     @Override
-    public @NotNull RecordListener provide() {
+    public RecordListener provide() {
         return this;
     }
 }

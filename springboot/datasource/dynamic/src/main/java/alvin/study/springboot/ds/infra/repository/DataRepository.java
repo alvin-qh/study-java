@@ -55,8 +55,8 @@ public class DataRepository extends BaseRepository {
 
         // 获取返回的自增 id 属性值
         entity.setId(Optional.ofNullable(keyHolder.getKeys())
-            .map(h -> (Long) h.get("id"))
-            .orElseThrow());
+                .map(h -> (Long) h.get("id"))
+                .orElseThrow());
         return entity;
     }
 

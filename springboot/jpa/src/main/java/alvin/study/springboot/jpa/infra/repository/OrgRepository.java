@@ -22,7 +22,7 @@ public interface OrgRepository extends CrudRepository<Org, Long> {
      *
      * @param name 组织名
      * @return {@link Optional} 对象, {@link Optional#isPresent()} 方法返回 {@code true}
-     * 表示查询成功
+     *         表示查询成功
      */
     Optional<Org> findByName(String name);
 }

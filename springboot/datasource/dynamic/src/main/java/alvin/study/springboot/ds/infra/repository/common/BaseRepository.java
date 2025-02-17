@@ -15,11 +15,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public abstract class BaseRepository {
     // 时间日期格式
     private static final DateTimeFormatter DB_DATETIME_FORMATTER = new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .append(DateTimeFormatter.ISO_LOCAL_DATE)
-        .appendLiteral(' ')
-        .append(DateTimeFormatter.ISO_LOCAL_TIME)
-        .toFormatter();
+            .parseCaseInsensitive()
+            .append(DateTimeFormatter.ISO_LOCAL_DATE)
+            .appendLiteral(' ')
+            .append(DateTimeFormatter.ISO_LOCAL_TIME)
+            .toFormatter();
 
     // 注入 JDBC 模板对象
     @Autowired
@@ -33,6 +33,7 @@ public abstract class BaseRepository {
      * @param type  要转换的类型
      * @return 转换结果
      */
+    @SuppressWarnings("unchecked")
     protected static <T> T map(String value, Class<T> type) {
         if (type == Instant.class) {
             // 字符串转为 UTC 日期时间对象

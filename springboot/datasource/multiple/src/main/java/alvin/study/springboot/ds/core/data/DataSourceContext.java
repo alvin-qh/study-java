@@ -18,7 +18,7 @@ public final class DataSourceContext {
     // 本地线程存储对象
     private static final ThreadLocal<DataSourceTarget> LOCAL = new ThreadLocal<>();
 
-    private DataSourceContext() { }
+    private DataSourceContext() {}
 
     /**
      * 切换数据源标识

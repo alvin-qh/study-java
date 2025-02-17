@@ -40,12 +40,12 @@ class OrgTest extends IntegrationTest {
 
         // 确认查询解雇符合预期
         graphql("test-org", "queryOrg", vars)
-            .assertThatNoErrorsArePresent()
-            .assertThatField("$.data.org")
-            .as(PathMap.class)
-            .matches(v -> v.get("id").equals(org.getId().toString()), "id")
-            // 由于 @uppercase 处理器的作用, 查询到的 name 属性值为大写
-            .matches(v -> v.get("name").equals(org.getName().toUpperCase()), "name");
+                .assertThatNoErrorsArePresent()
+                .assertThatField("$.data.org")
+                .as(PathMap.class)
+                .matches(v -> v.get("id").equals(org.getId().toString()), "id")
+                // 由于 @uppercase 处理器的作用, 查询到的 name 属性值为大写
+                .matches(v -> v.get("name").equals(org.getName().toUpperCase()), "name");
     }
 
     /**
@@ -56,20 +56,20 @@ class OrgTest extends IntegrationTest {
     void createOrg_shouldMutationExecute() throws IOException {
         // 构建输入参数对象
         var input = OrgInput.builder()
-            .name("alvin.edu")
-            .build();
+                .name("alvin.edu")
+                .build();
 
         // 构建变更参数
         var vars = valueToTree("input", input);
 
         // 执行变更操作并确认结果
         graphql("test-org", "createOrg", vars)
-            .assertThatNoErrorsArePresent()
-            .assertThatField("$.data.createOrg.org")
-            .as(PathMap.class)
-            .matches(v -> !Strings.isNullOrEmpty(v.getAs("id")), "id")
-            // 由于 @uppercase 处理器的作用, 查询到的 name 属性值为大写
-            .matches(v -> v.get("name").equals(input.getName().toUpperCase()), "name");
+                .assertThatNoErrorsArePresent()
+                .assertThatField("$.data.createOrg.org")
+                .as(PathMap.class)
+                .matches(v -> !Strings.isNullOrEmpty(v.getAs("id")), "id")
+                // 由于 @uppercase 处理器的作用, 查询到的 name 属性值为大写
+                .matches(v -> v.get("name").equals(input.getName().toUpperCase()), "name");
     }
 
     /**
@@ -87,8 +87,8 @@ class OrgTest extends IntegrationTest {
 
         // 构建变更输入对象
         var input = OrgInput.builder()
-            .name("alvin.edu.update")
-            .build();
+                .name("alvin.edu.update")
+                .build();
 
         // 构建变更参数
         var vars = mapToTree(Map.of(
@@ -97,12 +97,12 @@ class OrgTest extends IntegrationTest {
 
         // 执行变更操作并确认结果
         graphql("test-org", "updateOrg", vars)
-            .assertThatNoErrorsArePresent()
-            .assertThatField("$.data.updateOrg.org")
-            .as(PathMap.class)
-            .matches(v -> v.get("id").equals(org.getId().toString()), "id")
-            // 由于 @uppercase 处理器的作用, 查询到的 name 属性值为大写
-            .matches(v -> v.get("name").equals(input.getName().toUpperCase()), "name");
+                .assertThatNoErrorsArePresent()
+                .assertThatField("$.data.updateOrg.org")
+                .as(PathMap.class)
+                .matches(v -> v.get("id").equals(org.getId().toString()), "id")
+                // 由于 @uppercase 处理器的作用, 查询到的 name 属性值为大写
+                .matches(v -> v.get("name").equals(input.getName().toUpperCase()), "name");
     }
 
     /**

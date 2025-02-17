@@ -3,7 +3,6 @@ package alvin.study.springboot.kickstart.app.api.schema.type.common;
 import java.util.concurrent.CompletableFuture;
 
 import org.dataloader.DataLoader;
-import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 
 import alvin.study.springboot.kickstart.app.api.schema.loader.OrgLoaderProvider;
@@ -47,7 +46,7 @@ public interface TenantedResolver<T extends TenantedType> extends GraphQLResolve
      *                 {@link DataLoader} 对象
      * @return 一个异步函数, 将通过每个 id 获取对象的处理延时执行, 转化为批量处理
      */
-    default CompletableFuture<@NotNull OrgType> getOrg(T instance, DataFetchingEnvironment env) {
+    default CompletableFuture<OrgType> getOrg(T instance, DataFetchingEnvironment env) {
         var mapper = (ModelMapper) env.getGraphQlContext().get(ModelMapper.class);
 
         DataLoader<Long, Org> loader = env.getDataLoaderRegistry().getDataLoader(OrgLoaderProvider.NAME);

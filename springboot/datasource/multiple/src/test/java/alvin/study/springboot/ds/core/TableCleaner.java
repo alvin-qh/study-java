@@ -72,12 +72,12 @@ public class TableCleaner {
             template.execute("SET FOREIGN_KEY_CHECKS = 0");
             // 清空指定数据表
             listAllTables(schema, tableType).stream()
-                .map(m -> m.get("table_name"))
-                .filter(n -> !excludeSet.contains(n))
-                .forEach(n -> {
-                    log.info("Clear table {}", n);
-                    template.execute(String.format("TRUNCATE TABLE `%s`", n));
-                });
+                    .map(m -> m.get("table_name"))
+                    .filter(n -> !excludeSet.contains(n))
+                    .forEach(n -> {
+                        log.info("Clear table {}", n);
+                        template.execute(String.format("TRUNCATE TABLE `%s`", n));
+                    });
         } finally {
             // 恢复外键约束
             template.execute("SET FOREIGN_KEY_CHECKS = 1");

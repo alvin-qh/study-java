@@ -194,10 +194,10 @@ public class Department extends AuditedEntity {
      */
     public List<Employee> getEmployees() {
         return departmentEmployees.stream()
-            // 将集合的每一项 mapping 为 Employee 类型实体对象
-            .map(DepartmentEmployee::getEmployee)
-            // 将 mapping 的结果重新转为 List 集合
-            .toList();
+                // 将集合的每一项 mapping 为 Employee 类型实体对象
+                .map(DepartmentEmployee::getEmployee)
+                // 将 mapping 的结果重新转为 List 集合
+                .toList();
     }
 
     /**

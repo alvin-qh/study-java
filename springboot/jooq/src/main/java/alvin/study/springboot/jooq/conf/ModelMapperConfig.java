@@ -22,10 +22,10 @@ public class ModelMapperConfig {
         var modelMapper = new ModelMapper();
         // 配置对象
         modelMapper.getConfiguration()
-            // 增加 JOOQ 相关配置
-            .addValueReader(new RecordValueReader())
-            // 增加名称转换规则
-            .setSourceNameTokenizer(NameTokenizers.UNDERSCORE);
+                // 增加 JOOQ 相关配置
+                .addValueReader(new RecordValueReader())
+                // 增加名称转换规则
+                .setSourceNameTokenizer(NameTokenizers.UNDERSCORE);
 
         return modelMapper;
     }

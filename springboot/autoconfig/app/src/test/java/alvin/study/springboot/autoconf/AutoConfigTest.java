@@ -24,26 +24,26 @@ class AutoConfigTest {
     @Test
     void timeZone_shouldInjectTimeZoneIntoTimeUtilObject() {
         then(timeUtil).isNotNull()
-            .extracting(TimeUtil::getZoneId)
-            .hasToString("Asia/Shanghai")
-            .isNotNull();
+                .extracting(TimeUtil::getZoneId)
+                .hasToString("Asia/Shanghai")
+                .isNotNull();
     }
 
     @Test
     void user_shouldInjectUserNameIntoUserObject() {
         then(user).isNotNull()
-            .extracting(User::getName)
-            .hasToString("Emma")
-            .isNotNull();
+                .extracting(User::getName)
+                .hasToString("Emma")
+                .isNotNull();
     }
 
     @Test
     void userService_shouldInjectUserService() {
         var user = userService.loadUser();
         then(user).isNotNull()
-            .extracting(User::getName)
-            .hasToString("Emma")
-            .isNotNull();
+                .extracting(User::getName)
+                .hasToString("Emma")
+                .isNotNull();
     }
 
 }

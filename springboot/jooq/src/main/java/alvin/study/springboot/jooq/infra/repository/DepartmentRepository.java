@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Repository;
 
 import alvin.study.springboot.jooq.infra.model.public_.tables.records.DepartmentRecord;
@@ -33,16 +32,16 @@ public class DepartmentRepository extends BaseRepository<DepartmentRecord> {
      * @param id 实体主键
      * @return {@link Optional} 对象, 内部为 {@link DepartmentRecord} 类型对象
      */
-    public Optional<@NotNull DepartmentRecord> selectById(Long id) {
+    public Optional<DepartmentRecord> selectById(Long id) {
         // 查询员工记录所有字段
         var departments = dsl()
-            .select()
-            .from(DEPARTMENT)
-            // 查询条件
-            .where(DEPARTMENT.ID.eq(id))
-            .fetch()
-            // 返回结果转换
-            .into(DepartmentRecord.class);
+                .select()
+                .from(DEPARTMENT)
+                // 查询条件
+                .where(DEPARTMENT.ID.eq(id))
+                .fetch()
+                // 返回结果转换
+                .into(DepartmentRecord.class);
 
         return asOptional(departments);
     }
@@ -57,28 +56,28 @@ public class DepartmentRepository extends BaseRepository<DepartmentRecord> {
      * @param name 要查询的部门名称
      * @return 查询结果, 为一个 Map 对象, Key 是 1 对 n 关系中的 1, Value 是 n
      */
-    public Map<@NotNull DepartmentRecord, List<DepartmentRecord>> selectByNameWithChildren(String name) {
+    public Map<DepartmentRecord, List<DepartmentRecord>> selectByNameWithChildren(String name) {
         // 为要进行连接的两个表设置别名
         var p1 = DEPARTMENT.as("p1");
         var p2 = DEPARTMENT.as("p2");
 
         return dsl()
-            // 设置要查询的字段
-            .select(p1.fields())
-            .select(p2.fields())
-            // 设置要查询的表, 连接表和连接条件
-            .from(p1)
-            .join(p2).on(p1.ID.eq(p2.PARENT_ID))
-            // 设置查询条件
-            .where(p1.NAME.eq(name))
-            // 设置排序方式
-            .orderBy(p1.ID.desc())
-            // 设置 Mapping 方式
-            .fetchGroups(
-                // Key 的 mapping 方式
-                r -> r.into(p1).into(DepartmentRecord.class),
-                // Value 的 mapping 方式
-                r -> r.into(p2).into(DepartmentRecord.class));
+                // 设置要查询的字段
+                .select(p1.fields())
+                .select(p2.fields())
+                // 设置要查询的表, 连接表和连接条件
+                .from(p1)
+                .join(p2).on(p1.ID.eq(p2.PARENT_ID))
+                // 设置查询条件
+                .where(p1.NAME.eq(name))
+                // 设置排序方式
+                .orderBy(p1.ID.desc())
+                // 设置 Mapping 方式
+                .fetchGroups(
+                    // Key 的 mapping 方式
+                    r -> r.into(p1).into(DepartmentRecord.class),
+                    // Value 的 mapping 方式
+                    r -> r.into(p2).into(DepartmentRecord.class));
     }
 
     /**
@@ -87,28 +86,28 @@ public class DepartmentRepository extends BaseRepository<DepartmentRecord> {
      * @param id 要查询的部门 ID
      * @return 查询结果, 为一个 Map 对象, Key 是 1 对 n 关系中的 1, Value 是 n
      */
-    public Map<@NotNull DepartmentRecord, List<EmployeeRecord>> selectByIdWithEmployees(Long id) {
+    public Map<DepartmentRecord, List<EmployeeRecord>> selectByIdWithEmployees(Long id) {
         // 为要进行连接的两个表设置别名
         var d = DEPARTMENT.as("d");
         var e = EMPLOYEE.as("e");
         var de = DEPARTMENT_EMPLOYEE.as("de");
 
         return dsl()
-            // 设置要查询的字段
-            .select(d.fields())
-            .select(e.fields())
-            // 设置要查询的表, 连接表和连接条件
-            .from(d)
-            .join(de).on(d.ID.eq(de.DEPARTMENT_ID))
-            .join(e).on(e.ID.eq(de.EMPLOYEE_ID))
-            // 设置查询条件
-            .where(d.ID.eq(id))
-            // 设置排序方式
-            // 设置 Mapping 方式
-            .fetchGroups(
-                // Key 的 mapping 方式
-                r -> r.into(d).into(DepartmentRecord.class),
-                // Value 的 mapping 方式
-                r -> r.into(e).into(EmployeeRecord.class));
+                // 设置要查询的字段
+                .select(d.fields())
+                .select(e.fields())
+                // 设置要查询的表, 连接表和连接条件
+                .from(d)
+                .join(de).on(d.ID.eq(de.DEPARTMENT_ID))
+                .join(e).on(e.ID.eq(de.EMPLOYEE_ID))
+                // 设置查询条件
+                .where(d.ID.eq(id))
+                // 设置排序方式
+                // 设置 Mapping 方式
+                .fetchGroups(
+                    // Key 的 mapping 方式
+                    r -> r.into(d).into(DepartmentRecord.class),
+                    // Value 的 mapping 方式
+                    r -> r.into(e).into(EmployeeRecord.class));
     }
 }

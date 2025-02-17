@@ -44,7 +44,7 @@ public interface UserRepository extends CrudRepository<User, Long>, JpaSpecifica
      *
      * @param account 用户账号
      * @return {@link Optional} 对象, {@link Optional#isPresent()} 方法返回 {@code true}
-     * 表示查询成功
+     *         表示查询成功
      */
     Optional<User> findByAccount(String account);
 }

@@ -59,10 +59,10 @@ class UserTest extends IntegrationTest {
     void createUser_shouldMutationExecute() throws IOException {
         // 构建输入参数对象
         var input = UserInput.builder()
-            .account("Alvin")
-            .password("12345678")
-            .group(UserGroup.ADMIN)
-            .build();
+                .account("Alvin")
+                .password("12345678")
+                .group(UserGroup.ADMIN)
+                .build();
 
         // 构建变更参数
         var vars = valueToTree("input", input);
@@ -96,10 +96,10 @@ class UserTest extends IntegrationTest {
 
         // 构建变更输入对象
         var input = UserInput.builder()
-            .account("Alvin-Updated")
-            .password("12345678")
-            .group(UserGroup.ADMIN)
-            .build();
+                .account("Alvin-Updated")
+                .password("12345678")
+                .group(UserGroup.ADMIN)
+                .build();
 
         // 构建变更参数
         var vars = mapToTree(Map.of(

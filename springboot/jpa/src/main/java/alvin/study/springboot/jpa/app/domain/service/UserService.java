@@ -115,12 +115,12 @@ public class UserService {
             // 返回 where 条件 + order by 的组合结果
             // 如果只需要 where 条件即可, 则可直接返回 predicate 变量
             return query
-                // 将查询条件放入 query 的 where 子句中
-                .where(predicate)
-                // 设置排序表达式
-                .orderBy(cb.desc(root.get("id")))
-                // 返回复合查询条件
-                .getRestriction();
+                    // 将查询条件放入 query 的 where 子句中
+                    .where(predicate)
+                    // 设置排序表达式
+                    .orderBy(cb.desc(root.get("id")))
+                    // 返回复合查询条件
+                    .getRestriction();
         }, pageable);
     }
 

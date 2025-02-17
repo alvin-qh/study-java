@@ -19,7 +19,7 @@ import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 public class ConfigControllerTest extends IntegrationTest {
     // 定义响应数据返回类型
     private static final ParameterizedTypeReference<ResponseDto<ConfigDto>> RESP_TYPE
-        = new ParameterizedTypeReference<>() { };
+        = new ParameterizedTypeReference<>() {};
 
     // 注入配置服务对象
     @Autowired
@@ -39,11 +39,11 @@ public class ConfigControllerTest extends IntegrationTest {
 
         // 创建指定的 org 配置
         var resp = postJson("/api/config/{0}", "test-org-1", "test-org-2")
-            .exchange()
-            .expectStatus().isOk()
-            .expectBody(RESP_TYPE)
-            .returnResult()
-            .getResponseBody();
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(RESP_TYPE)
+                .returnResult()
+                .getResponseBody();
 
         // 确认返回响应结果正确
         then(resp.getStatus()).isZero();
@@ -66,8 +66,8 @@ public class ConfigControllerTest extends IntegrationTest {
 
         // 删除指定的 org 配置
         deleteJson("/api/config/{0}", "test-org-1", "test-org-1")
-            .exchange()
-            .expectStatus().isOk();
+                .exchange()
+                .expectStatus().isOk();
 
         // 确认返回响应结果正确
         thenThrownBy(() -> configService.findConfig("test-org-1")).isInstanceOf(ConfigNotExistException.class);

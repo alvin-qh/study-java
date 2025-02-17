@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Repository;
 
 import alvin.study.springboot.jooq.infra.model.public_.tables.records.DepartmentRecord;
@@ -33,16 +32,16 @@ public class EmployeeRepository extends BaseRepository<EmployeeRecord> {
      * @param id 实体主键
      * @return {@link Optional} 对象, 内部为 {@link EmployeeRecord} 类型对象
      */
-    public Optional<@NotNull EmployeeRecord> selectById(Long id) {
+    public Optional<EmployeeRecord> selectById(Long id) {
         // 查询员工记录所有字段
         var employees = dsl()
-            .select()
-            .from(EMPLOYEE)
-            // 查询条件
-            .where(EMPLOYEE.ID.eq(id))
-            .fetch()
-            // 返回结果转换
-            .into(EmployeeRecord.class);
+                .select()
+                .from(EMPLOYEE)
+                // 查询条件
+                .where(EMPLOYEE.ID.eq(id))
+                .fetch()
+                // 返回结果转换
+                .into(EmployeeRecord.class);
 
         return asOptional(employees);
     }
@@ -53,25 +52,25 @@ public class EmployeeRepository extends BaseRepository<EmployeeRecord> {
      * @param id 实体主键
      * @return {@link Optional} 对象, 内部为 {@link EmployeeRecord} 类型对象
      */
-    public Map<@NotNull EmployeeRecord, List<DepartmentRecord>> selectByIdWithDepartments(Long id) {
+    public Map<EmployeeRecord, List<DepartmentRecord>> selectByIdWithDepartments(Long id) {
         var e = EMPLOYEE.as("e");
         var d = DEPARTMENT.as("d");
         var de = DEPARTMENT_EMPLOYEE.as("de");
 
         // 查询员工部门关系表
         return dsl()
-            .select(e.fields())
-            .select(d.fields())
-            .from(e)
-            // 设置连接表和连接条件
-            .join(de).on(e.ID.eq(de.EMPLOYEE_ID))
-            .join(d).on(d.ID.eq(de.DEPARTMENT_ID))
-            // 查询条件
-            .where(e.ID.eq(id))
-            .fetchGroups(
-                // Key 的 mapping 方式
-                r -> r.into(e).into(EmployeeRecord.class),
-                // Value 的 mapping 方式
-                r -> r.into(d).into(DepartmentRecord.class));
+                .select(e.fields())
+                .select(d.fields())
+                .from(e)
+                // 设置连接表和连接条件
+                .join(de).on(e.ID.eq(de.EMPLOYEE_ID))
+                .join(d).on(d.ID.eq(de.DEPARTMENT_ID))
+                // 查询条件
+                .where(e.ID.eq(id))
+                .fetchGroups(
+                    // Key 的 mapping 方式
+                    r -> r.into(e).into(EmployeeRecord.class),
+                    // Value 的 mapping 方式
+                    r -> r.into(d).into(DepartmentRecord.class));
     }
 }

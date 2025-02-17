@@ -93,9 +93,9 @@ class TenantingTest extends IntegrationTest {
         // 本次持久化操作成功
         try (var ignore = beginTx(false)) {
             newBuilder(DepartmentBuilder.class)
-                // 设置 orgId 字段
-                .withOrgId(currentOrg().getId())
-                .create();
+                    // 设置 orgId 字段
+                    .withOrgId(currentOrg().getId())
+                    .create();
         }
     }
 }

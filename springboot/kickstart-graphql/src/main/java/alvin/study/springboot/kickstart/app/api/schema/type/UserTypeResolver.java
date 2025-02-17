@@ -9,4 +9,4 @@ import alvin.study.springboot.kickstart.core.graphql.annotation.Resolver;
  * {@code org} 字段
  */
 @Resolver
-public class UserTypeResolver implements AuditedResolver<UserType>, TenantedResolver<UserType> { }
+public class UserTypeResolver implements AuditedResolver<UserType>, TenantedResolver<UserType> {}

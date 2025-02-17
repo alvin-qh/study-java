@@ -84,12 +84,12 @@ public class RestResponseAdvice implements ResponseBodyAdvice<Object> {
      */
     @Override
     public ResponseDto<?> beforeBodyWrite(
-        Object body,
-        MethodParameter returnType,
-        MediaType selectedContentType,
-        Class<? extends HttpMessageConverter<?>> selectedConverterType,
-        ServerHttpRequest request,
-        ServerHttpResponse response) {
+            Object body,
+            MethodParameter returnType,
+            MediaType selectedContentType,
+            Class<? extends HttpMessageConverter<?>> selectedConverterType,
+            ServerHttpRequest request,
+            ServerHttpResponse response) {
         return ResponseDto.success(body);
     }
 

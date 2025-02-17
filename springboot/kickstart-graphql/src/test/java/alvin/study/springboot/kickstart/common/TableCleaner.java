@@ -116,19 +116,19 @@ public class TableCleaner {
 
             // 获取所有待清除的数据表名并执行清除语句
             listAllTables(conn, schema, tableType)
-                .stream()
-                // 去除排除的数据表
-                .filter(t -> !excludeSet.contains(t))
-                // 对每个数据表进行清除操作
-                .forEach(t -> {
-                    log.info("Clear table {}", t);
-                    // 执行 truncate 操作
-                    try (var stat = conn.prepareStatement(String.format("TRUNCATE TABLE `%s`", t))) {
-                        stat.execute();
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
+                    .stream()
+                    // 去除排除的数据表
+                    .filter(t -> !excludeSet.contains(t))
+                    // 对每个数据表进行清除操作
+                    .forEach(t -> {
+                        log.info("Clear table {}", t);
+                        // 执行 truncate 操作
+                        try (var stat = conn.prepareStatement(String.format("TRUNCATE TABLE `%s`", t))) {
+                            stat.execute();
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
 
             // 恢复外键约束
             try (var stat = conn.prepareStatement("SET FOREIGN_KEY_CHECKS = 1")) {

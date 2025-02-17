@@ -8,7 +8,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.jetbrains.annotations.NotNull;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.QueryPart;
@@ -85,10 +84,11 @@ public class TentedVisitListener implements VisitListener, VisitListenerProvider
      *
      * @param context 数据访问上下文对象
      */
+    @SuppressWarnings("unchecked")
     private void walkQueryPars(VisitContext context) {
         // 从请求上下文中获取 orgId 值
         var mayOrgId = Optional.ofNullable(this.context.<OrgRecord>getOrDefault(Context.ORG, null))
-            .map(OrgRecord::getId);
+                .map(OrgRecord::getId);
 
         if (mayOrgId.isEmpty()) {
             // 如果请求上下文中没有 orgId, 则无需添加查询条件
@@ -120,6 +120,7 @@ public class TentedVisitListener implements VisitListener, VisitListenerProvider
      * @param context 数据访问上下文对象
      * @return 保存 {@link Field} 对象的 {@link Set} 集合
      */
+    @SuppressWarnings("unchecked")
     private Set<Field<?>> loadUsedFieldSet(VisitContext context) {
         // 从数据访问上下文对象中获取 Set 对象
         var fieldSet = (Set<Field<?>>) context.data("fieldSet");
@@ -140,9 +141,9 @@ public class TentedVisitListener implements VisitListener, VisitListenerProvider
     private List<? extends Field<?>> walkTables(SelectQuery<?> select) {
         // 从 SelectQuery 的 from 部分获取对应的表对象, 遍历表对象, 获取指定字段集合
         return select.$from().stream()
-            .map(table -> this.findTableField(table, "org_id"))
-            .filter(Objects::nonNull)
-            .toList();
+                .map(table -> this.findTableField(table, "org_id"))
+                .filter(Objects::nonNull)
+                .toList();
     }
 
     /**
@@ -172,7 +173,7 @@ public class TentedVisitListener implements VisitListener, VisitListenerProvider
      * @return {@link VisitListener} 对象
      */
     @Override
-    public @NotNull VisitListener provide() {
+    public VisitListener provide() {
         return this;
     }
 

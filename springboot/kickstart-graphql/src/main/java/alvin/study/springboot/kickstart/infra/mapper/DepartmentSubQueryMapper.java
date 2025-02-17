@@ -76,5 +76,4 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 @CacheNamespace
-public interface DepartmentSubQueryMapper extends BaseMapper<Department> {
-}
+public interface DepartmentSubQueryMapper extends BaseMapper<Department> {}

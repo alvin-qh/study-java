@@ -9,7 +9,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import org.jetbrains.annotations.NotNull;
 import org.jooq.DSLContext;
 import org.jooq.exception.DataAccessException;
 import org.springframework.stereotype.Repository;
@@ -53,16 +52,15 @@ public class OrgRepository extends JdbcBaseRepository<OrgRecord> {
     public OrgRecord insert(OrgRecord orgRecord) throws DataAccessException, SQLException {
         // 执行一条 insert 语句
         return Objects.requireNonNull(
-                contextManager.get().insertInto(ORG)
+            contextManager.get().insertInto(ORG)
                     .set(ORG.NAME, orgRecord.getName())
                     .set(ORG.CREATED_AT, LocalDateTime.now(ZoneOffset.UTC))
                     .set(ORG.UPDATED_AT, LocalDateTime.now(ZoneOffset.UTC))
                     // 在返回结果中包括所有字段 (包括自增 id)
                     .returning(ORG.fields())
-                    .fetchOne()
-            )
-            // 返回结果转为 Record 对象
-            .into(OrgRecord.class);
+                    .fetchOne())
+                // 返回结果转为 Record 对象
+                .into(OrgRecord.class);
     }
 
     /**
@@ -88,13 +86,13 @@ public class OrgRepository extends JdbcBaseRepository<OrgRecord> {
      */
     public int update(OrgRecord orgRecord) throws DataAccessException, SQLException {
         return contextManager.get().update(ORG)
-            // 要更新的字段信息
-            .set(ORG.NAME, orgRecord.getName())
-            .set(ORG.UPDATED_AT, LocalDateTime.now(ZoneOffset.UTC))
-            // 检索条件
-            .where(ORG.ID.eq(orgRecord.getId()))
-            // 执行语句
-            .execute();
+                // 要更新的字段信息
+                .set(ORG.NAME, orgRecord.getName())
+                .set(ORG.UPDATED_AT, LocalDateTime.now(ZoneOffset.UTC))
+                // 检索条件
+                .where(ORG.ID.eq(orgRecord.getId()))
+                // 执行语句
+                .execute();
     }
 
     /**
@@ -106,8 +104,8 @@ public class OrgRepository extends JdbcBaseRepository<OrgRecord> {
      * <ul>
      * <li>
      * 通过 {@link OrgRecord} 对象的 {@link OrgRecord#delete()} 方法进行删除操作, 需要通过
-     * {@link JdbcBaseRepository#newRecord(Consumer)}  方法产生一个 Record 对象, 或者通过
-     * {@link JdbcBaseRepository#newRecord(Object, Consumer)}  方法将一个 Pojo 对象转化为 Record 对象
+     * {@link JdbcBaseRepository#newRecord(Consumer)} 方法产生一个 Record 对象, 或者通过
+     * {@link JdbcBaseRepository#newRecord(Object, Consumer)} 方法将一个 Pojo 对象转化为 Record 对象
      * </li>
      * <li>
      * 通过 {@link DSLContext#delete(org.jooq.Table)
@@ -121,10 +119,10 @@ public class OrgRepository extends JdbcBaseRepository<OrgRecord> {
      */
     public int delete(OrgRecord orgRecord) throws DataAccessException, SQLException {
         return contextManager.get().delete(ORG)
-            // 检索条件
-            .where(ORG.ID.eq(orgRecord.getId()))
-            // 执行语句
-            .execute();
+                // 检索条件
+                .where(ORG.ID.eq(orgRecord.getId()))
+                // 执行语句
+                .execute();
     }
 
     /**
@@ -133,15 +131,15 @@ public class OrgRepository extends JdbcBaseRepository<OrgRecord> {
      * @param id 实体主键
      * @return {@link Optional} 对象, 内部为 {@link OrgRecord} 类型对象
      */
-    public Optional<@NotNull OrgRecord> selectById(Long id) throws DataAccessException, SQLException {
+    public Optional<OrgRecord> selectById(Long id) throws DataAccessException, SQLException {
         // 查询员工记录所有字段
         var orgs = contextManager.get().select()
-            .from(ORG)
-            // 查询条件
-            .where(ORG.ID.eq(id))
-            .fetch()
-            // 返回结果转换
-            .into(OrgRecord.class);
+                .from(ORG)
+                // 查询条件
+                .where(ORG.ID.eq(id))
+                .fetch()
+                // 返回结果转换
+                .into(OrgRecord.class);
 
         return asOptional(orgs);
     }

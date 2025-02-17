@@ -31,8 +31,8 @@ public class Pagination {
      * @param maxPageSize     最大每页记录数, 分页结果不能超过该限定值
      */
     public Pagination(
-        @Value("${spring.data.web.pageable.default-page-size:null}") Integer defaultPageSize,
-        @Value("${spring.data.web.pageable.max-page-size:null}") Integer maxPageSize) {
+            @Value("${spring.data.web.pageable.default-page-size:null}") Integer defaultPageSize,
+            @Value("${spring.data.web.pageable.max-page-size:null}") Integer maxPageSize) {
         if (defaultPageSize != null && defaultPageSize > 0) {
             this.defaultPageSize = defaultPageSize;
         }
@@ -147,12 +147,12 @@ public class Pagination {
         public PageBuilder<T> withQueryParams(@NotNull Map<String, Object> queryParams) {
             try {
                 return withBefore((String) queryParams.get("before"))
-                    .withAfter((String) queryParams.get("after"))
-                    .withFirst((Integer) queryParams.get("first"))
-                    .withLast((Integer) queryParams.get("last"))
-                    .withOffset((Integer) queryParams.get("offset"))
-                    .withLimit((Integer) queryParams.get("limit"))
-                    .withOrder((String) queryParams.get("order"));
+                        .withAfter((String) queryParams.get("after"))
+                        .withFirst((Integer) queryParams.get("first"))
+                        .withLast((Integer) queryParams.get("last"))
+                        .withOffset((Integer) queryParams.get("offset"))
+                        .withLimit((Integer) queryParams.get("limit"))
+                        .withOrder((String) queryParams.get("order"));
             } catch (ClassCastException e) {
                 throw new InputException(e);
             }
@@ -228,15 +228,15 @@ public class Pagination {
         private List<OrderItem> buildOrderItems() {
             // 将排序字符串分割后转为 OrderItem 集合
             return orders.stream().map(s -> {
-                    if (s.startsWith("-")) {
-                        return OrderItem.desc(s.substring(1));
-                    }
-                    if (s.startsWith("+")) {
-                        return OrderItem.asc(s.substring(1));
-                    }
-                    return OrderItem.asc(s);
-                })
-                .toList();
+                if (s.startsWith("-")) {
+                    return OrderItem.desc(s.substring(1));
+                }
+                if (s.startsWith("+")) {
+                    return OrderItem.asc(s.substring(1));
+                }
+                return OrderItem.asc(s);
+            })
+                    .toList();
         }
     }
 }

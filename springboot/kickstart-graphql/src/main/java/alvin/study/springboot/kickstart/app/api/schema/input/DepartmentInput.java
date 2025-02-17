@@ -1,6 +1,5 @@
 package alvin.study.springboot.kickstart.app.api.schema.input;
 
-
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

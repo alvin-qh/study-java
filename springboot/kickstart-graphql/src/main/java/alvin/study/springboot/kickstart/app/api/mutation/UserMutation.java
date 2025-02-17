@@ -74,8 +74,8 @@ public class UserMutation extends BaseMutation {
 
         // 更新用户实体
         return userService.update(Long.parseLong(id), user)
-            .map(u -> new UpdateUserPayload(map(u, UserType.class)))
-            .orElseThrow(() -> new InputException("Update User not found"));
+                .map(u -> new UpdateUserPayload(map(u, UserType.class)))
+                .orElseThrow(() -> new InputException("Update User not found"));
     }
 
     /**

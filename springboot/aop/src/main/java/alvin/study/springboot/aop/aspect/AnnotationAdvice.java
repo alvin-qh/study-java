@@ -123,8 +123,8 @@ public class AnnotationAdvice {
      * @param objectMapper 用于对象 JSON 序列化
      */
     public AnnotationAdvice(
-        @Qualifier("mqForAnnotationAdvice") BlockingQueue<Message> messageQueue,
-        ObjectMapper objectMapper) {
+            @Qualifier("mqForAnnotationAdvice") BlockingQueue<Message> messageQueue,
+            ObjectMapper objectMapper) {
         this.messageQueue = messageQueue;
         this.objectMapper = objectMapper;
     }
@@ -145,7 +145,7 @@ public class AnnotationAdvice {
      * </p>
      */
     @Pointcut("@annotation(alvin.study.springboot.aop.aspect.Transactional)")
-    public void point() { }
+    public void point() {}
 
     /**
      * 在目标方法执行前进行拦截的方法
@@ -226,9 +226,7 @@ public class AnnotationAdvice {
                 jp.getSignature().toLongString(),
                 jp.getThis(),
                 jp.getArgs(),
-                exception
-            )
-        );
+                exception));
     }
 
     /**
@@ -263,19 +261,16 @@ public class AnnotationAdvice {
                 jp.getSignature().toLongString(),
                 jp.getThis(),
                 jp.getArgs(),
-                null
-            )
-        );
+                null));
 
         var result = jp.proceed();
         if (result instanceof String r) {
             try {
-                var json = objectMapper.readValue(r, new TypeReference<Map<String, Object>>() { });
+                var json = objectMapper.readValue(r, new TypeReference<Map<String, Object>>() {});
                 json.put("addition", this.getClass().getSimpleName());
 
                 result = objectMapper.writeValueAsString(json);
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
         }
         return result;
     }

@@ -3,8 +3,6 @@ package alvin.study.springboot.kickstart.app.api.schema.type;
 import java.util.concurrent.CompletableFuture;
 
 import org.dataloader.DataLoader;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.modelmapper.ModelMapper;
 
 import alvin.study.springboot.kickstart.app.api.schema.loader.DepartmentLoaderProvider;
@@ -50,7 +48,7 @@ public class DepartmentTypeResolver implements AuditedResolver<DepartmentType>, 
      * @return 一个异步函数, 将通过每个 id 获取对象的处理延时执行, 转化为批量处理
      * @see DepartmentLoaderProvider
      */
-    public CompletableFuture<@Nullable DepartmentType> getParent(DepartmentType instance, DataFetchingEnvironment env) {
+    public CompletableFuture<DepartmentType> getParent(DepartmentType instance, DataFetchingEnvironment env) {
         if (instance.getParentId() == null) {
             return CompletableFuture.completedFuture(null);
         }
@@ -75,8 +73,8 @@ public class DepartmentTypeResolver implements AuditedResolver<DepartmentType>, 
      * @see alvin.study.core.graphql.relay.Page
      * @see ConnectionBuilder
      */
-    public Connection<@NotNull DepartmentType> getChildren(
-        DepartmentType instance, String first, Integer after, DataFetchingEnvironment env) {
+    public Connection<DepartmentType> getChildren(
+            DepartmentType instance, String first, Integer after, DataFetchingEnvironment env) {
         var mapper = (ModelMapper) env.getGraphQlContext().get(ModelMapper.class);
 
         // 构建分页对象
@@ -101,8 +99,8 @@ public class DepartmentTypeResolver implements AuditedResolver<DepartmentType>, 
      * @see alvin.study.core.graphql.relay.Page
      * @see ConnectionBuilder
      */
-    public Connection<@NotNull EmployeeType> getEmployees(
-        DepartmentType instance, String first, Integer after, DataFetchingEnvironment env) {
+    public Connection<EmployeeType> getEmployees(
+            DepartmentType instance, String first, Integer after, DataFetchingEnvironment env) {
         var mapper = (ModelMapper) env.getGraphQlContext().get(ModelMapper.class);
 
         // 构建分页对象

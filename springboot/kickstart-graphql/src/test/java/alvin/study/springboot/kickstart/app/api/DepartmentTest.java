@@ -53,9 +53,9 @@ class DepartmentTest extends IntegrationTest {
             for (var i = 0; i < 10; i++) {
                 var employee = newBuilder(EmployeeBuilder.class).create();
                 newBuilder(DepartmentEmployeeBuilder.class)
-                    .withDepartmentId(department.getId())
-                    .withEmployeeId(employee.getId())
-                    .create();
+                        .withDepartmentId(department.getId())
+                        .withEmployeeId(employee.getId())
+                        .create();
                 employees.add(employee);
             }
         }
@@ -115,21 +115,21 @@ class DepartmentTest extends IntegrationTest {
 
         // 定义执行参数
         var input = DepartmentInput.builder()
-            .name("RD-X")
-            .parentId(parent.getId())
-            .build();
+                .name("RD-X")
+                .parentId(parent.getId())
+                .build();
 
         var vars = valueToTree("input", input);
 
         // 执行创建语句
         graphql("test-department", "createDepartment", vars)
-            .assertThatNoErrorsArePresent()
-            .assertThatField("$.data.createDepartment.department")
-            .as(PathMap.class)
-            .matches(v -> !Strings.isNullOrEmpty(v.getAs("id")), "id")
-            .matches(v -> v.get("name").equals("RD-X"), "name")
-            .matches(v -> v.getByPath("org.id").equals(currentOrg().getId().toString()), "org.id")
-            .matches(v -> v.getByPath("parent.id").equals(parent.getId().toString()), "parent.id");
+                .assertThatNoErrorsArePresent()
+                .assertThatField("$.data.createDepartment.department")
+                .as(PathMap.class)
+                .matches(v -> !Strings.isNullOrEmpty(v.getAs("id")), "id")
+                .matches(v -> v.get("name").equals("RD-X"), "name")
+                .matches(v -> v.getByPath("org.id").equals(currentOrg().getId().toString()), "org.id")
+                .matches(v -> v.getByPath("parent.id").equals(parent.getId().toString()), "parent.id");
     }
 
     /**
@@ -152,9 +152,9 @@ class DepartmentTest extends IntegrationTest {
 
         // 定义执行参数
         var input = DepartmentInput.builder()
-            .name("RD-X")
-            .parentId(parent.getId())
-            .build();
+                .name("RD-X")
+                .parentId(parent.getId())
+                .build();
 
         var vars = mapToTree(Map.of(
             "id", department.getId(),
@@ -162,13 +162,13 @@ class DepartmentTest extends IntegrationTest {
 
         // 执行创建语句
         graphql("test-department", "updateDepartment", vars)
-            .assertThatNoErrorsArePresent()
-            .assertThatField("$.data.updateDepartment.department")
-            .as(PathMap.class)
-            .matches(v -> !Strings.isNullOrEmpty(v.getAs("id")), "id")
-            .matches(v -> v.get("name").equals("RD-X"), "name")
-            .matches(v -> v.getByPath("org.id").equals(currentOrg().getId().toString()), "org.id")
-            .matches(v -> v.getByPath("parent.id").equals(parent.getId().toString()), "parent.id");
+                .assertThatNoErrorsArePresent()
+                .assertThatField("$.data.updateDepartment.department")
+                .as(PathMap.class)
+                .matches(v -> !Strings.isNullOrEmpty(v.getAs("id")), "id")
+                .matches(v -> v.get("name").equals("RD-X"), "name")
+                .matches(v -> v.getByPath("org.id").equals(currentOrg().getId().toString()), "org.id")
+                .matches(v -> v.getByPath("parent.id").equals(parent.getId().toString()), "parent.id");
     }
 
     /**

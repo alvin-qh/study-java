@@ -25,8 +25,7 @@ public final class ConnectionBuilder {
     /**
      * 私有构造器, 禁止创建对象
      */
-    private ConnectionBuilder() {
-    }
+    private ConnectionBuilder() {}
 
     /**
      * 构建 {@link ListConnection} 对象
@@ -36,7 +35,7 @@ public final class ConnectionBuilder {
      * @return {@link ListConnection} 对象
      */
     @Contract("_ -> new")
-    public static <T> @NotNull ListConnection<T> build(IPage<T> page) {
+    public static <T> ListConnection<T> build(IPage<T> page) {
         log.debug("Build graphql connection with: startPos={}, pageSize={}, dataCount={} and totalCount={}",
             page.offset(), page.getSize(), page.getRecords().size(), page.getTotal());
 
@@ -76,8 +75,8 @@ public final class ConnectionBuilder {
 
         // 创建 Edge 集合
         return IntStream.range(0, page.getRecords().size())
-            .mapToObj(n -> (Edge<T>) new DefaultEdge<>(records.get(n), Cursors.makeConnCursor(offset + n)))
-            .toList();
+                .mapToObj(n -> (Edge<T>) new DefaultEdge<>(records.get(n), Cursors.makeConnCursor(offset + n)))
+                .toList();
     }
 
     /**

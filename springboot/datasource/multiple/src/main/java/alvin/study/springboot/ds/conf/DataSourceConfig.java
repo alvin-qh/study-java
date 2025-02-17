@@ -71,8 +71,8 @@ public class DataSourceConfig {
     @Bean("dynamicDataSource")
     @Primary
     DataSource dynamicDataSource(
-        @Qualifier("db1DataSource") DataSource db1DataSource,
-        @Qualifier("db2DataSource") DataSource db2DataSource) {
+            @Qualifier("db1DataSource") DataSource db1DataSource,
+            @Qualifier("db2DataSource") DataSource db2DataSource) {
         // 实例化对象
         var ds = new DynamicDataSource();
 

@@ -75,8 +75,8 @@ class OrgRepositoryTest extends IntegrationTest {
         var mayOrg = repository.selectById(rec.getId());
         then(mayOrg).isPresent().get().matches(
             r -> Objects.equals(r.getName(), orgName)
-                && Objects.nonNull(r.getUpdatedAt())
-                && Objects.nonNull(r.getUpdatedAt()));
+                 && Objects.nonNull(r.getUpdatedAt())
+                 && Objects.nonNull(r.getUpdatedAt()));
     }
 
     /**

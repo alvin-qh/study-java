@@ -27,7 +27,7 @@ class ModifyingRepositoryTest extends IntegrationTest {
      * 测试通过 HQL 进行数据修改操作
      *
      * @see ModifyingRepository#updatePasswordById(Long,
-     * String) ModifyingRepository.updatePasswordById(Long, String)
+     *      String) ModifyingRepository.updatePasswordById(Long, String)
      */
     @Test
     @SneakyThrows

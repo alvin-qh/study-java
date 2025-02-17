@@ -232,6 +232,7 @@ public abstract class IntegrationTest {
      *
      * @param entity 非受控对象
      */
+    @SuppressWarnings("unchecked")
     protected <T extends BaseEntity> T refreshEntity(T entity) {
         return (T) em.find(entity.getClass(), entity.getId());
     }

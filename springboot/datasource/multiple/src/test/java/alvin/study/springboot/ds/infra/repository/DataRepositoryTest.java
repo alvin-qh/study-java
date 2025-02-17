@@ -59,20 +59,20 @@ class DataRepositoryTest extends IntegrationTest {
         try (var s = DataSourceContext.switchTo(DataSourceTarget.db1)) {
             var entities = repository.selectAll();
             then(entities)
-                .hasSize(1)
-                .singleElement()
-                .extracting("name", "value")
-                .containsExactly("name_for_db1", "value_for_db1");
+                    .hasSize(1)
+                    .singleElement()
+                    .extracting("name", "value")
+                    .containsExactly("name_for_db1", "value_for_db1");
         }
 
         // 切换到 db2 数据源, 查询数据, 确保该 db2 数据库中仅包含指定数据
         try (var s = DataSourceContext.switchTo(DataSourceTarget.db2)) {
             var entities = repository.selectAll();
             then(entities)
-                .hasSize(1)
-                .singleElement()
-                .extracting("name", "value")
-                .containsExactly("name_for_db2", "value_for_db2");
+                    .hasSize(1)
+                    .singleElement()
+                    .extracting("name", "value")
+                    .containsExactly("name_for_db2", "value_for_db2");
         }
     }
 }

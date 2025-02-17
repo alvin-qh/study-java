@@ -72,8 +72,8 @@ public class OrgMutation extends BaseMutation {
 
         // 更新组织实体
         return orgService.update(Long.parseLong(id), org)
-            .map(u -> new UpdateOrgPayload(map(u, OrgType.class)))
-            .orElseThrow(() -> new InputException("Update org not found"));
+                .map(u -> new UpdateOrgPayload(map(u, OrgType.class)))
+                .orElseThrow(() -> new InputException("Update org not found"));
     }
 
     /**

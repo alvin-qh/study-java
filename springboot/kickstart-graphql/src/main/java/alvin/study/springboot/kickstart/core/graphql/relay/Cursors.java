@@ -26,7 +26,7 @@ public class Cursors {
     // 游标前缀
     private static final String DUMMY_CURSOR_PREFIX = "alvin_study_";
 
-    private Cursors() { }
+    private Cursors() {}
 
     /**
      * 从 Base64 字符串中解析游标的值

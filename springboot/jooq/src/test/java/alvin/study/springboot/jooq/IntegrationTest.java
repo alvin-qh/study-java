@@ -69,9 +69,9 @@ public abstract class IntegrationTest {
 
             var user = dsl.newRecord(USER);
             user.setAccount("admin")
-                .setPassword(passwordUtil.encrypt("12345678"))
-                .setType(UserType.ADMIN)
-                .store();
+                    .setPassword(passwordUtil.encrypt("12345678"))
+                    .setType(UserType.ADMIN)
+                    .store();
             context.set(Context.USER, user);
         });
     }

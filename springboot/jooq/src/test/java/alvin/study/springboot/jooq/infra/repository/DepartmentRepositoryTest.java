@@ -4,6 +4,8 @@ import alvin.study.springboot.jooq.IntegrationTest;
 import alvin.study.springboot.jooq.infra.model.public_.tables.records.DepartmentRecord;
 import alvin.study.springboot.jooq.infra.model.public_.tables.records.EmployeeRecord;
 import alvin.study.springboot.jooq.infra.repository.common.BaseRepository;
+
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.jooq.DSLContext;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -152,17 +154,17 @@ class DepartmentRepositoryTest extends IntegrationTest {
 
         // 确认返回 Map 的 Key 为上级 Department 对象
         then(group.keySet())
-            .singleElement()
-            .extracting("name")
-            .isEqualTo("PARENT");
+                .singleElement()
+                .extracting("name")
+                .isEqualTo("PARENT");
 
         // 确认返回 Map 的 Value 为下级 Department 对象集合
         then(group.values())
-            .singleElement()
-            .asList()
-            .map(DepartmentRecord.class::cast)
-            .hasSize(10)
-            .allMatch(r -> r.getName().startsWith("SUB-") && r.getParentId().equals(parentId));
+                .singleElement()
+                .asInstanceOf(InstanceOfAssertFactories.LIST)
+                .map(DepartmentRecord.class::cast)
+                .hasSize(10)
+                .allMatch(r -> r.getName().startsWith("SUB-") && r.getParentId().equals(parentId));
     }
 
     /**
@@ -183,14 +185,14 @@ class DepartmentRepositoryTest extends IntegrationTest {
             // 持久化雇员实体
             var employee = employeeRepository.newRecord(
                 r -> r.setName("Employee-" + index)
-                    .setEmail("alvin" + index + "@fakemail.com")
-                    .setTitle("Normal")
-                    .store());
+                        .setEmail("alvin" + index + "@fakemail.com")
+                        .setTitle("Normal")
+                        .store());
 
             // 持久化部门雇员故关系
             departmentEmployeeRepository.newRecord(r -> r.setDepartmentId(department.getId())
-                .setEmployeeId(employee.getId())
-                .store());
+                    .setEmployeeId(employee.getId())
+                    .store());
 
             employees.add(employee);
         }
@@ -201,17 +203,17 @@ class DepartmentRepositoryTest extends IntegrationTest {
 
         // 确认部门实体查询结果
         then(departmentWithEmployees.keySet())
-            .singleElement()
-            .extracting("id")
-            .isEqualTo(department.getId());
+                .singleElement()
+                .extracting("id")
+                .isEqualTo(department.getId());
 
         // 确认部门下属雇员结果
         then(departmentWithEmployees.values())
-            .singleElement()
-            .asList()
-            .hasSize(10)
-            .map(EmployeeRecord.class::cast)
-            .extracting("id")
-            .containsAll(employees.stream().map(EmployeeRecord::getId).toList());
+                .singleElement()
+                .asInstanceOf(InstanceOfAssertFactories.LIST)
+                .hasSize(10)
+                .map(EmployeeRecord.class::cast)
+                .extracting("id")
+                .containsAll(employees.stream().map(EmployeeRecord::getId).toList());
     }
 }

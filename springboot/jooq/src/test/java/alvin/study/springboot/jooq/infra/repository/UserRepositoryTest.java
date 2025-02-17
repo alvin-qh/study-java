@@ -41,16 +41,16 @@ class UserRepositoryTest extends IntegrationTest {
         // 持久化实体对象
         var rec = repository.newRecord(
             r -> r.setAccount("alvin")
-                .setPassword(passwordUtil.encrypt("123456"))
-                .setType(UserType.NORMAL)
-                .store());
+                    .setPassword(passwordUtil.encrypt("123456"))
+                    .setType(UserType.NORMAL)
+                    .store());
         then(rec.getId()).isNotNull();
 
         // 确认实体对象已被持久化
         var mayUser = repository.selectById(rec.getId());
         then(mayUser).isPresent().get().matches(
             r -> Objects.equals(r.getAccount(), "alvin")
-                && passwordUtil.verify("123456", r.getPassword()));
+                 && passwordUtil.verify("123456", r.getPassword()));
     }
 
     /**
@@ -67,9 +67,9 @@ class UserRepositoryTest extends IntegrationTest {
         // 持久化实体对象
         var rec = repository.newRecord(
             r -> r.setAccount("alvin")
-                .setPassword(passwordUtil.encrypt("123456"))
-                .setType(UserType.NORMAL)
-                .store());
+                    .setPassword(passwordUtil.encrypt("123456"))
+                    .setType(UserType.NORMAL)
+                    .store());
         then(rec.getId()).isNotNull();
 
         // 更新实体字段
@@ -80,7 +80,7 @@ class UserRepositoryTest extends IntegrationTest {
         var mayUser = repository.selectById(rec.getId());
         then(mayUser).isPresent().get().matches(
             r -> Objects.equals(r.getAccount(), "alvin-new")
-                && Objects.equals(r.getType(), UserType.ADMIN));
+                 && Objects.equals(r.getType(), UserType.ADMIN));
     }
 
     /**
@@ -97,9 +97,9 @@ class UserRepositoryTest extends IntegrationTest {
         // 持久化实体对象
         var rec = repository.newRecord(
             r -> r.setAccount("alvin")
-                .setPassword(passwordUtil.encrypt("123456"))
-                .setType(UserType.NORMAL)
-                .store());
+                    .setPassword(passwordUtil.encrypt("123456"))
+                    .setType(UserType.NORMAL)
+                    .store());
         then(rec.getId()).isNotNull();
 
         // 删除实体对象
@@ -121,9 +121,9 @@ class UserRepositoryTest extends IntegrationTest {
         // 持久化实体对象
         var rec = repository.newRecord(
             r -> r.setAccount("alvin")
-                .setPassword(passwordUtil.encrypt("123456"))
-                .setType(UserType.NORMAL)
-                .store());
+                    .setPassword(passwordUtil.encrypt("123456"))
+                    .setType(UserType.NORMAL)
+                    .store());
         then(rec.getId()).isNotNull();
 
         // 根据账号名称查询用户实体
@@ -131,6 +131,6 @@ class UserRepositoryTest extends IntegrationTest {
         var mayUser = repository.selectByAccount("alvin");
         then(mayUser).isPresent().get().matches(
             r -> Objects.equals(r.getId(), rec.getId())
-                && Objects.equals(r.getAccount(), "alvin"));
+                 && Objects.equals(r.getAccount(), "alvin"));
     }
 }

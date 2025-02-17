@@ -1,6 +1,5 @@
 package alvin.study.springboot.jooq.infra.converter.common;
 
-import org.jetbrains.annotations.NotNull;
 import org.jooq.Converter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -49,7 +48,7 @@ public abstract class JacksonConverter<T> implements Converter<String, T> {
      * 获取数据表字段类型
      */
     @Override
-    public @NotNull Class<@NotNull String> fromType() {
+    public Class<String> fromType() {
         return String.class;
     }
 }

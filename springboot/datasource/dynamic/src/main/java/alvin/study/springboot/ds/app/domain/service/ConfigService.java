@@ -47,8 +47,7 @@ public class ConfigService extends BaseService {
             entity.getOrg(),
             entity.getDbName(),
             entity.getUpdatedAt(),
-            entity.getCreatedAt()
-        );
+            entity.getCreatedAt());
     }
 
     /**
@@ -65,48 +64,46 @@ public class ConfigService extends BaseService {
     public ConfigDto createConfig(String org) {
         // 在配置表中查询给定组织的配置
         var entity = configRepository.selectByOrg(org).orElseGet(() -> {
-                log.info("No database found for org=\"{}\", created it", org);
+            log.info("No database found for org=\"{}\", created it", org);
 
-                // 配置不存在, 则创建对应的数据库, 切换数据源, 并进行初始化操作
-                var dbName = "db_" + org;
-                try (var s = DataSourceContext.switchTo(dbName)) {
-                    var tx = beginTransaction();
-                    try {
-                        migration.migrateBusinessDB(dbName);
-                        commit(tx);
-                        log.info("Create database (name=\"{}\") for org=\"{}\"", dbName, org);
-                    } catch (RuntimeException e) {
-                        rollback(tx);
-                        throw e;
-                    }
-                }
-
+            // 配置不存在, 则创建对应的数据库, 切换数据源, 并进行初始化操作
+            var dbName = "db_" + org;
+            try (var s = DataSourceContext.switchTo(dbName)) {
                 var tx = beginTransaction();
                 try {
-                    // 增加对应的配置项
-                    var configEntity = new ConfigEntity();
-                    configEntity.setOrg(org);
-                    configEntity.setDbName(dbName);
-                    configEntity.setCreatedAt(Instant.now());
-                    configEntity.setUpdatedAt(Instant.now());
-                    configRepository.insert(configEntity);
+                    migration.migrateBusinessDB(dbName);
                     commit(tx);
-
-                    return configEntity;
+                    log.info("Create database (name=\"{}\") for org=\"{}\"", dbName, org);
                 } catch (RuntimeException e) {
                     rollback(tx);
                     throw e;
                 }
             }
-        );
+
+            var tx = beginTransaction();
+            try {
+                // 增加对应的配置项
+                var configEntity = new ConfigEntity();
+                configEntity.setOrg(org);
+                configEntity.setDbName(dbName);
+                configEntity.setCreatedAt(Instant.now());
+                configEntity.setUpdatedAt(Instant.now());
+                configRepository.insert(configEntity);
+                commit(tx);
+
+                return configEntity;
+            } catch (RuntimeException e) {
+                rollback(tx);
+                throw e;
+            }
+        });
 
         return new ConfigDto(
             entity.getId(),
             entity.getOrg(),
             entity.getDbName(),
             entity.getUpdatedAt(),
-            entity.getCreatedAt()
-        );
+            entity.getCreatedAt());
     }
 
     /**

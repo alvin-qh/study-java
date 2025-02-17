@@ -46,7 +46,7 @@ public class OrgQuery extends BaseQuery {
     public OrgType org(String id) {
         // 查询组织
         return orgService.findById(Long.parseLong(id))
-            .map(u -> map(u, OrgType.class))
-            .orElseThrow(() -> new InputException("Invalid org id"));
+                .map(u -> map(u, OrgType.class))
+                .orElseThrow(() -> new InputException("Invalid org id"));
     }
 }

@@ -30,8 +30,8 @@ public class ApplicationStartedEventListener implements ApplicationListener<Appl
      * 构造器, 获取配置中定义的时区
      */
     public ApplicationStartedEventListener(
-        @Value("${application.zone}") String timezone,
-        Migration migration) {
+            @Value("${application.zone}") String timezone,
+            Migration migration) {
         this.timezone = Strings.isNullOrEmpty(timezone) ? "UTC" : timezone;
         this.migration = migration;
     }

@@ -135,13 +135,13 @@ public abstract class IntegrationTest {
      */
     protected WebTestClient client() {
         return client
-            // 对 client 字段进行更新操作, 返回
-            // org.springframework.test.web.reactive.server.WebTestClient.Builder 对象
-            .mutate()
-            // 设置请求超时
-            .responseTimeout(Duration.ofMinutes(1))
-            // 创建新的 WebTestClient 对象
-            .build();
+                // 对 client 字段进行更新操作, 返回
+                // org.springframework.test.web.reactive.server.WebTestClient.Builder 对象
+                .mutate()
+                // 设置请求超时
+                .responseTimeout(Duration.ofMinutes(1))
+                // 创建新的 WebTestClient 对象
+                .build();
     }
 
     /**
@@ -154,8 +154,9 @@ public abstract class IntegrationTest {
      * @param uriVariables 在 URL 中包含的请求参数值
      * @return {@link RequestHeadersSpec} 对象, 用于发送测试请求
      */
+    @SuppressWarnings("unchecked")
     private <T extends RequestHeadersSpec<?>, R extends RequestHeadersUriSpec<?>> T setup(
-        R spec, String url, Object... uriVariables) {
+            R spec, String url, Object... uriVariables) {
         // 设置访问 URL 地址和必要的 header 信息
         return (T) spec.uri(servletContext.getContextPath() + url, uriVariables);
     }
@@ -170,8 +171,8 @@ public abstract class IntegrationTest {
      */
     protected RequestHeadersSpec<?> getJson(String url, String org, Object... uriVariables) {
         return setup(client().get(), url, uriVariables)
-            .accept(MediaType.APPLICATION_JSON)
-            .header(ApiHandlerInterceptor.HEADER_ORG, org);
+                .accept(MediaType.APPLICATION_JSON)
+                .header(ApiHandlerInterceptor.HEADER_ORG, org);
     }
 
     /**
@@ -184,9 +185,9 @@ public abstract class IntegrationTest {
      */
     protected RequestBodySpec postJson(String url, String org, Object... uriVariables) {
         return ((RequestBodySpec) setup(client().post(), url, uriVariables))
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .header(ApiHandlerInterceptor.HEADER_ORG, org);
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .header(ApiHandlerInterceptor.HEADER_ORG, org);
     }
 
     /**
@@ -199,7 +200,7 @@ public abstract class IntegrationTest {
      */
     protected RequestHeadersSpec<?> deleteJson(String url, String org, Object... uriVariables) {
         return setup(client().delete(), url, uriVariables)
-            .accept(MediaType.APPLICATION_JSON)
-            .header(ApiHandlerInterceptor.HEADER_ORG, org);
+                .accept(MediaType.APPLICATION_JSON)
+                .header(ApiHandlerInterceptor.HEADER_ORG, org);
     }
 }

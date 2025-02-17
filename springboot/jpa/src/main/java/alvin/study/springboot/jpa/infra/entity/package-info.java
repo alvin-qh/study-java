@@ -12,7 +12,7 @@
  */
 
 // @FilterDefs({
-//     @FilterDef(name = "tenantFilter", parameters = { @ParamDef(name = "orgId", type = Long.class) })
+// @FilterDef(name = "tenantFilter", parameters = { @ParamDef(name = "orgId", type = Long.class) })
 // })
 @FilterDef(name = "tenantFilter", parameters = { @ParamDef(name = "orgId", type = Long.class) })
 package alvin.study.springboot.jpa.infra.entity;

@@ -3,7 +3,6 @@ package alvin.study.springboot.kickstart.app.api.schema.type.common;
 import java.util.concurrent.CompletableFuture;
 
 import org.dataloader.DataLoader;
-import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 
 import alvin.study.springboot.kickstart.app.api.schema.loader.UserLoaderProvider;
@@ -49,7 +48,7 @@ public interface AuditedResolver<T extends AuditedType> extends GraphQLResolver<
      * @return 一个异步函数, 将通过每个 id 获取对象的处理延时执行, 转化为批量处理
      * @see UserLoaderProvider
      */
-    default CompletableFuture<@NotNull UserType> getCreatedByUser(T instance, DataFetchingEnvironment env) {
+    default CompletableFuture<UserType> getCreatedByUser(T instance, DataFetchingEnvironment env) {
         var mapper = (ModelMapper) env.getGraphQlContext().get(ModelMapper.class);
 
         DataLoader<Long, User> loader = env.getDataLoaderRegistry().getDataLoader(UserLoaderProvider.NAME);
@@ -66,7 +65,7 @@ public interface AuditedResolver<T extends AuditedType> extends GraphQLResolver<
      * @return 一个异步函数, 将通过每个 id 获取对象的处理延时执行, 转化为批量处理
      * @see UserLoaderProvider
      */
-    default CompletableFuture<@NotNull UserType> getUpdatedByUser(T instance, DataFetchingEnvironment env) {
+    default CompletableFuture<UserType> getUpdatedByUser(T instance, DataFetchingEnvironment env) {
         var mapper = (ModelMapper) env.getGraphQlContext().get(ModelMapper.class);
 
         DataLoader<Long, User> loader = env.getDataLoaderRegistry().getDataLoader(UserLoaderProvider.NAME);

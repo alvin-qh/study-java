@@ -18,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-
 /**
  * 对 {@link GraphQLContext} 进行解析处理
  *
@@ -118,11 +117,11 @@ public class ServletGraphQLContextResolver implements GraphQLContextResolver {
      */
     private void checkUser(Long userId, String orgCode) {
         var user = userService.findById(userId)
-            .orElseThrow(() -> HttpClientErrors.forbidden("Invalid user"));
+                .orElseThrow(() -> HttpClientErrors.forbidden("Invalid user"));
 
         var org = orgService.findById(user.getOrgId())
-            .filter(o -> o.getName().equals(orgCode))
-            .orElseThrow(() -> HttpClientErrors.forbidden("Invalid org"));
+                .filter(o -> o.getName().equals(orgCode))
+                .orElseThrow(() -> HttpClientErrors.forbidden("Invalid org"));
 
         log.info("Set context with userId={} and orgCode={}", user.getId(), org.getName());
 

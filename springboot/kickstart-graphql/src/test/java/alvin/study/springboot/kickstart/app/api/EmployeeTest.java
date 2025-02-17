@@ -39,21 +39,21 @@ class EmployeeTest extends IntegrationTest {
         var departments = new ArrayList<Department>();
         try (var ignore = beginTx(false)) {
             employee = newBuilder(EmployeeBuilder.class)
-                .withInfo(Map.of(
-                    "gender", "M",
-                    "birthday", LocalDate.parse("1981-03-17")))
-                .create();
+                    .withInfo(Map.of(
+                        "gender", "M",
+                        "birthday", LocalDate.parse("1981-03-17")))
+                    .create();
             departments.add(newBuilder(DepartmentBuilder.class).create());
             newBuilder(DepartmentEmployeeBuilder.class)
-                .withEmployeeId(employee.getId())
-                .withDepartmentId(departments.get(0).getId())
-                .create();
+                    .withEmployeeId(employee.getId())
+                    .withDepartmentId(departments.get(0).getId())
+                    .create();
 
             departments.add(newBuilder(DepartmentBuilder.class).create());
             newBuilder(DepartmentEmployeeBuilder.class)
-                .withEmployeeId(employee.getId())
-                .withDepartmentId(departments.get(1).getId())
-                .create();
+                    .withEmployeeId(employee.getId())
+                    .withDepartmentId(departments.get(1).getId())
+                    .create();
         }
 
         // 创建查询参数
@@ -92,14 +92,14 @@ class EmployeeTest extends IntegrationTest {
 
         // 构建输入参数对象
         var input = EmployeeInput.builder()
-            .name("Alvin")
-            .email("alvin-employee@fakemail.com")
-            .title("Manager")
-            .info(Map.of(
-                "gender", "M",
-                "birthday", LocalDate.parse("1981-03-17")))
-            .departmentIds(departments.stream().map(Department::getId).toList())
-            .build();
+                .name("Alvin")
+                .email("alvin-employee@fakemail.com")
+                .title("Manager")
+                .info(Map.of(
+                    "gender", "M",
+                    "birthday", LocalDate.parse("1981-03-17")))
+                .departmentIds(departments.stream().map(Department::getId).toList())
+                .build();
 
         // 构建变更参数
         var vars = valueToTree("input", input);
@@ -146,14 +146,14 @@ class EmployeeTest extends IntegrationTest {
 
         // 构建变更输入对象
         var input = EmployeeInput.builder()
-            .name("Alvin")
-            .email("alvin-employee@fakemail.com")
-            .title("Manager")
-            .info(Map.of(
-                "gender", "M",
-                "birthday", LocalDate.parse("1981-03-17")))
-            .departmentIds(departments.stream().map(Department::getId).toList())
-            .build();
+                .name("Alvin")
+                .email("alvin-employee@fakemail.com")
+                .title("Manager")
+                .info(Map.of(
+                    "gender", "M",
+                    "birthday", LocalDate.parse("1981-03-17")))
+                .departmentIds(departments.stream().map(Department::getId).toList())
+                .build();
 
         // 构建变更参数
         var vars = mapToTree(Map.of(

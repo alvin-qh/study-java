@@ -7,8 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 
 public final class HttpClientErrors {
-    private HttpClientErrors() {
-    }
+    private HttpClientErrors() {}
 
     @Contract("_ -> new")
     public static @NotNull HttpClientErrorException methodNotAllowed(String statusText) {

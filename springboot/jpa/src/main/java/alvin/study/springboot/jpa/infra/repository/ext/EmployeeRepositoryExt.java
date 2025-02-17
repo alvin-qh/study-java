@@ -56,19 +56,19 @@ public interface EmployeeRepositoryExt {
         private EntityManager em;
 
         @Override
-        @SuppressWarnings("null")
         public List<@NotNull Employee> findEmployeesByDepartment(Department department) {
             // 通过 JPQL 实现查询
             return em.createQuery("""
-                    select e
-                    from DepartmentEmployee de
-                    join de.employee e
-                    where de.department=:department
-                    """, Employee.class)
-                .setParameter("department", department)
-                .getResultList();
+                select e
+                from DepartmentEmployee de
+                join de.employee e
+                where de.department=:department
+                """, Employee.class)
+                    .setParameter("department", department)
+                    .getResultList();
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public List<Employee> findEmployeesByDepartmentNative(Department department) {
             // 通过原生 SQL 实现查询
@@ -81,8 +81,8 @@ public interface EmployeeRepositoryExt {
                 """;
 
             return em.createNativeQuery(sql, Employee.class)
-                .setParameter("department_id", department.getId())
-                .getResultList();
+                    .setParameter("department_id", department.getId())
+                    .getResultList();
         }
     }
 }
