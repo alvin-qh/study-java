@@ -82,18 +82,14 @@ public class AsyncService {
      *
      * @return {@code true} 表示初始化完毕
      */
-    public boolean isInitialized() {
-        return initialized;
-    }
+    public boolean isInitialized() { return initialized; }
 
     /**
      * 获取已设置的值
      *
      * @return 之前设置的整数值
      */
-    public long getValue() {
-        return value.get();
-    }
+    public long getValue() { return value.get(); }
 
     /**
      * 设置一个值

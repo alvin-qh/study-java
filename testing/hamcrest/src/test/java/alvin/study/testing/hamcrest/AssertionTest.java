@@ -310,29 +310,29 @@ class AssertionTest {
     @Test
     void arrays_shouldAssertArrayIfMatchedMatchers() {
         // 判断一个数组是否和指定的元素值匹配
-        assertThat(new Integer[]{ 1, 2, 3 }, is(arrayContaining(1, 2, 3)));
+        assertThat(new Integer[] { 1, 2, 3 }, is(arrayContaining(1, 2, 3)));
         // 判断一个数组是否和指定的匹配器匹配
-        assertThat(new Integer[]{ 1, 2, 3 }, is(array(equalTo(1), equalTo(2), equalTo(3))));
+        assertThat(new Integer[] { 1, 2, 3 }, is(array(equalTo(1), equalTo(2), equalTo(3))));
         // 判断一个数组是否和指定的匹配器匹配
-        assertThat(new Integer[]{ 1, 2, 3 }, is(arrayContaining(equalTo(1), equalTo(2), equalTo(3))));
+        assertThat(new Integer[] { 1, 2, 3 }, is(arrayContaining(equalTo(1), equalTo(2), equalTo(3))));
 
         // 判断一个数组是否和指定的元素值匹配 (忽略元素顺序)
-        assertThat(new Integer[]{ 1, 2, 3 }, is(arrayContainingInAnyOrder(3, 2, 1)));
+        assertThat(new Integer[] { 1, 2, 3 }, is(arrayContainingInAnyOrder(3, 2, 1)));
         // 判断一个数组是否和指定的匹配器匹配 (忽略匹配器顺序)
-        assertThat(new Integer[]{ 1, 2, 3 }, is(arrayContainingInAnyOrder(equalTo(2), equalTo(1), equalTo(3))));
+        assertThat(new Integer[] { 1, 2, 3 }, is(arrayContainingInAnyOrder(equalTo(2), equalTo(1), equalTo(3))));
 
         // 判断一个数组元素数量是否匹配
-        assertThat(new Integer[]{ 1, 2, 3 }, is(arrayWithSize(equalTo(3))));
+        assertThat(new Integer[] { 1, 2, 3 }, is(arrayWithSize(equalTo(3))));
 
         // 判断一个数组是否为空
-        assertThat(new Integer[]{ }, is(emptyArray()));
+        assertThat(new Integer[] {}, is(emptyArray()));
         // 判断一个数组是否不为空
-        assertThat(new Integer[]{ 1, 2, 3 }, not(emptyArray()));
+        assertThat(new Integer[] { 1, 2, 3 }, not(emptyArray()));
 
         // 判断一个数组是否包含指定元素
-        assertThat(new Integer[]{ 1, 2, 3 }, is(hasItemInArray(2)));
+        assertThat(new Integer[] { 1, 2, 3 }, is(hasItemInArray(2)));
         // 判断一个数组的元素是否匹配指定的匹配器
-        assertThat(new Integer[]{ 1, 2, 3 }, is(hasItemInArray(greaterThan(2))));
+        assertThat(new Integer[] { 1, 2, 3 }, is(hasItemInArray(greaterThan(2))));
     }
 
     /**
@@ -455,9 +455,7 @@ class AssertionTest {
             Map.of("A", 1, "B", 2, "C", 3),
             is(allOf(
                 hasEntry("A", 1),
-                hasEntry("B", 2)
-            ))
-        );
+                hasEntry("B", 2))));
     }
 
     /**
@@ -510,7 +508,6 @@ class AssertionTest {
             Optional.of(new User(1, "Alvin")),
             is(presentThen(
                 objectOf(User::getId, is(equalTo(1))),
-                objectOf(User::getName, is(equalTo("Alvin")))))
-        );
+                objectOf(User::getName, is(equalTo("Alvin"))))));
     }
 }

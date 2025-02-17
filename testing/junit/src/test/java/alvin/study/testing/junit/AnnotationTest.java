@@ -99,7 +99,6 @@ class AnnotationTest {
         TEST_LIST.add("afterAll");
 
         assertEquals(
-            TEST_LIST,
             List.of(
                 "beforeAll",
                 "beforeEach",
@@ -109,7 +108,8 @@ class AnnotationTest {
                 "runTest2",
                 "afterEach",
                 "afterAll"
-            )
+            ),
+            TEST_LIST
         );
     }
 
@@ -229,10 +229,10 @@ class AnnotationTest {
     @Order(2)
     @EnabledOnOs({ OS.MAC, OS.LINUX })
     @DisabledOnOs({ OS.WINDOWS })
-    @EnabledOnJre({ JRE.JAVA_17 })
+    @EnabledOnJre({ JRE.JAVA_21 })
     @DisabledOnJre({ JRE.JAVA_8 })
-    @EnabledForJreRange(min = JRE.JAVA_11, max = JRE.JAVA_17)
-    @DisabledForJreRange(min = JRE.JAVA_8, max = JRE.JAVA_10)
+    @EnabledForJreRange(min = JRE.JAVA_11, max = JRE.JAVA_21)
+    @DisabledForJreRange(min = JRE.JAVA_8, max = JRE.JAVA_11)
     @EnabledIfSystemProperties({ @EnabledIfSystemProperty(named = "os.arch", matches = ".*64.*") })
     @DisabledIfSystemProperties({ @DisabledIfSystemProperty(named = "java.vm.name", matches = ".*HoSpot.*") })
     @EnabledIfEnvironmentVariables({ @EnabledIfEnvironmentVariable(named = "PATH", matches = ".*/bin.*") })

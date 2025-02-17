@@ -12,7 +12,7 @@ import org.junit.jupiter.params.aggregator.ArgumentsAggregator;
 public class UserAggregator implements ArgumentsAggregator {
     @Override
     public Object aggregateArguments(ArgumentsAccessor accessor, ParameterContext context)
-        throws ArgumentsAggregationException {
+            throws ArgumentsAggregationException {
         // 通过 ArgumentsAccessor 对象获取 csv 数据的前两列, 形成 User 对象
         return new User(accessor.getInteger(0), accessor.getString(1));
     }

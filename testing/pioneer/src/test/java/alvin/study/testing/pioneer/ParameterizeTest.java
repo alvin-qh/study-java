@@ -147,7 +147,7 @@ class NumberSourceProvider implements CartesianParameterArgumentsProvider<Intege
  * </p>
  */
 class NumberArgumentSourceProvider implements CartesianMethodArgumentsProvider,
-    AnnotationConsumer<NumberArgumentSource> {
+                                   AnnotationConsumer<NumberArgumentSource> {
     // NumberArgumentSource 注解的 value 属性值, 作为产生参数值的规则
     private int[] numbers;
 
@@ -210,9 +210,9 @@ class ParameterizeTest {
      */
     static ArgumentSets argumentsGenerator() {
         return ArgumentSets
-            .argumentsForFirstParameter(IntStream.range(1, 3).boxed())
-            .argumentsForNextParameter("A", "B")
-            .argumentsForNextParameter(TestEnum.values());
+                .argumentsForFirstParameter(IntStream.range(1, 3).boxed())
+                .argumentsForNextParameter("A", "B")
+                .argumentsForNextParameter(TestEnum.values());
     }
 
     /**
@@ -267,16 +267,16 @@ class ParameterizeTest {
      */
     @CartesianTest(name = "{index} => first arg: {0}, second arg: {1}")
     void cartesian_shouldInjectCartesianArguments(
-        @Values(ints = { 1, 2 }) int x,
-        @Values(ints = { 3, 4 }) int y) {
-        var expected = new Object[]{
-            new int[]{ 1, 3 },
-            new int[]{ 1, 4 },
-            new int[]{ 2, 3 },
-            new int[]{ 2, 4 }
+            @Values(ints = { 1, 2 }) int x,
+            @Values(ints = { 3, 4 }) int y) {
+        var expected = new Object[] {
+            new int[] { 1, 3 },
+            new int[] { 1, 4 },
+            new int[] { 2, 3 },
+            new int[] { 2, 4 }
         };
 
-        then(new int[]{ x, y }).isIn(expected);
+        then(new int[] { x, y }).isIn(expected);
     }
 
     /**
@@ -337,21 +337,21 @@ class ParameterizeTest {
      */
     @CartesianTest
     void cartesian_shouldPassArgumentsInRange(
-        @IntRangeSource(from = 1, to = 3, step = 1) int x,
-        @Values(strings = { "A", "B" }) String s,
-        @Enum(TestEnum.class) TestEnum e) {
-        var expected = new Object[]{
-            new Object[]{ 1, "A", TestEnum.FIRST },
-            new Object[]{ 1, "A", TestEnum.SECOND },
-            new Object[]{ 1, "B", TestEnum.FIRST },
-            new Object[]{ 1, "B", TestEnum.SECOND },
-            new Object[]{ 2, "A", TestEnum.FIRST },
-            new Object[]{ 2, "A", TestEnum.SECOND },
-            new Object[]{ 2, "B", TestEnum.FIRST },
-            new Object[]{ 2, "B", TestEnum.SECOND }
+            @IntRangeSource(from = 1, to = 3, step = 1) int x,
+            @Values(strings = { "A", "B" }) String s,
+            @Enum(TestEnum.class) TestEnum e) {
+        var expected = new Object[] {
+            new Object[] { 1, "A", TestEnum.FIRST },
+            new Object[] { 1, "A", TestEnum.SECOND },
+            new Object[] { 1, "B", TestEnum.FIRST },
+            new Object[] { 1, "B", TestEnum.SECOND },
+            new Object[] { 2, "A", TestEnum.FIRST },
+            new Object[] { 2, "A", TestEnum.SECOND },
+            new Object[] { 2, "B", TestEnum.FIRST },
+            new Object[] { 2, "B", TestEnum.SECOND }
         };
 
-        then(new Object[]{ x, s, e }).isIn(expected);
+        then(new Object[] { x, s, e }).isIn(expected);
     }
 
     /**
@@ -364,18 +364,18 @@ class ParameterizeTest {
     @CartesianTest
     @MethodFactory("argumentsGenerator")
     void cartesian_shouldGenerateArgumentsByFactoryMethod(int x, String s, TestEnum e) {
-        var expected = new Object[]{
-            new Object[]{ 1, "A", TestEnum.FIRST },
-            new Object[]{ 1, "A", TestEnum.SECOND },
-            new Object[]{ 1, "B", TestEnum.FIRST },
-            new Object[]{ 1, "B", TestEnum.SECOND },
-            new Object[]{ 2, "A", TestEnum.FIRST },
-            new Object[]{ 2, "A", TestEnum.SECOND },
-            new Object[]{ 2, "B", TestEnum.FIRST },
-            new Object[]{ 2, "B", TestEnum.SECOND }
+        var expected = new Object[] {
+            new Object[] { 1, "A", TestEnum.FIRST },
+            new Object[] { 1, "A", TestEnum.SECOND },
+            new Object[] { 1, "B", TestEnum.FIRST },
+            new Object[] { 1, "B", TestEnum.SECOND },
+            new Object[] { 2, "A", TestEnum.FIRST },
+            new Object[] { 2, "A", TestEnum.SECOND },
+            new Object[] { 2, "B", TestEnum.FIRST },
+            new Object[] { 2, "B", TestEnum.SECOND }
         };
 
-        then(new Object[]{ x, s, e }).isIn(expected);
+        then(new Object[] { x, s, e }).isIn(expected);
     }
 
     /**
@@ -389,7 +389,7 @@ class ParameterizeTest {
      */
     @CartesianTest
     void cartesian_shouldGenerateArgumentsByAnnotation(
-        @NumberSource({ 1, 2, 3 }) int x) {
+            @NumberSource({ 1, 2, 3 }) int x) {
         then(x).isIn(1, 2, 3);
     }
 
@@ -412,19 +412,19 @@ class ParameterizeTest {
     @CartesianTest
     @NumberArgumentSource({ 1, 2, 3 })
     void cartesian_shouldGenerateAllArgumentsByAnnotation(int x, int y) {
-        var expected = new Object[]{
-            new int[]{ 1, 1 },
-            new int[]{ 1, 2 },
-            new int[]{ 1, 3 },
-            new int[]{ 2, 1 },
-            new int[]{ 2, 2 },
-            new int[]{ 2, 3 },
-            new int[]{ 3, 1 },
-            new int[]{ 3, 2 },
-            new int[]{ 3, 3 },
+        var expected = new Object[] {
+            new int[] { 1, 1 },
+            new int[] { 1, 2 },
+            new int[] { 1, 3 },
+            new int[] { 2, 1 },
+            new int[] { 2, 2 },
+            new int[] { 2, 3 },
+            new int[] { 3, 1 },
+            new int[] { 3, 2 },
+            new int[] { 3, 3 },
         };
 
-        then(new int[]{ x, y }).isIn(expected);
+        then(new int[] { x, y }).isIn(expected);
     }
 
     /**
@@ -482,7 +482,7 @@ class ParameterizeTest {
         // 确认 JSON 反序列化结果正确
         then(group).extracting("id", "name").isNotEqualTo(tuple(1001, "Students"));
         then(group.getUsers()).extracting("id", "name")
-            .containsExactly(tuple(1001001, "Alvin"), tuple(1001002, "Emma"));
+                .containsExactly(tuple(1001001, "Alvin"), tuple(1001002, "Emma"));
     }
 
     /**
@@ -527,8 +527,8 @@ class ParameterizeTest {
     @JsonSource("{\"id\": 1001, \"name\": \"Alvin\"}")
     @ParameterizedTest
     void json_shouldDeserializedObjectFromJsonInStringAndGetCertainProperties(
-        @Property("id") Integer id,
-        @Property("name") String name) {
+            @Property("id") Integer id,
+            @Property("name") String name) {
         // 确认 JSON 反序列化结果正确
         then(id).isEqualTo(1001);
         then(name).isEqualTo("Alvin");
@@ -554,8 +554,8 @@ class ParameterizeTest {
     @ParameterizedTest
     @JsonClasspathSource(value = "json/group.json", data = "users")
     void json_shouldDeserializedObjectFromJsonAndGetAPartOfIt(
-        @Property("id") int id,
-        @Property("name") String name) {
+            @Property("id") int id,
+            @Property("name") String name) {
         // 确认 JSON 反序列化结果正确
         then(id).isIn(1001001, 1001002);
         then(name).isIn("Alvin", "Emma");

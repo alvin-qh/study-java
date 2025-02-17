@@ -37,8 +37,7 @@ public class IsTruly<T> extends BaseMatcher<T> {
     /**
      * 构造器, 禁用 {@code new} 操作符产生对象
      */
-    protected IsTruly() {
-    }
+    protected IsTruly() {}
 
     /**
      * 构造一个 {@link Matcher} 对象, 用于匹配一个对象值是否表示 {@code true}

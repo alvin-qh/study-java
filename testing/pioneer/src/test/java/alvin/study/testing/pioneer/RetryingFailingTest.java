@@ -78,8 +78,8 @@ class RetryingFailingTest {
 
         // 确认测试时间间隔, 第一次测试会失败, 第二次测试和第一次间隔 300 毫秒左右 (误差为 50 ms)
         then(System.currentTimeMillis() - timestamp)
-            .isGreaterThanOrEqualTo(300)
-            .isLessThan(350);
+                .isGreaterThanOrEqualTo(300)
+                .isLessThan(350);
     }
 
     /**

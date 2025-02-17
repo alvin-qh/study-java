@@ -72,10 +72,10 @@ class LocaleAndTimeZoneTest {
     void locale_shouldSetDefaultLocaleByProperties() {
         then(Locale.getDefault()).isEqualTo(
             new Locale.Builder()
-                .setRegion("cn")
-                .setLanguage("zh")
-                .setVariant("chinese")
-                .build());
+                    .setRegion("cn")
+                    .setLanguage("zh")
+                    .setVariant("chinese")
+                    .build());
     }
 
     /**

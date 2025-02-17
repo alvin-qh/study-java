@@ -172,7 +172,8 @@ class SystemPropertyAndEnvironmentVariableTest {
      * 测试通过 {@link SetSystemProperties @SetSystemProperties} 注解批量设置新的系统属性值
      */
     @Test
-    @SetSystemProperties(value = { @SetSystemProperty(key = "os.name", value = "macOS"), @SetSystemProperty(key = "user.name", value = "Alvin") })
+    @SetSystemProperties(value = { @SetSystemProperty(key = "os.name", value = "macOS"),
+        @SetSystemProperty(key = "user.name", value = "Alvin") })
     void setSystemProperties_shouldSetNewValues() {
         // 确认多个系统属性值为新设置的值
         then(System.getProperty("os.name")).isEqualTo("macOS");
@@ -223,7 +224,8 @@ class SystemPropertyAndEnvironmentVariableTest {
      * 测试通过 {@link SetEnvironmentVariables @SetEnvironmentVariables} 注解批量设置新的环境变量值
      */
     @Test
-    @SetEnvironmentVariables({ @SetEnvironmentVariable(key = "PATH", value = "/opt/jvm/jdk-17"), @SetEnvironmentVariable(key = "HOME", value = "/home/alvin") })
+    @SetEnvironmentVariables({ @SetEnvironmentVariable(key = "PATH", value = "/opt/jvm/jdk-17"),
+        @SetEnvironmentVariable(key = "HOME", value = "/home/alvin") })
     void setEnvironmentVariables_shouldSetNewValues() {
         // 确认环境变量为新设置的值
         then(System.getenv("PATH")).isEqualTo("/opt/jvm/jdk-17");

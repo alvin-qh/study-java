@@ -3,8 +3,6 @@ package alvin.study.testing.hamcrest.matcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -56,8 +54,7 @@ public class IsPresent<T> extends TypeSafeDiagnosingMatcher<Optional<? extends T
      * @param <T> 任意类型
      * @return {@link IsPresent} 类型对象
      */
-    @Contract(" -> new")
-    public static <T> @NotNull Matcher<Optional<? extends T>> present() {
+    public static <T> Matcher<Optional<? extends T>> present() {
         return new IsPresent<>(null);
     }
 
@@ -67,8 +64,7 @@ public class IsPresent<T> extends TypeSafeDiagnosingMatcher<Optional<? extends T
      * @param <T> 任意类型
      * @return {@link org.hamcrest.core.IsNot IsNot(IsPresent)} 类型对象
      */
-    @Contract(" -> new")
-    public static <T> @NotNull Matcher<Optional<? extends T>> notPresent() {
+    public static <T> Matcher<Optional<? extends T>> notPresent() {
         return not(present());
     }
 
@@ -79,9 +75,8 @@ public class IsPresent<T> extends TypeSafeDiagnosingMatcher<Optional<? extends T
      * @param <T> 任意类型
      * @return {@link IsPresent} 类型对象
      */
-    @Contract("_ -> new")
     @SafeVarargs
-    public static <T> @NotNull Matcher<Optional<? extends T>> presentThen(Matcher<? extends T>... matcher) {
+    public static <T> Matcher<Optional<? extends T>> presentThen(Matcher<? extends T>... matcher) {
         return new IsPresent<>(List.of(matcher));
     }
 

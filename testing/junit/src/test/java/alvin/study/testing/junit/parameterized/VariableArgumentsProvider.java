@@ -42,13 +42,13 @@ public class VariableArgumentsProvider implements ArgumentsProvider, AnnotationC
 
         // 从上下文中获取当前执行的测试类型
         return context
-            .getTestClass()
-            // 转换为指定的字段对象
-            .map(this::getField)
-            // 从字段中获取字段值
-            .map(this::getValue)
-            // 为获取到结果, 抛出异常
-            .orElseThrow(() -> new IllegalArgumentException("Failed to load test arguments"));
+                .getTestClass()
+                // 转换为指定的字段对象
+                .map(this::getField)
+                // 从字段中获取字段值
+                .map(this::getValue)
+                // 为获取到结果, 抛出异常
+                .orElseThrow(() -> new IllegalArgumentException("Failed to load test arguments"));
     }
 
     /**
@@ -89,8 +89,7 @@ public class VariableArgumentsProvider implements ArgumentsProvider, AnnotationC
             }
             // 从字段获取字段值, 因为是静态字段, 所以无需类实例对象
             return (Stream<Arguments>) field.get(null);
-        } catch (Exception ignored) {
-        } finally {
+        } catch (Exception ignored) {} finally {
             if (!accessible) {
                 // 关闭无法直接访问字段的访问权限
                 field.setAccessible(false);

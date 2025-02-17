@@ -140,8 +140,8 @@ class AssertionTest {
      */
     @Test
     void equalsOrNot_shouldAssertArrayOrIterableEquals() {
-        var nums = new Integer[]{ 1, 2, 3 };
-        assertArrayEquals(new Integer[]{ 1, 2, 3 }, nums);
+        var nums = new Integer[] { 1, 2, 3 };
+        assertArrayEquals(new Integer[] { 1, 2, 3 }, nums);
 
         var chars = List.of('A', 'B', 'C');
         assertIterableEquals(List.of('A', 'B', 'C'), chars);
@@ -256,7 +256,6 @@ class AssertionTest {
         var user = new User(1, "Alvin");
         assertAll(
             () -> assertTrue(user.getId() == 1),
-            () -> assertEquals("Alvin", user.getName())
-        );
+            () -> assertEquals("Alvin", user.getName()));
     }
 }

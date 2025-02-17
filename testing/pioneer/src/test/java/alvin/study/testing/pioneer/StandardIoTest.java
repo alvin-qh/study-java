@@ -53,8 +53,8 @@ class StandardIoTest {
         var lines = out.capturedLines();
         // 确认读取的输出内容符合预期
         then(lines)
-            .hasSize(2)
-            .containsExactly("Hello, Pioneer.", "The System.out changed");
+                .hasSize(2)
+                .containsExactly("Hello, Pioneer.", "The System.out changed");
     }
 
     /**
@@ -72,7 +72,7 @@ class StandardIoTest {
         var lines = err.capturedLines();
         // 确认读取的输出内容符合预期
         then(lines).hasSize(2)
-            .containsExactly("Hello, Pioneer.", "The System.out changed");
+                .containsExactly("Hello, Pioneer.", "The System.out changed");
     }
 
     /**
@@ -91,8 +91,7 @@ class StandardIoTest {
                 // 按行读取输入内容
                 lines.add(scanner.nextLine());
             }
-        } catch (NoSuchElementException e) {
-        }
+        } catch (NoSuchElementException e) {}
 
         // 确认输入内容符合预期
         then(lines).containsExactly("Hello", "World");

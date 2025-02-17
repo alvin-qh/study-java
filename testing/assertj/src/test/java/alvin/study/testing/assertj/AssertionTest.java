@@ -215,7 +215,7 @@ class AssertionTest {
      */
     @Test
     void arrays_shouldAssertArrayMatchedMatches() {
-        var array = new int[]{ 1, 2, 3, 3 };
+        var array = new int[] { 1, 2, 3, 3 };
 
         // 断言一个数组的长度
         then(array).hasSize(4);
@@ -289,8 +289,8 @@ class AssertionTest {
         then(list).filteredOn(n -> n > 0).containsExactly(1, 2, 3, 3);
         // 对集合元素进行转换后, 断言转换后的结果
         then(list).map(String::valueOf)
-            .filteredOn(s -> !s.isEmpty())
-            .containsExactly("1", "2", "3", "3");
+                .filteredOn(s -> !s.isEmpty())
+                .containsExactly("1", "2", "3", "3");
 
         // 断言集合的所有元素都满足指定的 Condition 对象
         var cond = new Condition<Integer>(n -> n > 0, "great than 1");
@@ -307,15 +307,15 @@ class AssertionTest {
 
         // 获取集合元素的特定属性, 进行断言
         then(users).extracting("name")
-            .contains("Alvin", "Emma", "Lucy")
-            .doesNotContain("Lily");
+                .contains("Alvin", "Emma", "Lucy")
+                .doesNotContain("Lily");
 
         // 获取集合元素的若干属性, 进行断言
         then(users).extracting("id", "name")
-            .contains(
-                tuple(1, "Alvin"),
-                tuple(2, "Emma"),
-                tuple(3, "Lucy"));
+                .contains(
+                    tuple(1, "Alvin"),
+                    tuple(2, "Emma"),
+                    tuple(3, "Lucy"));
 
         var groups = List.of(
             new Group(1,
@@ -331,9 +331,9 @@ class AssertionTest {
 
         // 将集合中对象中的集合属性展开, 进行断言
         then(groups).flatExtracting("users")
-            .extracting("name")
-            .contains("Alvin", "Emma", "Lucy", "Lily")
-            .doesNotContain("Arthur");
+                .extracting("name")
+                .contains("Alvin", "Emma", "Lucy", "Lily")
+                .doesNotContain("Arthur");
     }
 
     /**
@@ -397,8 +397,8 @@ class AssertionTest {
         thenThrownBy(() -> {
             throw new IllegalAccessException("Test exception");
         })
-            .isInstanceOf(IllegalAccessException.class)
-            .hasMessage("Test exception");
+                .isInstanceOf(IllegalAccessException.class)
+                .hasMessage("Test exception");
     }
 
     /**

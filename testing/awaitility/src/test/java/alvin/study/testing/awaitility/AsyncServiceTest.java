@@ -78,9 +78,9 @@ class AsyncServiceTest {
         service.initialize();
         // 在 1.5 ~ 2.5 秒内不断轮询 isInitialized 方法的结果, 确保在指定时间内完成操作
         await()
-            .atLeast(1500, TimeUnit.MILLISECONDS)
-            .atMost(2500, TimeUnit.MILLISECONDS)
-            .until(service::isInitialized);
+                .atLeast(1500, TimeUnit.MILLISECONDS)
+                .atMost(2500, TimeUnit.MILLISECONDS)
+                .until(service::isInitialized);
     }
 
     /**
@@ -115,15 +115,15 @@ class AsyncServiceTest {
 
         service.initialize();
         with()
-            .pollDelay(100, TimeUnit.MILLISECONDS) // 设置轮询延迟时间
-            .and()
-            .with().pollInterval(1000, TimeUnit.MILLISECONDS) // 设置轮询间隔时间
-            .and()
-            .with().timeout(1, TimeUnit.SECONDS) // 设置等待超时时间
-            .await()
-            .atLeast(1, TimeUnit.MILLISECONDS)
-            .atMost(3, TimeUnit.SECONDS)
-            .until(service::isInitialized);
+                .pollDelay(100, TimeUnit.MILLISECONDS) // 设置轮询延迟时间
+                .and()
+                .with().pollInterval(1000, TimeUnit.MILLISECONDS) // 设置轮询间隔时间
+                .and()
+                .with().timeout(1, TimeUnit.SECONDS) // 设置等待超时时间
+                .await()
+                .atLeast(1, TimeUnit.MILLISECONDS)
+                .atMost(3, TimeUnit.SECONDS)
+                .until(service::isInitialized);
     }
 
     /**
@@ -144,8 +144,8 @@ class AsyncServiceTest {
 
         service.setValue(1234L);
         await()
-            .atMost(2, TimeUnit.SECONDS)
-            .until(service::getValue, is(equalTo(1234L)));
+                .atMost(2, TimeUnit.SECONDS)
+                .until(service::getValue, is(equalTo(1234L)));
     }
 
     /**
@@ -166,14 +166,13 @@ class AsyncServiceTest {
             try {
                 Thread.sleep(1000);
                 atom.set(20);
-            } catch (InterruptedException ignore) {
-            }
+            } catch (InterruptedException ignore) {}
         }).start();
 
         // 在 2 秒内等待 Atomic 对象的值变为期待值
         await()
-            .atMost(2, TimeUnit.SECONDS)
-            .untilAtomic(atom, is(equalTo(20)));
+                .atMost(2, TimeUnit.SECONDS)
+                .untilAtomic(atom, is(equalTo(20)));
     }
 
     /**
@@ -216,13 +215,12 @@ class AsyncServiceTest {
 
         service.setValue(1234L);
         await()
-            .atMost(3, TimeUnit.SECONDS)
-            .until(
-                fieldIn(service)
-                    .ofType(AtomicLong.class)
-                    .andWithName("value"),
-                atom -> atom.get() == 1234L
-            );
+                .atMost(3, TimeUnit.SECONDS)
+                .until(
+                    fieldIn(service)
+                            .ofType(AtomicLong.class)
+                            .andWithName("value"),
+                    atom -> atom.get() == 1234L);
     }
 
     /**
@@ -248,12 +246,10 @@ class AsyncServiceTest {
 
         service.setValue(1234L);
         await()
-            .atMost(3, TimeUnit.SECONDS)
-            .untilAsserted(() ->
-                then(service)
-                    .extracting("value")
-                    .isEqualTo(1234L)
-            );
+                .atMost(3, TimeUnit.SECONDS)
+                .untilAsserted(() -> then(service)
+                        .extracting("value")
+                        .isEqualTo(1234L));
     }
 
     /**
@@ -279,13 +275,12 @@ class AsyncServiceTest {
 
         service.setUser(new User(1001, "Alvin"));
         given()
-            .ignoreException(IllegalStateException.class)
-            .await()
-            .atMost(2, TimeUnit.SECONDS)
-            .until(
-                service::getUser,
-                user -> Objects.equal(user.getId(), 1001) && Objects.equal(user.getName(), "Alvin")
-            );
+                .ignoreException(IllegalStateException.class)
+                .await()
+                .atMost(2, TimeUnit.SECONDS)
+                .until(
+                    service::getUser,
+                    user -> Objects.equal(user.getId(), 1001) && Objects.equal(user.getName(), "Alvin"));
     }
 
     /**
@@ -306,12 +301,11 @@ class AsyncServiceTest {
         service.setUser(new User(1001, "Alvin"));
 
         given()
-            .ignoreExceptionsMatching(e -> e.getMessage().startsWith("Object not ready"))
-            .await()
-            .atMost(2, TimeUnit.SECONDS)
-            .until(
-                service::getUser,
-                user -> Objects.equal(user.getId(), 1001) && Objects.equal(user.getName(), "Alvin")
-            );
+                .ignoreExceptionsMatching(e -> e.getMessage().startsWith("Object not ready"))
+                .await()
+                .atMost(2, TimeUnit.SECONDS)
+                .until(
+                    service::getUser,
+                    user -> Objects.equal(user.getId(), 1001) && Objects.equal(user.getName(), "Alvin"));
     }
 }

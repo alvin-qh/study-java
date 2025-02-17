@@ -20,7 +20,8 @@ import java.lang.annotation.Target;
  * <p>
  * 注意, {@link #value()} 参数指定的字段必须为 {@code static}, 这一点可以参考
  * {@code VariableArgumentsProvider.getValue(Field) 方法中对字段取值的方式
- * </p>
+ *
+</p>
  */
 @Documented
 @Target(ElementType.METHOD)

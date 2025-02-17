@@ -72,8 +72,7 @@ class MiscTest {
      */
     @Test
     @ReportEntry(key = "test-reporting", value = "The test reporting output demo", when = PublishCondition.ALWAYS)
-    void reporting_shouldReportTestUseCertainKeyAndValue() {
-    }
+    void reporting_shouldReportTestUseCertainKeyAndValue() {}
 
     /**
      * 通过 {@link Issue @Issue} 注解在测试报告中包含一个 issues 代码, 以表示此测试方法是针对某个具体的缺陷
@@ -84,8 +83,7 @@ class MiscTest {
      */
     @Test
     @Issue("ERR-1001")
-    void issue_shouldReportIssueCode() {
-    }
+    void issue_shouldReportIssueCode() {}
 
     /**
      * {@link ExpectedToFail @ExpectedToFail} 注解表示该测试方法有失败的预期, 即使失败了也不要在结果中显示

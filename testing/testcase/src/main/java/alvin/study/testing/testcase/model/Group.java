@@ -23,9 +23,9 @@ public class Group implements Serializable {
     private final List<User> users;
 
     public Group(
-        @JsonProperty("id") int id,
-        @JsonProperty("name") String name,
-        @JsonProperty("users") List<User> users) {
+            @JsonProperty("id") int id,
+            @JsonProperty("name") String name,
+            @JsonProperty("users") List<User> users) {
         this.id = id;
         this.name = name;
         this.users = users;

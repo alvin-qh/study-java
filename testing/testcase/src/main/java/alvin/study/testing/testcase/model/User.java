@@ -19,8 +19,8 @@ public class User implements Serializable {
     private final String name;
 
     public User(
-        @JsonProperty("id") int id,
-        @JsonProperty("name") String name) {
+            @JsonProperty("id") int id,
+            @JsonProperty("name") String name) {
         this.id = id;
         this.name = name;
     }

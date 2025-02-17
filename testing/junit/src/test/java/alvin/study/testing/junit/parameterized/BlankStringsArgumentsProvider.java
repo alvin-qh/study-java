@@ -20,7 +20,6 @@ public class BlankStringsArgumentsProvider implements ArgumentsProvider {
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
         return Stream.of(
             Arguments.of((String) null),
-            Arguments.of("")
-        );
+            Arguments.of(""));
     }
 }

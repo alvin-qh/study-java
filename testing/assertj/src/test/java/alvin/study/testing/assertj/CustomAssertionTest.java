@@ -1,6 +1,5 @@
 package alvin.study.testing.assertj;
 
-
 import alvin.study.testing.assertj.custom.SoftAssertions;
 import alvin.study.testing.testcase.model.User;
 import org.junit.jupiter.api.Test;
@@ -30,9 +29,9 @@ class CustomAssertionTest {
     @Test
     void standard_shouldCustomAssertWorked() {
         assertThat(user)
-            .isNotNull()
-            .hasId(1001)
-            .hasName("Alvin");
+                .isNotNull()
+                .hasId(1001)
+                .hasName("Alvin");
     }
 
     /**
@@ -45,9 +44,9 @@ class CustomAssertionTest {
     @Test
     void bdd_shouldCustomAssertWorked() {
         then(user)
-            .isNotNull()
-            .hasId(1001)
-            .hasName("Alvin");
+                .isNotNull()
+                .hasId(1001)
+                .hasName("Alvin");
     }
 
     /**
@@ -61,9 +60,9 @@ class CustomAssertionTest {
     void softly_shouldCustomAssertWorked() {
         SoftAssertions.assertSoftly(softly -> {
             softly.assertThat(user)
-                .isNotNull()
-                .hasName("Alvin")
-                .hasId(1001);
+                    .isNotNull()
+                    .hasName("Alvin")
+                    .hasId(1001);
         });
     }
 }

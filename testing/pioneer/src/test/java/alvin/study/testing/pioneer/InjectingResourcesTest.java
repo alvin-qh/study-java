@@ -42,7 +42,7 @@ class InjectingResourcesTest {
      */
     @Test
     void new_shouldCreateNewTempDirResource(
-        @New(value = TemporaryDirectory.class, arguments = "new-dir-prefix") Path tmpDir) {
+            @New(value = TemporaryDirectory.class, arguments = "new-dir-prefix") Path tmpDir) {
         // 确认临时路径已被创建
         then(tmpDir).exists();
 
@@ -99,7 +99,7 @@ class InjectingResourcesTest {
     @Test
     @Order(1)
     void new_shouldCreateSharedTempDirResourceWrite(
-        @Shared(factory = TemporaryDirectory.class, name = "shared-tmp-dir") Path tmpDir) throws Exception {
+            @Shared(factory = TemporaryDirectory.class, name = "shared-tmp-dir") Path tmpDir) throws Exception {
         // 确认临时路径已被创建
         then(Files.exists(tmpDir)).isTrue();
 
@@ -145,7 +145,7 @@ class InjectingResourcesTest {
     @Test
     @Order(2)
     void new_shouldCreateSharedTempDirResourceRead(
-        @Shared(factory = TemporaryDirectory.class, name = "shared-tmp-dir") Path tmpDir) throws Exception {
+            @Shared(factory = TemporaryDirectory.class, name = "shared-tmp-dir") Path tmpDir) throws Exception {
         // 确认临时路径已被创建
         then(Files.exists(tmpDir)).isTrue();
 

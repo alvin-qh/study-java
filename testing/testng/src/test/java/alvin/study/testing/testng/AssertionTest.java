@@ -103,10 +103,10 @@ public class AssertionTest {
      */
     @Test
     void equal_shouldAssertArrayEqual() {
-        var nums = new Integer[]{ 1, 2, 3 };
+        var nums = new Integer[] { 1, 2, 3 };
 
-        assertEquals(nums, new Integer[]{ 1, 2, 3 });
-        assertNotEquals(nums, new Integer[]{ 1, 2, 3, 4 });
+        assertEquals(nums, new Integer[] { 1, 2, 3 });
+        assertNotEquals(nums, new Integer[] { 1, 2, 3, 4 });
     }
 
     /**

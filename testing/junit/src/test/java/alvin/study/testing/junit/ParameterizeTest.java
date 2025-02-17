@@ -1,6 +1,5 @@
 package alvin.study.testing.junit;
 
-
 import static org.assertj.core.api.BDDAssertions.then;
 
 import java.time.LocalDate;
@@ -8,7 +7,6 @@ import java.time.Month;
 import java.util.EnumSet;
 import java.util.stream.Stream;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.aggregator.AggregateWith;
@@ -87,7 +85,7 @@ class ParameterizeTest {
      *
      * @return 传递给 {@link #methodSource_shouldDisplayName(char, int)} 方法的参数值
      */
-    private static @NotNull Stream<Arguments> methodSource_shouldDisplayName() {
+    private static Stream<Arguments> methodSource_shouldDisplayName() {
         return Stream.of(
             Arguments.of('A', 65),
             Arguments.of('B', 66),
@@ -350,8 +348,8 @@ class ParameterizeTest {
     @CsvSource({ "2018/12/25,2018", "2019/02/11,2019" })
     @ParameterizedTest
     void csvSource_shouldConvertSlashyDateToLocalDate(
-        @ConvertWith(SlashyDateConverter.class) LocalDate input,
-        int expected) {
+            @ConvertWith(SlashyDateConverter.class) LocalDate input,
+            int expected) {
         then(input.getYear()).isEqualTo(expected);
     }
 
@@ -406,8 +404,8 @@ class ParameterizeTest {
     @CsvSource({ "1,Alvin,1-Alvin", "2,Emma,2-Emma", "3,Arthur,3-Arthur", "4,Lily,4-Lily", "5,Jimmy,5-Jimmy" })
     @ParameterizedTest
     void csvSource_shouldGetParameterByAggregator(
-        @AggregateWith(UserAggregator.class) User user,
-        ArgumentsAccessor accessor) {
+            @AggregateWith(UserAggregator.class) User user,
+            ArgumentsAccessor accessor) {
         // 获取 csv 的第三列数据
         var expected = accessor.getString(2);
         then(user).hasToString(expected);
