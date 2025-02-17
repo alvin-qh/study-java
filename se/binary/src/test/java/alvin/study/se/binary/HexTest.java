@@ -86,9 +86,9 @@ class HexTest {
 
         // 将字节数组转为内存转储字符串
         then(Hex.dump(data)).isEqualTo("""
-                0x00000000 54 68 69 73 20 69 73 20 6D 65 6D 6F 72 79 20 64 This is memory d
-                0x00000010 75 6D 70 20 74 65 73 74 69 6E 67 2C 20 73 68 6F ump testing, sho
-                0x00000020 75 6C 64 20 73 68 6F 77 20 74 68 65 20 6D 65 6D uld show the mem
-                0x00000030 6F 72 79 20 76 69 65 77                         ory view""");
+            0x00000000 54 68 69 73 20 69 73 20 6D 65 6D 6F 72 79 20 64 This is memory d
+            0x00000010 75 6D 70 20 74 65 73 74 69 6E 67 2C 20 73 68 6F ump testing, sho
+            0x00000020 75 6C 64 20 73 68 6F 77 20 74 68 65 20 6D 65 6D uld show the mem
+            0x00000030 6F 72 79 20 76 69 65 77                         ory view""");
     }
 }

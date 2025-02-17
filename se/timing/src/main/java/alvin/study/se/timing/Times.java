@@ -252,7 +252,5 @@ public final class Times {
      * </p>
      */
     @VisibleForTesting
-    static void setClock(Clock clock) {
-        Times.clock = clock;
-    }
+    static void setClock(Clock clock) { Times.clock = clock; }
 }

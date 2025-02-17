@@ -195,18 +195,14 @@ class TimerScheduleTest {
              *
              * @return 任务是否完成
              */
-            public boolean isDone() {
-                return executionTime != 0;
-            }
+            public boolean isDone() { return executionTime != 0; }
 
             /**
              * 获取任务执行时间
              *
              * @return 任务何时执行完毕的毫秒数
              */
-            public long getExecutionTime() {
-                return executionTime;
-            }
+            public long getExecutionTime() { return executionTime; }
         }
 
         // 定义定时器对象

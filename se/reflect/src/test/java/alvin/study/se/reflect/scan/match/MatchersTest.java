@@ -18,8 +18,7 @@ import org.junit.jupiter.api.Test;
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@interface TestAnnotation {
-}
+@interface TestAnnotation {}
 
 /**
  * 测试类型
@@ -52,8 +51,7 @@ class TestClass {
  * 用于测试 {@link Matchers.SubclassesOf} 匹配器
  * </p>
  */
-class TestSubClass extends TestClass {
-}
+class TestSubClass extends TestClass {}
 
 /**
  * 测试 {@link Matchers} 类型, 检验各个 {@link Matcher} 实现类

@@ -70,6 +70,5 @@ public class BlockedService {
     }
 
     // 模型类型
-    public record Model(long id, String name) {
-    }
+    public record Model(long id, String name) {}
 }

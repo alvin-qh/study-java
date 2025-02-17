@@ -13,13 +13,13 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@interface TestAnnotation { }
+@interface TestAnnotation {}
 
 @TestAnnotation
-abstract class TestClass { }
+abstract class TestClass {}
 
 @TestAnnotation
-class TestSubClass extends TestClass { }
+class TestSubClass extends TestClass {}
 
 /**
  * 测试 {@link ClassScanner} 类型, 查找符合条件的类
@@ -41,12 +41,12 @@ class ClassScannerTest {
         // 2. 具备 TestAnnotation 注解
         // 3. 自身不能是 TestClass 类
         var matcher = Matchers.subclassesOf(TestClass.class)
-            .and(Matchers.annotatedWith(TestAnnotation.class))
-            .and(Matchers.not(Matchers.is(TestClass.class)));
+                .and(Matchers.annotatedWith(TestAnnotation.class))
+                .and(Matchers.not(Matchers.is(TestClass.class)));
 
         // 在 ClassScannerTest 类型所在的包下进行查找
         var classes = ClassScanner.matching(matcher)
-            .in(ClassScannerTest.class.getPackage());
+                .in(ClassScannerTest.class.getPackage());
 
         // 确认查找结果为 TestSubClass 类
         then(classes).containsExactly(TestSubClass.class);
@@ -68,7 +68,7 @@ class ClassScannerTest {
 
         // 设置查询的包范围
         var classes = ClassScanner.matching(matcher)
-            .in("org.hamcrest", "org.junit");
+                .in("org.hamcrest", "org.junit");
 
         // 确认查找结果
         then(classes).containsExactly(Test.class);

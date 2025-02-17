@@ -27,23 +27,15 @@ public final class Pair<K, V> implements Map.Entry<K, V> {
         return new Pair<>(left, right);
     }
 
-    public K getLeft() {
-        return getKey();
-    }
+    public K getLeft() { return getKey(); }
 
-    public V getRight() {
-        return getValue();
-    }
+    public V getRight() { return getValue(); }
 
     @Override
-    public K getKey() {
-        return left;
-    }
+    public K getKey() { return left; }
 
     @Override
-    public V getValue() {
-        return right;
-    }
+    public V getValue() { return right; }
 
     @Override
     public V setValue(V value) {

@@ -64,18 +64,14 @@ public class SimpleMailClientBuilder {
      *
      * @return {@code true} 表示开启 debug 模式
      */
-    public static boolean isDebug() {
-        return debug;
-    }
+    public static boolean isDebug() { return debug; }
 
     /**
      * 设置是否开启 debug 模式
      *
      * @param debug {@code true} 表示开启 debug 模式
      */
-    public static void setDebug(boolean debug) {
-        SimpleMailClientBuilder.debug = debug;
-    }
+    public static void setDebug(boolean debug) { SimpleMailClientBuilder.debug = debug; }
 
     /**
      * 设置是否需要服务器认证

@@ -142,14 +142,14 @@ class BytesTest {
 
         // 在原数组基础上, 将 7 个字节连接到原数组末尾
         dist = Bytes.concat(dist,
-                dist.length,
-                new byte[] { 0x20, 0x21, 0x22 },
-                new byte[] { 0x30, 0x31, 0x32, 0x33 });
+            dist.length,
+            new byte[] { 0x20, 0x21, 0x22 },
+            new byte[] { 0x30, 0x31, 0x32, 0x33 });
         // 确认连接结果
         then(dist).containsExactly(
-                0x1, 0x10, 0x11, 0x12,
-                0x20, 0x21, 0x22, 0x30,
-                0x31, 0x32, 0x33);
+            0x1, 0x10, 0x11, 0x12,
+            0x20, 0x21, 0x22, 0x30,
+            0x31, 0x32, 0x33);
     }
 
     /**
@@ -159,7 +159,7 @@ class BytesTest {
     void append_shouldAppendBytesIntoByteArray() {
         // 要被追加的目标数组
         var dist = new byte[] {
-                0x0, 0x0, 0x0, 0x0
+            0x0, 0x0, 0x0, 0x0
         };
 
         // 将 2 个字节追加到原 byte 数组末尾
@@ -208,7 +208,7 @@ class BytesTest {
         var result = Bytes.appendLong(dist, 0x1234567890ABCDEFL);
         // 确认追加结果
         then(result).containsExactly(
-                0x0, 0x0, 0x0, 0x0, 0x12, 0x34, 0x56, 0x78, (byte) 0x90, (byte) 0xAB, (byte) 0xCD, (byte) 0xEF);
+            0x0, 0x0, 0x0, 0x0, 0x12, 0x34, 0x56, 0x78, (byte) 0x90, (byte) 0xAB, (byte) 0xCD, (byte) 0xEF);
     }
 
     /**
@@ -241,7 +241,7 @@ class BytesTest {
     @Test
     void toBytes_shouldConvertLongToBytesArray() {
         then(Bytes.toBytes(0x1234567890ABCDEFL)).containsExactly(
-                0x12, 0x34, 0x56, 0x78, (byte) 0x90, (byte) 0xAB, (byte) 0xCD, (byte) 0xEF);
+            0x12, 0x34, 0x56, 0x78, (byte) 0x90, (byte) 0xAB, (byte) 0xCD, (byte) 0xEF);
     }
 
     /**
@@ -276,38 +276,38 @@ class BytesTest {
     @Test
     void toLong_shouldBytesToLong() {
         then(Bytes.toLong(
-                (byte) 0x12,
-                (byte) 0x34,
-                (byte) 0x56,
-                (byte) 0x78,
-                (byte) 0x90,
-                (byte) 0xAB,
-                (byte) 0xCD,
-                (byte) 0xEF)).isEqualTo(0x1234567890ABCDEFL);
+            (byte) 0x12,
+            (byte) 0x34,
+            (byte) 0x56,
+            (byte) 0x78,
+            (byte) 0x90,
+            (byte) 0xAB,
+            (byte) 0xCD,
+            (byte) 0xEF)).isEqualTo(0x1234567890ABCDEFL);
 
         then(Bytes.toLong(new byte[] {
-                (byte) 0x12,
-                (byte) 0x34,
-                (byte) 0x56,
-                (byte) 0x78,
-                (byte) 0x90,
-                (byte) 0xAB,
-                (byte) 0xCD,
-                (byte) 0xEF
+            (byte) 0x12,
+            (byte) 0x34,
+            (byte) 0x56,
+            (byte) 0x78,
+            (byte) 0x90,
+            (byte) 0xAB,
+            (byte) 0xCD,
+            (byte) 0xEF
         })).isEqualTo(0x1234567890ABCDEFL);
 
         then(Bytes.toLong(new byte[] {
-                (byte) 0x0,
-                (byte) 0x0,
-                (byte) 0x0,
-                (byte) 0x12,
-                (byte) 0x34,
-                (byte) 0x56,
-                (byte) 0x78,
-                (byte) 0x90,
-                (byte) 0xAB,
-                (byte) 0xCD,
-                (byte) 0xEF
+            (byte) 0x0,
+            (byte) 0x0,
+            (byte) 0x0,
+            (byte) 0x12,
+            (byte) 0x34,
+            (byte) 0x56,
+            (byte) 0x78,
+            (byte) 0x90,
+            (byte) 0xAB,
+            (byte) 0xCD,
+            (byte) 0xEF
         }, 3)).isEqualTo(0x1234567890ABCDEFL);
     }
 

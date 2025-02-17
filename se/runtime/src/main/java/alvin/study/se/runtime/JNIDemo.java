@@ -17,8 +17,7 @@ public class JNIDemo {
             } else {
                 throw new UnsupportedOperationException("Invalid OS");
             }
-        } catch (IOException ignored) {
-        }
+        } catch (IOException ignored) {}
     }
 
     /**

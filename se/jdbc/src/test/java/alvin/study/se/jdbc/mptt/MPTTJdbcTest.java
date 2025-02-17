@@ -79,11 +79,11 @@ class MPTTJdbcTest extends MPTTBaseTest {
         var path = repository.findPath(start, end);
         // 确认查询的路径符合预期
         then(path).extracting("id", "name", "pid", "lft", "rht")
-            .containsExactly(
-                tuple(1L, "Food", 0L, 1L, 18L),
-                tuple(3L, "Fruit", 1L, 2L, 11L),
-                tuple(4L, "Yellow", 3L, 7L, 10L),
-                tuple(7L, "Banana", 4L, 8L, 9L));
+                .containsExactly(
+                    tuple(1L, "Food", 0L, 1L, 18L),
+                    tuple(3L, "Fruit", 1L, 2L, 11L),
+                    tuple(4L, "Yellow", 3L, 7L, 10L),
+                    tuple(7L, "Banana", 4L, 8L, 9L));
 
         // 重新选择两个节点
         start = repository.findByName("Fruit").orElseThrow();
@@ -107,11 +107,11 @@ class MPTTJdbcTest extends MPTTBaseTest {
         var leaves = repository.findLeaves();
         // 确认查询结果符合预期
         then(leaves).extracting("id", "name", "pid", "lft", "rht")
-            .containsExactly(
-                tuple(6L, "Cherry", 5L, 4L, 5L),
-                tuple(7L, "Banana", 4L, 8L, 9L),
-                tuple(9L, "Beef", 2L, 13L, 14L),
-                tuple(8L, "Pork", 2L, 15L, 16L));
+                .containsExactly(
+                    tuple(6L, "Cherry", 5L, 4L, 5L),
+                    tuple(7L, "Banana", 4L, 8L, 9L),
+                    tuple(9L, "Beef", 2L, 13L, 14L),
+                    tuple(8L, "Pork", 2L, 15L, 16L));
     }
 
     /**
@@ -129,9 +129,9 @@ class MPTTJdbcTest extends MPTTBaseTest {
         var children = repository.findImmediateChildren(parent.getId());
         // 确认查询结果符合预期
         then(children).extracting("id", "name", "pid", "lft", "rht")
-            .containsExactly(
-                tuple(5L, "Red", 3L, 3L, 6L),
-                tuple(4L, "Yellow", 3L, 7L, 10L));
+                .containsExactly(
+                    tuple(5L, "Red", 3L, 3L, 6L),
+                    tuple(4L, "Yellow", 3L, 7L, 10L));
     }
 
     /**
@@ -160,16 +160,16 @@ class MPTTJdbcTest extends MPTTBaseTest {
         var records = repository.findAll();
         // 确认兄弟节点已经被加入
         then(records).extracting("id", "name", "pid", "lft", "rht")
-            .containsExactly(
-                tuple(1L, "Food", 0L, 1L, 20L),
-                tuple(3L, "Fruit", 1L, 2L, 13L),
-                tuple(5L, "Red", 3L, 3L, 6L),
-                tuple(6L, "Cherry", 5L, 4L, 5L),
-                tuple(4L, "Yellow", 3L, 7L, 10L),
-                tuple(7L, "Banana", 4L, 8L, 9L),
-                tuple(10L, "Green", 3L, 11L, 12L),
-                tuple(2L, "Meat", 1L, 14L, 19L),
-                tuple(9L, "Beef", 2L, 15L, 16L),
-                tuple(8L, "Pork", 2L, 17L, 18L));
+                .containsExactly(
+                    tuple(1L, "Food", 0L, 1L, 20L),
+                    tuple(3L, "Fruit", 1L, 2L, 13L),
+                    tuple(5L, "Red", 3L, 3L, 6L),
+                    tuple(6L, "Cherry", 5L, 4L, 5L),
+                    tuple(4L, "Yellow", 3L, 7L, 10L),
+                    tuple(7L, "Banana", 4L, 8L, 9L),
+                    tuple(10L, "Green", 3L, 11L, 12L),
+                    tuple(2L, "Meat", 1L, 14L, 19L),
+                    tuple(9L, "Beef", 2L, 15L, 16L),
+                    tuple(8L, "Pork", 2L, 17L, 18L));
     }
 }

@@ -22,7 +22,7 @@ class TypeDefinitionTest {
     @Test
     void genericArgumentType_shouldGetGenericType() {
         // 实例化具备泛型类型参数的对象
-        var def = new TypeDefinition<List<String>>() { };
+        var def = new TypeDefinition<List<String>>() {};
 
         // 确认获取泛型参数类型名正确
         then(def.getTypeName()).isEqualTo("java.util.List<java.lang.String>");
@@ -32,7 +32,7 @@ class TypeDefinitionTest {
 
         // 确认获取泛型参数类型的泛型参数正确
         then(def.getActualTypeArguments())
-            .hasSize(1)
-            .containsExactly(String.class);
+                .hasSize(1)
+                .containsExactly(String.class);
     }
 }

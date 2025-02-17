@@ -80,8 +80,7 @@ public final class ProcessUtil {
                     }
                     sb.append(new String(buf, 0, n));
                 }
-            } catch (IOException ignore) {
-            }
+            } catch (IOException ignore) {}
         });
 
         // 启动线程
@@ -228,13 +227,13 @@ public final class ProcessUtil {
          */
         private static ProcessInfo of(@Nonnull ProcessHandle handle) {
             return new ProcessInfo(
-                    handle.pid(),
-                    handle.isAlive(),
-                    handle.info().commandLine().orElse(""),
-                    handle.info().command().orElse(""),
-                    handle.info().arguments().orElse(null),
-                    handle.info().startInstant().orElse(null),
-                    handle.info().totalCpuDuration().orElse(null));
+                handle.pid(),
+                handle.isAlive(),
+                handle.info().commandLine().orElse(""),
+                handle.info().command().orElse(""),
+                handle.info().arguments().orElse(null),
+                handle.info().startInstant().orElse(null),
+                handle.info().totalCpuDuration().orElse(null));
         }
 
         /**

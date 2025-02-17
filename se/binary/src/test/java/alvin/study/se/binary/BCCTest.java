@@ -13,7 +13,7 @@ class BCCTest {
      */
     @Test
     void bcc_shouldCalculateChecksumByDoFinal() {
-        var data = new byte[]{ 0x01, (byte) 0xA0, 0x7C, (byte) 0xFF, 0x02 };
+        var data = new byte[] { 0x01, (byte) 0xA0, 0x7C, (byte) 0xFF, 0x02 };
 
         var bcc = new BCC();
         then(bcc.doFinal(data)).isEqualTo(0x20);
@@ -26,8 +26,8 @@ class BCCTest {
     void bcc_shouldCalculateChecksumByUpdateAndDoFinal() {
         var bcc = new BCC();
 
-        var data1 = new byte[]{ 0x01, (byte) 0xA0, 0x7C };
-        var data2 = new byte[]{ (byte) 0xFF, 0x02 };
+        var data1 = new byte[] { 0x01, (byte) 0xA0, 0x7C };
+        var data2 = new byte[] { (byte) 0xFF, 0x02 };
 
         bcc.update(data1);
         then(bcc.doFinal(data2)).isEqualTo(0x20);
@@ -39,7 +39,7 @@ class BCCTest {
      */
     @Test
     void bcc_shouldCalculateChecksumByUpdateAndDoFinalWithPos() {
-        var data = new byte[]{ 0x01, (byte) 0xA0, 0x7C, (byte) 0xFF, 0x02 };
+        var data = new byte[] { 0x01, (byte) 0xA0, 0x7C, (byte) 0xFF, 0x02 };
 
         var bcc = new BCC();
 

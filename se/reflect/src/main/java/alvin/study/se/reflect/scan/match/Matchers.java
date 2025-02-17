@@ -149,7 +149,7 @@ public final class Matchers {
         /**
          * 构造器, 禁止从外部实例化对象
          */
-        private Any() { }
+        private Any() {}
 
         /**
          * 执行匹配操作, 返回匹配结果

@@ -126,8 +126,7 @@ class LockSupportTest {
                 Thread.sleep(1000);
                 // 通过线程对象解除其阻塞
                 LockSupport.unpark(thread);
-            } catch (InterruptedException ignored) {
-            }
+            } catch (InterruptedException ignored) {}
         }).start();
 
         var startNanos = System.nanoTime();
@@ -197,8 +196,7 @@ class LockSupportTest {
                 synchronized (state) {
                     state.wait();
                 }
-            } catch (InterruptedException ignored) {
-            }
+            } catch (InterruptedException ignored) {}
         });
 
         // 启动线程并等待结束

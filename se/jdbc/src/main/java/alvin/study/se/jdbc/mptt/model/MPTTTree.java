@@ -102,9 +102,7 @@ public class MPTTTree implements Iterable<MPTT> {
      *
      * @return 根节点对象
      */
-    public MPTT getRoot() {
-        return root.value;
-    }
+    public MPTT getRoot() { return root.value; }
 
     /**
      * 通过子节点值, 获取父节点值
@@ -215,8 +213,6 @@ public class MPTTTree implements Iterable<MPTT> {
          *
          * @return 当前节点的子节点集合
          */
-        public List<Node> getChildren() {
-            return children == null ? List.of() : children;
-        }
+        public List<Node> getChildren() { return children == null ? List.of() : children; }
     }
 }

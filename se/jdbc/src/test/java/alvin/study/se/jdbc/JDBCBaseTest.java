@@ -29,14 +29,13 @@ public abstract class JDBCBaseTest {
     static void beforeAll() {
         // 创建数据源对象
         dataSource = DataSourceBuilder.newBuilder()
-            .url("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL;NON_KEYWORDS=USER")
-            .username("dev")
-            .password("password")
-            .build();
+                .url("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL;NON_KEYWORDS=USER")
+                .username("dev")
+                .password("password")
+                .build();
 
         // 通过脚本创建数据表
         new Migration(dataSource).migrate();
-
 
     }
 
@@ -67,7 +66,5 @@ public abstract class JDBCBaseTest {
         connectionManager.close();
     }
 
-    public ConnectionManager getConnectionManager() {
-        return connectionManager;
-    }
+    public ConnectionManager getConnectionManager() { return connectionManager; }
 }

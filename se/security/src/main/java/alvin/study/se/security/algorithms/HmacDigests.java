@@ -143,7 +143,7 @@ public class HmacDigests {
      * @throws NoSuchAlgorithmException 无效的算法名称
      */
     public String digest(byte[] hmacKey, byte[] data, int offset, int length)
-        throws InvalidKeyException, NoSuchAlgorithmException {
+            throws InvalidKeyException, NoSuchAlgorithmException {
         var mac = algorithm.instance(hmacKey);
         mac.update(data, offset, length);
         return Hex.encodeHexString(mac.doFinal());
@@ -174,7 +174,7 @@ public class HmacDigests {
      * @throws IOException              读取输入流失败
      */
     public String digest(byte[] hmacKey, InputStream input)
-        throws InvalidKeyException, NoSuchAlgorithmException, IOException {
+            throws InvalidKeyException, NoSuchAlgorithmException, IOException {
         var mac = algorithm.instance(hmacKey);
 
         var buf = new byte[BUFFER_SIZE];

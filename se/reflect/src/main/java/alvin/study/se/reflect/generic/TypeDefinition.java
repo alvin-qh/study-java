@@ -47,9 +47,7 @@ public abstract class TypeDefinition<T> implements ParameterizedType {
      * @return 泛型参数类型的类型名称
      */
     @Override
-    public String getTypeName() {
-        return genericArgumentType.getTypeName();
-    }
+    public String getTypeName() { return genericArgumentType.getTypeName(); }
 
     /**
      * 获取泛型参数类型的所有者类型
@@ -62,9 +60,7 @@ public abstract class TypeDefinition<T> implements ParameterizedType {
      * @return 当前泛型类型的所有类型
      */
     @Override
-    public Type getOwnerType() {
-        return genericArgumentType.getOwnerType();
-    }
+    public Type getOwnerType() { return genericArgumentType.getOwnerType(); }
 
     /**
      * 获取泛型参数类型的 {@link Class} 对象
@@ -73,9 +69,7 @@ public abstract class TypeDefinition<T> implements ParameterizedType {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public Class<T> getRawType() {
-        return (Class<T>) genericArgumentType.getRawType();
-    }
+    public Class<T> getRawType() { return (Class<T>) genericArgumentType.getRawType(); }
 
     /**
      * 获取泛型参数类型的泛型参数
@@ -88,7 +82,5 @@ public abstract class TypeDefinition<T> implements ParameterizedType {
      * @return 泛型参数类型的泛型参数
      */
     @Override
-    public Type[] getActualTypeArguments() {
-        return genericArgumentType.getActualTypeArguments();
-    }
+    public Type[] getActualTypeArguments() { return genericArgumentType.getActualTypeArguments(); }
 }

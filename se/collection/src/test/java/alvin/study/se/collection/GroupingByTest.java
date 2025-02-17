@@ -44,8 +44,7 @@ record BlogPost(
      * @param type  帖子类型
      * @param likes 点赞数
      */
-    record TypeAndLikeKey(BlogPostType type, int likes) {
-    }
+    record TypeAndLikeKey(BlogPostType type, int likes) {}
 
     /**
      * 保存多聚合结果的记录属性
@@ -54,8 +53,7 @@ record BlogPost(
      * @param titles    标题集合
      * @param likeStats 点赞数统计信息
      */
-    record PostCountTitlesLikesStats(long postCount, String titles, IntSummaryStatistics likeStats) {
-    }
+    record PostCountTitlesLikesStats(long postCount, String titles, IntSummaryStatistics likeStats) {}
 
     /**
      * 保存标题和点赞数聚合结果
@@ -64,8 +62,7 @@ record BlogPost(
      * @param titles            帖子标题聚合
      * @param boundedSumOfLikes 点赞数聚合
      */
-    record TitlesBoundedSumOfLikes(long postCount, String titles, int boundedSumOfLikes) {
-    }
+    record TitlesBoundedSumOfLikes(long postCount, String titles, int boundedSumOfLikes) {}
 }
 
 /**
@@ -131,13 +128,13 @@ class GroupingByTest {
                 .stream()
                 .flatMap(e -> IntStream.range(0, e.getValue())
                         .mapToObj(n -> new BlogPost(
-                                faker.funnyName().name(),
-                                faker.name().fullName(),
-                                e.getKey(),
-                                likeHolder.getLikes(),
-                                IntStream.range(0, n + 1) // 第几个帖子就有几条回复
-                                        .mapToObj(ignore -> faker.regexify("[A-Za-z\\-,. ]{20,50}"))
-                                        .toList())))
+                            faker.funnyName().name(),
+                            faker.name().fullName(),
+                            e.getKey(),
+                            likeHolder.getLikes(),
+                            IntStream.range(0, n + 1) // 第几个帖子就有几条回复
+                                    .mapToObj(ignore -> faker.regexify("[A-Za-z\\-,. ]{20,50}"))
+                                    .toList())))
                 .toList();
     }
 
@@ -160,9 +157,9 @@ class GroupingByTest {
     void classifier_simpleGroupingByASingleColumn() {
         // 生成测试数据
         var data = makeTestingData(Map.of(
-                BlogPostType.NEWS, 10,
-                BlogPostType.REVIEW, 5,
-                BlogPostType.GUIDE, 8));
+            BlogPostType.NEWS, 10,
+            BlogPostType.REVIEW, 5,
+            BlogPostType.GUIDE, 8));
         then(data).hasSize(23);
 
         // 将测试数据以 Map<BlogPostType, List<BlogPost>> 类型进行分组
@@ -199,16 +196,16 @@ class GroupingByTest {
     void classifier_groupingByWithAComplexMapKeyType() {
         // 产生测试数据
         var data = makeTestingData(Map.of(
-                BlogPostType.NEWS, 10,
-                BlogPostType.REVIEW, 5,
-                BlogPostType.GUIDE, 8));
+            BlogPostType.NEWS, 10,
+            BlogPostType.REVIEW, 5,
+            BlogPostType.GUIDE, 8));
         then(data).hasSize(23);
 
         // 将测试数据以 Map<BlogPost.TypeAndLikeKey, List<BlogPost>> 类型进行分组
         var results = data.stream().collect(
-                Collectors.groupingBy(blog -> new BlogPost.TypeAndLikeKey(
-                        blog.type(),
-                        blog.likes())));
+            Collectors.groupingBy(blog -> new BlogPost.TypeAndLikeKey(
+                blog.type(),
+                blog.likes())));
 
         // 确认分组数量
         // 因为每个帖子类型都有点赞数为 1 和 2 的记录, 所以产生 6 个分组 (帖子类型分类 x 点赞数分类 = 3 * 2 = 6)
@@ -249,14 +246,14 @@ class GroupingByTest {
     void classifier_modifyingTheReturnedMapValueType() {
         // 产生测试数据
         var data = makeTestingData(Map.of(
-                BlogPostType.NEWS, 10,
-                BlogPostType.REVIEW, 5,
-                BlogPostType.GUIDE, 8));
+            BlogPostType.NEWS, 10,
+            BlogPostType.REVIEW, 5,
+            BlogPostType.GUIDE, 8));
         then(data).hasSize(23);
 
         // 将测试数据以 Map<BlogPostType, Set<BlogPost>> 类型进行分组
         var results = data.stream().collect(
-                Collectors.groupingBy(BlogPost::type, Collectors.toSet()));
+            Collectors.groupingBy(BlogPost::type, Collectors.toSet()));
 
         // 确认分组数量
         then(results).hasSize(3);
@@ -292,14 +289,14 @@ class GroupingByTest {
     void classifier_groupingByMultipleFields() {
         // 产生测试数据
         var data = makeTestingData(Map.of(
-                BlogPostType.NEWS, 10,
-                BlogPostType.REVIEW, 5,
-                BlogPostType.GUIDE, 8));
+            BlogPostType.NEWS, 10,
+            BlogPostType.REVIEW, 5,
+            BlogPostType.GUIDE, 8));
         then(data).hasSize(23);
 
         // 将测试数据以 Map<BlogPostType, Map<Integer, List<BlogPost>>> 类型进行分组
         var results = data.stream().collect(
-                Collectors.groupingBy(BlogPost::type, Collectors.groupingBy(BlogPost::likes)));
+            Collectors.groupingBy(BlogPost::type, Collectors.groupingBy(BlogPost::likes)));
 
         // 确认第一级分组数量
         then(results).hasSize(3);
@@ -342,14 +339,14 @@ class GroupingByTest {
     void classifier_gettingTheAverageFromGroupedResults() {
         // 产生测试数据
         var data = makeTestingData(Map.of(
-                BlogPostType.NEWS, 10,
-                BlogPostType.REVIEW, 5,
-                BlogPostType.GUIDE, 8));
+            BlogPostType.NEWS, 10,
+            BlogPostType.REVIEW, 5,
+            BlogPostType.GUIDE, 8));
         then(data).hasSize(23);
 
         // 将测试数据以 Map<BlogPostType, Double> 类型进行分组
         var results = data.stream().collect(
-                Collectors.groupingBy(BlogPost::type, Collectors.averagingInt(BlogPost::likes)));
+            Collectors.groupingBy(BlogPost::type, Collectors.averagingInt(BlogPost::likes)));
 
         // 确认分组数量
         then(results).hasSize(3);
@@ -380,14 +377,14 @@ class GroupingByTest {
     void classifier_gettingTheSumFromGroupedResults() {
         // 产生测试数据
         var data = makeTestingData(Map.of(
-                BlogPostType.NEWS, 10,
-                BlogPostType.REVIEW, 5,
-                BlogPostType.GUIDE, 8));
+            BlogPostType.NEWS, 10,
+            BlogPostType.REVIEW, 5,
+            BlogPostType.GUIDE, 8));
         then(data).hasSize(23);
 
         // 将测试数据以 Map<BlogPostType, Integer> 类型进行分组
         var results = data.stream().collect(
-                Collectors.groupingBy(BlogPost::type, Collectors.summingInt(BlogPost::likes)));
+            Collectors.groupingBy(BlogPost::type, Collectors.summingInt(BlogPost::likes)));
 
         // 确认分组数量
         then(results).hasSize(3);
@@ -417,14 +414,14 @@ class GroupingByTest {
     void classifier_gettingTheMaximumOrMinimumFromGroupedResults() {
         // 产生测试数据
         var data = makeTestingData(Map.of(
-                BlogPostType.NEWS, 10,
-                BlogPostType.REVIEW, 5,
-                BlogPostType.GUIDE, 8));
+            BlogPostType.NEWS, 10,
+            BlogPostType.REVIEW, 5,
+            BlogPostType.GUIDE, 8));
         then(data).hasSize(23);
 
         // 将测试数据以 Map<BlogPostType, Optional<BlogPost>> 类型进行分组, 每组返回点赞数最大的那个对象
         var results = data.stream().collect(
-                Collectors.groupingBy(BlogPost::type, Collectors.maxBy(Comparator.comparingInt(BlogPost::likes))));
+            Collectors.groupingBy(BlogPost::type, Collectors.maxBy(Comparator.comparingInt(BlogPost::likes))));
 
         // 确认分组数量
         then(results).hasSize(3);
@@ -436,7 +433,7 @@ class GroupingByTest {
 
         // 将测试数据以 Map<BlogPostType, Optional<BlogPost>> 类型进行分组, 每组返回点赞数最小的那个对象
         results = data.stream().collect(
-                Collectors.groupingBy(BlogPost::type, Collectors.minBy(Comparator.comparingInt(BlogPost::likes))));
+            Collectors.groupingBy(BlogPost::type, Collectors.minBy(Comparator.comparingInt(BlogPost::likes))));
 
         // 确认分组数量
         then(results).hasSize(3);
@@ -487,14 +484,14 @@ class GroupingByTest {
     void classifier_gettingASummaryForAnAttributeOfGroupedResults() {
         // 产生测试数据
         var data = makeTestingData(Map.of(
-                BlogPostType.NEWS, 10,
-                BlogPostType.REVIEW, 5,
-                BlogPostType.GUIDE, 8));
+            BlogPostType.NEWS, 10,
+            BlogPostType.REVIEW, 5,
+            BlogPostType.GUIDE, 8));
         then(data).hasSize(23);
 
         // 将测试数据以 Map<BlogPostType, IntSummaryStatistics> 类型进行分组, 每组返回点赞数的统计指标对象
         var results = data.stream().collect(
-                Collectors.groupingBy(BlogPost::type, Collectors.summarizingInt(BlogPost::likes)));
+            Collectors.groupingBy(BlogPost::type, Collectors.summarizingInt(BlogPost::likes)));
 
         // 确认分组数量
         then(results).hasSize(3);
@@ -511,10 +508,10 @@ class GroupingByTest {
             @Override
             public boolean matches(IntSummaryStatistics value) {
                 return value.getCount() == count
-                        && value.getAverage() == avg
-                        && value.getSum() == sum
-                        && value.getMax() == max
-                        && value.getMin() == min;
+                       && value.getAverage() == avg
+                       && value.getSum() == sum
+                       && value.getMax() == max
+                       && value.getMin() == min;
             }
         }
 
@@ -538,30 +535,30 @@ class GroupingByTest {
     void classifier_aggregatingMultipleAttributesOfAGroupedResult() {
         // 产生测试数据
         var data = makeTestingData(Map.of(
-                BlogPostType.NEWS, 10,
-                BlogPostType.REVIEW, 5,
-                BlogPostType.GUIDE, 8));
+            BlogPostType.NEWS, 10,
+            BlogPostType.REVIEW, 5,
+            BlogPostType.GUIDE, 8));
         then(data).hasSize(23);
 
         // 将测试数据以 Map<BlogPostType, BlogPost.PostCountTitlesLikesStats> 类型进行分组,
         // 每组返回所需统计数据
         var results = data.stream().collect(
-                Collectors.groupingBy(BlogPost::type, Collectors.collectingAndThen(
-                        // 分组结果存储在 List 集合中
-                        Collectors.toList(),
-                        // 对分组结果进行进一步处理
-                        list -> {
-                            // 将分组中所有帖子的标题连接成一个
-                            var titles = list.stream()
-                                    .map(BlogPost::title)
-                                    .collect(Collectors.joining(":"));
+            Collectors.groupingBy(BlogPost::type, Collectors.collectingAndThen(
+                // 分组结果存储在 List 集合中
+                Collectors.toList(),
+                // 对分组结果进行进一步处理
+                list -> {
+                    // 将分组中所有帖子的标题连接成一个
+                    var titles = list.stream()
+                            .map(BlogPost::title)
+                            .collect(Collectors.joining(":"));
 
-                            // 将分组中所有帖子的点赞数进行统计
-                            var summary = list.stream().collect(Collectors.summarizingInt(BlogPost::likes));
+                    // 将分组中所有帖子的点赞数进行统计
+                    var summary = list.stream().collect(Collectors.summarizingInt(BlogPost::likes));
 
-                            // 将结果返回成 BlogPost.PostCountTitlesLikesStats 类型对象
-                            return new BlogPost.PostCountTitlesLikesStats(list.size(), titles, summary);
-                        })));
+                    // 将结果返回成 BlogPost.PostCountTitlesLikesStats 类型对象
+                    return new BlogPost.PostCountTitlesLikesStats(list.size(), titles, summary);
+                })));
 
         // 确认分组数量
         then(results).hasSize(3);
@@ -599,25 +596,25 @@ class GroupingByTest {
     void classifier_aggregatingMultipleAttributesByToMapMethod() {
         // 产生测试数据
         var data = makeTestingData(Map.of(
-                BlogPostType.NEWS, 10,
-                BlogPostType.REVIEW, 5,
-                BlogPostType.GUIDE, 8));
+            BlogPostType.NEWS, 10,
+            BlogPostType.REVIEW, 5,
+            BlogPostType.GUIDE, 8));
         then(data).hasSize(23);
 
         // 将测试数据以 Map<BlogPostType, BlogPost.TitlesBoundedSumOfLikes> 类型进行分组, 每组返回所需统计数据
         var results = data.stream().collect(Collectors.toMap(
-                // Map 的 Key 值
-                BlogPost::type,
-                // Map 的 Value 值
-                post -> new BlogPost.TitlesBoundedSumOfLikes(1, post.title(), post.likes()),
-                // Key 重复的时候, 解决冲突的方法, 这里可以用于进行分组统计计算
-                (o, n) -> new BlogPost.TitlesBoundedSumOfLikes(
-                        // 合并贴子总数
-                        o.postCount() + n.postCount(),
-                        // 合并标题内容
-                        String.format("%s:%s", o.titles(), n.titles()),
-                        // 合并点赞数
-                        o.boundedSumOfLikes() + n.boundedSumOfLikes())));
+            // Map 的 Key 值
+            BlogPost::type,
+            // Map 的 Value 值
+            post -> new BlogPost.TitlesBoundedSumOfLikes(1, post.title(), post.likes()),
+            // Key 重复的时候, 解决冲突的方法, 这里可以用于进行分组统计计算
+            (o, n) -> new BlogPost.TitlesBoundedSumOfLikes(
+                // 合并贴子总数
+                o.postCount() + n.postCount(),
+                // 合并标题内容
+                String.format("%s:%s", o.titles(), n.titles()),
+                // 合并点赞数
+                o.boundedSumOfLikes() + n.boundedSumOfLikes())));
 
         // 确认分组数量
         then(results).hasSize(3);
@@ -648,19 +645,19 @@ class GroupingByTest {
     void classifier_mappingGroupedResultsToDifferentType() {
         // 产生测试数据
         var data = makeTestingData(Map.of(
-                BlogPostType.NEWS, 10,
-                BlogPostType.REVIEW, 5,
-                BlogPostType.GUIDE, 8));
+            BlogPostType.NEWS, 10,
+            BlogPostType.REVIEW, 5,
+            BlogPostType.GUIDE, 8));
         then(data).hasSize(23);
 
         // 将测试数据以 Map<BlogPostType, String> 类型进行分组, 将每个分组转为字符串类型
         var results = data.stream().collect(Collectors.groupingBy(
-                // 指定分组 Key
-                BlogPost::type,
-                // 将分组结果进行转换
-                Collectors.mapping(
-                        BlogPost::title, // 获取分组结果每个元素的帖子标题, 并将结果进行字符串连接
-                        Collectors.joining(", ", "Post Titles: [", "]"))));
+            // 指定分组 Key
+            BlogPost::type,
+            // 将分组结果进行转换
+            Collectors.mapping(
+                BlogPost::title, // 获取分组结果每个元素的帖子标题, 并将结果进行字符串连接
+                Collectors.joining(", ", "Post Titles: [", "]"))));
 
         // 确认分组数量
         then(results).hasSize(3);
@@ -697,19 +694,19 @@ class GroupingByTest {
     void classifier_modifyingTheReturnMapType() {
         // 产生测试数据
         var data = makeTestingData(Map.of(
-                BlogPostType.NEWS, 10,
-                BlogPostType.REVIEW, 5,
-                BlogPostType.GUIDE, 8));
+            BlogPostType.NEWS, 10,
+            BlogPostType.REVIEW, 5,
+            BlogPostType.GUIDE, 8));
         then(data).hasSize(23);
 
         // 将测试数据以 EnumMap<BlogPostType, List<BlogPost>> 类型进行分组
         var results = data.stream().collect(Collectors.groupingBy(
-                // 获取分组 Key
-                BlogPost::type,
-                // 设置返回 Map 对象
-                () -> new EnumMap<>(BlogPostType.class),
-                // 设置分组集合
-                Collectors.toList()));
+            // 获取分组 Key
+            BlogPost::type,
+            // 设置返回 Map 对象
+            () -> new EnumMap<>(BlogPostType.class),
+            // 设置分组集合
+            Collectors.toList()));
 
         // 确认分组数量
         then(results).hasSize(3);
@@ -729,16 +726,16 @@ class GroupingByTest {
     void classifier_filteringCollector() {
         // 产生测试数据
         var data = makeTestingData(Map.of(
-                BlogPostType.NEWS, 10,
-                BlogPostType.REVIEW, 5,
-                BlogPostType.GUIDE, 8));
+            BlogPostType.NEWS, 10,
+            BlogPostType.REVIEW, 5,
+            BlogPostType.GUIDE, 8));
         then(data).hasSize(23);
 
         var results = data.stream().collect(Collectors.groupingBy(
-                // 获取分组 Key
-                BlogPost::type,
-                // 对分组元素的每一项进行过滤
-                Collectors.filtering(blog -> blog.likes() > 1, Collectors.toList())));
+            // 获取分组 Key
+            BlogPost::type,
+            // 对分组元素的每一项进行过滤
+            Collectors.filtering(blog -> blog.likes() > 1, Collectors.toList())));
 
         // 确认分组数量
         then(results).hasSize(3);
@@ -762,16 +759,16 @@ class GroupingByTest {
     void classifier_flatMappingCollector() {
         // 产生测试数据
         var data = makeTestingData(Map.of(
-                BlogPostType.NEWS, 10,
-                BlogPostType.REVIEW, 5,
-                BlogPostType.GUIDE, 8));
+            BlogPostType.NEWS, 10,
+            BlogPostType.REVIEW, 5,
+            BlogPostType.GUIDE, 8));
         then(data).hasSize(23);
 
         var results = data.stream().collect(Collectors.groupingBy(
-                // 获取分组 Key
-                BlogPost::type,
-                // 对每个分组中的回复进行平铺处理
-                Collectors.flatMapping(blog -> blog.comments().stream(), Collectors.toList())));
+            // 获取分组 Key
+            BlogPost::type,
+            // 对每个分组中的回复进行平铺处理
+            Collectors.flatMapping(blog -> blog.comments().stream(), Collectors.toList())));
 
         // 确认分组数量
         then(results).hasSize(3);

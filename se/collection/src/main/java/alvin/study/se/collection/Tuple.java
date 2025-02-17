@@ -37,9 +37,7 @@ public final class Tuple<E> implements Iterable<E> {
         return elements.size();
     }
 
-    public boolean isEmpty() {
-        return elements.isEmpty();
-    }
+    public boolean isEmpty() { return elements.isEmpty(); }
 
     public boolean contains(Object o) {
         return elements.contains(o);

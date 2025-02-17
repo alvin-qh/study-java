@@ -224,16 +224,16 @@ class ForkJoinTest {
 
         // 创建 Fork/Join 线程池
         try (var pool = new ForkJoinPool(
-                kernelCount,
-                new CustomWorkerThreadFactory(),
-                null,
-                false,
-                kernelCount,
-                256,
-                1,
-                null,
-                60,
-                TimeUnit.SECONDS)) {
+            kernelCount,
+            new CustomWorkerThreadFactory(),
+            null,
+            false,
+            kernelCount,
+            256,
+            1,
+            null,
+            60,
+            TimeUnit.SECONDS)) {
             // 提交计算任务, 计算 1~10000 之间的所有偶数
             var task = pool.submit(new EvenTask(1, 10000));
 
@@ -368,10 +368,10 @@ class ForkJoinTest {
                 // 如果要计算的数值小于 5, 则开始计算
                 if (size < 5) {
                     setRawResult(
-                            IntStream.range(start, end + 1)
-                                    .filter(value -> value % 2 == 0)
-                                    .boxed()
-                                    .toList());
+                        IntStream.range(start, end + 1)
+                                .filter(value -> value % 2 == 0)
+                                .boxed()
+                                .toList());
                 } else {
                     // 计算中间值, 通过中间值将要计算的数值分为两部分
                     var mid = (start + end) / 2;
@@ -407,14 +407,10 @@ class ForkJoinTest {
             }
 
             @Override
-            public List<Integer> getRawResult() {
-                return result == null ? List.of() : result;
-            }
+            public List<Integer> getRawResult() { return result == null ? List.of() : result; }
 
             @Override
-            protected void setRawResult(List<Integer> result) {
-                this.result = result;
-            }
+            protected void setRawResult(List<Integer> result) { this.result = result; }
         }
 
         // 提交计算任务, 计算 1~10000 之间的所有偶数

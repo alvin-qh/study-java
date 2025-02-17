@@ -37,11 +37,11 @@ public class MPTTRepository {
         // 遍历结果集, 转为 MPTT 类型对象
         do {
             results.add(new MPTT(
-                    rs.getLong(1),
-                    rs.getString(2),
-                    rs.getLong(3),
-                    rs.getLong(4),
-                    rs.getLong(5)));
+                rs.getLong(1),
+                rs.getString(2),
+                rs.getLong(3),
+                rs.getLong(4),
+                rs.getLong(5)));
         } while (rs.next());
 
         return results;
@@ -99,8 +99,8 @@ public class MPTTRepository {
     private void insert(@Nonnull Connection conn, @Nonnull MPTT mptt) throws SQLException {
         // 执行插入语句, 要求返回新纪录的自增 ID
         try (var stat = conn.prepareStatement(
-                "INSERT INTO `mptt` (`name`, `pid`, `lft`, `rht`) VALUES (?, ?, ?, ?)",
-                Statement.RETURN_GENERATED_KEYS)) {
+            "INSERT INTO `mptt` (`name`, `pid`, `lft`, `rht`) VALUES (?, ?, ?, ?)",
+            Statement.RETURN_GENERATED_KEYS)) {
             stat.setString(1, mptt.getName());
             stat.setLong(2, mptt.getPid());
             stat.setLong(3, mptt.getLft());
@@ -276,7 +276,7 @@ public class MPTTRepository {
 
         // 查询父节点记录的子节点记录集合
         try (var stat = conn.prepareStatement(
-                "SELECT `id`, `name`, `pid`, `lft`, `rht` FROM `mptt` WHERE `lft` > ? AND `rht` < ? ORDER BY `lft`")) {
+            "SELECT `id`, `name`, `pid`, `lft`, `rht` FROM `mptt` WHERE `lft` > ? AND `rht` < ? ORDER BY `lft`")) {
             stat.setLong(1, parent.getLft());
             stat.setLong(2, parent.getRht());
 
@@ -304,8 +304,8 @@ public class MPTTRepository {
 
         // 查询路径节点记录集合
         try (var stat = conn.prepareStatement(
-                "SELECT `id`, `name`, `pid`, `lft`, `rht` FROM `mptt` " +
-                        "WHERE `lft` BETWEEN ? AND ? AND `rht` BETWEEN ? AND ? ORDER BY `lft`")) {
+            "SELECT `id`, `name`, `pid`, `lft`, `rht` FROM `mptt` " +
+                                              "WHERE `lft` BETWEEN ? AND ? AND `rht` BETWEEN ? AND ? ORDER BY `lft`")) {
             stat.setLong(1, first.getLft());
             stat.setLong(2, last.getLft());
             stat.setLong(3, last.getRht());
@@ -332,7 +332,7 @@ public class MPTTRepository {
 
         // 查询叶子节点记录集合
         try (var stat = conn.prepareStatement(
-                "SELECT `id`, `name`, `pid`, `lft`, `rht` FROM `mptt` WHERE `rht` - `lft` = 1 ORDER BY `lft`")) {
+            "SELECT `id`, `name`, `pid`, `lft`, `rht` FROM `mptt` WHERE `rht` - `lft` = 1 ORDER BY `lft`")) {
 
             try (var rs = stat.executeQuery()) {
                 return resultSetToList(rs);
@@ -356,7 +356,7 @@ public class MPTTRepository {
 
         // 查询直属子节点记录
         try (var stat = conn.prepareStatement(
-                "SELECT `id`, `name`, `pid`, `lft`, `rht` FROM `mptt` WHERE `pid` = ? ORDER BY `lft`")) {
+            "SELECT `id`, `name`, `pid`, `lft`, `rht` FROM `mptt` WHERE `pid` = ? ORDER BY `lft`")) {
 
             stat.setLong(1, parentId);
             try (var rs = stat.executeQuery()) {
@@ -376,7 +376,7 @@ public class MPTTRepository {
 
         // 执行查询语句
         try (var stat = conn.prepareStatement(
-                "SELECT `id`, `name`, `pid`, `lft`, `rht` FROM `mptt` ORDER BY `lft`")) {
+            "SELECT `id`, `name`, `pid`, `lft`, `rht` FROM `mptt` ORDER BY `lft`")) {
             try (var rs = stat.executeQuery()) {
                 return resultSetToList(rs);
             }

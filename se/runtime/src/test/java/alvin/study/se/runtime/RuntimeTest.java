@@ -57,7 +57,7 @@ class RuntimeTest {
     @EnabledOnOs({ OS.MAC, OS.LINUX })
     void exec_shouldStartNewProcessByCommandLine() throws Exception {
         // 通过命令行 echo Hello Java 启动 echo 进程
-        var process = runtime.exec(new String[]{ "echo", "Hello Java" });
+        var process = runtime.exec(new String[] { "echo", "Hello Java" });
 
         // 通过 Reader 读取进程的标准输出
         try (var reader = process.inputReader(StandardCharsets.UTF_8)) {

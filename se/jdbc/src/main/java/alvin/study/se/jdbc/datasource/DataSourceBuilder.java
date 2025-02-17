@@ -10,8 +10,7 @@ public final class DataSourceBuilder {
     private String username;
     private String password;
 
-    private DataSourceBuilder() {
-    }
+    private DataSourceBuilder() {}
 
     public static DataSourceBuilder newBuilder() {
         return new DataSourceBuilder();

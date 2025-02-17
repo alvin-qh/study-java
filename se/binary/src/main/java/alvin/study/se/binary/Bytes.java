@@ -494,13 +494,13 @@ public final class Bytes {
      */
     public static long toLong(byte b1, byte b2, byte b3, byte b4, byte b5, byte b6, byte b7, byte b8) {
         return (((long) b1 << 56) & 0xFF00000000000000L)
-            | (((long) b2 << 48) & 0xFF000000000000L)
-            | (((long) b3 << 40) & 0xFF0000000000L)
-            | (((long) b4 << 32) & 0xFF00000000L)
-            | (((long) b5 << 24) & 0xFF000000L)
-            | (((long) b6 << 16) & 0xFF0000L)
-            | (((long) b7 << 8) & 0xFF00L)
-            | (b8 & 0xFFL);
+               | (((long) b2 << 48) & 0xFF000000000000L)
+               | (((long) b3 << 40) & 0xFF0000000000L)
+               | (((long) b4 << 32) & 0xFF00000000L)
+               | (((long) b5 << 24) & 0xFF000000L)
+               | (((long) b6 << 16) & 0xFF0000L)
+               | (((long) b7 << 8) & 0xFF00L)
+               | (b8 & 0xFFL);
     }
 
     /**

@@ -536,9 +536,9 @@ public class Ciphers {
         // 产生非对称密钥
         var keyPair = keyPairGenerator.generateKeyPair();
         return new SecretKeyPairSpec(
-                algorithm.algorithm(),
-                keyPair.getPrivate().getEncoded(),
-                keyPair.getPublic().getEncoded());
+            algorithm.algorithm(),
+            keyPair.getPrivate().getEncoded(),
+            keyPair.getPublic().getEncoded());
     }
 
     /**
@@ -657,9 +657,9 @@ public class Ciphers {
         if (encrypt) {
             // 对于不同的填充算法, 在加密时块大小要减去填充数据大小
             blockSize -= switch (padding == null ? "" : padding) {
-                case "", "PKCS5Padding" -> 11;
-                case "OAEPWithSHA-256AndMGF1Padding" -> 66;
-                default -> 11;
+            case "", "PKCS5Padding" -> 11;
+            case "OAEPWithSHA-256AndMGF1Padding" -> 66;
+            default -> 11;
             };
         }
         return blockSize;

@@ -197,16 +197,16 @@ class ThreadPoolTest {
 
         // 保存 FutureTask 的集合对象
         var tasks = IntStream.range(1, 21)
-            .mapToObj(n -> (Callable<Integer>) () -> {
-                try {
-                    // 执行计算
-                    return Fibonacci.calculate(n + 1);
-                } finally {
-                    // 增加任务计数器
-                    resultCount.incrementAndGet();
-                }
-            })
-            .toList();
+                .mapToObj(n -> (Callable<Integer>) () -> {
+                    try {
+                        // 执行计算
+                        return Fibonacci.calculate(n + 1);
+                    } finally {
+                        // 增加任务计数器
+                        resultCount.incrementAndGet();
+                    }
+                })
+                .toList();
 
         // 创建线程池执行器对象
         var executor = executorCreator.arrayBlockingQueueExecutor(20);
@@ -243,12 +243,12 @@ class ThreadPoolTest {
 
         // 保存 FutureTask 的集合对象
         var tasks = IntStream.range(1, 21)
-            .mapToObj(n -> (Callable<String>) () -> {
-                var sleepMillis = rand.nextInt(2000) + 1000;
-                Thread.sleep(sleepMillis);
-                return String.format("%d-Success-Sleep-%d", n, sleepMillis);
-            })
-            .toList();
+                .mapToObj(n -> (Callable<String>) () -> {
+                    var sleepMillis = rand.nextInt(2000) + 1000;
+                    Thread.sleep(sleepMillis);
+                    return String.format("%d-Success-Sleep-%d", n, sleepMillis);
+                })
+                .toList();
 
         // 创建线程池执行器对象
         var executor = executorCreator.arrayBlockingQueueExecutor(20);
@@ -272,15 +272,15 @@ class ThreadPoolTest {
 
         // 保存 FutureTask 的集合对象
         var tasks = IntStream.range(0, taskCount)
-            .mapToObj(n -> (Callable<String>) () -> {
-                try {
-                    Thread.sleep(1000L);
-                    return String.format("%d-Success", n);
-                } finally {
-                    resultCount.incrementAndGet();
-                }
-            })
-            .toList();
+                .mapToObj(n -> (Callable<String>) () -> {
+                    try {
+                        Thread.sleep(1000L);
+                        return String.format("%d-Success", n);
+                    } finally {
+                        resultCount.incrementAndGet();
+                    }
+                })
+                .toList();
 
         // 创建线程池执行器对象, 使用 SynchronousQueue 作为任务队列
         var executor = executorCreator.synchronousQueueExecutor(0);

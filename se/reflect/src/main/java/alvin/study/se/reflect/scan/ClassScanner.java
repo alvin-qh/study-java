@@ -232,9 +232,9 @@ public final class ClassScanner {
                 if (file.isDirectory()) {
                     // 如果该 File 对象表示目录, 则递归处理该目录下的内容
                     findClassesInDirPackage(packageName + "." + file.getName(),
-                            file.getAbsolutePath(),
-                            recursive,
-                            classes);
+                        file.getAbsolutePath(),
+                        recursive,
+                        classes);
                 } else {
                     var fileName = file.getName();
                     if (fileName.endsWith(CLASS_FILE_EXT)) {

@@ -12,8 +12,7 @@ import java.io.IOException;
  * 从资源中释放动态库并进行加载
  */
 public final class LoadLibrary {
-    private LoadLibrary() {
-    }
+    private LoadLibrary() {}
 
     /**
      * 从资源中释放动态库, 并加载

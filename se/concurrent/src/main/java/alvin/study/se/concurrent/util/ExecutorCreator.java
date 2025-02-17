@@ -101,16 +101,16 @@ public final class ExecutorCreator implements AutoCloseable {
         // 使用 ArrayBlockingQueue 保证不会无休止的增加任务
         // 淘汰策略为: 从任务队列中淘汰一个最早的任务, 以容纳新任务 (默认规则是丢弃新任务)
         var executor = new ThreadPoolExecutor(
-                maxThread,
-                maxThread,
-                0,
-                TimeUnit.NANOSECONDS,
-                new ArrayBlockingQueue<>(queueSize),
-                (runnable, exec) -> {
-                    var queue = exec.getQueue();
-                    queue.poll();
-                    queue.offer(runnable);
-                });
+            maxThread,
+            maxThread,
+            0,
+            TimeUnit.NANOSECONDS,
+            new ArrayBlockingQueue<>(queueSize),
+            (runnable, exec) -> {
+                var queue = exec.getQueue();
+                queue.poll();
+                queue.offer(runnable);
+            });
 
         // 存储线程池对象以便适时关闭
         recordHistory(executor);
@@ -143,11 +143,11 @@ public final class ExecutorCreator implements AutoCloseable {
         // 产生的线程在 60 秒内可以被后续任务复用, 空闲超过该时间后, 线程销毁
         // 未设置淘汰策略, 所以线程达到最大限度后, 增加任务会导致异常抛出
         var executor = new ThreadPoolExecutor(
-                0,
-                maxThreads,
-                60,
-                TimeUnit.SECONDS,
-                new SynchronousQueue<>());
+            0,
+            maxThreads,
+            60,
+            TimeUnit.SECONDS,
+            new SynchronousQueue<>());
 
         // 存储线程池对象以便适时关闭
         recordHistory(executor);

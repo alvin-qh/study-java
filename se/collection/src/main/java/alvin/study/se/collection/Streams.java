@@ -157,15 +157,15 @@ public final class Streams {
      */
     private static <T> Collector<T, ?, Set<T>> toLinkedSet() {
         return Collector.of(
-                // 集合对象创建函数
-                LinkedHashSet<T>::new,
-                // 元素添加函数
-                Set::add,
-                // 集合合并函数
-                (left, right) -> {
-                    left.addAll(right);
-                    return left;
-                });
+            // 集合对象创建函数
+            LinkedHashSet<T>::new,
+            // 元素添加函数
+            Set::add,
+            // 集合合并函数
+            (left, right) -> {
+                left.addAll(right);
+                return left;
+            });
     }
 
     /**
@@ -201,21 +201,21 @@ public final class Streams {
             @Nonnull Function<? super T, ? extends U> valueMapper,
             boolean omitKeyNull) {
         return Collector.of(
-                // 集合对象创建函数
-                LinkedHashMap::new,
-                // 集合元素添加函数
-                (map, entity) -> {
-                    var key = keyMapper.apply(entity);
-                    if (omitKeyNull && key == null) {
-                        return;
-                    }
-                    map.merge(key, valueMapper.apply(entity), (left, right) -> right);
-                },
-                // 集合合并函数
-                (left, right) -> {
-                    left.putAll(right);
-                    return left;
-                });
+            // 集合对象创建函数
+            LinkedHashMap::new,
+            // 集合元素添加函数
+            (map, entity) -> {
+                var key = keyMapper.apply(entity);
+                if (omitKeyNull && key == null) {
+                    return;
+                }
+                map.merge(key, valueMapper.apply(entity), (left, right) -> right);
+            },
+            // 集合合并函数
+            (left, right) -> {
+                left.putAll(right);
+                return left;
+            });
     }
 
     /**

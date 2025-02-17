@@ -14,12 +14,12 @@ class ChecksumTest {
     @Test
     void checksum_shouldCalculateChecksumByDoFinal() {
         // 计算累加结果不超过 0xFF 的情况
-        var data = new byte[]{ (byte) 0xB5, 0x42, (byte) 0xE2, (byte) 0xC7 };
+        var data = new byte[] { (byte) 0xB5, 0x42, (byte) 0xE2, (byte) 0xC7 };
         var checksum = new Checksum();
         then(checksum.doFinal(data)).isEqualTo(0x60);
 
         // 计算累加结果超过 0xFF 的情况
-        data = new byte[]{ (byte) 0xB5, 0x42, (byte) 0xE2, (byte) 0xC7, (byte) 0xF8, (byte) 0x90 };
+        data = new byte[] { (byte) 0xB5, 0x42, (byte) 0xE2, (byte) 0xC7, (byte) 0xF8, (byte) 0x90 };
         checksum = new Checksum();
         then(checksum.doFinal(data)).isEqualTo(0xD8);
     }
@@ -31,8 +31,8 @@ class ChecksumTest {
     void checksum_shouldCalculateChecksumByUpdateAndDoFinal() {
         var checksum = new Checksum();
 
-        var data1 = new byte[]{ (byte) 0xB5, 0x42 };
-        var data2 = new byte[]{ (byte) 0xE2, (byte) 0xC7 };
+        var data1 = new byte[] { (byte) 0xB5, 0x42 };
+        var data2 = new byte[] { (byte) 0xE2, (byte) 0xC7 };
 
         // 计算累加结果不超过 0xFF 的情况
         checksum.update(data1);
@@ -40,7 +40,7 @@ class ChecksumTest {
         then(checksum.doFinal()).isEqualTo(0x60);
 
         // 计算累加结果超过 0xFF 的情况
-        var data3 = new byte[]{ (byte) 0xF8, (byte) 0x90 };
+        var data3 = new byte[] { (byte) 0xF8, (byte) 0x90 };
         then(checksum.doFinal(data3)).isEqualTo(0xD8);
     }
 
@@ -50,8 +50,8 @@ class ChecksumTest {
      */
     @Test
     void checksum_shouldCalculateChecksumByUpdateAndDoFinalWithPos() {
-        var data1 = new byte[]{ (byte) 0xB5, 0x42, (byte) 0xE2, (byte) 0xC7 };
-        var data2 = new byte[]{ (byte) 0xF8, (byte) 0x90 };
+        var data1 = new byte[] { (byte) 0xB5, 0x42, (byte) 0xE2, (byte) 0xC7 };
+        var data2 = new byte[] { (byte) 0xF8, (byte) 0x90 };
 
         var checksum = new Checksum();
 

@@ -17,11 +17,11 @@ public class Migration {
      */
     public void migrate() {
         Flyway.configure()
-            .dataSource(dataSource)
-            .baselineOnMigrate(true)
-            .locations("classpath:migration")
-            .table("schema_version")
-            .load()
-            .migrate();
+                .dataSource(dataSource)
+                .baselineOnMigrate(true)
+                .locations("classpath:migration")
+                .table("schema_version")
+                .load()
+                .migrate();
     }
 }

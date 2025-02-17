@@ -147,17 +147,13 @@ public class SlidingWindowRateLimiter implements RateLimiter {
          *
          * @return 块起始时间
          */
-        public long getStartTime() {
-            return startTime;
-        }
+        public long getStartTime() { return startTime; }
 
         /**
          * 获取块中记录的调用次数
          *
          * @return 块中记录的调用次数
          */
-        public int getCount() {
-            return count.get();
-        }
+        public int getCount() { return count.get(); }
     }
 }

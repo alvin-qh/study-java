@@ -26,7 +26,5 @@ public abstract class Certificates {
     /**
      * 获取证书中的公钥信息
      */
-    public PublicKey getPublicKey() {
-        return cert.getPublicKey();
-    }
+    public PublicKey getPublicKey() { return cert.getPublicKey(); }
 }

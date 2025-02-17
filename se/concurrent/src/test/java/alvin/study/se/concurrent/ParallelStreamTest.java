@@ -66,8 +66,7 @@ class ParallelStreamTest {
                     r.threadId = Thread.currentThread().threadId();
                     return true;
                 }
-            } catch (InterruptedException ignored) {
-            }
+            } catch (InterruptedException ignored) {}
             return false;
         }).toList();
 

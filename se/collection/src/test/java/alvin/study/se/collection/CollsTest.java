@@ -54,7 +54,7 @@ class CollsTest {
         then(Colls.isEmpty(new Integer[0])).isTrue();
 
         // 确认非空集合返回 false
-        then(Colls.isEmpty(new Integer[]{ 1 })).isFalse();
+        then(Colls.isEmpty(new Integer[] { 1 })).isFalse();
     }
 
     /**
@@ -475,13 +475,13 @@ class CollsTest {
     void intersect_shouldGetSubsetFromTwoCollections() {
         // 产生一个 [1..5) 的集合
         var left = IntStream.range(1, 5)
-            .mapToObj(n -> (Object) n)
-            .toList();
+                .mapToObj(n -> (Object) n)
+                .toList();
 
         // 产生一个 [3..10) 的集合
         var right = IntStream.range(3, 10)
-            .mapToObj(n -> (Object) n)
-            .toList();
+                .mapToObj(n -> (Object) n)
+                .toList();
 
         // 获取两个集合的交集
         var results = Colls.intersect(left, right);
@@ -500,8 +500,8 @@ class CollsTest {
 
         // 产生一个 [3..10) 的集合
         var right = IntStream.range(3, 10)
-            .mapToObj(n -> (Object) n)
-            .toList();
+                .mapToObj(n -> (Object) n)
+                .toList();
 
         // 获取两个集合的差集
         var result = Colls.diff(left, right);
@@ -524,8 +524,7 @@ class CollsTest {
             rand.ints(5, 1, 10).boxed().toList(),
             rand.ints(5, 1, 10).boxed().toList(),
             rand.ints(5, 1, 10).boxed().toList(),
-            rand.ints(5, 1, 10).boxed().toList()
-        );
+            rand.ints(5, 1, 10).boxed().toList());
         // 确认合并后的集合大小不会超过 10
         then(results).size().isLessThan(10);
 
