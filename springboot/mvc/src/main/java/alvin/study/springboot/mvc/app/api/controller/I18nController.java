@@ -1,11 +1,7 @@
 package alvin.study.springboot.mvc.app.api.controller;
 
-import alvin.study.springboot.mvc.app.api.interceptor.ApiHandlerInterceptor;
-import alvin.study.springboot.mvc.app.api.model.I18nDto;
-import alvin.study.springboot.mvc.core.i18n.I18n;
-import jakarta.validation.constraints.NotBlank;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +9,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import alvin.study.springboot.mvc.app.api.interceptor.ApiHandlerInterceptor;
+import alvin.study.springboot.mvc.app.api.model.I18nDto;
+import alvin.study.springboot.mvc.core.i18n.I18n;
+import jakarta.validation.constraints.NotBlank;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 根据请求获取 i18n 信息
@@ -86,8 +87,8 @@ public class I18nController {
     @GetMapping
     @ResponseBody
     I18nDto get(
-        @RequestParam("key") @NotBlank String key,
-        @RequestParam(name = "args", defaultValue = "", required = false) List<String> args) {
+            @RequestParam("key") @NotBlank String key,
+            @RequestParam(name = "args", defaultValue = "", required = false) List<String> args) {
         log.info("GET method of I18nController was called, key=\"{}\"", key);
 
         // 返回成功响应

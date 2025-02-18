@@ -1,12 +1,13 @@
 package alvin.study.springboot.mvc.app.web.controller;
 
-import alvin.study.springboot.mvc.app.web.model.Form;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import alvin.study.springboot.mvc.app.web.model.Form;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 展示表单提交结果的页面请求

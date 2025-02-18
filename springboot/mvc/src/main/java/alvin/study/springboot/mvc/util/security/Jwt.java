@@ -1,14 +1,15 @@
 package alvin.study.springboot.mvc.util.security;
 
+import java.time.Clock;
+import java.time.Duration;
+import java.time.Instant;
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.common.annotations.VisibleForTesting;
-import lombok.RequiredArgsConstructor;
 
-import java.time.Clock;
-import java.time.Duration;
-import java.time.Instant;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Jwt 令牌处理类型
@@ -45,13 +46,13 @@ public class Jwt {
 
         // 创建 token
         return JWT.create()
-            .withAudience(org) // 设置 token 的接收方
-            .withIssuer(user)  // 设置 token 的发行方
-            .withIssuedAt(now) // 设置 token 的发行时间
-            .withNotBefore(now) // 设置 token 的生效时间
-            .withExpiresAt(expiresAt) // 设置 token 的失效时间
-            .withJWTId(jwtId) // 设置 token 的标识 id
-            .sign(algorithm); // 对 token 进行签名操作, 产生完整的 token 字符串
+                .withAudience(org) // 设置 token 的接收方
+                .withIssuer(user)  // 设置 token 的发行方
+                .withIssuedAt(now) // 设置 token 的发行时间
+                .withNotBefore(now) // 设置 token 的生效时间
+                .withExpiresAt(expiresAt) // 设置 token 的失效时间
+                .withJWTId(jwtId) // 设置 token 的标识 id
+                .sign(algorithm); // 对 token 进行签名操作, 产生完整的 token 字符串
     }
 
     /**
@@ -72,9 +73,9 @@ public class Jwt {
      */
     public DecodedJWT verify(String token) {
         return JWT.require(algorithm)
-            .withJWTId(jwtId)
-            .build()
-            .verify(token);
+                .withJWTId(jwtId)
+                .build()
+                .verify(token);
     }
 
     /**

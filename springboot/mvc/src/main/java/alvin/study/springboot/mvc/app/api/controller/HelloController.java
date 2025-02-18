@@ -1,12 +1,5 @@
 package alvin.study.springboot.mvc.app.api.controller;
 
-import alvin.study.springboot.mvc.app.api.advice.ApiResponseAdvice;
-import alvin.study.springboot.mvc.app.api.interceptor.ApiHandlerInterceptor;
-import alvin.study.springboot.mvc.app.api.model.HelloDto;
-import alvin.study.springboot.mvc.app.api.model.HelloForm;
-import alvin.study.springboot.mvc.core.http.ResponseWrapper;
-import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import alvin.study.springboot.mvc.app.api.advice.ApiResponseAdvice;
+import alvin.study.springboot.mvc.app.api.interceptor.ApiHandlerInterceptor;
+import alvin.study.springboot.mvc.app.api.model.HelloDto;
+import alvin.study.springboot.mvc.app.api.model.HelloForm;
+import alvin.study.springboot.mvc.core.http.ResponseWrapper;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * API 调用

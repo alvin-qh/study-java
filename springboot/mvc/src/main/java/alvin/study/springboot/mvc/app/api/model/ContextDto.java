@@ -10,10 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @param userId  用户 ID
  */
 public record ContextDto(
-    @JsonProperty("orgCode") String orgCode,
-    @JsonProperty("userId") Long userId) {
+        @JsonProperty("orgCode") String orgCode,
+        @JsonProperty("userId") Long userId) {
 
     @JsonCreator
-    public ContextDto {
-    }
+    public ContextDto {}
 }

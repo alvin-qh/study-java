@@ -286,8 +286,10 @@ public class LengthDirective implements SchemaDirectiveWiring {
                             .forEach(io -> {
                                 // 获取 Input 字段值
                                 var value = env.<Map<String, Object>>getArgument(it.getName());
-                                // 获取 Input 字段值, 处理字段值, 并记录返回的错误
-                                errors.addAll(apply(io, env, value.get(io.getName())));
+                                if (value != null) {
+                                    // 获取 Input 字段值, 处理字段值, 并记录返回的错误
+                                    errors.addAll(apply(io, env, value.get(io.getName())));
+                                }
                             });
                 }
             });

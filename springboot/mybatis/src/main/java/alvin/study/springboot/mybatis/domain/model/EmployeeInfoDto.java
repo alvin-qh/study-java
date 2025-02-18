@@ -1,12 +1,12 @@
 package alvin.study.springboot.mybatis.domain.model;
 
+import java.io.Serializable;
+import java.time.LocalDate;
+
 import alvin.study.springboot.mybatis.infra.entity.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
-import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor

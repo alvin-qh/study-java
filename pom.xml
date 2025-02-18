@@ -93,14 +93,14 @@
 
   <!-- 包含子项目所在的路径名 -->
   <modules>
-    <module>se</module>
-    <module>testing</module>
-    <module>misc</module>
-    <module>guava</module>
-    <module>guice</module>
+    <!-- <module>se</module> -->
+    <!-- <module>testing</module> -->
+    <!-- <module>misc</module> -->
+    <!-- <module>guava</module> -->
+    <!-- <module>guice</module> -->
     <module>springboot</module>
-    <module>springcloud</module>
-    <module>quarkus</module>
+    <!-- <module>springcloud</module> -->
+    <!-- <module>quarkus</module> -->
   </modules>
 
   <!-- 依赖声明, 所有子项目可使用声明后的依赖 -->

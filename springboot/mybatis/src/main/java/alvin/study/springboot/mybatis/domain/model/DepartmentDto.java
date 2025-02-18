@@ -1,10 +1,10 @@
 package alvin.study.springboot.mybatis.domain.model;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
 
 /**
  * 部门的 DTO 类型

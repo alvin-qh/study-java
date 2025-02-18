@@ -1,12 +1,13 @@
 package alvin.study.springboot.mybatis.infra.entity.common;
 
-import alvin.study.springboot.mybatis.infra.handler.EntityFieldHandler;
+import java.time.Instant;
+
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+
+import alvin.study.springboot.mybatis.infra.handler.EntityFieldHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.time.Instant;
 
 /**
  * 包含审计字段的实体超类

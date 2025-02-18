@@ -1,10 +1,11 @@
 package alvin.study.springboot.mybatis.infra.entity.common;
 
+import java.io.Serializable;
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import lombok.Data;
 
-import java.io.Serializable;
+import lombok.Data;
 
 /**
  * 所有实体类超类

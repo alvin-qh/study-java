@@ -1,8 +1,12 @@
 package alvin.study.springboot.mybatis.conf;
 
-import alvin.study.springboot.mybatis.infra.mapper.BaseMapper;
-import alvin.study.springboot.mybatis.infra.mapper.method.DeleteAllMethod;
-import alvin.study.springboot.mybatis.infra.mapper.method.InsertAllBatchMethod;
+import java.util.List;
+
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.autoconfigure.ConfigurationCustomizer;
 import com.baomidou.mybatisplus.autoconfigure.MybatisPlusPropertiesCustomizer;
@@ -15,12 +19,10 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.pagination.dialects.MySqlDialect;
-import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import java.util.List;
+import alvin.study.springboot.mybatis.infra.mapper.BaseMapper;
+import alvin.study.springboot.mybatis.infra.mapper.method.DeleteAllMethod;
+import alvin.study.springboot.mybatis.infra.mapper.method.InsertAllBatchMethod;
 
 /**
  * MyBatis 框架相关配置
@@ -139,8 +141,10 @@ public class MyBatisConfig extends DefaultSqlInjector {
      * @see InsertAllBatchMethod
      */
     @Override
-    public List<AbstractMethod> getMethodList(Class<?> mapperClass, TableInfo tableInfo) {
-        var methods = super.getMethodList(mapperClass, tableInfo);
+    public List<AbstractMethod> getMethodList(
+            org.apache.ibatis.session.Configuration configuration,
+            Class<?> mapperClass, TableInfo tableInfo) {
+        var methods = super.getMethodList(configuration, mapperClass, tableInfo);
         methods.add(new DeleteAllMethod());
         methods.add(new InsertAllBatchMethod());
         return methods;

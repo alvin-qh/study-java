@@ -18,4 +18,4 @@ import org.springframework.context.annotation.Profile;
  */
 @Profile("test")
 @TestConfiguration("conf/testing")
-public class TestConfig { }
+public class TestConfig {}

@@ -1,9 +1,7 @@
 package alvin.study.springboot.mvc.app.web.controller;
 
-import alvin.study.springboot.mvc.app.web.model.Form;
-import alvin.study.springboot.mvc.conf.WebConfig;
-import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
+import java.nio.charset.StandardCharsets;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,7 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.UriUtils;
 
-import java.nio.charset.StandardCharsets;
+import alvin.study.springboot.mvc.app.web.model.Form;
+import alvin.study.springboot.mvc.conf.WebConfig;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 页面请求 Controller

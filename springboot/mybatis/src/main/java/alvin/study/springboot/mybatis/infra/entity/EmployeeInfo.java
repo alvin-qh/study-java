@@ -1,10 +1,10 @@
 package alvin.study.springboot.mybatis.infra.entity;
 
-import lombok.Data;
-import lombok.experimental.Accessors;
-
 import java.io.Serializable;
 import java.time.LocalDate;
+
+import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * 雇员明细信息类型

@@ -1,7 +1,8 @@
 package alvin.study.springboot.mvc.core.http;
 
-import alvin.study.springboot.mvc.conf.WebConfig;
 import org.springframework.web.servlet.HandlerInterceptor;
+
+import alvin.study.springboot.mvc.conf.WebConfig;
 
 /**
  * 拦截器接口

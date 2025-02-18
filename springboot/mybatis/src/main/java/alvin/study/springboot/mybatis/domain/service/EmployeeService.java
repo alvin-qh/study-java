@@ -1,18 +1,20 @@
 package alvin.study.springboot.mybatis.domain.service;
 
+import java.util.Optional;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+
 import alvin.study.springboot.mybatis.domain.model.EmployeeDto;
 import alvin.study.springboot.mybatis.infra.entity.DepartmentEmployee;
 import alvin.study.springboot.mybatis.infra.entity.Employee;
 import alvin.study.springboot.mybatis.infra.mapper.DepartmentEmployeeMapper;
 import alvin.study.springboot.mybatis.infra.mapper.DepartmentMapper;
 import alvin.study.springboot.mybatis.infra.mapper.EmployeeMapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 /**
  * 员工服务类
@@ -96,7 +98,7 @@ public class EmployeeService {
 
         if (!departmentIds.isEmpty()) {
             // 将查询到的 Department 信息放入 Employee 相关字段
-            employee.setDepartments(departmentMapper.selectBatchIds(departmentIds));
+            employee.setDepartments(departmentMapper.selectByIds(departmentIds));
         }
 
         // 将 Employee 实体对象转为 DTO 对象

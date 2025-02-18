@@ -1,12 +1,5 @@
 package alvin.study.springboot.mvc.app.api.controller;
 
-import alvin.study.springboot.mvc.app.api.advice.ApiResponseAdvice;
-import alvin.study.springboot.mvc.app.api.interceptor.ApiHandlerInterceptor;
-import alvin.study.springboot.mvc.app.api.model.ContextDto;
-import alvin.study.springboot.mvc.core.context.Context;
-import alvin.study.springboot.mvc.core.context.NoContextAttributeException;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +7,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
+
+import alvin.study.springboot.mvc.app.api.advice.ApiResponseAdvice;
+import alvin.study.springboot.mvc.app.api.interceptor.ApiHandlerInterceptor;
+import alvin.study.springboot.mvc.app.api.model.ContextDto;
+import alvin.study.springboot.mvc.core.context.Context;
+import alvin.study.springboot.mvc.core.context.NoContextAttributeException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 测试 {@link Context} 对象的使用
@@ -87,8 +88,7 @@ public class ContextController {
                 "no_org_code",
                 HttpHeaders.EMPTY,
                 null,
-                null
-            );
+                null);
         }
     }
 }

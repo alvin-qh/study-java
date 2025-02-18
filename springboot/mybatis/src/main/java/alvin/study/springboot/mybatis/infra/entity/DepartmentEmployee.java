@@ -1,9 +1,10 @@
 package alvin.study.springboot.mybatis.infra.entity;
 
-import alvin.study.springboot.mybatis.infra.entity.common.AuditedEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.Version;
+
+import alvin.study.springboot.mybatis.infra.entity.common.AuditedEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

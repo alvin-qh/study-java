@@ -1,13 +1,14 @@
 package alvin.study.springboot.mvc.app.api.controller;
 
-import alvin.study.springboot.mvc.WebTest;
-import alvin.study.springboot.mvc.app.api.model.I18nDto;
-import alvin.study.springboot.mvc.core.http.ResponseWrapper;
+import static org.assertj.core.api.BDDAssertions.then;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import alvin.study.springboot.mvc.WebTest;
+import alvin.study.springboot.mvc.app.api.model.I18nDto;
+import alvin.study.springboot.mvc.core.http.ResponseWrapper;
 
 /**
  * 测试 {@link I18nController}, 国际化语言
@@ -15,7 +16,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 class I18nControllerTest extends WebTest {
     // 定义正确的响应类型
     private static final ParameterizedTypeReference<ResponseWrapper<I18nDto>> SUCCESS_TYPE
-        = new ParameterizedTypeReference<>() { };
+        = new ParameterizedTypeReference<>() {};
 
     /**
      * 测试 {@link I18nController#get(String, java.util.List)} 方法
@@ -31,10 +32,10 @@ class I18nControllerTest extends WebTest {
         var resp = getJson(
             "/api/i18n?key={key}&args={args}",
             "application.name", "MVC")
-            .exchange()
-            .expectStatus().isOk()
-            .expectBody(SUCCESS_TYPE).returnResult() // 获取响应结果
-            .getResponseBody(); // 获取响应结果的 body
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectBody(SUCCESS_TYPE).returnResult() // 获取响应结果
+                    .getResponseBody(); // 获取响应结果的 body
 
         then(resp).isNotNull();
 
@@ -56,11 +57,11 @@ class I18nControllerTest extends WebTest {
     void get_shouldGetMessageByAcceptHeader() {
         // 发起 GET 测试请求
         var resp = getJson("/api/i18n?key={key}&args={args}", "application.name", "MVC")
-            .header(HttpHeaders.ACCEPT_LANGUAGE, "zh-CN")
-            .exchange()
-            .expectStatus().isOk()
-            .expectBody(SUCCESS_TYPE).returnResult() // 获取响应结果
-            .getResponseBody(); // 获取响应结果的
+                .header(HttpHeaders.ACCEPT_LANGUAGE, "zh-CN")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(SUCCESS_TYPE).returnResult() // 获取响应结果
+                .getResponseBody(); // 获取响应结果的
         // body
 
         then(resp).isNotNull();
@@ -83,10 +84,10 @@ class I18nControllerTest extends WebTest {
     void get_shouldGetMessageByLangParameter() {
         // 发起 GET 测试请求, 传递 lang 参数
         var resp = getJson("/api/i18n?key={key}&args={args}&lang={lang}", "application.name", "MVC", "zh-CN")
-            .exchange()
-            .expectStatus().isOk()
-            .expectBody(SUCCESS_TYPE).returnResult() // 获取响应结果
-            .getResponseBody(); // 获取响应结果的 body
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(SUCCESS_TYPE).returnResult() // 获取响应结果
+                .getResponseBody(); // 获取响应结果的 body
 
         then(resp).isNotNull();
 

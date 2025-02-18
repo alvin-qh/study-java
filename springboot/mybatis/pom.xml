@@ -19,15 +19,18 @@
     <jdbc.url>jdbc:h2:${project.basedir}/.data/dev;MODE=MYSQL</jdbc.url>
     <jdbc.user>dev</jdbc.user>
     <jdbc.password>password</jdbc.password>
-    <!-- spring 升级到 3.2 以后, mybatis-plus 的相关组件未跟上升级 -->
-    <version.mybatis-spring>3.0.3</version.mybatis-spring>
   </properties>
 
   <dependencyManagement>
     <dependencies>
       <dependency>
         <groupId>com.baomidou</groupId>
-        <artifactId>mybatis-plus-boot-starter</artifactId>
+        <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+        <version>${version.mybatis-plus}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus-jsqlparser</artifactId>
         <version>${version.mybatis-plus}</version>
       </dependency>
       <dependency>
@@ -62,25 +65,33 @@
     <dependency>
       <!-- Spring Boot Mybatis-Plus 依赖 -->
       <groupId>com.baomidou</groupId>
-      <artifactId>mybatis-plus-boot-starter</artifactId>
+      <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
       <exclusions>
         <exclusion>
           <groupId>org.springframework.boot</groupId>
           <artifactId>*</artifactId>
         </exclusion>
         <!-- spring 升级到 3.2 以后, mybatis-plus 的相关组件未跟上升级 -->
+        <!--
         <exclusion>
           <groupId>org.mybatis</groupId>
           <artifactId>mybatis-spring</artifactId>
         </exclusion>
+        -->
       </exclusions>
     </dependency>
+    <dependency>
+      <groupId>com.baomidou</groupId>
+      <artifactId>mybatis-plus-jsqlparser</artifactId>
+    </dependency>
     <!-- spring 升级到 3.2 以后, mybatis-plus 的相关组件未跟上升级 -->
+    <!--
     <dependency>
       <groupId>org.mybatis</groupId>
       <artifactId>mybatis-spring</artifactId>
       <version>${version.mybatis-spring}</version>
     </dependency>
+    -->
     <dependency>
       <!-- Spring Boot Bean 验证依赖 -->
       <groupId>org.springframework.boot</groupId>

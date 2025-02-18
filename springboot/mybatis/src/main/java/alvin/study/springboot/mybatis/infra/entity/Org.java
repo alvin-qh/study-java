@@ -1,11 +1,11 @@
 package alvin.study.springboot.mybatis.infra.entity;
 
+import java.time.Instant;
+
 import alvin.study.springboot.mybatis.infra.entity.common.BaseEntity;
 import alvin.study.springboot.mybatis.infra.mapper.OrgMapper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.time.Instant;
 
 /**
  * 组织实体, 同时表示租户, 对应 {@code org} 表

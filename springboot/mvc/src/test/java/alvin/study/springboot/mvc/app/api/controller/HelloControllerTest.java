@@ -1,14 +1,15 @@
 package alvin.study.springboot.mvc.app.api.controller;
 
-import alvin.study.springboot.mvc.WebTest;
-import alvin.study.springboot.mvc.app.api.model.HelloDto;
-import alvin.study.springboot.mvc.app.api.model.HelloForm;
-import alvin.study.springboot.mvc.core.http.ResponseWrapper;
+import static org.assertj.core.api.BDDAssertions.then;
+
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.ParameterizedTypeReference;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import alvin.study.springboot.mvc.WebTest;
+import alvin.study.springboot.mvc.app.api.model.HelloDto;
+import alvin.study.springboot.mvc.app.api.model.HelloForm;
+import alvin.study.springboot.mvc.core.http.ResponseWrapper;
 
 /**
  * 测试 {@link HelloController} 类
@@ -16,7 +17,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 class HelloControllerTest extends WebTest {
     // 定义正确的响应类型
     private static final ParameterizedTypeReference<ResponseWrapper<HelloDto>> SUCCESS_TYPE
-        = new ParameterizedTypeReference<>() { };
+        = new ParameterizedTypeReference<>() {};
 
     /**
      * 测试 {@link HelloController#get(String)} 方法
@@ -29,10 +30,10 @@ class HelloControllerTest extends WebTest {
     void get_shouldReturn200Successful() {
         // 发起 GET 测试请求
         var resp = getJson("/api/hello?name={name}", "Alvin")
-            .exchange()
-            .expectStatus().isOk() // 确认请求成功, 返回 200 OK
-            .expectBody(SUCCESS_TYPE).returnResult() // 获取响应结果
-            .getResponseBody(); // 获取响应结果的 body
+                .exchange()
+                .expectStatus().isOk() // 确认请求成功, 返回 200 OK
+                .expectBody(SUCCESS_TYPE).returnResult() // 获取响应结果
+                .getResponseBody(); // 获取响应结果的 body
 
         // 确认返回响应内容
         then(resp).isNotNull();
@@ -58,10 +59,10 @@ class HelloControllerTest extends WebTest {
     void get_shouldReturn400Error() {
         // 发起 GET 测试请求
         var resp = getJson("/api/hello?name={name}", "Al")
-            .exchange()
-            .expectStatus().is4xxClientError() // 返回 400 错误
-            .expectBody(ERROR_TYPE).returnResult() // 获取响应结果
-            .getResponseBody(); // 获取响应结果的 body
+                .exchange()
+                .expectStatus().is4xxClientError() // 返回 400 错误
+                .expectBody(ERROR_TYPE).returnResult() // 获取响应结果
+                .getResponseBody(); // 获取响应结果的 body
 
         // 确认返回响应内容
         then(resp).isNotNull();
@@ -73,9 +74,9 @@ class HelloControllerTest extends WebTest {
         // 确认 payload 的信息, 为 ErrorDetail 类型
         var payload = resp.payload();
         then(payload.errorParameters())
-            .extractingByKey("name")
-            .asInstanceOf(InstanceOfAssertFactories.ARRAY)
-            .containsExactly("length must be between 3 and 10");
+                .extractingByKey("name")
+                .asInstanceOf(InstanceOfAssertFactories.ARRAY)
+                .containsExactly("length must be between 3 and 10");
     }
 
     /**
@@ -92,10 +93,10 @@ class HelloControllerTest extends WebTest {
 
         // 发起 POST 测试请求
         var resp = postJson("/api/hello").bodyValue(form).exchange()
-            .expectStatus().isOk()
-            .expectBody(SUCCESS_TYPE)
-            .returnResult()
-            .getResponseBody();
+                .expectStatus().isOk()
+                .expectBody(SUCCESS_TYPE)
+                .returnResult()
+                .getResponseBody();
 
         // 确认返回响应内容
         then(resp).isNotNull();
@@ -124,10 +125,10 @@ class HelloControllerTest extends WebTest {
 
         // 发起 POST 测试请求
         var resp = postJson("/api/hello")
-            .bodyValue(form).exchange()
-            .expectStatus().is4xxClientError()
-            .expectBody(ERROR_TYPE).returnResult()
-            .getResponseBody();
+                .bodyValue(form).exchange()
+                .expectStatus().is4xxClientError()
+                .expectBody(ERROR_TYPE).returnResult()
+                .getResponseBody();
 
         // 确认返回响应内容
         then(resp).isNotNull();
@@ -139,8 +140,8 @@ class HelloControllerTest extends WebTest {
         // 确认 payload 的信息, 为 ErrorDetail 类型
         var payload = resp.payload();
         then(payload.errorFields())
-            .extractingByKey("name")
-            .asInstanceOf(InstanceOfAssertFactories.ARRAY)
-            .containsExactly("length must be between 3 and 10");
+                .extractingByKey("name")
+                .asInstanceOf(InstanceOfAssertFactories.ARRAY)
+                .containsExactly("length must be between 3 and 10");
     }
 }

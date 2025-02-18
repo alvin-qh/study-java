@@ -1,12 +1,7 @@
 package alvin.study.springboot.mvc.conf;
 
-import alvin.study.springboot.mvc.core.context.Context;
-import alvin.study.springboot.mvc.core.context.WebContext;
-import alvin.study.springboot.mvc.core.i18n.I18n;
-import alvin.study.springboot.mvc.core.i18n.MessageI18n;
-import alvin.study.springboot.mvc.util.security.Jwt;
-import com.auth0.jwt.algorithms.Algorithm;
-import lombok.extern.slf4j.Slf4j;
+import java.time.Duration;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +10,14 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.context.annotation.RequestScope;
 
-import java.time.Duration;
+import com.auth0.jwt.algorithms.Algorithm;
+
+import alvin.study.springboot.mvc.core.context.Context;
+import alvin.study.springboot.mvc.core.context.WebContext;
+import alvin.study.springboot.mvc.core.i18n.I18n;
+import alvin.study.springboot.mvc.core.i18n.MessageI18n;
+import alvin.study.springboot.mvc.util.security.Jwt;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 配置当前 Application 中所有需要容器化管理的 Bean 对象
