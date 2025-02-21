@@ -1,11 +1,15 @@
 package alvin.study.springboot.spel;
 
-import alvin.study.springboot.spel.infra.model.Group;
-import alvin.study.springboot.spel.infra.model.User;
-import alvin.study.springboot.spel.util.TemplatedExpressionParser;
+import static org.assertj.core.api.Assertions.atIndex;
+import static org.assertj.core.api.Assertions.entry;
+import static org.assertj.core.api.BDDAssertions.then;
 
-import org.assertj.core.api.InstanceOfAssertFactories;
-import org.junit.jupiter.api.Test;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
@@ -15,15 +19,12 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import org.assertj.core.api.InstanceOfAssertFactories;
+import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.atIndex;
-import static org.assertj.core.api.Assertions.entry;
-import static org.assertj.core.api.BDDAssertions.then;
+import alvin.study.springboot.spel.infra.model.Group;
+import alvin.study.springboot.spel.infra.model.User;
+import alvin.study.springboot.spel.util.TemplatedExpressionParser;
 
 /**
  * 对各类 SpEL 进行测试
@@ -455,7 +456,7 @@ public class ExpressionsTest {
         expression = parser.parseExpression("#{ { {[0], [1]}, {[2], [3]} } }");
         value = expression.getValue(context, users, List.class);
         then(value.get(0)).asInstanceOf(InstanceOfAssertFactories.LIST).containsExactly(users.get(0), users.get(1));
-        then(value.get(0)).asInstanceOf(InstanceOfAssertFactories.LIST).containsExactly(users.get(2), users.get(3));
+        then(value.get(1)).asInstanceOf(InstanceOfAssertFactories.LIST).containsExactly(users.get(2), users.get(3));
     }
 
     /**

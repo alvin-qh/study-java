@@ -1,13 +1,14 @@
 package alvin.study.springboot.spel.infra.model;
 
-import com.google.common.base.Functions;
-import lombok.Builder;
-import lombok.Data;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import com.google.common.base.Functions;
+
+import lombok.Builder;
+import lombok.Data;
 
 /**
  * 用于测试 SpEL 获取对象属性值的 Pojo 类型
