@@ -1,9 +1,10 @@
 package alvin.study.misc.jackson.pojo;
 
-import alvin.study.misc.jackson.pojo.common.SimpleDate;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+
+import alvin.study.misc.jackson.pojo.common.SimpleDate;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;

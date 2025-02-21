@@ -129,8 +129,8 @@ public class Cache {
     public Collection<GrantedAuthority> saveAuthorities(Long userId, Collection<GrantedAuthority> authorities) {
         var key = String.format(KEY_PERMISSION, userId);
         var permissions = authorities.stream()
-            .map(GrantedAuthority::getAuthority)
-            .toList();
+                .map(GrantedAuthority::getAuthority)
+                .toList();
 
         try {
             redis.opsForValue().set(key, permissions);
@@ -159,8 +159,8 @@ public class Cache {
             }
             log.debug("Load permissions(userId = {}, size = {}) from cache", userId, permissions.size());
             return Optional.of(permissions.stream()
-                .map(p -> (GrantedAuthority) new SimpleGrantedAuthority(p))
-                .toList());
+                    .map(p -> (GrantedAuthority) new SimpleGrantedAuthority(p))
+                    .toList());
         } catch (Exception e) {
             // log.error("Cannot load permissions from cache", e);
             return Optional.empty();

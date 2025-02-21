@@ -1,16 +1,17 @@
 package alvin.study.guava.collect;
 
+import static org.assertj.core.api.BDDAssertions.then;
+
+import java.util.stream.IntStream;
+
+import org.junit.jupiter.api.Test;
+
 import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.ImmutableRangeSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Range;
 import com.google.common.collect.RangeSet;
 import com.google.common.collect.TreeRangeSet;
-import org.junit.jupiter.api.Test;
-
-import java.util.stream.IntStream;
-
-import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * {@link RangeSet} 相当于是多个区间的组合

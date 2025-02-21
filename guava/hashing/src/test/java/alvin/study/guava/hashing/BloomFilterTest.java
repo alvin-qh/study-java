@@ -1,16 +1,18 @@
 package alvin.study.guava.hashing;
 
-import alvin.study.guava.hashing.model.Person;
-import com.google.common.collect.ImmutableList;
-import com.google.common.hash.BloomFilter;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.hash.BloomFilter;
+
+import alvin.study.guava.hashing.model.Person;
 
 /**
  * 演示布隆过滤器的使用

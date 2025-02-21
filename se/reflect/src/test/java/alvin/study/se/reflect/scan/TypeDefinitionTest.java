@@ -1,11 +1,12 @@
 package alvin.study.se.reflect.scan;
 
-import alvin.study.se.reflect.generic.TypeDefinition;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.List;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
+
+import alvin.study.se.reflect.generic.TypeDefinition;
 
 /**
  * 测试 {@link TypeDefinition} 类型, 获取泛型参数类型

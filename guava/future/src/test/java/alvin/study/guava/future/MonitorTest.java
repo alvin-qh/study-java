@@ -1,10 +1,11 @@
 package alvin.study.guava.future;
 
-import com.google.common.util.concurrent.Monitor;
+import static org.assertj.core.api.BDDAssertions.then;
+
 import org.junit.jupiter.api.Test;
 import org.junitpioneer.jupiter.RetryingTest;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import com.google.common.util.concurrent.Monitor;
 
 /**
  * 测试通过 {@link Monitor} 类型对象进行并发控制

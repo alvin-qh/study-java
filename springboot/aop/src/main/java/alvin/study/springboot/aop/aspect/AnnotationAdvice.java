@@ -1,11 +1,8 @@
 package alvin.study.springboot.aop.aspect;
 
-import alvin.study.springboot.aop.aspect.Message.Step;
-import alvin.study.springboot.aop.domain.model.Worker;
-import alvin.study.springboot.aop.domain.service.WorkingService;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Map;
+import java.util.concurrent.BlockingQueue;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -19,8 +16,13 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
-import java.util.concurrent.BlockingQueue;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import alvin.study.springboot.aop.aspect.Message.Step;
+import alvin.study.springboot.aop.domain.model.Worker;
+import alvin.study.springboot.aop.domain.service.WorkingService;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 定义用于拦截具备指定注解方法的切面类型

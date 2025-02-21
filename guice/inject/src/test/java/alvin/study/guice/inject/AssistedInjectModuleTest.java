@@ -1,11 +1,13 @@
 package alvin.study.guice.inject;
 
-import alvin.study.guice.inject.AssistedInjectModule.ConnectionFactory;
-import com.google.inject.Module;
-import jakarta.inject.Inject;
+import static org.assertj.core.api.BDDAssertions.then;
+
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import com.google.inject.Module;
+
+import alvin.study.guice.inject.AssistedInjectModule.ConnectionFactory;
+import jakarta.inject.Inject;
 
 /**
  * 测试 {@link AssistedInjectModule} 模块

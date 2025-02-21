@@ -1,9 +1,10 @@
 package alvin.study.springboot.security.core.security.handler;
 
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
+
+import jakarta.annotation.Nonnull;
 
 import java.io.Serializable;
 
@@ -27,7 +28,7 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
      * @param role           角色名称
      * @return 是否匹配
      */
-    public boolean hasRole(@NotNull Authentication authentication, String role) {
+    public boolean hasRole(@Nonnull Authentication authentication, String role) {
         return authentication.getAuthorities().stream()
             .anyMatch(it -> checkIfRoleMatch(role, it.getAuthority()));
     }
@@ -39,7 +40,7 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
      * @param expected 期待的角色名称, 以 {@code "ROLE_"} 开始
      * @return 是否匹配
      */
-    private boolean checkIfRoleMatch(String given, @NotNull String expected) {
+    private boolean checkIfRoleMatch(String given, @Nonnull String expected) {
         if (!expected.startsWith(ROLE_PREFIX)) {
             return false;
         }
@@ -135,7 +136,7 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
      * @param permission 完整的权限字符串
      * @return 是否匹配
      */
-    private boolean checkIsNameMatched(@NotNull String name, String permission) {
+    private boolean checkIsNameMatched(@Nonnull String name, String permission) {
         if (name.equals("*")) {
             // 如果要求的权限名称为通配符, 则返回匹配
             return true;
@@ -171,7 +172,7 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
      * @param permission 完整的权限字符串
      * @return 是否匹配
      */
-    private boolean checkIsActionMatched(String name, String resource, @NotNull String action, String permission) {
+    private boolean checkIsActionMatched(String name, String resource, @Nonnull String action, String permission) {
         if (action.equals("*")) {
             return true;
         }
@@ -188,7 +189,7 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
      * @param fromIndex      从完整权限字符串开始匹配的位置
      * @return 是否匹配成功
      */
-    private boolean checkIfContains(String given, @NotNull String fullPermission, int fromIndex) {
+    private boolean checkIfContains(String given, @Nonnull String fullPermission, int fromIndex) {
         var n = 0;
         while (fromIndex < fullPermission.length() && n < given.length()) {
             if (given.charAt(n) != fullPermission.charAt(fromIndex)) {

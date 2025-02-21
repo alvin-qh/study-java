@@ -1,10 +1,6 @@
 package alvin.study.guava.io;
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
-import com.google.common.io.CharStreams;
-import com.google.common.io.LineProcessor;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -18,7 +14,12 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
+
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
+import com.google.common.io.CharStreams;
+import com.google.common.io.LineProcessor;
 
 /**
  * 测试 {@link CharStreams} 工具类

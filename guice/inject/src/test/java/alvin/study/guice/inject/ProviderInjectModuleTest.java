@@ -1,12 +1,14 @@
 package alvin.study.guice.inject;
 
-import alvin.study.guice.inject.ProviderInjectModule.InjectProvider;
-import alvin.study.guice.inject.ProviderInjectModule.InjectValue;
-import com.google.inject.Inject;
-import com.google.inject.Module;
+import static org.assertj.core.api.BDDAssertions.then;
+
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import com.google.inject.Inject;
+import com.google.inject.Module;
+
+import alvin.study.guice.inject.ProviderInjectModule.InjectProvider;
+import alvin.study.guice.inject.ProviderInjectModule.InjectValue;
 
 /**
  * 测试 {@link ProviderInjectModule} 模块

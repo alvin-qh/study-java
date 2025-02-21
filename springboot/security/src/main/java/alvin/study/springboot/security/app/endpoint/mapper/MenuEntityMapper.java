@@ -30,8 +30,8 @@ public class MenuEntityMapper {
     public MenuDto toDto(Collection<Menu> menuCollection) {
         // 读取数据表中的菜单记录并转为 MenuItemDto 对象, 并以 id 为 Key 产生 Map 对象
         var menuMap = menuCollection.stream()
-            .map(m -> modelMapper.map(m, MenuDto.MenuItemDto.class))
-            .collect(Collectors.toMap(MenuDto.MenuItemDto::getId, Functions.identity()));
+                .map(m -> modelMapper.map(m, MenuDto.MenuItemDto.class))
+                .collect(Collectors.toMap(MenuDto.MenuItemDto::getId, Functions.identity()));
 
         // 将子菜单和父菜单进行关联
         var result = new ArrayList<MenuDto.MenuItemDto>(menuMap.size());

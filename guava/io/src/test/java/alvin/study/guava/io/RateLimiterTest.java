@@ -1,14 +1,15 @@
 package alvin.study.guava.io;
 
-import com.google.common.collect.Lists;
-import com.google.common.util.concurrent.RateLimiter;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.LockSupport;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
+
+import com.google.common.collect.Lists;
+import com.google.common.util.concurrent.RateLimiter;
 
 /**
  * 测试速率限制类型

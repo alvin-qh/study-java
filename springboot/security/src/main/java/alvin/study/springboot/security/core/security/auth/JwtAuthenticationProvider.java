@@ -19,8 +19,8 @@ import org.springframework.stereotype.Component;
  * </p>
  *
  * @deprecated 在 Spring Security 6+ 版本之后, 无需使用 Provider, 只需要在 Filter 中为
- * {@link org.springframework.security.core.context.SecurityContext SecurityContext}传递
- * {@link Authentication} 对象即可, 参见 {@link JwtRequestFilter JwtRequestFilter} 类型
+ *             {@link org.springframework.security.core.context.SecurityContext SecurityContext}传递
+ *             {@link Authentication} 对象即可, 参见 {@link JwtRequestFilter JwtRequestFilter} 类型
  */
 @Component
 @Deprecated(forRemoval = true, since = "3.0")
@@ -34,7 +34,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
      *
      * @param auth {@code JwtAuthenticationToken} 类型对象
      * @return {@link NameAndPasswordAuthenticationToken} 存储
-     * {@link User User} 实体对象
+     *         {@link User User} 实体对象
      */
     @Override
     public Authentication authenticate(Authentication auth) throws AuthenticationException {

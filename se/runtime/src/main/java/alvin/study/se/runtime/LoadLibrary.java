@@ -1,12 +1,12 @@
 package alvin.study.se.runtime;
 
-import com.google.common.base.Strings;
-import com.google.common.io.ByteStreams;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import com.google.common.base.Strings;
+import com.google.common.io.ByteStreams;
 
 /**
  * 从资源中释放动态库并进行加载

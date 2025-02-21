@@ -1,6 +1,5 @@
 package alvin.study.springboot.security.app.endpoint;
 
-
 import alvin.study.springboot.security.app.domain.service.AuthService;
 import alvin.study.springboot.security.app.endpoint.common.BaseController;
 import alvin.study.springboot.security.app.endpoint.model.LoginForm;

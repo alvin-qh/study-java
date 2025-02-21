@@ -51,7 +51,7 @@
     <version.mybatis-plus>3.5.10.1</version.mybatis-plus>
     <version.flyway>11.3.2</version.flyway>
 
-    <version.spring-boot>3.4.2</version.spring-boot>
+    <version.spring-boot>3.4.3</version.spring-boot>
     <version.spring-cloud>2023.0.1</version.spring-cloud>
     <version.alibaba-cloud>2023.0.1.0</version.alibaba-cloud>
 
@@ -93,14 +93,14 @@
 
   <!-- 包含子项目所在的路径名 -->
   <modules>
-    <!-- <module>se</module> -->
+    <module>se</module>
     <!-- <module>testing</module> -->
-    <!-- <module>misc</module> -->
-    <!-- <module>guava</module> -->
-    <!-- <module>guice</module> -->
+    <module>misc</module>
+    <module>guava</module>
+    <module>guice</module>
     <module>springboot</module>
     <!-- <module>springcloud</module> -->
-    <!-- <module>quarkus</module> -->
+    <module>quarkus</module>
   </modules>
 
   <!-- 依赖声明, 所有子项目可使用声明后的依赖 -->

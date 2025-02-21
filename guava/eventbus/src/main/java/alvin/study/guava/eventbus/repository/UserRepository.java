@@ -1,14 +1,15 @@
 package alvin.study.guava.eventbus.repository;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import com.google.common.eventbus.EventBus;
+
 import alvin.study.guava.eventbus.EventBusManager;
 import alvin.study.guava.eventbus.event.Event.Action;
 import alvin.study.guava.eventbus.event.UserEvent;
 import alvin.study.guava.eventbus.model.User;
-import com.google.common.eventbus.EventBus;
 import lombok.Getter;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * {@link User} 类型对象持久化类

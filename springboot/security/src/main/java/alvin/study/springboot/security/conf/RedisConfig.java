@@ -25,7 +25,7 @@ public class RedisConfig {
      */
     @Bean
     RedisTemplate<String, Object> redisTemplate(
-        LettuceConnectionFactory connectionFactory, ObjectMapper objectMapper) {
+            LettuceConnectionFactory connectionFactory, ObjectMapper objectMapper) {
         // 复制一个新的 ObjectMapper 用于 redis 序列化操作, 并设置 json 中存储对象元数据
         objectMapper = objectMapper.copy();
         objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);

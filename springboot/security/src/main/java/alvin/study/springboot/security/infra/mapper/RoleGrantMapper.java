@@ -88,7 +88,7 @@ public interface RoleGrantMapper extends BaseMapper<RoleGrant> {
         where user_or_group_id = #{userOrGroupId} and type = #{type} and role_id = #{roleId}
         """)
     Optional<RoleGrant> selectByUserOrGroupIdAndType(
-        @Param("userOrGroupId") Long userOrGroupId,
-        @Param("type") RoleGrantType type,
-        @Param("roleId") Long roleId);
+            @Param("userOrGroupId") Long userOrGroupId,
+            @Param("type") RoleGrantType type,
+            @Param("roleId") Long roleId);
 }

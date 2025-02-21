@@ -1,7 +1,6 @@
 package alvin.study.guava.io;
 
-import com.google.common.io.MoreFiles;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -10,7 +9,9 @@ import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.PosixFilePermissions;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
+
+import com.google.common.io.MoreFiles;
 
 /**
  * 测试 {@link com.google.common.io.ByteSink ByteSink} 类型用于写入字节数据

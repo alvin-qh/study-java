@@ -1,8 +1,20 @@
 package alvin.study.guava.cache;
 
-import alvin.study.guava.cache.model.User;
-import alvin.study.guava.cache.observer.CacheObserver;
-import alvin.study.guava.cache.repository.UserRepository;
+import static org.assertj.core.api.Assertions.entry;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
+import javax.annotation.Nonnull;
+
+import org.junit.jupiter.api.Test;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -14,21 +26,10 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.MultimapBuilder;
 import com.google.common.hash.BloomFilter;
 import com.google.common.util.concurrent.UncheckedExecutionException;
-import org.junit.jupiter.api.Test;
 
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-
-import javax.annotation.Nonnull;
-
-import static org.assertj.core.api.Assertions.entry;
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
-import static org.awaitility.Awaitility.await;
-import static org.junit.jupiter.api.Assertions.fail;
+import alvin.study.guava.cache.model.User;
+import alvin.study.guava.cache.observer.CacheObserver;
+import alvin.study.guava.cache.repository.UserRepository;
 
 /**
  * 测试 Guava 的缓存类

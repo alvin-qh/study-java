@@ -9,6 +9,8 @@ import alvin.study.springboot.security.builder.RoleGrantBuilder;
 import alvin.study.springboot.security.builder.RolePermissionBuilder;
 import alvin.study.springboot.security.infra.entity.RoleGrantType;
 import alvin.study.springboot.security.util.collection.PathMap;
+
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
@@ -243,20 +245,20 @@ class HomeControllerTest extends IntegrationTest {
 
             then(json).isNotNull();
 
-            then((Object) json.getByPath("items")).asList().hasSize(2);
+            then((Object) json.getByPath("items")).asInstanceOf(InstanceOfAssertFactories.LIST).hasSize(2);
 
             then((Object) json.getByPath("items[0].text")).isEqualTo("I");
-            then((Object) json.getByPath("items[0].items")).asList().hasSize(3);
+            then((Object) json.getByPath("items[0].items")).asInstanceOf(InstanceOfAssertFactories.LIST).hasSize(3);
             then((Object) json.getByPath("items[0].items[0].text")).isEqualTo("I-I");
             then((Object) json.getByPath("items[0].items[1].text")).isEqualTo("I-II");
             then((Object) json.getByPath("items[0].items[2].text")).isEqualTo("I-III");
 
             then((Object) json.getByPath("items[1].text")).isEqualTo("II");
-            then((Object) json.getByPath("items[1].items")).asList().hasSize(2);
+            then((Object) json.getByPath("items[1].items")).asInstanceOf(InstanceOfAssertFactories.LIST).hasSize(2);
             then((Object) json.getByPath("items[1].items[0].text")).isEqualTo("II-I");
             then((Object) json.getByPath("items[1].items[1].text")).isEqualTo("II-II");
 
-            then((Object) json.getByPath("items[1].items[1].items")).asList().hasSize(1);
+            then((Object) json.getByPath("items[1].items[1].items")).asInstanceOf(InstanceOfAssertFactories.LIST).hasSize(1);
             then((Object) json.getByPath("items[1].items[1].items[0].text")).isEqualTo("II-II-II");
         }
     }

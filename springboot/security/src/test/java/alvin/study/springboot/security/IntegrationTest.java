@@ -196,9 +196,9 @@ public abstract class IntegrationTest {
         try (var ignore = txManager.begin(false)) {
             // 当前用户对象
             currentUser = newBuilder(UserBuilder.class)
-                .withPassword(RAW_PASSWORD)
-                .withType(UserType.ADMIN)
-                .create();
+                    .withPassword(RAW_PASSWORD)
+                    .withType(UserType.ADMIN)
+                    .create();
 
             // 在线程上下文中注册当前登录用户
             SecurityContextHolder.getContext().setAuthentication(
@@ -206,13 +206,13 @@ public abstract class IntegrationTest {
 
             // 当前用户所属的用户组
             adminGroup = newBuilder(GroupBuilder.class)
-                .withName("Administrators")
-                .create();
+                    .withName("Administrators")
+                    .create();
 
             newBuilder(UserGroupBuilder.class)
-                .withGroupId(adminGroup.getId())
-                .withUserId(currentUser.getId())
-                .create();
+                    .withGroupId(adminGroup.getId())
+                    .withUserId(currentUser.getId())
+                    .create();
         }
 
         cache.removeAllKeys();
@@ -282,13 +282,13 @@ public abstract class IntegrationTest {
      */
     protected WebTestClient client() {
         return client
-            // 对 client 字段进行更新操作, 返回
-            // org.springframework.test.web.reactive.server.WebTestClient.Builder 对象
-            .mutate()
-            // 设置请求超时
-            .responseTimeout(Duration.ofMinutes(1))
-            // 创建新的 WebTestClient 对象
-            .build();
+                // 对 client 字段进行更新操作, 返回
+                // org.springframework.test.web.reactive.server.WebTestClient.Builder 对象
+                .mutate()
+                // 设置请求超时
+                .responseTimeout(Duration.ofMinutes(1))
+                // 创建新的 WebTestClient 对象
+                .build();
     }
 
     /**
@@ -303,7 +303,7 @@ public abstract class IntegrationTest {
      */
     @SuppressWarnings("unchecked")
     private <T extends RequestHeadersSpec<?>, R extends RequestHeadersUriSpec<?>> T setup(
-        R spec, String url, Object... uriVariables) {
+            R spec, String url, Object... uriVariables) {
         // 产生一个 token
         var token = makeBearerToken();
 
@@ -312,7 +312,7 @@ public abstract class IntegrationTest {
 
         // 设置访问 URL 地址和必要的 header 信息
         return (T) spec.uri(servletContext.getContextPath() + url, uriVariables)
-            .header(Headers.AUTHORIZATION, Headers.BEARER + " " + token);
+                .header(Headers.AUTHORIZATION, Headers.BEARER + " " + token);
     }
 
     /**
@@ -324,7 +324,7 @@ public abstract class IntegrationTest {
      */
     protected RequestHeadersSpec<?> getJson(String url, Object... uriVariables) {
         return setup(client().get(), url, uriVariables)
-            .accept(MediaType.APPLICATION_JSON);
+                .accept(MediaType.APPLICATION_JSON);
     }
 
     /**
@@ -336,8 +336,8 @@ public abstract class IntegrationTest {
      */
     protected RequestBodySpec postJson(String url, Object... uriVariables) {
         return ((RequestBodySpec) setup(client().post(), url, uriVariables))
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON);
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON);
     }
 
     /**
@@ -371,20 +371,20 @@ public abstract class IntegrationTest {
      * @param permissions   权限列表
      */
     private void addPermissions(
-        Long userOrGroupId, RoleGrantType type, String roleName, Collection<String> permissions) {
+            Long userOrGroupId, RoleGrantType type, String roleName, Collection<String> permissions) {
         // 查询角色名称, 若不存在, 则创建角色并绑定用户 (或组)
         var role = roleMapper.selectByName(roleName).orElseGet(
             () -> newBuilder(RoleBuilder.class)
-                .withName(roleName)
-                .create());
+                    .withName(roleName)
+                    .create());
 
         // 查询角色授予情况, 如不存在, 则进行授予
         roleGrantMapper.selectByUserOrGroupIdAndType(userOrGroupId, type, role.getId()).orElseGet(
             () -> newBuilder(RoleGrantBuilder.class)
-                .withUserOrGroupId(userOrGroupId)
-                .withType(type)
-                .withRoleId(role.getId())
-                .create());
+                    .withUserOrGroupId(userOrGroupId)
+                    .withType(type)
+                    .withRoleId(role.getId())
+                    .create());
 
         for (var permissionStr : permissions) {
             var parts = permissionStr.split(":", 3);
@@ -395,17 +395,17 @@ public abstract class IntegrationTest {
             // 查询权限, 若不存在则创建权限
             var permission = permissionMapper.selectByNameResourceAndAction(parts[0], parts[1], parts[2]).orElseGet(
                 () -> newBuilder(PermissionBuilder.class)
-                    .withName(parts[0])
-                    .withResource(parts[1])
-                    .withAction(parts[2])
-                    .create());
+                        .withName(parts[0])
+                        .withResource(parts[1])
+                        .withAction(parts[2])
+                        .create());
 
             // 查询权限和角色关系, 若不存在则建立关系
             rolePermissionMapper.selectByRoleAndPermissionId(role.getId(), permission.getId()).orElseGet(
                 () -> newBuilder(RolePermissionBuilder.class)
-                    .withPermissionId(permission.getId())
-                    .withRoleId(role.getId())
-                    .create());
+                        .withPermissionId(permission.getId())
+                        .withRoleId(role.getId())
+                        .create());
         }
     }
 

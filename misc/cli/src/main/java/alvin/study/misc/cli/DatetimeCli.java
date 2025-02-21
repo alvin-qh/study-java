@@ -1,12 +1,12 @@
 package alvin.study.misc.cli;
 
-import picocli.CommandLine.Command;
-import picocli.CommandLine.Option;
-
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.concurrent.Callable;
+
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
 
 /**
  * 通过类型定义一个命令

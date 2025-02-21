@@ -1,8 +1,9 @@
 package alvin.study.guice.bind;
 
-import alvin.study.guice.bind.inte.BindDemo;
 import com.google.inject.Binder;
 import com.google.inject.Module;
+
+import alvin.study.guice.bind.inte.BindDemo;
 import jakarta.inject.Singleton;
 
 /**

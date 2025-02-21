@@ -1,9 +1,10 @@
 package alvin.study.guice.module;
 
+import org.junit.jupiter.api.BeforeEach;
+
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import org.junit.jupiter.api.BeforeEach;
 
 /**
  * 测试超类

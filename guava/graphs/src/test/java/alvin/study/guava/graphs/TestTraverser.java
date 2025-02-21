@@ -1,13 +1,15 @@
 package alvin.study.guava.graphs;
 
-import com.google.common.graph.ElementOrder;
-import com.google.common.graph.Traverser;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.List;
 
-import static alvin.study.guava.graphs.GraphsDatasource.Edge;
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
+
+import com.google.common.graph.ElementOrder;
+import com.google.common.graph.Traverser;
+
+import alvin.study.guava.graphs.GraphsDatasource.Edge;
 
 /**
  * 测试图的遍历

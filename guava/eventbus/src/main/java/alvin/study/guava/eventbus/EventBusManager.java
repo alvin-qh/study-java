@@ -1,10 +1,5 @@
 package alvin.study.guava.eventbus;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.eventbus.AsyncEventBus;
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.SubscriberExceptionHandler;
-
 import java.io.Closeable;
 import java.util.Map;
 import java.util.UUID;
@@ -13,6 +8,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.eventbus.AsyncEventBus;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.SubscriberExceptionHandler;
 
 /**
  * 管理 {@link EventBus} 对象的管理器类型

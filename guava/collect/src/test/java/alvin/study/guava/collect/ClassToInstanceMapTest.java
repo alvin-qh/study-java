@@ -1,10 +1,11 @@
 package alvin.study.guava.collect;
 
-import com.google.common.collect.ImmutableClassToInstanceMap;
-import com.google.common.collect.MutableClassToInstanceMap;
+import static org.assertj.core.api.BDDAssertions.then;
+
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import com.google.common.collect.ImmutableClassToInstanceMap;
+import com.google.common.collect.MutableClassToInstanceMap;
 
 /**
  * 维护 {@link Class} 与其实例之间对应关系的 {@link java.util.Map Map} 类型

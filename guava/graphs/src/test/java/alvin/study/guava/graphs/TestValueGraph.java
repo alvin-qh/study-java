@@ -1,11 +1,13 @@
 package alvin.study.guava.graphs;
 
-import alvin.study.guava.graphs.GraphsDatasource.Edge;
-import com.google.common.graph.ElementOrder;
+import static org.assertj.core.api.BDDAssertions.then;
+
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import com.google.common.graph.ElementOrder;
+
+import alvin.study.guava.graphs.GraphsDatasource.Edge;
 
 /**
  * 测试图数据结构类型, 包括"有向图"和"无向图"

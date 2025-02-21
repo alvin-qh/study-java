@@ -1,14 +1,16 @@
 package alvin.study.guice.inject;
 
-import alvin.study.guice.inject.SimpleInjectModule.InjectorByConstruct;
-import alvin.study.guice.inject.SimpleInjectModule.InjectorByField;
-import alvin.study.guice.inject.SimpleInjectModule.InjectorBySetter;
-import com.google.inject.Guice;
-import jakarta.inject.Inject;
+import static org.assertj.core.api.BDDAssertions.then;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import com.google.inject.Guice;
+
+import alvin.study.guice.inject.SimpleInjectModule.InjectorByConstruct;
+import alvin.study.guice.inject.SimpleInjectModule.InjectorByField;
+import alvin.study.guice.inject.SimpleInjectModule.InjectorBySetter;
+import jakarta.inject.Inject;
 
 /**
  * 测试基本的依赖注入

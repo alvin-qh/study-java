@@ -1,10 +1,6 @@
 package alvin.study.misc.jwt;
 
-import alvin.study.misc.jwt.util.RSAKeyLoader;
-import com.google.common.io.ByteStreams;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -16,7 +12,13 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.Objects;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import com.google.common.io.ByteStreams;
+
+import alvin.study.misc.jwt.util.RSAKeyLoader;
 
 /**
  * 测试 {@link JWTs} 工具类

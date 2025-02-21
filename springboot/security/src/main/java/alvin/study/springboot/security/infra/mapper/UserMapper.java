@@ -78,7 +78,7 @@ public interface UserMapper extends BaseMapper<User> {
      *
      * @param account 账号名
      * @return {@link Optional} 对象, {@link Optional#isPresent()} 方法返回 {@code true}
-     * 表示查询成功
+     *         表示查询成功
      */
     @Select("""
         select id, account, password, type, created_at, updated_at, created_by, updated_by

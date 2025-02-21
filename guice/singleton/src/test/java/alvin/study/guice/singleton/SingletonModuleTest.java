@@ -1,14 +1,16 @@
 package alvin.study.guice.singleton;
 
+import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
+
+import com.google.inject.Guice;
+
 import alvin.study.guice.singleton.bean.SingletonAnnotationBean;
 import alvin.study.guice.singleton.bean.SingletonBean;
-import com.google.inject.Guice;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.inject.Provider;
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link SingletonModule} 模块

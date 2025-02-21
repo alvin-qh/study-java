@@ -1,16 +1,17 @@
 package alvin.study.guice.bind;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.TypeLiteral;
-import jakarta.inject.Singleton;
+import static java.util.Arrays.asList;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import static java.util.Arrays.asList;
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
+import com.google.inject.TypeLiteral;
+
+import jakarta.inject.Singleton;
 
 /**
  * 根据<b>泛型参数</b>匹配注入对象类型

@@ -22,4 +22,4 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
     "alvin.study.springboot.security.infra.mapper"
 })
 @EnableTransactionManagement
-public class MyBatisConfig { }
+public class MyBatisConfig {}

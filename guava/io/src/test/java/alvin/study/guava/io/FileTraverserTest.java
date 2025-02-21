@@ -1,15 +1,6 @@
 package alvin.study.guava.io;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Ordering;
-import com.google.common.collect.Queues;
-import com.google.common.graph.Traverser;
-import com.google.common.io.Files;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +14,17 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.StreamSupport;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
+import com.google.common.collect.Queues;
+import com.google.common.graph.Traverser;
+import com.google.common.io.Files;
 
 /**
  * 演示各类文件遍历操作

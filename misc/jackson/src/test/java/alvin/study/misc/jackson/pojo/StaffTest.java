@@ -1,15 +1,17 @@
 package alvin.study.misc.jackson.pojo;
 
-import alvin.study.misc.jackson.decode.Decoder;
-import alvin.study.misc.jackson.encode.Encoder;
-import alvin.study.misc.jackson.pojo.common.SimpleDate;
-import com.fasterxml.jackson.core.type.TypeReference;
-import org.assertj.core.api.BDDAssertions;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.List;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.assertj.core.api.BDDAssertions;
+import org.junit.jupiter.api.Test;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+
+import alvin.study.misc.jackson.decode.Decoder;
+import alvin.study.misc.jackson.encode.Encoder;
+import alvin.study.misc.jackson.pojo.common.SimpleDate;
 
 /**
  * 测试 {@link Staff} 类型的 JSON 序列化和反序列化

@@ -1,8 +1,9 @@
 package alvin.study.guice.module.submodule;
 
-import alvin.study.guice.module.bean.ModuleDemo;
 import com.google.inject.PrivateModule;
 import com.google.inject.name.Names;
+
+import alvin.study.guice.module.bean.ModuleDemo;
 
 /**
  * 私有子模块

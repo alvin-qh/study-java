@@ -1,15 +1,16 @@
 package alvin.study.se.reflect.generic;
 
-import alvin.study.se.reflect.scan.ClassScanner;
-import alvin.study.se.reflect.scan.match.Matcher;
-import alvin.study.se.reflect.scan.match.Matchers;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
+
+import alvin.study.se.reflect.scan.ClassScanner;
+import alvin.study.se.reflect.scan.match.Matcher;
+import alvin.study.se.reflect.scan.match.Matchers;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

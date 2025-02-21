@@ -68,4 +68,4 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 @CacheNamespace
-public interface UserGroupMapper extends BaseMapper<UserGroup> { }
+public interface UserGroupMapper extends BaseMapper<UserGroup> {}

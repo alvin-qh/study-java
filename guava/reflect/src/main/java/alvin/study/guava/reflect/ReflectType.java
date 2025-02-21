@@ -1,12 +1,13 @@
 package alvin.study.guava.reflect;
 
-import com.google.common.reflect.TypeParameter;
-import com.google.common.reflect.TypeToken;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-
 import java.util.List;
 import java.util.Map;
+
+import com.google.common.reflect.TypeParameter;
+import com.google.common.reflect.TypeToken;
+
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 /**
  * 反射类型工具类

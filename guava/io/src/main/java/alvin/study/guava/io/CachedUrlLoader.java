@@ -1,14 +1,5 @@
 package alvin.study.guava.io;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Preconditions;
-import com.google.common.io.ByteSource;
-import com.google.common.io.MoreFiles;
-import com.google.common.io.Resources;
-
-import jakarta.annotation.Nonnull;
-import lombok.Getter;
-
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
@@ -26,6 +17,15 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Preconditions;
+import com.google.common.io.ByteSource;
+import com.google.common.io.MoreFiles;
+import com.google.common.io.Resources;
+
+import jakarta.annotation.Nonnull;
+import lombok.Getter;
 
 /**
  * 演示通过 {@link ByteSource} 从网络或者缓存文件中读取数据

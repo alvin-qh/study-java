@@ -47,7 +47,10 @@ public class NameAndPasswordAuthenticationToken extends AbstractAuthenticationTo
      * @param user        用户实体对象
      * @param authorities 角色和权限集合
      */
-    public NameAndPasswordAuthenticationToken(User user, String token, Collection<? extends GrantedAuthority> authorities) {
+    public NameAndPasswordAuthenticationToken(
+            User user,
+            String token,
+            Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.user = user;
         this.token = token;
@@ -65,9 +68,7 @@ public class NameAndPasswordAuthenticationToken extends AbstractAuthenticationTo
      * </p>
      */
     @Override
-    public Object getPrincipal() {
-        return user;
-    }
+    public Object getPrincipal() { return user; }
 
     /**
      * 获取用户凭证, 这里是密码
@@ -78,9 +79,7 @@ public class NameAndPasswordAuthenticationToken extends AbstractAuthenticationTo
      * </p>
      */
     @Override
-    public Object getCredentials() {
-        return token;
-    }
+    public Object getCredentials() { return token; }
 
     /**
      * 获取用户名信息
@@ -96,9 +95,7 @@ public class NameAndPasswordAuthenticationToken extends AbstractAuthenticationTo
     }
 
     @Override
-    public boolean isAuthenticated() {
-        return user != null;
-    }
+    public boolean isAuthenticated() { return user != null; }
 
     /**
      * 设置是否已通过认证, 该方法在当前类型无效

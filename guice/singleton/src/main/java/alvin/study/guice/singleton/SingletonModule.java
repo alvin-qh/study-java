@@ -1,8 +1,9 @@
 package alvin.study.guice.singleton;
 
-import alvin.study.guice.singleton.bean.SingletonBean;
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
+
+import alvin.study.guice.singleton.bean.SingletonBean;
 import jakarta.inject.Singleton;
 
 /**

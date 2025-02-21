@@ -1,10 +1,11 @@
 package alvin.study.guice.bind;
 
-import alvin.study.guice.bind.inte.BindDemo;
-import com.google.inject.AbstractModule;
-import jakarta.inject.Provider;
-
 import java.util.Random;
+
+import com.google.inject.AbstractModule;
+
+import alvin.study.guice.bind.inte.BindDemo;
+import jakarta.inject.Provider;
 
 /**
  * 绑定 Provider

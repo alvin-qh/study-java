@@ -1,12 +1,13 @@
 package alvin.study.misc.jackson.pojo;
 
-import alvin.study.misc.jackson.decode.Decoder;
-import alvin.study.misc.jackson.encode.Encoder;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.time.LocalDate;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
+
+import alvin.study.misc.jackson.decode.Decoder;
+import alvin.study.misc.jackson.encode.Encoder;
 
 /**
  * 测试 {@link Person} 类型的 JSON 序列化以及反序列化操作

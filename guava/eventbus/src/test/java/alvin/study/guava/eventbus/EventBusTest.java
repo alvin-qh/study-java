@@ -1,21 +1,23 @@
 package alvin.study.guava.eventbus;
 
+import static org.assertj.core.api.Assertions.entry;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.awaitility.Awaitility.await;
+
+import java.util.concurrent.TimeUnit;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+
+import com.google.common.collect.Lists;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.SubscriberExceptionHandler;
+
 import alvin.study.guava.eventbus.event.Event.Action;
 import alvin.study.guava.eventbus.event.UserEvent;
 import alvin.study.guava.eventbus.handler.UserHandler;
 import alvin.study.guava.eventbus.model.User;
 import alvin.study.guava.eventbus.repository.UserRepository;
-import com.google.common.collect.Lists;
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.SubscriberExceptionHandler;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-
-import java.util.concurrent.TimeUnit;
-
-import static org.assertj.core.api.Assertions.entry;
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.awaitility.Awaitility.await;
 
 /**
  * 测试通过 {@link com.google.common.eventbus.EventBus EventBus} 通过观察者模式进行事件处理

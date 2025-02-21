@@ -1,16 +1,18 @@
 package alvin.study.guava.hashing;
 
-import alvin.study.guava.hashing.model.Person;
-import com.google.common.base.Charsets;
-import com.google.common.collect.Lists;
-import com.google.common.hash.HashCode;
-import com.google.common.hash.Hashing;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.time.LocalDate;
 import java.util.Collections;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
+
+import com.google.common.base.Charsets;
+import com.google.common.collect.Lists;
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hashing;
+
+import alvin.study.guava.hashing.model.Person;
 
 /**
  * 测试散列计算工具类

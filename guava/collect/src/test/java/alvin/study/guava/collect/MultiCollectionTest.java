@@ -1,15 +1,16 @@
 package alvin.study.guava.collect;
 
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.MultimapBuilder;
-import org.junit.jupiter.api.Test;
-
-import java.util.Collections;
-
 import static org.assertj.core.api.Assertions.tuple;
 import static org.assertj.core.api.BDDAssertions.entry;
 import static org.assertj.core.api.BDDAssertions.then;
+
+import java.util.Collections;
+
+import org.junit.jupiter.api.Test;
+
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.MultimapBuilder;
 
 /**
  * 演示可以存储多个值的 {@link java.util.Set Set} 和 {@link com.google.common.collect.Multimap Multimap} 集合

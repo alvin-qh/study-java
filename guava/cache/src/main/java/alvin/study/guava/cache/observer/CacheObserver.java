@@ -1,12 +1,13 @@
 package alvin.study.guava.cache.observer;
 
-import alvin.study.guava.cache.event.UserDeleteEvent;
-import alvin.study.guava.cache.event.UserUpdateEvent;
-import alvin.study.guava.cache.model.User;
 import jakarta.annotation.Nonnull;
 
 import com.google.common.cache.LoadingCache;
 import com.google.common.eventbus.Subscribe;
+
+import alvin.study.guava.cache.event.UserDeleteEvent;
+import alvin.study.guava.cache.event.UserUpdateEvent;
+import alvin.study.guava.cache.model.User;
 
 /**
  * 用于缓存处理的观察者类

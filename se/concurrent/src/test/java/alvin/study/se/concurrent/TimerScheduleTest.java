@@ -88,9 +88,9 @@ class TimerScheduleTest {
         var queue = new DelayQueue<DelayedValue<Integer>>();
 
         // 入队 3 个元素, 并各自具备不同的延时时间
-        queue.offer(new DelayedValue<>(1, 2000, TimeUnit.MILLISECONDS));
-        queue.offer(new DelayedValue<>(2, 1000, TimeUnit.MILLISECONDS));
-        queue.offer(new DelayedValue<>(3, 2100, TimeUnit.MILLISECONDS));
+        queue.offer(new DelayedValue<>(1, 200, TimeUnit.MILLISECONDS));
+        queue.offer(new DelayedValue<>(2, 100, TimeUnit.MILLISECONDS));
+        queue.offer(new DelayedValue<>(3, 210, TimeUnit.MILLISECONDS));
 
         // 记录当前时间
         var millis = System.currentTimeMillis();
@@ -99,7 +99,7 @@ class TimerScheduleTest {
         then(queue.poll()).isNull();
 
         // 休眠 1s 后再次出队, 此时可以出队延时时间为 1s 的元素
-        Thread.sleep(1000);
+        Thread.sleep(100);
         then(queue.poll()).extracting("value").isEqualTo(2);
 
         // 继续出队, 因为此时无元素到达延时时间, 所以返回值为 null
@@ -112,7 +112,7 @@ class TimerScheduleTest {
         then(queue.poll(110, TimeUnit.MILLISECONDS)).extracting("value").isEqualTo(3);
 
         // 确认整体出队耗时 2100ms, 为延时时间最久的元素出队时间
-        then(System.currentTimeMillis() - millis).isGreaterThanOrEqualTo(2100).isLessThan(2200);
+        then(System.currentTimeMillis() - millis).isGreaterThanOrEqualTo(210).isLessThan(220);
     }
 
     /**
@@ -144,24 +144,24 @@ class TimerScheduleTest {
     @Test
     void scheduleFuture_shouldScheduleTaskAfterWhile() throws Exception {
         // 创建延时任务线程池
-        var executor = executorCreator.scheduledExecutor(0);
+        try (var executor = executorCreator.scheduledExecutor(0)) {
+            // 记录起始时间
+            var startedMillis = System.currentTimeMillis();
 
-        // 记录起始时间
-        var startedMillis = System.currentTimeMillis();
+            // 提交 3 个延时任务, 为每个任务设置延时时间, 任务结果为 Record 类型对象
+            var future1 = executor.schedule(System::currentTimeMillis, 200, TimeUnit.MILLISECONDS);
+            var future2 = executor.schedule(System::currentTimeMillis, 100, TimeUnit.MILLISECONDS);
+            var future3 = executor.schedule(System::currentTimeMillis, 210, TimeUnit.MILLISECONDS);
 
-        // 提交 3 个延时任务, 为每个任务设置延时时间, 任务结果为 Record 类型对象
-        var future1 = executor.schedule(System::currentTimeMillis, 2000, TimeUnit.MILLISECONDS);
-        var future2 = executor.schedule(System::currentTimeMillis, 1000, TimeUnit.MILLISECONDS);
-        var future3 = executor.schedule(System::currentTimeMillis, 2100, TimeUnit.MILLISECONDS);
+            // 确认整体任务执行完毕耗时 2100ms, 即最后一个任务执行的时间
+            await().atMost(1, TimeUnit.SECONDS).until(() -> future1.isDone() && future2.isDone() && future3.isDone());
+            then(System.currentTimeMillis() - startedMillis).isGreaterThanOrEqualTo(210).isLessThan(310);
 
-        // 确认整体任务执行完毕耗时 2100ms, 即最后一个任务执行的时间
-        await().atMost(3, TimeUnit.SECONDS).until(() -> future1.isDone() && future2.isDone() && future3.isDone());
-        then(System.currentTimeMillis() - startedMillis).isGreaterThanOrEqualTo(2100).isLessThan(2200);
-
-        // 确认每个任务的延时时间, 和设定的延时时间一致
-        then(future1.get() - startedMillis).isGreaterThanOrEqualTo(2000).isLessThan(2100);
-        then(future2.get() - startedMillis).isGreaterThanOrEqualTo(1000).isLessThan(1100);
-        then(future3.get() - startedMillis).isGreaterThanOrEqualTo(2100).isLessThan(2200);
+            // 确认每个任务的延时时间, 和设定的延时时间一致
+            then(future1.get() - startedMillis).isGreaterThanOrEqualTo(200).isLessThan(210);
+            then(future2.get() - startedMillis).isGreaterThanOrEqualTo(100).isLessThan(110);
+            then(future3.get() - startedMillis).isGreaterThanOrEqualTo(210).isLessThan(220);
+        }
     }
 
     /**
@@ -213,22 +213,21 @@ class TimerScheduleTest {
 
         // 提交 3 个延时任务, 为每个任务设置延时时间, 任务结果为 Record 类型对象
         var task1 = new RecordTask();
-        timer.schedule(task1, 2000);
+        timer.schedule(task1, 200);
 
         var task2 = new RecordTask();
-        timer.schedule(task2, 1000);
+        timer.schedule(task2, 100);
 
         var task3 = new RecordTask();
-        timer.schedule(task3, 2100);
+        timer.schedule(task3, 210);
 
         // 确认整体任务执行完毕耗时 2100ms, 即最后一个任务执行的时间
         await().atMost(3, TimeUnit.SECONDS).until(() -> task1.isDone() && task2.isDone() && task3.isDone());
-        then(System.currentTimeMillis() - startedMillis).isGreaterThanOrEqualTo(2100).isLessThan(2200);
 
         // 确认每个任务的延时时间, 和设定的延时时间一致
-        then(task1.getExecutionTime() - startedMillis).isGreaterThanOrEqualTo(2000).isLessThan(2100);
-        then(task2.getExecutionTime() - startedMillis).isGreaterThanOrEqualTo(1000).isLessThan(1100);
-        then(task3.getExecutionTime() - startedMillis).isGreaterThanOrEqualTo(2100).isLessThan(2200);
+        then(task1.getExecutionTime() - startedMillis).isGreaterThanOrEqualTo(200).isLessThan(210);
+        then(task2.getExecutionTime() - startedMillis).isGreaterThanOrEqualTo(100).isLessThan(110);
+        then(task3.getExecutionTime() - startedMillis).isGreaterThanOrEqualTo(210).isLessThan(220);
     }
 
     /**
@@ -262,17 +261,17 @@ class TimerScheduleTest {
             // 记录执行时间
             () -> records.add(System.currentTimeMillis()),
             // 设置执行延迟时间和重复执行频率
-            1, 2, TimeUnit.SECONDS);
+            100, 200, TimeUnit.MILLISECONDS);
 
-        // 等待定时器执行 3 次以后, 取消定时器
-        await().atMost(6, TimeUnit.SECONDS).untilAsserted(() -> then(records).hasSize(3));
+        // 等待定时器执行 3 次 (最大耗时约 600ms) 以后, 取消定时器
+        await().atMost(600, TimeUnit.MILLISECONDS).untilAsserted(() -> then(records).hasSize(3));
         future.cancel(false);
 
-        // 确认 3 此任务共耗时 5s (第一次间隔 1s, 后两次均间隔 2s, 共 5s)
-        then(System.currentTimeMillis() - startedMillis).isGreaterThanOrEqualTo(5000).isLessThan(5300);
+        // 确认 3 此任务共耗时 500ms~600ms (第一次间隔 100ms, 后两次均间隔 200ms, 共 500ms)
+        then(System.currentTimeMillis() - startedMillis).isGreaterThanOrEqualTo(500).isLessThan(600);
 
         // 确认每次任务执行间隔时间
-        then(records).map(n -> (n - startedMillis) / 1000).containsExactly(1L, 3L, 5L);
+        then(records).map(n -> (n - startedMillis) / 100).containsExactly(1L, 3L, 5L);
     }
 
     /**
@@ -310,15 +309,15 @@ class TimerScheduleTest {
         // 记录程序执行的起始时间
         var startedMillis = System.currentTimeMillis();
 
-        // 开始执行任务, 第一次 1s 后执行, 之后每 2s 重复执行一次
-        timer.scheduleAtFixedRate(task, 1000, 2000);
+        // 开始执行任务, 第一次 100ms 后执行, 之后每 200ms 重复执行一次
+        timer.scheduleAtFixedRate(task, 100, 200);
 
-        // 等待执行 3 次后, 取消任务执行
-        await().atMost(5500, TimeUnit.MILLISECONDS).untilAsserted(() -> then(records).hasSize(3));
+        // 等待执行 3 次后 (最大耗时 600ms), 取消任务执行
+        await().atMost(600, TimeUnit.MILLISECONDS).untilAsserted(() -> then(records).hasSize(3));
         timer.cancel();
 
         // 确认每次任务的时间间隔
-        then(records).map(n -> (n - startedMillis) / 1000).containsExactly(1L, 3L, 5L);
+        then(records).map(n -> (n - startedMillis) / 100).containsExactly(1L, 3L, 5L);
     }
 
     /**
@@ -350,17 +349,17 @@ class TimerScheduleTest {
             // 记录执行时间
             () -> records.add(System.currentTimeMillis()),
             // 设置执行延迟时间和重复执行频率
-            1, 2, TimeUnit.SECONDS);
+            100, 200, TimeUnit.MILLISECONDS);
 
-        // 等待定时器执行 3 次以后, 取消定时器
-        await().atMost(6, TimeUnit.SECONDS).untilAsserted(() -> then(records).hasSize(3));
+        // 等待定时器执行 3 次 (最大耗时 600ms) 以后, 取消定时器
+        await().atMost(600, TimeUnit.MILLISECONDS).untilAsserted(() -> then(records).hasSize(3));
         future.cancel(false);
 
         // 确认 3 此任务共耗时 5s (第一次间隔 1s, 后两次均间隔 2s, 共 5s)
-        then(System.currentTimeMillis() - startedMillis).isGreaterThanOrEqualTo(5000).isLessThan(5300);
+        then(System.currentTimeMillis() - startedMillis).isGreaterThanOrEqualTo(500).isLessThan(600);
 
         // 确认每次任务执行间隔时间
-        then(records).map(n -> (n - startedMillis) / 1000).containsExactly(1L, 3L, 5L);
+        then(records).map(n -> (n - startedMillis) / 100).containsExactly(1L, 3L, 5L);
     }
 
     /**
@@ -396,14 +395,14 @@ class TimerScheduleTest {
         // 记录程序执行的起始时间
         var startedMillis = System.currentTimeMillis();
 
-        // 开始执行任务, 第一次 1s 后执行, 之后每 2s 重复执行一次
-        timer.schedule(task, 1000, 2000);
+        // 开始执行任务, 第一次 100ms 后执行, 之后每 200ms 重复执行一次
+        timer.schedule(task, 100, 200);
 
-        // 等待执行 3 次后, 取消任务执行
-        await().atMost(5500, TimeUnit.MILLISECONDS).untilAsserted(() -> then(records).hasSize(3));
+        // 等待执行 3 次 (最大耗时 600ms) 后, 取消任务执行
+        await().atMost(600, TimeUnit.MILLISECONDS).untilAsserted(() -> then(records).hasSize(3));
         timer.cancel();
 
         // 确认每次任务的时间间隔
-        then(records).map(n -> (n - startedMillis) / 1000).containsExactly(1L, 3L, 5L);
+        then(records).map(n -> (n - startedMillis) / 100).containsExactly(1L, 3L, 5L);
     }
 }

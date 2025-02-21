@@ -39,14 +39,14 @@ class MenuEntityMapperTest extends IntegrationTest {
     @Transactional
     void toDto_shouldMenuEntityToDto() {
         var role = newBuilder(RoleBuilder.class)
-            .withName("R@II")
-            .create();
+                .withName("R@II")
+                .create();
 
         var permission = newBuilder(PermissionBuilder.class)
-            .withName("MENU")
-            .withResource("P@II-II")
-            .withAction("READ")
-            .create();
+                .withName("MENU")
+                .withResource("P@II-II")
+                .withAction("READ")
+                .create();
 
         // 为当前用户设置角色, 不设置必要权限, 所以 II-II-I 和 II-II—II 两个菜单不予返回
         SecurityContextHolder.setContext(new SecurityContextImpl(
@@ -66,9 +66,9 @@ class MenuEntityMapperTest extends IntegrationTest {
 
         var menu2_2 = newBuilder(MenuBuilder.class).withText("II-II").withParentId(menu2.getId()).create();
         newBuilder(MenuBuilder.class)
-            .withText("II-II-I").withParentId(menu2_2.getId()).withPermissionId(permission.getId()).create();
+                .withText("II-II-I").withParentId(menu2_2.getId()).withPermissionId(permission.getId()).create();
         newBuilder(MenuBuilder.class)
-            .withText("II-II-II").withParentId(menu2_2.getId()).withPermissionId(permission.getId()).create();
+                .withText("II-II-II").withParentId(menu2_2.getId()).withPermissionId(permission.getId()).create();
         newBuilder(MenuBuilder.class).withText("II-II-III").withParentId(menu2_2.getId()).create();
 
         newBuilder(MenuBuilder.class).withText("II-III").withParentId(menu2.getId()).create();

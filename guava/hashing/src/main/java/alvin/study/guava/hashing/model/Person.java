@@ -1,11 +1,12 @@
 package alvin.study.guava.hashing.model;
 
-import com.google.common.hash.Funnel;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+
+import com.google.common.hash.Funnel;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 定义一个类型用于计算对象的散列值

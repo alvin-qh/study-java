@@ -1,13 +1,15 @@
 package alvin.study.guava.graphs;
 
-import alvin.study.guava.graphs.GraphsDatasource.Edge;
-import com.google.common.graph.ElementOrder;
-import com.google.common.graph.EndpointPair;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+import com.google.common.graph.ElementOrder;
+import com.google.common.graph.EndpointPair;
+
+import alvin.study.guava.graphs.GraphsDatasource.Edge;
 
 /**
  * 测试网络类型

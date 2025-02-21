@@ -1,9 +1,10 @@
 package alvin.study.guice.bind;
 
+import com.google.inject.AbstractModule;
+
 import alvin.study.guice.bind.anno.A;
 import alvin.study.guice.bind.anno.B;
 import alvin.study.guice.bind.inte.BindDemo;
-import com.google.inject.AbstractModule;
 
 /**
  * 通过<b>注解</b>标识绑定关系

@@ -41,20 +41,20 @@ class AuthServiceTest extends IntegrationTest {
         for (var resource : List.of("X1", "X2")) {
             for (var action : List.of("READ", "WRITE", "DELETE")) {
                 var permission = newBuilder(PermissionBuilder.class)
-                    .withName("X")
-                    .withResource(resource)
-                    .withAction(action)
-                    .create();
+                        .withName("X")
+                        .withResource(resource)
+                        .withAction(action)
+                        .create();
 
                 newBuilder(RolePermissionBuilder.class)
-                    .withPermissionId(permission.getId())
-                    .withRoleId(roleAdmin.getId())
-                    .create();
+                        .withPermissionId(permission.getId())
+                        .withRoleId(roleAdmin.getId())
+                        .create();
 
                 newBuilder(RolePermissionBuilder.class)
-                    .withPermissionId(permission.getId())
-                    .withRoleId(roleDba.getId())
-                    .create();
+                        .withPermissionId(permission.getId())
+                        .withRoleId(roleDba.getId())
+                        .create();
             }
         }
 
@@ -62,24 +62,24 @@ class AuthServiceTest extends IntegrationTest {
         for (var resource : List.of("Y1", "Y2")) {
             for (var action : List.of("READ", "WRITE", "DELETE")) {
                 var permission = newBuilder(PermissionBuilder.class)
-                    .withName("Y")
-                    .withResource(resource)
-                    .withAction(action)
-                    .create();
+                        .withName("Y")
+                        .withResource(resource)
+                        .withAction(action)
+                        .create();
 
                 newBuilder(RolePermissionBuilder.class)
-                    .withPermissionId(permission.getId())
-                    .withRoleId(roleAdmin.getId())
-                    .create();
+                        .withPermissionId(permission.getId())
+                        .withRoleId(roleAdmin.getId())
+                        .create();
             }
         }
 
         for (var role : List.of(roleAdmin, roleDba, roleNormal)) {
             newBuilder(RoleGrantBuilder.class)
-                .withRoleId(role.getId())
-                .withUserOrGroupId(currentUser().getId())
-                .withType(RoleGrantType.USER)
-                .create();
+                    .withRoleId(role.getId())
+                    .withUserOrGroupId(currentUser().getId())
+                    .withType(RoleGrantType.USER)
+                    .create();
         }
 
         clearSessionCache();
@@ -90,31 +90,31 @@ class AuthServiceTest extends IntegrationTest {
 
         // 确认当前用户有三个角色
         then(permissions)
-            .filteredOn(p -> p.getAuthority().startsWith("ROLE_"))
-            .extracting("authority")
-            .contains("ROLE_A", "ROLE_B", "ROLE_C");
+                .filteredOn(p -> p.getAuthority().startsWith("ROLE_"))
+                .extracting("authority")
+                .contains("ROLE_A", "ROLE_B", "ROLE_C");
 
         // 确认用户的权限情况
         then(permissions)
-            .filteredOn(p -> p.getAuthority().startsWith("X:"))
-            .extracting("authority")
-            .containsExactlyInAnyOrder(
-                "X:X1:READ",
-                "X:X1:WRITE",
-                "X:X1:DELETE",
-                "X:X2:READ",
-                "X:X2:WRITE",
-                "X:X2:DELETE");
+                .filteredOn(p -> p.getAuthority().startsWith("X:"))
+                .extracting("authority")
+                .containsExactlyInAnyOrder(
+                    "X:X1:READ",
+                    "X:X1:WRITE",
+                    "X:X1:DELETE",
+                    "X:X2:READ",
+                    "X:X2:WRITE",
+                    "X:X2:DELETE");
 
         then(permissions)
-            .filteredOn(p -> p.getAuthority().startsWith("Y:"))
-            .extracting("authority")
-            .containsExactlyInAnyOrder(
-                "Y:Y1:READ",
-                "Y:Y1:WRITE",
-                "Y:Y1:DELETE",
-                "Y:Y2:READ",
-                "Y:Y2:WRITE",
-                "Y:Y2:DELETE");
+                .filteredOn(p -> p.getAuthority().startsWith("Y:"))
+                .extracting("authority")
+                .containsExactlyInAnyOrder(
+                    "Y:Y1:READ",
+                    "Y:Y1:WRITE",
+                    "Y:Y1:DELETE",
+                    "Y:Y2:READ",
+                    "Y:Y2:WRITE",
+                    "Y:Y2:DELETE");
     }
 }

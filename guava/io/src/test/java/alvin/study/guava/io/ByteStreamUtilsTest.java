@@ -1,11 +1,7 @@
 package alvin.study.guava.io;
 
-import com.google.common.base.Preconditions;
-import com.google.common.io.ByteProcessor;
-import com.google.common.io.ByteStreams;
-import lombok.SneakyThrows;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -24,8 +20,14 @@ import java.util.Arrays;
 
 import javax.annotation.Nonnull;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.junit.jupiter.api.Test;
+
+import com.google.common.base.Preconditions;
+import com.google.common.io.ByteProcessor;
+import com.google.common.io.ByteStreams;
+
+import lombok.SneakyThrows;
 
 /**
  * 测试 {@link ByteStreams} 工具类

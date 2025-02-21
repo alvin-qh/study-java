@@ -28,12 +28,12 @@ public class JacksonConfig {
     @Bean
     Jackson2ObjectMapperBuilderCustomizer customizer() {
         return builder -> builder.serializationInclusion(Include.NON_NULL)
-            .featuresToDisable(MapperFeature.DEFAULT_VIEW_INCLUSION)
-            // 遇到未知属性不抛出错误
-            .featuresToDisable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-            // 日期时间以字符串而不是 timestamp 输出
-            .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-            // 空类型不抛出错误
-            .featuresToDisable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+                .featuresToDisable(MapperFeature.DEFAULT_VIEW_INCLUSION)
+                // 遇到未知属性不抛出错误
+                .featuresToDisable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+                // 日期时间以字符串而不是 timestamp 输出
+                .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+                // 空类型不抛出错误
+                .featuresToDisable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
     }
 }

@@ -1,11 +1,12 @@
 package alvin.study.guava.collect;
 
-import com.google.common.collect.HashBiMap;
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.entry;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+
+import org.junit.jupiter.api.Test;
+
+import com.google.common.collect.HashBiMap;
 
 /**
  * {@link com.google.common.collect.BiMap BiMap} 接口可以通过 Key 查找 Value, 同时也可以通过 Value 查找 Key

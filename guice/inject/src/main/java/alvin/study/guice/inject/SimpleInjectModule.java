@@ -1,8 +1,9 @@
 package alvin.study.guice.inject;
 
-import alvin.study.guice.inject.bean.InjectDemo;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+
+import alvin.study.guice.inject.bean.InjectDemo;
 import jakarta.inject.Inject;
 import lombok.Getter;
 

@@ -1,8 +1,9 @@
 package alvin.study.guice.bind;
 
-import alvin.study.guice.bind.inte.BindDemo;
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
+
+import alvin.study.guice.bind.inte.BindDemo;
 
 /**
  * 为绑定关系命名

@@ -1,12 +1,6 @@
 package alvin.study.guava.io;
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
-import com.google.common.io.CharSource;
-import com.google.common.io.LineProcessor;
-import com.google.common.io.MoreFiles;
-import com.google.common.io.Resources;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.io.IOException;
 import java.nio.CharBuffer;
@@ -18,7 +12,14 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
+
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
+import com.google.common.io.CharSource;
+import com.google.common.io.LineProcessor;
+import com.google.common.io.MoreFiles;
+import com.google.common.io.Resources;
 
 /**
  * 测试通过 {@link CharSource} 类型读取字符内容

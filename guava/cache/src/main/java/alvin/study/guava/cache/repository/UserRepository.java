@@ -5,6 +5,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+import jakarta.annotation.Nonnull;
+
 import com.google.common.cache.LoadingCache;
 import com.google.common.hash.BloomFilter;
 
@@ -12,7 +14,6 @@ import alvin.study.guava.cache.CacheEventBus;
 import alvin.study.guava.cache.event.UserDeleteEvent;
 import alvin.study.guava.cache.event.UserUpdateEvent;
 import alvin.study.guava.cache.model.User;
-import jakarta.annotation.Nonnull;
 
 /**
  * 用于 {@link User} 对象的持久化类型

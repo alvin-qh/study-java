@@ -1,13 +1,14 @@
 package alvin.study.guava.collect;
 
+import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
+
 import com.google.common.collect.BoundType;
 import com.google.common.collect.ContiguousSet;
 import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Range;
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link Range} 集合

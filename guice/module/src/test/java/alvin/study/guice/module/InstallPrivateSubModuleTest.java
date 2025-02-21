@@ -1,16 +1,18 @@
 package alvin.study.guice.module;
 
-import alvin.study.guice.module.bean.ModuleDemo;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+
+import org.junit.jupiter.api.Test;
+
 import com.google.inject.ConfigurationException;
 import com.google.inject.Key;
 import com.google.inject.Module;
 import com.google.inject.name.Names;
+
+import alvin.study.guice.module.bean.ModuleDemo;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 class InstallPrivateSubModuleTest extends BaseModuleTest {
     /**

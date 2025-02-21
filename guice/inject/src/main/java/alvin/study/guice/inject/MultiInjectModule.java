@@ -1,11 +1,12 @@
 package alvin.study.guice.inject;
 
-import alvin.study.guice.inject.bean.InjectDemo;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
 import com.google.inject.multibindings.MapBinder;
 import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Names;
+
+import alvin.study.guice.inject.bean.InjectDemo;
 
 /**
  * 多实例绑定注入

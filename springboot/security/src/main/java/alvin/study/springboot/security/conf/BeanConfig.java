@@ -41,8 +41,8 @@ public class BeanConfig {
      */
     @Bean
     PasswordEncoder passwordEncoder(
-        @Value("${application.security.hash.algorithm}") String algorithm,
-        @Value("${application.security.hash.key}") String key) {
+            @Value("${application.security.hash.algorithm}") String algorithm,
+            @Value("${application.security.hash.key}") String key) {
         var encoder = new PasswordEncoder(algorithm, key);
         log.info("[CONF] PasswordEncoder object created, algorithm=\"{}\", hmacKey=\"{}\"", algorithm, key);
         return encoder;

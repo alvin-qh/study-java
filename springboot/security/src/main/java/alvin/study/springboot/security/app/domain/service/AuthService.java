@@ -102,7 +102,7 @@ public class AuthService {
     @Transactional(readOnly = true)
     public User findUserByAccount(String account) {
         return userMapper.selectByAccount(account)
-            .orElseThrow(() -> new UsernameNotFoundException(account));
+                .orElseThrow(() -> new UsernameNotFoundException(account));
     }
 
     /**
@@ -147,9 +147,9 @@ public class AuthService {
 
             // 获取用户所在的组 id
             var groupIds = groupMapper.selectByUserId(userId)
-                .stream()
-                .map(Group::getId)
-                .toList();
+                    .stream()
+                    .map(Group::getId)
+                    .toList();
             if (!groupIds.isEmpty()) {
                 roles.addAll(roleMapper.selectByGroupIds(groupIds));
             }
@@ -166,9 +166,9 @@ public class AuthService {
             if (!roleIds.isEmpty()) {
                 // 根据角色 id 列表获取全部权限
                 permissionMapper.selectByRoleIds(roleIds)
-                    .stream()
-                    .distinct()
-                    .forEach(p -> authorities.add(buildPermissionAuthority(p.getPermission())));
+                        .stream()
+                        .distinct()
+                        .forEach(p -> authorities.add(buildPermissionAuthority(p.getPermission())));
             }
 
             return cache.saveAuthorities(userId, authorities);

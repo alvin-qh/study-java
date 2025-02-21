@@ -23,9 +23,7 @@ public class Group {
      *
      * @return 包含 {@link User} 对象的 {@link List} 集合
      */
-    public List<User> getUsersAsList() {
-        return List.of(users);
-    }
+    public List<User> getUsersAsList() { return List.of(users); }
 
     /**
      * {@code usersAsMap} 属性, 将 {@code users} 属性以 {@link Map} 集合返回
@@ -38,6 +36,6 @@ public class Group {
      */
     public Map<String, User> getUsersAsMap() {
         return Arrays.stream(users)
-            .collect(Collectors.toMap(User::getName, Functions.identity()));
+                .collect(Collectors.toMap(User::getName, Functions.identity()));
     }
 }

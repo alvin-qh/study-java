@@ -1,16 +1,17 @@
 package alvin.study.guava.future;
 
-import alvin.study.guava.future.model.User;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
-import lombok.SneakyThrows;
 
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
+import alvin.study.guava.future.model.User;
+import lombok.SneakyThrows;
 
 /**
  * 用于演示异步任务的用户相关服务类

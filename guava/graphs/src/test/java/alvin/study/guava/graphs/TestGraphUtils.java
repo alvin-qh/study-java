@@ -1,15 +1,17 @@
 package alvin.study.guava.graphs;
 
-import alvin.study.guava.graphs.GraphsDatasource.Edge;
-import com.google.common.graph.ElementOrder;
-import com.google.common.graph.EndpointPair;
-import com.google.common.graph.Graphs;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.LinkedHashSet;
 import java.util.List;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
+
+import com.google.common.graph.ElementOrder;
+import com.google.common.graph.EndpointPair;
+import com.google.common.graph.Graphs;
+
+import alvin.study.guava.graphs.GraphsDatasource.Edge;
 
 /**
  * 测试 {@link Graphs} 工具类, 用于对"图"对象进行对应操作

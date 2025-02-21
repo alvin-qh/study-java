@@ -1,6 +1,7 @@
 package alvin.study.misc.jackson.encode;
 
-import alvin.study.misc.jackson.pojo.User;
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -14,7 +15,7 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import java.util.Set;
+import alvin.study.misc.jackson.pojo.User;
 
 /**
  * 将对象转为 JSON 的编码器类

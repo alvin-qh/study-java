@@ -1,8 +1,9 @@
 package alvin.study.guice.module;
 
+import com.google.inject.AbstractModule;
+
 import alvin.study.guice.module.submodule.SubModuleA;
 import alvin.study.guice.module.submodule.SubModuleB;
-import com.google.inject.AbstractModule;
 
 /**
  * 安装子模块

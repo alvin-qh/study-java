@@ -1,14 +1,15 @@
 package alvin.study.guava.collect;
 
+import static org.assertj.core.api.BDDAssertions.then;
+
+import java.util.Comparator;
+
+import org.junit.jupiter.api.Test;
+
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
-import org.junit.jupiter.api.Test;
-
-import java.util.Comparator;
-
-import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * {@link Collections2} 类型是 Guava 对 {@link java.util.Collections} 工具类的补充

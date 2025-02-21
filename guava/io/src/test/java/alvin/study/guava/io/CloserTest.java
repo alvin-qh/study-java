@@ -1,14 +1,15 @@
 package alvin.study.guava.io;
 
-import com.google.common.io.Closer;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
+
+import com.google.common.io.Closer;
 
 /**
  * 测试 Guava 的流关闭器

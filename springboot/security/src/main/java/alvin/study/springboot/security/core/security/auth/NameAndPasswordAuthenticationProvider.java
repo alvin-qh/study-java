@@ -30,8 +30,8 @@ import org.springframework.stereotype.Component;
  * </p>
  *
  * @deprecated 在 Spring Security 6+ 版本之后, 无需使用 Provider, 只需要在 Filter 中为
- * {@link org.springframework.security.core.context.SecurityContext SecurityContext}传递
- * {@link Authentication} 对象即可, 参见 {@link JwtRequestFilter JwtRequestFilter} 类型
+ *             {@link org.springframework.security.core.context.SecurityContext SecurityContext}传递
+ *             {@link Authentication} 对象即可, 参见 {@link JwtRequestFilter JwtRequestFilter} 类型
  */
 @Component
 @Deprecated(forRemoval = true, since = "3.0")
@@ -78,7 +78,7 @@ public class NameAndPasswordAuthenticationProvider implements AuthenticationProv
      *
      * @param authType 待匹配的 {@link Authentication} 对象类型
      * @return 如果 {@code authType} 参数类型为 {@link NameAndPasswordAuthenticationToken}
-     * 类型则返回 {@code true}
+     *         类型则返回 {@code true}
      */
     @Override
     public boolean supports(Class<?> authType) {

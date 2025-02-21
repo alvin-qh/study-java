@@ -70,7 +70,7 @@ public class PathMap extends LinkedHashMap<String, Object> {
                     break;
                 }
             }
-        } catch (ClassCastException ignore) { }
+        } catch (ClassCastException ignore) {}
         return null;
     }
 

@@ -1,7 +1,8 @@
 package alvin.study.guice.module.submodule;
 
-import alvin.study.guice.module.bean.ModuleDemo;
 import com.google.inject.AbstractModule;
+
+import alvin.study.guice.module.bean.ModuleDemo;
 
 /**
  * 定义子模块

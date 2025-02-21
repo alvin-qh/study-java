@@ -1,15 +1,16 @@
 package alvin.study.misc.jackson.pojo;
 
+import static org.assertj.core.api.BDDAssertions.then;
+
+import java.security.Security;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import alvin.study.misc.jackson.decode.Decoder;
 import alvin.study.misc.jackson.encode.Encoder;
 import alvin.study.misc.jackson.pojo.view.InternalView;
 import alvin.study.misc.jackson.pojo.view.PublicView;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.security.Security;
-
-import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link User} 类型的 JSON 序列化以及反序列化操作

@@ -1,15 +1,16 @@
 package alvin.study.guava.common;
 
-import com.google.common.base.Preconditions;
-import com.google.common.base.Throwables;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenCode;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 import java.io.IOException;
 import java.util.Objects;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenCode;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+import org.junit.jupiter.api.Test;
+
+import com.google.common.base.Preconditions;
+import com.google.common.base.Throwables;
 
 /**
  * 测试异常处理辅助类

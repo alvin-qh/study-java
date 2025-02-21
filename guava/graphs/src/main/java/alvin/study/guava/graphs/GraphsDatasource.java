@@ -1,5 +1,11 @@
 package alvin.study.guava.graphs;
 
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import com.google.common.graph.ElementOrder;
 import com.google.common.graph.EndpointPair;
 import com.google.common.graph.GraphBuilder;
@@ -8,12 +14,6 @@ import com.google.common.graph.MutableNetwork;
 import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.NetworkBuilder;
 import com.google.common.graph.ValueGraphBuilder;
-
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * "图"结构数据源, 用于测试"图"类型和"网络"类型

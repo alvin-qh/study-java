@@ -1,17 +1,18 @@
 package alvin.study.guava.collect;
 
-import com.google.common.collect.ContiguousSet;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Queues;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.awaitility.Awaitility.await;
 
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.awaitility.Awaitility.await;
+import org.junit.jupiter.api.Test;
+
+import com.google.common.collect.ContiguousSet;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Queues;
 
 /**
  * 测试 Guava 队列工具类

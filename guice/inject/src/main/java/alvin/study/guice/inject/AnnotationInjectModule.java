@@ -1,11 +1,12 @@
 package alvin.study.guice.inject;
 
-import alvin.study.guice.inject.anno.A;
-import alvin.study.guice.inject.anno.B;
-import alvin.study.guice.inject.bean.InjectDemo;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+
+import alvin.study.guice.inject.anno.A;
+import alvin.study.guice.inject.anno.B;
+import alvin.study.guice.inject.bean.InjectDemo;
 import jakarta.inject.Inject;
 import lombok.Data;
 import lombok.Getter;

@@ -1,11 +1,12 @@
 package alvin.study.guava.reflect;
 
-import alvin.study.guava.reflect.model.User;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.io.IOException;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
+
+import alvin.study.guava.reflect.model.User;
 
 /**
  * 测试 {@link ClassFinder} 类型

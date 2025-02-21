@@ -1,15 +1,16 @@
 package alvin.study.misc.jackson.pojo;
 
+import java.time.LocalDate;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-
-import java.time.LocalDate;
 
 /**
  * 本例演示了在 POJO 类中, 通过 {@link JsonGetter @JsonGetter} 注解添加 JSON 字段.

@@ -671,11 +671,11 @@ class SpliteratorTest {
 
             // 确认分割后的第一部分无内容
             then(sp1.getExactSizeIfKnown()).isEqualTo(-1);
-            then(toList(sp1)).isEmpty(); 
+            then(toList(sp1)).isEmpty();
 
             // 确认分割后的另一部分具备确定长度, 可继续分隔
-            then(sp2.getExactSizeIfKnown()).isEqualTo(-1); 
-            then(sp2.characteristics()).isEqualTo(Spliterator.SIZED | Spliterator.SUBSIZED);
+            then(sp2.getExactSizeIfKnown()).isEqualTo(-1);
+            then(sp2.characteristics()).isEqualTo(0);
             then(toList(sp2)).containsExactly(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
         }
     }

@@ -1,17 +1,8 @@
 package alvin.study.guava.io;
 
-import com.google.common.hash.Hashing;
-import com.google.common.io.ByteProcessor;
-import com.google.common.io.ByteSource;
-import com.google.common.io.MoreFiles;
-import com.google.common.io.Resources;
-import com.google.common.primitives.Bytes;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.awaitility.Awaitility.await;
 
-import javax.annotation.Nonnull;
-
-import org.junit.jupiter.api.Test;
-
-import javax.sql.DataSource;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -21,8 +12,17 @@ import java.nio.file.attribute.PosixFilePermissions;
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.awaitility.Awaitility.await;
+import javax.annotation.Nonnull;
+import javax.sql.DataSource;
+
+import org.junit.jupiter.api.Test;
+
+import com.google.common.hash.Hashing;
+import com.google.common.io.ByteProcessor;
+import com.google.common.io.ByteSource;
+import com.google.common.io.MoreFiles;
+import com.google.common.io.Resources;
+import com.google.common.primitives.Bytes;
 
 /**
  * 测试通过 {@link ByteSource} 类型读取数据

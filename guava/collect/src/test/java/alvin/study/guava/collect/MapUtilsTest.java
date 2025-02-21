@@ -59,16 +59,16 @@ class MapUtilsTest {
 
         // 确认得到的 Map 对象符合预期
         then(map).containsExactly(
-                entry(0, "00"),
-                entry(1, "01"),
-                entry(2, "02"),
-                entry(3, "03"),
-                entry(4, "04"),
-                entry(5, "05"),
-                entry(6, "06"),
-                entry(7, "07"),
-                entry(8, "08"),
-                entry(9, "09"));
+            entry(0, "00"),
+            entry(1, "01"),
+            entry(2, "02"),
+            entry(3, "03"),
+            entry(4, "04"),
+            entry(5, "05"),
+            entry(6, "06"),
+            entry(7, "07"),
+            entry(8, "08"),
+            entry(9, "09"));
     }
 
     /**
@@ -90,16 +90,16 @@ class MapUtilsTest {
 
         // 确认得到的 Map 对象符合预期
         then(map).containsExactly(
-                entry("00", 0),
-                entry("01", 1),
-                entry("02", 2),
-                entry("03", 3),
-                entry("04", 4),
-                entry("05", 5),
-                entry("06", 6),
-                entry("07", 7),
-                entry("08", 8),
-                entry("09", 9));
+            entry("00", 0),
+            entry("01", 1),
+            entry("02", 2),
+            entry("03", 3),
+            entry("04", 4),
+            entry("05", 5),
+            entry("06", 6),
+            entry("07", 7),
+            entry("08", 8),
+            entry("09", 9));
     }
 
     /**
@@ -227,15 +227,15 @@ class MapUtilsTest {
             // 通过现有的 Map 对象构建 HashMap 对象
             map = Maps.newHashMap(ImmutableMap.of("A", 1, "B", 2));
             then(map).isInstanceOf(HashMap.class).containsExactly(
-                    entry("A", 1),
-                    entry("B", 2));
+                entry("A", 1),
+                entry("B", 2));
 
             // 通过一个预期的键值对数量值构建 HashMap 对象
             map = Maps.newHashMapWithExpectedSize(2);
             map.putAll(ImmutableMap.of("A", 1, "B", 2));
             then(map).isInstanceOf(HashMap.class).containsExactly(
-                    entry("A", 1),
-                    entry("B", 2));
+                entry("A", 1),
+                entry("B", 2));
         }
 
         // 构建 LinkedHashMap 对象
@@ -247,15 +247,15 @@ class MapUtilsTest {
             // 通过现有的 Map 对象构建 LinkedHashMap 对象
             map = Maps.newLinkedHashMap(ImmutableMap.of("A", 1, "B", 2));
             then(map).isInstanceOf(LinkedHashMap.class).containsExactly(
-                    entry("A", 1),
-                    entry("B", 2));
+                entry("A", 1),
+                entry("B", 2));
 
             // 通过一个预期的键值对数量值构建 LinkedHashMap 对象
             map = Maps.newLinkedHashMapWithExpectedSize(2);
             map.putAll(ImmutableMap.of("A", 1, "B", 2));
             then(map).isInstanceOf(LinkedHashMap.class).containsExactly(
-                    entry("A", 1),
-                    entry("B", 2));
+                entry("A", 1),
+                entry("B", 2));
         }
 
         // 构建 TreeMap 对象
@@ -267,8 +267,8 @@ class MapUtilsTest {
             // 通过现有的 Map 对象构建 TreeMap 对象
             map = Maps.newTreeMap(ImmutableSortedMap.of("A", 1, "B", 2));
             then(map).isInstanceOf(TreeMap.class).containsExactly(
-                    entry("A", 1),
-                    entry("B", 2));
+                entry("A", 1),
+                entry("B", 2));
         }
 
         // 构建 ConcurrentHashMap 对象
@@ -286,13 +286,13 @@ class MapUtilsTest {
 
             // 通过一个现有的 Key 为枚举类型的 Map 对象构建 EnumMap 对象
             map = Maps.newEnumMap(ImmutableMap.of(
-                    Month.JANUARY, "01",
-                    Month.FEBRUARY, "02",
-                    Month.MARCH, "03"));
+                Month.JANUARY, "01",
+                Month.FEBRUARY, "02",
+                Month.MARCH, "03"));
             then(map).isInstanceOf(EnumMap.class).containsExactly(
-                    entry(Month.JANUARY, "01"),
-                    entry(Month.FEBRUARY, "02"),
-                    entry(Month.MARCH, "03"));
+                entry(Month.JANUARY, "01"),
+                entry(Month.FEBRUARY, "02"),
+                entry(Month.MARCH, "03"));
         }
 
         // 构建 IdentityHashMap 对象
@@ -559,9 +559,9 @@ class MapUtilsTest {
 
         // 确认返回的 Map 对象包含期待的键值对
         then(subMap).containsExactly(
-                entry("B", 200),
-                entry("C", 300),
-                entry("D", 400));
+            entry("B", 200),
+            entry("C", 300),
+            entry("D", 400));
     }
 
     /**
@@ -656,9 +656,9 @@ class MapUtilsTest {
 
         // 确认产生的 Map 对象包含期待的键值对
         then(map).containsExactly(
-                entry(1, "01"),
-                entry(2, "02"),
-                entry(3, "03"));
+            entry(1, "01"),
+            entry(2, "02"),
+            entry(3, "03"));
     }
 
     /**
@@ -740,18 +740,18 @@ class MapUtilsTest {
         var transformedMap = Maps.transformEntries(map, (key, value) -> 50 + value);
         // 确认返回的 Map 对象包含 Value 被转换后的 Entries
         then(transformedMap).containsExactly(
-                entry("A", 150),
-                entry("B", 250),
-                entry("C", 350));
+            entry("A", 150),
+            entry("B", 250),
+            entry("C", 350));
 
         // 在 Map 对象中添加新的键值对
         map.put("D", 400);
         // 确认转换结果中也增加了新键值对, 且 Value 已经被转换
         then(transformedMap).containsExactly(
-                entry("A", 150),
-                entry("B", 250),
-                entry("C", 350),
-                entry("D", 450));
+            entry("A", 150),
+            entry("B", 250),
+            entry("C", 350),
+            entry("D", 450));
     }
 
     /**
@@ -771,17 +771,17 @@ class MapUtilsTest {
         var transformedMap = Maps.transformValues(map, val -> 50 + val);
         // 确认返回的 Map 对象包含 Value 被转换后的 Entries
         then(transformedMap).containsExactly(
-                entry("A", 150),
-                entry("B", 250),
-                entry("C", 350));
+            entry("A", 150),
+            entry("B", 250),
+            entry("C", 350));
 
         // 在 Map 对象中添加新的键值对
         map.put("D", 400);
         // 确认转换结果中也增加了新键值对, 且 Value 已经被转换
         then(transformedMap).containsExactly(
-                entry("A", 150),
-                entry("B", 250),
-                entry("C", 350),
-                entry("D", 450));
+            entry("A", 150),
+            entry("B", 250),
+            entry("C", 350),
+            entry("D", 450));
     }
 }

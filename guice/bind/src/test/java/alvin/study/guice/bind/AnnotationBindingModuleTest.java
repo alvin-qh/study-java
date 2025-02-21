@@ -1,16 +1,18 @@
 package alvin.study.guice.bind;
 
+import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
+
+import com.google.inject.Key;
+import com.google.inject.Module;
+
 import alvin.study.guice.bind.AnnotationBindingModule.BindDemoA;
 import alvin.study.guice.bind.AnnotationBindingModule.BindDemoB;
 import alvin.study.guice.bind.anno.A;
 import alvin.study.guice.bind.anno.B;
 import alvin.study.guice.bind.inte.BindDemo;
-import com.google.inject.Key;
-import com.google.inject.Module;
 import jakarta.inject.Inject;
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link AnnotationBindingModule} 类型

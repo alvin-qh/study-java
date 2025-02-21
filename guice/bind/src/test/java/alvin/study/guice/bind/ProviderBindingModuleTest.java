@@ -1,13 +1,15 @@
 package alvin.study.guice.bind;
 
-import alvin.study.guice.bind.ProviderBindingModule.BindDemoImpl;
-import alvin.study.guice.bind.inte.BindDemo;
-import com.google.inject.Module;
-import jakarta.inject.Inject;
-import jakarta.inject.Provider;
+import static org.assertj.core.api.BDDAssertions.then;
+
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import com.google.inject.Module;
+
+import alvin.study.guice.bind.ProviderBindingModule.BindDemoImpl;
+import alvin.study.guice.bind.inte.BindDemo;
+import jakarta.inject.Inject;
+import jakarta.inject.Provider;
 
 /**
  * 测试 {@link ProviderBindingModule} 类型

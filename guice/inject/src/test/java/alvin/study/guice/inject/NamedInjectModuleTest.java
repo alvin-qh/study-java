@@ -1,12 +1,14 @@
 package alvin.study.guice.inject;
 
-import alvin.study.guice.inject.NamedInjectModule.InjectByA;
-import alvin.study.guice.inject.NamedInjectModule.InjectByB;
-import com.google.inject.Module;
-import jakarta.inject.Inject;
+import static org.assertj.core.api.BDDAssertions.then;
+
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import com.google.inject.Module;
+
+import alvin.study.guice.inject.NamedInjectModule.InjectByA;
+import alvin.study.guice.inject.NamedInjectModule.InjectByB;
+import jakarta.inject.Inject;
 
 /**
  * 测试 {@link NamedInjectModule} 模块

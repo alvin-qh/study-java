@@ -33,7 +33,7 @@ public class AuthenticationErrorHandlerEntryPoint implements AuthenticationEntry
      */
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e)
-        throws IOException {
+            throws IOException {
         log.error("Authentication error caused", e);
 
         // 向客户端发送错误信息

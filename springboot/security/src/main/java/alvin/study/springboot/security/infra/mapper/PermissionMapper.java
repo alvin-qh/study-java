@@ -111,5 +111,5 @@ public interface PermissionMapper extends BaseMapper<Permission> {
         where name = #{name} and resource = #{resource} and action = #{action}
         """)
     Optional<Permission> selectByNameResourceAndAction(
-        @Param("name") String name, @Param("resource") String resource, @Param("action") String action);
+            @Param("name") String name, @Param("resource") String resource, @Param("action") String action);
 }

@@ -86,5 +86,5 @@ public interface RolePermissionMapper extends BaseMapper<RolePermission> {
         where role_id = #{roleId} and permission_id = #{permissionId}
         """)
     Optional<RolePermission> selectByRoleAndPermissionId(
-        @Param("roleId") Long roleId, @Param("permissionId") Long permissionId);
+            @Param("roleId") Long roleId, @Param("permissionId") Long permissionId);
 }

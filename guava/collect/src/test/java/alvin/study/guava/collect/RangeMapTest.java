@@ -1,12 +1,13 @@
 package alvin.study.guava.collect;
 
+import static org.assertj.core.api.BDDAssertions.entry;
+import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
+
 import com.google.common.collect.Range;
 import com.google.common.collect.RangeMap;
 import com.google.common.collect.TreeRangeMap;
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.BDDAssertions.entry;
-import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * {@link RangeMap} 存储了区间和指定值的对应关系
