@@ -1,10 +1,12 @@
 package alvin.study.springboot.springdoc.conf;
 
-import alvin.study.springboot.springdoc.app.interceptor.AccessInterceptor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import lombok.RequiredArgsConstructor;
+
+import alvin.study.springboot.springdoc.app.interceptor.AccessInterceptor;
 
 /**
  * 配置和 Web 访问相关的配置

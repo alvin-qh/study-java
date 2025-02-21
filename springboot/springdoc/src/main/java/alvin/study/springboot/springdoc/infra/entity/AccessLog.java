@@ -1,11 +1,11 @@
 package alvin.study.springboot.springdoc.infra.entity;
 
+import java.time.Instant;
+
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
-import java.time.Instant;
 
 /**
  * 表示访问记录的实体对象

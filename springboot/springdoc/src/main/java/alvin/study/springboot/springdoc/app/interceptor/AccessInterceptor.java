@@ -1,16 +1,18 @@
 package alvin.study.springboot.springdoc.app.interceptor;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import lombok.RequiredArgsConstructor;
+
 import alvin.study.springboot.springdoc.infra.entity.AccessLog;
 import alvin.study.springboot.springdoc.infra.entity.User;
 import alvin.study.springboot.springdoc.infra.repository.AccessLogRepository;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 
 /**
  * Spring 拦截器, 拦截请求, 记录访问时间

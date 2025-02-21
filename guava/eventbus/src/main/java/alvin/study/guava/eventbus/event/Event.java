@@ -24,7 +24,7 @@ public interface Event<T> {
      *
      * @return 载荷对象
      */
-    T payload();
+     T payload();
 
     /**
      * 获取事件的相关行为

@@ -1,20 +1,21 @@
 package alvin.study.springboot.springdoc.core.security.filter;
 
-import alvin.study.springboot.springdoc.core.security.auth.CustomAuthenticationToken;
-import alvin.study.springboot.springdoc.infra.repository.UserRepository;
-import alvin.study.springboot.springdoc.util.http.Headers;
-import alvin.study.springboot.springdoc.util.security.Jwt;
-import alvin.study.springboot.springdoc.util.security.PasswordEncoder;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.DecodedJWT;
-import com.google.common.base.Strings;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.SneakyThrows;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import com.google.common.base.Strings;
+
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,11 +23,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
+import lombok.SneakyThrows;
 
-import static alvin.study.springboot.springdoc.core.security.auth.CustomAuthenticationToken.Type;
+import alvin.study.springboot.springdoc.core.security.auth.CustomAuthenticationToken;
+import alvin.study.springboot.springdoc.core.security.auth.CustomAuthenticationToken.Type;
+import alvin.study.springboot.springdoc.infra.repository.UserRepository;
+import alvin.study.springboot.springdoc.util.http.Headers;
+import alvin.study.springboot.springdoc.util.security.Jwt;
+import alvin.study.springboot.springdoc.util.security.PasswordEncoder;
 
 /**
  * 对客户端请求进行拦截, 处理 Basic Auth 和 Jwt 两类 Header 信息
@@ -115,7 +119,7 @@ public class CustomRequestFilter extends OncePerRequestFilter {
      * @return 是否匹配成功
      */
     private static boolean checkIfMatcherMatches(
-            AntPathRequestMatcher @NotNull [] matchers,
+            @Nonnull AntPathRequestMatcher[] matchers,
             HttpServletRequest request) {
         for (var matcher : matchers) {
             if (matcher.matches(request)) {
@@ -177,9 +181,9 @@ public class CustomRequestFilter extends OncePerRequestFilter {
      * @return 用户凭证对象
      */
     @SneakyThrows
-    private @Nullable CustomAuthenticationToken checkAsBasicAuth(
-            @NotNull HttpServletRequest request,
-            @NotNull HttpServletResponse response) {
+    private CustomAuthenticationToken checkAsBasicAuth(
+            @Nonnull HttpServletRequest request,
+            @Nonnull HttpServletResponse response) {
         var token = request.getHeader(Headers.AUTHORIZATION);
         if (Strings.isNullOrEmpty(token)) {
             // 如果 Header 中不包含 Authorization 头信息, 则返回包含 WWW-Authenticate
@@ -220,7 +224,7 @@ public class CustomRequestFilter extends OncePerRequestFilter {
      * @return 用户凭证对象
      */
     @SneakyThrows
-    private @Nullable CustomAuthenticationToken checkAsJwtAuth(@NotNull HttpServletRequest request) {
+    private @Nullable CustomAuthenticationToken checkAsJwtAuth(@Nonnull HttpServletRequest request) {
         var token = request.getHeader(Headers.AUTHORIZATION);
         if (Strings.isNullOrEmpty(token)) {
             // 如果 Header 中不包含 JWT 串, 则不生成用户凭证

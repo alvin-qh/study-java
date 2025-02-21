@@ -5,6 +5,9 @@ import static org.assertj.core.api.BDDAssertions.then;
 import java.util.Map;
 import java.util.Set;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+
 import org.junit.jupiter.api.Test;
 
 import com.google.inject.Key;
@@ -13,8 +16,6 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
 
 import alvin.study.guice.bind.inte.BindDemo;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
 
 /**
  * 测试 {@link MultiBinderModule} 类型

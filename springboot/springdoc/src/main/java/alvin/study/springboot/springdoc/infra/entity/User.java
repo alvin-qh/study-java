@@ -1,10 +1,10 @@
 package alvin.study.springboot.springdoc.infra.entity;
 
+import java.io.Serializable;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
-import java.io.Serializable;
 
 /**
  * 表示用户的实体对象

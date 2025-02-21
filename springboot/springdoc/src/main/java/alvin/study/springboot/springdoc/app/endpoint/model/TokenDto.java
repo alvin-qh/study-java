@@ -1,12 +1,12 @@
 package alvin.study.springboot.springdoc.app.endpoint.model;
 
+import java.io.Serializable;
+import java.time.Instant;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
-import java.time.Instant;
 
 /**
  * 返回 jwt 信息的类型

@@ -8,10 +8,11 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
 
-import alvin.study.misc.jackson.encode.Encoder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+
+import alvin.study.misc.jackson.encode.Encoder;
 
 /**
  * 本例演示了 JSON 字段过滤器, 即通过 {@link JsonFilter @JsonFilter} 注解指定过滤器, 控制 POJO 类到 JSON 转换的字段.

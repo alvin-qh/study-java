@@ -1,10 +1,11 @@
 package alvin.study.guice.bind;
 
+import jakarta.inject.Singleton;
+
 import com.google.inject.Binder;
 import com.google.inject.Module;
 
 import alvin.study.guice.bind.inte.BindDemo;
-import jakarta.inject.Singleton;
 
 /**
  * 基本绑定演示

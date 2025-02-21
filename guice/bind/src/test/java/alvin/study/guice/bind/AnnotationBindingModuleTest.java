@@ -2,6 +2,8 @@ package alvin.study.guice.bind;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
+import jakarta.inject.Inject;
+
 import org.junit.jupiter.api.Test;
 
 import com.google.inject.Key;
@@ -12,7 +14,6 @@ import alvin.study.guice.bind.AnnotationBindingModule.BindDemoB;
 import alvin.study.guice.bind.anno.A;
 import alvin.study.guice.bind.anno.B;
 import alvin.study.guice.bind.inte.BindDemo;
-import jakarta.inject.Inject;
 
 /**
  * 测试 {@link AnnotationBindingModule} 类型

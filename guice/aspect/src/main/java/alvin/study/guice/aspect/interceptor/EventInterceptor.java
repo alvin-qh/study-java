@@ -6,16 +6,18 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import jakarta.inject.Inject;
+
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
 import com.google.inject.name.Named;
 
+import lombok.SneakyThrows;
+
 import alvin.study.guice.aspect.anno.Event;
 import alvin.study.guice.aspect.anno.EventHandler;
 import alvin.study.guice.aspect.anno.Handler;
-import jakarta.inject.Inject;
-import lombok.SneakyThrows;
 
 /**
  * 实现一个拦截器类

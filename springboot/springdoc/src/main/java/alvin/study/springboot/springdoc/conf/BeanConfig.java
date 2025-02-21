@@ -1,12 +1,15 @@
 package alvin.study.springboot.springdoc.conf;
 
-import alvin.study.springboot.springdoc.core.data.DataSource;
-import alvin.study.springboot.springdoc.core.data.Storage;
-import alvin.study.springboot.springdoc.infra.entity.User;
-import alvin.study.springboot.springdoc.util.security.Jwt;
-import alvin.study.springboot.springdoc.util.security.PasswordEncoder;
-import com.auth0.jwt.algorithms.Algorithm;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.google.common.base.Functions;
+
+import com.auth0.jwt.algorithms.Algorithm;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -16,11 +19,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import alvin.study.springboot.springdoc.core.data.DataSource;
+import alvin.study.springboot.springdoc.core.data.Storage;
+import alvin.study.springboot.springdoc.infra.entity.User;
+import alvin.study.springboot.springdoc.util.security.Jwt;
+import alvin.study.springboot.springdoc.util.security.PasswordEncoder;
 
 /**
  * 配置需被容器管理的 Bean 对象

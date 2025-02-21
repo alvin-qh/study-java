@@ -5,6 +5,8 @@ import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.time.Instant;
 
+import jakarta.inject.Singleton;
+
 import com.google.common.reflect.ClassPath;
 import com.google.common.reflect.ClassPath.ClassInfo;
 import com.google.inject.AbstractModule;
@@ -12,12 +14,12 @@ import com.google.inject.matcher.Matchers;
 import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Names;
 
+import lombok.SneakyThrows;
+
 import alvin.study.guice.aspect.anno.Event;
 import alvin.study.guice.aspect.anno.EventHandler;
 import alvin.study.guice.aspect.anno.Handler;
 import alvin.study.guice.aspect.interceptor.EventInterceptor;
-import jakarta.inject.Singleton;
-import lombok.SneakyThrows;
 
 /**
  * 演示对 Guice 方法拦截器的使用

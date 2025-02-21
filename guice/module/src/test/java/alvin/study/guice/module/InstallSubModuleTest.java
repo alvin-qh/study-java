@@ -2,12 +2,13 @@ package alvin.study.guice.module;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
+import jakarta.inject.Inject;
+
 import org.junit.jupiter.api.Test;
 
 import com.google.inject.Guice;
 
 import alvin.study.guice.module.bean.ModuleDemo;
-import jakarta.inject.Inject;
 
 /**
  * 测试 {@link InstallSubModule} 模块

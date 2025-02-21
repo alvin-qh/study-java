@@ -7,13 +7,13 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+import jakarta.inject.Inject;
+
 import org.junit.jupiter.api.Test;
 
 import com.google.inject.Key;
 import com.google.inject.Module;
 import com.google.inject.TypeLiteral;
-
-import jakarta.inject.Inject;
 
 /**
  * 测试 {@link GenericBindingModule} 类型

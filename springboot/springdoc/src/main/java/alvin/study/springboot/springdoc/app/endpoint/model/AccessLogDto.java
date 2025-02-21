@@ -1,11 +1,11 @@
 package alvin.study.springboot.springdoc.app.endpoint.model;
 
+import java.time.Instant;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.Instant;
 
 /**
  * 返回访问日志的 DTO 类型

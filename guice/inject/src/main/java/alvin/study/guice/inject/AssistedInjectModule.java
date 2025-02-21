@@ -1,13 +1,13 @@
 package alvin.study.guice.inject;
 
+import jakarta.inject.Named;
+
 import com.google.common.base.Strings;
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.name.Names;
-
-import jakarta.inject.Named;
 
 /**
  * 参数辅助注入

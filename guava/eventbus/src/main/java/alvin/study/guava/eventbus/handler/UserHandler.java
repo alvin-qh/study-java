@@ -3,17 +3,19 @@ package alvin.study.guava.eventbus.handler;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import jakarta.annotation.Nonnull;
+
 import com.google.common.base.Preconditions;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+
+import lombok.Getter;
+import lombok.SneakyThrows;
 
 import alvin.study.guava.eventbus.EventBusManager;
 import alvin.study.guava.eventbus.event.Event.Action;
 import alvin.study.guava.eventbus.event.UserEvent;
 import alvin.study.guava.eventbus.model.User;
-import jakarta.annotation.Nonnull;
-import lombok.Getter;
-import lombok.SneakyThrows;
 
 /**
  * 处理 {@link User} 实体类型相关的时间订阅和事件处理

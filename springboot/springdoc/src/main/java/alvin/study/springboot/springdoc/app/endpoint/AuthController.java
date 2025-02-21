@@ -1,6 +1,20 @@
 package alvin.study.springboot.springdoc.app.endpoint;
 
 
+import jakarta.validation.Valid;
+
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import lombok.RequiredArgsConstructor;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import alvin.study.springboot.springdoc.app.endpoint.model.LoginForm;
 import alvin.study.springboot.springdoc.app.endpoint.model.TokenDto;
 import alvin.study.springboot.springdoc.infra.entity.AccessLog;
@@ -8,16 +22,6 @@ import alvin.study.springboot.springdoc.infra.repository.AccessLogRepository;
 import alvin.study.springboot.springdoc.infra.repository.UserRepository;
 import alvin.study.springboot.springdoc.util.security.Jwt;
 import alvin.study.springboot.springdoc.util.security.PasswordEncoder;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 获取访问日志的控制器类

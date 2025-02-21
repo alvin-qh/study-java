@@ -4,6 +4,8 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 import java.time.Instant;
 
+import jakarta.inject.Inject;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +13,6 @@ import com.google.inject.Guice;
 
 import alvin.study.guice.aspect.AspectModule.EventDemo;
 import alvin.study.guice.aspect.AspectModule.HandlerDemo;
-import jakarta.inject.Inject;
 
 /**
  * 测试 {@link AspectModule} 模块, 拦截器的使用

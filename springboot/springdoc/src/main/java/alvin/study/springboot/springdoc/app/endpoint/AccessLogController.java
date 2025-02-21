@@ -1,21 +1,25 @@
 package alvin.study.springboot.springdoc.app.endpoint;
 
-import alvin.study.springboot.springdoc.app.endpoint.model.AccessLogDto;
-import alvin.study.springboot.springdoc.conf.SpringDocConfig;
-import alvin.study.springboot.springdoc.infra.repository.AccessLogRepository;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import jakarta.validation.constraints.NotBlank;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+import alvin.study.springboot.springdoc.app.endpoint.model.AccessLogDto;
+import alvin.study.springboot.springdoc.conf.SpringDocConfig;
+import alvin.study.springboot.springdoc.infra.repository.AccessLogRepository;
 
 /**
  * 获取访问日志的控制器类

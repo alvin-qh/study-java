@@ -4,10 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import alvin.study.misc.jackson.pojo.common.SimpleDate;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+
+import alvin.study.misc.jackson.pojo.common.SimpleDate;
 
 /**
  * 本例演示了最基本的 JSON 序列化和反序列

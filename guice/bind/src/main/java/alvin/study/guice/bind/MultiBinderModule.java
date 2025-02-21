@@ -1,5 +1,7 @@
 package alvin.study.guice.bind;
 
+import jakarta.inject.Singleton;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
 import com.google.inject.multibindings.MapBinder;
@@ -7,7 +9,6 @@ import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Names;
 
 import alvin.study.guice.bind.inte.BindDemo;
-import jakarta.inject.Singleton;
 
 /**
  * 多实例绑定

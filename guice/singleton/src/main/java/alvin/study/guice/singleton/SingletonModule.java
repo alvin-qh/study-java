@@ -1,10 +1,11 @@
 package alvin.study.guice.singleton;
 
+import jakarta.inject.Singleton;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
 
 import alvin.study.guice.singleton.bean.SingletonBean;
-import jakarta.inject.Singleton;
 
 /**
  * 单例是一种设计模式和代码设计技巧

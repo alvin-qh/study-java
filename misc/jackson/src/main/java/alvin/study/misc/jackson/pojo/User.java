@@ -14,13 +14,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.google.common.base.Strings;
 
-import alvin.study.misc.jackson.encode.Encoder;
-import alvin.study.misc.jackson.pojo.view.InternalView;
-import alvin.study.misc.jackson.pojo.view.PublicView;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.ToString;
+
+import alvin.study.misc.jackson.encode.Encoder;
+import alvin.study.misc.jackson.pojo.view.InternalView;
+import alvin.study.misc.jackson.pojo.view.PublicView;
 
 /**
  * 通过视图控制 JSON 序列化结果

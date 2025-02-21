@@ -1,14 +1,16 @@
 package alvin.study.guice.inject;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Names;
 
-import alvin.study.guice.inject.bean.InjectDemo;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import lombok.Getter;
+
+import alvin.study.guice.inject.bean.InjectDemo;
 
 /**
  * 通过命名注入同一个类型的不同对象

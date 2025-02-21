@@ -1,13 +1,15 @@
 package alvin.study.springboot.springdoc.bootstrap;
 
+import java.util.TimeZone;
+
 import com.google.common.base.Strings;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import java.util.TimeZone;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 应用处理启动监听器

@@ -1,15 +1,17 @@
 package alvin.study.guice.inject;
 
+import jakarta.inject.Inject;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 
+import lombok.Data;
+import lombok.Getter;
+
 import alvin.study.guice.inject.anno.A;
 import alvin.study.guice.inject.anno.B;
 import alvin.study.guice.inject.bean.InjectDemo;
-import jakarta.inject.Inject;
-import lombok.Data;
-import lombok.Getter;
 
 /**
  * 通过注解绑定接口的不同类型

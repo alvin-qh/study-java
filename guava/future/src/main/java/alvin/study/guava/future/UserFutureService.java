@@ -10,8 +10,9 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 
-import alvin.study.guava.future.model.User;
 import lombok.SneakyThrows;
+
+import alvin.study.guava.future.model.User;
 
 /**
  * 用于演示异步任务的用户相关服务类

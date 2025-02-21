@@ -1,17 +1,21 @@
 package alvin.study.springboot.springdoc.core.security.filter;
 
-import alvin.study.springboot.springdoc.core.http.ResponseWrapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import alvin.study.springboot.springdoc.core.http.ResponseWrapper;
 
 /**
  * 对 {@link AuthenticationException} 异常进行处理

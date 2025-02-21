@@ -1,11 +1,13 @@
 package alvin.study.guice.inject;
 
+import jakarta.inject.Inject;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 
-import alvin.study.guice.inject.bean.InjectDemo;
-import jakarta.inject.Inject;
 import lombok.Getter;
+
+import alvin.study.guice.inject.bean.InjectDemo;
 
 /**
  * 基本对象注入

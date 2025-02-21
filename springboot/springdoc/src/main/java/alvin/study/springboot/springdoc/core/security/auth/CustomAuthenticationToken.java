@@ -1,14 +1,16 @@
 package alvin.study.springboot.springdoc.core.security.auth;
 
-import alvin.study.springboot.springdoc.infra.entity.User;
-import lombok.Getter;
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.List;
+import lombok.Getter;
+
+import alvin.study.springboot.springdoc.infra.entity.User;
 
 /**
  * 对承载用户名/密码, JWT 或者 {@link User}/{@link UserDetails} 对象的凭证对象进行认证操作

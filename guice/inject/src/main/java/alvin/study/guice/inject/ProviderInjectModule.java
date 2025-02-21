@@ -1,13 +1,15 @@
 package alvin.study.guice.inject;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-
-import alvin.study.guice.inject.bean.InjectDemo;
 import jakarta.inject.Inject;
 import jakarta.inject.Provider;
 import jakarta.inject.Singleton;
+
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
+
 import lombok.Data;
+
+import alvin.study.guice.inject.bean.InjectDemo;
 
 /**
  * 通过 {@link Provider} 注入对象

@@ -1,8 +1,9 @@
 package alvin.study.springboot.springdoc.infra.repository.common;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import alvin.study.springboot.springdoc.core.data.DataSource;
 import alvin.study.springboot.springdoc.core.data.Storage;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 所有持久化类型的超类

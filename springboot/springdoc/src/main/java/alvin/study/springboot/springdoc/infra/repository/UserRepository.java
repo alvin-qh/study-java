@@ -1,10 +1,11 @@
 package alvin.study.springboot.springdoc.infra.repository;
 
-import alvin.study.springboot.springdoc.infra.entity.User;
-import alvin.study.springboot.springdoc.infra.repository.common.BaseRepository;
+import java.util.Optional;
+
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import alvin.study.springboot.springdoc.infra.entity.User;
+import alvin.study.springboot.springdoc.infra.repository.common.BaseRepository;
 
 /**
  * 用户实体对象持久化类型

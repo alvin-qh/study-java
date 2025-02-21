@@ -1,12 +1,13 @@
 package alvin.study.springboot.springdoc.infra.repository;
 
-import alvin.study.springboot.springdoc.infra.entity.AccessLog;
-import alvin.study.springboot.springdoc.infra.repository.common.BaseRepository;
-import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Repository;
+
+import alvin.study.springboot.springdoc.infra.entity.AccessLog;
+import alvin.study.springboot.springdoc.infra.repository.common.BaseRepository;
 
 /**
  * 处理访问记录实体的持久化类型
