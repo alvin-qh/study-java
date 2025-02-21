@@ -31,7 +31,7 @@ public class TimestampTypeHandler extends BaseTypeHandler<Timestamp> {
      */
     @Override
     public void setNonNullParameter(
-        PreparedStatement ps, int i, Timestamp parameter, JdbcType jdbcType) throws SQLException {
+            PreparedStatement ps, int i, Timestamp parameter, JdbcType jdbcType) throws SQLException {
         ps.setTimestamp(i, parameter);
     }
 

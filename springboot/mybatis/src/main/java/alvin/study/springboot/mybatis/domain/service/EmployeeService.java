@@ -73,10 +73,10 @@ public class EmployeeService {
         var employee = employeeMapper.selectOne(
             // 包装一个 LambdaQueryWrapper 对象组织 SQL 语句
             Wrappers.lambdaQuery(Employee.class)
-                // 查询全部字段, 相当于 select *
-                // .select(i -> true)
-                // where 条件, 相当于 where name = :name
-                .eq(Employee::getName, name));
+                    // 查询全部字段, 相当于 select *
+                    // .select(i -> true)
+                    // where 条件, 相当于 where name = :name
+                    .eq(Employee::getName, name));
 
         if (employee == null) {
             // 未查询到员工实体的情况
@@ -85,16 +85,16 @@ public class EmployeeService {
 
         // 查询员工部门对应关系
         var departmentIds = departmentEmployeeMapper.selectObjs(
-                // 包装一个 LambdaQueryWrapper 对象组织 SQL 语句
-                Wrappers.lambdaQuery(DepartmentEmployee.class)
+            // 包装一个 LambdaQueryWrapper 对象组织 SQL 语句
+            Wrappers.lambdaQuery(DepartmentEmployee.class)
                     // 查询 department_id 字段
                     .select(DepartmentEmployee::getDepartmentId)
                     // 指定 where 条件, 相当于 where employee_id = :employeeId
                     .eq(DepartmentEmployee::getEmployeeId, employee.getId()))
-            // 将返回的 List<Object> 转为 List<Long>
-            .stream()
-            .map(Long.class::cast)
-            .toList();
+                // 将返回的 List<Object> 转为 List<Long>
+                .stream()
+                .map(Long.class::cast)
+                .toList();
 
         if (!departmentIds.isEmpty()) {
             // 将查询到的 Department 信息放入 Employee 相关字段

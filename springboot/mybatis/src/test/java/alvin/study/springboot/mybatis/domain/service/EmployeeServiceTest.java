@@ -1,15 +1,16 @@
 package alvin.study.springboot.mybatis.domain.service;
 
+import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
 import alvin.study.springboot.mybatis.IntegrationTest;
 import alvin.study.springboot.mybatis.builder.DepartmentBuilder;
 import alvin.study.springboot.mybatis.builder.DepartmentEmployeeBuilder;
 import alvin.study.springboot.mybatis.builder.EmployeeBuilder;
 import alvin.study.springboot.mybatis.infra.entity.Gender;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
-import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link EmployeeService} 类型

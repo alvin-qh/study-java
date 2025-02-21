@@ -1,13 +1,14 @@
 package alvin.study.springboot.mybatis.builder;
 
+import java.time.LocalDate;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import alvin.study.springboot.mybatis.infra.entity.Employee;
 import alvin.study.springboot.mybatis.infra.entity.EmployeeInfo;
 import alvin.study.springboot.mybatis.infra.entity.Gender;
 import alvin.study.springboot.mybatis.infra.mapper.EmployeeMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.time.LocalDate;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 职员实体构建器类
@@ -15,9 +16,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class EmployeeBuilder extends Builder<Employee> {
     private final static AtomicInteger SEQUENCE = new AtomicInteger();
     private final EmployeeInfo info = new EmployeeInfo()
-        .setGender(Gender.MALE)
-        .setBirthday(LocalDate.parse("1981-03-17"))
-        .setTelephone("13999999011");
+            .setGender(Gender.MALE)
+            .setBirthday(LocalDate.parse("1981-03-17"))
+            .setTelephone("13999999011");
     @Autowired
     private EmployeeMapper mapper;
     private String name = "Employee" + SEQUENCE.incrementAndGet();

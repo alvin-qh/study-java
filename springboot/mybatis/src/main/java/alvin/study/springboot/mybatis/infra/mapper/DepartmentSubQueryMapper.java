@@ -1,14 +1,15 @@
 package alvin.study.springboot.mybatis.infra.mapper;
 
-import alvin.study.springboot.mybatis.infra.entity.Department;
-import alvin.study.springboot.mybatis.infra.entity.common.AuditedEntity;
-import alvin.study.springboot.mybatis.infra.entity.common.TenantedEntity;
-import alvin.study.springboot.mybatis.infra.handler.EntityFieldHandler;
+import java.util.Optional;
+
 import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.Optional;
+import alvin.study.springboot.mybatis.infra.entity.Department;
+import alvin.study.springboot.mybatis.infra.entity.common.AuditedEntity;
+import alvin.study.springboot.mybatis.infra.entity.common.TenantedEntity;
+import alvin.study.springboot.mybatis.infra.handler.EntityFieldHandler;
 
 /**
  * 该 Mapper 类型通过 {@code classpath:/mapper/DepartmentSubQueryMapper.xml} 来设定要执行的

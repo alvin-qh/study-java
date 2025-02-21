@@ -1,6 +1,7 @@
 package alvin.study.springboot.mybatis.infra.mapper;
 
-import alvin.study.springboot.mybatis.infra.entity.Org;
+import java.util.Optional;
+
 import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
@@ -11,7 +12,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import java.util.Optional;
+import alvin.study.springboot.mybatis.infra.entity.Org;
 
 /**
  * 对 {@link Org} 实体进行操作的 Mapper 类型
@@ -85,7 +86,7 @@ public interface OrgMapper {
      *
      * @param name 组织名
      * @return {@link Optional} 对象, {@link Optional#isPresent()} 方法返回 {@code true}
-     * 表示查询成功
+     *         表示查询成功
      */
     @Select("select id, name, created_at, updated_at from org where deleted = 0 and name = #{name}")
     @Options(useCache = true)

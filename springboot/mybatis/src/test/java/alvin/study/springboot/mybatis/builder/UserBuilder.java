@@ -1,13 +1,14 @@
 package alvin.study.springboot.mybatis.builder;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import alvin.study.springboot.mybatis.infra.entity.User;
 import alvin.study.springboot.mybatis.infra.entity.UserType;
 import alvin.study.springboot.mybatis.infra.mapper.UserMapper;
 import alvin.study.springboot.mybatis.util.security.PasswordUtil;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 用户实体构建器类

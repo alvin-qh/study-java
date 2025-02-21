@@ -1,18 +1,20 @@
 package alvin.study.springboot.mybatis.infra.mapper;
 
+import static org.assertj.core.api.BDDAssertions.then;
+
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
 import alvin.study.springboot.mybatis.IntegrationTest;
 import alvin.study.springboot.mybatis.builder.DepartmentBuilder;
 import alvin.study.springboot.mybatis.builder.DepartmentEmployeeBuilder;
 import alvin.study.springboot.mybatis.builder.EmployeeBuilder;
 import alvin.study.springboot.mybatis.infra.entity.Gender;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-
-import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link EmployeeMapper} 类型

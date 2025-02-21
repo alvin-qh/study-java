@@ -1,8 +1,5 @@
 package alvin.study.springboot.mybatis.infra.handler;
 
-import lombok.extern.slf4j.Slf4j;
-import net.sf.jsqlparser.parser.CCJSqlParserUtil;
-import net.sf.jsqlparser.statement.select.Select;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.BoundSql;
@@ -15,6 +12,10 @@ import org.apache.ibatis.plugin.Plugin;
 import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
+
+import lombok.extern.slf4j.Slf4j;
+import net.sf.jsqlparser.parser.CCJSqlParserUtil;
+import net.sf.jsqlparser.statement.select.PlainSelect;
 
 /**
  * Mybatis 的 {@link Executor} 类型的拦截器
@@ -127,7 +128,7 @@ public class ExecutorHandler implements Interceptor {
 
         // 解析 SQL 语句并进行修改
         var statement = CCJSqlParserUtil.parse(sql);
-        var selectBody = ((Select) statement).getSelectBody();
+        var selectBody = ((PlainSelect) statement).getSelectItems();
         log.info("[ExecutorHandler] Select Body is: {}", selectBody);
 
         // 用新的 SQL 语句产生新的 BoundSql 对象

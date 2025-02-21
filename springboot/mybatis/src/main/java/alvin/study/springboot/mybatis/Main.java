@@ -1,11 +1,12 @@
 package alvin.study.springboot.mybatis;
 
-import alvin.study.springboot.mybatis.util.collection.Pair;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.HashMap;
-import java.util.Map;
+import alvin.study.springboot.mybatis.util.collection.Pair;
 
 /**
  * 应用程序主配置和启动类

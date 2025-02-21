@@ -1,13 +1,15 @@
 package alvin.study.springboot.mybatis.infra.mapper.method;
 
-import alvin.study.springboot.mybatis.conf.MyBatisConfig;
-import alvin.study.springboot.mybatis.infra.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.injector.AbstractMethod;
-import com.baomidou.mybatisplus.core.metadata.TableInfo;
+import java.util.Collection;
+
 import org.apache.ibatis.executor.keygen.NoKeyGenerator;
 import org.apache.ibatis.mapping.MappedStatement;
 
-import java.util.Collection;
+import com.baomidou.mybatisplus.core.injector.AbstractMethod;
+import com.baomidou.mybatisplus.core.metadata.TableInfo;
+
+import alvin.study.springboot.mybatis.conf.MyBatisConfig;
+import alvin.study.springboot.mybatis.infra.mapper.BaseMapper;
 
 /**
  * 定义 {@code deleteAll} 方法
@@ -75,15 +77,15 @@ public class InsertAllBatchMethod extends AbstractMethod {
 
         // 拼装插入字段列表
         var fieldSql = new StringBuilder("(")
-            .append(tableInfo.getKeyColumn())
-            .append(",");
+                .append(tableInfo.getKeyColumn())
+                .append(",");
 
         // 拼装 foreach 部分
         var valueSql = new StringBuilder("""
             <foreach collection="list" item="item" index="index" open="(" separator="),(" close=")">""")
-            .append("#{item.")
-            .append(tableInfo.getKeyProperty())
-            .append("},");
+                .append("#{item.")
+                .append(tableInfo.getKeyProperty())
+                .append("},");
 
         // 拼装表示要插入值的参数列表
         tableInfo.getFieldList().forEach(field -> {

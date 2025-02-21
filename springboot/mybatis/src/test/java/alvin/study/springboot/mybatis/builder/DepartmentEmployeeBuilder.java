@@ -1,10 +1,11 @@
 package alvin.study.springboot.mybatis.builder;
 
-import alvin.study.springboot.mybatis.infra.entity.DepartmentEmployee;
-import alvin.study.springboot.mybatis.infra.mapper.DepartmentEmployeeMapper;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import alvin.study.springboot.mybatis.infra.entity.DepartmentEmployee;
+import alvin.study.springboot.mybatis.infra.mapper.DepartmentEmployeeMapper;
 
 /**
  * 构建部门职员关系实体

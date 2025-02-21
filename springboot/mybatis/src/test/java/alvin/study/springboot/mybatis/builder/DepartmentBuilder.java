@@ -1,10 +1,11 @@
 package alvin.study.springboot.mybatis.builder;
 
-import alvin.study.springboot.mybatis.infra.entity.Department;
-import alvin.study.springboot.mybatis.infra.mapper.DepartmentMapper;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import alvin.study.springboot.mybatis.infra.entity.Department;
+import alvin.study.springboot.mybatis.infra.mapper.DepartmentMapper;
 
 /**
  * 部门实体构建器类

@@ -1,10 +1,11 @@
 package alvin.study.springboot.mybatis.builder;
 
-import alvin.study.springboot.mybatis.infra.entity.Org;
-import alvin.study.springboot.mybatis.infra.mapper.OrgMapper;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import alvin.study.springboot.mybatis.infra.entity.Org;
+import alvin.study.springboot.mybatis.infra.mapper.OrgMapper;
 
 /**
  * 组织实体构建器类

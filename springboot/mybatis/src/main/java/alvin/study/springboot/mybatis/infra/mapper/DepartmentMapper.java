@@ -207,11 +207,11 @@ public interface DepartmentMapper extends BaseMapper<Department> {
     default List<Map<String, Object>> selectByEmployee(Employee employee) {
         // 拼装原生 SQL 语句
         var sql = new SQL()
-            .SELECT("d.id, d.org_id, d.name, d.deleted, d.created_at, d.created_by, d.updated_at, d.updated_by")
-            .FROM("department d")
-            .JOIN("department_employee de on d.id = de.department_id")
-            .JOIN("employee e on e.deleted = 0 and e.id = de.employee_id")
-            .WHERE("d.deleted = 0 and e.id = {0}");
+                .SELECT("d.id, d.org_id, d.name, d.deleted, d.created_at, d.created_by, d.updated_at, d.updated_by")
+                .FROM("department d")
+                .JOIN("department_employee de on d.id = de.department_id")
+                .JOIN("employee e on e.deleted = 0 and e.id = de.employee_id")
+                .WHERE("d.deleted = 0 and e.id = {0}");
 
         // 通过 SqlRunner 对象执行原生 SQL 语句, 返回 Map 类型结果
         var runner = SqlRunner.db(Department.class);

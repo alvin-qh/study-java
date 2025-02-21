@@ -1,10 +1,12 @@
 package alvin.study.springboot.mybatis.infra.mapper.method;
 
-import alvin.study.springboot.mybatis.conf.MyBatisConfig;
-import alvin.study.springboot.mybatis.infra.mapper.BaseMapper;
+import org.apache.ibatis.mapping.MappedStatement;
+
 import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
-import org.apache.ibatis.mapping.MappedStatement;
+
+import alvin.study.springboot.mybatis.conf.MyBatisConfig;
+import alvin.study.springboot.mybatis.infra.mapper.BaseMapper;
 
 /**
  * 定义 {@code deleteAll} 方法

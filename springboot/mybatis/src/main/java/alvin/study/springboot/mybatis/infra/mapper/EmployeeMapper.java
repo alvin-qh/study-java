@@ -1,17 +1,19 @@
 package alvin.study.springboot.mybatis.infra.mapper;
 
-import alvin.study.springboot.mybatis.infra.entity.Employee;
-import alvin.study.springboot.mybatis.infra.entity.common.AuditedEntity;
-import alvin.study.springboot.mybatis.infra.entity.common.TenantedEntity;
-import alvin.study.springboot.mybatis.infra.handler.EntityFieldHandler;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+
 import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+
+import alvin.study.springboot.mybatis.infra.entity.Employee;
+import alvin.study.springboot.mybatis.infra.entity.common.AuditedEntity;
+import alvin.study.springboot.mybatis.infra.entity.common.TenantedEntity;
+import alvin.study.springboot.mybatis.infra.handler.EntityFieldHandler;
 
 /**
  * 该 Mapper 类型通过 {@code classpath:/mapper/DepartmentMapper.xml} 来设定要执行的 SQL 语句
@@ -147,9 +149,9 @@ public interface EmployeeMapper extends BaseMapper<Employee> {
      * @return 分页结果
      */
     IPage<Employee> selectBySearch(
-        IPage<Employee> page,
-        @Param("name") String name,
-        @Param("email") String email,
-        @Param("title") String title,
-        @Param("departmentName") String departmentName);
+            IPage<Employee> page,
+            @Param("name") String name,
+            @Param("email") String email,
+            @Param("title") String title,
+            @Param("departmentName") String departmentName);
 }
