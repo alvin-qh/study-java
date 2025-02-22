@@ -1,19 +1,22 @@
 package alvin.study.springboot.shiro.conf;
 
-import alvin.study.springboot.shiro.util.security.Jwt;
-import alvin.study.springboot.shiro.util.security.PasswordEncoder;
-import com.auth0.jwt.algorithms.Algorithm;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
 import java.time.Duration;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import com.auth0.jwt.algorithms.Algorithm;
+
+import lombok.extern.slf4j.Slf4j;
+
+import alvin.study.springboot.shiro.util.security.Jwt;
+import alvin.study.springboot.shiro.util.security.PasswordEncoder;
 
 /**
  * 配置需被容器管理的 Bean 对象
@@ -46,8 +49,8 @@ public class BeanConfig {
      */
     @Bean
     PasswordEncoder passwordEncoder(
-        @Value("${application.security.hash.algorithm}") String algorithm,
-        @Value("${application.security.hash.key}") String key) {
+            @Value("${application.security.hash.algorithm}") String algorithm,
+            @Value("${application.security.hash.key}") String key) {
         var encoder = new PasswordEncoder(algorithm, key);
         log.info("[CONF] PasswordEncoder object created, algorithm=\"{}\", hmacKey=\"{}\"", algorithm, key);
         return encoder;
@@ -81,10 +84,10 @@ public class BeanConfig {
      */
     @Bean
     Executor fixedThreadPoolExecutor(
-        @Value("${application.thread-pool.core-pool-size}") int corePoolSize,
-        @Value("${application.thread-pool.max-pool-size}") int maxPoolSize,
-        @Value("${application.thread-pool.keep-alive}") String keepAlive,
-        @Value("${application.thread-pool.queue-size}") int queueSize) {
+            @Value("${application.thread-pool.core-pool-size}") int corePoolSize,
+            @Value("${application.thread-pool.max-pool-size}") int maxPoolSize,
+            @Value("${application.thread-pool.keep-alive}") String keepAlive,
+            @Value("${application.thread-pool.queue-size}") int queueSize) {
         // 通过正则表达式匹配线程存活时间参数
         var m = Pattern.compile("(\\d+)(h|m|s|ms|ns)").matcher(keepAlive);
         if (!m.matches()) {
@@ -96,12 +99,12 @@ public class BeanConfig {
 
         // 获取线程存活时间单位
         var unit = switch (m.group(2)) {
-            case "h" -> TimeUnit.HOURS;
-            case "m" -> TimeUnit.MINUTES;
-            case "s" -> TimeUnit.SECONDS;
-            case "ms" -> TimeUnit.MICROSECONDS;
-            case "ns" -> TimeUnit.NANOSECONDS;
-            default -> TimeUnit.SECONDS;
+        case "h" -> TimeUnit.HOURS;
+        case "m" -> TimeUnit.MINUTES;
+        case "s" -> TimeUnit.SECONDS;
+        case "ms" -> TimeUnit.MICROSECONDS;
+        case "ns" -> TimeUnit.NANOSECONDS;
+        default -> TimeUnit.SECONDS;
         };
 
         // 创建线程池执行器

@@ -1,6 +1,7 @@
 package alvin.study.quarkus.cdi.inject;
 
 import jakarta.inject.Singleton;
+
 import lombok.Getter;
 
 /**

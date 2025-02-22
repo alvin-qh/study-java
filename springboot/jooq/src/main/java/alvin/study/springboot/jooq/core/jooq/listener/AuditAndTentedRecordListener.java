@@ -9,12 +9,14 @@ import org.jooq.Field;
 import org.jooq.RecordContext;
 import org.jooq.RecordListener;
 import org.jooq.RecordListenerProvider;
+
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
 
 import alvin.study.springboot.jooq.core.context.Context;
 import alvin.study.springboot.jooq.infra.model.public_.tables.records.OrgRecord;
 import alvin.study.springboot.jooq.infra.model.public_.tables.records.UserRecord;
-import lombok.RequiredArgsConstructor;
 
 /**
  * 数据记录处理监听器

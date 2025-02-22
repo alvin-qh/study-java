@@ -1,11 +1,12 @@
 package alvin.study.springboot.jpa.common;
 
-import alvin.study.springboot.jpa.core.context.Context;
-import alvin.study.springboot.jpa.core.context.CustomRequestAttributes;
+import java.util.function.Consumer;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
-import java.util.function.Consumer;
+import alvin.study.springboot.jpa.core.context.Context;
+import alvin.study.springboot.jpa.core.context.CustomRequestAttributes;
 
 /**
  * {@link Context} 对象切换器类型

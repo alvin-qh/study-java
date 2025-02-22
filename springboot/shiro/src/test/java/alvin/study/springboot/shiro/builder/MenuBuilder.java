@@ -1,10 +1,11 @@
 package alvin.study.springboot.shiro.builder;
 
-import alvin.study.springboot.shiro.infra.entity.Menu;
-import alvin.study.springboot.shiro.infra.mapper.MenuMapper;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import alvin.study.springboot.shiro.infra.entity.Menu;
+import alvin.study.springboot.shiro.infra.mapper.MenuMapper;
 
 /**
  * 菜单实体构建类

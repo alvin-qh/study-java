@@ -1,13 +1,16 @@
 package alvin.study.springboot.validator.service;
 
-import alvin.study.springboot.validator.IntegrationTest;
-import alvin.study.springboot.validator.model.Computer;
-import jakarta.validation.ConstraintViolationException;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.junit.jupiter.api.Assertions.fail;
+
+import jakarta.validation.ConstraintViolationException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.junit.jupiter.api.Test;
+
+import alvin.study.springboot.validator.IntegrationTest;
+import alvin.study.springboot.validator.model.Computer;
 
 /**
  * 测试对具备验证注解的参数进行校验
@@ -128,8 +131,8 @@ class ComputerServiceTest extends IntegrationTest {
                 // 对于复合参数类型, 路径格式为: 方法名.参数名.字段名
                 switch (violation.getPropertyPath().toString()) {
                 case "updateComputer.computer.name" -> then(violation.getMessage()).isEqualTo("must not be blank");
-                case "updateComputer.computer.ipAddress" ->
-                    then(violation.getMessage()).isEqualTo("invalid IP address");
+                case "updateComputer.computer.ipAddress" -> then(violation.getMessage())
+                        .isEqualTo("invalid IP address");
                 default -> fail();
                 }
             }

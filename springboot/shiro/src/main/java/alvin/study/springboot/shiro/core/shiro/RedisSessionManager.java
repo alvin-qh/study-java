@@ -1,6 +1,5 @@
 package alvin.study.springboot.shiro.core.shiro;
 
-import lombok.RequiredArgsConstructor;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.SessionException;
 import org.apache.shiro.session.mgt.SessionContext;
@@ -8,6 +7,8 @@ import org.apache.shiro.session.mgt.SessionKey;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.web.util.WebUtils;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * 会话信息管理器类型

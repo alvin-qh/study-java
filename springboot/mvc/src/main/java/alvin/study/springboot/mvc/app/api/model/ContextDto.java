@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public record ContextDto(
         @JsonProperty("orgCode") String orgCode,
         @JsonProperty("userId") Long userId) {
-
     @JsonCreator
     public ContextDto {}
 }

@@ -1,15 +1,17 @@
 package alvin.study.springboot.jooq.infra.repository.common;
 
-import alvin.study.springboot.jooq.core.context.Context;
-import alvin.study.springboot.jooq.infra.model.public_.tables.records.OrgRecord;
-import org.jooq.DSLContext;
-import org.jooq.Record;
-import org.jooq.Table;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+
+import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.Table;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import alvin.study.springboot.jooq.core.context.Context;
+import alvin.study.springboot.jooq.infra.model.public_.tables.records.OrgRecord;
 
 /**
  * 通过 Spring 框架集成 Jooq 的 Repository 类型超类

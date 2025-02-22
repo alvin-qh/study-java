@@ -3,10 +3,12 @@ package alvin.study.quarkus.web.endpoint.model;
 import java.time.LocalDate;
 import java.time.Period;
 
-import alvin.study.quarkus.web.persist.entity.Gender;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
 import lombok.Builder;
+
+import alvin.study.quarkus.web.persist.entity.Gender;
 
 /**
  * DTO 类型

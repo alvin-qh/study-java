@@ -1,10 +1,11 @@
 package alvin.study.springboot.autoconf;
 
-import alvin.study.springboot.autoconf.domain.model.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
+
+import alvin.study.springboot.autoconf.domain.model.User;
 
 @SpringBootApplication
 public class Main {

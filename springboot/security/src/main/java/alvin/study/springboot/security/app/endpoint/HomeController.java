@@ -1,5 +1,15 @@
 package alvin.study.springboot.security.app.endpoint;
 
+import java.util.Objects;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import lombok.RequiredArgsConstructor;
+
 import alvin.study.springboot.security.app.domain.service.AuthService;
 import alvin.study.springboot.security.app.domain.service.MenuService;
 import alvin.study.springboot.security.app.endpoint.common.BaseController;
@@ -8,14 +18,6 @@ import alvin.study.springboot.security.app.endpoint.model.HomeDto;
 import alvin.study.springboot.security.app.endpoint.model.MenuDto;
 import alvin.study.springboot.security.core.security.filter.JwtRequestFilter;
 import alvin.study.springboot.security.core.security.handler.AclPermissionEvaluator;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Objects;
 
 /**
  * Home 页控制器类型

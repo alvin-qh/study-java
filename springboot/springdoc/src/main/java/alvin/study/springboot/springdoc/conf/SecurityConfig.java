@@ -45,8 +45,8 @@ public class SecurityConfig {
      */
     @Bean
     PasswordEncoder passwordEncoder(
-        @Value("${application.security.hash.algorithm}") String algorithm,
-        @Value("${application.security.hash.key}") String key) {
+            @Value("${application.security.hash.algorithm}") String algorithm,
+            @Value("${application.security.hash.key}") String key) {
         var encoder = new PasswordEncoder(algorithm, key);
         log.info("[CONF] PasswordEncoder object created, algorithm=\"{}\", hmacKey=\"{}\"", algorithm, key);
         return encoder;
@@ -62,13 +62,13 @@ public class SecurityConfig {
      */
     @Bean
     InMemoryUserDetailsManager userDetailsManager(
-        PasswordEncoder encoder,
-        @Value("${springdoc.authorization.username}") String username,
-        @Value("${springdoc.authorization.password}") String password) {
+            PasswordEncoder encoder,
+            @Value("${springdoc.authorization.username}") String username,
+            @Value("${springdoc.authorization.password}") String password) {
         return new InMemoryUserDetailsManager(User.withUsername(username)
-            .password(encoder.encode(password))
-            .authorities(List.of())
-            .build());
+                .password(encoder.encode(password))
+                .authorities(List.of())
+                .build());
     }
 
     /**
@@ -83,23 +83,21 @@ public class SecurityConfig {
      */
     @Bean
     CustomRequestFilter customRequestFilter(
-        UserDetailsService userDetailsService,
-        UserRepository userRepository,
-        PasswordEncoder passwordEncoder,
-        Jwt jwt
-    ) {
+            UserDetailsService userDetailsService,
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder,
+            Jwt jwt) {
         return new CustomRequestFilter(
             // 设置需要 basic auth 登录认证拦截的路径
-            new String[]{ "/**/api-docs/**" },
+            new String[] { "/**/api-docs/**" },
             // 设置需要 JWT 登录认证拦截的路径
-            new String[]{ "/api/**" },
+            new String[] { "/api/**" },
             // 设置不需要认证拦截的路径
-            new String[]{ "/swagger-ui/**" },
+            new String[] { "/swagger-ui/**" },
             userDetailsService,
             passwordEncoder,
             jwt,
-            userRepository
-        );
+            userRepository);
     }
 
     /**
@@ -110,30 +108,26 @@ public class SecurityConfig {
      */
     @Bean
     SecurityFilterChain filterChain(
-        HttpSecurity security,
-        CustomRequestFilter customRequestFilter,
-        CustomErrorHandlerEntryPoint errorHandlerEntryPoint) throws Exception {
+            HttpSecurity security,
+            CustomRequestFilter customRequestFilter,
+            CustomErrorHandlerEntryPoint errorHandlerEntryPoint) throws Exception {
         return security
-            // 禁用 CSRF 重复提交检验
-            .csrf(AbstractHttpConfigurer::disable)
-            // 设置认证相关的访问 URI
-            .authorizeHttpRequests(registry ->
-                registry
-                    // 无需凭证的 URI
-                    .requestMatchers("/auth/**", "/swagger-ui/**").permitAll()
-                    // 其它请求均需要凭证认证
-                    .anyRequest().authenticated()
-            )
-            .sessionManagement(configurer ->
+                // 禁用 CSRF 重复提交检验
+                .csrf(AbstractHttpConfigurer::disable)
+                // 设置认证相关的访问 URI
+                .authorizeHttpRequests(registry -> registry
+                        // 无需凭证的 URI
+                        .requestMatchers("/auth/**", "/swagger-ui/**").permitAll()
+                        // 其它请求均需要凭证认证
+                        .anyRequest().authenticated())
+                .sessionManagement(configurer ->
                 // 设置 session 管理方式, 以 Cookie 管理无状态 session
-                configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
-            .exceptionHandling(configurer ->
+                configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(configurer ->
                 // 设置异常处理器
-                configurer.authenticationEntryPoint(errorHandlerEntryPoint)
-            )
-            // 设置拦截器的位置
-            .addFilterBefore(customRequestFilter, HeaderWriterFilter.class)
-            .build();
+                configurer.authenticationEntryPoint(errorHandlerEntryPoint))
+                // 设置拦截器的位置
+                .addFilterBefore(customRequestFilter, HeaderWriterFilter.class)
+                .build();
     }
 }

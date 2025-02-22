@@ -1,15 +1,17 @@
 package alvin.study.springboot.ds.app.endpoint;
 
+import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+
 import alvin.study.springboot.ds.IntegrationTest;
 import alvin.study.springboot.ds.app.domain.model.DataDto;
 import alvin.study.springboot.ds.app.domain.model.DataForm;
 import alvin.study.springboot.ds.app.domain.service.ConfigService;
 import alvin.study.springboot.ds.core.http.common.ResponseDto;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-
-import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link DataController} 类型

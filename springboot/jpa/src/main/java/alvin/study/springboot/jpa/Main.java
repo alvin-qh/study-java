@@ -1,11 +1,11 @@
 package alvin.study.springboot.jpa;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.util.Pair;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 应用程序主配置和启动类

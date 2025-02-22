@@ -1,13 +1,15 @@
 package alvin.study.springboot.jpa.infra.entity;
 
-import alvin.study.springboot.jpa.infra.entity.common.AuditedEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
 import lombok.Getter;
 import lombok.Setter;
+
+import alvin.study.springboot.jpa.infra.entity.common.AuditedEntity;
 
 /**
  * 部门职员关系实体, 对应 {@code department_employee} 表

@@ -1,5 +1,34 @@
 package alvin.study.springboot.security;
 
+import java.time.Duration;
+import java.util.Collection;
+import java.util.List;
+
+import jakarta.servlet.ServletContext;
+
+import org.apache.ibatis.session.SqlSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.test.web.reactive.server.WebTestClient.RequestBodySpec;
+import org.springframework.test.web.reactive.server.WebTestClient.RequestHeadersSpec;
+import org.springframework.test.web.reactive.server.WebTestClient.RequestHeadersUriSpec;
+import org.springframework.transaction.annotation.Transactional;
+
+import lombok.SneakyThrows;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+
 import alvin.study.springboot.security.builder.Builder;
 import alvin.study.springboot.security.builder.GroupBuilder;
 import alvin.study.springboot.security.builder.PermissionBuilder;
@@ -26,30 +55,6 @@ import alvin.study.springboot.security.infra.mapper.RoleMapper;
 import alvin.study.springboot.security.infra.mapper.RolePermissionMapper;
 import alvin.study.springboot.security.util.http.Headers;
 import alvin.study.springboot.security.util.security.Jwt;
-import jakarta.servlet.ServletContext;
-import lombok.SneakyThrows;
-import org.apache.ibatis.session.SqlSession;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.http.MediaType;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.web.reactive.server.WebTestClient;
-import org.springframework.test.web.reactive.server.WebTestClient.RequestBodySpec;
-import org.springframework.test.web.reactive.server.WebTestClient.RequestHeadersSpec;
-import org.springframework.test.web.reactive.server.WebTestClient.RequestHeadersUriSpec;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.Duration;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * 集成测试类的超类

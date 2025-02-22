@@ -1,10 +1,10 @@
 package alvin.study.springboot.ds.core.data;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-
 import java.util.Deque;
 import java.util.LinkedList;
+
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 /**
  * 用于切换数据源的线程上下文类

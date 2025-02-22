@@ -1,12 +1,13 @@
 package alvin.study.springboot.shiro.util.security;
 
-import com.google.common.base.Charsets;
-import org.apache.commons.codec.binary.Hex;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+
+import org.apache.commons.codec.binary.Hex;
 
 /**
  * 密码加密处理工具类
@@ -32,7 +33,7 @@ public class PasswordEncoder {
      */
     public PasswordEncoder(String algorithm, String hmacKey) {
         // 实例化密钥生成对象
-        secretKeySpec = new SecretKeySpec(hmacKey.getBytes(Charsets.UTF_8), algorithm);
+        secretKeySpec = new SecretKeySpec(hmacKey.getBytes(StandardCharsets.UTF_8), algorithm);
     }
 
     /**
@@ -65,7 +66,7 @@ public class PasswordEncoder {
         try {
             var mac = hmac();
             // 将待加密字符串转化为 bytes 后进行加密
-            var data = mac.doFinal(rawPassword.toString().getBytes(Charsets.UTF_8));
+            var data = mac.doFinal(rawPassword.toString().getBytes(StandardCharsets.UTF_8));
             // 将加密结果 bytes 转化为 16 进制字符串格式并返回
             return Hex.encodeHexString(data);
         } catch (InvalidKeyException | NoSuchAlgorithmException e) {

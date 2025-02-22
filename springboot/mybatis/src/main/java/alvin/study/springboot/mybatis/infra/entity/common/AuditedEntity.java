@@ -5,9 +5,10 @@ import java.time.Instant;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 
-import alvin.study.springboot.mybatis.infra.handler.EntityFieldHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import alvin.study.springboot.mybatis.infra.handler.EntityFieldHandler;
 
 /**
  * 包含审计字段的实体超类

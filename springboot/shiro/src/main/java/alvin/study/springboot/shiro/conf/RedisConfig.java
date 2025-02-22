@@ -1,16 +1,16 @@
 package alvin.study.springboot.shiro.conf;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 
 /**
  * 配置 Redis
@@ -33,11 +33,10 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  */
 @Configuration("core/redis")
 public class RedisConfig {
-    @NotNull
     private static RedisTemplate<String, Object> getStringObjectRedisTemplate(
-        LettuceConnectionFactory connectionFactory,
-        ObjectMapper objectMapper,
-        StringRedisSerializer stringSerializer) {
+            LettuceConnectionFactory connectionFactory,
+            ObjectMapper objectMapper,
+            StringRedisSerializer stringSerializer) {
 
         var jacksonSerializer = new GenericJackson2JsonRedisSerializer(objectMapper);
 
@@ -68,7 +67,7 @@ public class RedisConfig {
      */
     @Bean
     RedisTemplate<String, Object> redisTemplate(
-        LettuceConnectionFactory connectionFactory, ObjectMapper objectMapper) {
+            LettuceConnectionFactory connectionFactory, ObjectMapper objectMapper) {
         // 克隆一个新的 ObjectMapper 用于 redis 序列化操作
         objectMapper = objectMapper.copy();
         // 设置 JSON 序列化时对源对象内容的可见性

@@ -1,6 +1,5 @@
 package alvin.study.springboot.springdoc.app.endpoint;
 
-
 import jakarta.validation.Valid;
 
 import org.springframework.security.authentication.BadCredentialsException;
@@ -10,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import lombok.RequiredArgsConstructor;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
+import lombok.RequiredArgsConstructor;
 
 import alvin.study.springboot.springdoc.app.endpoint.model.LoginForm;
 import alvin.study.springboot.springdoc.app.endpoint.model.TokenDto;
@@ -65,8 +64,8 @@ public class AuthController {
     TokenDto login(@Valid @RequestBody LoginForm form) {
         // 对登录信息进行验证
         var user = userRepository
-            .selectUserByName(form.getUsername())
-            .orElseThrow(() -> new BadCredentialsException("bad_credentials"));
+                .selectUserByName(form.getUsername())
+                .orElseThrow(() -> new BadCredentialsException("bad_credentials"));
 
         if (!passwordEncoder.matches(form.getPassword(), user.getPassword())) {
             throw new BadCredentialsException("bad_credentials");

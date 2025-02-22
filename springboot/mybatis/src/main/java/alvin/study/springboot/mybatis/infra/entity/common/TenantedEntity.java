@@ -3,9 +3,10 @@ package alvin.study.springboot.mybatis.infra.entity.common;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 
-import alvin.study.springboot.mybatis.infra.handler.EntityFieldHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import alvin.study.springboot.mybatis.infra.handler.EntityFieldHandler;
 
 /**
  * 多租户实体类的超类

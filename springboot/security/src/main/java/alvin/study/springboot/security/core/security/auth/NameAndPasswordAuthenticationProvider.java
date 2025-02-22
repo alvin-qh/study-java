@@ -1,16 +1,18 @@
 package alvin.study.springboot.security.core.security.auth;
 
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
+
 import alvin.study.springboot.security.app.domain.service.AuthService;
 import alvin.study.springboot.security.app.endpoint.AuthController;
 import alvin.study.springboot.security.app.endpoint.model.LoginForm;
 import alvin.study.springboot.security.conf.SecurityConfig;
 import alvin.study.springboot.security.core.security.filter.JwtRequestFilter;
 import alvin.study.springboot.security.util.security.PasswordEncoder;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
 
 /**
  * 对 {@link NameAndPasswordAuthenticationToken} 类型对象进行身份验证的类型

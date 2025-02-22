@@ -17,11 +17,13 @@ import org.jooq.Table;
 import org.jooq.VisitContext;
 import org.jooq.VisitListener;
 import org.jooq.VisitListenerProvider;
+
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
 
 import alvin.study.springboot.jooq.core.context.Context;
 import alvin.study.springboot.jooq.infra.model.public_.tables.records.OrgRecord;
-import lombok.RequiredArgsConstructor;
 
 /**
  * 数据访问处理监听器

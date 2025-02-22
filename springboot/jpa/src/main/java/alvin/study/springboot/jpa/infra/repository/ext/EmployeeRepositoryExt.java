@@ -2,12 +2,13 @@ package alvin.study.springboot.jpa.infra.repository.ext;
 
 import java.util.List;
 
-import alvin.study.springboot.jpa.infra.entity.Department;
-import alvin.study.springboot.jpa.infra.entity.Employee;
-import alvin.study.springboot.jpa.infra.repository.EmployeeRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.validation.constraints.NotNull;
+
+import alvin.study.springboot.jpa.infra.entity.Department;
+import alvin.study.springboot.jpa.infra.entity.Employee;
+import alvin.study.springboot.jpa.infra.repository.EmployeeRepository;
 
 /**
  * 定义一个接口来扩充 {@link EmployeeRepository

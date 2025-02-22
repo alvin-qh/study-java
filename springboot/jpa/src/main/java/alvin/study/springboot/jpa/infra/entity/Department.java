@@ -3,10 +3,6 @@ package alvin.study.springboot.jpa.infra.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
-
-import alvin.study.springboot.jpa.infra.entity.common.AuditedEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,8 +12,14 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
+
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
+
 import lombok.Getter;
 import lombok.Setter;
+
+import alvin.study.springboot.jpa.infra.entity.common.AuditedEntity;
 
 /**
  * 部门实体, 对应 {@code department} 表

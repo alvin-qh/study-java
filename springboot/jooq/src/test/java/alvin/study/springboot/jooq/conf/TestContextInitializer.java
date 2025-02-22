@@ -5,12 +5,14 @@ import java.util.Map;
 import org.apache.logging.slf4j.Log4jLoggerFactory;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
+
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import alvin.study.springboot.jooq.Main;
 import lombok.SneakyThrows;
+
+import alvin.study.springboot.jooq.Main;
 
 /**
  * 初始化测试上下文

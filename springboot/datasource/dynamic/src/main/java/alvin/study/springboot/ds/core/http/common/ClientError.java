@@ -1,10 +1,11 @@
 package alvin.study.springboot.ds.core.http.common;
 
-import alvin.study.springboot.ds.http.Servlets;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import alvin.study.springboot.ds.http.Servlets;
 
 /**
  * 客户端错误类型

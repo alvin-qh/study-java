@@ -1,15 +1,16 @@
 package alvin.study.springboot.shiro.app.domain.model;
 
-import alvin.study.springboot.shiro.infra.entity.Permission;
-import alvin.study.springboot.shiro.infra.entity.Role;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import alvin.study.springboot.shiro.infra.entity.Permission;
+import alvin.study.springboot.shiro.infra.entity.Role;
 
 /**
  * 记录一个用户相关角色权限集合的类型

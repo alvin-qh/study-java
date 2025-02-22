@@ -1,15 +1,17 @@
 package alvin.study.springboot.shiro.infra.mapper;
 
-import alvin.study.springboot.shiro.infra.entity.User;
-import alvin.study.springboot.shiro.infra.entity.common.AuditedEntity;
-import alvin.study.springboot.shiro.infra.handler.EntityFieldHandler;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import java.util.Optional;
+
 import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
-import java.util.Optional;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+import alvin.study.springboot.shiro.infra.entity.User;
+import alvin.study.springboot.shiro.infra.entity.common.AuditedEntity;
+import alvin.study.springboot.shiro.infra.handler.EntityFieldHandler;
 
 /**
  * 对 {@link User} 实体进行操作的 Mapper 类型
@@ -78,7 +80,7 @@ public interface UserMapper extends BaseMapper<User> {
      *
      * @param account 账号名
      * @return {@link Optional} 对象, {@link Optional#isPresent()} 方法返回 {@code true}
-     * 表示查询成功
+     *         表示查询成功
      */
     @Select("""
         select id, account, password, type, created_at, updated_at, created_by, updated_by

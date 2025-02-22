@@ -1,12 +1,14 @@
 package alvin.study.springboot.mybatis.infra.mapper;
 
-import alvin.study.springboot.mybatis.IntegrationTest;
-import alvin.study.springboot.mybatis.builder.DepartmentBuilder;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
+
+import alvin.study.springboot.mybatis.IntegrationTest;
+import alvin.study.springboot.mybatis.builder.DepartmentBuilder;
 
 /**
  * 测试 {@link DepartmentSubQueryMapper} 类型

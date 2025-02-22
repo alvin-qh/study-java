@@ -1,17 +1,19 @@
 package alvin.study.springboot.ds.app.endpoint;
 
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+
 import alvin.study.springboot.ds.IntegrationTest;
 import alvin.study.springboot.ds.app.domain.model.ConfigDto;
 import alvin.study.springboot.ds.app.domain.service.ConfigNotExistException;
 import alvin.study.springboot.ds.app.domain.service.ConfigService;
 import alvin.study.springboot.ds.core.data.DynamicDataSource;
 import alvin.study.springboot.ds.core.http.common.ResponseDto;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 /**
  * 测试 {@link ConfigController} 类型

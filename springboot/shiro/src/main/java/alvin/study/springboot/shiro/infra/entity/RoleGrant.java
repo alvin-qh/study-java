@@ -1,10 +1,12 @@
 package alvin.study.springboot.shiro.infra.entity;
 
-import alvin.study.springboot.shiro.infra.entity.common.AuditedEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import alvin.study.springboot.shiro.infra.entity.common.AuditedEntity;
 
 /**
  * 对应 {@code role_grant} 表的实体类型, 表示用户 (或者组) 和角色之间的关系

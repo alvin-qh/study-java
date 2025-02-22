@@ -1,12 +1,13 @@
 package alvin.study.springboot.security.core.security.handler;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.PermissionEvaluator;
-import org.springframework.security.core.Authentication;
+import java.io.Serializable;
 
 import jakarta.annotation.Nonnull;
 
-import java.io.Serializable;
+import org.springframework.security.access.PermissionEvaluator;
+import org.springframework.security.core.Authentication;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 进行权限匹配的处理类型
@@ -30,7 +31,7 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
      */
     public boolean hasRole(@Nonnull Authentication authentication, String role) {
         return authentication.getAuthorities().stream()
-            .anyMatch(it -> checkIfRoleMatch(role, it.getAuthority()));
+                .anyMatch(it -> checkIfRoleMatch(role, it.getAuthority()));
     }
 
     /**
@@ -203,7 +204,7 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
 
     @Override
     public boolean hasPermission(
-        Authentication authentication, Serializable targetId, String targetType, Object permission) {
+            Authentication authentication, Serializable targetId, String targetType, Object permission) {
         throw new UnsupportedOperationException("Use hasPermission(String, String) instead of");
     }
 }

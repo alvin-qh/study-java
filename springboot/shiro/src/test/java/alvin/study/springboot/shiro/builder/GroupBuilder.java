@@ -1,10 +1,11 @@
 package alvin.study.springboot.shiro.builder;
 
-import alvin.study.springboot.shiro.infra.entity.Group;
-import alvin.study.springboot.shiro.infra.mapper.GroupMapper;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import alvin.study.springboot.shiro.infra.entity.Group;
+import alvin.study.springboot.shiro.infra.mapper.GroupMapper;
 
 /**
  * 用户组实体构建器类

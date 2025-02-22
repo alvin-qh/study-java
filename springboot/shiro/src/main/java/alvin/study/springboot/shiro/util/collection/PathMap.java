@@ -1,11 +1,11 @@
 package alvin.study.springboot.shiro.util.collection;
 
-import com.google.common.base.Splitter;
-
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+
+import com.google.common.base.Splitter;
 
 /**
  * 具备按 Path 找到对应值的 Map 类型
@@ -70,7 +70,7 @@ public class PathMap extends LinkedHashMap<String, Object> {
                     break;
                 }
             }
-        } catch (ClassCastException ignore) { }
+        } catch (ClassCastException ignore) {}
         return null;
     }
 

@@ -1,12 +1,14 @@
 package alvin.study.springboot.autoconf.bootstrap;
 
-import alvin.study.springboot.autoconf.prop.ConfigProperties;
-import lombok.extern.slf4j.Slf4j;
+import java.time.Duration;
+import java.util.TimeZone;
+
 import org.springframework.boot.SpringApplicationRunListener;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import java.time.Duration;
-import java.util.TimeZone;
+import lombok.extern.slf4j.Slf4j;
+
+import alvin.study.springboot.autoconf.prop.ConfigProperties;
 
 /**
  * 应用程序启动监听, 监听整个 Spring 容器的启动过程

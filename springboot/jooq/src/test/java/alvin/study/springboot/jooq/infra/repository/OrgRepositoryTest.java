@@ -1,16 +1,19 @@
 package alvin.study.springboot.jooq.infra.repository;
 
-import alvin.study.springboot.jooq.IntegrationTest;
-import alvin.study.springboot.jooq.core.jooq.dsl.JdbcDSLContextManager;
-import alvin.study.springboot.jooq.infra.model.public_.tables.records.OrgRecord;
-import lombok.SneakyThrows;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Objects;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import lombok.SneakyThrows;
+
+import alvin.study.springboot.jooq.IntegrationTest;
+import alvin.study.springboot.jooq.core.jooq.dsl.JdbcDSLContextManager;
+import alvin.study.springboot.jooq.infra.model.public_.tables.records.OrgRecord;
 
 /**
  * 测试 {@link OrgRepository} 类型对

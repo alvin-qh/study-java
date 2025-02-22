@@ -1,11 +1,13 @@
 package alvin.study.springboot.security.infra.entity;
 
-import alvin.study.springboot.security.infra.entity.common.AuditedEntity;
-import alvin.study.springboot.security.infra.mapper.PermissionMapper;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import alvin.study.springboot.security.infra.entity.common.AuditedEntity;
+import alvin.study.springboot.security.infra.mapper.PermissionMapper;
 
 /**
  * 对应 {@code permission} 表的实体类型, 表示权限

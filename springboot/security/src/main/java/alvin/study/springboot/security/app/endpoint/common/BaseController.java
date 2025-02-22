@@ -1,9 +1,11 @@
 package alvin.study.springboot.security.app.endpoint.common;
 
-import alvin.study.springboot.security.infra.entity.User;
 import org.modelmapper.ModelMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import alvin.study.springboot.security.infra.entity.User;
 
 /**
  * 所有 Controller 类型的超类

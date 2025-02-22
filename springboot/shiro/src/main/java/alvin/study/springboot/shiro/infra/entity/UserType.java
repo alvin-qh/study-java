@@ -1,6 +1,7 @@
 package alvin.study.springboot.shiro.infra.entity;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
+
 import lombok.Getter;
 
 /**

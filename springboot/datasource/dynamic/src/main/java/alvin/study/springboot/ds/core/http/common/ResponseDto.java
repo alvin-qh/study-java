@@ -1,11 +1,11 @@
 package alvin.study.springboot.ds.core.http.common;
 
+import java.time.Instant;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.Instant;
 
 /**
  * 响应包装类

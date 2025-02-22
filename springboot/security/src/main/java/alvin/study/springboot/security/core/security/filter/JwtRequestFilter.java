@@ -2,6 +2,11 @@ package alvin.study.springboot.security.core.security.filter;
 
 import java.io.IOException;
 
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -10,15 +15,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.google.common.base.Strings;
 
+import lombok.RequiredArgsConstructor;
+
 import alvin.study.springboot.security.app.domain.service.AuthService;
 import alvin.study.springboot.security.conf.SecurityConfig;
 import alvin.study.springboot.security.core.security.auth.NameAndPasswordAuthenticationToken;
 import alvin.study.springboot.security.util.http.Headers;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 
 /**
  * 拦截器, 对请求中的 JWT token 进行处理

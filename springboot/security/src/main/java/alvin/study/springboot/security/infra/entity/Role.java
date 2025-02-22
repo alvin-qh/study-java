@@ -1,11 +1,13 @@
 package alvin.study.springboot.security.infra.entity;
 
-import alvin.study.springboot.security.infra.entity.common.AuditedEntity;
-import alvin.study.springboot.security.infra.mapper.RoleMapper;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import alvin.study.springboot.security.infra.entity.common.AuditedEntity;
+import alvin.study.springboot.security.infra.mapper.RoleMapper;
 
 /**
  * 对应 {@code role} 表的实体类型, 表示角色

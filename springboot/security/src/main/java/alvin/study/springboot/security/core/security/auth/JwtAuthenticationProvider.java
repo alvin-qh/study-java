@@ -1,14 +1,16 @@
 package alvin.study.springboot.security.core.security.auth;
 
-import alvin.study.springboot.security.app.domain.service.AuthService;
-import alvin.study.springboot.security.conf.SecurityConfig;
-import alvin.study.springboot.security.core.security.filter.JwtRequestFilter;
-import alvin.study.springboot.security.infra.entity.User;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
+
+import alvin.study.springboot.security.app.domain.service.AuthService;
+import alvin.study.springboot.security.conf.SecurityConfig;
+import alvin.study.springboot.security.core.security.filter.JwtRequestFilter;
+import alvin.study.springboot.security.infra.entity.User;
 
 /**
  * 对 {@code JwtAuthenticationToken} 类型对象进行身份验证的类型

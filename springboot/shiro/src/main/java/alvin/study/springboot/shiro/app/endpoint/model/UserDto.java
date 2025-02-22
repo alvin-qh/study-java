@@ -1,12 +1,13 @@
 package alvin.study.springboot.shiro.app.endpoint.model;
 
-import alvin.study.springboot.shiro.infra.entity.UserType;
+import java.io.Serializable;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
+import alvin.study.springboot.shiro.infra.entity.UserType;
 
 /**
  * 登录用户信息类型

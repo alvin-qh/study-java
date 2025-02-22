@@ -1,16 +1,18 @@
 package alvin.study.springboot.shiro.infra.mapper;
 
-import alvin.study.springboot.shiro.infra.entity.RoleGrant;
-import alvin.study.springboot.shiro.infra.entity.RoleGrantType;
-import alvin.study.springboot.shiro.infra.entity.common.AuditedEntity;
-import alvin.study.springboot.shiro.infra.handler.EntityFieldHandler;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import java.util.Optional;
+
 import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
-import java.util.Optional;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+import alvin.study.springboot.shiro.infra.entity.RoleGrant;
+import alvin.study.springboot.shiro.infra.entity.RoleGrantType;
+import alvin.study.springboot.shiro.infra.entity.common.AuditedEntity;
+import alvin.study.springboot.shiro.infra.handler.EntityFieldHandler;
 
 /**
  * 对 {@link RoleGrant} 实体进行操作的 Mapper 类型
@@ -88,7 +90,7 @@ public interface RoleGrantMapper extends BaseMapper<RoleGrant> {
         where user_or_group_id = #{userOrGroupId} and type = #{type} and role_id = #{roleId}
         """)
     Optional<RoleGrant> selectByUserOrGroupIdAndType(
-        @Param("userOrGroupId") Long userOrGroupId,
-        @Param("type") RoleGrantType type,
-        @Param("roleId") Long roleId);
+            @Param("userOrGroupId") Long userOrGroupId,
+            @Param("type") RoleGrantType type,
+            @Param("roleId") Long roleId);
 }

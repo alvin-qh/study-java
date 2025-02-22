@@ -1,8 +1,10 @@
 package alvin.study.springboot.autoconf.domain.service;
 
-import alvin.study.springboot.autoconf.domain.model.User;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
+
+import alvin.study.springboot.autoconf.domain.model.User;
 
 @Service
 @RequiredArgsConstructor

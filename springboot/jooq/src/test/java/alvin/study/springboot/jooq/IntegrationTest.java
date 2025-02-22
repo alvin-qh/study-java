@@ -1,5 +1,20 @@
 package alvin.study.springboot.jooq;
 
+import static alvin.study.springboot.jooq.infra.model.public_.Tables.ORG;
+import static alvin.study.springboot.jooq.infra.model.public_.Tables.USER;
+
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.jooq.DSLContext;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+
 import alvin.study.springboot.jooq.conf.TestConfig;
 import alvin.study.springboot.jooq.conf.TestContextInitializer;
 import alvin.study.springboot.jooq.core.TableCleaner;
@@ -9,19 +24,6 @@ import alvin.study.springboot.jooq.core.context.WebContext;
 import alvin.study.springboot.jooq.core.jooq.dsl.JdbcDSLContextManager;
 import alvin.study.springboot.jooq.infra.model.UserType;
 import alvin.study.springboot.jooq.util.security.PasswordUtil;
-import org.jooq.DSLContext;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-
-import java.util.concurrent.atomic.AtomicInteger;
-
-import static alvin.study.springboot.jooq.infra.model.public_.Tables.ORG;
-import static alvin.study.springboot.jooq.infra.model.public_.Tables.USER;
 
 /**
  * 集成测试超类, 所有需要数据库集成测试, 需要继承此类

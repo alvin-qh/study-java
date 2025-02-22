@@ -1,13 +1,15 @@
 package alvin.study.springboot.validator.validator;
 
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.junit.jupiter.api.Test;
+
 import alvin.study.springboot.validator.IntegrationTest;
 import alvin.study.springboot.validator.model.Computer;
 import alvin.study.springboot.validator.model.User;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * 测试 {@link Validators} 工具类, 对具备校验注解字段的对象进行校验

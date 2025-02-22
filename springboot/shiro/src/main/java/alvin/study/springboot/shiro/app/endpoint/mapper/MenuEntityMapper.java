@@ -1,17 +1,21 @@
 package alvin.study.springboot.shiro.app.endpoint.mapper;
 
-import alvin.study.springboot.shiro.app.endpoint.model.MenuDto;
-import alvin.study.springboot.shiro.app.endpoint.model.MenuDto.MenuItemDto;
-import alvin.study.springboot.shiro.infra.entity.Menu;
-import com.google.common.base.Functions;
-import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
+
+import org.springframework.stereotype.Component;
+
+import com.google.common.base.Functions;
+
+import lombok.RequiredArgsConstructor;
+
+import alvin.study.springboot.shiro.app.endpoint.model.MenuDto;
+import alvin.study.springboot.shiro.app.endpoint.model.MenuDto.MenuItemDto;
+import alvin.study.springboot.shiro.infra.entity.Menu;
 
 /**
  * 菜单对象类型转换
@@ -31,8 +35,8 @@ public class MenuEntityMapper {
     public MenuDto toDto(Collection<Menu> menuCollection) {
         // 读取数据表中的菜单记录并转为 MenuItemDto 对象, 并以 id 为 Key 产生 Map 对象
         var menuMap = menuCollection.stream()
-            .map(m -> modelMapper.map(m, MenuItemDto.class))
-            .collect(Collectors.toMap(MenuItemDto::getId, Functions.identity()));
+                .map(m -> modelMapper.map(m, MenuItemDto.class))
+                .collect(Collectors.toMap(MenuItemDto::getId, Functions.identity()));
 
         // 将子菜单和父菜单进行关联
         var result = new ArrayList<MenuItemDto>(menuMap.size());

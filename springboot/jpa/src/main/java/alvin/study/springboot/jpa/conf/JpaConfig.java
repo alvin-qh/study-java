@@ -1,9 +1,7 @@
 package alvin.study.springboot.jpa.conf;
 
-import alvin.study.springboot.jpa.core.context.Context;
-import alvin.study.springboot.jpa.infra.entity.User;
-import alvin.study.springboot.jpa.infra.entity.common.AuditedEntity;
-import lombok.RequiredArgsConstructor;
+import java.util.Optional;
+
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +9,11 @@ import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+
+import alvin.study.springboot.jpa.core.context.Context;
+import alvin.study.springboot.jpa.infra.entity.User;
+import alvin.study.springboot.jpa.infra.entity.common.AuditedEntity;
 
 /**
  * JAP 相关配置类

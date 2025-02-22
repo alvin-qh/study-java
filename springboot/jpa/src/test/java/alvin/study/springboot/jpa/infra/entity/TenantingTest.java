@@ -1,5 +1,20 @@
 package alvin.study.springboot.jpa.infra.entity;
 
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.ArrayList;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.PersistenceException;
+
+import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
+import org.hibernate.Session;
+import org.junit.jupiter.api.Test;
+
+import lombok.SneakyThrows;
+
 import alvin.study.springboot.jpa.IntegrationTest;
 import alvin.study.springboot.jpa.builder.DepartmentBuilder;
 import alvin.study.springboot.jpa.builder.OrgBuilder;
@@ -8,18 +23,6 @@ import alvin.study.springboot.jpa.core.context.Context;
 import alvin.study.springboot.jpa.core.context.CustomRequestAttributes;
 import alvin.study.springboot.jpa.core.context.WebContext;
 import alvin.study.springboot.jpa.infra.entity.common.TenantedEntityListener;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.PersistenceException;
-import lombok.SneakyThrows;
-import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
-import org.hibernate.Session;
-import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class TenantingTest extends IntegrationTest {
     // 注入 JPA 实体管理器对象

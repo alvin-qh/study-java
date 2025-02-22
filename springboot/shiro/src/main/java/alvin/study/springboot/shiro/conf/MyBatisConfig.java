@@ -1,6 +1,7 @@
 package alvin.study.springboot.shiro.conf;
 
 import org.mybatis.spring.annotation.MapperScan;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -20,5 +21,4 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration("conf/mybatis")
 @MapperScan(basePackages = { "alvin.study.springboot.shiro.infra.mapper" })
 @EnableTransactionManagement
-public class MyBatisConfig {
-}
+public class MyBatisConfig {}

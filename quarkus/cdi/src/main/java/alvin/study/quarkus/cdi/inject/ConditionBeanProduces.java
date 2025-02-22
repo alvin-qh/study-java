@@ -1,11 +1,12 @@
 package alvin.study.quarkus.cdi.inject;
 
+import jakarta.enterprise.inject.Produces;
+
 import io.quarkus.arc.DefaultBean;
 import io.quarkus.arc.lookup.LookupIfProperty;
 import io.quarkus.arc.lookup.LookupUnlessProperty;
 import io.quarkus.arc.profile.IfBuildProfile;
 import io.quarkus.arc.profile.UnlessBuildProfile;
-import jakarta.enterprise.inject.Produces;
 
 /**
  * 演示根据条件产生注入的 Bean 对象

@@ -1,11 +1,12 @@
 package alvin.study.springboot.testing.common;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-
 import java.time.Instant;
 import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.Getter;
 
 /**
  * 返回对象的包装类
@@ -63,11 +64,11 @@ public class ResponseWrapper<T> {
      */
     @JsonCreator
     public ResponseWrapper(
-        @JsonProperty("retCode") int retCode,
-        @JsonProperty("retMsg") String retMsg,
-        @JsonProperty("payload") T payload,
-        @JsonProperty("path") String path,
-        @JsonProperty("timestamp") Instant timestamp) {
+            @JsonProperty("retCode") int retCode,
+            @JsonProperty("retMsg") String retMsg,
+            @JsonProperty("payload") T payload,
+            @JsonProperty("path") String path,
+            @JsonProperty("timestamp") Instant timestamp) {
         this.retCode = retCode;
         this.retMsg = retMsg;
         this.payload = payload;
@@ -193,8 +194,8 @@ public class ResponseWrapper<T> {
          */
         @JsonCreator
         public ErrorDetail(
-            @JsonProperty("errorParameters") Map<String, String[]> errorParameters,
-            @JsonProperty("errorFields") Map<String, String[]> errorFields) {
+                @JsonProperty("errorParameters") Map<String, String[]> errorParameters,
+                @JsonProperty("errorFields") Map<String, String[]> errorFields) {
             this.errorParameters = errorParameters;
             this.errorFields = errorFields;
         }

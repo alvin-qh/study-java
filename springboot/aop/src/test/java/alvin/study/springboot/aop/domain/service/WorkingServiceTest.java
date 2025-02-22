@@ -1,31 +1,36 @@
 package alvin.study.springboot.aop.domain.service;
 
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
+
+import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
+
+import org.assertj.core.api.Condition;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.google.common.base.Objects;
+
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+
 import alvin.study.springboot.aop.IntegrationTest;
 import alvin.study.springboot.aop.aspect.AnnotationAdvice;
 import alvin.study.springboot.aop.aspect.Message;
 import alvin.study.springboot.aop.aspect.Message.Step;
 import alvin.study.springboot.aop.aspect.MethodAdvice;
 import alvin.study.springboot.aop.domain.model.Worker;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Objects;
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import org.assertj.core.api.Condition;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-
-import java.util.List;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.TimeUnit;
-
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 
 /**
  * 测试 AOP

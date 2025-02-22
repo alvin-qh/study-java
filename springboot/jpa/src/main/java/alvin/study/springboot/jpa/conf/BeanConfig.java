@@ -1,10 +1,12 @@
 package alvin.study.springboot.jpa.conf;
 
-import alvin.study.springboot.jpa.util.security.PasswordUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import lombok.extern.slf4j.Slf4j;
+
+import alvin.study.springboot.jpa.util.security.PasswordUtil;
 
 /**
  * 配置需被容器管理的 Bean 对象

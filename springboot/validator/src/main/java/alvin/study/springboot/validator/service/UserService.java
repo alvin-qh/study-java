@@ -1,15 +1,17 @@
 package alvin.study.springboot.validator.service;
 
-import alvin.study.springboot.validator.model.User;
+import java.util.Random;
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.Random;
+import alvin.study.springboot.validator.model.User;
 
 /**
  * 定义类型进行参数校验
@@ -50,8 +52,8 @@ public class UserService {
      * @return 校验成功, 产生实体类
      */
     public User createUser(
-        @NotBlank String name,
-        @NotNull @Min(10) @Max(100) Integer age) {
+            @NotBlank String name,
+            @NotNull @Min(10) @Max(100) Integer age) {
         return new User((long) RANDOM.nextInt(1000), name, age);
     }
 

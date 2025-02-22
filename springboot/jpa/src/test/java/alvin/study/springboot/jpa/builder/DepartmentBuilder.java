@@ -1,10 +1,10 @@
 package alvin.study.springboot.jpa.builder;
 
-import alvin.study.springboot.jpa.infra.entity.Department;
-import alvin.study.springboot.jpa.infra.entity.Employee;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import alvin.study.springboot.jpa.infra.entity.Department;
+import alvin.study.springboot.jpa.infra.entity.Employee;
 
 /**
  * 部门实体构建器类

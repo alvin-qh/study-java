@@ -1,15 +1,17 @@
 package alvin.study.springboot.mybatis.infra.mapper;
 
+import static org.assertj.core.api.BDDAssertions.then;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import org.junit.jupiter.api.Test;
+
 import alvin.study.springboot.mybatis.IntegrationTest;
 import alvin.study.springboot.mybatis.builder.DepartmentBuilder;
 import alvin.study.springboot.mybatis.builder.DepartmentEmployeeBuilder;
 import alvin.study.springboot.mybatis.builder.EmployeeBuilder;
 import alvin.study.springboot.mybatis.infra.entity.DepartmentEmployee;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
-import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link DepartmentEmployeeMapper} 类型
@@ -39,9 +41,9 @@ class DepartmentEmployeeMapperTest extends IntegrationTest {
 
         // 设置部门职员关系
         var relationship = newBuilder(DepartmentEmployeeBuilder.class)
-            .withDepartmentId(department1.getId())
-            .withEmployeeId(employee.getId())
-            .create();
+                .withDepartmentId(department1.getId())
+                .withEmployeeId(employee.getId())
+                .create();
 
         // 根据 id 获取部门职员关系, 查询两次
         var relationship1 = mapper.selectById(relationship.getId());

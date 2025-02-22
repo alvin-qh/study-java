@@ -1,11 +1,14 @@
 package alvin.study.springboot.ds.core.flyway;
 
-import alvin.study.springboot.ds.core.data.DataSourceContext;
-import lombok.RequiredArgsConstructor;
+import javax.sql.DataSource;
+
 import org.flywaydb.core.Flyway;
+
 import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
+import lombok.RequiredArgsConstructor;
+
+import alvin.study.springboot.ds.core.data.DataSourceContext;
 
 /**
  * 手动进行数据库 migrate 操作

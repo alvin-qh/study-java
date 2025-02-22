@@ -35,9 +35,9 @@ public class AccessLogRepository extends BaseRepository<List<AccessLog>> {
     public List<AccessLog> selectAll() {
         var storage = getStorage(NAME_ACCESS_LOGS);
         return storage.asStream()
-            .flatMap(List::stream)
-            .sorted((left, right) -> left.getLastAccessAt().compareTo(right.getLastAccessAt()))
-            .collect(Collectors.toList());
+                .flatMap(List::stream)
+                .sorted((left, right) -> left.getLastAccessAt().compareTo(right.getLastAccessAt()))
+                .collect(Collectors.toList());
     }
 
     /**

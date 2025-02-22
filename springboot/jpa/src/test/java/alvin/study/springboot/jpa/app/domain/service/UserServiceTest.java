@@ -1,13 +1,15 @@
 package alvin.study.springboot.jpa.app.domain.service;
 
-import alvin.study.springboot.jpa.IntegrationTest;
-import alvin.study.springboot.jpa.builder.UserBuilder;
-import alvin.study.springboot.jpa.infra.entity.User;
+import static org.assertj.core.api.BDDAssertions.then;
+
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import alvin.study.springboot.jpa.IntegrationTest;
+import alvin.study.springboot.jpa.builder.UserBuilder;
+import alvin.study.springboot.jpa.infra.entity.User;
 
 /**
  * 对 UserService 进行测试

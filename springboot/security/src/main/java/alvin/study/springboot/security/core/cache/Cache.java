@@ -1,17 +1,19 @@
 package alvin.study.springboot.security.core.cache;
 
-import alvin.study.springboot.security.infra.entity.Menu;
-import alvin.study.springboot.security.infra.entity.User;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.time.Duration;
+import java.util.Collection;
+import java.util.Optional;
+
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import java.time.Duration;
-import java.util.Collection;
-import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import alvin.study.springboot.security.infra.entity.Menu;
+import alvin.study.springboot.security.infra.entity.User;
 
 @Slf4j
 @Component

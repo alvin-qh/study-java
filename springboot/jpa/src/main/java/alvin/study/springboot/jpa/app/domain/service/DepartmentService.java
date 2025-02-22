@@ -1,17 +1,19 @@
 package alvin.study.springboot.jpa.app.domain.service;
 
+import jakarta.persistence.criteria.Join;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Strings;
 
+import lombok.RequiredArgsConstructor;
+
 import alvin.study.springboot.jpa.core.context.Context;
 import alvin.study.springboot.jpa.infra.entity.Department;
 import alvin.study.springboot.jpa.infra.entity.Org;
 import alvin.study.springboot.jpa.infra.repository.DepartmentRepository;
-import jakarta.persistence.criteria.Join;
-import lombok.RequiredArgsConstructor;
 
 /**
  * 和用户相关的服务类

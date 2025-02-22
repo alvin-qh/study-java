@@ -1,8 +1,9 @@
 package alvin.study.springboot.shiro.builder;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import alvin.study.springboot.shiro.infra.entity.Role;
 import alvin.study.springboot.shiro.infra.mapper.RoleMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 角色实体构建器类

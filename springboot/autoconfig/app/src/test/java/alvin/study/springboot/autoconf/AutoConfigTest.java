@@ -1,13 +1,15 @@
 package alvin.study.springboot.autoconf;
 
-import alvin.study.springboot.autoconf.domain.model.User;
-import alvin.study.springboot.autoconf.domain.service.UserService;
-import alvin.study.springboot.autoconf.util.TimeUtil;
+import static org.assertj.core.api.BDDAssertions.then;
+
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import alvin.study.springboot.autoconf.domain.model.User;
+import alvin.study.springboot.autoconf.domain.service.UserService;
+import alvin.study.springboot.autoconf.util.TimeUtil;
 
 @SpringBootTest
 class AutoConfigTest {

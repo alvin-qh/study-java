@@ -1,8 +1,9 @@
 package alvin.study.springboot.shiro.builder;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import alvin.study.springboot.shiro.infra.entity.UserGroup;
 import alvin.study.springboot.shiro.infra.mapper.UserGroupMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 用户组关系实体构建器类

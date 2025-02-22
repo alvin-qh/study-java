@@ -23,8 +23,7 @@
     <module>jpa</module>
     <module>datasource</module>
     <module>security</module>
-    <!-- Wait Shiro to support SpringBoot 3.0 -->
-    <!-- <module>shiro</module> -->
+    <module>shiro</module>
     <module>mybatis</module>
     <module>jooq</module>
     <module>kickstart-graphql</module>

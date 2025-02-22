@@ -1,12 +1,13 @@
 package alvin.study.springboot.security.core.security.auth;
 
-import alvin.study.springboot.security.infra.entity.User;
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties.Authentication;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
-import java.util.Collection;
-import java.util.List;
+import alvin.study.springboot.security.infra.entity.User;
 
 /**
  * 对用户名密码进行验证的 {@link Authentication} 接口对象

@@ -21,5 +21,5 @@ public class TestingContextInitializer implements ApplicationContextInitializer<
      * 对所给的 {@link ConfigurableApplicationContext} 对象进行初始化操作
      */
     @Override
-    public void initialize(ConfigurableApplicationContext applicationContext) { }
+    public void initialize(ConfigurableApplicationContext applicationContext) {}
 }

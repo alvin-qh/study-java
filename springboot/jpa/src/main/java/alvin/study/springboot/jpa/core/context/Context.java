@@ -1,9 +1,10 @@
 package alvin.study.springboot.jpa.core.context;
 
-import alvin.study.springboot.jpa.conf.ContextConfig;
 import org.springframework.aop.scope.ScopedProxyUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
+
+import alvin.study.springboot.jpa.conf.ContextConfig;
 
 /**
  * 上下文对象接口

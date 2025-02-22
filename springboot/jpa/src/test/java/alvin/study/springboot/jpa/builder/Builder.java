@@ -1,11 +1,13 @@
 package alvin.study.springboot.jpa.builder;
 
-import alvin.study.springboot.jpa.infra.entity.common.TenantedEntity;
-import com.github.javafaker.Faker;
+import java.util.Locale;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
-import java.util.Locale;
+import com.github.javafaker.Faker;
+
+import alvin.study.springboot.jpa.infra.entity.common.TenantedEntity;
 
 /**
  * 实体构建器超类

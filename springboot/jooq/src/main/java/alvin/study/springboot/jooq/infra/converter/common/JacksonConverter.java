@@ -3,10 +3,12 @@ package alvin.study.springboot.jooq.infra.converter.common;
 import org.jooq.Converter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.google.common.base.Strings;
 
-import alvin.study.springboot.jooq.util.bean.SpringBeanUtil;
 import lombok.SneakyThrows;
+
+import alvin.study.springboot.jooq.util.bean.SpringBeanUtil;
 
 /**
  * 将 JSON 类型和 Object 类型互转的转换类

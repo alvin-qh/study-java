@@ -2,12 +2,13 @@ package alvin.study.quarkus.cdi.inject;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
+import jakarta.inject.Inject;
+
 import org.junit.jupiter.api.Test;
 
 import alvin.study.quarkus.cdi.inject.anno.A;
 import alvin.study.quarkus.cdi.inject.anno.B;
 import io.quarkus.test.junit.QuarkusTest;
-import jakarta.inject.Inject;
 
 /**
  * 测试基本的 Bean 注入

@@ -1,13 +1,15 @@
 package alvin.study.springboot.jpa.app.domain.service;
 
-import alvin.study.springboot.jpa.IntegrationTest;
-import alvin.study.springboot.jpa.builder.DepartmentBuilder;
-import alvin.study.springboot.jpa.infra.entity.Department;
+import static org.assertj.core.api.BDDAssertions.then;
+
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import alvin.study.springboot.jpa.IntegrationTest;
+import alvin.study.springboot.jpa.builder.DepartmentBuilder;
+import alvin.study.springboot.jpa.infra.entity.Department;
 
 /**
  * 测试 {@link DepartmentService} 对象

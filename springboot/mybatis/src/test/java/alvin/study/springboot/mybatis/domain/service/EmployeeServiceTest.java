@@ -2,9 +2,10 @@ package alvin.study.springboot.mybatis.domain.service;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import org.junit.jupiter.api.Test;
 
 import alvin.study.springboot.mybatis.IntegrationTest;
 import alvin.study.springboot.mybatis.builder.DepartmentBuilder;
@@ -33,17 +34,17 @@ class EmployeeServiceTest extends IntegrationTest {
         var department1 = newBuilder(DepartmentBuilder.class).create();
         // 设置 Employee 和 Department 对应关系
         newBuilder(DepartmentEmployeeBuilder.class)
-            .withDepartmentId(department1.getId())
-            .withEmployeeId(employee.getId())
-            .create();
+                .withDepartmentId(department1.getId())
+                .withEmployeeId(employee.getId())
+                .create();
 
         // 创建第二个 Department 实体对象
         var department2 = newBuilder(DepartmentBuilder.class).create();
         // 设置 Employee 和 Department 对应关系
         newBuilder(DepartmentEmployeeBuilder.class)
-            .withDepartmentId(department2.getId())
-            .withEmployeeId(employee.getId())
-            .create();
+                .withDepartmentId(department2.getId())
+                .withEmployeeId(employee.getId())
+                .create();
 
         // 清除查询缓存
         clearSessionCache();
@@ -63,7 +64,7 @@ class EmployeeServiceTest extends IntegrationTest {
         // 获取相关的 departmentDto 对象
         var departmentDtos = mayEmployeeDto.get().getDepartments();
         then(departmentDtos)
-            .extracting("id")
-            .containsExactly(department1.getId(), department2.getId());
+                .extracting("id")
+                .containsExactly(department1.getId(), department2.getId());
     }
 }

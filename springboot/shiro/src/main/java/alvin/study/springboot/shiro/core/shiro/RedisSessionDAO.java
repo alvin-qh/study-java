@@ -1,21 +1,24 @@
 package alvin.study.springboot.shiro.core.shiro;
 
-import alvin.study.springboot.shiro.app.domain.service.SessionService;
-import io.lettuce.core.RedisException;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.session.Session;
-import org.apache.shiro.session.UnknownSessionException;
-import org.apache.shiro.session.mgt.ValidatingSession;
-import org.apache.shiro.session.mgt.eis.SessionDAO;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.redis.core.RedisTemplate;
-
 import java.io.Serializable;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+
+import org.apache.shiro.session.Session;
+import org.apache.shiro.session.UnknownSessionException;
+import org.apache.shiro.session.mgt.ValidatingSession;
+import org.apache.shiro.session.mgt.eis.SessionDAO;
+
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.core.RedisTemplate;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import alvin.study.springboot.shiro.app.domain.service.SessionService;
+import io.lettuce.core.RedisException;
 
 /**
  * session 存储类型
@@ -134,13 +137,13 @@ public class RedisSessionDAO implements SessionDAO {
         } catch (DataAccessException | RedisException e) {
             log.error("Cannot load sessions from redis, load them from database");
             values = sessionService.loadAllSessions().stream()
-                .map(s -> (Object) s.getValue()).toList();
+                    .map(s -> (Object) s.getValue()).toList();
         }
 
         // 将缓存值转为 session 对象
         return values.stream()
-            .map(v -> (Session) SessionUtil.stringToObject((String) v))
-            .toList();
+                .map(v -> (Session) SessionUtil.stringToObject((String) v))
+                .toList();
     }
 
     /**
@@ -158,11 +161,10 @@ public class RedisSessionDAO implements SessionDAO {
         try {
             // 在缓存中创建 session 存储
             redis.opsForValue()
-                .set(
-                    makeKey(session.getId()),
-                    Objects.requireNonNull(SessionUtil.objectToString(session)),
-                    period
-                );
+                    .set(
+                        makeKey(session.getId()),
+                        Objects.requireNonNull(SessionUtil.objectToString(session)),
+                        period);
 
             // 将缓存内容同步到数据库
             sessionService.persistSession((String) session.getId(), this, period);

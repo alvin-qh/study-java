@@ -1,18 +1,20 @@
 package alvin.study.springboot.security.app.domain.service;
 
+import static org.assertj.core.api.BDDAssertions.then;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import org.junit.jupiter.api.Test;
+
 import alvin.study.springboot.security.IntegrationTest;
 import alvin.study.springboot.security.builder.PermissionBuilder;
 import alvin.study.springboot.security.builder.RoleBuilder;
 import alvin.study.springboot.security.builder.RoleGrantBuilder;
 import alvin.study.springboot.security.builder.RolePermissionBuilder;
 import alvin.study.springboot.security.infra.entity.RoleGrantType;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-
-import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link AuthService} 类型

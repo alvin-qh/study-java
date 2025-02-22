@@ -1,11 +1,13 @@
 package alvin.study.springboot.security.infra.entity;
 
-import alvin.study.springboot.security.infra.entity.common.AuditedEntity;
-import alvin.study.springboot.security.infra.mapper.UserGroupMapper;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import alvin.study.springboot.security.infra.entity.common.AuditedEntity;
+import alvin.study.springboot.security.infra.mapper.UserGroupMapper;
 
 /**
  * 对应 {@code user_group} 表的实体类型, 表示用户和组的关系

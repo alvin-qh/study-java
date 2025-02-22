@@ -1,13 +1,15 @@
 package alvin.study.springboot.jooq.util.security;
 
-import lombok.SneakyThrows;
-import org.apache.commons.codec.binary.Hex;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+
+import org.apache.commons.codec.binary.Hex;
+
+import lombok.SneakyThrows;
 
 /**
  * 密码加密处理工具类

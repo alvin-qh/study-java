@@ -1,13 +1,15 @@
 package alvin.study.springboot.shiro.infra.entity;
 
-import alvin.study.springboot.shiro.infra.entity.common.AuditedEntity;
-import alvin.study.springboot.shiro.infra.mapper.SessionMapper;
+import java.time.Instant;
+
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.time.Instant;
+import alvin.study.springboot.shiro.infra.entity.common.AuditedEntity;
+import alvin.study.springboot.shiro.infra.mapper.SessionMapper;
 
 /**
  * 对应 {@code session} 表的实体类型, 表示会话

@@ -1,11 +1,12 @@
 package alvin.study.springboot.mybatis.infra.mapper;
 
+import org.apache.ibatis.annotations.CacheNamespace;
+import org.apache.ibatis.annotations.Mapper;
+
 import alvin.study.springboot.mybatis.infra.entity.DepartmentEmployee;
 import alvin.study.springboot.mybatis.infra.entity.common.AuditedEntity;
 import alvin.study.springboot.mybatis.infra.entity.common.TenantedEntity;
 import alvin.study.springboot.mybatis.infra.handler.EntityFieldHandler;
-import org.apache.ibatis.annotations.CacheNamespace;
-import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 对 {@link DepartmentEmployee} 实体进行操作的 Mapper 类型
@@ -69,5 +70,4 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 @CacheNamespace
-public interface DepartmentEmployeeMapper extends BaseMapper<DepartmentEmployee> {
-}
+public interface DepartmentEmployeeMapper extends BaseMapper<DepartmentEmployee> {}

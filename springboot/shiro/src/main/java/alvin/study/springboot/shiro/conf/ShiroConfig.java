@@ -1,16 +1,8 @@
 package alvin.study.springboot.shiro.conf;
 
-import alvin.study.springboot.shiro.app.domain.service.AuthService;
-import alvin.study.springboot.shiro.app.domain.service.SessionService;
-import alvin.study.springboot.shiro.core.shiro.CustomerCredentialsMatcher;
-import alvin.study.springboot.shiro.core.shiro.CustomerRealm;
-import alvin.study.springboot.shiro.core.shiro.RedisCacheManager;
-import alvin.study.springboot.shiro.core.shiro.RedisSessionDAO;
-import alvin.study.springboot.shiro.core.shiro.RedisSessionManager;
-import alvin.study.springboot.shiro.core.shiro.SessionUtil;
-import alvin.study.springboot.shiro.core.shiro.TokenAuthenticationFilter;
-import alvin.study.springboot.shiro.util.security.PasswordEncoder;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.Duration;
+import java.util.Map;
+
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
@@ -21,6 +13,7 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.spring.web.config.ShiroRequestMappingConfig;
 import org.apache.shiro.spring.web.config.ShiroWebConfiguration;
 import org.apache.shiro.spring.web.config.ShiroWebFilterConfiguration;
+
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,8 +24,18 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import java.time.Duration;
-import java.util.Map;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import alvin.study.springboot.shiro.app.domain.service.AuthService;
+import alvin.study.springboot.shiro.app.domain.service.SessionService;
+import alvin.study.springboot.shiro.core.shiro.CustomerCredentialsMatcher;
+import alvin.study.springboot.shiro.core.shiro.CustomerRealm;
+import alvin.study.springboot.shiro.core.shiro.RedisCacheManager;
+import alvin.study.springboot.shiro.core.shiro.RedisSessionDAO;
+import alvin.study.springboot.shiro.core.shiro.RedisSessionManager;
+import alvin.study.springboot.shiro.core.shiro.SessionUtil;
+import alvin.study.springboot.shiro.core.shiro.TokenAuthenticationFilter;
+import alvin.study.springboot.shiro.util.security.PasswordEncoder;
 
 /**
  * 对 Shiro 框架进行配置
@@ -67,9 +70,9 @@ public class ShiroConfig {
      */
     @Bean
     Realm realm(
-        CacheManager cacheManager,
-        PasswordEncoder passwordEncoder,
-        AuthService authService) {
+            CacheManager cacheManager,
+            PasswordEncoder passwordEncoder,
+            AuthService authService) {
         var realm = new CustomerRealm(
             // 注入缓存管理器对象
             cacheManager,
@@ -91,8 +94,8 @@ public class ShiroConfig {
      */
     @Bean
     SessionManager sessionManager(
-        @Value("${application.security.session.period}") String period,
-        SessionService sessionService) {
+            @Value("${application.security.session.period}") String period,
+            SessionService sessionService) {
         // 实例化 Session 存储对象
         var sessionDAO = new RedisSessionDAO(redisTemplate, Duration.parse(period), sessionService);
         // 实例化 Session 管理器对象
@@ -209,9 +212,7 @@ public class ShiroConfig {
         // 设置过滤器, 将 authc 拦截器进行替换
         filterFactoryBean.getFilters().putAll(
             Map.of(
-                "authc", new TokenAuthenticationFilter(sessionUtil, objectMapper)
-            )
-        );
+                "authc", new TokenAuthenticationFilter(sessionUtil, objectMapper)));
 
         // 设置登录 URI, 该地址可以直接访问
         filterFactoryBean.setLoginUrl("/auth/login");

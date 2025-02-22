@@ -1,12 +1,13 @@
 package alvin.study.quarkus.web.conf;
 
+import jakarta.inject.Singleton;
+
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import io.quarkus.jackson.ObjectMapperCustomizer;
-import jakarta.inject.Singleton;
 
 /**
  * 配置 Jackson JSON 序列号器

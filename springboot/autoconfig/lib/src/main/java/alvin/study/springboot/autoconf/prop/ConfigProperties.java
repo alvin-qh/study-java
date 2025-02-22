@@ -1,8 +1,9 @@
 package alvin.study.springboot.autoconf.prop;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * 读取 `application.yml` 中指定前缀下的配置信息

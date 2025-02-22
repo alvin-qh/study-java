@@ -1,8 +1,9 @@
 package alvin.study.springboot.shiro.builder;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import alvin.study.springboot.shiro.infra.entity.RolePermission;
 import alvin.study.springboot.shiro.infra.mapper.RolePermissionMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 权限实体构建器类

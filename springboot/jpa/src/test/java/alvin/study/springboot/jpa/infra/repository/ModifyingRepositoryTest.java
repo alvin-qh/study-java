@@ -1,13 +1,16 @@
 package alvin.study.springboot.jpa.infra.repository;
 
+import static org.assertj.core.api.BDDAssertions.then;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.SneakyThrows;
+
+import org.junit.jupiter.api.Test;
+
 import alvin.study.springboot.jpa.IntegrationTest;
 import alvin.study.springboot.jpa.builder.UserBuilder;
 import alvin.study.springboot.jpa.util.security.PasswordUtil;
-import lombok.SneakyThrows;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试通过显式声明的 HQL 语句完成查询, 修改和删除操作

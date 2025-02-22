@@ -1,13 +1,15 @@
 package alvin.study.springboot.shiro.infra.entity;
 
-import alvin.study.springboot.shiro.infra.entity.common.AuditedEntity;
-import alvin.study.springboot.shiro.infra.mapper.UserMapper;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import alvin.study.springboot.shiro.infra.entity.common.AuditedEntity;
+import alvin.study.springboot.shiro.infra.mapper.UserMapper;
 
 /**
  * 对应 {@code user} 表的实体类型, 表示用户

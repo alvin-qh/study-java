@@ -1,17 +1,19 @@
 package alvin.study.springboot.shiro.infra.mapper;
 
-import alvin.study.springboot.shiro.infra.entity.Permission;
-import alvin.study.springboot.shiro.infra.entity.common.AuditedEntity;
-import alvin.study.springboot.shiro.infra.handler.EntityFieldHandler;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+
 import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+import alvin.study.springboot.shiro.infra.entity.Permission;
+import alvin.study.springboot.shiro.infra.entity.common.AuditedEntity;
+import alvin.study.springboot.shiro.infra.handler.EntityFieldHandler;
 
 /**
  * 对 {@link Permission} 实体进行操作的 Mapper 类型
@@ -111,5 +113,5 @@ public interface PermissionMapper extends BaseMapper<Permission> {
         where name = #{name} and resource = #{resource} and action = #{action}
         """)
     Optional<Permission> selectByNameResourceAndAction(
-        @Param("name") String name, @Param("resource") String resource, @Param("action") String action);
+            @Param("name") String name, @Param("resource") String resource, @Param("action") String action);
 }

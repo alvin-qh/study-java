@@ -1,5 +1,17 @@
 package alvin.study.springboot.mybatis.infra.mapper;
 
+import static org.assertj.core.api.BDDAssertions.then;
+
+import java.util.ArrayList;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+
+import org.junit.jupiter.api.Test;
+
 import alvin.study.springboot.mybatis.IntegrationTest;
 import alvin.study.springboot.mybatis.builder.UserBuilder;
 import alvin.study.springboot.mybatis.conf.MyBatisConfig;
@@ -7,15 +19,6 @@ import alvin.study.springboot.mybatis.infra.entity.User;
 import alvin.study.springboot.mybatis.infra.entity.UserType;
 import alvin.study.springboot.mybatis.infra.mapper.method.DeleteAllMethod;
 import alvin.study.springboot.mybatis.infra.mapper.method.InsertAllBatchMethod;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.Optional;
-
-import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link UserMapper} 类型

@@ -4,11 +4,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import lombok.SneakyThrows;
+
 import alvin.study.springboot.mybatis.infra.entity.User;
 import alvin.study.springboot.mybatis.infra.entity.UserType;
 import alvin.study.springboot.mybatis.infra.mapper.UserMapper;
 import alvin.study.springboot.mybatis.util.security.PasswordUtil;
-import lombok.SneakyThrows;
 
 /**
  * 用户实体构建器类

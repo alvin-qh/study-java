@@ -4,11 +4,12 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import org.junit.jupiter.api.Test;
 
 import alvin.study.springboot.mybatis.IntegrationTest;
 import alvin.study.springboot.mybatis.builder.DepartmentBuilder;
@@ -38,26 +39,26 @@ class EmployeeMapperTest extends IntegrationTest {
     void selectByNameWithDepartments_shouldGetSelectResult() {
         // 创建一个员工
         var employee = newBuilder(EmployeeBuilder.class)
-            .withName("EMP-001")
-            .create();
+                .withName("EMP-001")
+                .create();
 
         // 创建部门 1
         var department1 = newBuilder(DepartmentBuilder.class).create();
 
         // 创建部门员工关系
         newBuilder(DepartmentEmployeeBuilder.class)
-            .withDepartmentId(department1.getId())
-            .withEmployeeId(employee.getId())
-            .create();
+                .withDepartmentId(department1.getId())
+                .withEmployeeId(employee.getId())
+                .create();
 
         // 创建部门 2
         var department2 = newBuilder(DepartmentBuilder.class).create();
 
         // 创建部门员工关系
         newBuilder(DepartmentEmployeeBuilder.class)
-            .withDepartmentId(department2.getId())
-            .withEmployeeId(employee.getId())
-            .create();
+                .withDepartmentId(department2.getId())
+                .withEmployeeId(employee.getId())
+                .create();
 
         // 清除一级缓存
         clearSessionCache();
@@ -125,8 +126,8 @@ class EmployeeMapperTest extends IntegrationTest {
         // 创建 100 个员工实体
         for (var i = 0; i < 100; i++) {
             var builder = newBuilder(EmployeeBuilder.class)
-                .withName(namePrefix + i)
-                .withEmail(namePrefix + i + "@fakemail.com");
+                    .withName(namePrefix + i)
+                    .withEmail(namePrefix + i + "@fakemail.com");
 
             var isLeader = i % 2 == 0;
             if (isLeader) {
@@ -140,9 +141,9 @@ class EmployeeMapperTest extends IntegrationTest {
             if (!isLeader) {
                 // 对于非 Leader 员工, 设定其和部门的关系
                 newBuilder(DepartmentEmployeeBuilder.class)
-                    .withDepartmentId(department.getId())
-                    .withEmployeeId(employee.getId())
-                    .create();
+                        .withDepartmentId(department.getId())
+                        .withEmployeeId(employee.getId())
+                        .create();
             }
         }
 

@@ -1,13 +1,15 @@
 package alvin.study.springboot.shiro.infra.mapper;
 
-import alvin.study.springboot.shiro.infra.entity.Menu;
-import alvin.study.springboot.shiro.infra.entity.common.AuditedEntity;
-import alvin.study.springboot.shiro.infra.handler.EntityFieldHandler;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import java.util.List;
+
 import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.List;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+import alvin.study.springboot.shiro.infra.entity.Menu;
+import alvin.study.springboot.shiro.infra.entity.common.AuditedEntity;
+import alvin.study.springboot.shiro.infra.handler.EntityFieldHandler;
 
 /**
  * 对 {@link Menu} 实体进行操作的 Mapper 类型

@@ -43,18 +43,17 @@ import alvin.study.springboot.mvc.util.http.Servlets;
  * @param timestamp 响应时间戳
  */
 public record ResponseWrapper<T>(
-    @JsonProperty("retCode") int retCode,
-    @JsonProperty("retMsg") String retMsg,
-    @JsonProperty("payload") T payload,
-    @JsonProperty("path") String path,
-    @JsonProperty("timestamp") Instant timestamp
-) {
+        @JsonProperty("retCode") int retCode,
+        @JsonProperty("retMsg") String retMsg,
+        @JsonProperty("payload") T payload,
+        @JsonProperty("path") String path,
+        @JsonProperty("timestamp") Instant timestamp) {
+
     private static final int SUCCESS_CODE = 0;
     private static final String SUCCESS_MESSAGE = "success";
 
     @JsonCreator
-    public ResponseWrapper {
-    }
+    public ResponseWrapper {}
 
     /**
      * 包装正确的响应数据
@@ -150,12 +149,11 @@ public record ResponseWrapper<T>(
      * @param errorFields     错误字段列表
      */
     public record ErrorDetail(
-        @JsonProperty("errorParameters") Map<String, String[]> errorParameters,
-        @JsonProperty("errorFields") Map<String, String[]> errorFields) {
+            @JsonProperty("errorParameters") Map<String, String[]> errorParameters,
+            @JsonProperty("errorFields") Map<String, String[]> errorFields) {
 
         @JsonCreator
-        public ErrorDetail {
-        }
+        public ErrorDetail {}
 
         /**
          * 通过 {@code errorParameters} 字段创建 {@link ErrorDetail} 对象

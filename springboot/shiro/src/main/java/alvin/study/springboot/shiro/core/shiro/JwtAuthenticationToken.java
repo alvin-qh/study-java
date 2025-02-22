@@ -1,7 +1,8 @@
 package alvin.study.springboot.shiro.core.shiro;
 
-import lombok.RequiredArgsConstructor;
 import org.apache.shiro.authc.AuthenticationToken;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * 保存 JWT 的用户凭证

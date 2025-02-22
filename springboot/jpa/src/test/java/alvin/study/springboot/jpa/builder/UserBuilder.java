@@ -1,9 +1,11 @@
 package alvin.study.springboot.jpa.builder;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.SneakyThrows;
+
 import alvin.study.springboot.jpa.infra.entity.User;
 import alvin.study.springboot.jpa.util.security.PasswordUtil;
-import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 用户实体构建器类

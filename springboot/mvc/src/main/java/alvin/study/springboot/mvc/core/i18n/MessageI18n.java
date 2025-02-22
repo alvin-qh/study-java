@@ -6,8 +6,9 @@ import org.springframework.context.MessageSource;
 
 import com.google.common.base.Strings;
 
-import alvin.study.springboot.mvc.util.http.Servlets;
 import lombok.RequiredArgsConstructor;
+
+import alvin.study.springboot.mvc.util.http.Servlets;
 
 /**
  * 基于 Spring {@code MessageSource} 机制的 i18n 实现类

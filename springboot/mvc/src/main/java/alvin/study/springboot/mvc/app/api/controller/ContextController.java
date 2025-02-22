@@ -8,13 +8,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import alvin.study.springboot.mvc.app.api.advice.ApiResponseAdvice;
 import alvin.study.springboot.mvc.app.api.interceptor.ApiHandlerInterceptor;
 import alvin.study.springboot.mvc.app.api.model.ContextDto;
 import alvin.study.springboot.mvc.core.context.Context;
 import alvin.study.springboot.mvc.core.context.NoContextAttributeException;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 测试 {@link Context} 对象的使用

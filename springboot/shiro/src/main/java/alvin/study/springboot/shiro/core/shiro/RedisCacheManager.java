@@ -1,18 +1,21 @@
 package alvin.study.springboot.shiro.core.shiro;
 
-import io.lettuce.core.RedisException;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.cache.Cache;
-import org.apache.shiro.cache.CacheException;
-import org.apache.shiro.cache.CacheManager;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.redis.core.RedisTemplate;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import org.apache.shiro.cache.Cache;
+import org.apache.shiro.cache.CacheException;
+import org.apache.shiro.cache.CacheManager;
+
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.core.RedisTemplate;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import io.lettuce.core.RedisException;
 
 /**
  * 缓存管理器类型
@@ -189,10 +192,10 @@ public class RedisCacheManager implements CacheManager {
                     }
 
                     return Optional.ofNullable(redis.opsForValue().multiGet(keys))
-                        .orElse(List.of())
-                        .stream()
-                        .map(o -> (V) SessionUtil.stringToObject((String) o))
-                        .toList();
+                            .orElse(List.of())
+                            .stream()
+                            .map(o -> (V) SessionUtil.stringToObject((String) o))
+                            .toList();
                 } catch (DataAccessException | RedisException e) {
                     log.error("Cannot get cache values from redis", e);
                     return List.of();

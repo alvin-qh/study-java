@@ -11,6 +11,7 @@ import java.util.function.Consumer;
 
 import org.jooq.DSLContext;
 import org.jooq.exception.DataAccessException;
+
 import org.springframework.stereotype.Repository;
 
 import alvin.study.springboot.jooq.infra.model.public_.tables.records.OrgRecord;

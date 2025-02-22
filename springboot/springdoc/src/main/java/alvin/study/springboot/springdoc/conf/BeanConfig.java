@@ -6,10 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.google.common.base.Functions;
-
-import com.auth0.jwt.algorithms.Algorithm;
-
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -18,6 +14,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
+
+import com.auth0.jwt.algorithms.Algorithm;
+
+import com.google.common.base.Functions;
 
 import alvin.study.springboot.springdoc.core.data.DataSource;
 import alvin.study.springboot.springdoc.core.data.Storage;
@@ -86,8 +86,8 @@ public class BeanConfig {
      */
     @Bean
     DataSource dataSource(
-        @Qualifier("userInfo") List<Map<String, String>> userInfo,
-        PasswordEncoder passwordEncoder) {
+            @Qualifier("userInfo") List<Map<String, String>> userInfo,
+            PasswordEncoder passwordEncoder) {
         var ds = new DataSource();
 
         // 创建存储访问日志实体对象的存储对象
@@ -96,10 +96,10 @@ public class BeanConfig {
         // 创建存储 API 访问用户实体的存储对象
         ds.addStorage(new Storage<>("access-users",
             userInfo.stream()
-                .map(u -> new User(
-                    u.get("username").toLowerCase(),
-                    passwordEncoder.encode(u.get("password"))))
-                .collect(Collectors.toMap(User::getUsername, Functions.identity()))));
+                    .map(u -> new User(
+                        u.get("username").toLowerCase(),
+                        passwordEncoder.encode(u.get("password"))))
+                    .collect(Collectors.toMap(User::getUsername, Functions.identity()))));
 
         return ds;
     }

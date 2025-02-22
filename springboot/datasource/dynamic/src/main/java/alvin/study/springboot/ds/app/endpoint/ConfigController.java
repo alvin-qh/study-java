@@ -1,10 +1,7 @@
 package alvin.study.springboot.ds.app.endpoint;
 
-import alvin.study.springboot.ds.app.domain.model.ConfigDto;
-import alvin.study.springboot.ds.app.domain.service.ConfigService;
-import alvin.study.springboot.ds.core.http.common.ResponseDto;
 import jakarta.validation.constraints.NotBlank;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +9,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import lombok.RequiredArgsConstructor;
+
+import alvin.study.springboot.ds.app.domain.model.ConfigDto;
+import alvin.study.springboot.ds.app.domain.service.ConfigService;
+import alvin.study.springboot.ds.core.http.common.ResponseDto;
 
 /**
  * 配置 Controller 类

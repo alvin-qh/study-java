@@ -1,9 +1,10 @@
 package alvin.study.springboot.shiro.builder;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import alvin.study.springboot.shiro.infra.entity.RoleGrant;
 import alvin.study.springboot.shiro.infra.entity.RoleGrantType;
 import alvin.study.springboot.shiro.infra.mapper.RoleGrantMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 角色实体构建器类

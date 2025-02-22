@@ -1,5 +1,12 @@
 package alvin.study.springboot.ds.app.domain.service;
 
+import java.time.Instant;
+
+import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import alvin.study.springboot.ds.app.domain.model.ConfigDto;
 import alvin.study.springboot.ds.app.domain.service.common.BaseService;
 import alvin.study.springboot.ds.core.data.DataSourceContext;
@@ -8,11 +15,6 @@ import alvin.study.springboot.ds.core.data.DynamicDataSource;
 import alvin.study.springboot.ds.core.flyway.Migration;
 import alvin.study.springboot.ds.infra.entity.ConfigEntity;
 import alvin.study.springboot.ds.infra.repository.ConfigRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
-import java.time.Instant;
 
 /**
  * 数据库服务类

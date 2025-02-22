@@ -2,12 +2,13 @@ package alvin.study.quarkus.cdi.inject;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
+import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
-import jakarta.enterprise.inject.Instance;
-import jakarta.inject.Inject;
 
 /**
  * 测试条件注入

@@ -1,15 +1,17 @@
 package alvin.study.springboot.shiro.infra.mapper;
 
-import alvin.study.springboot.shiro.infra.entity.RolePermission;
-import alvin.study.springboot.shiro.infra.entity.common.AuditedEntity;
-import alvin.study.springboot.shiro.infra.handler.EntityFieldHandler;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import java.util.Optional;
+
 import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
-import java.util.Optional;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+import alvin.study.springboot.shiro.infra.entity.RolePermission;
+import alvin.study.springboot.shiro.infra.entity.common.AuditedEntity;
+import alvin.study.springboot.shiro.infra.handler.EntityFieldHandler;
 
 /**
  * 对 {@link RolePermission} 实体进行操作的 Mapper 类型
@@ -86,6 +88,6 @@ public interface RolePermissionMapper extends BaseMapper<RolePermission> {
         where role_id = #{roleId} and permission_id = #{permissionId}
         """)
     Optional<RolePermission> selectByRoleAndPermissionId(
-        @Param("roleId") Long roleId,
-        @Param("permissionId") Long permissionId);
+            @Param("roleId") Long roleId,
+            @Param("permissionId") Long permissionId);
 }

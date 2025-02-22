@@ -1,19 +1,20 @@
 package alvin.study.springboot.jooq.infra.repository;
 
-import alvin.study.springboot.jooq.IntegrationTest;
-import alvin.study.springboot.jooq.infra.model.EmployeeInfo;
-import alvin.study.springboot.jooq.infra.model.Gender;
-import alvin.study.springboot.jooq.infra.repository.common.BaseRepository;
-
-import org.assertj.core.api.InstanceOfAssertFactories;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.assertj.core.api.InstanceOfAssertFactories;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import alvin.study.springboot.jooq.IntegrationTest;
+import alvin.study.springboot.jooq.infra.model.EmployeeInfo;
+import alvin.study.springboot.jooq.infra.model.Gender;
+import alvin.study.springboot.jooq.infra.repository.common.BaseRepository;
 
 /**
  * 测试 {@link EmployeeRepository} 类型对

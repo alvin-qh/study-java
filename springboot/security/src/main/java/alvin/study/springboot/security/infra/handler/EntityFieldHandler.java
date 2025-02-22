@@ -1,13 +1,17 @@
 package alvin.study.springboot.security.infra.handler;
 
-import alvin.study.springboot.security.infra.entity.User;
-import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import lombok.RequiredArgsConstructor;
+import java.time.Instant;
+
 import org.apache.ibatis.reflection.MetaObject;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
+import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+
+import lombok.RequiredArgsConstructor;
+
+import alvin.study.springboot.security.infra.entity.User;
 
 /**
  * 声明实体字段的自动填充处理类

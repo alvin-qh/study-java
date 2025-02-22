@@ -1,11 +1,13 @@
 package alvin.study.springboot.shiro.infra.entity;
 
-import alvin.study.springboot.shiro.infra.entity.common.BaseEntity;
-import alvin.study.springboot.shiro.infra.mapper.MenuMapper;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import alvin.study.springboot.shiro.infra.entity.common.BaseEntity;
+import alvin.study.springboot.shiro.infra.mapper.MenuMapper;
 
 /**
  * 对应 {@code group} 表的实体类型, 表示用户组

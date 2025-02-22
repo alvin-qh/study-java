@@ -1,17 +1,20 @@
 package alvin.study.springboot.security.app.endpoint;
 
+import static org.assertj.core.api.BDDAssertions.then;
+
+import java.util.Objects;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.auth0.jwt.interfaces.Payload;
+
+import org.junit.jupiter.api.Test;
+
 import alvin.study.springboot.security.IntegrationTest;
 import alvin.study.springboot.security.app.endpoint.model.LoginForm;
 import alvin.study.springboot.security.app.endpoint.model.TokenDto;
 import alvin.study.springboot.security.app.endpoint.model.UserDto;
 import alvin.study.springboot.security.util.security.Jwt;
-import com.auth0.jwt.interfaces.Payload;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Objects;
-
-import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link AuthController} 控制器类型

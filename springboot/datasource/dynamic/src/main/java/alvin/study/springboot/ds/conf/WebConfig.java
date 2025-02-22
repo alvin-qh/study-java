@@ -1,10 +1,11 @@
 package alvin.study.springboot.ds.conf;
 
-import alvin.study.springboot.ds.core.http.interceptor.ApiHandlerInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import alvin.study.springboot.ds.core.http.interceptor.ApiHandlerInterceptor;
 
 @Configuration("core/web")
 public class WebConfig implements WebMvcConfigurer {

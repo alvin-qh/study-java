@@ -2,9 +2,10 @@ package alvin.study.springboot.mvc.app.api.controller;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
+
+import org.junit.jupiter.api.Test;
 
 import alvin.study.springboot.mvc.WebTest;
 import alvin.study.springboot.mvc.app.api.model.I18nDto;

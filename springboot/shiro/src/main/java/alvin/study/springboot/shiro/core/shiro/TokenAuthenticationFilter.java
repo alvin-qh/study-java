@@ -1,14 +1,21 @@
 package alvin.study.springboot.shiro.core.shiro;
 
-import alvin.study.springboot.shiro.core.handler.GlobalExceptionHandler;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Strings;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
-import lombok.RequiredArgsConstructor;
+import jakarta.servlet.http.HttpServletResponse;
+
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.apache.shiro.web.util.WebUtils;
+
 import org.springframework.http.HttpMethod;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.google.common.base.Strings;
+
+import lombok.RequiredArgsConstructor;
+
+import alvin.study.springboot.shiro.core.handler.GlobalExceptionHandler;
 
 /**
  * 过滤器类

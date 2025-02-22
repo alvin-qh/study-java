@@ -23,14 +23,47 @@
 
   <dependencyManagement>
     <dependencies>
+      <!---
+      `shiro-spring-boot-web-starter` 目前一直未适配 SpringBoot 3.x, 故本例中直接使用 `shiro-spring` 依赖
       <dependency>
         <groupId>org.apache.shiro</groupId>
         <artifactId>shiro-spring-boot-web-starter</artifactId>
+        <classifier>jakarta</classifier>
+        <version>${version.shiro}</version>
+      </dependency>
+
+      本例中直接使用 `shiro-spring` 依赖以取代 `shiro-spring-boot-web-starter` 依赖
+      注意需要通过 `<classifier>jakarta</classifier>` 指定使用依赖 `jakarta` 的版本
+      -->
+      <dependency>
+        <groupId>org.apache.shiro</groupId>
+        <artifactId>shiro-spring</artifactId>
+        <classifier>jakarta</classifier>
+        <version>${version.shiro}</version>
+      </dependency>
+      <!--
+      本例中需要 `shiro-core` 的 ‵jakarta‵ 版本依赖, 需要通过 `<classifier>jakarta</classifier>` 指定,
+      并在 `shiro-spring` 依赖中排除原有的 `shiro-core` 依赖
+      -->
+      <dependency>
+        <groupId>org.apache.shiro</groupId>
+        <artifactId>shiro-core</artifactId>
+        <classifier>jakarta</classifier>
+        <version>${version.shiro}</version>
+      </dependency>
+      <!--
+      本例中需要 `shiro-web` 的 ‵jakarta‵ 版本依赖, 需要通过 `<classifier>jakarta</classifier>` 指定,
+      并在 `shiro-spring` 依赖中排除原有的 `shiro-web` 依赖
+      -->
+      <dependency>
+        <groupId>org.apache.shiro</groupId>
+        <artifactId>shiro-web</artifactId>
+        <classifier>jakarta</classifier>
         <version>${version.shiro}</version>
       </dependency>
       <dependency>
         <groupId>com.baomidou</groupId>
-        <artifactId>mybatis-plus-boot-starter</artifactId>
+        <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
         <version>${version.mybatis-plus}</version>
       </dependency>
       <dependency>
@@ -70,7 +103,7 @@
     <dependency>
       <!-- Mybatis-Plus 依赖 -->
       <groupId>com.baomidou</groupId>
-      <artifactId>mybatis-plus-boot-starter</artifactId>
+      <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
       <exclusions>
         <exclusion>
           <groupId>org.springframework.boot</groupId>
@@ -114,10 +147,39 @@
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
     </dependency>
+    <!-- Apache Shiro 依赖 -->
     <dependency>
-      <!-- Spring Boot Shiro 依赖 -->
       <groupId>org.apache.shiro</groupId>
-      <artifactId>shiro-spring-boot-web-starter</artifactId>
+      <artifactId>shiro-spring</artifactId>
+      <classifier>jakarta</classifier>
+      <!-- 排除掉 `javax` 版本依赖 -->
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.shiro</groupId>
+          <artifactId>shiro-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.shiro</groupId>
+          <artifactId>shiro-web</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <!-- 添加 `jakarta` 版本依赖 -->
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-core</artifactId>
+      <classifier>jakarta</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-web</artifactId>
+      <classifier>jakarta</classifier>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.shiro</groupId>
+          <artifactId>shiro-core</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <!-- Modelmapper 对象类型转换依赖 -->

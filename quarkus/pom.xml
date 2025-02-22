@@ -17,7 +17,7 @@
   <modules>
     <module>util</module>
     <module>web</module>
-    <module>test</module>
+    <module>testing</module>
     <module>cdi</module>
   </modules>
 

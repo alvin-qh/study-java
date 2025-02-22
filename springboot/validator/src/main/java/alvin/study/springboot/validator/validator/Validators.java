@@ -1,12 +1,14 @@
 package alvin.study.springboot.validator.validator;
 
+import java.util.Set;
+
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 以编程方式对指定对象进行校验
@@ -66,11 +68,9 @@ public class Validators {
      * </p>
      *
      * @return {@link org.springframework.validation.beanvalidation.LocalValidatorFactoryBean
-     * LocalValidatorFactoryBean} 类型对象
+     *         LocalValidatorFactoryBean} 类型对象
      */
-    public Validator getInjectedValidator() {
-        return validator;
-    }
+    public Validator getInjectedValidator() { return validator; }
 
     /**
      * 获取提供工厂方法产生的校验对象, 该验证对象由 Hibernate 框架提供
@@ -81,7 +81,7 @@ public class Validators {
      * </P>
      *
      * @return {@link org.hibernate.validator.internal.engine.ValidatorImpl
-     * ValidatorImpl} 类型对象
+     *         ValidatorImpl} 类型对象
      */
     public Validator getDefaultValidator() {
         // 获取默认的验证对象工厂

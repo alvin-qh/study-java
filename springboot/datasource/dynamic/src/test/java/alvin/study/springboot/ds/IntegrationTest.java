@@ -2,8 +2,11 @@ package alvin.study.springboot.ds;
 
 import java.time.Duration;
 
+import jakarta.servlet.ServletContext;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient;
@@ -23,7 +26,6 @@ import alvin.study.springboot.ds.core.TestingTransactionManager;
 import alvin.study.springboot.ds.core.data.DataSourceContext;
 import alvin.study.springboot.ds.core.data.DynamicDataSource;
 import alvin.study.springboot.ds.core.http.interceptor.ApiHandlerInterceptor;
-import jakarta.servlet.ServletContext;
 
 /**
  * 集成测试类的超类

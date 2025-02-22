@@ -1,7 +1,10 @@
 package alvin.study.springboot.testing.app.controller;
 
-import alvin.study.springboot.testing.model.TestModel;
-import com.google.common.base.Strings;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.util.Random;
+
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,10 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.Clock;
-import java.time.Instant;
-import java.time.ZoneOffset;
-import java.util.Random;
+import com.google.common.base.Strings;
+
+import alvin.study.springboot.testing.model.TestModel;
 
 /**
  * 用于演示 Controller 测试方法的类型
@@ -48,8 +50,8 @@ public class TestController {
     @GetMapping
     @ResponseBody
     TestModel get(
-        @RequestParam("name") String name,
-        @RequestParam(name = "clock", required = false) String clock) {
+            @RequestParam("name") String name,
+            @RequestParam(name = "clock", required = false) String clock) {
 
         final Clock c;
         if (Strings.isNullOrEmpty(clock)) {

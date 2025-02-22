@@ -1,9 +1,11 @@
 package alvin.study.springboot.shiro.app.endpoint.common;
 
-import alvin.study.springboot.shiro.infra.entity.User;
 import org.apache.shiro.util.ThreadContext;
 import org.modelmapper.ModelMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
+import alvin.study.springboot.shiro.infra.entity.User;
 
 /**
  * 所有 Controller 类型的超类

@@ -1,14 +1,17 @@
 package alvin.study.springboot.shiro.app.domain.service;
 
-import alvin.study.springboot.shiro.infra.entity.Menu;
-import alvin.study.springboot.shiro.infra.mapper.MenuMapper;
-import lombok.RequiredArgsConstructor;
+import java.util.Collection;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.cache.CacheManager;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
+import lombok.RequiredArgsConstructor;
+
+import alvin.study.springboot.shiro.infra.entity.Menu;
+import alvin.study.springboot.shiro.infra.mapper.MenuMapper;
 
 /**
  * 菜单服务类
@@ -38,21 +41,21 @@ public class MenuService {
             var subject = SecurityUtils.getSubject();
 
             menus = menuMapper.selectWithRoleAndPermission().stream()
-                .filter(m -> {
-                    var role = m.getRole();
-                    if (role == null) {
-                        return true;
-                    }
-                    return subject.hasRole(role.getName());
-                })
-                .filter(m -> {
-                    var permission = m.getPermission();
-                    if (permission == null) {
-                        return true;
-                    }
-                    return subject.isPermitted(permission.getPermission());
-                })
-                .toList();
+                    .filter(m -> {
+                        var role = m.getRole();
+                        if (role == null) {
+                            return true;
+                        }
+                        return subject.hasRole(role.getName());
+                    })
+                    .filter(m -> {
+                        var permission = m.getPermission();
+                        if (permission == null) {
+                            return true;
+                        }
+                        return subject.isPermitted(permission.getPermission());
+                    })
+                    .toList();
 
             cache.put(userId, menus);
         }

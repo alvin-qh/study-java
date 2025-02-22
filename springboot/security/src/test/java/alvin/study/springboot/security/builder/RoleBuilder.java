@@ -1,8 +1,9 @@
 package alvin.study.springboot.security.builder;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import alvin.study.springboot.security.infra.entity.Role;
 import alvin.study.springboot.security.infra.mapper.RoleMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 角色实体构建器类

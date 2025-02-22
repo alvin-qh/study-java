@@ -1,13 +1,15 @@
 package alvin.study.springboot.shiro.conf;
 
-import alvin.study.springboot.shiro.infra.entity.Permission;
-import alvin.study.springboot.shiro.infra.entity.Role;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration.AccessLevel;
 import org.modelmapper.convention.NameTokenizers;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import alvin.study.springboot.shiro.infra.entity.Permission;
+import alvin.study.springboot.shiro.infra.entity.Role;
 
 /**
  * 配置对象之间相互 mapping 的配置类
@@ -25,13 +27,13 @@ public class MapperConfig {
 
         // 获取配置对象并进行设置
         modelMapper.getConfiguration()
-            // 通过字段进行映射, 这种方式无需类型具备 setter 方法
-            .setFieldMatchingEnabled(true)
-            .setFieldAccessLevel(AccessLevel.PRIVATE)
-            // .setMatchingStrategy(MatchingStrategies.STANDARD)
-            .setAmbiguityIgnored(true)
-            // 增加名称转换规则
-            .setSourceNameTokenizer(NameTokenizers.UNDERSCORE);
+                // 通过字段进行映射, 这种方式无需类型具备 setter 方法
+                .setFieldMatchingEnabled(true)
+                .setFieldAccessLevel(AccessLevel.PRIVATE)
+                // .setMatchingStrategy(MatchingStrategies.STANDARD)
+                .setAmbiguityIgnored(true)
+                // 增加名称转换规则
+                .setSourceNameTokenizer(NameTokenizers.UNDERSCORE);
 
         // 添加特殊类型转换器
         modelMapper.addConverter(new AbstractConverter<Role, String>() {

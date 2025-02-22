@@ -1,10 +1,12 @@
 package alvin.study.springboot.jpa.common;
 
-import alvin.study.springboot.jpa.conf.TestingConfig;
-import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+
+import lombok.RequiredArgsConstructor;
+
+import alvin.study.springboot.jpa.conf.TestingConfig;
 
 /**
  * 测试用手动事务管理器

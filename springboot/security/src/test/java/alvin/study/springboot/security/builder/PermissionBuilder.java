@@ -1,8 +1,9 @@
 package alvin.study.springboot.security.builder;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import alvin.study.springboot.security.infra.entity.Permission;
 import alvin.study.springboot.security.infra.mapper.PermissionMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 权限实体构建器类

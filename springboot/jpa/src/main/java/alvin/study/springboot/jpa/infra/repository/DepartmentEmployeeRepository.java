@@ -2,13 +2,14 @@ package alvin.study.springboot.jpa.infra.repository;
 
 import java.util.List;
 
+import jakarta.persistence.OrderBy;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import alvin.study.springboot.jpa.infra.entity.Department;
 import alvin.study.springboot.jpa.infra.entity.DepartmentEmployee;
 import alvin.study.springboot.jpa.infra.entity.Employee;
-import jakarta.persistence.OrderBy;
 
 /**
  * 部门员工关系实体 {@link DepartmentEmployee} 的存储操作接口类

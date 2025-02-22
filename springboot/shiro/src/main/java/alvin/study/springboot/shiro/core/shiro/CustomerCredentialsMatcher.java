@@ -1,11 +1,13 @@
 package alvin.study.springboot.shiro.core.shiro;
 
-import alvin.study.springboot.shiro.util.security.PasswordEncoder;
-import lombok.RequiredArgsConstructor;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
+
+import lombok.RequiredArgsConstructor;
+
+import alvin.study.springboot.shiro.util.security.PasswordEncoder;
 
 /**
  * 自定义凭证验证类

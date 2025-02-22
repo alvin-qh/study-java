@@ -7,9 +7,10 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 
-import alvin.study.springboot.mybatis.infra.entity.common.AuditedEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import alvin.study.springboot.mybatis.infra.entity.common.AuditedEntity;
 
 /**
  * 雇员实体, 对应 {@code employee} 表

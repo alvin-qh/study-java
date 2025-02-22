@@ -1,14 +1,16 @@
 package alvin.study.springboot.autoconf;
 
-import alvin.study.springboot.autoconf.domain.model.User;
-import alvin.study.springboot.autoconf.prop.ConfigProperties;
-import alvin.study.springboot.autoconf.util.TimeUtil;
-import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+
+import lombok.RequiredArgsConstructor;
+
+import alvin.study.springboot.autoconf.domain.model.User;
+import alvin.study.springboot.autoconf.prop.ConfigProperties;
+import alvin.study.springboot.autoconf.util.TimeUtil;
 
 /**
  * 定义自动配置类, 当当前模块被加载后执行自动配置

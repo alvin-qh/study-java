@@ -1,18 +1,21 @@
 package alvin.study.springboot.jpa.infra.entity.common;
 
-import alvin.study.springboot.jpa.conf.JpaConfig;
+import java.time.Instant;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
-import lombok.Getter;
-import lombok.Setter;
+
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.Instant;
+import lombok.Getter;
+import lombok.Setter;
+
+import alvin.study.springboot.jpa.conf.JpaConfig;
 
 /**
  * 包含审计字段的实体超类

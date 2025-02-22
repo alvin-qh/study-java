@@ -13,9 +13,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import alvin.study.springboot.mybatis.util.db.SqlSessionManager;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+
+import alvin.study.springboot.mybatis.util.db.SqlSessionManager;
 
 /**
  * 在每次测试执行前, 将测试数据库的表清空

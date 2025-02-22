@@ -1,14 +1,17 @@
 package alvin.study.springboot.ds.bootstrap;
 
-import alvin.study.springboot.ds.core.flyway.Migration;
-import com.google.common.base.Strings;
-import lombok.extern.slf4j.Slf4j;
+import java.util.TimeZone;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import java.util.TimeZone;
+import com.google.common.base.Strings;
+
+import lombok.extern.slf4j.Slf4j;
+
+import alvin.study.springboot.ds.core.flyway.Migration;
 
 /**
  * 应用处理启动监听器

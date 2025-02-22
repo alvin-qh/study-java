@@ -1,9 +1,10 @@
 package alvin.study.springboot.jpa.infra.repository;
 
-import alvin.study.springboot.jpa.infra.entity.Org;
+import java.util.Optional;
+
 import org.springframework.data.repository.CrudRepository;
 
-import java.util.Optional;
+import alvin.study.springboot.jpa.infra.entity.Org;
 
 /**
  * 组织实体 {@link Org} 类型的存储操作接口类

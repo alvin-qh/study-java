@@ -1,11 +1,12 @@
 package alvin.study.springboot.security.core.security.auth;
 
-import alvin.study.springboot.security.infra.entity.User;
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
-import java.util.Collection;
-import java.util.List;
+import alvin.study.springboot.security.infra.entity.User;
 
 /**
  * 对 JWT 字符串进行验证的 {@link Authentication} 接口类型

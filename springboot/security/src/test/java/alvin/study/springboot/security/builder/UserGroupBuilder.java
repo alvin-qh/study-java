@@ -1,8 +1,9 @@
 package alvin.study.springboot.security.builder;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import alvin.study.springboot.security.infra.entity.UserGroup;
 import alvin.study.springboot.security.infra.mapper.UserGroupMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 用户组关系实体构建器类

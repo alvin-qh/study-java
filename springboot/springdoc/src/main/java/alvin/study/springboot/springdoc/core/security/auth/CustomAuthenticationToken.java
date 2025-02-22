@@ -40,8 +40,8 @@ public class CustomAuthenticationToken implements Authentication, CredentialsCon
     @Override
     public String getName() {
         return switch (type) {
-            case BASIC -> ((UserDetails) principal).getUsername();
-            case USER -> ((User) principal).getUsername();
+        case BASIC -> ((UserDetails) principal).getUsername();
+        case USER -> ((User) principal).getUsername();
         };
     }
 
@@ -75,9 +75,7 @@ public class CustomAuthenticationToken implements Authentication, CredentialsCon
      * 获取当前凭证是否已被认证, 如果返回 {@code true} 表示无需再次认证
      */
     @Override
-    public boolean isAuthenticated() {
-        return principal != null;
-    }
+    public boolean isAuthenticated() { return principal != null; }
 
     /**
      * 禁止修改已认证状态

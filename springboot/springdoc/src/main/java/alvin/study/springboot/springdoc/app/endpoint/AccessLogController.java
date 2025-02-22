@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import lombok.RequiredArgsConstructor;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
+import lombok.RequiredArgsConstructor;
 
 import alvin.study.springboot.springdoc.app.endpoint.model.AccessLogDto;
 import alvin.study.springboot.springdoc.conf.SpringDocConfig;
@@ -67,8 +67,8 @@ public class AccessLogController {
 
         // 根据用户名查询该用户的访问日志集合
         return accessLogRepository.selectByUsername(username).stream()
-            .map(log -> new AccessLogDto(log.getUsername(), log.getLastAccessAt(), log.isActionLogin()))
-            .collect(Collectors.toList());
+                .map(log -> new AccessLogDto(log.getUsername(), log.getLastAccessAt(), log.isActionLogin()))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -81,7 +81,7 @@ public class AccessLogController {
     List<AccessLogDto> getAllAccessLog() {
         // 查询所有的访问日志集合
         return accessLogRepository.selectAll().stream()
-            .map(log -> new AccessLogDto(log.getUsername(), log.getLastAccessAt(), log.isActionLogin()))
-            .collect(Collectors.toList());
+                .map(log -> new AccessLogDto(log.getUsername(), log.getLastAccessAt(), log.isActionLogin()))
+                .collect(Collectors.toList());
     }
 }

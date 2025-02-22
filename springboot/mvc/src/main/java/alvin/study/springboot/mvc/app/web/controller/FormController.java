@@ -2,6 +2,8 @@ package alvin.study.springboot.mvc.app.web.controller;
 
 import java.nio.charset.StandardCharsets;
 
+import jakarta.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,10 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.UriUtils;
 
+import lombok.extern.slf4j.Slf4j;
+
 import alvin.study.springboot.mvc.app.web.model.Form;
 import alvin.study.springboot.mvc.conf.WebConfig;
-import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 页面请求 Controller
@@ -133,7 +135,7 @@ public class FormController {
      * @param br    表单验证错误结果
      * @param model 页面模型对象
      * @return 如果表单参数验证失败, 则转发到 {@code classpath:/templates/form.html} 页面渲染表单值和错误信息,
-     * 否则重定向到 {@code /web/result} 请求
+     *         否则重定向到 {@code /web/result} 请求
      */
     @PostMapping
     String post(@Valid Form form, BindingResult br, Model model) {

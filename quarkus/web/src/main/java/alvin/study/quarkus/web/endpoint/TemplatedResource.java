@@ -5,15 +5,6 @@ import java.time.format.DateTimeParseException;
 import java.util.Map;
 import java.util.Objects;
 
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-
-import alvin.study.quarkus.util.StringUtil;
-import alvin.study.quarkus.web.endpoint.model.UserDto;
-import alvin.study.quarkus.web.persist.entity.Gender;
-import io.quarkus.qute.CheckedTemplate;
-import io.quarkus.qute.Location;
-import io.quarkus.qute.Template;
-import io.quarkus.qute.TemplateInstance;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
@@ -22,7 +13,18 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
+
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
 import lombok.extern.slf4j.Slf4j;
+
+import alvin.study.quarkus.util.StringUtil;
+import alvin.study.quarkus.web.endpoint.model.UserDto;
+import alvin.study.quarkus.web.persist.entity.Gender;
+import io.quarkus.qute.CheckedTemplate;
+import io.quarkus.qute.Location;
+import io.quarkus.qute.Template;
+import io.quarkus.qute.TemplateInstance;
 
 /**
  * 演示 Quarkus 的后端渲染

@@ -1,11 +1,13 @@
 package alvin.study.springboot.jpa.conf;
 
-import alvin.study.springboot.jpa.core.context.Context;
-import alvin.study.springboot.jpa.core.context.WebContext;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.annotation.RequestScope;
+
+import lombok.extern.slf4j.Slf4j;
+
+import alvin.study.springboot.jpa.core.context.Context;
+import alvin.study.springboot.jpa.core.context.WebContext;
 
 /**
  * 请求上下文对象配置类

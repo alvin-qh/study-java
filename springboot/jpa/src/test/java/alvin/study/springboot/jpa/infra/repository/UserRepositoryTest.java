@@ -1,15 +1,17 @@
 package alvin.study.springboot.jpa.infra.repository;
 
+import static org.assertj.core.api.BDDAssertions.then;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import org.junit.jupiter.api.Test;
+
 import alvin.study.springboot.jpa.IntegrationTest;
 import alvin.study.springboot.jpa.builder.OrgBuilder;
 import alvin.study.springboot.jpa.builder.UserBuilder;
 import alvin.study.springboot.jpa.infra.entity.Org;
 import alvin.study.springboot.jpa.infra.entity.User;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
-import static org.assertj.core.api.BDDAssertions.then;
 
 class UserRepositoryTest extends IntegrationTest {
     @Autowired

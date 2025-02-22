@@ -12,12 +12,13 @@ import org.springframework.web.context.annotation.RequestScope;
 
 import com.auth0.jwt.algorithms.Algorithm;
 
+import lombok.extern.slf4j.Slf4j;
+
 import alvin.study.springboot.mvc.core.context.Context;
 import alvin.study.springboot.mvc.core.context.WebContext;
 import alvin.study.springboot.mvc.core.i18n.I18n;
 import alvin.study.springboot.mvc.core.i18n.MessageI18n;
 import alvin.study.springboot.mvc.util.security.Jwt;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 配置当前 Application 中所有需要容器化管理的 Bean 对象

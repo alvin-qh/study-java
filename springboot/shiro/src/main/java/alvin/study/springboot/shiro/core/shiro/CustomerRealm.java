@@ -1,10 +1,5 @@
 package alvin.study.springboot.shiro.core.shiro;
 
-import alvin.study.springboot.shiro.app.domain.service.AuthService;
-import alvin.study.springboot.shiro.app.endpoint.AuthController;
-import alvin.study.springboot.shiro.app.endpoint.model.LoginForm;
-import alvin.study.springboot.shiro.conf.ShiroConfig;
-import alvin.study.springboot.shiro.infra.entity.User;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -16,6 +11,12 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+
+import alvin.study.springboot.shiro.app.domain.service.AuthService;
+import alvin.study.springboot.shiro.app.endpoint.AuthController;
+import alvin.study.springboot.shiro.app.endpoint.model.LoginForm;
+import alvin.study.springboot.shiro.conf.ShiroConfig;
+import alvin.study.springboot.shiro.infra.entity.User;
 
 /**
  * 本类型是 Shiro 的核心类型, 用于获取登录用户信息以及用户的角色权限信息

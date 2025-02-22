@@ -1,8 +1,8 @@
 package alvin.study.springboot.jooq.core.jooq.dsl;
 
-import alvin.study.springboot.jooq.core.jooq.listener.AuditAndTentedRecordListener;
-import alvin.study.springboot.jooq.core.jooq.listener.TentedVisitListener;
-import lombok.RequiredArgsConstructor;
+import java.sql.Connection;
+import java.sql.SQLException;
+
 import org.jooq.DSLContext;
 import org.jooq.RecordListenerProvider;
 import org.jooq.SQLDialect;
@@ -13,8 +13,10 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.DataSourceConnectionProvider;
 import org.jooq.impl.DefaultConfiguration;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import lombok.RequiredArgsConstructor;
+
+import alvin.study.springboot.jooq.core.jooq.listener.AuditAndTentedRecordListener;
+import alvin.study.springboot.jooq.core.jooq.listener.TentedVisitListener;
 
 /**
  * DSLContext 管理器类型

@@ -1,15 +1,17 @@
 package alvin.study.springboot.jooq.infra.repository;
 
-import alvin.study.springboot.jooq.IntegrationTest;
-import alvin.study.springboot.jooq.infra.model.UserType;
-import alvin.study.springboot.jooq.infra.repository.common.BaseRepository;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Objects;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import alvin.study.springboot.jooq.IntegrationTest;
+import alvin.study.springboot.jooq.infra.model.UserType;
+import alvin.study.springboot.jooq.infra.repository.common.BaseRepository;
 
 /**
  * 测试 {@link UserRepository} 类型对

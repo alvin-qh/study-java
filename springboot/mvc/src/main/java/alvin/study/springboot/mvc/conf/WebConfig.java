@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Set;
 
+import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
+
 import org.springframework.boot.web.server.ErrorPage;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
@@ -20,11 +22,11 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.resource.EncodedResourceResolver;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 import org.springframework.web.servlet.resource.VersionResourceResolver;
-import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
 
-import alvin.study.springboot.mvc.core.http.PathsHandlerInterceptor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import alvin.study.springboot.mvc.core.http.PathsHandlerInterceptor;
 
 /**
  * 配置和 Web 访问相关的配置

@@ -12,9 +12,10 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 
-import alvin.study.springboot.mybatis.Main;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+
+import alvin.study.springboot.mybatis.Main;
 
 /**
  * 初始化测试上下文

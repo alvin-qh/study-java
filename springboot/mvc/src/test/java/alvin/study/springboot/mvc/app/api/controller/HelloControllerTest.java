@@ -3,8 +3,10 @@ package alvin.study.springboot.mvc.app.api.controller;
 import static org.assertj.core.api.BDDAssertions.then;
 
 import org.assertj.core.api.InstanceOfAssertFactories;
-import org.junit.jupiter.api.Test;
+
 import org.springframework.core.ParameterizedTypeReference;
+
+import org.junit.jupiter.api.Test;
 
 import alvin.study.springboot.mvc.WebTest;
 import alvin.study.springboot.mvc.app.api.model.HelloDto;

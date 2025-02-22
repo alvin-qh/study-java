@@ -5,7 +5,10 @@ import static org.assertj.core.api.BDDAssertions.then;
 import java.time.Duration;
 
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.SneakyThrows;
 
 import alvin.study.springboot.jpa.IntegrationTest;
 import alvin.study.springboot.jpa.builder.DepartmentBuilder;
@@ -14,7 +17,6 @@ import alvin.study.springboot.jpa.core.context.Context;
 import alvin.study.springboot.jpa.core.context.CustomRequestAttributes;
 import alvin.study.springboot.jpa.infra.entity.common.AuditedEntity;
 import alvin.study.springboot.jpa.infra.entity.common.TenantedEntityListener;
-import lombok.SneakyThrows;
 
 /**
  * 测试实体类型的审计字段是否生效

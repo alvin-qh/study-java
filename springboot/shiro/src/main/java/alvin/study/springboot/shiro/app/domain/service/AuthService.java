@@ -1,5 +1,19 @@
 package alvin.study.springboot.shiro.app.domain.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UnknownAccountException;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.auth0.jwt.exceptions.JWTVerificationException;
+
+import lombok.RequiredArgsConstructor;
+
 import alvin.study.springboot.shiro.app.domain.model.RolePermission;
 import alvin.study.springboot.shiro.infra.entity.Group;
 import alvin.study.springboot.shiro.infra.entity.Permission;
@@ -10,16 +24,6 @@ import alvin.study.springboot.shiro.infra.mapper.PermissionMapper;
 import alvin.study.springboot.shiro.infra.mapper.RoleMapper;
 import alvin.study.springboot.shiro.infra.mapper.UserMapper;
 import alvin.study.springboot.shiro.util.security.Jwt;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import lombok.RequiredArgsConstructor;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * 登录验证的服务类
@@ -52,7 +56,7 @@ public class AuthService {
     @Transactional(readOnly = true)
     public User findUserById(long id) {
         return Optional.ofNullable(userMapper.selectById(id))
-            .orElseThrow(UnknownAccountException::new);
+                .orElseThrow(UnknownAccountException::new);
     }
 
     /**
@@ -86,7 +90,7 @@ public class AuthService {
     @Transactional(readOnly = true)
     public User findUserByAccount(String account) {
         return userMapper.selectByAccount(account)
-            .orElseThrow(UnknownAccountException::new);
+                .orElseThrow(UnknownAccountException::new);
     }
 
     /**
@@ -105,9 +109,9 @@ public class AuthService {
 
         // 获取用户所在的组 id
         var groupIds = groupMapper.selectByUserId(userId)
-            .stream()
-            .map(Group::getId)
-            .toList();
+                .stream()
+                .map(Group::getId)
+                .toList();
         if (!groupIds.isEmpty()) {
             roles.addAll(roleMapper.selectByGroupIds(groupIds));
         }

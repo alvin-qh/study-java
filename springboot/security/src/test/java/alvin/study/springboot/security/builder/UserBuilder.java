@@ -1,12 +1,13 @@
 package alvin.study.springboot.security.builder;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import alvin.study.springboot.security.infra.entity.User;
 import alvin.study.springboot.security.infra.entity.UserType;
 import alvin.study.springboot.security.infra.mapper.UserMapper;
 import alvin.study.springboot.security.util.security.PasswordEncoder;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 用户实体构建器类

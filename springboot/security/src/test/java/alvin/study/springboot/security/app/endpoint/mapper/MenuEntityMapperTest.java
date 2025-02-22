@@ -1,5 +1,17 @@
 package alvin.study.springboot.security.app.endpoint.mapper;
 
+import static org.assertj.core.api.BDDAssertions.then;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.transaction.annotation.Transactional;
+
+import org.junit.jupiter.api.Test;
+
 import alvin.study.springboot.security.IntegrationTest;
 import alvin.study.springboot.security.app.domain.service.MenuService;
 import alvin.study.springboot.security.app.endpoint.model.MenuDto;
@@ -8,16 +20,6 @@ import alvin.study.springboot.security.builder.PermissionBuilder;
 import alvin.study.springboot.security.builder.RoleBuilder;
 import alvin.study.springboot.security.core.security.auth.NameAndPasswordAuthenticationToken;
 import alvin.study.springboot.security.infra.entity.Menu;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextImpl;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-
-import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link MenuEntityMapper} 类, 将 {@link Menu Menu}

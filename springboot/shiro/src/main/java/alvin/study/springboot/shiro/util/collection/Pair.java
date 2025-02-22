@@ -1,9 +1,9 @@
 package alvin.study.springboot.shiro.util.collection;
 
+import java.util.Map;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Map;
 
 /**
  * 同时存储两个相关的值

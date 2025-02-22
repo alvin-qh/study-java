@@ -1,22 +1,26 @@
 package alvin.study.springboot.shiro.app.domain.service;
 
-import alvin.study.springboot.shiro.conf.BeanConfig;
-import alvin.study.springboot.shiro.core.shiro.SessionUtil;
-import alvin.study.springboot.shiro.infra.entity.Session;
-import alvin.study.springboot.shiro.infra.mapper.SessionMapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.session.mgt.eis.SessionDAO;
-import org.apache.shiro.util.ThreadContext;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.Executor;
+
+import org.apache.shiro.session.mgt.eis.SessionDAO;
+import org.apache.shiro.util.ThreadContext;
+
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import alvin.study.springboot.shiro.conf.BeanConfig;
+import alvin.study.springboot.shiro.core.shiro.SessionUtil;
+import alvin.study.springboot.shiro.infra.entity.Session;
+import alvin.study.springboot.shiro.infra.mapper.SessionMapper;
 
 /**
  * 对用户 Session 在数据库中进行持久化操作的服务类型
@@ -113,7 +117,7 @@ public class SessionService {
      *            {@link org.apache.shiro.session.Session Session} 来说, 是其
      *            {@link org.apache.shiro.session.Session#getId()
      * @return Session 值, 对于 {@link org.apache.shiro.session.Session
-     * Session} 来说, 是其对象本身
+     *         Session} 来说, 是其对象本身
      */
     @Transactional
     public Session loadSession(String key) {

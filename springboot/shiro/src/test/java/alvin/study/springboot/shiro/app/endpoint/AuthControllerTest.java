@@ -1,16 +1,18 @@
 package alvin.study.springboot.shiro.app.endpoint;
 
+import static org.assertj.core.api.BDDAssertions.then;
+
+import java.util.Objects;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.junit.jupiter.api.Test;
+
 import alvin.study.springboot.shiro.IntegrationTest;
 import alvin.study.springboot.shiro.app.endpoint.model.LoginForm;
 import alvin.study.springboot.shiro.app.endpoint.model.TokenDto;
 import alvin.study.springboot.shiro.app.endpoint.model.UserDto;
 import alvin.study.springboot.shiro.util.security.Jwt;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Objects;
-
-import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link AuthController} 控制器类型
@@ -27,15 +29,15 @@ class AuthControllerTest extends IntegrationTest {
         for (var i = 0; i < 3; i++) {
             // 发起 GET 请求
             var resp = getJson("/auth/me")
-                .exchange()
-                .expectStatus().is2xxSuccessful()
-                .expectBody(UserDto.class).returnResult()
-                .getResponseBody();
+                    .exchange()
+                    .expectStatus().is2xxSuccessful()
+                    .expectBody(UserDto.class).returnResult()
+                    .getResponseBody();
 
             // 确认响应结果为当前登录用户信息
             then(resp).isNotNull()
-                .extracting(UserDto::getAccount, UserDto::getType)
-                .contains(currentUser().getAccount(), currentUser().getType());
+                    .extracting(UserDto::getAccount, UserDto::getType)
+                    .contains(currentUser().getAccount(), currentUser().getType());
         }
     }
 
@@ -46,11 +48,11 @@ class AuthControllerTest extends IntegrationTest {
     void postLogin_shouldReturn200Ok() {
         // 发起 POST 请求
         var resp = postJson("/auth/login")
-            .bodyValue(new LoginForm(currentUser().getAccount(), RAW_PASSWORD))
-            .exchange()
-            .expectStatus().is2xxSuccessful()
-            .expectBody(TokenDto.class).returnResult()
-            .getResponseBody();
+                .bodyValue(new LoginForm(currentUser().getAccount(), RAW_PASSWORD))
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(TokenDto.class).returnResult()
+                .getResponseBody();
 
         // 对返回的 JWT token 字符串进行校验
         var payload = jwt.verify(Objects.requireNonNull(resp).getToken());

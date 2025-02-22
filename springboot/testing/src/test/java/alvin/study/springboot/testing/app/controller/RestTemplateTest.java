@@ -1,10 +1,11 @@
 package alvin.study.springboot.testing.app.controller;
 
-import alvin.study.springboot.testing.common.ResponseWrapper;
-import alvin.study.springboot.testing.model.TestModel;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.assertj.core.api.BDDAssertions.then;
+
+import java.util.Map;
+
 import org.assertj.core.api.InstanceOfAssertFactories;
-import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -12,10 +13,13 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.Map;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static alvin.study.springboot.testing.common.ResponseWrapper.ErrorDetail;
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
+
+import alvin.study.springboot.testing.common.ResponseWrapper;
+import alvin.study.springboot.testing.common.ResponseWrapper.ErrorDetail;
+import alvin.study.springboot.testing.model.TestModel;
 
 /**
  * 通过 {@link TestRestTemplate} 工具类进行 HTTP 测试
@@ -102,8 +106,8 @@ class RestTemplateTest {
         // 将返回的 payload 字段转为 ErrorDetail 类型对象
         var payload = objectMapper.convertValue(resp.getPayload(), ErrorDetail.class);
         then(payload.getErrorParameters())
-            .extractingByKey("name")
-            .asInstanceOf(InstanceOfAssertFactories.ARRAY)
-            .containsExactly("Required request parameter 'name' for method parameter type String is not present");
+                .extractingByKey("name")
+                .asInstanceOf(InstanceOfAssertFactories.ARRAY)
+                .containsExactly("Required request parameter 'name' for method parameter type String is not present");
     }
 }

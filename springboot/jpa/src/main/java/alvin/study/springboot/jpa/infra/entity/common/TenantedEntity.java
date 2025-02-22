@@ -3,9 +3,11 @@ package alvin.study.springboot.jpa.infra.entity.common;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
+
+import org.hibernate.annotations.Filter;
+
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Filter;
 
 /**
  * 多租户实体类的超类

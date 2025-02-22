@@ -1,13 +1,13 @@
 package alvin.study.springboot.validator.validator;
 
-import jakarta.validation.Constraint;
-import jakarta.validation.Payload;
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
 
 /**
  * 自定义校验注解, 对字段是否表示 IP 地址进行校验
@@ -56,7 +56,7 @@ public @interface IpAddress {
      *
      * @return 用于对校验注解分组的类型标志
      */
-    Class<?>[] groups() default { };
+    Class<?>[] groups() default {};
 
     /**
      * 一个作为载荷传递给校验结果的类型
@@ -69,5 +69,5 @@ public @interface IpAddress {
      *
      * @return {@link Payload} 类型 {@link Class} 对象
      */
-    Class<? extends Payload>[] payload() default { };
+    Class<? extends Payload>[] payload() default {};
 }

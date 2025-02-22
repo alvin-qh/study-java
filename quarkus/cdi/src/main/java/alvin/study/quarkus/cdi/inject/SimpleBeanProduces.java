@@ -1,10 +1,11 @@
 package alvin.study.quarkus.cdi.inject;
 
-import alvin.study.quarkus.cdi.inject.anno.A;
-import alvin.study.quarkus.cdi.inject.anno.B;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Produces;
+
+import alvin.study.quarkus.cdi.inject.anno.A;
+import alvin.study.quarkus.cdi.inject.anno.B;
 
 /**
  * 用于通过方法提供 Bean 对象

@@ -1,16 +1,20 @@
 package alvin.study.springboot.security.app.endpoint.mapper;
 
-import alvin.study.springboot.security.app.endpoint.model.MenuDto;
-import alvin.study.springboot.security.infra.entity.Menu;
-import com.google.common.base.Functions;
-import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
+
+import org.springframework.stereotype.Component;
+
+import com.google.common.base.Functions;
+
+import lombok.RequiredArgsConstructor;
+
+import alvin.study.springboot.security.app.endpoint.model.MenuDto;
+import alvin.study.springboot.security.infra.entity.Menu;
 
 /**
  * 菜单对象类型转换

@@ -4,10 +4,11 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 
-import alvin.study.springboot.mybatis.infra.entity.common.AuditedEntity;
-import alvin.study.springboot.mybatis.infra.mapper.UserMapper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import alvin.study.springboot.mybatis.infra.entity.common.AuditedEntity;
+import alvin.study.springboot.mybatis.infra.mapper.UserMapper;
 
 /**
  * 用户实体, 对应 {@code user} 表

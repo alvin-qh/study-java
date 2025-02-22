@@ -1,9 +1,11 @@
 package alvin.study.springboot.jpa.infra.entity.common;
 
+import jakarta.persistence.PrePersist;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import alvin.study.springboot.jpa.core.context.Context;
 import alvin.study.springboot.jpa.infra.entity.Org;
-import jakarta.persistence.PrePersist;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 实体操作监听器, 监听对实体的增删查改操作

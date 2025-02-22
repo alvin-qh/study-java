@@ -1,10 +1,11 @@
 package alvin.study.springboot.jooq.infra.repository;
 
-import alvin.study.springboot.jooq.infra.model.public_.tables.records.DepartmentEmployeeRecord;
-import alvin.study.springboot.jooq.infra.repository.common.BaseRepository;
+import static alvin.study.springboot.jooq.infra.model.public_.Tables.DEPARTMENT_EMPLOYEE;
+
 import org.springframework.stereotype.Repository;
 
-import static alvin.study.springboot.jooq.infra.model.public_.Tables.DEPARTMENT_EMPLOYEE;
+import alvin.study.springboot.jooq.infra.model.public_.tables.records.DepartmentEmployeeRecord;
+import alvin.study.springboot.jooq.infra.repository.common.BaseRepository;
 
 /**
  * 操作 {@code DEPARTMENT_EMPLOYEE} 表实体的 Repository 类型

@@ -1,13 +1,15 @@
 package alvin.study.springboot.jooq.conf;
 
-import alvin.study.springboot.jooq.core.TableCleaner;
 import org.jooq.DSLContext;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.Scope;
+
+import alvin.study.springboot.jooq.core.TableCleaner;
 
 /**
  * 测试环境配置

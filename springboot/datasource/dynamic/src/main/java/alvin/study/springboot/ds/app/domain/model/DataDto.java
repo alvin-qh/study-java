@@ -1,12 +1,12 @@
 package alvin.study.springboot.ds.app.domain.model;
 
+import java.io.Serializable;
+import java.time.Instant;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
-import java.time.Instant;
 
 /**
  * 数据 Dto 类型

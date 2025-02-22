@@ -1,5 +1,21 @@
 package alvin.study.springboot.security.app.domain.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.auth0.jwt.exceptions.JWTVerificationException;
+
+import com.google.common.base.Strings;
+
+import lombok.RequiredArgsConstructor;
+
 import alvin.study.springboot.security.core.cache.Cache;
 import alvin.study.springboot.security.core.security.exception.UserIdentityNotFoundException;
 import alvin.study.springboot.security.infra.entity.Group;
@@ -10,18 +26,6 @@ import alvin.study.springboot.security.infra.mapper.RoleMapper;
 import alvin.study.springboot.security.infra.mapper.UserMapper;
 import alvin.study.springboot.security.util.security.Jwt;
 import alvin.study.springboot.security.util.security.PasswordEncoder;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.google.common.base.Strings;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * 登录验证的服务类

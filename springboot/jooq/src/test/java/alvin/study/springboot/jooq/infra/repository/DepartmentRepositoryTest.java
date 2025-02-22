@@ -1,20 +1,21 @@
 package alvin.study.springboot.jooq.infra.repository;
 
-import alvin.study.springboot.jooq.IntegrationTest;
-import alvin.study.springboot.jooq.infra.model.public_.tables.records.DepartmentRecord;
-import alvin.study.springboot.jooq.infra.model.public_.tables.records.EmployeeRecord;
-import alvin.study.springboot.jooq.infra.repository.common.BaseRepository;
+import static alvin.study.springboot.jooq.infra.model.public_.Tables.DEPARTMENT;
+import static org.assertj.core.api.BDDAssertions.then;
+
+import java.util.ArrayList;
 
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.jooq.DSLContext;
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-
-import static alvin.study.springboot.jooq.infra.model.public_.Tables.DEPARTMENT;
-import static org.assertj.core.api.BDDAssertions.then;
+import alvin.study.springboot.jooq.IntegrationTest;
+import alvin.study.springboot.jooq.infra.model.public_.tables.records.DepartmentRecord;
+import alvin.study.springboot.jooq.infra.model.public_.tables.records.EmployeeRecord;
+import alvin.study.springboot.jooq.infra.repository.common.BaseRepository;
 
 /**
  * 测试 {@link DepartmentRepository} 类型对

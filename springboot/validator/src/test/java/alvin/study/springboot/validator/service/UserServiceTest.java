@@ -1,13 +1,16 @@
 package alvin.study.springboot.validator.service;
 
-import alvin.study.springboot.validator.IntegrationTest;
-import alvin.study.springboot.validator.model.User;
-import jakarta.validation.ConstraintViolationException;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.junit.jupiter.api.Assertions.fail;
+
+import jakarta.validation.ConstraintViolationException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.junit.jupiter.api.Test;
+
+import alvin.study.springboot.validator.IntegrationTest;
+import alvin.study.springboot.validator.model.User;
 
 /**
  * 测试对具备验证注解的参数进行校验
@@ -128,8 +131,8 @@ class UserServiceTest extends IntegrationTest {
                 switch (violation.getPropertyPath().toString()) {
                 case "updateUser.user.id" -> then(violation.getMessage()).isEqualTo("must not be null");
                 case "updateUser.user.name" -> then(violation.getMessage()).isEqualTo("must not be blank");
-                case "updateUser.user.age" ->
-                    then(violation.getMessage()).isEqualTo("must be greater than or equal to 10");
+                case "updateUser.user.age" -> then(violation.getMessage())
+                        .isEqualTo("must be greater than or equal to 10");
                 default -> fail();
                 }
             }

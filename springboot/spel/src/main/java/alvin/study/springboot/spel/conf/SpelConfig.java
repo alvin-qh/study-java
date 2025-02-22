@@ -1,12 +1,13 @@
 package alvin.study.springboot.spel.conf;
 
-import alvin.study.springboot.spel.infra.model.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.SpelCompilerMode;
 import org.springframework.expression.spel.SpelParserConfiguration;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
+
+import alvin.study.springboot.spel.infra.model.Value;
 
 /**
  * 配置 SPEL 表达式

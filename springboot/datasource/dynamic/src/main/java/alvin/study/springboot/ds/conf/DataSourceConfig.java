@@ -1,14 +1,15 @@
 package alvin.study.springboot.ds.conf;
 
-import alvin.study.springboot.ds.core.data.DataSourceFactory;
-import alvin.study.springboot.ds.core.data.DynamicDataSource;
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.sql.DataSource;
+import alvin.study.springboot.ds.core.data.DataSourceFactory;
+import alvin.study.springboot.ds.core.data.DynamicDataSource;
 
 /**
  * 配置数据源

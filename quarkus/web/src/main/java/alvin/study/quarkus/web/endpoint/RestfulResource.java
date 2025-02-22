@@ -5,14 +5,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.jboss.resteasy.reactive.ResponseStatus;
-
-import alvin.study.quarkus.web.endpoint.model.UserDto;
-import alvin.study.quarkus.web.i18n.AppMessager;
-import alvin.study.quarkus.web.persist.DataSource;
-import alvin.study.quarkus.web.persist.entity.Gender;
-import alvin.study.quarkus.web.persist.entity.User;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -23,7 +15,17 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
+
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.jboss.resteasy.reactive.ResponseStatus;
+
 import lombok.RequiredArgsConstructor;
+
+import alvin.study.quarkus.web.endpoint.model.UserDto;
+import alvin.study.quarkus.web.i18n.AppMessager;
+import alvin.study.quarkus.web.persist.DataSource;
+import alvin.study.quarkus.web.persist.entity.Gender;
+import alvin.study.quarkus.web.persist.entity.User;
 
 /**
  * 测试 Restful 请求

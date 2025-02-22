@@ -1,14 +1,16 @@
 package alvin.study.springboot.jooq.infra.repository.common;
 
-import alvin.study.springboot.jooq.core.jooq.dsl.JdbcDSLContextManager;
-import org.jooq.Record;
-import org.jooq.Table;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+
+import org.jooq.Record;
+import org.jooq.Table;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import alvin.study.springboot.jooq.core.jooq.dsl.JdbcDSLContextManager;
 
 /**
  * 通过 JDBC 使用 Jooq 的 Repository 类型超类

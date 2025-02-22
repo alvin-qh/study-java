@@ -4,9 +4,10 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.Version;
 
-import alvin.study.springboot.mybatis.infra.entity.common.AuditedEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import alvin.study.springboot.mybatis.infra.entity.common.AuditedEntity;
 
 /**
  * 部门职员关系实体, 对应 {@code department_employee} 表

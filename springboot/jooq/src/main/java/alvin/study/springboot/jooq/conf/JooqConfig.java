@@ -1,9 +1,7 @@
 package alvin.study.springboot.jooq.conf;
 
-import alvin.study.springboot.jooq.core.jooq.dsl.JdbcDSLContextManager;
-import alvin.study.springboot.jooq.core.jooq.listener.AuditAndTentedRecordListener;
-import alvin.study.springboot.jooq.core.jooq.listener.TentedVisitListener;
-import lombok.RequiredArgsConstructor;
+import javax.sql.DataSource;
+
 import org.jooq.DSLContext;
 import org.jooq.RecordListenerProvider;
 import org.jooq.SQLDialect;
@@ -11,13 +9,18 @@ import org.jooq.VisitListenerProvider;
 import org.jooq.impl.DSL;
 import org.jooq.impl.DataSourceConnectionProvider;
 import org.jooq.impl.DefaultConfiguration;
+
 import org.springframework.boot.autoconfigure.jooq.ExceptionTranslatorExecuteListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.sql.DataSource;
+import lombok.RequiredArgsConstructor;
+
+import alvin.study.springboot.jooq.core.jooq.dsl.JdbcDSLContextManager;
+import alvin.study.springboot.jooq.core.jooq.listener.AuditAndTentedRecordListener;
+import alvin.study.springboot.jooq.core.jooq.listener.TentedVisitListener;
 
 /**
  * JOOQ 相关 Spring Boot 配置

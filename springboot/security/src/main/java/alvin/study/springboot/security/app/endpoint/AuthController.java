@@ -1,14 +1,7 @@
 package alvin.study.springboot.security.app.endpoint;
 
-import alvin.study.springboot.security.app.domain.service.AuthService;
-import alvin.study.springboot.security.app.endpoint.common.BaseController;
-import alvin.study.springboot.security.app.endpoint.model.LoginForm;
-import alvin.study.springboot.security.app.endpoint.model.TokenDto;
-import alvin.study.springboot.security.app.endpoint.model.UserDto;
-import alvin.study.springboot.security.core.cache.Cache;
-import alvin.study.springboot.security.util.security.Jwt;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +9,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import lombok.RequiredArgsConstructor;
+
+import alvin.study.springboot.security.app.domain.service.AuthService;
+import alvin.study.springboot.security.app.endpoint.common.BaseController;
+import alvin.study.springboot.security.app.endpoint.model.LoginForm;
+import alvin.study.springboot.security.app.endpoint.model.TokenDto;
+import alvin.study.springboot.security.app.endpoint.model.UserDto;
+import alvin.study.springboot.security.core.cache.Cache;
+import alvin.study.springboot.security.util.security.Jwt;
 
 /**
  * 处理用户认证的 Controller 类型

@@ -1,10 +1,11 @@
 package alvin.study.springboot.security.builder;
 
-import alvin.study.springboot.security.infra.entity.Menu;
-import alvin.study.springboot.security.infra.mapper.MenuMapper;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import alvin.study.springboot.security.infra.entity.Menu;
+import alvin.study.springboot.security.infra.mapper.MenuMapper;
 
 /**
  * 菜单实体构建类

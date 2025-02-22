@@ -1,17 +1,12 @@
 package alvin.study.springboot.shiro.app.endpoint;
 
-import alvin.study.springboot.shiro.app.endpoint.common.BaseController;
-import alvin.study.springboot.shiro.app.endpoint.model.LoginForm;
-import alvin.study.springboot.shiro.app.endpoint.model.TokenDto;
-import alvin.study.springboot.shiro.app.endpoint.model.UserDto;
-import alvin.study.springboot.shiro.conf.ShiroConfig;
-import alvin.study.springboot.shiro.core.shiro.CustomerRealm;
-import alvin.study.springboot.shiro.infra.entity.User;
-import alvin.study.springboot.shiro.util.security.Jwt;
+import java.util.Optional;
+
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +15,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+
+import alvin.study.springboot.shiro.app.endpoint.common.BaseController;
+import alvin.study.springboot.shiro.app.endpoint.model.LoginForm;
+import alvin.study.springboot.shiro.app.endpoint.model.TokenDto;
+import alvin.study.springboot.shiro.app.endpoint.model.UserDto;
+import alvin.study.springboot.shiro.conf.ShiroConfig;
+import alvin.study.springboot.shiro.core.shiro.CustomerRealm;
+import alvin.study.springboot.shiro.infra.entity.User;
+import alvin.study.springboot.shiro.util.security.Jwt;
 
 /**
  * 处理用户认证的 Controller 类型
@@ -51,11 +55,9 @@ public class AuthController extends BaseController {
      */
     @GetMapping("/me")
     @ResponseBody
-    UserDto getMe() {
-        return Optional.ofNullable(currentUser())
+    UserDto getMe() { return Optional.ofNullable(currentUser())
             .map(u -> mapper(u, UserDto.class))
-            .orElse(null);
-    }
+            .orElse(null); }
 
     /**
      * 用户登录

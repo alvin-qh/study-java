@@ -1,13 +1,14 @@
 package alvin.study.springboot.security.util.security;
 
+import java.time.Duration;
+import java.time.Instant;
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
-import java.time.Duration;
-import java.time.Instant;
 
 /**
  * Jwt 令牌处理类型

@@ -1,5 +1,16 @@
 package alvin.study.springboot.jpa.infra.repository;
 
+import static org.assertj.core.api.BDDAssertions.then;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Random;
+
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
 import alvin.study.springboot.jpa.IntegrationTest;
 import alvin.study.springboot.jpa.builder.DepartmentBuilder;
 import alvin.study.springboot.jpa.builder.EmployeeBuilder;
@@ -8,15 +19,6 @@ import alvin.study.springboot.jpa.infra.entity.Department;
 import alvin.study.springboot.jpa.infra.entity.DepartmentEmployee;
 import alvin.study.springboot.jpa.infra.entity.Employee;
 import alvin.study.springboot.jpa.infra.entity.Org;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Random;
-
-import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link DepartmentRepository} 的增删查改操作

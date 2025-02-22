@@ -1,5 +1,20 @@
 package alvin.study.springboot.mybatis;
 
+import org.apache.ibatis.session.SqlSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.transaction.annotation.Transactional;
+
+import lombok.SneakyThrows;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+
 import alvin.study.springboot.mybatis.builder.Builder;
 import alvin.study.springboot.mybatis.builder.OrgBuilder;
 import alvin.study.springboot.mybatis.builder.UserBuilder;
@@ -16,17 +31,6 @@ import alvin.study.springboot.mybatis.infra.entity.Org;
 import alvin.study.springboot.mybatis.infra.entity.User;
 import alvin.study.springboot.mybatis.infra.entity.common.AuditedEntity;
 import alvin.study.springboot.mybatis.infra.entity.common.TenantedEntity;
-import lombok.SneakyThrows;
-import org.apache.ibatis.session.SqlSession;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 集成测试类的超类
@@ -65,7 +69,7 @@ public abstract class IntegrationTest {
      * </p>
      *
      * @see TestingConfig#testingTransactionManager(org.springframework.transaction.PlatformTransactionManager)
-     * TestingConfig.testingTransactionManager(PlatformTransactionManager)
+     *      TestingConfig.testingTransactionManager(PlatformTransactionManager)
      */
     @Autowired
     private TestingTransactionManager txManager;
@@ -158,7 +162,7 @@ public abstract class IntegrationTest {
      * 每次测试结束, 进行清理工作
      */
     @AfterEach
-    protected void afterEach() { }
+    protected void afterEach() {}
 
     protected Org currentOrg() {
         return org;

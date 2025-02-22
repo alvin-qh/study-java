@@ -1,14 +1,17 @@
 package alvin.study.springboot.security.conf;
 
-import alvin.study.springboot.security.util.security.Jwt;
-import alvin.study.springboot.security.util.security.PasswordEncoder;
-import com.auth0.jwt.algorithms.Algorithm;
-import lombok.extern.slf4j.Slf4j;
+import java.time.Duration;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.Duration;
+import com.auth0.jwt.algorithms.Algorithm;
+
+import lombok.extern.slf4j.Slf4j;
+
+import alvin.study.springboot.security.util.security.Jwt;
+import alvin.study.springboot.security.util.security.PasswordEncoder;
 
 /**
  * 配置需被容器管理的 Bean 对象

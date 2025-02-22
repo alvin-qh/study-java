@@ -1,20 +1,23 @@
 package alvin.study.springboot.mybatis.infra.mapper;
 
+import static org.assertj.core.api.BDDAssertions.then;
+
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import org.junit.jupiter.api.Test;
+
 import alvin.study.springboot.mybatis.IntegrationTest;
 import alvin.study.springboot.mybatis.builder.DepartmentBuilder;
 import alvin.study.springboot.mybatis.builder.DepartmentEmployeeBuilder;
 import alvin.study.springboot.mybatis.builder.EmployeeBuilder;
 import alvin.study.springboot.mybatis.infra.entity.Department;
 import alvin.study.springboot.mybatis.infra.entity.Employee;
-import org.junit.jupiter.api.Test;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-
-import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * 测试 {@link DepartmentMapper} 类型
@@ -43,14 +46,14 @@ class DepartmentMapperTest extends IntegrationTest {
     void selectByNameWithParentAndChildren_shouldGetSelectResult() {
         // 创建一个上级部门
         var parent = newBuilder(DepartmentBuilder.class)
-            .withName("Parent")
-            .create();
+                .withName("Parent")
+                .create();
 
         // 创建一个下级部门
         var child = newBuilder(DepartmentBuilder.class)
-            .withName("Child")
-            .withParent(parent)
-            .create();
+                .withName("Child")
+                .withParent(parent)
+                .create();
 
         // 清除一级缓存
         clearSessionCache();
@@ -97,20 +100,20 @@ class DepartmentMapperTest extends IntegrationTest {
     void selectByNameWithEmployees_shouldGetSelectResult() {
         // 创建一个部门
         var department = newBuilder(DepartmentBuilder.class)
-            .withName("DEPT-1")
-            .create();
+                .withName("DEPT-1")
+                .create();
 
         for (var i = 0; i < 10; i++) {
             // 创建一个员工
             var employee = newBuilder(EmployeeBuilder.class)
-                .withName("EMP-" + i)
-                .create();
+                    .withName("EMP-" + i)
+                    .create();
 
             // 将员工和部门关联
             newBuilder(DepartmentEmployeeBuilder.class)
-                .withDepartmentId(department.getId())
-                .withEmployeeId(employee.getId())
-                .create();
+                    .withDepartmentId(department.getId())
+                    .withEmployeeId(employee.getId())
+                    .create();
         }
 
         // 清除一级缓存
@@ -144,8 +147,8 @@ class DepartmentMapperTest extends IntegrationTest {
     void selectByName_shouldGetSelectResult() {
         // 创建一个部门
         var department = newBuilder(DepartmentBuilder.class)
-            .withName("DEPT-1")
-            .create();
+                .withName("DEPT-1")
+                .create();
 
         // 根据部门名称进行查询
         var mayDepartment = mapper.selectByName("DEPT-1");
@@ -186,23 +189,23 @@ class DepartmentMapperTest extends IntegrationTest {
         var department1 = newBuilder(DepartmentBuilder.class).create();
         // 关联员工和部门实体
         newBuilder(DepartmentEmployeeBuilder.class)
-            .withDepartmentId(department1.getId())
-            .withEmployeeId(employee.getId())
-            .create();
+                .withDepartmentId(department1.getId())
+                .withEmployeeId(employee.getId())
+                .create();
 
         // 创建第二个部门实体
         var department2 = newBuilder(DepartmentBuilder.class).create();
         // 关联员工和部门实体
         newBuilder(DepartmentEmployeeBuilder.class)
-            .withDepartmentId(department2.getId())
-            .withEmployeeId(employee.getId())
-            .create();
+                .withDepartmentId(department2.getId())
+                .withEmployeeId(employee.getId())
+                .create();
 
         // 根据员工查询相关的部门信息 Map 对象列表
         var results = mapper.selectByEmployee(employee);
         then(results).hasSize(2);
 
-        var resultType = new TypeToken<List<Department>>() { }.getType();
+        var resultType = new TypeToken<List<Department>>() {}.getType();
         // 通过 ModelMapper 将 Map 对象转化为 Department 对象
         var departments = (List<Department>) modelMapper.map(results, resultType);
 

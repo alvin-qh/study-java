@@ -1,10 +1,11 @@
 package alvin.study.springboot.validator.validator;
 
-import com.google.common.base.Strings;
+import java.util.regex.Pattern;
+
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-import java.util.regex.Pattern;
+import com.google.common.base.Strings;
 
 /**
  * 和校验注解关联的校验执行类
@@ -20,7 +21,7 @@ import java.util.regex.Pattern;
 class IpAddressValidator implements ConstraintValidator<IpAddress, String> {
     // 用于判断 IPv4 格式的正则表达式
     private static final Pattern PATTERN_IPV4 = Pattern
-        .compile("^(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})$");
+            .compile("^(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})$");
 
     // 用于判断 IPv6 格式的正则表达式
     private static final Pattern PATTERN_IPV6 = Pattern.compile("^([a-fA-F]{1,4}:){7}[a-fA-F]{1,4}$");

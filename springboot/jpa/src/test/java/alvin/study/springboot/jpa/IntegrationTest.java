@@ -1,14 +1,20 @@
 package alvin.study.springboot.jpa;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
 import org.hibernate.Session;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+
+import lombok.SneakyThrows;
 
 import alvin.study.springboot.jpa.builder.Builder;
 import alvin.study.springboot.jpa.builder.OrgBuilder;
@@ -24,9 +30,6 @@ import alvin.study.springboot.jpa.core.context.WebContext;
 import alvin.study.springboot.jpa.infra.entity.Org;
 import alvin.study.springboot.jpa.infra.entity.User;
 import alvin.study.springboot.jpa.infra.entity.common.BaseEntity;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import lombok.SneakyThrows;
 
 /**
  * 集成测试类的超类
