@@ -2,12 +2,11 @@
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>study-java-springboot-mybatis</artifactId>
+  <artifactId>study-java-springboot-graphql</artifactId>
   <name>${project.artifactId}</name>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <!-- 从根项目 pom.xml 继承 -->
   <parent>
     <groupId>alvin.study</groupId>
     <artifactId>study-java-springboot-parent</artifactId>
@@ -24,6 +23,16 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>com.graphql-java</groupId>
+        <artifactId>graphql-java-extended-scalars</artifactId>
+        <version>${version.graphql-java}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.graphql-java</groupId>
+        <artifactId>graphql-java-extended-validation</artifactId>
+        <version>${version.graphql-java}</version>
+      </dependency>
+      <dependency>
         <groupId>com.baomidou</groupId>
         <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
         <version>${version.mybatis-plus}</version>
@@ -32,6 +41,11 @@
         <groupId>com.baomidou</groupId>
         <artifactId>mybatis-plus-jsqlparser</artifactId>
         <version>${version.mybatis-plus}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.auth0</groupId>
+        <artifactId>java-jwt</artifactId>
+        <version>${version.auth-jwt}</version>
       </dependency>
       <dependency>
         <groupId>commons-codec</groupId>
@@ -44,9 +58,10 @@
         <version>${version.modelmapper}</version>
       </dependency>
       <dependency>
-        <groupId>p6spy</groupId>
-        <artifactId>p6spy</artifactId>
-        <version>${version.p6spy}</version>
+        <groupId>org.springframework.graphql</groupId>
+        <artifactId>spring-graphql-test</artifactId>
+        <version>${version.spring-graphql-test}</version>
+        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -58,12 +73,32 @@
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
     <dependency>
+      <!-- Spring Boot Web 依赖 -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
       <!-- Spring Boot JDBC 依赖 -->
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-jdbc</artifactId>
     </dependency>
     <dependency>
-      <!-- Spring Boot Mybatis-Plus 依赖 -->
+      <!-- Spring Boot GraphQL 依赖 -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-graphql</artifactId>
+    </dependency>
+    <dependency>
+      <!-- GraphQL 扩展类型依赖 -->
+      <groupId>com.graphql-java</groupId>
+      <artifactId>graphql-java-extended-scalars</artifactId>
+    </dependency>
+    <dependency>
+      <!-- GraphQL 扩展验证注解依赖 -->
+      <groupId>com.graphql-java</groupId>
+      <artifactId>graphql-java-extended-validation</artifactId>
+    </dependency>
+    <dependency>
+      <!-- Spring Boot Mybatis 依赖 -->
       <groupId>com.baomidou</groupId>
       <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
       <exclusions>
@@ -74,9 +109,20 @@
       </exclusions>
     </dependency>
     <dependency>
-      <!-- Mybatis-Plus SQL 解析器依赖, 拦截器需要 -->
+      <!-- Spring Boot Mybatis 分页依赖 -->
       <groupId>com.baomidou</groupId>
       <artifactId>mybatis-plus-jsqlparser</artifactId>
+    </dependency>
+    <dependency>
+      <!-- JWT 依赖 -->
+      <groupId>com.auth0</groupId>
+      <artifactId>java-jwt</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <!-- Spring Boot Bean 验证依赖 -->
@@ -94,7 +140,7 @@
       <artifactId>h2</artifactId>
     </dependency>
     <dependency>
-      <!-- Modelmapper 对象类型转换依赖 -->
+      <!-- Modelmapper 对象转换工具依赖 -->
       <groupId>org.modelmapper</groupId>
       <artifactId>modelmapper</artifactId>
     </dependency>
@@ -105,9 +151,15 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
-      <!-- SQL 执行记录插件 -->
-      <groupId>p6spy</groupId>
-      <artifactId>p6spy</artifactId>
+      <!-- Spring Boot Webflux Starter, 这里仅用作测试 -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-webflux</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <!-- Spring Boot Graphql 测试依赖 -->
+      <groupId>org.springframework.graphql</groupId>
+      <artifactId>spring-graphql-test</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

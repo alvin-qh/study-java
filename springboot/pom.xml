@@ -23,12 +23,12 @@
     <module>jpa</module>
     <module>datasource</module>
     <module>security</module>
-    <module>shiro</module>
+    <module>autoconfig</module>
+    <module>springdoc</module>
     <module>mybatis</module>
     <module>jooq</module>
-    <module>kickstart-graphql</module>
-    <module>springdoc</module>
-    <module>autoconfig</module>
+    <module>shiro</module>
+    <module>graphql</module>
   </modules>
 
   <dependencyManagement>
