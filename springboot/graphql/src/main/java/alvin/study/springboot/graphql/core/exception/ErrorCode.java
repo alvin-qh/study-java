@@ -1,7 +1,7 @@
 package alvin.study.springboot.graphql.core.exception;
 
 /**
- * 错误主代码
+ * 错误主代码常量群
  */
 public interface ErrorCode {
     String INPUT_ERROR = "input_error";

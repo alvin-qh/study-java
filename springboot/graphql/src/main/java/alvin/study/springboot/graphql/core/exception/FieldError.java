@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * 表示一个错误字段的类型
+ * 定义类用于表示一个字段解析时引发的错误信息
  */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
@@ -25,6 +25,12 @@ public class FieldError {
     // 错误信息
     private String message;
 
+    /**
+     * 构造器, 只传入错误字段名与错误值
+     *
+     * @param field 错误字段名
+     * @param rejectedValue 错误值
+     */
     public FieldError(String field, Object rejectedValue) {
         this.field = field;
         this.rejectedValue = rejectedValue;

@@ -1,4 +1,4 @@
-package alvin.study.springboot.kickstart.core.graphql.relay;
+package alvin.study.springboot.graphql.core.graphql.relay;
 
 /**
  * 扩展原本的 {@link graphql.relay.Connection} 类型, 增加 {@link #getTotalCount()} 属性

@@ -2,7 +2,6 @@ package alvin.study.springboot.graphql.core.graphql.directive;
 
 import graphql.schema.DataFetcherFactories;
 import graphql.schema.GraphQLFieldDefinition;
-import graphql.schema.GraphQLObjectType;
 import graphql.schema.idl.SchemaDirectiveWiring;
 import graphql.schema.idl.SchemaDirectiveWiringEnvironment;
 
@@ -39,8 +38,8 @@ import graphql.schema.idl.SchemaDirectiveWiringEnvironment;
  * </p>
  *
  * <p>
- * 本类型在 {@link alvin.study.springboot.graphql.conf.GraphqlConfig#uppercaseDirective()
- * GraphqlConfig.uppercaseDirective()} 方法中进行注册
+ * 本类型在 {@link alvin.study.springboot.graphql.conf.GraphqlConfig#runtimeWiringConfigurer()
+ * GraphqlConfig.runtimeWiringConfigurer()} 方法中进行注册
  * </p>
  */
 public class UppercaseDirective implements SchemaDirectiveWiring {
@@ -49,28 +48,13 @@ public class UppercaseDirective implements SchemaDirectiveWiring {
      */
     @Override
     public GraphQLFieldDefinition onField(SchemaDirectiveWiringEnvironment<GraphQLFieldDefinition> env) {
-        // 获取 graphql 代码注册表对象
-        var registry = env.getCodeRegistry();
-
-        // 获取在处理的字段对象
-        var field = env.getElement();
-
-        // 获取包含指定字段的类型
-        var parentType = field.getType();
-
-        // 获取原本的 dataFetcher 对象
-        var originalFetcher = registry.getDataFetcher((GraphQLObjectType) parentType, env.getFieldDefinition());
-
-        // 定义新的 dataFetcher, 即新的获取字段的方式
-        var dataFetcher = DataFetcherFactories.wrapDataFetcher(originalFetcher, (dfEnv, value) -> {
+        var dataFetcher = DataFetcherFactories.wrapDataFetcher(env.getFieldDataFetcher(), (dataFetcherEnv, value) -> {
             if (value instanceof String s) {
                 return s.toUpperCase();
             }
-            return value;
+            return value.toString().toUpperCase();
         });
 
-        // 注册字段的 dataFetcher 对象
-        registry.dataFetcher((GraphQLObjectType) parentType, field, dataFetcher);
-        return field;
+        return env.setFieldDataFetcher(dataFetcher);
     }
 }

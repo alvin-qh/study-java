@@ -52,7 +52,7 @@ public class BeanConfig {
     }
 
     /**
-     * 获取 {@link Jwt} 对象
+     * 获取 {@link Jwt} 对象, 用于产生用户 Token
      *
      * @param key    加密密钥
      * @param jti    JWT ID

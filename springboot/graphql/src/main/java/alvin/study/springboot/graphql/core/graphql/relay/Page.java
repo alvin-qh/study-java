@@ -1,4 +1,4 @@
-package alvin.study.springboot.kickstart.core.graphql.relay;
+package alvin.study.springboot.graphql.core.graphql.relay;
 
 import java.util.ArrayList;
 import java.util.List;

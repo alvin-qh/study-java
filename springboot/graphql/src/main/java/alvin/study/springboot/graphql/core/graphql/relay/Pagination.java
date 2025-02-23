@@ -1,16 +1,19 @@
-package alvin.study.springboot.kickstart.core.graphql.relay;
-
-import alvin.study.springboot.kickstart.core.exception.InputException;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.metadata.OrderItem;
-import com.google.common.base.Splitter;
-import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+package alvin.study.springboot.graphql.core.graphql.relay;
 
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
+
+import com.google.common.base.Splitter;
+
+import lombok.Getter;
+
+import alvin.study.springboot.graphql.core.exception.InputException;
 
 /**
  * 辅助分页工具类
@@ -144,7 +147,7 @@ public class Pagination {
             return this;
         }
 
-        public PageBuilder<T> withQueryParams(@NotNull Map<String, Object> queryParams) {
+        public PageBuilder<T> withQueryParams(Map<String, Object> queryParams) {
             try {
                 return withBefore((String) queryParams.get("before"))
                         .withAfter((String) queryParams.get("after"))

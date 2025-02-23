@@ -39,13 +39,19 @@ spring:
         max-page-size: 5000
 
   # 配置 graphql-spring 框架
-  # Kickstart 是基于 org.springframework.boot:spring-boot-starter-graphql 框架建立的, 所以部分配置在 spring.graphql 下
   graphql:
     schema:
       # schema 文件的扩展名
       file-extensions: graphqls
       # schema 文件的存放路径
-      locations: classpath*:graphql/**/*.graphqls
+      locations: classpath*:graphql/**
+
+    graphiql:
+      enabled: true
+
+    # cors:
+    #   allowed-origins: http://some.domain.com
+    #   allowed-methods: GET, HEAD, POST
 
 # 服务容器 (Tomcat) 配置
 server:
@@ -57,7 +63,7 @@ server:
     threads:
       max: 256
       min-spare: 0
-  port: 8080
+  port: 12345
   servlet:
     context-path: /
     encoding:
@@ -81,38 +87,6 @@ mybatis-plus:
     map-underscore-to-camel-case: true
     auto-mapping-behavior: full
     auto-mapping-unknown-column-behavior: warning
-
-# 配置 Spring Graphql 框架
-graphql:
-  # schema-strategy: annotations
-  # annotations:
-  #   base-package: alvin.study
-  extended-scalars:
-    - DateTime
-    - JSON
-    - Long
-  servlet:
-    mapping: /graphql
-    corsEnabled: false
-    # cors:
-    #   allowed-origins: http://some.domain.com
-    #   allowed-methods: GET, HEAD, POST
-    exception-handlers-enabled: true
-    context-setting: PER_REQUEST_WITH_INSTRUMENTATION
-    async:
-      enabled: true
-  tools:
-    introspection-enabled: true
-  graphiql:
-    enabled: true
-    mapping: /graphiql
-    subscriptions:
-      timeout: 30
-      reconnect: false
-    pageTitle: GraphiQL
-    props:
-      variables:
-        editorTheme: solarized dark
 
 # 应用程序设置
 application:

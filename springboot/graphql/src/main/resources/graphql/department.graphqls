@@ -1,28 +1,6 @@
 # 和 Department 相关的所有操作
 
-# 定义 Department 类型, 参考 alvin.study.app.api.schema.type.DepartmentType 类型
-type Department {
-  id: ID!
-  orgId: Long
-  org: Org!
-  name: String!
-  parentId: Long
-  parent: Department
-  # 部门的下属部门
-  # 这里使用了 Graphql Relay 定义分页结果, 参考 alvin.study.core.graphql.relay.ListConnection<DepartmentType> 类型
-  children(after: String, first: Int): DepartmentConnection!
-  # 部门下属的雇员
-  # 这里使用了 Graphql Relay 定义分页结果, 参考 alvin.study.core.graphql.relay.ListConnection<EmployeeType> 类型
-  employees(after: String, first: Int): EmployeeConnection!
-  createdBy: Long
-  createdByUser: User
-  updatedBy: Long
-  updatedByUser: User
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
-# 部门类型的 Edge 类型, 参考 graphql.relay.DefaultEdge<DepartmentType> 类型
+# 部门类型的 Edge 类型, 参考 graphql.relay.DefaultEdge<Department> 类型
 type DepartmentEdge {
   node: Department!
   cursor: String!
@@ -35,35 +13,53 @@ type DepartmentConnection {
   totalCount: Int!
 }
 
-# 扩展根查询类型, 添加组织查询方法, 参考 alvin.study.app.api.query.DepartmentQuery 类型
+# 定义 Department 类型, 参考 `alvin.study.springboot.graphql.infra.entity.Department` 类型
+type Department {
+  id: ID!
+  orgId: Long
+  org: Org!
+  name: String!
+  parentId: Long
+  parent: Department
+  children(after: String, first: Int): DepartmentConnection! # 部门的下属部门
+  employees(after: String, first: Int): EmployeeConnection! # 部门下属的雇员
+  createdBy: Long
+  createdByUser: User
+  updatedBy: Long
+  updatedByUser: User
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+# 扩展根查询类型, 添加组织查询方法, 参考 `alvin.study.springboot.graphql.app.api.query.DepartmentQuery` 类型
 extend type Query {
   department(id: ID!): Department!
 }
 
-# 变更组织信息的输入类, alvin.study.app.api.schema.input.DepartmentInput 类型
-input DepartmentInput {
-  name: String!
-  parentId: Long!
-}
+# # 变更组织信息的输入类, alvin.study.app.api.schema.input.DepartmentInput 类型
+# input DepartmentInput {
+#   name: String!
+#   parentId: Long!
+# }
 
-# 创建组织信息的结果类, alvin.study.app.api.schema.payload.CreateDepartmentPayload 类型
-type CreateDepartmentPayload {
-  department: Department!
-}
+# # 创建组织信息的结果类, alvin.study.app.api.schema.payload.CreateDepartmentPayload 类型
+# type CreateDepartmentPayload {
+#   department: Department!
+# }
 
-# 更新组织信息的结果类, alvin.study.app.api.schema.payload.UpdateDepartmentPayload 类型
-type UpdateDepartmentPayload {
-  department: Department!
-}
+# # 更新组织信息的结果类, alvin.study.app.api.schema.payload.UpdateDepartmentPayload 类型
+# type UpdateDepartmentPayload {
+#   department: Department!
+# }
 
-# 删除部门信息的结果类, alvin.study.app.api.schema.payload.DeleteDepartmentPayload 类型
-type DeleteDepartmentPayload {
-  deleted: Boolean!
-}
+# # 删除部门信息的结果类, alvin.study.app.api.schema.payload.DeleteDepartmentPayload 类型
+# type DeleteDepartmentPayload {
+#   deleted: Boolean!
+# }
 
-# 扩展根变更类型, 参考 alvin.study.app.api.mutation.OrgMutation 类型
-extend type Mutation {
-  createDepartment(input: DepartmentInput!): CreateDepartmentPayload!
-  updateDepartment(id: ID!, input: DepartmentInput!): UpdateDepartmentPayload!
-  deleteDepartment(id: ID!): DeleteDepartmentPayload!
-}
+# # 扩展根变更类型, 参考 alvin.study.app.api.mutation.OrgMutation 类型
+# extend type Mutation {
+#   createDepartment(input: DepartmentInput!): CreateDepartmentPayload!
+#   updateDepartment(id: ID!, input: DepartmentInput!): UpdateDepartmentPayload!
+#   deleteDepartment(id: ID!): DeleteDepartmentPayload!
+# }

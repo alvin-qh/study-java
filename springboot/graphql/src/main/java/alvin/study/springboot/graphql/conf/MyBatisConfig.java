@@ -29,7 +29,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.dialects.MySqlDiale
  */
 @Configuration("conf/mybatis")
 @MapperScan(basePackages = {
-    "alvin.study.springboot.kickstart.infra.mapper"
+    "alvin.study.springboot.graphql.infra.mapper"
 })
 @EnableTransactionManagement
 public class MyBatisConfig extends DefaultSqlInjector {

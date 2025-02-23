@@ -1,25 +1,5 @@
 # 和 Employee 相关的所有操作
 
-# 定义 Employee 类型, 参考 alvin.study.app.api.schema.type.EmployeeType 类型和 alvin.study.app.api.schema.type.EmployeeTypeResolver 类型
-type Employee {
-  id: ID!
-  orgId: Long
-  org: Org!
-  name: String!
-  email: String!
-  title: String!
-  # JSON 类型字段, 可以处理各类 JSON 格式的信息, 对应 java.util.Map 类型
-  info: JSON
-  # 所属部门
-  departments: [Department!]
-  createdBy: Long
-  createdByUser: User
-  updatedBy: Long
-  updatedByUser: User
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
 # 雇员类型的 Edge 类型, 参考 graphql.relay.DefaultEdge<EmployeeType> 类型
 type EmployeeEdge {
   node: Employee!
@@ -33,40 +13,57 @@ type EmployeeConnection {
   totalCount: Int!
 }
 
-# 扩展根查询类型, 添加雇员查询方法, 参考 alvin.study.app.api.query.EmployeeQuery 类型
-extend type Query {
-  # 根据 id 查询雇员信息
-  employee(id: ID!): Employee!
-}
-
-# 变更雇员信息的输入类, alvin.study.app.api.schema.input.EmployeeInput 类型
-input EmployeeInput {
+# 定义 Employee 类型, 参考 `alvin.study.springboot.graphql.infra.entity.Employee` 类型
+type Employee {
+  id: ID!
+  orgId: Long
+  org: Org!
   name: String!
   email: String!
   title: String!
-  # JSON 类型字段, 可以处理各类 JSON 格式的信息, 对应 java.util.Map 类型
-  info: JSON
-  departmentIds: [Long!]
+  info: JSON # JSON 类型字段, 可以处理各类 JSON 格式的信息, 对应 `java.util.Map` 类型
+  departments: [Department!] # 所属部门
+  createdBy: Long
+  createdByUser: User
+  updatedBy: Long
+  updatedByUser: User
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
-# 创建雇员信息的结果类, alvin.study.app.api.schema.payload.CreateEmployeePayload 类型
-type CreateEmployeePayload {
-  employee: Employee!
+# 扩展根查询类型, 添加雇员查询方法, 参考 `alvin.study.springboot.graphql.app.api.query.EmployeeQuery` 类型
+extend type Query {
+  employee(id: ID!): Employee! # 根据 id 查询雇员信息
 }
 
-# 更新雇员信息的结果类, alvin.study.app.api.schema.payload.UpdateEmployeePayload 类型
-type UpdateEmployeePayload {
-  employee: Employee!
-}
+# # 变更雇员信息的输入类, alvin.study.app.api.schema.input.EmployeeInput 类型
+# input EmployeeInput {
+#   name: String!
+#   email: String!
+#   title: String!
+#   # JSON 类型字段, 可以处理各类 JSON 格式的信息, 对应 java.util.Map 类型
+#   info: JSON
+#   departmentIds: [Long!]
+# }
 
-# 删除雇员信息的结果类, alvin.study.app.api.schema.payload.DeleteEmployeePayload 类型
-type DeleteEmployeePayload {
-  deleted: Boolean!
-}
+# # 创建雇员信息的结果类, alvin.study.app.api.schema.payload.CreateEmployeePayload 类型
+# type CreateEmployeePayload {
+#   employee: Employee!
+# }
 
-# 扩展根变更类型, 参考 alvin.study.app.api.mutation.UserMutation 类型
-extend type Mutation {
-  createEmployee(input: EmployeeInput!): CreateEmployeePayload!
-  updateEmployee(id: ID!, input: EmployeeInput!): UpdateEmployeePayload!
-  deleteEmployee(id: ID!): DeleteEmployeePayload!
-}
+# # 更新雇员信息的结果类, alvin.study.app.api.schema.payload.UpdateEmployeePayload 类型
+# type UpdateEmployeePayload {
+#   employee: Employee!
+# }
+
+# # 删除雇员信息的结果类, alvin.study.app.api.schema.payload.DeleteEmployeePayload 类型
+# type DeleteEmployeePayload {
+#   deleted: Boolean!
+# }
+
+# # 扩展根变更类型, 参考 alvin.study.app.api.mutation.UserMutation 类型
+# extend type Mutation {
+#   createEmployee(input: EmployeeInput!): CreateEmployeePayload!
+#   updateEmployee(id: ID!, input: EmployeeInput!): UpdateEmployeePayload!
+#   deleteEmployee(id: ID!): DeleteEmployeePayload!
+# }

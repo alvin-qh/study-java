@@ -1,7 +1,7 @@
 package alvin.study.springboot.graphql.core.exception;
 
 /**
- * 扩展错误代码
+ * 扩展错误代码常量群
  */
 public interface ErrorExtensionCode {
     String REASON = "reason";

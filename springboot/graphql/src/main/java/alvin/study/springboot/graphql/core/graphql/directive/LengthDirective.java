@@ -11,16 +11,18 @@ import graphql.GraphqlErrorBuilder;
 import graphql.execution.DataFetcherResult;
 import graphql.language.IntValue;
 import graphql.schema.DataFetcher;
+import graphql.schema.DataFetcherFactories;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLAppliedDirective;
 import graphql.schema.GraphQLDirectiveContainer;
 import graphql.schema.GraphQLFieldDefinition;
 import graphql.schema.GraphQLInputObjectType;
 import graphql.schema.GraphQLInputType;
-import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLTypeUtil;
 import graphql.schema.idl.SchemaDirectiveWiring;
 import graphql.schema.idl.SchemaDirectiveWiringEnvironment;
+
+import alvin.study.springboot.graphql.core.exception.ApiException;
 
 /**
  * 定义 {@code @len} 字段处理器
@@ -179,16 +181,57 @@ public class LengthDirective implements SchemaDirectiveWiring {
      */
     @Override
     public GraphQLFieldDefinition onField(SchemaDirectiveWiringEnvironment<GraphQLFieldDefinition> env) {
-        // 获取字段值
-        var field = env.getElement();
-
-        // 判断字段的参数或参数的 Input 字段是否包含了所需的 directive 处理器标识
-        if (appliesTo(field)) {
-            // 替换 DataFetcher
-            replaceDataFetcher(env);
+        if (!appliesTo(env.getFieldDefinition())) {
+            return env.getFieldDefinition();
         }
+        var dataFetcher = DataFetcherFactories.wrapDataFetcher(env.getFieldDataFetcher(), (dataFetcherEnv, value) -> {
+            // 记录错误信息的集合
+            var errors = new ArrayList<GraphQLError>();
 
-        return field;
+            // 遍历字段的参数
+            env.getFieldDefinition().getArguments().forEach(it -> {
+                // 判断参数是否包含指定的处理器标识
+                if (appliesTo(it)) {
+                    // 获取参数值, 处理参数, 并记录返回的错误
+                    errors.addAll(apply(it, dataFetcherEnv, dataFetcherEnv.getArgument(it.getName())));
+                }
+
+                // 如果参数为 Input 类型
+                var inputType = unwrapNonNull(it.getType());
+                if (inputType instanceof GraphQLInputObjectType inputObjType) {
+                    // 获取 Input 参数的字段定义
+                    inputObjType.getFieldDefinitions().stream()
+                            // 判断字段是否包含指定的处理器标识
+                            .filter(this::appliesTo)
+                            // 遍历所有 Input 字段
+                            .forEach(io -> {
+                                // 获取 Input 字段值
+                                var fetchVal = dataFetcherEnv.<Map<String, Object>>getArgument(it.getName());
+                                if (fetchVal != null) {
+                                    // 获取 Input 字段值, 处理字段值, 并记录返回的错误
+                                    errors.addAll(apply(io, dataFetcherEnv, fetchVal.get(io.getName())));
+                                }
+                            });
+                }
+            });
+
+            // 通过原始的 DataFetcher 获取字段原始值
+            Object result;
+            try {
+                result = env.getFieldDataFetcher().get(dataFetcherEnv);
+                if (errors.isEmpty()) {
+                    // 如果没有错误信息, 则返回字段的原始值
+                    return result;
+                }
+
+                // 将字段原始值和错误信息整合为新的 DataFetcherResult 对象
+                return makeDFRFromFetchedResult(errors, result);
+            } catch (Exception e) {
+                throw new ApiException("cannot fetch value", e);
+            }
+        });
+
+        return env.setFieldDataFetcher(dataFetcher);
     }
 
     /**
@@ -227,82 +270,6 @@ public class LengthDirective implements SchemaDirectiveWiring {
     private boolean appliesTo(GraphQLDirectiveContainer container) {
         // 判断标注的 directive 标识是否为期望的标识
         return container.getAppliedDirective(DIRECTIVE) != null;
-    }
-
-    /**
-     * 替换当前字段的 {@link DataFetcher} 对象
-     *
-     * @param definition
-     */
-    private void replaceDataFetcher(SchemaDirectiveWiringEnvironment<GraphQLFieldDefinition> env) {
-        // 获取原本的 DataFetcher 对象
-        var originalFetcher = env.getFieldDataFetcher();
-
-        // 创建一个新的 DataFetcher 对象
-        var newFetcher = createDataFetcher(originalFetcher);
-
-        var def = env.getFieldDefinition();
-        var type = def.getType();
-
-        // 替换当前字段的 DataFetcher 对象
-        env.getCodeRegistry().dataFetcher((GraphQLObjectType) type, def, newFetcher);
-    }
-
-    /**
-     * 为当前字段创建新的 {@link DataFetcher} 对象
-     *
-     * <p>
-     * 创建的 {@link DataFetcher} 对象表示: 当获取当前字段值时, 会将当前字段的参数 (以及 Input 类型参数的字段) 进行遍历,
-     * 如果包含了指定的 {@code @len} 处理器标识, 则根据处理器标识的参数 ({@code min} 和 {@code max}),
-     * 校验字段参数值是否符合要求
-     * </p>
-     *
-     * @param originalFetcher
-     * @return 新的 {@link DataFetcher} 对象
-     */
-    private DataFetcher<?> createDataFetcher(DataFetcher<?> originalFetcher) {
-        // 返回 DataFetcher 对象 (lambda 表达式)
-        return env -> {
-            // 记录错误信息的集合
-            var errors = new ArrayList<GraphQLError>();
-
-            // 遍历字段的参数
-            env.getFieldDefinition().getArguments().forEach(it -> {
-                // 判断参数是否包含指定的处理器标识
-                if (appliesTo(it)) {
-                    // 获取参数值, 处理参数, 并记录返回的错误
-                    errors.addAll(apply(it, env, env.getArgument(it.getName())));
-                }
-
-                // 如果参数为 Input 类型
-                var inputType = unwrapNonNull(it.getType());
-                if (inputType instanceof GraphQLInputObjectType inputObjType) {
-                    // 获取 Input 参数的字段定义
-                    inputObjType.getFieldDefinitions().stream()
-                            // 判断字段是否包含指定的处理器标识
-                            .filter(this::appliesTo)
-                            // 遍历所有 Input 字段
-                            .forEach(io -> {
-                                // 获取 Input 字段值
-                                var value = env.<Map<String, Object>>getArgument(it.getName());
-                                if (value != null) {
-                                    // 获取 Input 字段值, 处理字段值, 并记录返回的错误
-                                    errors.addAll(apply(io, env, value.get(io.getName())));
-                                }
-                            });
-                }
-            });
-
-            // 通过原始的 DataFetcher 获取字段原始值
-            var result = originalFetcher.get(env);
-            if (errors.isEmpty()) {
-                // 如果没有错误信息, 则返回字段的原始值
-                return result;
-            }
-
-            // 将字段原始值和错误信息整合为新的 DataFetcherResult 对象
-            return makeDFRFromFetchedResult(errors, result);
-        };
     }
 
     /**

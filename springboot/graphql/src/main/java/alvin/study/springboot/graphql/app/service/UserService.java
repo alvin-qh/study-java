@@ -14,26 +14,19 @@ import alvin.study.springboot.graphql.infra.mapper.UserMapper;
 import alvin.study.springboot.graphql.util.security.PasswordUtil;
 
 /**
- * 用户服务类
+ * 用户服务类, 用于 {@link User} 类型数据操作
  */
 @Component
 @RequiredArgsConstructor
 public class UserService {
-    /**
-     * 注入 {@link UserMapper} 类型
-     */
     private final UserMapper userMapper;
-
-    /**
-     * 密码处理工具对象
-     */
     private final PasswordUtil passwordUtil;
 
     /**
-     * 根据用户 id 名查询用户信息
+     * 根据用户 {@code ID} 值查询 {@link User} 类型用户实体对象
      *
-     * @param id 用户 id
-     * @return 用户实体的 {@link Optional} 包装对象
+     * @param id 用户实体 {@code ID}
+     * @return {@link User} 类型用户实体对象的 {@link Optional} 包装对象
      */
     @Transactional(readOnly = true)
     public Optional<User> findById(long id) {
@@ -41,9 +34,9 @@ public class UserService {
     }
 
     /**
-     * 创建一个 {@link User} 实体对象
+     * 创建 {@link User} 类型用户实体对象
      *
-     * @param user {@link User} 对象
+     * @param user {@link User} 类型用户实体对象
      */
     @Transactional
     public void create(User user) {
@@ -56,10 +49,11 @@ public class UserService {
     }
 
     /**
-     * 更新一个 {@link User} 实体对象
+     * 更新 {@link User} 类型用户实体对象
      *
-     * @param id   用户 id
-     * @param user {@link User} 对象
+     * @param id   用户实体 {@code ID}
+     * @param user {@link User} 用户实体对象的 {@link Optional} 包装对象
+     * @return {@link User} 类型用户实体对象的 {@link Optional} 包装对象
      */
     @Transactional
     public Optional<User> update(long id, User user) {
@@ -82,10 +76,10 @@ public class UserService {
     }
 
     /**
-     * 删除用户实体对象
+     * 删除 {@link User} 类型用户实体
      *
-     * @param id 用户 ID
-     * @return 是否删除用户
+     * @param id 用户实体 {@code ID} 值
+     * @return {@code true} 表示删除成功, {@code false} 表示删除失败
      */
     @Transactional
     public boolean delete(long id) {

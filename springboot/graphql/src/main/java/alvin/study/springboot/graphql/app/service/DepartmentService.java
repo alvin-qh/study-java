@@ -1,5 +1,6 @@
 package alvin.study.springboot.graphql.app.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,21 +16,18 @@ import alvin.study.springboot.graphql.infra.entity.Department;
 import alvin.study.springboot.graphql.infra.mapper.DepartmentMapper;
 
 /**
- * 部门服务类
+ * 部门服务类, 用于 {@link Department} 类型数据操作
  */
 @Component
 @RequiredArgsConstructor
 public class DepartmentService {
-    /**
-     * 注入 {@link DepartmentMapper} 类型
-     */
     private final DepartmentMapper departmentMapper;
 
     /**
-     * 根据组织 id 名查询部门信息
+     * 根据部门实体 {@code ID} 值查询 {@link Department} 类型部门实体对象
      *
-     * @param id 部门 id
-     * @return 部门实体的 {@link Optional} 包装对象
+     * @param id 部门实体 {@code ID}
+     * @return {@link Department} 类型部门实体对象的 {@link Optional} 包装对象
      */
     @Transactional(readOnly = true)
     public Optional<Department> findById(long id) {
@@ -37,9 +35,20 @@ public class DepartmentService {
     }
 
     /**
-     * 创建一个 {@link Department} 实体对象
+     * 根据部门 {@code ID} 集合查询 {@link Department} 类型部门实体集合
      *
-     * @param department {@link Department} 对象
+     * @param departmentIds 部门 {@code ID} 集合
+     * @return {@link Department} 类型部门实体集合
+     */
+    @Transactional(readOnly = true)
+    public List<Department> listByIds(Collection<Long> departmentIds) {
+        return departmentMapper.selectByIds(departmentIds);
+    }
+
+    /**
+     * 创建 {@link Department} 类型部门实体对象
+     *
+     * @param department {@link Department} 类型部门实体对象
      */
     @Transactional
     public void create(Department department) {
@@ -47,10 +56,11 @@ public class DepartmentService {
     }
 
     /**
-     * 更新一个 {@link Department} 实体对象
+     * 更新 {@link Department} 类型部门实体对象
      *
-     * @param id         部门 id
-     * @param department {@link Department} 对象
+     * @param id         部门实体 {@code ID}
+     * @param department {@link Department} 部门实体对象的 {@link Optional} 包装对象
+     * @return {@link Department} 类型部门实体对象的 {@link Optional} 包装对象
      */
     @Transactional
     public Optional<Department> update(long id, Department department) {
@@ -70,11 +80,11 @@ public class DepartmentService {
     }
 
     /**
-     * 根据部门 ID 查询相关子部门实体集合
+     * 根据部门 {@code ID} 查询相关的 {@link Department} 类型子部门实体集合
      *
-     * @param parentId 父一级部门 ID
-     * @param page     Mybatis-Plus 分页对象
-     * @return 子部门集合
+     * @param parentId 父一级部门 {@code ID}
+     * @param page     {@link IPage} 类型分页对象
+     * @return {@link IPage} 类型分页对象, 包含一页数量的 {@link Department} 类型子部门实体集合
      */
     @Transactional(readOnly = true)
     public IPage<Department> listChildren(long parentId, IPage<Department> page) {
@@ -83,10 +93,10 @@ public class DepartmentService {
     }
 
     /**
-     * 删除一个部门实体
+     * 删除 {@link Department} 类型部门实体
      *
-     * @param id 部门 id
-     * @return 是否删除
+     * @param id 部门实体 {@code ID} 值
+     * @return {@code true} 表示删除成功, {@code false} 表示删除失败
      */
     @Transactional
     public boolean delete(long id) {
@@ -94,10 +104,10 @@ public class DepartmentService {
     }
 
     /**
-     * 根据雇员 id 查询其所属的部门
+     * 根据雇员 {@code ID} 查询其 {@link Department} 类型所属的部门实体对象
      *
-     * @param employeeId 雇员 id
-     * @return 雇员所属部门
+     * @param employeeId 雇员 {@code ID}
+     * @return 雇员所属部门的 {@link Department} 类型实体集合
      */
     @Transactional(readOnly = true)
     public List<Department> listByEmployeeId(long employeeId) {

@@ -27,10 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 public class ApplicationStartedEventListener implements ApplicationListener<ApplicationStartedEvent> {
-    // application.yml 中定义的时区信息
     private final String timezone;
-
-    // Jackson 对象
     private final ObjectMapper objectMapper;
 
     /**

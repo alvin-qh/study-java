@@ -13,11 +13,21 @@ public class InternalException extends GraphqlBaseException {
     // 异常原因
     private final String reason;
 
+    /**
+     * 构造器, 创建一个 {@link InternalException} 对象
+     *
+     * @param reason 异常原因
+     */
     public InternalException(String reason) {
         super(ErrorCode.INTERNAL_ERROR, ErrorType.ExecutionAborted);
         this.reason = reason;
     }
 
+    /**
+     * 构造器, 创建一个 {@link InternalException} 对象
+     *
+     * @param cause 异常原因
+     */
     public InternalException(Throwable cause) {
         super(ErrorCode.INTERNAL_ERROR, cause, ErrorType.ExecutionAborted);
         this.reason = cause.getMessage();

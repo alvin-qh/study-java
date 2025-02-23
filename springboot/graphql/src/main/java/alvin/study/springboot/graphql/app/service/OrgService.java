@@ -11,21 +11,18 @@ import alvin.study.springboot.graphql.infra.entity.Org;
 import alvin.study.springboot.graphql.infra.mapper.OrgMapper;
 
 /**
- * 组织服务类
+ * 组织服务类, 用于 {@link Org} 类型数据操作
  */
 @Component
 @RequiredArgsConstructor
 public class OrgService {
-    /**
-     * 注入 {@link OrgMapper} 类型
-     */
     private final OrgMapper orgMapper;
 
     /**
-     * 根据组织 id 名查询用户信息
+     * 根据组织 {@code ID} 查询 {@link Org} 类型组织实体对象
      *
-     * @param id 组织 id
-     * @return 组织实体的 {@link Optional} 包装对象
+     * @param id 组织 {@code ID}
+     * @return {@link Org} 类型组织实体对象的 {@link Optional} 包装对象
      */
     @Transactional(readOnly = true)
     public Optional<Org> findById(long id) {
@@ -33,9 +30,9 @@ public class OrgService {
     }
 
     /**
-     * 创建一个 {@link Org} 实体对象
+     * 创建 {@link Org} 类型组织实体对象
      *
-     * @param org {@link Org} 对象
+     * @param org {@link Org} 类型组织实体对象
      */
     @Transactional
     public void create(Org org) {
@@ -43,10 +40,10 @@ public class OrgService {
     }
 
     /**
-     * 更新一个 {@link Org} 实体对象
+     * 更新 {@link Org} 类型组织实体对象
      *
-     * @param id  组织 id
-     * @param org {@link Org} 对象
+     * @param id  组织 {@code ID}
+     * @param org {@link Org} 类型组织实体对象的 {@link Optional} 包装对象
      */
     @Transactional
     public Optional<Org> update(long id, Org org) {
@@ -65,11 +62,10 @@ public class OrgService {
     }
 
     /**
-     * 删除一个 {@link Org} 实体
+     * 删除 {@link Org} 类型组织实体
      *
-     * @param id 实体 id
-     * @return 是否删除
-     * @return 是否删除
+     * @param id 组织实体 {@code ID} 值
+     * @return {@code true} 表示删除成功, {@code false} 表示删除失败
      */
     @Transactional
     public boolean delete(long id) {

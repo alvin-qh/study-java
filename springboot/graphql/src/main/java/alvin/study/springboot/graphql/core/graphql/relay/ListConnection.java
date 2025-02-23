@@ -1,13 +1,14 @@
-package alvin.study.springboot.kickstart.core.graphql.relay;
+package alvin.study.springboot.graphql.core.graphql.relay;
+
+import java.util.List;
+import java.util.function.Function;
+
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import graphql.relay.DefaultEdge;
 import graphql.relay.Edge;
 import graphql.relay.PageInfo;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
-
-import java.util.List;
-import java.util.function.Function;
 
 /**
  * 表示通过列表集合承载的 {@link Connection} 对象

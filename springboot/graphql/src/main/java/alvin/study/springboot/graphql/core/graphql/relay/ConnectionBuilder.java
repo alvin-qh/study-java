@@ -1,16 +1,16 @@
-package alvin.study.springboot.kickstart.core.graphql.relay;
+package alvin.study.springboot.graphql.core.graphql.relay;
+
+import java.util.List;
+import java.util.stream.IntStream;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+
+import lombok.extern.slf4j.Slf4j;
+
 import graphql.relay.DefaultEdge;
 import graphql.relay.DefaultPageInfo;
 import graphql.relay.Edge;
 import graphql.relay.PageInfo;
-import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
-import java.util.stream.IntStream;
 
 /**
  * 创建 {@link ListConnection} 对象
@@ -34,7 +34,6 @@ public final class ConnectionBuilder {
      * @param page Mybatis 分页对象
      * @return {@link ListConnection} 对象
      */
-    @Contract("_ -> new")
     public static <T> ListConnection<T> build(IPage<T> page) {
         log.debug("Build graphql connection with: startPos={}, pageSize={}, dataCount={} and totalCount={}",
             page.offset(), page.getSize(), page.getRecords().size(), page.getTotal());
@@ -61,7 +60,7 @@ public final class ConnectionBuilder {
      * @param page Mybatis 分页对象
      * @return {@link Edge} 对象的 {@link List} 集合
      */
-    private static <T> List<Edge<T>> buildEdges(@NotNull IPage<T> page) {
+    private static <T> List<Edge<T>> buildEdges(IPage<T> page) {
         // 如果查询结果总数量为 0, 则返回空集合
         if (page.getTotal() == 0) {
             return List.of();
@@ -93,9 +92,7 @@ public final class ConnectionBuilder {
      * @param page Mybatis 分页对象
      * @return {@link PageInfo} 对象
      */
-    @Contract("_ -> new")
-    private static @NotNull PageInfo buildPageInfo(@NotNull IPage<?> page) {
-        //
+    private static PageInfo buildPageInfo(IPage<?> page) {
         return new DefaultPageInfo(
             Cursors.makeConnCursor((int) page.offset()),
             Cursors.makeConnCursor((int) page.offset() + page.getRecords().size()),

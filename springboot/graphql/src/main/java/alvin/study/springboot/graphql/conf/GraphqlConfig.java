@@ -3,24 +3,16 @@ package alvin.study.springboot.graphql.conf;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.constraints.NotNull;
-import jakarta.websocket.Session;
-import jakarta.websocket.server.HandshakeRequest;
-
-import org.modelmapper.ModelMapper;
+import org.dataloader.BatchLoader;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.graphql.execution.BatchLoaderRegistry;
 import org.springframework.graphql.execution.DefaultBatchLoaderRegistry;
 import org.springframework.graphql.execution.RuntimeWiringConfigurer;
-import org.springframework.web.context.request.RequestContextHolder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,11 +21,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-import alvin.study.springboot.graphql.core.context.CustomRequestAttributes;
-import alvin.study.springboot.graphql.core.graphql.context.GraphQLContextResolver;
-import alvin.study.springboot.graphql.core.graphql.dataloader.DataLoaderProvider;
-import alvin.study.springboot.graphql.core.graphql.directive.LengthDirective;
-import alvin.study.springboot.graphql.core.graphql.directive.UppercaseDirective;
 import graphql.ExecutionResult;
 import graphql.GraphQLContext;
 import graphql.execution.CoercedVariables;
@@ -41,7 +28,6 @@ import graphql.execution.instrumentation.Instrumentation;
 import graphql.execution.instrumentation.InstrumentationContext;
 import graphql.execution.instrumentation.InstrumentationState;
 import graphql.execution.instrumentation.SimpleInstrumentationContext;
-import graphql.execution.instrumentation.SimplePerformantInstrumentation;
 import graphql.execution.instrumentation.parameters.InstrumentationExecutionParameters;
 import graphql.language.Value;
 import graphql.scalars.ExtendedScalars;
@@ -51,54 +37,52 @@ import graphql.schema.CoercingParseValueException;
 import graphql.schema.CoercingSerializeException;
 import graphql.schema.GraphQLScalarType;
 
+import alvin.study.springboot.graphql.core.graphql.dataloader.DepartmentLoader;
+import alvin.study.springboot.graphql.core.graphql.dataloader.OrgLoader;
+import alvin.study.springboot.graphql.core.graphql.dataloader.UserLoader;
+import alvin.study.springboot.graphql.core.graphql.directive.LengthDirective;
+import alvin.study.springboot.graphql.core.graphql.directive.UppercaseDirective;
+import alvin.study.springboot.graphql.infra.entity.Department;
+import alvin.study.springboot.graphql.infra.entity.Org;
+import alvin.study.springboot.graphql.infra.entity.User;
+
 /**
- * Kickstart Graphql 配置类
+ * Spring Graphql 配置类
  *
  * <p>
- * {@link SimplePerformantInstrumentation} 超类提供了一组拦截器, 用于拦截 Graphql 执行过程中的各个阶段, 参考:
- * {@link SimplePerformantInstrumentation#beginExecution(InstrumentationExecutionParameters)}
- * 等方法
+ * {@link Instrumentation} 接口提供了一组拦截器, 用于拦截 Graphql 执行过程中的各个阶段, 参考:
+ * {@link Instrumentation#beginExecution(InstrumentationExecutionParameters)} 等方法
  * </p>
  *
  * <p>
- * {@link GraphQLServletContextBuilder} 接口用来提供各类请求上下文下
- * {@link GraphQLKickstartContext} 对象如何产生, 参考:
- * {@link GraphQLServletContextBuilder#build()},
- * {@link GraphQLServletContextBuilder#build(HttpServletRequest, HttpServletResponse)}
- * 和 {@link GraphQLServletContextBuilder#build(Session, HandshakeRequest)} 方法
+ * 另外, 该类型还提供了如下类型:
+ * <ul>
+ * <li>{@link RuntimeWiringConfigurer} 类型实例, 用于对 Graphql 的数据类型进行扩展, 包括: 1. 注册新的 Graphql scalar 类型;
+ * 2. 注册 Graphql 中使用的 directive 处理器;</li>
+ * <li>{@link BatchLoaderRegistry} 类型实例, 用于对 Graphql 处理过程中使用到的 {@code DataLoader} 进行注册;</li>
+ * </ul>
  * </p>
  */
 @Slf4j
 @Configuration("conf/graphql")
 @RequiredArgsConstructor
 public class GraphqlConfig implements Instrumentation {
-    // 注入所有的 Dataloader 对象
-    private final List<DataLoaderProvider<?, ?>> dataLoaderProviders;
-
-    // 注入所有的 Graphql 请求上下文对象进行处理器
-    private final List<GraphQLContextResolver> contextResolvers;
-
-    // 注入 JSON 处理对象
     private final ObjectMapper objectMapper;
-
-    // 注入模型转换对象
-    private final ModelMapper modelMapper;
 
     /**
      * 拦截 Graphql 执行前的节点
      *
      * <p>
-     * 由于 Kickstart 框架是基于 Graphql Spring Boot 框架, 而 {@link SimplePerformantInstrumentation} 超类是
-     * Graphql Spring Boot 框架提供, 用于拦截 graphql 执行过程中的各个阶段
+     * {@link Instrumentation} 接口提供了一组方法, 用于拦截 Graphql 语句执行过程中的各个阶段
      * </p>
      *
      * <p>
-     * 本方法拦截了 Graphql 执行前阶段, 本例中起到三个作用: 1. 打印 Graphql 执行过程中的日志; 2. 对 Graphql
-     * Context 进行处理; 3. 注册 Spring MVC Context, 并将 Graphql Context 和 Spring Context
-     * 进行集成
+     * 本方法拦截了 Graphql 执行前阶段, 用于输出 Graphql 执行过程中的日志
      * </p>
      *
-     * @param parameters 执行参数
+     * @param parameters Graphql 语句执行参数
+     * @param state      Graphql 语句执行状态
+     * @return Graphql 执行上下文对象
      */
     @Override
     public InstrumentationContext<ExecutionResult> beginExecution(
@@ -108,17 +92,6 @@ public class GraphqlConfig implements Instrumentation {
                 parameters.getQuery().trim().replace("\n", "\n\t"),
                 parameters.getOperation(),
                 formatGraphqlVariables(parameters.getVariables()));
-        }
-
-        // 将 Graphql 请求上下文对象注入到 Spring web 请求上下文内
-        if (RequestContextHolder.getRequestAttributes() == null) {
-            RequestContextHolder.setRequestAttributes(new CustomRequestAttributes());
-        }
-
-        // 对 Graphql 请求上下文对象进行处理
-        var context = parameters.getGraphQLContext();
-        for (var resolver : this.contextResolvers) {
-            resolver.resolve(context);
         }
 
         // 返回执行完成拦截器对象, 当 Graphql 处理完成后进行拦截
@@ -134,10 +107,10 @@ public class GraphqlConfig implements Instrumentation {
     /**
      * 对 Graphql 参数进行格式化
      *
-     * @param variables 一个 Map 对象表示 Graphql 的参数
-     * @return 格式化结果
+     * @param variables Graphql 执行参数, 通过 {@link Map} 对象存储
+     * @return 格式化结果字符串
      */
-    private @NotNull String formatGraphqlVariables(Map<String, ?> variables) {
+    private String formatGraphqlVariables(Map<String, ?> variables) {
         if (variables == null || variables.isEmpty()) {
             return "Empty variables";
         }
@@ -151,13 +124,13 @@ public class GraphqlConfig implements Instrumentation {
     }
 
     /**
-     * 如果 Graphql 执行返回结果有错误, 则打印日志
+     * 打印 Graphql 执行过程中发生的错误信息
      *
-     * @param er Graphql 执行结果
-     * @return 是否包含错误信息
+     * @param er {@link ExecutionResult} 类型对象, 表示 Graphql 语句的执行结果
+     * @return {@code true} 表示有错误发生, {@code false} 表示没有错误发生
      */
     @SneakyThrows
-    private boolean logIfHasError(@NotNull ExecutionResult er) {
+    private boolean logIfHasError(ExecutionResult er) {
         var errors = er.getErrors();
         if (errors == null || errors.isEmpty()) {
             return false;
@@ -182,9 +155,9 @@ public class GraphqlConfig implements Instrumentation {
     }
 
     /**
-     * 如果 Graphql 执行成功, 则打印日志
+     * 打印 Graphql 执行完毕后的成功信息
      *
-     * @param er Graphql 执行结果
+     * @param er {@link ExecutionResult} 类型对象, 表示 Graphql 语句的执行结果
      */
     @SneakyThrows
     private void logIfSuccess(ExecutionResult er) {
@@ -205,9 +178,10 @@ public class GraphqlConfig implements Instrumentation {
     }
 
     /**
-     * 如果 Graphql 执行过程中发生异常, 则打印日志
+     * 打印 Graphql 执行过程中发生的异常信息
      *
-     * @param t 异常对象
+     * @param t {@link Throwable} 类型对象, 表示 Graphql 语句执行过程中抛出的异常
+     * @return {@code true} 表示有异常发生, {@code false} 表示没有异常发生
      */
     @SneakyThrows
     private boolean logIfHasException(Throwable t) {
@@ -225,6 +199,11 @@ public class GraphqlConfig implements Instrumentation {
         return true;
     }
 
+    /**
+     * 构建 {@code Void} 扩展类型
+     *
+     * @return {@link GraphQLScalarType} 类型对象, 表示扩展 Graphql 数据类型的 {@code Void} 集合
+     */
     private GraphQLScalarType buildVoidType() {
         // 新增 Graphql Scalar 类型 (Void 类型)
         return GraphQLScalarType.newScalar()
@@ -234,52 +213,82 @@ public class GraphqlConfig implements Instrumentation {
                     // 该类用于演示 Scalar 的定义, 该方法不会被调用, 正常情况下不应该返回 null 值
                     @Override
                     public Void parseLiteral(
-                            @NotNull Value<?> input,
-                            @NotNull CoercedVariables variables,
-                            @NotNull GraphQLContext graphQLContext,
-                            @NotNull Locale locale) throws CoercingParseLiteralException {
+                            Value<?> input,
+                            CoercedVariables variables,
+                            GraphQLContext graphQLContext,
+                            Locale locale) throws CoercingParseLiteralException {
                         return null;
                     }
 
                     @Override
                     public Void parseValue(
-                            @NotNull Object input,
-                            @NotNull GraphQLContext graphQLContext,
-                            @NotNull Locale locale) throws CoercingParseValueException {
+                            Object input,
+                            GraphQLContext graphQLContext,
+                            Locale locale) throws CoercingParseValueException {
                         return null;
                     }
 
                     @Override
                     public Void serialize(
-                            @NotNull Object dataFetcherResult,
-                            @NotNull GraphQLContext graphQLContext,
-                            @NotNull Locale locale) throws CoercingSerializeException {
+                            Object dataFetcherResult,
+                            GraphQLContext graphQLContext,
+                            Locale locale) throws CoercingSerializeException {
                         return null;
                     }
                 })
                 .build();
     }
 
+    /**
+     * 构建 {@link RuntimeWiringConfigurer} 类型对象, 用于配置 Graphql 运行时环境
+     *
+     * <p>
+     * {@link RuntimeWiringConfigurer} 类型对象用于配置 Graphql 运行时环境, 包括: 1. 扩展类型; 2. 扩展指令;
+     * </p>
+     *
+     * @return {@link RuntimeWiringConfigurer} 类型对象, 用于配置 Graphql 运行时环境
+     */
     @Bean
     RuntimeWiringConfigurer runtimeWiringConfigurer() {
         return wiringBuilder -> wiringBuilder
-                .scalar(ExtendedScalars.Object)
+                .scalar(ExtendedScalars.Object) // 添加扩展类型
                 .scalar(ExtendedScalars.Json)
                 .scalar(ExtendedScalars.DateTime)
                 .scalar(ExtendedScalars.Url)
                 .scalar(ExtendedScalars.GraphQLLong)
                 .scalar(ExtendedScalars.Locale)
                 .scalar(buildVoidType())
-                .directive("uppercase", new UppercaseDirective())
+                .directive("uppercase", new UppercaseDirective()) // 添加扩展指令
                 .directiveWiring(new LengthDirective());
     }
 
+    /**
+     * 构建 {@link BatchLoaderRegistry} 类型对象, 用于配置 {@link BatchLoader} 类型对象
+     *
+     * <p>
+     * 要在代码中使用 {@link BatchLoader} 类型对象, 需要使用 {@link BatchLoaderRegistry} 类型对象进行注册
+     * </p>
+     *
+     * @param userLoader {@link BatchLoader} 类型对象, 用于根据 {@code ID} 加载用户实体对象
+     * @param orgLoader  {@link BatchLoader} 类型对象, 用于根据 {@code ID} 加载组织实体对象
+     * @return {@link BatchLoaderRegistry} 类型对象, 用于配置 {@link BatchLoader} 类型对象
+     */
     @Bean
-    BatchLoaderRegistry batchLoaderRegistry() {
+    BatchLoaderRegistry batchLoaderRegistry(
+            UserLoader userLoader,
+            OrgLoader orgLoader,
+            DepartmentLoader departmentLoader) {
         var registry = new DefaultBatchLoaderRegistry();
-        for (var provider : dataLoaderProviders) {
-            registry.forTypePair(null, null)
-        }
+
+        registry.forTypePair(Long.class, User.class)
+                .registerMappedBatchLoader(userLoader);
+
+        registry.forTypePair(Long.class, Org.class)
+                .registerMappedBatchLoader(orgLoader);
+
+        registry.forTypePair(Long.class, Department.class)
+                .registerMappedBatchLoader(departmentLoader);
+
         return registry;
     }
 }

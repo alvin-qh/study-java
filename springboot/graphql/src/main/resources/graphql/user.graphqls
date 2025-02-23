@@ -1,13 +1,13 @@
 # 和 User 相关的所有操作
 
-# 定义用户类型枚举, 参考 alvin.study.app.api.schema.type.UserGroup 类型
+# 定义用户类型枚举, 参考 `alvin.study.springboot.graphql.infra.entity.UserGroup` 类型
 enum UserGroup {
   ADMIN
   OPERATOR
   NORMAL
 }
 
-# 定义 User 类型, 参考 alvin.study.app.api.schema.type.UserType 类型和 alvin.study.app.api.schema.type.UserTypeResolver 类型
+# 定义 User 类型, 参考 `alvin.study.springboot.graphql.infra.entity.User` 类型
 type User {
   id: ID!
   orgId: Long
@@ -22,39 +22,21 @@ type User {
   updatedAt: DateTime
 }
 
-# 扩展根查询类型, 添加用户查询方法, 参考 alvin.study.app.api.query.UserQuery 类型
+# 扩展根查询类型, 添加用户查询方法, 参考 `alvin.study.springboot.graphql.app.api.query.UserQuery` 类型
 extend type Query {
-  # 根据 id 查询用户信息
-  user(id: ID!): User!
+  user(id: ID!): User! # 根据 id 查询用户信息
 }
 
-# 变更用户信息的输入类, alvin.study.app.api.schema.input.UserInput 类型
+# 变更用户信息的输入类, `alvin.study.springboot.graphql.app.api.mutation.UserInput` 类型
 input UserInput {
-  # 这里使用了一个字段处理器, 参考 /graphql/type.graphqls 文件的 directive 定义
-  account: String! @len(min: 3, max: 50)
-  # 这里使用了一个字段处理器, 参考 /graphql/type.graphqls 文件的 directive 定义
-  password: String! @len(min: 6, max: 20)
+  account: String! @len(min: 3, max: 50) # 这里使用了一个字段处理器, 参考 /graphql/type.graphqls 文件的 directive 定义
+  password: String! @len(min: 6, max: 20) # 这里使用了一个字段处理器, 参考 /graphql/type.graphqls 文件的 directive 定义
   group: UserGroup! = NORMAL # 设置默认值
-}
-
-# 创建用户信息的结果类, alvin.study.app.api.schema.payload.CreateUserPayload 类型
-type CreateUserPayload {
-  user: User!
-}
-
-# 更新用户信息的结果类, alvin.study.app.api.schema.payload.UpdateUserPayload 类型
-type UpdateUserPayload {
-  user: User!
-}
-
-# 删除用户信息的结果类, alvin.study.app.api.schema.payload.DeleteUserPayload 类型
-type DeleteUserPayload {
-  deleted: Boolean!
 }
 
 # 扩展根变更类型, 参考 alvin.study.app.api.mutation.UserMutation 类型
 extend type Mutation {
-  createUser(input: UserInput!): CreateUserPayload!
-  updateUser(id: ID!, input: UserInput!): UpdateUserPayload!
-  deleteUser(id: ID!): DeleteUserPayload!
+  createUser(input: UserInput!): User!
+  # updateUser(id: ID!, input: UserInput!): UpdateUserPayload!
+  # deleteUser(id: ID!): DeleteUserPayload!
 }

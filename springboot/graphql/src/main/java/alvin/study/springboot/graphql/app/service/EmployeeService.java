@@ -23,31 +23,20 @@ import alvin.study.springboot.graphql.infra.mapper.DepartmentMapper;
 import alvin.study.springboot.graphql.infra.mapper.EmployeeMapper;
 
 /**
- * 部门服务类
+ * 雇员服务类, 用于 {@link Employee} 类型数据操作
  */
 @Component
 @RequiredArgsConstructor
 public class EmployeeService {
-    /**
-     * 注入雇员服务类对象
-     */
     private final EmployeeMapper employeeMapper;
-
-    /**
-     * 注入部门服务类对象
-     */
     private final DepartmentMapper departmentMapper;
-
-    /**
-     * 注入部门员工关系服务类对象
-     */
     private final DepartmentEmployeeMapper departmentEmployeeMapper;
 
     /**
-     * 根据组织 id 名查询部门信息
+     * 根据雇员 {@code ID} 查询 {@link Employee} 类型雇员实体
      *
-     * @param id 部门 id
-     * @return 部门实体的 {@link Optional} 包装对象
+     * @param id 部门 {@code ID}
+     * @return {@link Employee} 类型雇员实体的 {@link Optional} 类型包装对象
      */
     @Transactional(readOnly = true)
     public Optional<Employee> findById(long id) {
@@ -55,10 +44,10 @@ public class EmployeeService {
     }
 
     /**
-     * 创建一个 {@link Employee} 实体对象
+     * 创建 {@link Employee} 雇员实体对象
      *
-     * @param employee      {@link Employee} 对象
-     * @param departmentIds 所属部门 id 集合
+     * @param employee      {@link Employee} 类型雇员实体对象
+     * @param departmentIds 所属部门 {@code ID} 集合
      */
     @Transactional
     public void create(Employee employee, Collection<Long> departmentIds) {
@@ -71,11 +60,12 @@ public class EmployeeService {
     }
 
     /**
-     * 更新一个 {@link Employee} 实体对象
+     * 更新 {@link Employee} 雇员实体对象
      *
-     * @param id            实体 {@code id}
-     * @param employee      {@link Employee} 对象
-     * @param departmentIds 所属部门 id 集合
+     * @param id            实体 {@code ID}
+     * @param employee      {@link Employee} 类型雇员实体对象
+     * @param departmentIds 所属部门 {@code ID} 集合
+     * @return {@link Employee} 类型雇员实体的 {@link Optional} 类型包装对象
      */
     @Transactional
     public Optional<Employee> update(long id, Employee employee, Collection<Long> departmentIds) {
@@ -109,8 +99,12 @@ public class EmployeeService {
     /**
      * 将雇员和指定的部门进行绑定
      *
-     * @param employee      员工对象
-     * @param departmentIds 所属部门 id 集合
+     * <p>
+     * 该方法用于将指定的 {@link Employee} 类型员工实体对象加入到指定的部门中
+     * </p>
+     *
+     * @param employee      {@link Employee} 类型员工实体对象
+     * @param departmentIds 所属部门 {@code ID} 集合
      */
     private void bindWithDepartments(Employee employee, Set<Long> departmentIds) {
         var departments = departmentMapper.selectByIds(departmentIds);
@@ -129,9 +123,10 @@ public class EmployeeService {
     }
 
     /**
-     * 删除一个 {@link Employee} 实体
+     * 删除一个 {@link Employee} 类型实体对象
      *
-     * @param id 实体 id
+     * @param id 雇员实体的 {@code ID} 值
+     * @return {@code true} 表示删除成功, {@code false} 表示删除失败
      */
     @Transactional
     public boolean delete(long id) {
@@ -144,11 +139,11 @@ public class EmployeeService {
     }
 
     /**
-     * 根据部门 id 查询部门下的员工
+     * 根据部门 {@code ID} 查询部门下的所有 {@link Employee} 类型员工实体对象集合
      *
-     * @param page         分页对象
-     * @param departmentId 部门 id
-     * @return 部门下员工的分页集合
+     * @param page         {@link IPage} 类型分页对象
+     * @param departmentId {@link Department} 类型部门实体的 {@code ID} 值
+     * @return {@link IPage} 类型分页对象, 包含一页数量的 {@link Employee} 类型的员工实体对象集合
      */
     @Transactional(readOnly = true)
     public IPage<Employee> listByDepartmentId(IPage<Employee> page, long departmentId) {

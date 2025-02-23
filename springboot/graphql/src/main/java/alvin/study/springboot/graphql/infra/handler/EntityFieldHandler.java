@@ -10,10 +10,6 @@ import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 
 import lombok.RequiredArgsConstructor;
 
-import alvin.study.springboot.graphql.core.context.Context;
-import alvin.study.springboot.graphql.infra.entity.Org;
-import alvin.study.springboot.graphql.infra.entity.User;
-
 /**
  * 声明实体字段的自动填充处理类
  *
@@ -46,13 +42,8 @@ import alvin.study.springboot.graphql.infra.entity.User;
 @Component
 @RequiredArgsConstructor
 public class EntityFieldHandler implements MetaObjectHandler {
-    private static final String FIELD_ORG_ID = "orgId";
     private static final String FIELD_UPDATED_AT = "updatedAt";
-    private static final String FIELD_UPDATED_BY = "updatedBy";
     private static final String FIELD_CREATED_AT = "createdAt";
-    private static final String FIELD_CREATED_BY = "createdBy";
-    // 注入请求上下文, 用来获取当前登录用户和所属的组织
-    private final Context context;
 
     /**
      * 对插入的实体对象字段进行填充
@@ -64,36 +55,6 @@ public class EntityFieldHandler implements MetaObjectHandler {
         // 对待插入的对象填充 createdAt 和 updatedAt 两个字段设置为当前时间
         strictInsertFill(metaObject, FIELD_CREATED_AT, Instant.class, now);
         strictInsertFill(metaObject, FIELD_UPDATED_AT, Instant.class, now);
-
-        // 获取实体对象的 createdBy 字段值
-        var createdBy = getFieldValByName(FIELD_CREATED_BY, metaObject);
-        if (createdBy == null || createdBy.equals(0L)) {
-            // 如果实体对象未设置 createdBy 字段值, 则将其设置为当前登录用户 id 值
-            var user = (User) context.getOrDefault(Context.USER, null);
-            if (user != null && user.getId() != null) {
-                strictInsertFill(metaObject, FIELD_CREATED_BY, Long.class, user.getId());
-            }
-        }
-
-        // 获取实体对象的 updatedBy 字段值
-        var updatedBy = getFieldValByName(FIELD_UPDATED_BY, metaObject);
-        if (updatedBy == null || updatedBy.equals(0L)) {
-            // 如果实体对象未设置 updatedBy 字段值, 则将其设置为当前登录用户 id 值
-            var user = (User) context.getOrDefault(Context.USER, null);
-            if (user != null && user.getId() != null) {
-                strictInsertFill(metaObject, FIELD_UPDATED_BY, Long.class, user.getId());
-            }
-        }
-
-        // 获取实体对象的 orgId 字段值
-        var orgId = getFieldValByName(FIELD_ORG_ID, metaObject);
-        if (orgId == null || orgId.equals(0L)) {
-            // 如果实体对象未设置 orgId 字段值, 则将其设置为当前组织的 id 值
-            var org = (Org) context.getOrDefault(Context.ORG, null);
-            if (org != null && org.getId() != null) {
-                strictInsertFill(metaObject, FIELD_ORG_ID, Long.class, org.getId());
-            }
-        }
     }
 
     /**
@@ -104,11 +65,5 @@ public class EntityFieldHandler implements MetaObjectHandler {
         var now = Instant.now();
         // 将实体的 updatedAt 字段设置为当前时间
         strictInsertFill(metaObject, FIELD_UPDATED_AT, Instant.class, now);
-
-        var user = (User) context.getOrDefault(Context.USER, null);
-        if (user != null && user.getId() != null) {
-            // 则实体的 updatedBy 字段设置为当前登录用户 id 值
-            strictInsertFill(metaObject, FIELD_UPDATED_BY, Long.class, user.getId());
-        }
     }
 }

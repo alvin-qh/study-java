@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="alvin.study.springboot.kickstart.infra.mapper.DepartmentMapper">
-
+<mapper namespace="alvin.study.springboot.graphql.infra.mapper.DepartmentMapper">
   <resultMap
     id="departmentResultMap"
-    type="alvin.study.springboot.kickstart.infra.entity.Department"
+    type="alvin.study.springboot.graphql.infra.entity.Department"
     autoMapping="true"
   >
-    <id property="id" column="id"/>
+    <id property="id" column="id" />
   </resultMap>
 </mapper>

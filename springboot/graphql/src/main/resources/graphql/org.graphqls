@@ -1,42 +1,41 @@
 # 和 Org 相关的所有操作
 
-# 定义 Org 类型, 参考 alvin.study.app.api.schema.type.OrgType 类型
+# 定义 Org 类型, 参考: `alvin.study.springboot.graphql.infra.entity.Org` 类型
 type Org {
   id: ID!
-  # 这里使用了一个字段处理器, 参考 /graphql/type.graphqls 文件的 directive 定义
-  name: String! @uppercase
+  name: String! @uppercase # 这里使用了一个字段处理器, 参考 /graphql/type.graphqls 文件的 directive 定义
   createdAt: DateTime
   updatedAt: DateTime
 }
 
-# 扩展根查询类型, 添加组织查询方法, 参考 alvin.study.app.api.query.OrgQuery 类型
+# 扩展根查询类型, 添加组织查询方法, 参考 `alvin.study.springboot.graphql.app.api.query.OrgQuery` 类型
 extend type Query {
   org(id: ID!): Org!
 }
 
-# 变更组织信息的输入类, alvin.study.app.api.schema.input.OrgInput 类型
-input OrgInput {
-  name: String!
-}
+# # 变更组织信息的输入类, alvin.study.app.api.schema.input.OrgInput 类型
+# input OrgInput {
+#   name: String!
+# }
 
-# 创建组织信息的结果类, alvin.study.app.api.schema.payload.CreateOrgPayload 类型
-type CreateOrgPayload {
-  org: Org!
-}
+# # 创建组织信息的结果类, alvin.study.app.api.schema.payload.CreateOrgPayload 类型
+# type CreateOrgPayload {
+#   org: Org!
+# }
 
-# 更新组织信息的结果类, alvin.study.app.api.schema.payload.UpdateOrgPayload 类型
-type UpdateOrgPayload {
-  org: Org!
-}
+# # 更新组织信息的结果类, alvin.study.app.api.schema.payload.UpdateOrgPayload 类型
+# type UpdateOrgPayload {
+#   org: Org!
+# }
 
-# 删除组织信息的结果类, alvin.study.app.api.schema.payload.DeleteOrgPayload 类型
-type DeleteOrgPayload {
-  deleted: Boolean!
-}
+# # 删除组织信息的结果类, alvin.study.app.api.schema.payload.DeleteOrgPayload 类型
+# type DeleteOrgPayload {
+#   deleted: Boolean!
+# }
 
-# 扩展根变更类型, 参考 alvin.study.app.api.mutation.OrgMutation 类型
-extend type Mutation {
-  createOrg(input: OrgInput!): CreateOrgPayload!
-  updateOrg(id: ID!, input: OrgInput!): UpdateOrgPayload!
-  deleteOrg(id: ID!): DeleteOrgPayload!
-}
+# # 扩展根变更类型, 参考 alvin.study.app.api.mutation.OrgMutation 类型
+# extend type Mutation {
+#   createOrg(input: OrgInput!): CreateOrgPayload!
+#   updateOrg(id: ID!, input: OrgInput!): UpdateOrgPayload!
+#   deleteOrg(id: ID!): DeleteOrgPayload!
+# }
