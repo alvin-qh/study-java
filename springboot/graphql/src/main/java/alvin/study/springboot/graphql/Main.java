@@ -36,8 +36,6 @@ public class Main {
      *
      * @param additionalProperties 扩展属性列表
      * @return 包含默认属性的 Map 对象
-     *
-     * @formatter:off
      */
     @SafeVarargs
     public static Map<String, String> getDefaultProperties(Pair<String, String>... additionalProperties) {

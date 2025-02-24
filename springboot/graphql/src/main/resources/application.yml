@@ -63,7 +63,7 @@ server:
     threads:
       max: 256
       min-spare: 0
-  port: 12345
+  port: 8080
   servlet:
     context-path: /
     encoding:
