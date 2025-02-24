@@ -15,8 +15,13 @@ import alvin.study.springboot.graphql.infra.entity.UserGroup;
 public class UserMutation {
     private final UserService userService;
 
+    /**
+     * 用户输入对象
+     */
+    static record UserInput(String account, String password, UserGroup group) {}
+
     @MutationMapping
-    public User createUser(@Argument UserInput input) {
+    public MutationResult<User> createUser(@Argument UserInput input) {
         User user = new User();
         user.setAccount(input.account());
         user.setPassword(input.password());
@@ -25,8 +30,8 @@ public class UserMutation {
         case OPERATOR -> UserGroup.OPERATOR;
         case NORMAL -> UserGroup.NORMAL;
         });
-
+        user.setOrgId(1L);
         userService.create(user);
-        return user;
+        return MutationResult.of(user);
     }
 }

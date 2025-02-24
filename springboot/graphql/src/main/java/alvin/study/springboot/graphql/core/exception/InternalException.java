@@ -2,9 +2,10 @@ package alvin.study.springboot.graphql.core.exception;
 
 import java.util.Map;
 
+import org.springframework.graphql.execution.ErrorType;
+
 import com.google.common.base.Strings;
 
-import graphql.ErrorType;
 
 /**
  * 调用 API 时因为内部错误导致异常
@@ -19,7 +20,7 @@ public class InternalException extends GraphqlBaseException {
      * @param reason 异常原因
      */
     public InternalException(String reason) {
-        super(ErrorCode.INTERNAL_ERROR, ErrorType.ExecutionAborted);
+        super(ErrorCode.INTERNAL_ERROR, ErrorType.INTERNAL_ERROR);
         this.reason = reason;
     }
 
@@ -29,7 +30,7 @@ public class InternalException extends GraphqlBaseException {
      * @param cause 异常原因
      */
     public InternalException(Throwable cause) {
-        super(ErrorCode.INTERNAL_ERROR, cause, ErrorType.ExecutionAborted);
+        super(ErrorCode.INTERNAL_ERROR, cause, ErrorType.INTERNAL_ERROR);
         this.reason = cause.getMessage();
     }
 

@@ -1,11 +1,11 @@
 package alvin.study.springboot.graphql.core.graphql.adapter;
 
 import org.springframework.graphql.execution.DataFetcherExceptionResolverAdapter;
+import org.springframework.graphql.execution.ErrorType;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 
-import graphql.ErrorType;
 import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
 import graphql.schema.DataFetchingEnvironment;
@@ -35,21 +35,27 @@ import alvin.study.springboot.graphql.core.exception.GraphqlBaseException;
 @Slf4j
 @Component
 public class GraphqlErrorResolver extends DataFetcherExceptionResolverAdapter {
-    private static final String UNKNOWN_ERROR_REASON = "Unknown error reason";
+    private static final String UNKNOWN_ERROR = "Unknown error";
 
     @Override
     protected GraphQLError resolveToSingleError(Throwable ex, DataFetchingEnvironment env) {
         if (ex instanceof GraphqlBaseException e) {
+            log.error("GraphQL error: {}", ex.getMessage(), ex);
             return GraphqlErrorBuilder.newError()
                     .errorType(e.getErrorType())
                     .message(e.getMessage())
+                    .path(env.getExecutionStepInfo().getPath())
+                    .location(env.getField().getSourceLocation())
                     .extensions(e.toExtensions())
                     .build();
         }
 
+        log.error("{}: {}", UNKNOWN_ERROR, ex.getMessage(), ex);
         return GraphqlErrorBuilder.newError()
-                    .errorType(ErrorType.ExecutionAborted)
-                    .message(UNKNOWN_ERROR_REASON)
-                    .build();
+                .errorType(ErrorType.INTERNAL_ERROR)
+                .message(ex.getMessage())
+                .path(env.getExecutionStepInfo().getPath())
+                .location(env.getField().getSourceLocation())
+                .build();
     }
 }

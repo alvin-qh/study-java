@@ -3,9 +3,7 @@ package alvin.study.springboot.graphql.core.graphql.directive;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletionStage;
 
-import graphql.Assert;
 import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
 import graphql.execution.DataFetcherResult;
@@ -13,16 +11,12 @@ import graphql.language.IntValue;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetcherFactories;
 import graphql.schema.DataFetchingEnvironment;
-import graphql.schema.GraphQLAppliedDirective;
 import graphql.schema.GraphQLDirectiveContainer;
 import graphql.schema.GraphQLFieldDefinition;
 import graphql.schema.GraphQLInputObjectType;
-import graphql.schema.GraphQLInputType;
 import graphql.schema.GraphQLTypeUtil;
 import graphql.schema.idl.SchemaDirectiveWiring;
 import graphql.schema.idl.SchemaDirectiveWiringEnvironment;
-
-import alvin.study.springboot.graphql.core.exception.ApiException;
 
 /**
  * 定义 {@code @len} 字段处理器
@@ -72,166 +66,14 @@ public class LengthDirective implements SchemaDirectiveWiring {
     private static final String DIRECTIVE_ARG_MAX = "max";
 
     /**
-     * 将处理器参数解析为整数型 ({@code min} 和 {@code max}) 参数
+     * 判断参数或 Input 字段对象是否包含指定的 directive 处理器标识
      *
-     * @param directive    处理器标识对象
-     * @param argumentName 处理器标识参数名
-     * @return 处理器对象参数值
+     * @param container 承载 directive 处理器标识的参数或 Input 字段对象
+     * @return 是否包含指定的 directive 处理器标识
      */
-    private static Integer parseArgument(GraphQLAppliedDirective directive, String argumentName) {
-        // 根据参数名获取处理器标识的参数值
-        var argument = directive.getArgument(argumentName);
-        if (argument == null) {
-            throw new IllegalArgumentException("directive");
-        }
-
-        // 获取参数值, 参数值为 InputValueWithState 类型对象
-        var valueWithState = argument.getArgumentValue();
-        if (!valueWithState.isSet()) {
-            throw new IllegalArgumentException("directive");
-        }
-
-        // 获取参数的实际值
-        var value = valueWithState.getValue();
-        if (!(value instanceof IntValue v)) {
-            throw new IllegalArgumentException("directive");
-        }
-
-        // 返回整数类型的 Java 对象值
-        return v.getValue().intValue();
-    }
-
-    /**
-     * 获取参数的实际类型
-     *
-     * @param inputType 输入的 {@code Input} 对象类型
-     * @return {@link GraphQLInputType} 对象
-     */
-    private static GraphQLInputType unwrapNonNull(GraphQLInputType inputType) {
-        var type = GraphQLTypeUtil.unwrapNonNull(inputType);
-        if (type instanceof GraphQLInputType qlInputType) {
-            return qlInputType;
-        }
-
-        var argType = GraphQLTypeUtil.simplePrint(inputType);
-        return Assert.assertShouldNeverHappen("You have a wrapped type that is in fact not a input type : %s", argType);
-    }
-
-    /**
-     * 包装字段返回值
-     *
-     * <p>
-     * 根据字段返回值的不同, 采用不同方式获取字段返回的实际信息, 并包装为 {@link DataFetcherResult} 对象返回
-     * </p>
-     *
-     * @param errors 字段错误信息
-     * @param value  字段实际值
-     * @return {@link DataFetcherResult} 类型对象
-     */
-    private static Object makeDFRFromFetchedResult(List<GraphQLError> errors, Object value) {
-        // 判断字段值类型是否为 CompletionStage, 这是一个异步字段值包装对象, 需要进一步获取其本身的值
-        if (value instanceof CompletionStage<?> stage) {
-            // 异步回调, 进一步获取字段返回值 (递归调用)
-            return stage.thenApply(v -> makeDFRFromFetchedResult(errors, v));
-        }
-
-        // 判断字段值是否为 DataFetcherResult 对象, 这是 graphql 字段值的包装对象, 可以直接获取字段返回的信息
-        if (value instanceof DataFetcherResult<?> df) {
-            // 设置字段的原始值, 合并错误信息
-            return makeDFR(df.getData(), concat(errors, df.getErrors()), df.getLocalContext());
-        }
-
-        // 如果字段值为其它类型对象, 则直接包装为 DataFetcherResult 类型并返回
-        return makeDFR(value, errors, null);
-    }
-
-    /**
-     * 产生一个 {@link DataFetcherResult} 对象, 即 {@code graphql} 查询字段的返回值
-     *
-     * @param value        返回值的实际对象值
-     * @param errors       返回值包含的错误信息
-     * @param localContext 相关上下文对象
-     * @return {@link DataFetcherResult} 对象
-     */
-    private static DataFetcherResult<Object> makeDFR(Object value, List<GraphQLError> errors, Object localContext) {
-        return DataFetcherResult.newResult()
-                .data(value)
-                .errors(errors)
-                .localContext(localContext)
-                .build();
-    }
-
-    /**
-     * 合并两个 {@link List} 集合
-     *
-     * @param <T> 集合元素类型
-     * @param l1  集合 1
-     * @param l2  集合 2
-     * @return 两个集合合并的结果
-     */
-    private static <T> List<T> concat(List<T> l1, List<T> l2) {
-        var errors = new ArrayList<T>();
-        errors.addAll(l1);
-        errors.addAll(l2);
-        return errors;
-    }
-
-    /**
-     * 当查询到标注指定处理器的字段时, 执行的方法
-     */
-    @Override
-    public GraphQLFieldDefinition onField(SchemaDirectiveWiringEnvironment<GraphQLFieldDefinition> env) {
-        if (!appliesTo(env.getFieldDefinition())) {
-            return env.getFieldDefinition();
-        }
-        var dataFetcher = DataFetcherFactories.wrapDataFetcher(env.getFieldDataFetcher(), (dataFetcherEnv, value) -> {
-            // 记录错误信息的集合
-            var errors = new ArrayList<GraphQLError>();
-
-            // 遍历字段的参数
-            env.getFieldDefinition().getArguments().forEach(it -> {
-                // 判断参数是否包含指定的处理器标识
-                if (appliesTo(it)) {
-                    // 获取参数值, 处理参数, 并记录返回的错误
-                    errors.addAll(apply(it, dataFetcherEnv, dataFetcherEnv.getArgument(it.getName())));
-                }
-
-                // 如果参数为 Input 类型
-                var inputType = unwrapNonNull(it.getType());
-                if (inputType instanceof GraphQLInputObjectType inputObjType) {
-                    // 获取 Input 参数的字段定义
-                    inputObjType.getFieldDefinitions().stream()
-                            // 判断字段是否包含指定的处理器标识
-                            .filter(this::appliesTo)
-                            // 遍历所有 Input 字段
-                            .forEach(io -> {
-                                // 获取 Input 字段值
-                                var fetchVal = dataFetcherEnv.<Map<String, Object>>getArgument(it.getName());
-                                if (fetchVal != null) {
-                                    // 获取 Input 字段值, 处理字段值, 并记录返回的错误
-                                    errors.addAll(apply(io, dataFetcherEnv, fetchVal.get(io.getName())));
-                                }
-                            });
-                }
-            });
-
-            // 通过原始的 DataFetcher 获取字段原始值
-            Object result;
-            try {
-                result = env.getFieldDataFetcher().get(dataFetcherEnv);
-                if (errors.isEmpty()) {
-                    // 如果没有错误信息, 则返回字段的原始值
-                    return result;
-                }
-
-                // 将字段原始值和错误信息整合为新的 DataFetcherResult 对象
-                return makeDFRFromFetchedResult(errors, result);
-            } catch (Exception e) {
-                throw new ApiException("cannot fetch value", e);
-            }
-        });
-
-        return env.setFieldDataFetcher(dataFetcher);
+    private static boolean hasDirective(GraphQLDirectiveContainer container) {
+        // 判断标注的 directive 标识是否为期望的标识
+        return container.getAppliedDirective(DIRECTIVE) != null;
     }
 
     /**
@@ -240,36 +82,24 @@ public class LengthDirective implements SchemaDirectiveWiring {
      * @param definition 字段定义对象
      * @return 是否包含指定的 directive 处理器标识
      */
-    private boolean appliesTo(GraphQLFieldDefinition definition) {
-        // 遍历字段定义的参数
-        // 参数包含简单类型参数和 Input 类型参数
-        return definition.getArguments().stream().anyMatch(it -> {
+    private static boolean appliesTo(GraphQLFieldDefinition definition) {
+        // 遍历字段定义的参数 (参数包含简单类型参数和 Input 类型参数)
+        return definition.getArguments().stream().anyMatch(arg -> {
             // 判断参数上是否标记了指定的处理器标识
-            if (appliesTo(it)) {
+            if (hasDirective(arg)) {
                 return true;
             }
 
             // 若参数上为标记所需的处理器标识, 则进一步查看参数类型是否为 Input 类型
-            var inputType = unwrapNonNull(it.getType());
+            var inputType = GraphQLTypeUtil.unwrapNonNull(arg.getType());
             if (!(inputType instanceof GraphQLInputObjectType inputObjectType)) {
                 // 如果参数类型非 GraphQLInputObjectType 类型, 则返回 false
                 return false;
             }
 
             // 遍历 Input 类型的每个字段, 查看字段上是否标注了指定的处理器标识
-            return inputObjectType.getFieldDefinitions().stream().anyMatch(this::appliesTo);
+            return inputObjectType.getFieldDefinitions().stream().anyMatch(LengthDirective::hasDirective);
         });
-    }
-
-    /**
-     * 判断参数或 Input 字段对象是否包含指定的 directive 处理器标识
-     *
-     * @param container 承载 directive 处理器标识的参数或 Input 字段对象
-     * @return 是否包含指定的 directive 处理器标识
-     */
-    private boolean appliesTo(GraphQLDirectiveContainer container) {
-        // 判断标注的 directive 标识是否为期望的标识
-        return container.getAppliedDirective(DIRECTIVE) != null;
     }
 
     /**
@@ -280,21 +110,74 @@ public class LengthDirective implements SchemaDirectiveWiring {
      * @param value 包含处理器标识的参数或字段对象的值
      * @return 错误信息集合
      */
-    private List<GraphQLError> apply(GraphQLDirectiveContainer it, DataFetchingEnvironment env, Object value) {
+    private static List<GraphQLError> apply(
+            GraphQLDirectiveContainer container, DataFetchingEnvironment env, Object value) {
         // 获取参数或 Input 字段值上定义的处理器标识
-        var directive = it.getAppliedDirective(DIRECTIVE);
+        var directive = container.getAppliedDirective(DIRECTIVE);
 
         // 获取处理器参数 (min 和 max 参数)
-        var min = parseArgument(directive, DIRECTIVE_ARG_MIN);
-        var max = parseArgument(directive, DIRECTIVE_ARG_MAX);
+        var min = (IntValue) directive.getArgument(DIRECTIVE_ARG_MIN).getArgumentValue().getValue();
+        var max = (IntValue) directive.getArgument(DIRECTIVE_ARG_MAX).getArgumentValue().getValue();
 
         // 判断参数值或字段值的长度是否符合要求
-        if ((value instanceof String s) && (s.length() < min || s.length() > max)) {
-            // 产生错误信息
-            var err = String.format("Argument value %s is out of range. The range is %s to %s.", value, min, max);
+        if ((value instanceof String s)
+            && (s.length() < min.getValue().intValue() || s.length() > max.getValue().intValue())) {
             // 创建错误对象
-            return List.of(GraphqlErrorBuilder.newError(env).message(err).build());
+            return List.of(
+                GraphqlErrorBuilder
+                        .newError(env)
+                        .message(
+                            "Argument value \"%s\" is out of range. The range is %d to %d.",
+                            value,
+                            min.getValue().intValue(),
+                            max.getValue().intValue())
+                        .build());
         }
         return List.of();
+    }
+
+    /**
+     * 当查询到标注指定处理器的字段时, 执行的方法
+     */
+    @Override
+    public GraphQLFieldDefinition onField(SchemaDirectiveWiringEnvironment<GraphQLFieldDefinition> env) {
+        var definition = env.getElement();
+        if (!appliesTo(definition)) {
+            return definition;
+        }
+
+        var wrappedDataFetcher = DataFetcherFactories.wrapDataFetcher(env.getFieldDataFetcher(), (dfEnv, value) -> {
+            var errors = new ArrayList<GraphQLError>();
+
+            dfEnv.getFieldDefinition().getArguments().stream().forEach(arg -> {
+                if (hasDirective(arg)) {
+                    errors.addAll(apply(arg, dfEnv, dfEnv.getArgument(arg.getName())));
+                }
+
+                var inputType = GraphQLTypeUtil.unwrapNonNull(arg.getType());
+                if (inputType instanceof GraphQLInputObjectType inputObjType) {
+                    inputObjType.getFieldDefinitions().stream()
+                            .filter(LengthDirective::hasDirective)
+                            .forEach(field -> {
+                                var values = dfEnv.<Map<String, Object>>getArgument(arg.getName());
+                                if (values != null) {
+                                    errors.addAll(apply(field, dfEnv, values.get(field.getName())));
+                                }
+                            });
+                }
+            });
+
+            if (errors.isEmpty()) {
+                return value;
+            }
+
+            return DataFetcherResult.newResult()
+                    .data(value)
+                    .errors(errors)
+                    .localContext(dfEnv.getLocalContext())
+                    .build();
+        });
+
+        return env.setFieldDataFetcher(wrappedDataFetcher);
     }
 }

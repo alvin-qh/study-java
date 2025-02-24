@@ -34,9 +34,13 @@ input UserInput {
   group: UserGroup! = NORMAL # 设置默认值
 }
 
+type UserResult {
+  result: User
+}
+
 # 扩展根变更类型, 参考 alvin.study.app.api.mutation.UserMutation 类型
 extend type Mutation {
-  createUser(input: UserInput!): User!
+  createUser(input: UserInput!): UserResult
   # updateUser(id: ID!, input: UserInput!): UpdateUserPayload!
   # deleteUser(id: ID!): DeleteUserPayload!
 }
