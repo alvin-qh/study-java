@@ -48,20 +48,24 @@ public class ApiAuthInterceptor implements WebGraphQlInterceptor {
 
             var token = auth.substring(TOKEN_PREFIX.length()).trim();
 
-            // 解析 token, 获取 token 负载
-            var payload = jwt.verify(token);
+            try {
+                // 解析 token, 获取 token 负载
+                var payload = jwt.verify(token);
 
-            var org = orgService.findById(Long.parseLong(payload.getAudience().get(0)))
-                    .orElseThrow(() -> new ForbiddenException("invalid_org"));
+                var org = orgService.findById(Long.parseLong(payload.getAudience().get(0)))
+                        .orElseThrow(() -> new ForbiddenException("invalid_org"));
 
-            var user = userService.findById(Long.parseLong(payload.getIssuer()))
-                    .orElseThrow(() -> new ForbiddenException("invalid_user"));
+                var user = userService.findById(Long.parseLong(payload.getIssuer()))
+                        .orElseThrow(() -> new ForbiddenException("invalid_user"));
 
-            // 将获取的负载信息存入请求上下文对象
-            request.configureExecutionInput((input, builder) -> builder.graphQLContext(
-                Map.of(
-                    ContextKey.ORG, org,
-                    ContextKey.USER, user)).build());
+                // 将获取的负载信息存入请求上下文对象
+                request.configureExecutionInput((input, builder) -> builder.graphQLContext(
+                    Map.of(
+                        ContextKey.ORG, org,
+                        ContextKey.USER, user)).build());
+            } catch (Exception e) {
+                throw new ForbiddenException("invalid_bearer_token", e);
+            }
         }
         return chain.next(request);
     }

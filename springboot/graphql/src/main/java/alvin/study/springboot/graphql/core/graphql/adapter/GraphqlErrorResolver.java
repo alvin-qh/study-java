@@ -1,5 +1,6 @@
 package alvin.study.springboot.graphql.core.graphql.adapter;
 
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.graphql.execution.DataFetcherExceptionResolverAdapter;
 import org.springframework.graphql.execution.ErrorType;
 import org.springframework.stereotype.Component;
@@ -39,7 +40,7 @@ public class GraphqlErrorResolver extends DataFetcherExceptionResolverAdapter {
     @Override
     protected GraphQLError resolveToSingleError(Throwable ex, DataFetchingEnvironment env) {
         if (ex instanceof GraphqlBaseException e) {
-            log.error("GraphQL error: {}", ex.getMessage(), ex);
+            log.error("GraphQL error: {}", e.getMessage(), e);
             return GraphqlErrorBuilder.newError()
                     .errorType(e.getErrorType())
                     .message(e.getMessage())
@@ -48,11 +49,20 @@ public class GraphqlErrorResolver extends DataFetcherExceptionResolverAdapter {
                     .extensions(e.toExtensions())
                     .build();
         }
+        if (ex instanceof DuplicateKeyException e) {
+            log.error("SQL error: {}", e.getMessage(), e);
+            return GraphqlErrorBuilder.newError()
+                    .errorType(ErrorType.BAD_REQUEST)
+                    .message("entity_key_duplicated")
+                    .path(env.getExecutionStepInfo().getPath())
+                    .location(env.getField().getSourceLocation())
+                    .build();
+        }
 
         log.error("{}: {}", UNKNOWN_ERROR, ex.getMessage(), ex);
         return GraphqlErrorBuilder.newError()
                 .errorType(ErrorType.INTERNAL_ERROR)
-                .message(ex.getMessage())
+                .message("internal_error")
                 .path(env.getExecutionStepInfo().getPath())
                 .location(env.getField().getSourceLocation())
                 .build();
