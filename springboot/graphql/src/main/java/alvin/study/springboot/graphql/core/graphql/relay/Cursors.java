@@ -9,11 +9,9 @@ import org.springframework.lang.Contract;
 
 import com.google.common.base.Strings;
 
+import alvin.study.springboot.graphql.core.exception.InputException;
 import graphql.relay.ConnectionCursor;
 import graphql.relay.DefaultConnectionCursor;
-
-import alvin.study.springboot.graphql.core.exception.FieldError;
-import alvin.study.springboot.graphql.core.exception.InputException;
 
 /**
  * 对查询结果在整体记录集合的位置 (游标) 进行编解码操作的类型
@@ -37,18 +35,18 @@ public class Cursors {
      * @param cursor 游标字符串
      * @return 记录序号
      */
-    public static  Integer parseCursor(String cursor) {
+    public static Integer parseCursor(String cursor) {
         if (Strings.isNullOrEmpty(cursor)) {
             return null;
         }
         try {
             var rawCursor = new String(DECODER.decode(cursor), StandardCharsets.UTF_8);
             if (!rawCursor.startsWith(DUMMY_CURSOR_PREFIX)) {
-                throw new InputException("cursor");
+                throw new InputException("invalid_cursor");
             }
             return Integer.parseInt(rawCursor.substring(DUMMY_CURSOR_PREFIX.length()));
         } catch (IllegalArgumentException e) {
-            throw new InputException().setFieldError(new FieldError("cursor", cursor));
+            throw new InputException("invalid_cursor");
         }
     }
 

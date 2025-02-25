@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import lombok.RequiredArgsConstructor;
 
 import alvin.study.springboot.graphql.app.api.query.common.AuditedBaseQuery;
+import alvin.study.springboot.graphql.app.model.UserGroup;
 import alvin.study.springboot.graphql.app.service.UserService;
 import alvin.study.springboot.graphql.core.exception.InputException;
 import alvin.study.springboot.graphql.infra.entity.User;

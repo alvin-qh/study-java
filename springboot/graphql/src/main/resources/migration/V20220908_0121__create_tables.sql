@@ -57,7 +57,7 @@ VALUES (
         1,
         1,
         'admin',
-        '$2a$10$fYQKYxqYQ/YZQYQ/YZQYQ.fYQKYxqYQ/YZQYQ/YZQYQ/YZQYQ/YZQYQ',
+        '1050cf65d91df2644fc7c05a10efb67ab142aac70005ee62f2452f77d8d45827',
         'admin',
         0,
         1,

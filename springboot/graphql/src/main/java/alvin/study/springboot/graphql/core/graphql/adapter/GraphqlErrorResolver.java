@@ -6,11 +6,10 @@ import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 
+import alvin.study.springboot.graphql.core.exception.GraphqlBaseException;
 import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
 import graphql.schema.DataFetchingEnvironment;
-
-import alvin.study.springboot.graphql.core.exception.GraphqlBaseException;
 
 /**
  * Graphql 错误处理器

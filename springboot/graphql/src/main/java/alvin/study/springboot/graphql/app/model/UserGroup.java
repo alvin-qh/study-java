@@ -1,4 +1,4 @@
-package alvin.study.springboot.graphql.app.api.query;
+package alvin.study.springboot.graphql.app.model;
 
 /**
  * 用户分组枚举类型

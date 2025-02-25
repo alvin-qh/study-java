@@ -7,10 +7,14 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+
 import lombok.RequiredArgsConstructor;
 
+import alvin.study.springboot.graphql.core.exception.UnauthorizedException;
 import alvin.study.springboot.graphql.infra.entity.User;
 import alvin.study.springboot.graphql.infra.mapper.UserMapper;
+import alvin.study.springboot.graphql.util.security.Jwt;
 import alvin.study.springboot.graphql.util.security.PasswordUtil;
 
 /**
@@ -20,6 +24,8 @@ import alvin.study.springboot.graphql.util.security.PasswordUtil;
 @RequiredArgsConstructor
 public class UserService {
     private final UserMapper userMapper;
+
+    private final Jwt jwt;
     private final PasswordUtil passwordUtil;
 
     /**
@@ -84,5 +90,25 @@ public class UserService {
     @Transactional
     public boolean delete(long id) {
         return userMapper.deleteById(id) > 0;
+    }
+
+    @Transactional(readOnly = true)
+    public String login(long orgId, String account, String password) {
+        var user = userMapper.selectOne(
+            Wrappers.lambdaQuery(User.class)
+                    .eq(User::getOrgId, orgId)
+                    .eq(User::getAccount, account));
+
+        if (user == null) {
+            throw new UnauthorizedException("user_not_exist");
+        }
+        try {
+            if (!passwordUtil.verify(password, user.getPassword())) {
+                throw new UnauthorizedException("invalid_password");
+            }
+            return jwt.encode(user.getOrgId().toString(), user.getId().toString());
+        } catch (InvalidKeyException | NoSuchAlgorithmException e) {
+            throw new InternalError(e);
+        }
     }
 }
