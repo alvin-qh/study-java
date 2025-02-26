@@ -9,4 +9,6 @@
   >
     <id property="id" column="id" />
   </resultMap>
+
+  <resultMap id="" type=""></resultMap>
 </mapper>

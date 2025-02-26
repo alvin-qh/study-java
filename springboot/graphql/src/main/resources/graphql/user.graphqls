@@ -27,7 +27,7 @@ extend type Query {
   user(id: ID!): User! # 根据 id 查询用户信息
 }
 
-# 变更用户信息的输入类, `alvin.study.springboot.graphql.app.api.mutation.UserInput` 类型
+# 变更用户信息的输入类, `alvin.study.springboot.graphql.infra.entity.UserGroup#UserInput` 类型
 input UserInput {
   account: String! @len(min: 3, max: 50) # 这里使用了一个字段处理器, 参考 /graphql/type.graphqls 文件的 directive 定义
   password: String! @len(min: 6, max: 20) # 这里使用了一个字段处理器, 参考 /graphql/type.graphqls 文件的 directive 定义
@@ -44,10 +44,10 @@ input LoginInput {
   password: String!
 }
 
-# 扩展根变更类型, 参考 alvin.study.app.api.mutation.UserMutation 类型
+# 扩展根变更类型, 参考 `alvin.study.springboot.graphql.infra.entity.UserGroup` 类型
 extend type Mutation {
   login(input: LoginInput!): UserResult!
   createUser(input: UserInput!): UserResult!
-  # updateUser(id: ID!, input: UserInput!): UpdateUserPayload!
-  # deleteUser(id: ID!): DeleteUserPayload!
+  updateUser(id: ID!, input: UserInput!): UserResult!
+  deleteUser(id: ID!): Boolean!
 }

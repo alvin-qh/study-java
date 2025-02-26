@@ -1,5 +1,6 @@
 package alvin.study.springboot.graphql.infra.mapper;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.ibatis.annotations.CacheNamespace;
@@ -89,10 +90,19 @@ public interface DepartmentMapper extends BaseMapper<Department> {
      * @return 雇员所属部门集合
      */
     @Select("""
-        select d.id, d.org_id, d.name, d.parent_id, d.created_at, d.updated_at, d.created_by, d.updated_by
-        from department d
-        join department_employee de on d.id = de.department_id
-        where d.deleted = 0 and de.employee_id = #{employeeId}
+        <script>
+            select d.id,d.org_id,d.name,d.parent_id,d.created_at,d.updated_at,d.created_by,
+            d.updated_by from
+            department d
+            join department_employee
+            de on d.id=
+            de.department_id where d.deleted=0
+            and de.
+            employee_id in
+            <foreach collection="employeeIds" item="id" separator="," open="(" close=")">
+                #{id}
+            </foreach>
+        </script>
         """)
-    List<Department> selectByEmployeeId(@Param("employeeId") long employeeId);
+    List<Department> selectByEmployeeId(@Param("employeeIds") Collection<Long> employeeIds);
 }

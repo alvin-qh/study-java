@@ -40,10 +40,8 @@ public class ApiAuthInterceptor implements WebGraphQlInterceptor {
 
         if (!INTROSPECTION_QUERY.equals(request.getOperationName())) {
             var auth = request.getHeaders().getFirst(HEADER_AUTH);
-            if (!Strings.isNullOrEmpty(auth)) {
-                if (!auth.startsWith(TOKEN_PREFIX)) {
-                    throw new ForbiddenException("invalid_bearer_token");
-                }
+            if (Strings.isNullOrEmpty(auth) || !auth.startsWith(TOKEN_PREFIX)) {
+                throw new ForbiddenException("invalid_bearer_token");
             }
 
             var token = auth.substring(TOKEN_PREFIX.length()).trim();

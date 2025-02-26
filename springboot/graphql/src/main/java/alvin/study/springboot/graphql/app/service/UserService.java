@@ -11,6 +11,8 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 
 import lombok.RequiredArgsConstructor;
 
+import alvin.study.springboot.graphql.core.exception.InputException;
+import alvin.study.springboot.graphql.core.exception.InternalException;
 import alvin.study.springboot.graphql.core.exception.UnauthorizedException;
 import alvin.study.springboot.graphql.infra.entity.User;
 import alvin.study.springboot.graphql.infra.mapper.UserMapper;
@@ -40,56 +42,66 @@ public class UserService {
     }
 
     /**
+     * 将用户密码字段进行加密
+     *
+     * @param user {@link User} 类型实体对象
+     * @return {@link User} 类型实体对象
+     */
+    private User encryptUserPassword(User user) {
+        try {
+            user.setPassword(passwordUtil.encrypt(user.getPassword()));
+            return user;
+        } catch (InvalidKeyException | NoSuchAlgorithmException e) {
+            throw new InternalException(e);
+        }
+    }
+
+    /**
      * 创建 {@link User} 类型用户实体对象
      *
      * @param user {@link User} 类型用户实体对象
      */
     @Transactional
     public void create(User user) {
-        try {
-            user.setPassword(passwordUtil.encrypt(user.getPassword()));
-        } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-            throw new InternalError("Cannot encrypt password", e);
-        }
-        userMapper.insert(user);
+        userMapper.insert(encryptUserPassword(user));
     }
 
     /**
      * 更新 {@link User} 类型用户实体对象
      *
-     * @param id   用户实体 {@code ID}
-     * @param user {@link User} 用户实体对象的 {@link Optional} 包装对象
+     * @param id    用户实体 {@code ID}
+     * @param orgId 组织 {@code ID}
+     * @param user  {@link User} 用户实体对象的 {@link Optional} 包装对象
      * @return {@link User} 类型用户实体对象的 {@link Optional} 包装对象
      */
     @Transactional
-    public Optional<User> update(long id, User user) {
-        var originalUser = userMapper.selectById(id);
-        if (originalUser == null) {
-            return Optional.empty();
-        }
+    public User update(long orgId, long id, User user) {
+        user.setId(id);
+        user.setOrgId(orgId);
 
-        try {
-            originalUser.setPassword(passwordUtil.encrypt(user.getPassword()));
-        } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-            throw new InternalError("Cannot encrypt password", e);
+        if (userMapper.update(user, Wrappers.lambdaUpdate(User.class)
+                .eq(User::getId, id)
+                .eq(User::getOrgId, orgId))
+            == 0) {
+            throw new InputException("user_not_exist");
         }
-        originalUser.setAccount(user.getAccount());
-
-        if (userMapper.updateById(originalUser) > 0) {
-            return Optional.of(originalUser);
-        }
-        return Optional.empty();
+        return user;
     }
 
     /**
      * 删除 {@link User} 类型用户实体
      *
-     * @param id 用户实体 {@code ID} 值
+     * @param orgId 组织实体 {@code ID} 值
+     * @param id    用户实体 {@code ID} 值
      * @return {@code true} 表示删除成功, {@code false} 表示删除失败
      */
     @Transactional
-    public boolean delete(long id) {
-        return userMapper.deleteById(id) > 0;
+    public boolean delete(long orgId, long id) {
+        return userMapper.update(Wrappers.lambdaUpdate(User.class)
+                .set(User::getDeleted, 1)
+                .eq(User::getId, id)
+                .eq(User::getOrgId, orgId))
+               > 0;
     }
 
     @Transactional(readOnly = true)

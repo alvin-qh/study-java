@@ -1,10 +1,11 @@
 package alvin.study.springboot.graphql.app.api.query;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.BatchMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
 
 import lombok.RequiredArgsConstructor;
@@ -48,8 +49,8 @@ public class EmployeeQuery extends AuditedBaseQuery<Employee> {
      * @param entity 雇员实体
      * @return {@link Department} 类型部门实体对象集合
      */
-    @SchemaMapping
-    public List<Department> departments(Employee entity) {
+    @BatchMapping
+    public Map<Employee, List<Department>> departments(Employee entity) {
         return departmentService.listByEmployeeId(entity.getId());
     }
 }

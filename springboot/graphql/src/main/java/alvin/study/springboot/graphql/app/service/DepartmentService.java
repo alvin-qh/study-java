@@ -110,7 +110,7 @@ public class DepartmentService {
      * @return 雇员所属部门的 {@link Department} 类型实体集合
      */
     @Transactional(readOnly = true)
-    public List<Department> listByEmployeeId(long employeeId) {
+    public List<Department> listByEmployeeIds(Collection<Long> employeeIds) {
         return departmentMapper.selectByEmployeeId(employeeId);
     }
 }
