@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+<!--
+为 `alvin.study.springboot.graphql.infra.mapper.DepartmentMapper` 类定义 ORM 映射
+-->
 <mapper namespace="alvin.study.springboot.graphql.infra.mapper.DepartmentMapper">
+
+  <!--
+  定义查询结果到 `alvin.study.springboot.graphql.infra.entity.Department` 类型实例的映射
+  -->
   <resultMap
     id="departmentResultMap"
     type="alvin.study.springboot.graphql.infra.entity.Department"
@@ -10,5 +17,31 @@
     <id property="id" column="id" />
   </resultMap>
 
-  <resultMap id="employeeDepartmentsMap" type=""></resultMap>
+  <!--
+  定义查询结果到 `alvin.study.springboot.graphql.infra.entity.EmployeeDepartment` 类型实例的映射
+  -->
+  <resultMap
+    id="employeeDepartmentsMap"
+    type="alvin.study.springboot.graphql.infra.entity.EmployeeDepartment"
+    autoMapping="true"
+  >
+    <!--
+    将 `EmployeeDepartment` 类的 `employee` 属性映射到 `Employee` 类型实例
+
+    -->
+    <association
+      property="employee"
+      resultMap="alvin.study.springboot.graphql.infra.mapper.EmployeeMapper.employeeResultMap"
+      columnPrefix="e_"
+    />
+
+    <!--
+    将 `EmployeeDepartment` 类的 `departments` 属性映射到 `List<Department>` 类型实例
+    -->
+    <collection
+      property="departments"
+      resultMap="departmentResultMap"
+      columnPrefix="d_"
+    />
+  </resultMap>
 </mapper>

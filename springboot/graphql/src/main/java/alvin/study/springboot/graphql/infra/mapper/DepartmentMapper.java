@@ -6,11 +6,13 @@ import java.util.List;
 import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 import alvin.study.springboot.graphql.infra.entity.Department;
+import alvin.study.springboot.graphql.infra.entity.EmployeeDepartment;
 import alvin.study.springboot.graphql.infra.entity.common.AuditedEntity;
 import alvin.study.springboot.graphql.infra.entity.common.TenantedEntity;
 import alvin.study.springboot.graphql.infra.handler.EntityFieldHandler;
@@ -91,18 +93,33 @@ public interface DepartmentMapper extends BaseMapper<Department> {
      */
     @Select("""
         <script>
-            select d.id,d.org_id,d.name,d.parent_id,d.created_at,d.updated_at,d.created_by,
-            d.updated_by from
-            department d
-            join department_employee
-            de on d.id=
-            de.department_id where d.deleted=0
-            and de.
-            employee_id in
+            select
+                e.id as e_id,
+                e.org_id as e_org_id,
+                e.name as e_name,
+                e.email as e_email,
+                e.title as e_title,
+                e.created_at as e_created_at,
+                e.updated_at as e_updated_at,
+                e.created_by as e_created_by,
+                e.updated_by as e_updated_by,
+                d.id as d_id,
+                d.org_id as d_org_id,
+                d.name as d_name,
+                d.parent_id as d_parent_id,
+                d.created_at as d_created_at,
+                d.updated_at as d_updated_at,
+                d.created_by as d_created_by,
+                d.updated_by as d_updated_by
+            from employee e
+            join department_employee de on e.id=de.employee_id
+            join department d on d.id=de.department_id
+            where d.deleted=0 and e.id in
             <foreach collection="employeeIds" item="id" separator="," open="(" close=")">
                 #{id}
             </foreach>
         </script>
         """)
-    List<Department> selectByEmployeeId(@Param("employeeIds") Collection<Long> employeeIds);
+    @ResultMap("employeeDepartmentsMap")
+    List<EmployeeDepartment> selectByEmployeeIds(@Param("employeeIds") Collection<Long> employeeIds);
 }

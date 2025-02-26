@@ -2,6 +2,7 @@ package alvin.study.springboot.graphql.app.api.query;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.BatchMapping;
@@ -16,6 +17,7 @@ import alvin.study.springboot.graphql.app.service.EmployeeService;
 import alvin.study.springboot.graphql.core.exception.InputException;
 import alvin.study.springboot.graphql.infra.entity.Department;
 import alvin.study.springboot.graphql.infra.entity.Employee;
+import alvin.study.springboot.graphql.infra.entity.EmployeeDepartment;
 
 /**
  * 对应 {@link Employee} 类型的 GraphQL 查询对象
@@ -50,7 +52,13 @@ public class EmployeeQuery extends AuditedBaseQuery<Employee> {
      * @return {@link Department} 类型部门实体对象集合
      */
     @BatchMapping
-    public Map<Employee, List<Department>> departments(Employee entity) {
-        return departmentService.listByEmployeeId(entity.getId());
+    public Map<Employee, List<Department>> departments(List<Employee> entities) {
+        var employeeDepts = departmentService.listByEmployeeIds(
+            entities.stream().map(Employee::getId).toList());
+
+        return employeeDepts.stream().collect(
+            Collectors.toMap(
+                EmployeeDepartment::getEmployee,
+                EmployeeDepartment::getDepartments));
     }
 }
