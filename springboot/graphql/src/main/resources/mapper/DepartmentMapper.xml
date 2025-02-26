@@ -10,5 +10,5 @@
     <id property="id" column="id" />
   </resultMap>
 
-  <resultMap id="" type=""></resultMap>
+  <resultMap id="employeeDepartmentsMap" type=""></resultMap>
 </mapper>
