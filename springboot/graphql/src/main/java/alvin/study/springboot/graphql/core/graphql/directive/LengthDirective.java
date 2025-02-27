@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import alvin.study.springboot.graphql.core.exception.InputException;
 import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
+import graphql.execution.DataFetcherResult;
 import graphql.language.IntValue;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetcherFactories;
@@ -14,6 +14,7 @@ import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLDirectiveContainer;
 import graphql.schema.GraphQLFieldDefinition;
 import graphql.schema.GraphQLInputObjectType;
+import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLTypeUtil;
 import graphql.schema.idl.SchemaDirectiveWiring;
 import graphql.schema.idl.SchemaDirectiveWiringEnvironment;
@@ -141,12 +142,18 @@ public class LengthDirective implements SchemaDirectiveWiring {
      */
     @Override
     public GraphQLFieldDefinition onField(SchemaDirectiveWiringEnvironment<GraphQLFieldDefinition> env) {
-        var definition = env.getElement();
-        if (!appliesTo(definition)) {
-            return definition;
+        var fieldDefinition = env.getElement();
+        if (!appliesTo(fieldDefinition)) {
+            return fieldDefinition;
         }
 
-        var wrappedDataFetcher = DataFetcherFactories.wrapDataFetcher(env.getFieldDataFetcher(), (dfEnv, value) -> {
+        var fieldsContainer = env.getFieldsContainer();
+        if (!(fieldsContainer instanceof GraphQLObjectType fieldObjectType)) {
+            return fieldDefinition;
+        }
+
+        var wrappedDataFetcher = DataFetcherFactories.wrapDataFetcher(
+            env.getCodeRegistry().getDataFetcher(fieldObjectType, fieldDefinition), (dfEnv, value) -> {
             var errors = new ArrayList<GraphQLError>();
 
             dfEnv.getFieldDefinition().getArguments().stream().forEach(arg -> {
@@ -167,12 +174,19 @@ public class LengthDirective implements SchemaDirectiveWiring {
                 }
             });
 
-            if (!errors.isEmpty()) {
-                throw new InputException();
+            if (errors.isEmpty()) {
+                return value;
             }
-            return value;
+
+            return DataFetcherResult.newResult()
+                    .data(value)
+                    .errors(errors)
+                    .localContext(dfEnv.getLocalContext())
+                    .build();
         });
 
-        return env.setFieldDataFetcher(wrappedDataFetcher);
+        env.getCodeRegistry().dataFetcher(fieldObjectType, fieldDefinition, wrappedDataFetcher);
+
+        return fieldDefinition;
     }
 }

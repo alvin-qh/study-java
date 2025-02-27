@@ -37,8 +37,11 @@ public class UserService {
      * @return {@link User} 类型用户实体对象的 {@link Optional} 包装对象
      */
     @Transactional(readOnly = true)
-    public Optional<User> findById(long id) {
-        return Optional.ofNullable(userMapper.selectById(id));
+    public Optional<User> findById(long orgId, long id) {
+        return Optional.ofNullable(
+            userMapper.selectOne(Wrappers.lambdaQuery(User.class)
+                    .eq(User::getOrgId, orgId)
+                    .eq(User::getId, id)));
     }
 
     /**
@@ -76,6 +79,11 @@ public class UserService {
      */
     @Transactional
     public void update(User user) {
+        var originalUser = findById(user.getOrgId(), user.getId())
+                .orElseThrow(() -> new InputException("user_not_exist"));
+
+        user.setPassword(originalUser.getPassword());
+
         if (userMapper.update(user, Wrappers.lambdaUpdate(User.class)
                 .eq(User::getId, user.getId())
                 .eq(User::getOrgId, user.getOrgId()))

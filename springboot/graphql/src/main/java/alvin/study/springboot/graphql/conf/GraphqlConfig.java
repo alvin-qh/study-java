@@ -250,7 +250,7 @@ public class GraphqlConfig implements Instrumentation {
      */
     @Bean
     RuntimeWiringConfigurer runtimeWiringConfigurer() {
-        return wiringBuilder -> wiringBuilder
+        return builder -> builder
                 .scalar(ExtendedScalars.Object) // 添加扩展类型
                 .scalar(ExtendedScalars.Json)
                 .scalar(ExtendedScalars.DateTime)
@@ -259,7 +259,8 @@ public class GraphqlConfig implements Instrumentation {
                 .scalar(ExtendedScalars.Locale)
                 .scalar(buildVoidType())
                 .directive("uppercase", new UppercaseDirective()) // 添加扩展指令
-                .directiveWiring(new LengthDirective());
+                .directiveWiring(new LengthDirective())
+                .build();
     }
 
     /**

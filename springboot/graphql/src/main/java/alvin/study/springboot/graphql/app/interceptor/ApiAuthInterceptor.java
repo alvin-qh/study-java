@@ -12,12 +12,13 @@ import com.google.common.base.Strings;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import reactor.core.publisher.Mono;
+
 import alvin.study.springboot.graphql.app.service.OrgService;
 import alvin.study.springboot.graphql.app.service.UserService;
 import alvin.study.springboot.graphql.core.context.ContextKey;
 import alvin.study.springboot.graphql.core.exception.ForbiddenException;
 import alvin.study.springboot.graphql.util.security.Jwt;
-import reactor.core.publisher.Mono;
 
 @Slf4j
 @Component
@@ -53,7 +54,7 @@ public class ApiAuthInterceptor implements WebGraphQlInterceptor {
                 var org = orgService.findById(Long.parseLong(payload.getAudience().get(0)))
                         .orElseThrow(() -> new ForbiddenException("invalid_org"));
 
-                var user = userService.findById(Long.parseLong(payload.getIssuer()))
+                var user = userService.findById(org.getId(), Long.parseLong(payload.getIssuer()))
                         .orElseThrow(() -> new ForbiddenException("invalid_user"));
 
                 // 将获取的负载信息存入请求上下文对象
