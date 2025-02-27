@@ -38,15 +38,8 @@ type UserResult {
   result: User
 }
 
-input LoginInput {
-  orgId: Long!
-  account: String!
-  password: String!
-}
-
 # 扩展根变更类型, 参考 `alvin.study.springboot.graphql.infra.entity.UserGroup` 类型
 extend type Mutation {
-  login(input: LoginInput!): UserResult!
   createUser(input: UserInput!): UserResult!
   updateUser(id: ID!, input: UserInput!): UserResult!
   deleteUser(id: ID!): Boolean!

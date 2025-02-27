@@ -75,17 +75,13 @@ public class UserService {
      * @return {@link User} 类型用户实体对象的 {@link Optional} 包装对象
      */
     @Transactional
-    public User update(long orgId, long id, User user) {
-        user.setId(id);
-        user.setOrgId(orgId);
-
+    public void update(User user) {
         if (userMapper.update(user, Wrappers.lambdaUpdate(User.class)
-                .eq(User::getId, id)
-                .eq(User::getOrgId, orgId))
+                .eq(User::getId, user.getId())
+                .eq(User::getOrgId, user.getOrgId()))
             == 0) {
             throw new InputException("user_not_exist");
         }
-        return user;
     }
 
     /**

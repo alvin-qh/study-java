@@ -46,19 +46,8 @@ public class OrgService {
      * @param org {@link Org} 类型组织实体对象的 {@link Optional} 包装对象
      */
     @Transactional
-    public Optional<Org> update(long id, Org org) {
-        var originalOrg = orgMapper.selectById(id);
-        if (originalOrg == null) {
-            return Optional.empty();
-        }
-
-        originalOrg.setName(org.getName());
-
-        if (orgMapper.updateById(originalOrg) > 0) {
-            return Optional.of(originalOrg);
-        }
-
-        return Optional.empty();
+    public void update(Org org) {
+        orgMapper.updateById(org);
     }
 
     /**

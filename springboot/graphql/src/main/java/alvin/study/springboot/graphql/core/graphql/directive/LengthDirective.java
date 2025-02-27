@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import alvin.study.springboot.graphql.core.exception.InputException;
 import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
-import graphql.execution.DataFetcherResult;
 import graphql.language.IntValue;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetcherFactories;
@@ -167,15 +167,10 @@ public class LengthDirective implements SchemaDirectiveWiring {
                 }
             });
 
-            if (errors.isEmpty()) {
-                return value;
+            if (!errors.isEmpty()) {
+                throw new InputException();
             }
-
-            return DataFetcherResult.newResult()
-                    .data(value)
-                    .errors(errors)
-                    .localContext(dfEnv.getLocalContext())
-                    .build();
+            return value;
         });
 
         return env.setFieldDataFetcher(wrappedDataFetcher);
