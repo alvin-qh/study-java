@@ -104,14 +104,23 @@ public interface DepartmentEmployeeMapper extends BaseMapper<DepartmentEmployee>
                 d.created_at as d_created_at,
                 d.updated_at as d_updated_at,
                 d.created_by as d_created_by,
-                d.updated_by as d_updated_by
-            from employee e
-            join department_employee de on e.id=de.employee_id
+                d.updated_by as d_updated_by,
+                de.id,
+                de.org_id,
+                de.employee_id,
+                de.department_id,
+                de.created_at,
+                de.updated_at,
+                de.created_by,
+                de.updated_by
+            from department_employee de
             join department d on d.id=de.department_id
-            where d.deleted=0 and e.id in
+            join employee e on e.id=de.employee_id
+            where de.employee_id in
             <foreach collection="employeeIds" item="id" separator="," open="(" close=")">
                 #{id}
             </foreach>
+            and d.deleted=0 and e.deleted=0
         </script>
         """)
     @ResultMap("departmentEmployeeResultMap")

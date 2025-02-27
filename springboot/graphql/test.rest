@@ -2,7 +2,7 @@
 #
 # ```json
 # {
-#   "Authorization": "Bearer {{token}}",
+#   "Authorization": "Bearer {{token}}"
 # }
 # ```
 POST http://localhost:8080/login HTTP/1.1

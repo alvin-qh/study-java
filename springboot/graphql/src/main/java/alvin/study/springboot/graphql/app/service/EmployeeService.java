@@ -116,7 +116,10 @@ public class EmployeeService {
             de.setOrgId(employee.getOrgId());
             de.setDepartmentId(d.getId());
             de.setEmployeeId(employee.getId());
-
+            de.setUpdatedBy(employee.getUpdatedBy());
+            if (employee.getCreatedBy() != null) {
+                de.setCreatedBy(employee.getCreatedBy());
+            }
             departmentEmployeeMapper.insert(de);
         });
     }
