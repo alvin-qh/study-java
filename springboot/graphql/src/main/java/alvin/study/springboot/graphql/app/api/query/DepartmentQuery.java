@@ -45,9 +45,9 @@ public class DepartmentQuery extends AuditedBaseQuery<Department> {
      * @return {@link Department} 类型部门实体对象
      */
     @QueryMapping
-    public Department department(@Argument String id) {
+    public Department department(@Argument long id) {
         // 查询组织
-        return departmentService.findById(Long.parseLong(id))
+        return departmentService.findById(id)
                 .orElseThrow(() -> new InputException("Invalid department id"));
     }
 

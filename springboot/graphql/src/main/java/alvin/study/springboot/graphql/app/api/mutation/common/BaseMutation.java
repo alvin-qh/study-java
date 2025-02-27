@@ -1,12 +1,14 @@
-package alvin.study.springboot.graphql.app.api.mutation;
+package alvin.study.springboot.graphql.app.api.mutation.common;
 
-import alvin.study.springboot.graphql.core.context.ContextKey;
-import alvin.study.springboot.graphql.infra.entity.User;
-import alvin.study.springboot.graphql.infra.entity.common.AuditedEntity;
 import graphql.Assert;
 import graphql.GraphQLContext;
 
-abstract class BaseMutation {
+import alvin.study.springboot.graphql.core.context.ContextKey;
+import alvin.study.springboot.graphql.infra.entity.Org;
+import alvin.study.springboot.graphql.infra.entity.User;
+import alvin.study.springboot.graphql.infra.entity.common.AuditedEntity;
+
+public abstract class BaseMutation {
     protected static <T extends AuditedEntity> T completeAuditedEntity(T entity, GraphQLContext ctx) {
         var loginUser = ctx.<User>get(ContextKey.USER);
         if (entity.getCreatedBy() == null) {
@@ -14,7 +16,7 @@ abstract class BaseMutation {
         }
         entity.setUpdatedBy(loginUser.getId());
 
-        var org = ctx.<User>get(ContextKey.ORG);
+        var org = ctx.<Org>get(ContextKey.ORG);
         if (entity.getOrgId() == null) {
             entity.setOrgId(org.getId());
         } else {

@@ -9,15 +9,20 @@ import org.springframework.graphql.data.method.annotation.BatchMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
+import com.google.common.base.Functions;
+
 import lombok.RequiredArgsConstructor;
+
+import graphql.GraphQLContext;
 
 import alvin.study.springboot.graphql.app.api.query.common.AuditedBaseQuery;
 import alvin.study.springboot.graphql.app.service.DepartmentService;
 import alvin.study.springboot.graphql.app.service.EmployeeService;
-import alvin.study.springboot.graphql.core.exception.InputException;
+import alvin.study.springboot.graphql.core.context.ContextKey;
 import alvin.study.springboot.graphql.infra.entity.Department;
+import alvin.study.springboot.graphql.infra.entity.DepartmentEmployee;
 import alvin.study.springboot.graphql.infra.entity.Employee;
-import alvin.study.springboot.graphql.infra.entity.EmployeeDepartment;
+import alvin.study.springboot.graphql.infra.entity.Org;
 
 /**
  * 对应 {@link Employee} 类型的 GraphQL 查询对象
@@ -39,10 +44,8 @@ public class EmployeeQuery extends AuditedBaseQuery<Employee> {
      * @return {@link Employee} 类型雇员实体对象
      */
     @QueryMapping
-    public Employee employee(@Argument String id) {
-        // 查询组织
-        return employeeService.findById(Long.parseLong(id))
-                .orElseThrow(() -> new InputException("Invalid employee id"));
+    public Employee employee(@Argument long id, GraphQLContext ctx) {
+        return employeeService.findById(ctx.<Org>get(ContextKey.ORG).getId(), id);
     }
 
     /**
@@ -53,12 +56,12 @@ public class EmployeeQuery extends AuditedBaseQuery<Employee> {
      */
     @BatchMapping
     public Map<Employee, List<Department>> departments(List<Employee> entities) {
-        var employeeDepts = departmentService.listByEmployeeIds(
-            entities.stream().map(Employee::getId).toList());
+        var empMap = entities.stream().collect(Collectors.toMap(Employee::getId, Functions.identity()));
+        var employeeDepts = departmentService.listByEmployeeIds(empMap.keySet());
 
         return employeeDepts.stream().collect(
             Collectors.toMap(
-                EmployeeDepartment::getEmployee,
-                EmployeeDepartment::getDepartments));
+                e -> empMap.get(e.getEmployee().getId()),
+                DepartmentEmployee::getDepartments));
     }
 }

@@ -1,7 +1,13 @@
 package alvin.study.springboot.graphql.infra.mapper;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultMap;
+import org.apache.ibatis.annotations.Select;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
@@ -72,4 +78,42 @@ import alvin.study.springboot.graphql.infra.handler.EntityFieldHandler;
  */
 @Mapper
 @CacheNamespace
-public interface DepartmentEmployeeMapper extends BaseMapper<DepartmentEmployee> {}
+public interface DepartmentEmployeeMapper extends BaseMapper<DepartmentEmployee> {
+    /**
+     * 根据雇员 id 查询其所属部门
+     *
+     * @param employeeId 雇员 id
+     * @return 雇员所属部门集合
+     */
+    @Select("""
+        <script>
+            select
+                e.id as e_id,
+                e.org_id as e_org_id,
+                e.name as e_name,
+                e.email as e_email,
+                e.title as e_title,
+                e.created_at as e_created_at,
+                e.updated_at as e_updated_at,
+                e.created_by as e_created_by,
+                e.updated_by as e_updated_by,
+                d.id as d_id,
+                d.org_id as d_org_id,
+                d.name as d_name,
+                d.parent_id as d_parent_id,
+                d.created_at as d_created_at,
+                d.updated_at as d_updated_at,
+                d.created_by as d_created_by,
+                d.updated_by as d_updated_by
+            from employee e
+            join department_employee de on e.id=de.employee_id
+            join department d on d.id=de.department_id
+            where d.deleted=0 and e.id in
+            <foreach collection="employeeIds" item="id" separator="," open="(" close=")">
+                #{id}
+            </foreach>
+        </script>
+        """)
+    @ResultMap("departmentEmployeeResultMap")
+    List<DepartmentEmployee> selectByEmployeeIds(@Param("employeeIds") Collection<Long> employeeIds);
+}

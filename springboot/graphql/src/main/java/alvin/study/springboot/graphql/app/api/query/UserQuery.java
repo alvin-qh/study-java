@@ -13,7 +13,6 @@ import alvin.study.springboot.graphql.app.api.query.common.AuditedBaseQuery;
 import alvin.study.springboot.graphql.app.model.UserGroup;
 import alvin.study.springboot.graphql.app.service.UserService;
 import alvin.study.springboot.graphql.core.context.ContextKey;
-import alvin.study.springboot.graphql.core.exception.InputException;
 import alvin.study.springboot.graphql.infra.entity.Org;
 import alvin.study.springboot.graphql.infra.entity.User;
 
@@ -36,10 +35,9 @@ public class UserQuery extends AuditedBaseQuery<User> {
      * @return {@link User} 类型用户对象
      */
     @QueryMapping
-    public User user(@Argument String id, GraphQLContext ctx) {
+    public User user(@Argument long id, GraphQLContext ctx) {
         // 查询用户
-        return userService.findById(ctx.<Org>get(ContextKey.ORG).getId(), Long.parseLong(id))
-                .orElseThrow(() -> new InputException("Invalid user id"));
+        return userService.findById(ctx.<Org>get(ContextKey.ORG).getId(), id);
     }
 
     @SchemaMapping

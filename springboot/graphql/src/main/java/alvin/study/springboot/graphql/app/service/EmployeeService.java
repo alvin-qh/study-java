@@ -1,7 +1,6 @@
 package alvin.study.springboot.graphql.app.service;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -39,8 +38,12 @@ public class EmployeeService {
      * @return {@link Employee} 类型雇员实体的 {@link Optional} 类型包装对象
      */
     @Transactional(readOnly = true)
-    public Optional<Employee> findById(long id) {
-        return Optional.ofNullable(employeeMapper.selectById(id));
+    public Employee findById(long orgId, long id) {
+        return Optional.ofNullable(
+            employeeMapper.selectOne(Wrappers.lambdaQuery(Employee.class)
+                    .eq(Employee::getOrgId, orgId)
+                    .eq(Employee::getId, id)))
+                .orElseThrow(() -> new InputException("employee_not_exist"));
     }
 
     /**
@@ -51,11 +54,13 @@ public class EmployeeService {
      */
     @Transactional
     public void create(Employee employee, Collection<Long> departmentIds) {
-        employeeMapper.insert(employee);
+        if (employeeMapper.insert(employee) == 0) {
+            return;
+        }
 
         if (departmentIds != null && !departmentIds.isEmpty()) {
             // 建立关联关系
-            bindWithDepartments(employee, new HashSet<>(departmentIds));
+            bindWithDepartments(employee, Set.copyOf(departmentIds));
         }
     }
 
@@ -68,32 +73,23 @@ public class EmployeeService {
      * @return {@link Employee} 类型雇员实体的 {@link Optional} 类型包装对象
      */
     @Transactional
-    public Optional<Employee> update(long id, Employee employee, Collection<Long> departmentIds) {
-        var originalEmployee = employeeMapper.selectById(id);
-        if (originalEmployee == null) {
-            return Optional.empty();
+    public void update(Employee employee, Collection<Long> departmentIds) {
+        if (employeeMapper.update(employee, Wrappers.lambdaUpdate(Employee.class)
+                .eq(Employee::getOrgId, employee.getOrgId())
+                .eq(Employee::getId, employee.getId()))
+            == 0) {
+            throw new InputException("employee_not_exist");
         }
 
-        originalEmployee.setName(employee.getName());
-        originalEmployee.setEmail(employee.getEmail());
-        originalEmployee.setTitle(employee.getTitle());
-        originalEmployee.setInfo(employee.getInfo());
-
-        if (employeeMapper.updateById(originalEmployee) == 0) {
-            return Optional.empty();
-        }
+        // 删除之前的关联关系
+        departmentEmployeeMapper.delete(
+            Wrappers.lambdaQuery(DepartmentEmployee.class)
+                    .eq(DepartmentEmployee::getEmployeeId, employee.getId()));
 
         if (departmentIds != null && !departmentIds.isEmpty()) {
-            // 删除之前的关联关系
-            departmentEmployeeMapper.delete(
-                Wrappers.lambdaQuery(DepartmentEmployee.class)
-                        .eq(DepartmentEmployee::getEmployeeId, employee.getId()));
-
             // 建立新的关联关系
-            bindWithDepartments(originalEmployee, new HashSet<>(departmentIds));
+            bindWithDepartments(employee, Set.copyOf(departmentIds));
         }
-
-        return Optional.of(originalEmployee);
     }
 
     /**
@@ -107,7 +103,9 @@ public class EmployeeService {
      * @param departmentIds 所属部门 {@code ID} 集合
      */
     private void bindWithDepartments(Employee employee, Set<Long> departmentIds) {
-        var departments = departmentMapper.selectByIds(departmentIds);
+        var departments = departmentMapper.selectList(Wrappers.lambdaQuery(Department.class)
+                .in(Department::getId, departmentIds)
+                .eq(Department::getOrgId, employee.getOrgId()));
         if (departmentIds.size() != departments.size()) {
             departmentIds.removeAll(departments.stream().map(Department::getId).collect(Collectors.toSet()));
             throw new InputException(String.format("Department with id %s ", departmentIds));
@@ -115,6 +113,7 @@ public class EmployeeService {
 
         departments.forEach(d -> {
             var de = new DepartmentEmployee();
+            de.setOrgId(employee.getOrgId());
             de.setDepartmentId(d.getId());
             de.setEmployeeId(employee.getId());
 

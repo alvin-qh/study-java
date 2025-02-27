@@ -7,10 +7,11 @@ import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 
-import alvin.study.springboot.graphql.core.exception.GraphqlBaseException;
 import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
 import graphql.schema.DataFetchingEnvironment;
+
+import alvin.study.springboot.graphql.core.exception.GraphqlBaseException;
 
 /**
  * Graphql 错误处理器
@@ -54,6 +55,15 @@ public class GraphqlErrorResolver extends DataFetcherExceptionResolverAdapter {
             return GraphqlErrorBuilder.newError()
                     .errorType(ErrorType.BAD_REQUEST)
                     .message("entity_key_duplicated")
+                    .path(env.getExecutionStepInfo().getPath())
+                    .location(env.getField().getSourceLocation())
+                    .build();
+        }
+        if (ex instanceof NumberFormatException e)  {
+            log.error("Input error: {}", e.getMessage(), e);
+            return GraphqlErrorBuilder.newError()
+                    .errorType(ErrorType.BAD_REQUEST)
+                    .message("input_invalid_number")
                     .path(env.getExecutionStepInfo().getPath())
                     .location(env.getField().getSourceLocation())
                     .build();

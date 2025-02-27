@@ -13,7 +13,8 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 
 import alvin.study.springboot.graphql.infra.entity.Department;
-import alvin.study.springboot.graphql.infra.entity.EmployeeDepartment;
+import alvin.study.springboot.graphql.infra.entity.DepartmentEmployee;
+import alvin.study.springboot.graphql.infra.mapper.DepartmentEmployeeMapper;
 import alvin.study.springboot.graphql.infra.mapper.DepartmentMapper;
 
 /**
@@ -23,6 +24,7 @@ import alvin.study.springboot.graphql.infra.mapper.DepartmentMapper;
 @RequiredArgsConstructor
 public class DepartmentService {
     private final DepartmentMapper departmentMapper;
+    private final DepartmentEmployeeMapper departmentEmployeeMapper;
 
     /**
      * 根据部门实体 {@code ID} 值查询 {@link Department} 类型部门实体对象
@@ -111,7 +113,7 @@ public class DepartmentService {
      * @return 雇员所属部门的 {@link Department} 类型实体集合
      */
     @Transactional(readOnly = true)
-    public List<EmployeeDepartment> listByEmployeeIds(Collection<Long> employeeIds) {
-        return departmentMapper.selectByEmployeeIds(employeeIds);
+    public List<DepartmentEmployee> listByEmployeeIds(Collection<Long> employeeIds) {
+        return departmentEmployeeMapper.selectByEmployeeIds(employeeIds);
     }
 }

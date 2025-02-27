@@ -51,11 +51,8 @@ public class ApiAuthInterceptor implements WebGraphQlInterceptor {
                 // 解析 token, 获取 token 负载
                 var payload = jwt.verify(token);
 
-                var org = orgService.findById(Long.parseLong(payload.getAudience().get(0)))
-                        .orElseThrow(() -> new ForbiddenException("invalid_org"));
-
-                var user = userService.findById(org.getId(), Long.parseLong(payload.getIssuer()))
-                        .orElseThrow(() -> new ForbiddenException("invalid_user"));
+                var org = orgService.findById(Long.parseLong(payload.getAudience().get(0)));
+                var user = userService.findById(org.getId(), Long.parseLong(payload.getIssuer()));
 
                 // 将获取的负载信息存入请求上下文对象
                 request.configureExecutionInput((input, builder) -> builder.graphQLContext(

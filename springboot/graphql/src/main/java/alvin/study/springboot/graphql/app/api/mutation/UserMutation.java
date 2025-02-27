@@ -8,13 +8,15 @@ import org.springframework.stereotype.Controller;
 
 import lombok.RequiredArgsConstructor;
 
+import graphql.GraphQLContext;
+
+import alvin.study.springboot.graphql.app.api.mutation.common.BaseMutation;
 import alvin.study.springboot.graphql.app.model.MutationResult;
 import alvin.study.springboot.graphql.app.service.UserService;
 import alvin.study.springboot.graphql.core.context.ContextKey;
 import alvin.study.springboot.graphql.infra.entity.Org;
 import alvin.study.springboot.graphql.infra.entity.User;
 import alvin.study.springboot.graphql.infra.entity.UserGroup;
-import graphql.GraphQLContext;
 
 @Controller
 @RequiredArgsConstructor
@@ -27,7 +29,7 @@ public class UserMutation extends BaseMutation {
     static record UserInput(String account, String password, UserGroup group) {
         public User toEntity(GraphQLContext ctx, @Nullable Long id) {
             var user = completeAuditedEntity(new User(), ctx);
-
+            user.setId(id);
             user.setAccount(account);
             user.setPassword(password);
             user.setGroup(switch (group) {

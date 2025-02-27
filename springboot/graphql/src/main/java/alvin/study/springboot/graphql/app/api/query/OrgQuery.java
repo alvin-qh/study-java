@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import lombok.RequiredArgsConstructor;
 
 import alvin.study.springboot.graphql.app.service.OrgService;
-import alvin.study.springboot.graphql.core.exception.InputException;
 import alvin.study.springboot.graphql.infra.entity.Org;
 
 /**
@@ -33,10 +32,9 @@ public class OrgQuery {
      * @return 用户对象
      */
     @QueryMapping
-    public Org org(@Argument String id) {
+    public Org org(@Argument long id) {
         // 查询组织
-        return orgService.findById(Long.parseLong(id))
-                .orElseThrow(() -> new InputException("Invalid org id"));
+        return orgService.findById(id);
     }
 
     /**

@@ -16,32 +16,4 @@
   >
     <id property="id" column="id" />
   </resultMap>
-
-  <!--
-  定义查询结果到 `alvin.study.springboot.graphql.infra.entity.EmployeeDepartment` 类型实例的映射
-  -->
-  <resultMap
-    id="employeeDepartmentsMap"
-    type="alvin.study.springboot.graphql.infra.entity.EmployeeDepartment"
-    autoMapping="true"
-  >
-    <!--
-    将 `EmployeeDepartment` 类的 `employee` 属性映射到 `Employee` 类型实例
-
-    -->
-    <association
-      property="employee"
-      resultMap="alvin.study.springboot.graphql.infra.mapper.EmployeeMapper.employeeResultMap"
-      columnPrefix="e_"
-    />
-
-    <!--
-    将 `EmployeeDepartment` 类的 `departments` 属性映射到 `List<Department>` 类型实例
-    -->
-    <collection
-      property="departments"
-      resultMap="departmentResultMap"
-      columnPrefix="d_"
-    />
-  </resultMap>
 </mapper>
