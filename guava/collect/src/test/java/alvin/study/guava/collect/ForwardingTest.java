@@ -4,12 +4,12 @@ import static org.assertj.core.api.Assertions.entry;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
-import org.junit.jupiter.api.Test;
-
 import com.google.common.collect.ForwardingList;
 import com.google.common.collect.ForwardingMap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+
+import org.junit.jupiter.api.Test;
 
 import alvin.study.guava.collect.IdMap.IdMapEntry;
 
@@ -123,7 +123,6 @@ class ForwardingTest {
      * </p>
      */
     @Test
-    @SuppressWarnings("null")
     void idMap_shouldCustomTypeCanDelegateOtherMapType() {
         // 实例化一个代理类对象
         var map = new IdMap();
@@ -148,11 +147,10 @@ class ForwardingTest {
                 .isInstanceOf(IllegalArgumentException.class);
 
         // 确认通过 entrySet 方法获取的为 IdMap.IdMapEntry 类型的 Set 集合
-        then(map.entrySet())
-                .containsExactly(
-                    IdMapEntry.entry(1L, "A"),
-                    IdMapEntry.entry(2L, "B"),
-                    IdMapEntry.entry(3L, "C"))
+        then(map.entrySet()).containsExactly(
+            IdMapEntry.entry(1L, "A"),
+            IdMapEntry.entry(2L, "B"),
+            IdMapEntry.entry(3L, "C"))
                 .map(e -> (Object) e.getClass())
                 .containsExactly(IdMapEntry.class, IdMapEntry.class, IdMapEntry.class);
     }

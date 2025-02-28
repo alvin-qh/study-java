@@ -9,9 +9,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.assertj.core.api.InstanceOfAssertFactories;
-import org.junit.jupiter.api.Test;
 
 import com.google.common.reflect.TypeToken;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * 测试 {@link ReflectType} 类型, 产生具备泛型参数的类型
@@ -60,10 +61,9 @@ class ReflectTypeTest {
     }
 
     /**
-     * 测试 {@link ReflectType#mapOf(Class, Class)} 方法, 产生一个指定泛型参数的 {@link Map} 集合 *
+     * 测试 {@link ReflectType#mapOf(Class, Class)} 方法, 产生一个指定泛型参数的 {@link Map} 集合
      */
     @Test
-    @SuppressWarnings("null")
     void mapOf_shouldGetMapTypeWithGenericTypeParamter() {
         // 产生一个 Map<String, Object> 类型, 泛型参数为 String 和 Object
         var type = ReflectType.mapOf(String.class, Object.class);

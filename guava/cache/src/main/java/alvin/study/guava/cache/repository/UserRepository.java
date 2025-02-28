@@ -97,7 +97,6 @@ public class UserRepository {
      *
      * @return 布隆过滤器对象
      */
-    @SuppressWarnings("null")
     public BloomFilter<Long> toBloomFilter(long expectedInsertions) {
         return userStorage.values()
                 .stream()
