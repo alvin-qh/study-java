@@ -82,11 +82,25 @@ import alvin.study.springboot.graphql.infra.handler.EntityFieldHandler;
 @CacheNamespace
 public interface EmployeeMapper extends BaseMapper<Employee> {
     @Select("""
-        select e.id, e.org_id, e.name, e.email, e.title, e.info, e.created_at, e.updated_at, e.created_by,
-               e.updated_by
+        select
+            e.id,
+            e.org_id,
+            e.name,
+            e.email,
+            e.title,
+            e.info,
+            e.created_at,
+            e.updated_at,
+            e.created_by,
+            e.updated_by
         from employee e
         join department_employee de on e.id = de.employee_id
-        where e.deleted = 0 and de.department_id = #{departmentId}
+        where e.deleted = 0
+              and e.org_id = #{orgId}
+              and de.department_id = #{departmentId}
         """)
-    IPage<Employee> selectByDepartmentId(IPage<Employee> page, @Param("departmentId") long departmentId);
+    IPage<Employee> selectByDepartmentId(
+            IPage<Employee> page,
+            @Param("departmentId") long departmentId,
+            @Param("orgId") long orgId);
 }

@@ -36,10 +36,9 @@ import graphql.schema.CoercingParseLiteralException;
 import graphql.schema.CoercingParseValueException;
 import graphql.schema.CoercingSerializeException;
 import graphql.schema.GraphQLScalarType;
-
-import alvin.study.springboot.graphql.core.graphql.dataloader.DepartmentLoader;
-import alvin.study.springboot.graphql.core.graphql.dataloader.OrgLoader;
-import alvin.study.springboot.graphql.core.graphql.dataloader.UserLoader;
+import alvin.study.springboot.graphql.app.dataloader.DepartmentLoader;
+import alvin.study.springboot.graphql.app.dataloader.OrgLoader;
+import alvin.study.springboot.graphql.app.dataloader.UserLoader;
 import alvin.study.springboot.graphql.core.graphql.directive.LengthDirective;
 import alvin.study.springboot.graphql.core.graphql.directive.UppercaseDirective;
 import alvin.study.springboot.graphql.infra.entity.Department;

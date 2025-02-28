@@ -1,4 +1,4 @@
-package alvin.study.springboot.graphql.core.graphql.dataloader;
+package alvin.study.springboot.graphql.app.dataloader;
 
 import java.util.Map;
 import java.util.Set;
@@ -9,14 +9,18 @@ import org.dataloader.BatchLoaderEnvironment;
 
 import org.springframework.stereotype.Component;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+
 import com.google.common.base.Functions;
 
 import lombok.RequiredArgsConstructor;
 
-import reactor.core.publisher.Mono;
-
+import alvin.study.springboot.graphql.core.context.ContextKey;
+import alvin.study.springboot.graphql.infra.entity.Org;
 import alvin.study.springboot.graphql.infra.entity.User;
 import alvin.study.springboot.graphql.infra.mapper.UserMapper;
+import graphql.GraphQLContext;
+import reactor.core.publisher.Mono;
 
 /**
  * 通过 {@code id} 集合获取 {@link User} 实例集合的数据加载器类型
@@ -49,8 +53,13 @@ public class UserLoader implements BiFunction<Set<Long>, BatchLoaderEnvironment,
 
     @Override
     public Mono<Map<Long, User>> apply(Set<Long> ids, BatchLoaderEnvironment env) {
+        var ctx = env.<GraphQLContext>getContext();
+
         return Mono.just(
-            userMapper.selectByIds(ids)
+            userMapper.selectList(
+                Wrappers.lambdaQuery(User.class)
+                        .eq(User::getOrgId, ctx.<Org>get(ContextKey.ORG).getId())
+                        .in(User::getId, ids))
                     .stream()
                     .collect(Collectors.toMap(User::getId, Functions.identity())));
     }

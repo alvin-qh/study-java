@@ -1,4 +1,4 @@
-package alvin.study.springboot.graphql.core.graphql.dataloader;
+package alvin.study.springboot.graphql.app.dataloader;
 
 import java.util.Map;
 import java.util.Set;
@@ -9,14 +9,18 @@ import org.dataloader.BatchLoaderEnvironment;
 
 import org.springframework.stereotype.Component;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+
 import com.google.common.base.Functions;
 
 import lombok.RequiredArgsConstructor;
 
-import reactor.core.publisher.Mono;
-
+import alvin.study.springboot.graphql.core.context.ContextKey;
 import alvin.study.springboot.graphql.infra.entity.Department;
+import alvin.study.springboot.graphql.infra.entity.Org;
 import alvin.study.springboot.graphql.infra.mapper.DepartmentMapper;
+import graphql.GraphQLContext;
+import reactor.core.publisher.Mono;
 
 /**
  * 通过 {@code id} 集合获取 {@link Department} 实例集合的数据加载器类型
@@ -49,8 +53,13 @@ public class DepartmentLoader implements BiFunction<Set<Long>, BatchLoaderEnviro
 
     @Override
     public Mono<Map<Long, Department>> apply(Set<Long> ids, BatchLoaderEnvironment env) {
+        var ctx = env.<GraphQLContext>getContext();
+
         return Mono.just(
-            departmentMapper.selectByIds(ids)
+            departmentMapper.selectList(
+                Wrappers.lambdaQuery(Department.class)
+                        .eq(Department::getOrgId, ctx.<Org>get(ContextKey.ORG).getId())
+                        .in(Department::getId, ids))
                     .stream()
                     .collect(Collectors.toMap(Department::getId, Functions.identity())));
     }

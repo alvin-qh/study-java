@@ -1,4 +1,4 @@
-package alvin.study.springboot.graphql.core.graphql.dataloader;
+package alvin.study.springboot.graphql.app.dataloader;
 
 import java.util.Map;
 import java.util.Set;
@@ -13,10 +13,9 @@ import com.google.common.base.Functions;
 
 import lombok.RequiredArgsConstructor;
 
-import reactor.core.publisher.Mono;
-
 import alvin.study.springboot.graphql.infra.entity.Org;
 import alvin.study.springboot.graphql.infra.mapper.OrgMapper;
+import reactor.core.publisher.Mono;
 
 /**
  * 通过 {@code id} 集合获取 {@link Org} 实例集合的数据加载器类型

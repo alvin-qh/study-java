@@ -131,13 +131,21 @@ public class EmployeeService {
      * @return {@code true} 表示删除成功, {@code false} 表示删除失败
      */
     @Transactional
-    public boolean delete(long id) {
+    public boolean delete(long orgId, long id) {
         // 删除之前的关联关系
-        departmentEmployeeMapper.delete(
+        if (departmentEmployeeMapper.delete(
             Wrappers.lambdaQuery(DepartmentEmployee.class)
-                    .eq(DepartmentEmployee::getEmployeeId, id));
+                    .eq(DepartmentEmployee::getOrgId, orgId)
+                    .eq(DepartmentEmployee::getEmployeeId, id))
+            == 0) {
+            return false;
+        }
 
-        return employeeMapper.deleteById(id) > 0;
+        return employeeMapper.delete(
+            Wrappers.lambdaQuery(Employee.class)
+                    .eq(Employee::getOrgId, orgId)
+                    .eq(Employee::getId, id))
+               > 0;
     }
 
     /**
@@ -148,7 +156,7 @@ public class EmployeeService {
      * @return {@link IPage} 类型分页对象, 包含一页数量的 {@link Employee} 类型的员工实体对象集合
      */
     @Transactional(readOnly = true)
-    public IPage<Employee> listByDepartmentId(IPage<Employee> page, long departmentId) {
-        return employeeMapper.selectByDepartmentId(page, departmentId);
+    public IPage<Employee> listByDepartmentId(IPage<Employee> page, long orgId, long departmentId) {
+        return employeeMapper.selectByDepartmentId(page, orgId, departmentId);
     }
 }

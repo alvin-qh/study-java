@@ -63,7 +63,7 @@ public class AuditedBaseQuery<T extends AuditedEntity> extends TenantedBaseQuery
      * {@link DataLoader} 类型对象通过异步方式执行查询, 当批量查询 {@link User} 类型实体对象时,
      * 每个查询都会返回一个 {@link CompletableFuture} 类型对象, 当批量查询结束后,
      * 会将所有查询进行合并, 包括: 将查询条件合并为一个集合; 将查询给到
-     * {@link alvin.study.springboot.graphql.core.graphql.dataloader.UserLoader UserLoader}
+     * {@link alvin.study.springboot.graphql.app.dataloader.UserLoader UserLoader}
      * 类型对象, 批量查询结果后, 返回一个 {@link java.util.Map Map} 类型对象, 再根据 {@code Key}
      * 值将查询结果进行分发
      * </p>
@@ -79,7 +79,7 @@ public class AuditedBaseQuery<T extends AuditedEntity> extends TenantedBaseQuery
      *
      * @param entity 实体对象
      * @param loader {@link DataLoader} 对象, 用于异步加载 {@link User} 对象, 实际注入了
-     *               {@link alvin.study.springboot.graphql.core.graphql.dataloader.UserLoader UserLoader} 类型对象
+     *               {@link alvin.study.springboot.graphql.app.dataloader.UserLoader UserLoader} 类型对象
      * @return {@link User} 类型的实体创建人
      */
     @SchemaMapping
@@ -102,7 +102,7 @@ public class AuditedBaseQuery<T extends AuditedEntity> extends TenantedBaseQuery
      * {@link DataLoader} 类型对象通过异步方式执行查询, 当批量查询 {@link User} 类型实体对象时,
      * 每个查询都会返回一个 {@link CompletableFuture} 类型对象, 当批量查询结束后,
      * 会将所有查询进行合并, 包括: 将查询条件合并为一个集合; 将查询给到
-     * {@link alvin.study.springboot.graphql.core.graphql.dataloader.UserLoader UserLoader}
+     * {@link alvin.study.springboot.graphql.app.dataloader.UserLoader UserLoader}
      * 类型对象, 批量查询结果后, 返回一个 {@link java.util.Map Map} 类型对象, 再根据 {@code Key}
      * 值将查询结果进行分发
      * </p>

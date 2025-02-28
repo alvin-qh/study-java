@@ -2,6 +2,7 @@ package alvin.study.springboot.graphql.app.api.query;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -17,12 +18,14 @@ import lombok.RequiredArgsConstructor;
 import alvin.study.springboot.graphql.app.api.query.common.AuditedBaseQuery;
 import alvin.study.springboot.graphql.app.service.DepartmentService;
 import alvin.study.springboot.graphql.app.service.EmployeeService;
-import alvin.study.springboot.graphql.core.exception.InputException;
+import alvin.study.springboot.graphql.core.context.ContextKey;
 import alvin.study.springboot.graphql.core.graphql.relay.Connection;
 import alvin.study.springboot.graphql.core.graphql.relay.ConnectionBuilder;
 import alvin.study.springboot.graphql.core.graphql.relay.Pagination;
 import alvin.study.springboot.graphql.infra.entity.Department;
 import alvin.study.springboot.graphql.infra.entity.Employee;
+import alvin.study.springboot.graphql.infra.entity.Org;
+import graphql.GraphQLContext;
 
 /**
  * 对应 {@link Department} 类型的 GraphQL 查询对象
@@ -45,10 +48,8 @@ public class DepartmentQuery extends AuditedBaseQuery<Department> {
      * @return {@link Department} 类型部门实体对象
      */
     @QueryMapping
-    public Department department(@Argument long id) {
-        // 查询组织
-        return departmentService.findById(id)
-                .orElseThrow(() -> new InputException("Invalid department id"));
+    public Department department(@Argument long id, GraphQLContext ctx) {
+        return departmentService.findById(ctx.<Org>get(ContextKey.ORG).getId(), id);
     }
 
     /**
@@ -103,12 +104,19 @@ public class DepartmentQuery extends AuditedBaseQuery<Department> {
      *         其中 {@code Key} 值表示部门实体对象, {@code Value} 值表示 {@code Key} 值部门的上级部门
      */
     @BatchMapping
-    public Map<Department, Department> parent(List<Department> entities) {
-        var map = entities.stream().collect(Collectors.toMap(e -> e.getId(), Functions.identity()));
-        var parents = departmentService.listByIds(map.keySet());
+    public Map<Department, Department> parent(List<Department> entities, GraphQLContext ctx) {
+        var parentIds = entities.stream()
+                .map(Department::getParentId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+        if (parentIds.isEmpty()) {
+            return Map.of();
+        }
 
-        return parents.stream()
-                .collect(Collectors.toMap(e -> map.get(e.getId()), Functions.identity()));
+        var parents = departmentService.listByIds(ctx.<Org>get(ContextKey.ORG).getId(), parentIds)
+                .stream().collect(Collectors.toMap(Department::getId, Functions.identity()));
+        return entities.stream()
+                .collect(Collectors.toMap(Functions.identity(), e -> parents.get(e.getParentId())));
     }
 
     /**
@@ -127,9 +135,18 @@ public class DepartmentQuery extends AuditedBaseQuery<Department> {
     }
 
     @SchemaMapping
-    public Connection<Employee> employees(Department entity, @Argument String after, @Argument int first) {
-        var page = pagination.<Employee>newBuilder().withFirst(first).withAfter(after).build();
-        page = employeeService.listByDepartmentId(page, entity.getId());
+    public Connection<Employee> employees(
+            Department entity,
+            @Argument String after,
+            @Argument int first,
+            GraphQLContext ctx) {
+        var page = pagination.<Employee>newBuilder()
+                .withFirst(first)
+                .withAfter(after)
+                .build();
+        page = employeeService.listByDepartmentId(
+            page, ctx.<Org>get(ContextKey.ORG).getId(), entity.getId());
+
         return ConnectionBuilder.build(page);
     }
 }

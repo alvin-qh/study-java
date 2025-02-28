@@ -36,30 +36,20 @@ extend type Query {
   department(id: ID!): Department!
 }
 
-# # 变更组织信息的输入类, alvin.study.app.api.schema.input.DepartmentInput 类型
-# input DepartmentInput {
-#   name: String!
-#   parentId: Long!
-# }
+# 变更组织信息的输入类, alvin.study.app.api.schema.input.DepartmentInput 类型
+input DepartmentInput {
+  name: String!
+  parentId: Long!
+}
 
-# # 创建组织信息的结果类, alvin.study.app.api.schema.payload.CreateDepartmentPayload 类型
-# type CreateDepartmentPayload {
-#   department: Department!
-# }
+# 创建组织信息的结果类, alvin.study.app.api.schema.payload.CreateDepartmentPayload 类型
+type DepartmentResult {
+  result: Department
+}
 
-# # 更新组织信息的结果类, alvin.study.app.api.schema.payload.UpdateDepartmentPayload 类型
-# type UpdateDepartmentPayload {
-#   department: Department!
-# }
-
-# # 删除部门信息的结果类, alvin.study.app.api.schema.payload.DeleteDepartmentPayload 类型
-# type DeleteDepartmentPayload {
-#   deleted: Boolean!
-# }
-
-# # 扩展根变更类型, 参考 alvin.study.app.api.mutation.OrgMutation 类型
-# extend type Mutation {
-#   createDepartment(input: DepartmentInput!): CreateDepartmentPayload!
-#   updateDepartment(id: ID!, input: DepartmentInput!): UpdateDepartmentPayload!
-#   deleteDepartment(id: ID!): DeleteDepartmentPayload!
-# }
+# 扩展根变更类型, 参考 alvin.study.app.api.mutation.OrgMutation 类型
+extend type Mutation {
+  createDepartment(input: DepartmentInput!): EmployeeResult!
+  updateDepartment(id: ID!, input: DepartmentInput!): EmployeeResult!
+  deleteDepartment(id: ID!): Boolean!
+}

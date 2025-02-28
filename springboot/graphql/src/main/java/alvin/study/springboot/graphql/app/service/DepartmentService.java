@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 
 import lombok.RequiredArgsConstructor;
 
+import alvin.study.springboot.graphql.core.exception.InputException;
 import alvin.study.springboot.graphql.infra.entity.Department;
 import alvin.study.springboot.graphql.infra.entity.DepartmentEmployee;
 import alvin.study.springboot.graphql.infra.mapper.DepartmentEmployeeMapper;
@@ -33,8 +34,12 @@ public class DepartmentService {
      * @return {@link Department} 类型部门实体对象的 {@link Optional} 包装对象
      */
     @Transactional(readOnly = true)
-    public Optional<Department> findById(long id) {
-        return Optional.ofNullable(departmentMapper.selectById(id));
+    public Department findById(long orgId, long id) {
+        return Optional.ofNullable(
+            departmentMapper.selectOne(Wrappers.lambdaQuery(Department.class)
+                    .eq(Department::getOrgId, orgId)
+                    .eq(Department::getId, id)))
+                .orElseThrow(() -> new InputException("department_not_exist"));
     }
 
     /**
@@ -44,8 +49,10 @@ public class DepartmentService {
      * @return {@link Department} 类型部门实体集合
      */
     @Transactional(readOnly = true)
-    public List<Department> listByIds(Collection<Long> departmentIds) {
-        return departmentMapper.selectByIds(departmentIds);
+    public List<Department> listByIds(long orgId, Collection<Long> departmentIds) {
+        return departmentMapper.selectList(Wrappers.lambdaQuery(Department.class)
+                .eq(Department::getOrgId, orgId)
+                .in(Department::getId, departmentIds));
     }
 
     /**
@@ -66,20 +73,12 @@ public class DepartmentService {
      * @return {@link Department} 类型部门实体对象的 {@link Optional} 包装对象
      */
     @Transactional
-    public Optional<Department> update(long id, Department department) {
-        var originalDepartment = departmentMapper.selectById(id);
-        if (originalDepartment == null) {
-            return Optional.empty();
+    public void update(Department department) {
+        if (departmentMapper.update(Wrappers.lambdaUpdate(department)
+                .eq(Department::getOrgId, department.getOrgId())
+                .eq(Department::getId, department.getId())) == 0) {
+            throw new InputException("department_not_exist");
         }
-
-        originalDepartment.setName(department.getName());
-        originalDepartment.setParentId(department.getParentId());
-
-        if (departmentMapper.updateById(originalDepartment) > 0) {
-            return Optional.of(originalDepartment);
-        }
-
-        return Optional.empty();
     }
 
     /**
