@@ -64,7 +64,7 @@ class ReflectTypeTest {
      * 测试 {@link ReflectType#mapOf(Class, Class)} 方法, 产生一个指定泛型参数的 {@link Map} 集合
      */
     @Test
-    void mapOf_shouldGetMapTypeWithGenericTypeParamter() {
+    void mapOf_shouldGetMapTypeWithGenericTypeParameter() {
         // 产生一个 Map<String, Object> 类型, 泛型参数为 String 和 Object
         var type = ReflectType.mapOf(String.class, Object.class);
 
