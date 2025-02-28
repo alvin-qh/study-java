@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
-import alvin.study.springboot.graphql.core.exception.InputException;
+import alvin.study.springboot.graphql.core.exception.NotFoundException;
 import alvin.study.springboot.graphql.infra.entity.Org;
 import alvin.study.springboot.graphql.infra.mapper.OrgMapper;
 
@@ -28,7 +28,7 @@ public class OrgService {
     @Transactional(readOnly = true)
     public Org findById(long id) {
         return Optional.ofNullable(orgMapper.selectById(id))
-                .orElseThrow(() -> new InputException("org_not_exist"));
+                .orElseThrow(() -> new NotFoundException(String.format("Org not exist by id = %d", id)));
     }
 
     /**
@@ -50,7 +50,7 @@ public class OrgService {
     @Transactional
     public void update(Org org) {
         if (orgMapper.updateById(org) == 0) {
-            throw new InputException("org_not_exist");
+            throw new NotFoundException(String.format("Org not exist by id = %d", org.getId()));
         }
     }
 

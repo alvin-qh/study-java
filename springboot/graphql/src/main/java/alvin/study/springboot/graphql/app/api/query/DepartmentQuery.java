@@ -15,6 +15,8 @@ import com.google.common.base.Functions;
 
 import lombok.RequiredArgsConstructor;
 
+import graphql.GraphQLContext;
+
 import alvin.study.springboot.graphql.app.api.query.common.AuditedBaseQuery;
 import alvin.study.springboot.graphql.app.service.DepartmentService;
 import alvin.study.springboot.graphql.app.service.EmployeeService;
@@ -25,7 +27,6 @@ import alvin.study.springboot.graphql.core.graphql.relay.Pagination;
 import alvin.study.springboot.graphql.infra.entity.Department;
 import alvin.study.springboot.graphql.infra.entity.Employee;
 import alvin.study.springboot.graphql.infra.entity.Org;
-import graphql.GraphQLContext;
 
 /**
  * 对应 {@link Department} 类型的 GraphQL 查询对象
@@ -128,9 +129,16 @@ public class DepartmentQuery extends AuditedBaseQuery<Department> {
      * @return {@link Department} 类型部门实体对象集合, 表示当前部门下一级部门
      */
     @SchemaMapping
-    public Connection<Department> children(Department entity, @Argument String after, @Argument int first) {
+    public Connection<Department> children(
+            Department entity,
+            @Argument String after,
+            @Argument int first,
+            GraphQLContext ctx) {
         var page = pagination.<Department>newBuilder().withFirst(first).withAfter(after).build();
-        page = departmentService.listChildren(entity.getId(), page);
+        page = departmentService.listChildren(
+            page,
+            ctx.<Org>get(ContextKey.ORG).getId(),
+            entity.getId());
         return ConnectionBuilder.build(page);
     }
 

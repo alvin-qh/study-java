@@ -14,6 +14,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 
 import alvin.study.springboot.graphql.core.exception.InputException;
+import alvin.study.springboot.graphql.core.exception.NotFoundException;
 import alvin.study.springboot.graphql.infra.entity.Department;
 import alvin.study.springboot.graphql.infra.entity.DepartmentEmployee;
 import alvin.study.springboot.graphql.infra.entity.Employee;
@@ -43,7 +44,7 @@ public class EmployeeService {
             employeeMapper.selectOne(Wrappers.lambdaQuery(Employee.class)
                     .eq(Employee::getOrgId, orgId)
                     .eq(Employee::getId, id)))
-                .orElseThrow(() -> new InputException("employee_not_exist"));
+                .orElseThrow(() -> new NotFoundException(String.format("Employee not exist by id = %d", id)));
     }
 
     /**
@@ -78,7 +79,7 @@ public class EmployeeService {
                 .eq(Employee::getOrgId, employee.getOrgId())
                 .eq(Employee::getId, employee.getId()))
             == 0) {
-            throw new InputException("employee_not_exist");
+            throw new NotFoundException(String.format("Employee not exist by id = %d", employee.getId()));
         }
 
         // 删除之前的关联关系
@@ -108,7 +109,7 @@ public class EmployeeService {
                 .eq(Department::getOrgId, employee.getOrgId()));
         if (departmentIds.size() != departments.size()) {
             departmentIds.removeAll(departments.stream().map(Department::getId).collect(Collectors.toSet()));
-            throw new InputException(String.format("Department with id %s ", departmentIds));
+            throw new InputException(String.format("Department id in %s not a valid id", departmentIds));
         }
 
         departments.forEach(d -> {

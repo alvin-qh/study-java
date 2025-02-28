@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 import alvin.study.springboot.graphql.core.exception.InputException;
 import alvin.study.springboot.graphql.core.exception.InternalException;
+import alvin.study.springboot.graphql.core.exception.NotFoundException;
 import alvin.study.springboot.graphql.core.exception.UnauthorizedException;
 import alvin.study.springboot.graphql.infra.entity.User;
 import alvin.study.springboot.graphql.infra.mapper.UserMapper;
@@ -42,7 +43,7 @@ public class UserService {
             userMapper.selectOne(Wrappers.lambdaQuery(User.class)
                     .eq(User::getOrgId, orgId)
                     .eq(User::getId, id)))
-                .orElseThrow(() -> new InputException("user_not_exist"));
+                .orElseThrow(() -> new NotFoundException(String.format("User not exist by id = %d", id)));
     }
 
     /**
@@ -87,7 +88,7 @@ public class UserService {
                 .eq(User::getId, user.getId())
                 .eq(User::getOrgId, user.getOrgId()))
             == 0) {
-            throw new InputException("user_not_exist");
+            throw new InputException(new NotFoundException(String.format("User not exist by id = %d", user.getId())));
         }
     }
 
@@ -115,15 +116,15 @@ public class UserService {
                     .eq(User::getAccount, account));
 
         if (user == null) {
-            throw new UnauthorizedException("user_not_exist");
+            throw new UnauthorizedException(String.format("User not exist by account = %s", account));
         }
         try {
             if (!passwordUtil.verify(password, user.getPassword())) {
-                throw new UnauthorizedException("invalid_password");
+                throw new UnauthorizedException("Invalid password");
             }
             return jwt.encode(user.getOrgId().toString(), user.getId().toString());
         } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-            throw new InternalError(e);
+            throw new InternalException(e);
         }
     }
 }

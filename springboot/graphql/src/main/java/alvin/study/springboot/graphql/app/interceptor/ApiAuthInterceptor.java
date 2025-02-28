@@ -42,7 +42,7 @@ public class ApiAuthInterceptor implements WebGraphQlInterceptor {
         if (!INTROSPECTION_QUERY.equals(request.getOperationName())) {
             var auth = request.getHeaders().getFirst(HEADER_AUTH);
             if (Strings.isNullOrEmpty(auth) || !auth.startsWith(TOKEN_PREFIX)) {
-                throw new ForbiddenException("invalid_bearer_token");
+                throw new ForbiddenException("Invalid bearer token");
             }
 
             var token = auth.substring(TOKEN_PREFIX.length()).trim();
@@ -51,7 +51,7 @@ public class ApiAuthInterceptor implements WebGraphQlInterceptor {
                 // 解析 token, 获取 token 负载
                 var payload = jwt.verify(token);
 
-                var org = orgService.findById(Long.parseLong(payload.getAudience().get(0)));
+                var org = orgService.findById(Long.parseLong(payload.getAudience().getFirst()));
                 var user = userService.findById(org.getId(), Long.parseLong(payload.getIssuer()));
 
                 // 将获取的负载信息存入请求上下文对象
@@ -60,7 +60,7 @@ public class ApiAuthInterceptor implements WebGraphQlInterceptor {
                         ContextKey.ORG, org,
                         ContextKey.USER, user)).build());
             } catch (Exception e) {
-                throw new ForbiddenException("invalid_bearer_token", e);
+                throw new ForbiddenException("Invalid bearer token");
             }
         }
         return chain.next(request);

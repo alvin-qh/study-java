@@ -8,11 +8,14 @@ import org.springframework.stereotype.Controller;
 
 import lombok.RequiredArgsConstructor;
 
+import graphql.GraphQLContext;
+
 import alvin.study.springboot.graphql.app.api.mutation.common.BaseMutation;
 import alvin.study.springboot.graphql.app.model.MutationResult;
 import alvin.study.springboot.graphql.app.service.DepartmentService;
+import alvin.study.springboot.graphql.core.context.ContextKey;
 import alvin.study.springboot.graphql.infra.entity.Department;
-import graphql.GraphQLContext;
+import alvin.study.springboot.graphql.infra.entity.Org;
 
 @Controller
 @RequiredArgsConstructor
@@ -42,5 +45,10 @@ public class DepartmentMutation extends BaseMutation {
         var department = input.toEntity(ctx, id);
         departmentService.update(department);
         return MutationResult.of(department);
+    }
+
+    @MutationMapping
+    public boolean deleteDepartment(@Argument Long id, GraphQLContext ctx) {
+        return departmentService.delete(ctx.<Org>get(ContextKey.ORG).getId(), id);
     }
 }

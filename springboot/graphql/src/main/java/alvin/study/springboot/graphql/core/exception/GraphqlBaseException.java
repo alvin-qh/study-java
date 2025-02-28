@@ -3,6 +3,8 @@ package alvin.study.springboot.graphql.core.exception;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.google.common.base.Strings;
+
 import lombok.Getter;
 
 import graphql.ErrorClassification;
@@ -17,10 +19,10 @@ import graphql.GraphQLException;
  * 全局异常处理器进行统一处理
  * </p>
  */
-@Getter
 public abstract class GraphqlBaseException extends GraphQLException {
-    // 错误分类对象
-    private final ErrorClassification errorType;
+    @Getter
+    private final ErrorClassification classification;
+    private final Map<String, Object> extensions = new LinkedHashMap<>();
 
     /**
      * 构造器, 默认错误分类为 {@link ErrorClassification#toSpecification()}
@@ -28,9 +30,12 @@ public abstract class GraphqlBaseException extends GraphQLException {
      * @param message   错误信息
      * @param errorType 错误分类对象
      */
-    public GraphqlBaseException(String message, ErrorClassification errorType) {
+    public GraphqlBaseException(String message, String reason, ErrorClassification classification) {
         super(message);
-        this.errorType = errorType;
+        if (!Strings.isNullOrEmpty(reason)) {
+            this.extensions.put(ErrorExtensionCode.REASON, reason);
+        }
+        this.classification = classification;
     }
 
     /**
@@ -40,9 +45,20 @@ public abstract class GraphqlBaseException extends GraphQLException {
      * @param cause     异常原因
      * @param errorType 错误分类对象
      */
-    public GraphqlBaseException(String message, Throwable cause, ErrorClassification errorType) {
+    public GraphqlBaseException(String message, Throwable cause, ErrorClassification classification) {
         super(message, cause);
-        this.errorType = errorType;
+        if (cause != null) {
+            this.extensions.put(ErrorExtensionCode.REASON, cause.getMessage());
+        }
+        this.classification = classification;
+    }
+
+    public GraphqlBaseException(String message, String reason, Throwable cause, ErrorClassification classification) {
+        super(message, cause);
+        if (cause != null) {
+            this.extensions.put(ErrorExtensionCode.REASON, reason);
+        }
+        this.classification = classification;
     }
 
     /**
@@ -51,10 +67,10 @@ public abstract class GraphqlBaseException extends GraphQLException {
      * @return 包括扩展信息的 {@link Map} 对象
      */
     public Map<String, Object> toExtensions() {
-        var extensions = new LinkedHashMap<String, Object>();
-        if (this.getCause() != null) {
-            extensions.put(ErrorExtensionCode.REASON, this.getCause().getMessage());
-        }
         return extensions;
+    }
+
+    public void addExtension(String key, Object value) {
+        this.extensions.put(key, value);
     }
 }

@@ -1,5 +1,8 @@
 package alvin.study.springboot.graphql.core.graphql.adapter;
 
+import java.util.Map;
+
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.graphql.execution.DataFetcherExceptionResolverAdapter;
 import org.springframework.graphql.execution.ErrorType;
@@ -11,6 +14,8 @@ import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
 import graphql.schema.DataFetchingEnvironment;
 
+import alvin.study.springboot.graphql.core.exception.ErrorCode;
+import alvin.study.springboot.graphql.core.exception.ErrorExtensionCode;
 import alvin.study.springboot.graphql.core.exception.GraphqlBaseException;
 
 /**
@@ -43,36 +48,48 @@ public class GraphqlErrorResolver extends DataFetcherExceptionResolverAdapter {
         if (ex instanceof GraphqlBaseException e) {
             log.error("GraphQL error: {}", e.getMessage(), e);
             return GraphqlErrorBuilder.newError()
-                    .errorType(e.getErrorType())
                     .message(e.getMessage())
+                    .errorType(e.getClassification())
                     .path(env.getExecutionStepInfo().getPath())
                     .location(env.getField().getSourceLocation())
                     .extensions(e.toExtensions())
                     .build();
         }
-        if (ex instanceof DuplicateKeyException e) {
-            log.error("SQL error: {}", e.getMessage(), e);
+
+        if (ex instanceof DataIntegrityViolationException) {
+            log.error("SQL error: {}", ex.getMessage(), ex);
+            if (ex instanceof DuplicateKeyException) {
+                return GraphqlErrorBuilder.newError()
+                        .message(ErrorCode.DUPLICATED_KEY)
+                        .errorType(ErrorType.BAD_REQUEST)
+                        .path(env.getExecutionStepInfo().getPath())
+                        .location(env.getField().getSourceLocation())
+                        .extensions(Map.of(ErrorExtensionCode.REASON, "Entity key was duplicated"))
+                        .build();
+            }
             return GraphqlErrorBuilder.newError()
+                    .message(ErrorCode.INTERNAL_ERROR)
                     .errorType(ErrorType.BAD_REQUEST)
-                    .message("entity_key_duplicated")
                     .path(env.getExecutionStepInfo().getPath())
                     .location(env.getField().getSourceLocation())
                     .build();
         }
-        if (ex instanceof NumberFormatException e)  {
+
+        if (ex instanceof NumberFormatException e) {
             log.error("Input error: {}", e.getMessage(), e);
             return GraphqlErrorBuilder.newError()
+                    .message(ErrorCode.INPUT_ERROR)
                     .errorType(ErrorType.BAD_REQUEST)
-                    .message("input_invalid_number")
                     .path(env.getExecutionStepInfo().getPath())
                     .location(env.getField().getSourceLocation())
+                    .extensions(Map.of(ErrorExtensionCode.REASON, "Input cannot convert to number"))
                     .build();
         }
 
         log.error("{}: {}", UNKNOWN_ERROR, ex.getMessage(), ex);
         return GraphqlErrorBuilder.newError()
                 .errorType(ErrorType.INTERNAL_ERROR)
-                .message("internal_error")
+                .message(ErrorCode.INTERNAL_ERROR)
                 .path(env.getExecutionStepInfo().getPath())
                 .location(env.getField().getSourceLocation())
                 .build();

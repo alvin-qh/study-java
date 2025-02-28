@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 
 import alvin.study.springboot.graphql.core.exception.InputException;
+import alvin.study.springboot.graphql.core.exception.NotFoundException;
 import alvin.study.springboot.graphql.infra.entity.Department;
 import alvin.study.springboot.graphql.infra.entity.DepartmentEmployee;
 import alvin.study.springboot.graphql.infra.mapper.DepartmentEmployeeMapper;
@@ -39,7 +40,8 @@ public class DepartmentService {
             departmentMapper.selectOne(Wrappers.lambdaQuery(Department.class)
                     .eq(Department::getOrgId, orgId)
                     .eq(Department::getId, id)))
-                .orElseThrow(() -> new InputException("department_not_exist"));
+                .orElseThrow(
+                    () -> new NotFoundException(String.format("Department not exist by id = %d", id)));
     }
 
     /**
@@ -74,10 +76,14 @@ public class DepartmentService {
      */
     @Transactional
     public void update(Department department) {
-        if (departmentMapper.update(Wrappers.lambdaUpdate(department)
+        if (department.getParentId() == department.getId()) {
+            throw new InputException("Cannot set parent department as self");
+        }
+        if (departmentMapper.update(department, Wrappers.lambdaUpdate(Department.class)
                 .eq(Department::getOrgId, department.getOrgId())
-                .eq(Department::getId, department.getId())) == 0) {
-            throw new InputException("department_not_exist");
+                .eq(Department::getId, department.getId()))
+            == 0) {
+            throw new NotFoundException(String.format("Department not exist by id = %d", department.getId()));
         }
     }
 
@@ -89,8 +95,10 @@ public class DepartmentService {
      * @return {@link IPage} 类型分页对象, 包含一页数量的 {@link Department} 类型子部门实体集合
      */
     @Transactional(readOnly = true)
-    public IPage<Department> listChildren(long parentId, IPage<Department> page) {
-        var query = Wrappers.lambdaQuery(Department.class).eq(Department::getParentId, parentId);
+    public IPage<Department> listChildren(IPage<Department> page, long orgId, long parentId) {
+        var query = Wrappers.lambdaQuery(Department.class)
+                .eq(Department::getOrgId, orgId)
+                .eq(Department::getParentId, parentId);
         return departmentMapper.selectPage(page, query);
     }
 
@@ -101,8 +109,12 @@ public class DepartmentService {
      * @return {@code true} 表示删除成功, {@code false} 表示删除失败
      */
     @Transactional
-    public boolean delete(long id) {
-        return departmentMapper.deleteById(id) > 0;
+    public boolean delete(long orgId, long id) {
+        return departmentMapper.update(Wrappers.lambdaUpdate(Department.class)
+                .set(Department::getDeleted, 1)
+                .eq(Department::getOrgId, orgId)
+                .eq(Department::getId, id))
+               > 0;
     }
 
     /**

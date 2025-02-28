@@ -46,6 +46,7 @@ spring:
       # schema 文件的存放路径
       locations: classpath*:graphql/**
 
+    # 开启 Graphiql 网页终端, 通过 `http://localhost:8080/graphiql?path=/graphql` 进行访问
     graphiql:
       enabled: true
 

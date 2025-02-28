@@ -10,5 +10,5 @@ public interface ErrorCode {
     String FORBIDDEN = "forbidden";
     String NOT_FOUND = "not_found";
     String REMOTE_ERROR = "remote_error";
-    String ALREADY_EXISTS = "already_exists";
+    String DUPLICATED_KEY = "duplicated_entity_key";
 }

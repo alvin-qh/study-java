@@ -38,7 +38,7 @@ public class OrgMutation {
         // 获取当前登录用户
         var user = ctx.<User>get("user");
         if (user == null || user.getGroup() != UserGroup.ADMIN) {
-            throw new ForbiddenException("need_admin_user");
+            throw new ForbiddenException("Only admin user allowed");
         }
     }
 
