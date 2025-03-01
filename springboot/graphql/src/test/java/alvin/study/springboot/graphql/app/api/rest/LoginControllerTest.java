@@ -3,6 +3,7 @@ package alvin.study.springboot.graphql.app.api.rest;
 import static org.assertj.core.api.BDDAssertions.then;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.reactive.server.WebTestClient;
 
 import org.junit.jupiter.api.Test;
 
@@ -11,11 +12,14 @@ import alvin.study.springboot.graphql.util.security.Jwt;
 
 public class LoginControllerTest extends WebTest {
     @Autowired
+    private WebTestClient client;
+
+    @Autowired
     private Jwt jwt;
 
     @Test
     void login_shouldLoginAndGetToken() {
-        client().post().uri("/login")
+        client.post().uri("/login")
                 .bodyValue(new LoginController.LoginForm(currentOrg().getId(), currentUser().getAccount(), "test~123"))
                 .exchange()
                 .expectStatus().isOk()

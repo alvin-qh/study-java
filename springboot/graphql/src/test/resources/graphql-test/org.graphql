@@ -1,0 +1,8 @@
+query queryOrg($id: ID!) {
+  org(id: $id) {
+    id
+    name
+    createdAt
+    updatedAt
+  }
+}

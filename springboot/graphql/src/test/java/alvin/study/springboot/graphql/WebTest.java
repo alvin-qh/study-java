@@ -2,14 +2,14 @@ package alvin.study.springboot.graphql;
 
 import java.time.Duration;
 
-import jakarta.servlet.ServletContext;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureHttpGraphQlTester;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.MediaType;
+import org.springframework.graphql.test.tester.GraphQlTester;
+import org.springframework.graphql.test.tester.WebGraphQlTester;
+import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.reactive.server.WebTestClient.RequestBodySpec;
@@ -17,8 +17,7 @@ import org.springframework.test.web.reactive.server.WebTestClient.RequestHeaders
 import org.springframework.test.web.reactive.server.WebTestClient.RequestHeadersUriSpec;
 
 import alvin.study.springboot.graphql.conf.TestingConfig;
-import alvin.study.springboot.graphql.core.rest.ResponseWrapper;
-import alvin.study.springboot.graphql.core.rest.ResponseWrapper.ErrorDetail;
+import alvin.study.springboot.graphql.util.security.Jwt;
 
 /**
  * Web 测试的超类
@@ -59,20 +58,20 @@ import alvin.study.springboot.graphql.core.rest.ResponseWrapper.ErrorDetail;
  * 请求
  * </p>
  */
+
 @SpringBootTest(classes = { TestingConfig.class }, webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
+@AutoConfigureHttpGraphQlTester
 public abstract class WebTest extends IntegrationTest {
-    // 定义错误的响应类型
-    protected static final ParameterizedTypeReference<ResponseWrapper<ErrorDetail>> ERROR_TYPE
-        = new ParameterizedTypeReference<>() {};
-
     // 测试客户端, 模拟发送请求
     @Autowired
     private WebTestClient client;
 
-    // Servlet 上下文对象
     @Autowired
-    private ServletContext servletContext;
+    private WebGraphQlTester qlTester;
+
+    @Autowired
+    private Jwt jwt;
 
     /**
      * 实例化一个测试客户端
@@ -89,45 +88,11 @@ public abstract class WebTest extends IntegrationTest {
                 .build();
     }
 
-    /**
-     * 设置测试客户端
-     *
-     * @param <T>          Response 类型
-     * @param <R>          Request 类型
-     * @param spec         请求对象
-     * @param url          请求地址
-     * @param uriVariables 在 URL 中包含的请求参数值
-     * @return {@link RequestHeadersSpec} 对象, 用于发送测试请求
-     */
-    @SuppressWarnings("unchecked")
-    private <T extends RequestHeadersSpec<?>, R extends RequestHeadersUriSpec<?>> T setup(
-            R spec, String url, Object... uriVariables) {
-        // 设置访问 URL 地址和必要的 header 信息
-        return (T) spec.uri(servletContext.getContextPath() + url, uriVariables);
-    }
+    protected GraphQlTester qlTester() {
+        var token = jwt.encode(currentOrg().getId().toString(), currentUser().getId().toString());
 
-    /**
-     * 发送 json 类型的 {@code get} 请求
-     *
-     * @param url          请求地址
-     * @param uriVariables 在 URL 中包含的请求参数值
-     * @return {@link RequestHeadersSpec} 对象, 用于发送测试请求
-     */
-    protected RequestHeadersSpec<?> getJson(String url, Object... uriVariables) {
-        return setup(client().get(), url, uriVariables)
-                .accept(MediaType.APPLICATION_JSON);
-    }
-
-    /**
-     * 发送 json 类型的 {@code post} 请求
-     *
-     * @param url          请求地址
-     * @param uriVariables 在 URL 中包含的请求参数值
-     * @return {@link RequestBodySpec} 请求类型
-     */
-    protected RequestBodySpec postJson(String url, Object... uriVariables) {
-        return ((RequestBodySpec) setup(client().post(), url, uriVariables))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON);
+        return qlTester.mutate()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .build();
     }
 }
