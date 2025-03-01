@@ -116,13 +116,17 @@ public interface DepartmentEmployeeMapper extends BaseMapper<DepartmentEmployee>
             from department_employee de
             join department d on d.id=de.department_id
             join employee e on e.id=de.employee_id
-            where de.employee_id in
+            where d.deleted=0
+                and e.deleted=0
+                and d.org_id=#{orgId}
+                and de.employee_id in
             <foreach collection="employeeIds" item="id" separator="," open="(" close=")">
                 #{id}
             </foreach>
-            and d.deleted=0 and e.deleted=0
         </script>
         """)
     @ResultMap("departmentEmployeeResultMap")
-    List<DepartmentEmployee> selectByEmployeeIds(@Param("employeeIds") Collection<Long> employeeIds);
+    List<DepartmentEmployee> selectByEmployeeIds(
+            @Param("orgId") long orgId,
+            @Param("employeeIds") Collection<Long> employeeIds);
 }

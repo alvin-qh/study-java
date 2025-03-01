@@ -40,10 +40,11 @@ public class DepartmentEmployeeBuilder extends Builder<DepartmentEmployee> {
     public DepartmentEmployee build() {
         assertNotNull(departmentId);
         assertNotNull(employeeId);
+
         var de = new DepartmentEmployee();
         de.setDepartmentId(departmentId);
         de.setEmployeeId(employeeId);
-        return de;
+        return fillOrgId(de);
     }
 
     @Override

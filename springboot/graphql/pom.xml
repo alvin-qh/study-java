@@ -63,6 +63,16 @@
         <version>${version.spring-graphql-test}</version>
         <scope>test</scope>
       </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>${version.mockito}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-junit-jupiter</artifactId>
+        <version>${version.mockito}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -155,6 +165,17 @@
       <!-- Spring Boot Graphql 测试依赖 -->
       <groupId>org.springframework.graphql</groupId>
       <artifactId>spring-graphql-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <!-- Mockito 测试依赖 -->
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

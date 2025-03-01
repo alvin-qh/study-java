@@ -55,13 +55,22 @@ public class EmployeeQuery extends AuditedBaseQuery<Employee> {
      * @return {@link Department} 类型部门实体对象集合
      */
     @BatchMapping
-    public Map<Employee, List<Department>> departments(List<Employee> entities) {
-        var empMap = entities.stream().collect(Collectors.toMap(Employee::getId, Functions.identity()));
-        var employeeDepts = departmentService.listByEmployeeIds(empMap.keySet());
+    public Map<Employee, List<Department>> departments(List<Employee> entities, GraphQLContext ctx) {
+        if (entities == null || entities.isEmpty()) {
+            return Map.of();
+        }
 
-        return employeeDepts.stream().collect(
-            Collectors.toMap(
-                e -> empMap.get(e.getEmployee().getId()),
-                DepartmentEmployee::getDepartments));
+        var empMap = entities.stream()
+                .collect(Collectors.toMap(Employee::getId, Functions.identity()));
+
+        var employeeDepts = departmentService.listByEmployeeIds(
+            ctx.<Org>get(ContextKey.ORG).getId(),
+            empMap.keySet());
+
+        return employeeDepts.stream()
+                .filter(e -> empMap.containsKey(e.getEmployeeId()))
+                .collect(Collectors.groupingBy(
+                    e -> empMap.get(e.getEmployeeId()),
+                    Collectors.mapping(DepartmentEmployee::getDepartment, Collectors.toList())));
     }
 }

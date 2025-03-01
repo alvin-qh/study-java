@@ -101,6 +101,6 @@ public interface EmployeeMapper extends BaseMapper<Employee> {
         """)
     IPage<Employee> selectByDepartmentId(
             IPage<Employee> page,
-            @Param("departmentId") long departmentId,
-            @Param("orgId") long orgId);
+            @Param("orgId") long orgId,
+            @Param("departmentId") long departmentId);
 }

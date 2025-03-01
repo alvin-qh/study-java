@@ -1,40 +1,251 @@
 package alvin.study.springboot.graphql.app.service;
 
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.junit.jupiter.api.Test;
 
-public class DepartmentServiceTest {
-    @Test
-    void testCreate() {
+import alvin.study.springboot.graphql.IntegrationTest;
+import alvin.study.springboot.graphql.builder.DepartmentBuilder;
+import alvin.study.springboot.graphql.builder.DepartmentEmployeeBuilder;
+import alvin.study.springboot.graphql.builder.EmployeeBuilder;
+import alvin.study.springboot.graphql.core.exception.NotFoundException;
+import alvin.study.springboot.graphql.core.graphql.relay.Pagination;
+import alvin.study.springboot.graphql.infra.entity.Department;
+import alvin.study.springboot.graphql.infra.entity.Employee;
 
+public class DepartmentServiceTest extends IntegrationTest {
+    @Autowired
+    private DepartmentService departmentService;
+
+    @Autowired
+    private Pagination pagination;
+
+    @Test
+    void create_shouldCreateDepartment() {
+        var expectedDepartment = newBuilder(DepartmentBuilder.class)
+                .withOrgId(currentOrg().getId())
+                .build();
+
+        departmentService.create(expectedDepartment);
+
+        var actualDepartment = departmentService.findById(currentOrg().getId(), expectedDepartment.getId());
+        then(actualDepartment.getId()).isEqualTo(expectedDepartment.getId());
     }
 
     @Test
-    void testDelete() {
+    void delete_shouldDeleteExistDepartment() {
+        var department = newBuilder(DepartmentBuilder.class)
+                .withOrgId(currentOrg().getId())
+                .create();
 
+        var result = departmentService.delete(currentOrg().getId(), department.getId());
+        then(result).isTrue();
+
+        thenThrownBy(() -> departmentService.findById(currentOrg().getId(), department.getId()))
+                .isInstanceOf(NotFoundException.class);
     }
 
     @Test
-    void testFindById() {
+    void findById_shouldFindUserById() {
+        var expectedDepartment = newBuilder(DepartmentBuilder.class)
+                .withOrgId(currentOrg().getId())
+                .create();
 
+        var actualDepartment = departmentService.findById(currentOrg().getId(), expectedDepartment.getId());
+        then(actualDepartment.getId()).isEqualTo(expectedDepartment.getId());
     }
 
     @Test
-    void testListByEmployeeIds() {
+    void listByEmployeeIds_shouldFindDepartmentByEmployeeId() {
+        Department department1, department2, department3;
+        Employee employee1, employee2;
 
+        try (var ignore = beginTx(false)) {
+            department1 = newBuilder(DepartmentBuilder.class)
+                    .withOrgId(currentOrg().getId())
+                    .create();
+
+            department2 = newBuilder(DepartmentBuilder.class)
+                    .withOrgId(currentOrg().getId())
+                    .create();
+
+            department3 = newBuilder(DepartmentBuilder.class)
+                    .withOrgId(currentOrg().getId())
+                    .create();
+
+            employee1 = newBuilder(EmployeeBuilder.class)
+                    .withOrgId(currentOrg().getId())
+                    .create();
+
+            employee2 = newBuilder(EmployeeBuilder.class)
+                    .withOrgId(currentOrg().getId())
+                    .create();
+
+            newBuilder(DepartmentEmployeeBuilder.class)
+                    .withEmployeeId(employee1.getId())
+                    .withDepartmentId(department1.getId())
+                    .withOrgId(currentOrg().getId())
+                    .create();
+
+            newBuilder(DepartmentEmployeeBuilder.class)
+                    .withEmployeeId(employee1.getId())
+                    .withDepartmentId(department2.getId())
+                    .withOrgId(currentOrg().getId())
+                    .create();
+
+            newBuilder(DepartmentEmployeeBuilder.class)
+                    .withEmployeeId(employee2.getId())
+                    .withDepartmentId(department3.getId())
+                    .withOrgId(currentOrg().getId())
+                    .create();
+        }
+
+        var departmentEmployees
+            = departmentService.listByEmployeeIds(currentOrg().getId(), List.of(employee1.getId(), employee2.getId()));
+
+        // 验证结果
+        then(departmentEmployees).hasSize(3);
+
+        then(departmentEmployees.get(0).getDepartmentId()).isEqualTo(department1.getId());
+        then(departmentEmployees.get(0).getEmployeeId()).isEqualTo(employee1.getId());
+
+        then(departmentEmployees.get(1).getDepartmentId()).isEqualTo(department2.getId());
+        then(departmentEmployees.get(1).getEmployeeId()).isEqualTo(employee1.getId());
+
+        then(departmentEmployees.get(2).getDepartmentId()).isEqualTo(department3.getId());
+        then(departmentEmployees.get(2).getEmployeeId()).isEqualTo(employee2.getId());
+
+        then(departmentEmployees.get(0).getDepartment().getId())
+                .isEqualTo(departmentEmployees.get(0).getDepartmentId());
+        then(departmentEmployees.get(0).getDepartment().getId())
+                .isEqualTo(departmentEmployees.get(0).getDepartmentId());
+
+        then(departmentEmployees.get(1).getDepartment().getId())
+                .isEqualTo(departmentEmployees.get(1).getDepartmentId());
+        then(departmentEmployees.get(1).getDepartment().getId())
+                .isEqualTo(departmentEmployees.get(1).getDepartmentId());
+
+        then(departmentEmployees.get(2).getDepartment().getId())
+                .isEqualTo(departmentEmployees.get(2).getDepartmentId());
+        then(departmentEmployees.get(2).getDepartment().getId())
+                .isEqualTo(departmentEmployees.get(2).getDepartmentId());
     }
 
     @Test
-    void testListByIds() {
+    void listByIds_shouldFindDepartmentById() {
+        Department department1, department2, department3;
 
+        try (var ignore = beginTx(false)) {
+            department1 = newBuilder(DepartmentBuilder.class)
+                    .withOrgId(currentOrg().getId())
+                    .create();
+
+            department2 = newBuilder(DepartmentBuilder.class)
+                    .withOrgId(currentOrg().getId())
+                    .create();
+
+            department3 = newBuilder(DepartmentBuilder.class)
+                    .withOrgId(currentOrg().getId())
+                    .create();
+        }
+
+        var departments = departmentService.listByIds(currentOrg().getId(), List.of(
+            department1.getId(),
+            department2.getId(),
+            department3.getId()));
+
+        then(departments.stream().map(Department::getId).toList()).containsExactly(
+            department1.getId(),
+            department2.getId(),
+            department3.getId());
     }
 
     @Test
-    void testListChildren() {
+    void listChildren_shouldListChildrenDepartment() {
+        Department parent;
+        Department child1, child2, child3, child4, child5;
 
+        try (var ignore = beginTx(false)) {
+            parent = newBuilder(DepartmentBuilder.class)
+                    .withOrgId(currentOrg().getId())
+                    .create();
+
+            child1 = newBuilder(DepartmentBuilder.class)
+                    .withParent(parent.getId())
+                    .withOrgId(currentOrg().getId())
+                    .create();
+
+            child2 = newBuilder(DepartmentBuilder.class)
+                    .withParent(parent.getId())
+                    .withOrgId(currentOrg().getId())
+                    .create();
+
+            child3 = newBuilder(DepartmentBuilder.class)
+                    .withParent(parent.getId())
+                    .withOrgId(currentOrg().getId())
+                    .create();
+
+            child4 = newBuilder(DepartmentBuilder.class)
+                    .withParent(parent.getId())
+                    .withOrgId(currentOrg().getId())
+                    .create();
+
+            child5 = newBuilder(DepartmentBuilder.class)
+                    .withParent(parent.getId())
+                    .withOrgId(currentOrg().getId())
+                    .create();
+        }
+
+        var page = pagination.<Department>newBuilder()
+                .withOffset(0)
+                .withLimit(3)
+                .withOrder("-id")
+                .build();
+
+        page = departmentService.listChildren(page, currentOrg().getId(), parent.getId());
+        then(page.getPages()).isEqualTo(2);
+        then(page.getTotal()).isEqualTo(5);
+        then(page.getSize()).isEqualTo(3);
+        then(page.getCurrent()).isEqualTo(1);
+        then(page.getRecords().stream().map(Department::getId)).containsExactly(
+            child5.getId(),
+            child4.getId(),
+            child3.getId());
+
+        page = pagination.<Department>newBuilder()
+                .withOffset(3)
+                .withLimit(3)
+                .withOrder("-id")
+                .build();
+
+        page = departmentService.listChildren(page, currentOrg().getId(), parent.getId());
+        then(page.getPages()).isEqualTo(2);
+        then(page.getTotal()).isEqualTo(5);
+        then(page.getSize()).isEqualTo(3);
+        then(page.getCurrent()).isEqualTo(2);
+        then(page.getRecords().stream().map(Department::getId)).containsExactly(
+            child2.getId(),
+            child1.getId());
     }
 
     @Test
-    void testUpdate() {
+    void update_shouldUpdateDepartment() {
+        var department = newBuilder(DepartmentBuilder.class)
+                .withOrgId(currentOrg().getId())
+                .create();
 
+        var originDepartmentName = department.getName();
+
+        department.setName("updated_" + department.getName());
+
+        departmentService.update(department);
+
+        department = departmentService.findById(currentOrg().getId(), department.getId());
+        then(department.getName()).isEqualTo("updated_" + originDepartmentName);
     }
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 import org.springframework.graphql.server.WebGraphQlInterceptor;
 import org.springframework.graphql.server.WebGraphQlRequest;
 import org.springframework.graphql.server.WebGraphQlResponse;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Strings;
@@ -24,7 +25,6 @@ import alvin.study.springboot.graphql.util.security.Jwt;
 @Component
 @RequiredArgsConstructor
 public class ApiAuthInterceptor implements WebGraphQlInterceptor {
-    private static final String HEADER_AUTH = "Authorization";
     private static final String TOKEN_PREFIX = "Bearer";
 
     private static final String INTROSPECTION_QUERY = "IntrospectionQuery";
@@ -40,7 +40,7 @@ public class ApiAuthInterceptor implements WebGraphQlInterceptor {
         log.info("Execute operation \"{}\"", request.getOperationName());
 
         if (!INTROSPECTION_QUERY.equals(request.getOperationName())) {
-            var auth = request.getHeaders().getFirst(HEADER_AUTH);
+            var auth = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
             if (Strings.isNullOrEmpty(auth) || !auth.startsWith(TOKEN_PREFIX)) {
                 throw new ForbiddenException("Invalid bearer token");
             }
@@ -60,7 +60,7 @@ public class ApiAuthInterceptor implements WebGraphQlInterceptor {
                         ContextKey.ORG, org,
                         ContextKey.USER, user)).build());
             } catch (Exception e) {
-                throw new ForbiddenException("Invalid bearer token");
+                throw new ForbiddenException("Invalid bearer token", e);
             }
         }
         return chain.next(request);

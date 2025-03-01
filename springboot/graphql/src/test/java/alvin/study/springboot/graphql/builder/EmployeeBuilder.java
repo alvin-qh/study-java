@@ -22,6 +22,7 @@ public class EmployeeBuilder extends Builder<Employee> {
 
     @Autowired
     private EmployeeMapper mapper;
+
     private String name = "Employee" + SEQUENCE.incrementAndGet();
     private String email = String.format("employee%d@fakemail.com", SEQUENCE.incrementAndGet());
     private String title = "Staff";

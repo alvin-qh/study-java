@@ -15,12 +15,13 @@ import com.google.common.base.Functions;
 
 import lombok.RequiredArgsConstructor;
 
+import graphql.GraphQLContext;
+import reactor.core.publisher.Mono;
+
 import alvin.study.springboot.graphql.core.context.ContextKey;
 import alvin.study.springboot.graphql.infra.entity.Org;
 import alvin.study.springboot.graphql.infra.entity.User;
 import alvin.study.springboot.graphql.infra.mapper.UserMapper;
-import graphql.GraphQLContext;
-import reactor.core.publisher.Mono;
 
 /**
  * 通过 {@code id} 集合获取 {@link User} 实例集合的数据加载器类型

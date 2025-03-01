@@ -23,10 +23,10 @@
     />
 
     <!--
-    将 `EmployeeDepartment` 类的 `departments` 属性映射到 `List<Department>` 类型实例
+    将 `EmployeeDepartment` 类的 `department` 属性映射到 `Department` 类型实例
     -->
-    <collection
-      property="departments"
+    <association
+      property="department"
       resultMap="alvin.study.springboot.graphql.infra.mapper.DepartmentMapper.departmentResultMap"
       columnPrefix="d_"
     />

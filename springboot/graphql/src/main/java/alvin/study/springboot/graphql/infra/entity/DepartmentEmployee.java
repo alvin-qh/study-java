@@ -1,7 +1,5 @@
 package alvin.study.springboot.graphql.infra.entity;
 
-import java.util.List;
-
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -28,7 +26,7 @@ public class DepartmentEmployee extends AuditedEntity {
     private Long departmentId;
 
     @TableField(exist = false)
-    private List<Department> departments;
+    private Department department;
 
     /**
      * 职员 id

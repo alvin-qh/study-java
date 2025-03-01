@@ -20,7 +20,7 @@ public class DepartmentBuilder extends Builder<Department> {
     private String name = "Department" + SEQUENCE.incrementAndGet();
 
     // 部门的上级部门
-    private Department parent = null;
+    private Long parentId = null;
 
     /**
      * 设置部门名称
@@ -39,8 +39,8 @@ public class DepartmentBuilder extends Builder<Department> {
      * @param parent 表示上级部门的 {@link Department} 对象
      * @return 当前对象
      */
-    public DepartmentBuilder withParent(Department parent) {
-        this.parent = parent;
+    public DepartmentBuilder withParent(Long parentId) {
+        this.parentId = parentId;
         return this;
     }
 
@@ -48,7 +48,7 @@ public class DepartmentBuilder extends Builder<Department> {
     public Department build() {
         var department = new Department();
         department.setName(name);
-        department.setParentId(parent.getId());
+        department.setParentId(parentId);
         return fillOrgId(department);
     }
 

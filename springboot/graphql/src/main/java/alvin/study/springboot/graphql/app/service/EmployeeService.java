@@ -134,18 +134,14 @@ public class EmployeeService {
     @Transactional
     public boolean delete(long orgId, long id) {
         // 删除之前的关联关系
-        if (departmentEmployeeMapper.delete(
-            Wrappers.lambdaQuery(DepartmentEmployee.class)
-                    .eq(DepartmentEmployee::getOrgId, orgId)
-                    .eq(DepartmentEmployee::getEmployeeId, id))
-            == 0) {
-            return false;
-        }
+        departmentEmployeeMapper.delete(Wrappers.lambdaQuery(DepartmentEmployee.class)
+                .eq(DepartmentEmployee::getOrgId, orgId)
+                .eq(DepartmentEmployee::getEmployeeId, id));
 
-        return employeeMapper.delete(
-            Wrappers.lambdaQuery(Employee.class)
-                    .eq(Employee::getOrgId, orgId)
-                    .eq(Employee::getId, id))
+        return employeeMapper.update(Wrappers.lambdaUpdate(Employee.class)
+                .set(Employee::getDeleted, 1)
+                .eq(Employee::getOrgId, orgId)
+                .eq(Employee::getId, id))
                > 0;
     }
 

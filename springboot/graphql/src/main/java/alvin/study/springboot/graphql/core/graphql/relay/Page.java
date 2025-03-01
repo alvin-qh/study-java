@@ -129,10 +129,14 @@ class Page<T> implements IPage<T> {
 
     /**
      * 获取当前页码
+     *
+     * 根据偏移量和每页记录数计算当前页码
      */
     @Override
     public long getCurrent() {
-        // 根据偏移量和每页记录数计算当前页码
+        if (size == 0) {
+            return 0;
+        }
         return offset / size + 1;
     }
 

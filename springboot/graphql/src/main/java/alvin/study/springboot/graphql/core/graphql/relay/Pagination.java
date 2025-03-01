@@ -105,7 +105,7 @@ public class Pagination {
 
         public PageBuilder<T> withOffset(Integer offset) {
             if (offset != null) {
-                this.first = offset;
+                this.after = offset;
             }
             return this;
         }
@@ -135,14 +135,16 @@ public class Pagination {
             if (order == null) {
                 this.orders = List.of();
             } else {
-                this.orders = Splitter.on(",").omitEmptyStrings().splitToList(order);
+                this.orders = Splitter.on(",")
+                        .omitEmptyStrings()
+                        .splitToList(order);
             }
             return this;
         }
 
         public PageBuilder<T> withLimit(Integer limit) {
             if (limit != null) {
-                this.last = limit;
+                this.first = limit;
             }
             return this;
         }
@@ -203,6 +205,7 @@ public class Pagination {
             if (last == null) {
                 last = defaultPageSize;
             }
+
             // 返回 before/last 形成的分页对象
             return new Page<T>().setOffset(Math.max(before - last, 0)).setSize(Math.min(last, maxPageSize));
         }
@@ -238,8 +241,7 @@ public class Pagination {
                     return OrderItem.asc(s.substring(1));
                 }
                 return OrderItem.asc(s);
-            })
-                    .toList();
+            }).toList();
         }
     }
 }
