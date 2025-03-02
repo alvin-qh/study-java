@@ -58,7 +58,7 @@ public class UserBuilder extends Builder<User> {
         user.setAccount(account);
         user.setPassword(password);
         user.setGroup(group);
-        return fillOrgId(user);
+        return complete(user);
     }
 
     @Override

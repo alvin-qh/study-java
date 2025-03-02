@@ -6,3 +6,25 @@ query queryOrg($id: ID!) {
     updatedAt
   }
 }
+
+mutation createOrg($input: OrgInput!) {
+  createOrg(input: $input) {
+    result {
+      id
+      name
+    }
+  }
+}
+
+mutation updateOrg($id: ID!, $input: OrgInput!) {
+  updateOrg(id: $id, input: $input) {
+    result {
+      id
+      name
+    }
+  }
+}
+
+mutation deleteOrg($id: ID!) {
+  deleteOrg(id: $id)
+}

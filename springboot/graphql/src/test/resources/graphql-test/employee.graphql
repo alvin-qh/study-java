@@ -1,0 +1,66 @@
+query queryEmployee($id: ID!) {
+  employee(id: $id) {
+    id
+    orgId
+    org {
+      id
+      name
+    }
+    name
+    email
+    title
+    info
+    departments {
+      id
+      name
+    }
+    createdBy
+    createdByUser {
+      id
+      account
+    }
+    updatedBy
+    updatedByUser {
+      id
+      account
+    }
+    createdAt
+    updatedAt
+  }
+}
+
+mutation createEmployee($input: EmployeeInput!) {
+  createEmployee(input: $input) {
+    result {
+      id
+      name
+      email
+      title
+      info
+      departments {
+        id
+        name
+      }
+    }
+  }
+}
+
+mutation updateEmployee($id: ID!, $input: EmployeeInput!) {
+  updateEmployee(id: $id, input: $input) {
+    result {
+      id
+      name
+      email
+      title
+      info
+      departments {
+        id
+        name
+      }
+    }
+  }
+}
+
+mutation deleteEmployee($id: ID!) {
+  deleteUser(id: $id)
+}

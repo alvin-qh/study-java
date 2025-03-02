@@ -12,11 +12,11 @@ import graphql.GraphQLContext;
 
 import alvin.study.springboot.graphql.app.api.mutation.common.BaseMutation;
 import alvin.study.springboot.graphql.app.model.MutationResult;
+import alvin.study.springboot.graphql.app.model.UserGroup;
 import alvin.study.springboot.graphql.app.service.UserService;
 import alvin.study.springboot.graphql.core.context.ContextKey;
 import alvin.study.springboot.graphql.infra.entity.Org;
 import alvin.study.springboot.graphql.infra.entity.User;
-import alvin.study.springboot.graphql.infra.entity.UserGroup;
 
 @Controller
 @RequiredArgsConstructor
@@ -33,9 +33,9 @@ public class UserMutation extends BaseMutation {
             user.setAccount(account);
             user.setPassword(password);
             user.setGroup(switch (group) {
-            case ADMIN -> UserGroup.ADMIN;
-            case OPERATOR -> UserGroup.OPERATOR;
-            case NORMAL -> UserGroup.NORMAL;
+            case ADMIN -> alvin.study.springboot.graphql.infra.entity.UserGroup.ADMIN;
+            case OPERATOR -> alvin.study.springboot.graphql.infra.entity.UserGroup.OPERATOR;
+            case NORMAL -> alvin.study.springboot.graphql.infra.entity.UserGroup.NORMAL;
             });
             return user;
         }
@@ -51,8 +51,7 @@ public class UserMutation extends BaseMutation {
     @MutationMapping
     public MutationResult<User> updateUser(@Argument Long id, @Argument UserInput input, GraphQLContext ctx) {
         User user = input.toEntity(ctx, id);
-        userService.update(user);
-        return MutationResult.of(user);
+        return MutationResult.of(userService.update(user));
     }
 
     @MutationMapping

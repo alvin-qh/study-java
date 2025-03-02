@@ -56,8 +56,7 @@ public class OrgMutation {
         checkUserPermission(ctx);
 
         var org = input.toEntity(id);
-        orgService.update(org);
-        return MutationResult.of(org);
+        return MutationResult.of(orgService.update(org));
     }
 
     @MutationMapping

@@ -16,16 +16,16 @@ type EmployeeConnection {
 # 定义 Employee 类型, 参考 `alvin.study.springboot.graphql.infra.entity.Employee` 类型
 type Employee {
   id: ID!
-  orgId: Long
+  orgId: ID
   org: Org!
   name: String!
   email: String!
   title: String!
   info: JSON # JSON 类型字段, 可以处理各类 JSON 格式的信息, 对应 `java.util.Map` 类型
   departments: [Department!] # 所属部门
-  createdBy: Long
+  createdBy: ID
   createdByUser: User
-  updatedBy: Long
+  updatedBy: ID
   updatedByUser: User
   createdAt: DateTime
   updatedAt: DateTime
@@ -42,12 +42,21 @@ input EmployeeInput {
   email: String! @len(min: 2, max: 50)
   title: String! @len(min: 2, max: 20)
   info: JSON  # JSON 类型字段, 可以处理各类 JSON 格式的信息, 对应 `java.util.Map` 类型
-  departmentIds: [Long!]
+  departmentIds: [ID!]
+}
+
+type EmployeePayload {
+  id: ID!
+  name: String!
+  email: String!
+  title: String!
+  info: JSON
+  departments: [DepartmentPayload!]
 }
 
 # 创建雇员信息的结果类, alvin.study.app.api.schema.payload.CreateEmployeePayload 类型
 type EmployeeResult {
-  result: Employee
+  result: EmployeePayload
 }
 
 # 扩展根变更类型, 参考 alvin.study.app.api.mutation.UserMutation 类型

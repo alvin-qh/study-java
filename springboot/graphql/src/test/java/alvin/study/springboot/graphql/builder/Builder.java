@@ -1,13 +1,15 @@
 package alvin.study.springboot.graphql.builder;
 
+import alvin.study.springboot.graphql.infra.entity.common.AuditedEntity;
 import alvin.study.springboot.graphql.infra.entity.common.TenantedEntity;
 
 /**
  * 实体构建器超类
  */
 public abstract class Builder<T> {
-    // 组织 id
     protected Long orgId;
+    protected Long createdBy;
+    protected Long updatedBy;
 
     /**
      * 创建实体对象 (非持久化)
@@ -34,15 +36,32 @@ public abstract class Builder<T> {
         return this;
     }
 
+    public Builder<T> withAuditorId(Long userId) {
+        this.createdBy = userId;
+        this.updatedBy = userId;
+        return this;
+    }
+
+    public Builder<T> with(Long orgId, boolean isNullable) {
+        if (isNullable) {
+            this.orgId = orgId;
+        }
+        return this;
+    }
+
     /**
      * 填充 {@code orgId} 字段
      *
      * @param entity 多租户实体对象
      * @return 返回多租户实体对象
      */
-    protected <R extends TenantedEntity> R fillOrgId(R entity) {
+    protected <R extends TenantedEntity> R complete(R entity) {
         if (orgId != null) {
             entity.setOrgId(orgId);
+        }
+        if (entity instanceof AuditedEntity ae) {
+            ae.setCreatedBy(createdBy);
+            ae.setUpdatedBy(updatedBy);
         }
         return entity;
     }

@@ -44,7 +44,7 @@ public class DepartmentEmployeeBuilder extends Builder<DepartmentEmployee> {
         var de = new DepartmentEmployee();
         de.setDepartmentId(departmentId);
         de.setEmployeeId(employeeId);
-        return fillOrgId(de);
+        return complete(de);
     }
 
     @Override

@@ -74,11 +74,15 @@ public class EmployeeService {
      * @return {@link Employee} 类型雇员实体的 {@link Optional} 类型包装对象
      */
     @Transactional
-    public void update(Employee employee, Collection<Long> departmentIds) {
-        if (employeeMapper.update(employee, Wrappers.lambdaUpdate(Employee.class)
-                .eq(Employee::getOrgId, employee.getOrgId())
-                .eq(Employee::getId, employee.getId()))
-            == 0) {
+    public Employee update(Employee employee, Collection<Long> departmentIds) {
+        var existEmployee = findById(employee.getOrgId(), employee.getId());
+        existEmployee.setName(employee.getName());
+        existEmployee.setEmail(employee.getEmail());
+        existEmployee.setTitle(employee.getTitle());
+        existEmployee.setInfo(employee.getInfo());
+        existEmployee.setUpdatedBy(employee.getUpdatedBy());
+
+        if (employeeMapper.updateById(existEmployee) == 0) {
             throw new NotFoundException(String.format("Employee not exist by id = %d", employee.getId()));
         }
 
@@ -91,6 +95,7 @@ public class EmployeeService {
             // 建立新的关联关系
             bindWithDepartments(employee, Set.copyOf(departmentIds));
         }
+        return employeeMapper.selectById(employee.getId());
     }
 
     /**

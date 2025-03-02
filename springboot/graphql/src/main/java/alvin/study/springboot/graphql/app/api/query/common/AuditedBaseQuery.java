@@ -30,6 +30,10 @@ public class AuditedBaseQuery<T extends AuditedEntity> extends TenantedBaseQuery
      */
     @SchemaMapping
     public OffsetDateTime createdAt(T entity) {
+        var createdAt = entity.getCreatedAt();
+        if (createdAt == null) {
+            return null;
+        }
         return entity.getCreatedAt().atOffset(ZoneOffset.UTC);
     }
 
@@ -46,6 +50,10 @@ public class AuditedBaseQuery<T extends AuditedEntity> extends TenantedBaseQuery
      */
     @SchemaMapping
     public OffsetDateTime updatedAt(T entity) {
+        var updatedAt = entity.getUpdatedAt();
+        if (updatedAt == null) {
+            return null;
+        }
         return entity.getUpdatedAt().atOffset(ZoneOffset.UTC);
     }
 
@@ -84,6 +92,10 @@ public class AuditedBaseQuery<T extends AuditedEntity> extends TenantedBaseQuery
      */
     @SchemaMapping
     public CompletableFuture<User> createdByUser(T entity, DataLoader<Long, User> loader) {
+        var createdBy = entity.getCreatedBy();
+        if (createdBy == null) {
+            return CompletableFuture.completedFuture(null);
+        }
         return loader.load(entity.getCreatedBy());
     }
 
@@ -122,6 +134,10 @@ public class AuditedBaseQuery<T extends AuditedEntity> extends TenantedBaseQuery
      */
     @SchemaMapping
     public CompletableFuture<User> updatedByUser(T entity, DataLoader<Long, User> loader) {
+        var updatedBy = entity.getUpdatedBy();
+        if (updatedBy == null) {
+            return CompletableFuture.completedFuture(null);
+        }
         return loader.load(entity.getUpdatedBy());
     }
 }

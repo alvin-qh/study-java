@@ -1,6 +1,9 @@
 package alvin.study.springboot.graphql;
 
 import java.time.Duration;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureHttpGraphQlTester;
@@ -94,5 +97,10 @@ public abstract class WebTest extends IntegrationTest {
         return qlTester.mutate()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                 .build();
+    }
+
+    protected String formatDatetime(Instant instant) {
+        return instant.atZone(ZoneOffset.UTC)
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"));
     }
 }

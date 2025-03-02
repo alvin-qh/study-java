@@ -80,16 +80,17 @@ public class UserService {
      * @return {@link User} 类型用户实体对象的 {@link Optional} 包装对象
      */
     @Transactional
-    public void update(User user) {
-        var originalUser = findById(user.getOrgId(), user.getId());
-        user.setPassword(originalUser.getPassword());
+    public User update(User user) {
+        var existUser = findById(user.getOrgId(), user.getId());
+        existUser.setAccount(user.getAccount());
+        existUser.setPassword(user.getPassword());
+        existUser.setGroup(user.getGroup());
+        existUser.setUpdatedBy(user.getUpdatedBy());
 
-        if (userMapper.update(user, Wrappers.lambdaUpdate(User.class)
-                .eq(User::getId, user.getId())
-                .eq(User::getOrgId, user.getOrgId()))
-            == 0) {
+        if (userMapper.updateById(encryptUserPassword(existUser)) == 0) {
             throw new InputException(new NotFoundException(String.format("User not exist by id = %d", user.getId())));
         }
+        return existUser;
     }
 
     /**

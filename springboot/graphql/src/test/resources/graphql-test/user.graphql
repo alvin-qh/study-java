@@ -1,0 +1,48 @@
+query queryUser($id: ID!) {
+  user(id: $id) {
+    id
+    orgId
+    org {
+      id
+      name
+    }
+    account
+    group
+    createdBy
+    createdByUser {
+      id
+      account
+    }
+    updatedBy
+    updatedByUser {
+      id
+      account
+    }
+    createdAt
+    updatedAt
+  }
+}
+
+mutation createUser($input: UserInput!) {
+  createUser(input: $input) {
+    result {
+      id
+      account
+      group
+    }
+  }
+}
+
+mutation updateUser($id: ID!, $input: UserInput!) {
+  updateUser(id: $id, input: $input) {
+    result {
+      id
+      account
+      group
+    }
+  }
+}
+
+mutation deleteUser($id: ID!) {
+  deleteUser(id: $id)
+}

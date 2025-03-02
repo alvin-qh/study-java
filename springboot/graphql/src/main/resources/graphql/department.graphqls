@@ -42,9 +42,14 @@ input DepartmentInput {
   parentId: Long!
 }
 
+type DepartmentPayload {
+  id: ID!
+  name: String!
+}
+
 # 创建组织信息的结果类, alvin.study.app.api.schema.payload.CreateDepartmentPayload 类型
 type DepartmentResult {
-  result: Department
+  result: DepartmentPayload
 }
 
 # 扩展根变更类型, 参考 alvin.study.app.api.mutation.OrgMutation 类型

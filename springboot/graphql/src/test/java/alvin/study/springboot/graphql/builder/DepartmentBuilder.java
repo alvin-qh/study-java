@@ -49,7 +49,7 @@ public class DepartmentBuilder extends Builder<Department> {
         var department = new Department();
         department.setName(name);
         department.setParentId(parentId);
-        return fillOrgId(department);
+        return complete(department);
     }
 
     @Override

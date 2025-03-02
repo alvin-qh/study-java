@@ -10,13 +10,13 @@ enum UserGroup {
 # 定义 User 类型, 参考 `alvin.study.springboot.graphql.infra.entity.User` 类型
 type User {
   id: ID!
-  orgId: Long
+  orgId: ID!
   org: Org!
   account: String!
   group: UserGroup!
-  createdBy: Long
+  createdBy: ID
   createdByUser: User
-  updatedBy: Long
+  updatedBy: ID
   updatedByUser: User
   createdAt: DateTime
   updatedAt: DateTime
@@ -34,8 +34,14 @@ input UserInput {
   group: UserGroup! = NORMAL # 设置默认值
 }
 
+type UserPayload {
+  id: ID!
+  account: String!
+  group: UserGroup!
+}
+
 type UserResult {
-  result: User
+  result: UserPayload
 }
 
 # 扩展根变更类型, 参考 `alvin.study.springboot.graphql.infra.entity.UserGroup` 类型

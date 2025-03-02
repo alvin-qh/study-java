@@ -48,10 +48,14 @@ public class OrgService {
      * @param org {@link Org} 类型组织实体对象的 {@link Optional} 包装对象
      */
     @Transactional
-    public void update(Org org) {
-        if (orgMapper.updateById(org) == 0) {
+    public Org update(Org org) {
+        var existOrg = orgMapper.selectById(org.getId());
+        existOrg.setName(org.getName());
+
+        if (orgMapper.updateById(existOrg) == 0) {
             throw new NotFoundException(String.format("Org not exist by id = %d", org.getId()));
         }
+        return existOrg;
     }
 
     /**
