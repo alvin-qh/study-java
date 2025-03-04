@@ -58,6 +58,11 @@
         <version>${version.modelmapper}</version>
       </dependency>
       <dependency>
+        <groupId>io.micrometer</groupId>
+        <artifactId>context-propagation</artifactId>
+        <version>${version.context-propagation}</version>
+      </dependency>
+      <dependency>
         <groupId>org.springframework.graphql</groupId>
         <artifactId>spring-graphql-test</artifactId>
         <version>${version.spring-graphql-test}</version>
@@ -148,6 +153,11 @@
       <!-- Modelmapper 对象转换工具依赖 -->
       <groupId>org.modelmapper</groupId>
       <artifactId>modelmapper</artifactId>
+    </dependency>
+    <dependency>
+      <!-- context propagation 依赖, 用于线程上下文传递数据 -->
+      <groupId>io.micrometer</groupId>
+      <artifactId>context-propagation</artifactId>
     </dependency>
     <dependency>
       <!-- 数据库 Migration 依赖 -->

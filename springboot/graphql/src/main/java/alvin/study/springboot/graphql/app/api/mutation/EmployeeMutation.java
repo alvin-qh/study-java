@@ -12,9 +12,9 @@ import org.springframework.stereotype.Controller;
 import lombok.RequiredArgsConstructor;
 
 import alvin.study.springboot.graphql.app.api.mutation.common.BaseMutation;
+import alvin.study.springboot.graphql.app.context.ContextKey;
 import alvin.study.springboot.graphql.app.model.MutationResult;
 import alvin.study.springboot.graphql.app.service.EmployeeService;
-import alvin.study.springboot.graphql.core.context.ContextKey;
 import alvin.study.springboot.graphql.infra.entity.Employee;
 import alvin.study.springboot.graphql.infra.entity.Org;
 import graphql.GraphQLContext;

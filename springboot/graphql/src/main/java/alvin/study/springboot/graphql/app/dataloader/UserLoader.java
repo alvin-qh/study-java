@@ -15,13 +15,12 @@ import com.google.common.base.Functions;
 
 import lombok.RequiredArgsConstructor;
 
-import graphql.GraphQLContext;
-import reactor.core.publisher.Mono;
-
-import alvin.study.springboot.graphql.core.context.ContextKey;
+import alvin.study.springboot.graphql.app.context.ContextKey;
+import alvin.study.springboot.graphql.core.context.ContextHolder;
 import alvin.study.springboot.graphql.infra.entity.Org;
 import alvin.study.springboot.graphql.infra.entity.User;
 import alvin.study.springboot.graphql.infra.mapper.UserMapper;
+import reactor.core.publisher.Mono;
 
 /**
  * 通过 {@code id} 集合获取 {@link User} 实例集合的数据加载器类型
@@ -54,12 +53,13 @@ public class UserLoader implements BiFunction<Set<Long>, BatchLoaderEnvironment,
 
     @Override
     public Mono<Map<Long, User>> apply(Set<Long> ids, BatchLoaderEnvironment env) {
-        var ctx = env.<GraphQLContext>getContext();
+        var ctx = ContextHolder.getValue();
+        var org = ctx.<Org>get(ContextKey.KEY_ORG);
 
         return Mono.just(
             userMapper.selectList(
                 Wrappers.lambdaQuery(User.class)
-                        .eq(User::getOrgId, ctx.<Org>get(ContextKey.ORG).getId())
+                        .eq(User::getOrgId, org.getId())
                         .in(User::getId, ids))
                     .stream()
                     .collect(Collectors.toMap(User::getId, Functions.identity())));

@@ -17,10 +17,20 @@ import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.micrometer.context.ContextRegistry;
+
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
+import alvin.study.springboot.graphql.app.dataloader.DepartmentLoader;
+import alvin.study.springboot.graphql.app.dataloader.OrgLoader;
+import alvin.study.springboot.graphql.app.dataloader.UserLoader;
+import alvin.study.springboot.graphql.core.graphql.directive.LengthDirective;
+import alvin.study.springboot.graphql.core.graphql.directive.UppercaseDirective;
+import alvin.study.springboot.graphql.infra.entity.Department;
+import alvin.study.springboot.graphql.infra.entity.Org;
+import alvin.study.springboot.graphql.infra.entity.User;
 import graphql.ExecutionResult;
 import graphql.GraphQLContext;
 import graphql.execution.CoercedVariables;
@@ -36,14 +46,9 @@ import graphql.schema.CoercingParseLiteralException;
 import graphql.schema.CoercingParseValueException;
 import graphql.schema.CoercingSerializeException;
 import graphql.schema.GraphQLScalarType;
-import alvin.study.springboot.graphql.app.dataloader.DepartmentLoader;
-import alvin.study.springboot.graphql.app.dataloader.OrgLoader;
-import alvin.study.springboot.graphql.app.dataloader.UserLoader;
-import alvin.study.springboot.graphql.core.graphql.directive.LengthDirective;
-import alvin.study.springboot.graphql.core.graphql.directive.UppercaseDirective;
-import alvin.study.springboot.graphql.infra.entity.Department;
-import alvin.study.springboot.graphql.infra.entity.Org;
-import alvin.study.springboot.graphql.infra.entity.User;
+import graphql.validation.rules.OnValidationErrorStrategy;
+import graphql.validation.rules.ValidationRules;
+import graphql.validation.schemawiring.ValidationSchemaWiring;
 
 /**
  * Spring Graphql 配置类
@@ -257,6 +262,10 @@ public class GraphqlConfig implements Instrumentation {
                 .scalar(ExtendedScalars.GraphQLLong)
                 .scalar(ExtendedScalars.Locale)
                 .scalar(buildVoidType())
+                .directiveWiring(new ValidationSchemaWiring(
+                    ValidationRules.newValidationRules()
+                            .onValidationErrorStrategy(OnValidationErrorStrategy.RETURN_NULL)
+                            .build()))
                 .directive("uppercase", new UppercaseDirective()) // 添加扩展指令
                 .directiveWiring(new LengthDirective())
                 .build();
@@ -290,5 +299,10 @@ public class GraphqlConfig implements Instrumentation {
                 .registerMappedBatchLoader(departmentLoader);
 
         return registry;
+    }
+
+    @Bean
+    ContextRegistry contextRegistry() {
+        return new ContextRegistry();
     }
 }

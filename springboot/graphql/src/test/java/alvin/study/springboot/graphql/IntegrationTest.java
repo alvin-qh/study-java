@@ -18,7 +18,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
 import graphql.GraphQLContext;
-
+import alvin.study.springboot.graphql.app.context.ContextKey;
 import alvin.study.springboot.graphql.builder.Builder;
 import alvin.study.springboot.graphql.builder.OrgBuilder;
 import alvin.study.springboot.graphql.builder.UserBuilder;
@@ -27,7 +27,6 @@ import alvin.study.springboot.graphql.conf.TestingContextInitializer;
 import alvin.study.springboot.graphql.core.TableCleaner;
 import alvin.study.springboot.graphql.core.TestingTransaction;
 import alvin.study.springboot.graphql.core.TestingTransactionManager;
-import alvin.study.springboot.graphql.core.context.ContextKey;
 import alvin.study.springboot.graphql.infra.entity.Org;
 import alvin.study.springboot.graphql.infra.entity.User;
 

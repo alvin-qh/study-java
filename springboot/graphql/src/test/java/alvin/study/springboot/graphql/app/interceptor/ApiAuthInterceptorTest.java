@@ -22,9 +22,9 @@ import org.junit.jupiter.api.Test;
 import graphql.ExecutionInput;
 
 import alvin.study.springboot.graphql.IntegrationTest;
+import alvin.study.springboot.graphql.app.context.ContextKey;
 import alvin.study.springboot.graphql.app.service.OrgService;
 import alvin.study.springboot.graphql.app.service.UserService;
-import alvin.study.springboot.graphql.core.context.ContextKey;
 import alvin.study.springboot.graphql.infra.entity.Org;
 import alvin.study.springboot.graphql.infra.entity.User;
 import alvin.study.springboot.graphql.util.security.Jwt;

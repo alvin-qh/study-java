@@ -16,9 +16,9 @@ import lombok.RequiredArgsConstructor;
 import graphql.GraphQLContext;
 
 import alvin.study.springboot.graphql.app.api.query.common.AuditedBaseQuery;
+import alvin.study.springboot.graphql.app.context.ContextKey;
 import alvin.study.springboot.graphql.app.service.DepartmentService;
 import alvin.study.springboot.graphql.app.service.EmployeeService;
-import alvin.study.springboot.graphql.core.context.ContextKey;
 import alvin.study.springboot.graphql.infra.entity.Department;
 import alvin.study.springboot.graphql.infra.entity.DepartmentEmployee;
 import alvin.study.springboot.graphql.infra.entity.Employee;

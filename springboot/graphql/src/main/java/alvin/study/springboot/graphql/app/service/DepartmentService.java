@@ -109,10 +109,9 @@ public class DepartmentService {
      * @return {@code true} 表示删除成功, {@code false} 表示删除失败
      */
     @Transactional
-    public boolean delete(long orgId, long id) {
+    public boolean delete(long id) {
         return departmentMapper.update(Wrappers.lambdaUpdate(Department.class)
                 .set(Department::getDeleted, 1)
-                .eq(Department::getOrgId, orgId)
                 .eq(Department::getId, id))
                > 0;
     }

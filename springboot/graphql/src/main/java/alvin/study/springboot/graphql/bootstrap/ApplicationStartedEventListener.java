@@ -12,7 +12,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.google.common.base.Strings;
 
+import io.micrometer.context.ContextRegistry;
+
 import lombok.extern.slf4j.Slf4j;
+
+import alvin.study.springboot.graphql.core.context.ContextAccessor;
 
 /**
  * 应用处理启动监听器
@@ -29,13 +33,18 @@ import lombok.extern.slf4j.Slf4j;
 public class ApplicationStartedEventListener implements ApplicationListener<ApplicationStartedEvent> {
     private final String timezone;
     private final ObjectMapper objectMapper;
+    private final ContextRegistry contextRegistry;
 
     /**
      * 构造器, 注入所需的值
      */
-    public ApplicationStartedEventListener(@Value("${application.zone}") String timezone, ObjectMapper objectMapper) {
+    public ApplicationStartedEventListener(
+            @Value("${application.zone}") String timezone,
+            ObjectMapper objectMapper,
+            ContextRegistry contextRegistry) {
         this.timezone = Strings.isNullOrEmpty(timezone) ? "UTC" : timezone;
         this.objectMapper = objectMapper;
+        this.contextRegistry = contextRegistry;
     }
 
     /**
@@ -49,6 +58,9 @@ public class ApplicationStartedEventListener implements ApplicationListener<Appl
 
         // 为类型转换器设置 Jackson 对象
         JacksonTypeHandler.setObjectMapper(objectMapper);
+
+        // 注册上下文环境变量
+        contextRegistry.registerThreadLocalAccessor(new ContextAccessor());
 
         log.info("Application was started, timezone={}", this.timezone);
     }

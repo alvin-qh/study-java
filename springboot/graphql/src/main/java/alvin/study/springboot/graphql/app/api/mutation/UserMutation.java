@@ -11,10 +11,10 @@ import lombok.RequiredArgsConstructor;
 import graphql.GraphQLContext;
 
 import alvin.study.springboot.graphql.app.api.mutation.common.BaseMutation;
+import alvin.study.springboot.graphql.app.context.ContextKey;
 import alvin.study.springboot.graphql.app.model.MutationResult;
 import alvin.study.springboot.graphql.app.model.UserGroup;
 import alvin.study.springboot.graphql.app.service.UserService;
-import alvin.study.springboot.graphql.core.context.ContextKey;
 import alvin.study.springboot.graphql.infra.entity.Org;
 import alvin.study.springboot.graphql.infra.entity.User;
 

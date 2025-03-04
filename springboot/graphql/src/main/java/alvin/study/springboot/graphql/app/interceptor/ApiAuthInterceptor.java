@@ -1,7 +1,5 @@
 package alvin.study.springboot.graphql.app.interceptor;
 
-import java.util.Map;
-
 import org.springframework.graphql.server.WebGraphQlInterceptor;
 import org.springframework.graphql.server.WebGraphQlRequest;
 import org.springframework.graphql.server.WebGraphQlResponse;
@@ -13,13 +11,14 @@ import com.google.common.base.Strings;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import reactor.core.publisher.Mono;
-
+import alvin.study.springboot.graphql.app.context.ContextKey;
 import alvin.study.springboot.graphql.app.service.OrgService;
 import alvin.study.springboot.graphql.app.service.UserService;
-import alvin.study.springboot.graphql.core.context.ContextKey;
+import alvin.study.springboot.graphql.core.context.Context;
+import alvin.study.springboot.graphql.core.context.ContextHolder;
 import alvin.study.springboot.graphql.core.exception.ForbiddenException;
 import alvin.study.springboot.graphql.util.security.Jwt;
+import reactor.core.publisher.Mono;
 
 @Slf4j
 @Component
@@ -54,15 +53,24 @@ public class ApiAuthInterceptor implements WebGraphQlInterceptor {
                 var org = orgService.findById(Long.parseLong(payload.getAudience().getFirst()));
                 var user = userService.findById(org.getId(), Long.parseLong(payload.getIssuer()));
 
+                var context = new Context();
+                context.put(ContextKey.KEY_ORG, org);
+                context.put(ContextKey.KEY_USER, user);
+
+                ContextHolder.setValue(context);
+
                 // 将获取的负载信息存入请求上下文对象
-                request.configureExecutionInput((input, builder) -> builder.graphQLContext(
-                    Map.of(
-                        ContextKey.ORG, org,
-                        ContextKey.USER, user)).build());
+                // request.configureExecutionInput((input, builder) -> builder.graphQLContext(
+                // Map.of(Context.KEY_ORG, org, Context.KEY_USER, user)).build());
             } catch (Exception e) {
                 throw new ForbiddenException("Invalid bearer token", e);
             }
         }
-        return chain.next(request);
+
+        try {
+            return chain.next(request);
+        } finally {
+            ContextHolder.reset();
+        }
     }
 }

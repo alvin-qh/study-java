@@ -15,11 +15,11 @@ import com.google.common.base.Functions;
 
 import lombok.RequiredArgsConstructor;
 
-import alvin.study.springboot.graphql.core.context.ContextKey;
+import alvin.study.springboot.graphql.app.context.ContextKey;
+import alvin.study.springboot.graphql.core.context.ContextHolder;
 import alvin.study.springboot.graphql.infra.entity.Department;
 import alvin.study.springboot.graphql.infra.entity.Org;
 import alvin.study.springboot.graphql.infra.mapper.DepartmentMapper;
-import graphql.GraphQLContext;
 import reactor.core.publisher.Mono;
 
 /**
@@ -53,12 +53,13 @@ public class DepartmentLoader implements BiFunction<Set<Long>, BatchLoaderEnviro
 
     @Override
     public Mono<Map<Long, Department>> apply(Set<Long> ids, BatchLoaderEnvironment env) {
-        var ctx = env.<GraphQLContext>getContext();
+        var ctx = ContextHolder.getValue();
+        var org = ctx.<Org>get(ContextKey.KEY_ORG);
 
         return Mono.just(
             departmentMapper.selectList(
                 Wrappers.lambdaQuery(Department.class)
-                        .eq(Department::getOrgId, ctx.<Org>get(ContextKey.ORG).getId())
+                        .eq(Department::getOrgId, org.getId())
                         .in(Department::getId, ids))
                     .stream()
                     .collect(Collectors.toMap(Department::getId, Functions.identity())));

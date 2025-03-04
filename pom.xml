@@ -36,6 +36,7 @@
     <version.jetty>12.0.16</version.jetty>
     <version.shiro>2.0.2</version.shiro>
     <version.graphql-java>22.0</version.graphql-java>
+    <version.context-propagation>1.1.2</version.context-propagation>
 
     <version.slf4j>2.0.16</version.slf4j>
     <version.log4j2>2.24.3</version.log4j2>
