@@ -56,6 +56,6 @@ public abstract class AuditedEntity extends TenantedEntity {
     private Instant createdAt;
 
     // 记录实体更新时间
-    @TableField(value = "updated_at", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "updated_at", fill = FieldFill.INSERT_UPDATE/* , updateStrategy = FieldStrategy.ALWAYS */)
     private Instant updatedAt;
 }

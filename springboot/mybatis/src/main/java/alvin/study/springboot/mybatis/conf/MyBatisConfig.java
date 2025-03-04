@@ -19,8 +19,10 @@ import com.baomidou.mybatisplus.extension.incrementer.H2KeyGenerator;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.pagination.dialects.MySqlDialect;
 
+import alvin.study.springboot.mybatis.infra.handler.TenantHandler;
 import alvin.study.springboot.mybatis.infra.mapper.BaseMapper;
 import alvin.study.springboot.mybatis.infra.mapper.method.DeleteAllMethod;
 import alvin.study.springboot.mybatis.infra.mapper.method.InsertAllBatchMethod;
@@ -66,7 +68,7 @@ public class MyBatisConfig extends DefaultSqlInjector {
      * @return {@link MybatisPlusInterceptor} 对象, 表示拦截器集合
      */
     @Bean
-    MybatisPlusInterceptor interceptor() {
+    MybatisPlusInterceptor interceptor(TenantHandler tenantHandler) {
         var interceptor = new MybatisPlusInterceptor();
 
         // 添加内置拦截器, 用于启动分页控制
@@ -78,6 +80,12 @@ public class MyBatisConfig extends DefaultSqlInjector {
 
         // 添加内置拦截器, 用于启动乐观锁版本控制
         interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
+
+        // 添加内置拦截器, 用于启动租户控制
+        var tenantInterceptor = new TenantLineInnerInterceptor();
+        tenantInterceptor.setTenantLineHandler(tenantHandler);
+        interceptor.addInnerInterceptor(tenantInterceptor);
+
         return interceptor;
     }
 

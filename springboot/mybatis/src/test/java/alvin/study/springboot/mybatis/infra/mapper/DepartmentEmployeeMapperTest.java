@@ -58,10 +58,14 @@ class DepartmentEmployeeMapperTest extends IntegrationTest {
 
         // 对 relationship1 对象进行更新, 此时 version = 0 字段和数据表相符, 更新成功
         relationship1.setDepartmentId(department2.getId());
+        relationship1.setUpdatedAt(null);
         var rows = mapper.updateById(relationship1);
         then(rows).isOne();
         // 此时版本号 +1, 表示实体已经被更新一次
         then(relationship1.getVersion()).isOne();
+
+        clearSessionCache();
+        relationship1 = mapper.selectById(relationship1.getId());
 
         // 对 relationship2 对象进行更新, 此时 version = 0 字段和数据表不相符, 更新失败
         relationship2.setDepartmentId(department2.getId());

@@ -41,6 +41,8 @@ mybatis-plus:
   global-config:
     banner: false
     enable-sql-runner: true # 启用 SqlRunner 对象
+    # db-config:
+    #   update-strategy: always  # 配置字段自动更新策略
   configuration:
     cache-enabled: true
     map-underscore-to-camel-case: true
