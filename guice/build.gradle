@@ -1,13 +1,16 @@
+plugins {
+  id "com.github.ben-manes.versions" version "${VER_GRADLE_DEP_VERSIONS}"
+}
+
 subprojects {
   if (!new File(projectDir, "src").exists()) {
     return
   }
 
   dependencies {
-    implementation libs.main.jakarta.inject,
-      libs.main.guice
-
-    testImplementation libs.test.junit,
-        libs.test.assertj
+    implementation "jakarta.inject:jakarta.inject-api:${VER_JAKARTA_INJECT}",
+                   "com.google.inject:guice:${VER_GUICE}"
+    testImplementation "org.junit.jupiter:junit-jupiter:${VER_JUNIT}",
+                       "org.assertj:assertj-core:${VER_ASSERTJ}"
   }
 }
