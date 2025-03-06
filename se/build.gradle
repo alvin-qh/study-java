@@ -1,3 +1,7 @@
+plugins {
+  id "com.github.ben-manes.versions" version "${VER_GRADLE_DEP_VERSIONS}"
+}
+
 subprojects {
   if (!new File(projectDir, "src").exists()) {
     return
@@ -5,7 +9,6 @@ subprojects {
 
   dependencies {
     implementation "com.google.guava:guava:${VER_GUAVA}"
-
     testImplementation "org.junit.jupiter:junit-jupiter:${VER_JUNIT}",
                        "org.assertj:assertj-core:${VER_ASSERTJ}",
                        "org.awaitility:awaitility:${VER_AWAITILITY}",
