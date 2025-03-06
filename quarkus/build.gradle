@@ -1,5 +1,9 @@
-group "alvin.study.quarkus"
-version "1.0-SNAPSHOT"
+plugins {
+  id "com.github.ben-manes.versions" version "${VER_GRADLE_DEP_VERSIONS}"
+}
+
+group = "alvin.study.quarkus"
+version = "1.0-SNAPSHOT"
 
 subprojects {
   test {
@@ -7,11 +11,9 @@ subprojects {
   }
 
   dependencies {
-    implementation enforcedPlatform("io.quarkus.platform:quarkus-bom:${VAR_QUARKUS_PLATFORM}")
-
-    implementation libs.main.quarkus.common
-
-    testImplementation libs.test.quarkus.common,
-      libs.test.assertj
+    implementation enforcedPlatform("io.quarkus.platform:quarkus-bom:${VER_QUARKUS}"),
+                   "io.quarkus:quarkus-config-yaml:${VER_QUARKUS}"
+    testImplementation "io.quarkus:quarkus-junit5:${VER_QUARKUS}",
+                       "org.assertj:assertj-core:${VER_ASSERTJ}"
   }
 }

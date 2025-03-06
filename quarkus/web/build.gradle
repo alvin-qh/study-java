@@ -4,10 +4,9 @@ plugins {
 
 dependencies {
   implementation project(":quarkus:util"),
-    libs.main.quarkus.reactive,
-    libs.main.quarkus.qute,
-    libs.main.quarkus.jackson,
-    libs.main.quarkus.validator
-
-  testImplementation libs.test.quarkus.rest
+                 "io.quarkus:quarkus-rest:${VER_QUARKUS}",
+                 "io.quarkus:quarkus-rest-qute:${VER_QUARKUS}",
+                 "io.quarkus:quarkus-rest-jackson:${VER_QUARKUS}",
+                 "io.quarkus:quarkus-hibernate-validator:${VER_QUARKUS}"
+  testImplementation "io.rest-assured:rest-assured:${VER_REST_ASSURED}"
 }

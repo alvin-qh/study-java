@@ -1,5 +1,5 @@
 plugins {
-  id "org.kordamp.gradle.jandex" version "1.0.0"
+  id "org.kordamp.gradle.jandex" version "${VER_GRADLE_JANDEX}"
 }
 
 dependencies {

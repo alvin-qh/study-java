@@ -4,5 +4,5 @@ plugins {
 
 dependencies {
   implementation project(":quarkus:util"),
-    libs.main.quarkus.arc
+                 "io.quarkus:quarkus-arc:${VER_QUARKUS}"
 }
