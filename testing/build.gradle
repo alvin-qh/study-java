@@ -1,12 +1,21 @@
+plugins {
+  id "com.github.ben-manes.versions" version "${VER_GRADLE_DEP_VERSIONS}"
+}
+
 test {
   useJUnitPlatform()
 
   reports.html.required = false
 
   testLogging {
-    events "PASSED", "SKIPPED", "FAILED", "PASSED", "STANDARD_OUT", "STANDARD_ERROR"
-    showStackTraces true
-    exceptionFormat "full"
+    events "PASSED",
+           "SKIPPED",
+           "FAILED",
+           "PASSED",
+           "STANDARD_OUT",
+           "STANDARD_ERROR"
+    showStackTraces = true
+    exceptionFormat = "full"
   }
 
   failFast = false
@@ -18,12 +27,12 @@ subprojects {
   }
 
   dependencies {
-    implementation libs.main.guava
-
-    testImplementation libs.test.junit,
-        libs.test.assertj,
-        libs.test.junitPioneer,
-        libs.test.awaitility,
-        libs.test.hamcrest
+    implementation "com.google.guava:guava:${VER_GUAVA}"
+    testImplementation "org.junit.jupiter:junit-jupiter:${VER_JUNIT}",
+                       "org.assertj:assertj-core:${VER_ASSERTJ}",
+                       "org.junit-pioneer:junit-pioneer:${VER_JUNIT_PIONEER}",
+                       "org.awaitility:awaitility:${VER_AWAITILITY}",
+                       "org.hamcrest:hamcrest:${VER_HAMCREST}"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher:${VER_JUNIT_LAUNCHER}"
   }
 }

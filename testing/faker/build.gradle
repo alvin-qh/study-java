@@ -1,5 +1,4 @@
 dependencies {
   implementation project(":testing:testcase")
-
-  testImplementation libs.test.faker
+  testImplementation "com.github.javafaker:javafaker:${VER_JAVAFAKER}"
 }

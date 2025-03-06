@@ -1,5 +1,5 @@
 dependencies {
   implementation project(":testing:testcase")
-
-  testImplementation libs.test.mockito
+  testImplementation "org.mockito:mockito-core:${VER_MOCKITO}",
+                     "org.mockito:mockito-junit-jupiter:${VER_MOCKITO}"
 }

@@ -1,11 +1,10 @@
 test {
   jvmArgs "--enable-preview",
-    "--add-opens", "java.base/java.util=ALL-UNNAMED",
-    "--add-opens", "java.base/java.lang=ALL-UNNAMED"
+          "--add-opens", "java.base/java.util=ALL-UNNAMED",
+          "--add-opens", "java.base/java.lang=ALL-UNNAMED"
 }
 
 dependencies {
   implementation project(":testing:testcase")
-
-  testImplementation libs.test.junitPioneer
+  testImplementation "org.junit-pioneer:junit-pioneer:${VER_JUNIT_PIONEER}"
 }

@@ -3,7 +3,6 @@ test {
 }
 
 dependencies {
-  implementation libs.main.log4j
-
-  testImplementation libs.test.testng
+  implementation "org.apache.logging.log4j:log4j-slf4j2-impl:${VER_LOG4J}"
+  testImplementation "org.testng:testng:${VER_TESTNG}"
 }
