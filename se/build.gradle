@@ -4,11 +4,11 @@ subprojects {
   }
 
   dependencies {
-    implementation libs.main.guava
+    implementation "com.google.guava:guava:${VER_GUAVA}"
 
-    testImplementation libs.test.junit,
-        libs.test.assertj,
-        libs.test.awaitility,
-        libs.test.hamcrest
+    testImplementation "org.junit.jupiter:junit-jupiter:${VER_JUNIT}",
+                       "org.assertj:assertj-core:${VER_ASSERTJ}",
+                       "org.awaitility:awaitility:${VER_AWAITILITY}",
+                       "org.hamcrest:hamcrest:${VER_HAMCREST}"
   }
 }
