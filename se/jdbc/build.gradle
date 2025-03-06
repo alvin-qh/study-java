@@ -2,5 +2,5 @@ dependencies {
   implementation "com.h2database:h2:${VER_H2_DB}",
                  "com.zaxxer:HikariCP:${VER_HIKARI}",
                  "org.flywaydb:flyway-core:${VER_FLYWAY}",
-                 "org.slf4j:slf4j-api:${VER_SLF4J}"
+                 "org.apache.logging.log4j:log4j-slf4j2-impl:${VER_LOG4J}"
 }
