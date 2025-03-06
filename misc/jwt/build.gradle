@@ -1,5 +1,4 @@
 dependencies {
-  implementation libs.main.jwt,
-    libs.main.commonsCodec,
-    libs.main.jackson
+  implementation "com.auth0:java-jwt:${VER_AUTH0_JWT}",
+                 "commons-codec:commons-codec:${VER_COMMONS_CODEC}"
 }

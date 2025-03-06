@@ -1,3 +1,9 @@
 dependencies {
-  implementation libs.main.jackson
+  implementation "com.fasterxml.jackson.core:jackson-core:${VER_JACKSON}",
+                 "com.fasterxml.jackson.core:jackson-databind:${VER_JACKSON}",
+                 "com.fasterxml.jackson.core:jackson-annotations:${VER_JACKSON}",
+                 "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:${VER_JACKSON}",
+                 "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${VER_JACKSON}",
+                 "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${VER_JACKSON}",
+                 "com.fasterxml.jackson.module:jackson-module-parameter-names:${VER_JACKSON}"
 }

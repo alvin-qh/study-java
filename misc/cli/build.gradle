@@ -2,10 +2,6 @@ plugins {
   id "application"
 }
 
-dependencies {
-  implementation libs.main.picocli
-}
-
 task exec(type: JavaExec) {
   group = "Execution"
   description = "Run cli command"
@@ -34,4 +30,8 @@ task fatJar(type: Jar) {
     }
   }
   with jar
+}
+
+dependencies {
+  implementation "info.picocli:picocli:${VER_PICOCLI}"
 }
