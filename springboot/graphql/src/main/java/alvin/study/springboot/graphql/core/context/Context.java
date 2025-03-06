@@ -6,6 +6,7 @@ import java.util.Map;
 public final class Context {
     private Map<String, Object> contextMap = new HashMap<>();
 
+    @SuppressWarnings("unchecked")
     public <T> T get(String key) {
         return (T) contextMap.get(key);
     }

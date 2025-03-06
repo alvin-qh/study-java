@@ -158,6 +158,23 @@
 }
 ```
 
+## 3. Toolchain
+
+### 3.1. 查看依赖最新版本
+
+Maven
+
+```bash
+mvn versions:display-dependency-updates
+mvn versions:display-plugin-updates
+```
+
+Gradle
+
+```bash
+gradle dependencyUpdates
+```
+
 ## 附录. 使用 jEnv 管理 JDK
 
 ### 1. 安装

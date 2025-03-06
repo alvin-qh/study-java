@@ -2,15 +2,16 @@ pluginManagement {
   repositories {
     mavenLocal()
     maven {
-      url "https://repo.huaweicloud.com/repository/maven/"
-      url "https://maven.aliyun.com/nexus/content/groups/public/"
+      url = "https://repo.huaweicloud.com/repository/maven/"
+      url = "https://maven.aliyun.com/nexus/content/groups/public/"
     }
     mavenCentral()
     gradlePluginPortal()
   }
+
   plugins {
     // id("de.fayard.refreshVersions") version "${VER_PLUGIN_REFRESH_VERSIONS}"
-    id "io.quarkus" version "${VAR_QUARKUS_PLUGIN}"
+    id "io.quarkus" version "${VER_QUARKUS}"
   }
 }
 
@@ -83,32 +84,32 @@ include(
   ":guice:singleton",
 )
 
-include(
-  ":springboot:mvc",
-  ":springboot:spel",
-  ":springboot:testing",
-  ":springboot:validator",
-  ":springboot:aop",
-  ":springboot:jpa",
-  ":springboot:autoconfig:lib",
-  ":springboot:autoconfig:app",
-  ":springboot:datasource:dynamic",
-  ":springboot:datasource:multiple",
-  ":springboot:jooq",
-  ":springboot:mybatis",
-  ":springboot:security",
-//  ":springboot:shiro",
-  ":springboot:kickstart-graphql",
-  ":springboot:springdoc",
-)
+// include(
+//   ":springboot:mvc",
+//   ":springboot:spel",
+//   ":springboot:testing",
+//   ":springboot:validator",
+//   ":springboot:aop",
+//   ":springboot:jpa",
+//   ":springboot:autoconfig:lib",
+//   ":springboot:autoconfig:app",
+//   ":springboot:datasource:dynamic",
+//   ":springboot:datasource:multiple",
+//   ":springboot:jooq",
+//   ":springboot:mybatis",
+//   ":springboot:security",
+//   ":springboot:shiro",
+//   ":springboot:kickstart-graphql",
+//   ":springboot:springdoc",
+// )
 
-include(
-  ":springcloud:nacos",
-  ":springcloud:eureka:server",
-  ":springcloud:eureka:client",
-  ":springcloud:gateway:server",
-  ":springcloud:gateway:client",
-)
+// include(
+//   ":springcloud:nacos",
+//   ":springcloud:eureka:server",
+//   ":springcloud:eureka:client",
+//   ":springcloud:gateway:server",
+//   ":springcloud:gateway:client",
+// )
 
 include(
   ":quarkus:util",

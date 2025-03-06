@@ -38,7 +38,7 @@ public class UserService {
      * @return {@link User} 类型用户实体对象的 {@link Optional} 包装对象
      */
     @Transactional(readOnly = true)
-    public User findById(long orgId, long id) {
+    public User findById(long id) {
         return Optional.ofNullable(
             userMapper.selectOne(Wrappers.lambdaQuery(User.class)
                     .eq(User::getOrgId, orgId)

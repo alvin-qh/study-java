@@ -1,8 +1,7 @@
 plugins {
+  id "com.github.ben-manes.versions" version "${VER_GRADLE_DEP_VERSIONS}"
   id "org.flywaydb.flyway" version "${VER_FLYWAY}" apply false
 }
-
-apply from: "${rootDir}/gradle/depends.gradle"
 
 allprojects {
   apply plugin: "java"
@@ -26,8 +25,8 @@ allprojects {
   repositories {
     mavenLocal()
     maven {
-      url "https://repo.huaweicloud.com/repository/maven/"
-      url "https://maven.aliyun.com/nexus/content/groups/public/"
+      url = "https://repo.huaweicloud.com/repository/maven/"
+      url = "https://maven.aliyun.com/nexus/content/groups/public/"
     }
     mavenCentral()
   }
@@ -45,7 +44,11 @@ allprojects {
     reports.html.required = false
 
     testLogging {
-      events "PASSED", "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR"
+      events "PASSED",
+             "SKIPPED",
+             "FAILED",
+             "STANDARD_OUT",
+             "STANDARD_ERROR"
       showStackTraces = true
       exceptionFormat = "full"
     }
@@ -80,13 +83,11 @@ subprojects {
   }
 
   dependencies {
-    implementation libs.main.jetbrains.annotation,
-      libs.main.lombok
-
-    compileOnly libs.main.lombok
-
-    annotationProcessor libs.main.lombok
-
-    testAnnotationProcessor libs.main.lombok
+    implementation "jakarta.annotation:jakarta.annotation-api:${VER_JAKARTA_ANNOTATION}",
+                   "org.projectlombok:lombok:${VER_LOMBOK}"
+    compileOnly "org.projectlombok:lombok:${VER_LOMBOK}"
+    annotationProcessor "org.projectlombok:lombok:${VER_LOMBOK}"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher:${VER_JUNIT_LAUNCHER}"
+    testAnnotationProcessor "org.projectlombok:lombok:${VER_LOMBOK}"
   }
 }
