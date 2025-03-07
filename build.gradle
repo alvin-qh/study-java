@@ -87,7 +87,6 @@ subprojects {
                    "org.projectlombok:lombok:${VER_LOMBOK}"
     compileOnly "org.projectlombok:lombok:${VER_LOMBOK}"
     annotationProcessor "org.projectlombok:lombok:${VER_LOMBOK}"
-    testRuntimeOnly "org.junit.platform:junit-platform-launcher:${VER_JUNIT_LAUNCHER}"
     testAnnotationProcessor "org.projectlombok:lombok:${VER_LOMBOK}"
   }
 }

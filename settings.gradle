@@ -84,24 +84,24 @@ include(
   ":guice:singleton",
 )
 
-// include(
-//   ":springboot:mvc",
-//   ":springboot:spel",
-//   ":springboot:testing",
-//   ":springboot:validator",
-//   ":springboot:aop",
-//   ":springboot:jpa",
-//   ":springboot:autoconfig:lib",
-//   ":springboot:autoconfig:app",
-//   ":springboot:datasource:dynamic",
-//   ":springboot:datasource:multiple",
-//   ":springboot:jooq",
-//   ":springboot:mybatis",
-//   ":springboot:security",
-//   ":springboot:shiro",
-//   ":springboot:kickstart-graphql",
-//   ":springboot:springdoc",
-// )
+include(
+  ":springboot:mvc",
+  ":springboot:spel",
+  ":springboot:testing",
+  ":springboot:validator",
+  ":springboot:aop",
+  ":springboot:jpa",
+  ":springboot:autoconfig:lib",
+  ":springboot:autoconfig:app",
+  ":springboot:datasource:dynamic",
+  ":springboot:datasource:multiple",
+  // ":springboot:jooq",
+  // ":springboot:mybatis",
+  // ":springboot:security",
+  // ":springboot:shiro",
+  // ":springboot:kickstart-graphql",
+  // ":springboot:springdoc",
+)
 
 // include(
 //   ":springcloud:nacos",
