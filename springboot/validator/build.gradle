@@ -1,14 +1,3 @@
-plugins {
-  id "org.springframework.boot"
-  id "org.flywaydb.flyway"
-}
-
-dependencies {
-  implementation libs.main.springboot.validator
-
-  developmentOnly libs.main.springboot.devtools
-}
-
 springBoot {
   mainClass = "alvin.study.springboot.validator.Main"
 }
@@ -25,4 +14,6 @@ bootJar {
   archiveFileName = "alvin.study.springboot_validator.${archiveExtension.get()}"
 }
 
-
+dependencies {
+  implementation "org.springframework.boot:spring-boot-starter-validation"
+}
