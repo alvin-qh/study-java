@@ -96,7 +96,7 @@ include(
   ":springboot:datasource:dynamic",
   ":springboot:datasource:multiple",
   // ":springboot:jooq",
-  // ":springboot:mybatis",
+  ":springboot:mybatis",
   // ":springboot:security",
   // ":springboot:shiro",
   // ":springboot:kickstart-graphql",

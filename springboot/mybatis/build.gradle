@@ -1,5 +1,4 @@
 plugins {
-  id "org.springframework.boot"
   id "org.flywaydb.flyway"
 }
 
@@ -7,20 +6,6 @@ repositories {
   maven {
     url "https://oss.sonatype.org/content/groups/public/"
   }
-}
-
-dependencies {
-  implementation libs.main.springboot.mybatisPlus,
-    libs.main.springboot.web,
-    libs.main.modelmapper,
-    libs.main.commonsCodec,
-    libs.main.h2
-
-  developmentOnly libs.main.springboot.devtools
-
-  testImplementation libs.test.p6spy
-
-  runtimeOnly libs.main.flyway
 }
 
 springBoot {
@@ -47,4 +32,19 @@ flyway {
     "filesystem:${projectDir}/src/main/resources/migration"
   ]
   table = "schema_version"
+}
+
+dependencies {
+  implementation ("com.baomidou:mybatis-plus-spring-boot3-starter:${VER_MYBATIS_PLUS}") {
+    exclude group: "org.springframework.boot", module: "*"
+  }
+  implementation "com.baomidou:mybatis-plus-jsqlparser:${VER_MYBATIS_PLUS}",
+                 "org.springframework.boot:spring-boot-starter-web",
+                 "org.springframework.boot:spring-boot-starter-jdbc",
+                 "org.springframework.boot:spring-boot-starter-validation",
+                 "org.modelmapper:modelmapper:${VER_MODELMAPPER}",
+                 "commons-codec:commons-codec:${VER_COMMONS_CODEC}",
+                 "com.h2database:h2:${VER_H2_DB}"
+  testImplementation "p6spy:p6spy:${VER_P6SPY}"
+  runtimeOnly "org.flywaydb:flyway-core:${VER_FLYWAY}"
 }

@@ -1,6 +1,7 @@
 plugins {
   id "org.springframework.boot" version "${VER_SPRING_BOOT}" apply false
   id "io.spring.dependency-management" version "${VER_GRADLE_SPRING_DEP_MGR}" apply false
+  id "com.github.ben-manes.versions" version "${VER_GRADLE_DEP_VERSIONS}"
 }
 
 group "alvin.study.springboot"
