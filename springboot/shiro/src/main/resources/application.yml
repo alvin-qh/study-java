@@ -25,19 +25,20 @@ spring:
     username: dev
     password: password
 
-  # redis 配置
-  redis:
-    database: 0
-    host: 127.0.0.1
-    port: 6379
-    timeout: 2000
-    lettuce:
-      pool:
-        enabled: true
-        max-active: 8
-        max-wait: -1ms
-        max-idle: 8
-        min-idle: 0
+  data:
+    # redis 配置
+    redis:
+      database: 0
+      host: 127.0.0.1
+      port: 6379
+      timeout: 2000
+      lettuce:
+        pool:
+          enabled: true
+          max-active: 8
+          max-wait: -1ms
+          max-idle: 8
+          min-idle: 0
 
   # db migration 配置
   flyway:

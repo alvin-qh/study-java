@@ -23,8 +23,7 @@ import alvin.study.springboot.mybatis.infra.mapper.BaseMapper;
  * MyBatisConfig.getMethodList(Class, TableInfo)} 方法
  * </li>
  * <li>
- * 声明通用方法, 参考 {@link BaseMapper#deleteAll()
- * BaseMapper.deleteAll()} 方法
+ * 声明通用方法, 参考 {@link BaseMapper#deleteAll() BaseMapper.deleteAll()} 方法
  * </li>
  * </ol>
  * </p>

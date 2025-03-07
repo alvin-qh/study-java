@@ -99,12 +99,12 @@ public class EntityFieldHandler implements MetaObjectHandler {
     public void updateFill(MetaObject metaObject) {
         var now = Instant.now();
         // 将实体的 updatedAt 字段设置为当前时间
-        strictInsertFill(metaObject, FIELD_UPDATED_AT, Instant.class, now);
+        strictUpdateFill(metaObject, FIELD_UPDATED_AT, Instant.class, now);
 
         var user = getCurrentLoginUser();
         if (user != null && user.getId() != null) {
             // 则实体的 updatedBy 字段设置为当前登录用户 id 值
-            strictInsertFill(metaObject, FIELD_UPDATED_BY, Long.class, user.getId());
+            strictUpdateFill(metaObject, FIELD_UPDATED_BY, Long.class, user.getId());
         }
     }
 }
