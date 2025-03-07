@@ -1,3 +1,7 @@
 dependencies {
-  testImplementation "org.junit-pioneer:junit-pioneer:${VER_JUNIT_PIONEER}"
+  testImplementation ("org.junit-pioneer:junit-pioneer:${VER_JUNIT_PIONEER}") {
+    exclude group: "org.junit.jupiter", module: "*"
+    exclude group: "org.junit.platform", module: "*"
+  }
+  testImplementation "org.awaitility:awaitility:${VER_AWAITILITY}"
 }
