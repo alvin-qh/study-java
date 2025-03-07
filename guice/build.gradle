@@ -12,5 +12,6 @@ subprojects {
                    "com.google.inject:guice:${VER_GUICE}"
     testImplementation "org.junit.jupiter:junit-jupiter:${VER_JUNIT}",
                        "org.assertj:assertj-core:${VER_ASSERTJ}"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher:${VER_JUNIT_LAUNCHER}"
   }
 }
