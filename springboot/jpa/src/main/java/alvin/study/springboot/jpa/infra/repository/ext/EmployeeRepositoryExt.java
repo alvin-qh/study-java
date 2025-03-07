@@ -68,6 +68,7 @@ public interface EmployeeRepositoryExt {
                     .getResultList();
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public List<Employee> findEmployeesByDepartmentNative(Department department) {
             // 通过原生 SQL 实现查询
