@@ -1,7 +1,7 @@
 subprojects {
+  apply plugin: "org.flywaydb.flyway"
+
   if (!new File(projectDir, "src").exists()) {
     return
   }
-
-  apply plugin: "org.flywaydb.flyway"
 }

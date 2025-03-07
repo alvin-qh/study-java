@@ -1,13 +1,3 @@
-plugins {
-  id "org.springframework.boot"
-}
-
-dependencies {
-  implementation libs.main.springboot.jdbc,
-    libs.main.h2,
-    libs.main.flyway
-}
-
 springBoot {
   mainClass = "alvin.study.springboot.ds.Main"
 }
@@ -66,3 +56,9 @@ task flywayMigrateAll(dependsOn: [
   flywayMigrateDB1,
   flywayMigrateDB2
 ])
+
+dependencies {
+  implementation "org.springframework.boot:spring-boot-starter-jdbc",
+                 "com.h2database:h2:${VER_H2_DB}",
+                 "org.flywaydb:flyway-core:${VER_FLYWAY}"
+}

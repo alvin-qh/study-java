@@ -1,14 +1,3 @@
-plugins {
-  id "org.springframework.boot"
-}
-
-dependencies {
-  implementation libs.main.springboot.web,
-    libs.main.springboot.aop
-
-  developmentOnly libs.main.springboot.devtools
-}
-
 springBoot {
   mainClass = "alvin.study.springboot.aop.Main"
 }
@@ -23,4 +12,9 @@ bootJar {
 
   archiveBaseName = project.group
   archiveFileName = "alvin.study.springboot-aop.${archiveExtension.get()}"
+}
+
+dependencies {
+  implementation "org.springframework.boot:spring-boot-starter-web",
+                 "org.springframework.boot:spring-boot-starter-aop"
 }

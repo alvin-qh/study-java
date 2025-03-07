@@ -1,12 +1,14 @@
 plugins {
   id "org.springframework.boot" version "${VER_SPRING_BOOT}" apply false
-  id "io.spring.dependency-management" version "${VER_GRADLE_SPRING_DEPENDENCY_MANAGEMENT}" apply false
+  id "io.spring.dependency-management" version "${VER_GRADLE_SPRING_DEP_MGR}" apply false
 }
 
 group "alvin.study.springboot"
 version "1.0-SNAPSHOT"
 
 subprojects {
+  apply plugin: "org.springframework.boot"
+
   if (!new File(projectDir, "src").exists()) {
     return
   }
@@ -25,12 +27,12 @@ subprojects {
   }
 
   dependencies {
-    implementation libs.main.springboot.starter,
-      libs.main.springboot.log4j,
-      libs.main.guava
-
-    annotationProcessor libs.main.springboot.annotationProcessor
-
-    testImplementation libs.test.springboot.starter
+    implementation "org.springframework.boot:spring-boot-starter",
+                   "org.springframework.boot:spring-boot-starter-log4j2",
+                   "com.google.guava:guava:${VER_GUAVA}"
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    developmentOnly "org.springframework.boot:spring-boot-devtools:${VER_SPRING_BOOT}"
+    testImplementation "org.springframework.boot:spring-boot-starter-test",
+                       "org.assertj:assertj-core:${VER_ASSERTJ}"
   }
 }

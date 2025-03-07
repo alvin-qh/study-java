@@ -4,7 +4,6 @@ import java.util.List;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.validation.constraints.NotNull;
 
 import alvin.study.springboot.jpa.infra.entity.Department;
 import alvin.study.springboot.jpa.infra.entity.Employee;
@@ -57,7 +56,7 @@ public interface EmployeeRepositoryExt {
         private EntityManager em;
 
         @Override
-        public List<@NotNull Employee> findEmployeesByDepartment(Department department) {
+        public List<Employee> findEmployeesByDepartment(Department department) {
             // 通过 JPQL 实现查询
             return em.createQuery("""
                 select e
@@ -69,7 +68,6 @@ public interface EmployeeRepositoryExt {
                     .getResultList();
         }
 
-        @SuppressWarnings("unchecked")
         @Override
         public List<Employee> findEmployeesByDepartmentNative(Department department) {
             // 通过原生 SQL 实现查询
