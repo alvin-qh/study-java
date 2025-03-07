@@ -24,6 +24,11 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>org.jooq</groupId>
+        <artifactId>jooq</artifactId>
+        <version>${version.jooq}</version>
+      </dependency>
+      <dependency>
         <groupId>org.modelmapper.extensions</groupId>
         <artifactId>modelmapper-jooq</artifactId>
         <version>${version.modelmapper}</version>
@@ -66,7 +71,6 @@
       <!-- 引入高版本的 JOOQ 框架 -->
       <groupId>org.jooq</groupId>
       <artifactId>jooq</artifactId>
-      <version>${version.jooq}</version>
     </dependency>
     <dependency>
       <!-- Spring Boot Web 框架 -->

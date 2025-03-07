@@ -99,7 +99,6 @@ include(
   ":springboot:mybatis",
   // ":springboot:security",
   // ":springboot:shiro",
-  // ":springboot:kickstart-graphql",
   // ":springboot:springdoc",
 )
 

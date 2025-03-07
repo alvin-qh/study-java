@@ -1,11 +1,8 @@
 // 需要将 Spring 依赖的 JOOQ 版本进行替换, 参见 settings.gradle 中 buildscript 部分的配置
-
 plugins {
-  id "org.springframework.boot"
   id "nu.studer.jooq" version "${VER_GRADLE_JOOQ}"
+  id "org.flywaydb.flyway"
 }
-
-apply plugin: "org.flywaydb.flyway"
 
 sourceSets {
   main {
@@ -13,20 +10,6 @@ sourceSets {
       srcDirs += ["src/jooq/java"]
     }
   }
-}
-
-dependencies {
-  implementation libs.main.springboot.jooq,
-    libs.main.springboot.web,
-    libs.main.springboot.jdbc,
-    libs.main.commonsCodec,
-    libs.main.h2
-
-  developmentOnly libs.main.springboot.devtools
-
-  jooqGenerator libs.main.h2
-
-  runtimeOnly libs.main.flyway
 }
 
 springBoot {
@@ -157,4 +140,16 @@ tasks.named("generateJooq").configure {
       throw new RuntimeException("jOOQ source code generation failed:\n\n" + out.toString())
     }
   }
+}
+
+dependencies {
+  implementation "org.jooq:jooq:${VER_JOOQ}",
+                 ""
+    libs.main.springboot.jdbc,
+    libs.main.commonsCodec,
+    libs.main.h2
+
+  jooqGenerator libs.main.h2
+
+  runtimeOnly libs.main.flyway
 }
