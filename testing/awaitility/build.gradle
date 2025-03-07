@@ -1,3 +1,5 @@
 dependencies {
   implementation project(":testing:testcase")
+  testImplementation "org.awaitility:awaitility:${VER_AWAITILITY}",
+                     "org.assertj:assertj-core:${VER_ASSERTJ}"
 }

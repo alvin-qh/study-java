@@ -1,4 +1,5 @@
 dependencies {
   implementation project(":testing:testcase")
-  testImplementation "com.github.javafaker:javafaker:${VER_JAVAFAKER}"
+  testImplementation "com.github.javafaker:javafaker:${VER_JAVAFAKER}",
+                     "org.assertj:assertj-core:${VER_ASSERTJ}"
 }

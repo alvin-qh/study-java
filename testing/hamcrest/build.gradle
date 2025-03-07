@@ -1,5 +1,6 @@
 dependencies {
   implementation project(":testing:testcase")
-  testImplementation "org.mockito:mockito-core:${VER_MOCKITO}",
+  testImplementation "org.hamcrest:hamcrest:${VER_HAMCREST}",
+                     "org.mockito:mockito-core:${VER_MOCKITO}",
                      "org.mockito:mockito-junit-jupiter:${VER_MOCKITO}"
 }

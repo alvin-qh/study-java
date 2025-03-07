@@ -28,11 +28,7 @@ subprojects {
 
   dependencies {
     implementation "com.google.guava:guava:${VER_GUAVA}"
-    testImplementation "org.junit.jupiter:junit-jupiter:${VER_JUNIT}",
-                       "org.assertj:assertj-core:${VER_ASSERTJ}",
-                       "org.junit-pioneer:junit-pioneer:${VER_JUNIT_PIONEER}",
-                       "org.awaitility:awaitility:${VER_AWAITILITY}",
-                       "org.hamcrest:hamcrest:${VER_HAMCREST}"
+    testImplementation "org.junit.jupiter:junit-jupiter:${VER_JUNIT}"
     testRuntimeOnly "org.junit.platform:junit-platform-launcher:${VER_JUNIT_LAUNCHER}"
   }
 }
