@@ -13,11 +13,14 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 
 import lombok.RequiredArgsConstructor;
 
+import alvin.study.springboot.graphql.app.context.ContextKey;
+import alvin.study.springboot.graphql.core.context.ContextHolder;
 import alvin.study.springboot.graphql.core.exception.InputException;
 import alvin.study.springboot.graphql.core.exception.NotFoundException;
 import alvin.study.springboot.graphql.infra.entity.Department;
 import alvin.study.springboot.graphql.infra.entity.DepartmentEmployee;
 import alvin.study.springboot.graphql.infra.entity.Employee;
+import alvin.study.springboot.graphql.infra.entity.Org;
 import alvin.study.springboot.graphql.infra.mapper.DepartmentEmployeeMapper;
 import alvin.study.springboot.graphql.infra.mapper.DepartmentMapper;
 import alvin.study.springboot.graphql.infra.mapper.EmployeeMapper;
@@ -39,11 +42,9 @@ public class EmployeeService {
      * @return {@link Employee} 类型雇员实体的 {@link Optional} 类型包装对象
      */
     @Transactional(readOnly = true)
-    public Employee findById(long orgId, long id) {
+    public Employee findById(long id) {
         return Optional.ofNullable(
-            employeeMapper.selectOne(Wrappers.lambdaQuery(Employee.class)
-                    .eq(Employee::getOrgId, orgId)
-                    .eq(Employee::getId, id)))
+            employeeMapper.selectById(id))
                 .orElseThrow(() -> new NotFoundException(String.format("Employee not exist by id = %d", id)));
     }
 
@@ -75,12 +76,11 @@ public class EmployeeService {
      */
     @Transactional
     public Employee update(Employee employee, Collection<Long> departmentIds) {
-        var existEmployee = findById(employee.getOrgId(), employee.getId());
+        var existEmployee = employeeMapper.selectById(employee.getId());
         existEmployee.setName(employee.getName());
         existEmployee.setEmail(employee.getEmail());
         existEmployee.setTitle(employee.getTitle());
         existEmployee.setInfo(employee.getInfo());
-        existEmployee.setUpdatedBy(employee.getUpdatedBy());
 
         if (employeeMapper.updateById(existEmployee) == 0) {
             throw new NotFoundException(String.format("Employee not exist by id = %d", employee.getId()));
@@ -109,9 +109,7 @@ public class EmployeeService {
      * @param departmentIds 所属部门 {@code ID} 集合
      */
     private void bindWithDepartments(Employee employee, Set<Long> departmentIds) {
-        var departments = departmentMapper.selectList(Wrappers.lambdaQuery(Department.class)
-                .in(Department::getId, departmentIds)
-                .eq(Department::getOrgId, employee.getOrgId()));
+        var departments = departmentMapper.selectByIds(departmentIds);
         if (departmentIds.size() != departments.size()) {
             departmentIds.removeAll(departments.stream().map(Department::getId).collect(Collectors.toSet()));
             throw new InputException(String.format("Department id in %s not a valid id", departmentIds));
@@ -119,13 +117,8 @@ public class EmployeeService {
 
         departments.forEach(d -> {
             var de = new DepartmentEmployee();
-            de.setOrgId(employee.getOrgId());
             de.setDepartmentId(d.getId());
             de.setEmployeeId(employee.getId());
-            de.setUpdatedBy(employee.getUpdatedBy());
-            if (employee.getCreatedBy() != null) {
-                de.setCreatedBy(employee.getCreatedBy());
-            }
             departmentEmployeeMapper.insert(de);
         });
     }
@@ -137,17 +130,13 @@ public class EmployeeService {
      * @return {@code true} 表示删除成功, {@code false} 表示删除失败
      */
     @Transactional
-    public boolean delete(long orgId, long id) {
+    public boolean delete(long id) {
         // 删除之前的关联关系
-        departmentEmployeeMapper.delete(Wrappers.lambdaQuery(DepartmentEmployee.class)
-                .eq(DepartmentEmployee::getOrgId, orgId)
-                .eq(DepartmentEmployee::getEmployeeId, id));
+        departmentEmployeeMapper.delete(
+            Wrappers.lambdaQuery(DepartmentEmployee.class)
+                    .eq(DepartmentEmployee::getEmployeeId, id));
 
-        return employeeMapper.update(Wrappers.lambdaUpdate(Employee.class)
-                .set(Employee::getDeleted, 1)
-                .eq(Employee::getOrgId, orgId)
-                .eq(Employee::getId, id))
-               > 0;
+        return employeeMapper.deleteById(id) > 0;
     }
 
     /**
@@ -158,7 +147,8 @@ public class EmployeeService {
      * @return {@link IPage} 类型分页对象, 包含一页数量的 {@link Employee} 类型的员工实体对象集合
      */
     @Transactional(readOnly = true)
-    public IPage<Employee> listByDepartmentId(IPage<Employee> page, long orgId, long departmentId) {
-        return employeeMapper.selectByDepartmentId(page, orgId, departmentId);
+    public IPage<Employee> listByDepartmentId(IPage<Employee> page, long departmentId) {
+        var ctx = ContextHolder.getValue();
+        return employeeMapper.selectByDepartmentId(page, ctx.<Org>get(ContextKey.KEY_ORG).getId(), departmentId);
     }
 }

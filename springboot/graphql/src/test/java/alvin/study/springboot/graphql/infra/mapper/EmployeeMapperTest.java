@@ -27,58 +27,37 @@ public class EmployeeMapperTest extends IntegrationTest {
         Employee employee1, employee2, employee3, employee4, employee5;
 
         try (var ignore = beginTx(false)) {
-            department = newBuilder(DepartmentBuilder.class)
-                    .withOrgId(currentOrg().getId())
-                    .create();
+            department = newBuilder(DepartmentBuilder.class).create();
 
-            employee1 = newBuilder(EmployeeBuilder.class)
-                    .withOrgId(currentOrg().getId())
-                    .create();
-
-            employee2 = newBuilder(EmployeeBuilder.class)
-                    .withOrgId(currentOrg().getId())
-                    .create();
-
-            employee3 = newBuilder(EmployeeBuilder.class)
-                    .withOrgId(currentOrg().getId())
-                    .create();
-
-            employee4 = newBuilder(EmployeeBuilder.class)
-                    .withOrgId(currentOrg().getId())
-                    .create();
-
-            employee5 = newBuilder(EmployeeBuilder.class)
-                    .withOrgId(currentOrg().getId())
-                    .create();
+            employee1 = newBuilder(EmployeeBuilder.class).create();
+            employee2 = newBuilder(EmployeeBuilder.class).create();
+            employee3 = newBuilder(EmployeeBuilder.class).create();
+            employee4 = newBuilder(EmployeeBuilder.class).create();
+            employee5 = newBuilder(EmployeeBuilder.class).create();
 
             newBuilder(DepartmentEmployeeBuilder.class)
                     .withEmployeeId(employee1.getId())
                     .withDepartmentId(department.getId())
-                    .withOrgId(currentOrg().getId())
                     .create();
 
             newBuilder(DepartmentEmployeeBuilder.class)
                     .withEmployeeId(employee2.getId())
                     .withDepartmentId(department.getId())
-                    .withOrgId(currentOrg().getId())
                     .create();
 
             newBuilder(DepartmentEmployeeBuilder.class)
                     .withEmployeeId(employee3.getId())
                     .withDepartmentId(department.getId())
-                    .withOrgId(currentOrg().getId())
                     .create();
 
             newBuilder(DepartmentEmployeeBuilder.class)
                     .withEmployeeId(employee4.getId())
                     .withDepartmentId(department.getId())
-                    .withOrgId(currentOrg().getId())
                     .create();
 
             newBuilder(DepartmentEmployeeBuilder.class)
                     .withEmployeeId(employee5.getId())
                     .withDepartmentId(department.getId())
-                    .withOrgId(currentOrg().getId())
                     .create();
         }
 

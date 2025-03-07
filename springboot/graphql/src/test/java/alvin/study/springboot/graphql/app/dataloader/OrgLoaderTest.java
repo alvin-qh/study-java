@@ -8,12 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.junit.jupiter.api.Test;
 
-import alvin.study.springboot.graphql.app.dataloader.common.DataloaderTest;
+import alvin.study.springboot.graphql.IntegrationTest;
 import alvin.study.springboot.graphql.builder.OrgBuilder;
 import alvin.study.springboot.graphql.infra.entity.Org;
 import alvin.study.springboot.graphql.infra.mapper.OrgMapper;
 
-public class OrgLoaderTest extends DataloaderTest {
+public class OrgLoaderTest extends IntegrationTest {
     @Autowired
     private OrgMapper orgMapper;
 
@@ -29,8 +29,7 @@ public class OrgLoaderTest extends DataloaderTest {
 
         var loader = new OrgLoader(orgMapper);
         var result = loader.apply(
-            Set.of(org1.getId(), org2.getId(), org3.getId()),
-            buildBatchLoaderEnvironment());
+            Set.of(org1.getId(), org2.getId(), org3.getId()), null);
 
         var map = result.block();
         then(map.get(org1.getId()).getId()).isEqualTo(org1.getId());

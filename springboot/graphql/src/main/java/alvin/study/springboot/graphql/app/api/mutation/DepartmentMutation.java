@@ -21,7 +21,7 @@ public class DepartmentMutation extends BaseMutation {
     private final DepartmentService departmentService;
 
     static record DepartmentInput(String name, Long parentId) {
-        public Department toEntity(GraphQLContext ctx, @Nullable Long id) {
+        public Department toEntity(@Nullable Long id) {
             var department = new Department();
             department.setId(id);
             department.setName(name);
@@ -31,16 +31,15 @@ public class DepartmentMutation extends BaseMutation {
     }
 
     @MutationMapping
-    public MutationResult<Department> createDepartment(@Argument DepartmentInput input, GraphQLContext ctx) {
-        var department = input.toEntity(ctx, null);
+    public MutationResult<Department> createDepartment(@Argument DepartmentInput input) {
+        var department = input.toEntity(null);
         departmentService.create(department);
         return MutationResult.of(department);
     }
 
     @MutationMapping
-    public MutationResult<Department> updateDepartment(@Argument Long id, @Argument DepartmentInput input,
-            GraphQLContext ctx) {
-        var department = input.toEntity(ctx, id);
+    public MutationResult<Department> updateDepartment(@Argument Long id, @Argument DepartmentInput input) {
+        var department = input.toEntity(id);
         departmentService.update(department);
         return MutationResult.of(department);
     }

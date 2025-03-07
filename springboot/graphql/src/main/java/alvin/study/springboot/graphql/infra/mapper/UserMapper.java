@@ -3,8 +3,6 @@ package alvin.study.springboot.graphql.infra.mapper;
 import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-
 import alvin.study.springboot.graphql.infra.entity.User;
 import alvin.study.springboot.graphql.infra.entity.common.AuditedEntity;
 import alvin.study.springboot.graphql.infra.entity.common.TenantedEntity;

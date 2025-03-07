@@ -1,5 +1,7 @@
 package alvin.study.springboot.graphql.conf;
 
+import java.util.List;
+
 import org.mybatis.spring.annotation.MapperScan;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -8,11 +10,21 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.core.incrementer.IKeyGenerator;
+import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.injector.DefaultSqlInjector;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.TableInfo;
+import com.baomidou.mybatisplus.extension.incrementer.H2KeyGenerator;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.pagination.dialects.MySqlDialect;
+
+import alvin.study.springboot.graphql.infra.handler.TenantHandler;
+import alvin.study.springboot.graphql.infra.mapper.method.DeleteAllMethod;
+import alvin.study.springboot.graphql.infra.mapper.method.InsertAllBatchMethod;
 
 /**
  * MyBatis 框架相关配置
@@ -34,26 +46,80 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.dialects.MySqlDiale
 @EnableTransactionManagement
 public class MyBatisConfig extends DefaultSqlInjector {
     /**
+     * 获取主键生成器对象
+     *
+     * <p>
+     * 主键生成器一般用于自定义主键, 或 Oracle, DB2, PostgreSQL, H2 这类支持从序列 (Sequence)
+     * 中获取值作为主键的数据库. 本例中使用 MySQL, 所以无需特殊的主键生成规则, 所以注释掉 {@link Bean @Bean} 注解,
+     * 令该方法不生效
+     * </p>
+     *
+     * @return {@link IKeyGenerator} 接口对象, 用于生成主键, 例如 {@link H2KeyGenerator} 对象
+     */
+    // @Bean
+    IKeyGenerator keyGenerator() {
+        return new H2KeyGenerator();
+    }
+
+    /**
+     *
      * 开启所需的 Interceptor 拦截器, 从而通过拦截器启动各类功能
      *
      * @return {@link MybatisPlusInterceptor} 对象, 表示拦截器集合
      */
     @Bean
-    MybatisPlusInterceptor interceptor(@Value("${spring.data.web.pageable.max-page-size:null}") Long maxPageSize) {
+    MybatisPlusInterceptor interceptor(
+            @Value("${spring.data.web.pageable.max-page-size:null}") Long maxPageSize,
+            TenantHandler tenantHandler) {
         var interceptor = new MybatisPlusInterceptor();
 
         // 添加内置拦截器, 用于启动分页控制
         var paginationInterceptor = new PaginationInnerInterceptor(DbType.MYSQL);
         paginationInterceptor.setDialect(new MySqlDialect()); // 设置方言 (可选, 如已经设置 DbType 可忽略)
         paginationInterceptor.setOptimizeJoin(true); // 优化 count 语句时 left join 部分
-        if (maxPageSize != null) {
-            paginationInterceptor.setMaxLimit(maxPageSize); // 设置最大分页数量
-        }
+        paginationInterceptor.setMaxLimit(10000L); // 设置最大分页数量
         interceptor.addInnerInterceptor(paginationInterceptor);
 
         // 添加内置拦截器, 用于启动乐观锁版本控制
         interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
 
+        // 添加内置拦截器, 用于启动租户控制
+        var tenantInterceptor = new TenantLineInnerInterceptor();
+        tenantInterceptor.setTenantLineHandler(tenantHandler);
+        interceptor.addInnerInterceptor(tenantInterceptor);
+
         return interceptor;
+    }
+
+    /**
+     * 添加自定义方法
+     *
+     * <p>
+     * 通过重写 {@link DefaultSqlInjector#getMethodList(Class, TableInfo)}
+     * 方法即可以添加自定义通用方法
+     * </p>
+     *
+     * <p>
+     * 自定义方法需要编写一个从 {@link com.baomidou.mybatisplus.core.injector.AbstractMethod
+     * AbstractMethod} 类型继承的子类, 参考
+     * {@link DeleteAllMethod DeleteAllMethod} 类型
+     * </p>
+     *
+     * <p>
+     * 注入的方法需要在所有 Mapper 类型的超类中定义, 参考 {@link BaseMapper
+     * BaseMapper} 中定义的通用方法
+     * </p>
+     *
+     * @see DeleteAllMethod
+     * @see InsertAllBatchMethod
+     */
+    @Override
+    public List<AbstractMethod> getMethodList(
+            org.apache.ibatis.session.Configuration configuration,
+            Class<?> mapperClass, TableInfo tableInfo) {
+        var methods = super.getMethodList(configuration, mapperClass, tableInfo);
+        methods.add(new DeleteAllMethod());
+        methods.add(new InsertAllBatchMethod());
+        return methods;
     }
 }

@@ -8,10 +8,7 @@ import alvin.study.springboot.graphql.builder.UserBuilder;
 public class UserQueryTest extends WebTest {
     @Test
     void query_shouldFindUserById() {
-        var expectedUser = newBuilder(UserBuilder.class)
-                .withOrgId(currentOrg().getId())
-                .withAuditorId(currentUser().getId())
-                .create();
+        var expectedUser = newBuilder(UserBuilder.class).create();
 
         qlTester().documentName("user")
                 .operationName("queryUser")

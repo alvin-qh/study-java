@@ -1,7 +1,5 @@
 package alvin.study.springboot.graphql;
 
-import java.util.Map;
-
 import org.apache.ibatis.session.SqlSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,6 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
-import graphql.GraphQLContext;
 import alvin.study.springboot.graphql.app.context.ContextKey;
 import alvin.study.springboot.graphql.builder.Builder;
 import alvin.study.springboot.graphql.builder.OrgBuilder;
@@ -27,6 +24,8 @@ import alvin.study.springboot.graphql.conf.TestingContextInitializer;
 import alvin.study.springboot.graphql.core.TableCleaner;
 import alvin.study.springboot.graphql.core.TestingTransaction;
 import alvin.study.springboot.graphql.core.TestingTransactionManager;
+import alvin.study.springboot.graphql.core.context.Context;
+import alvin.study.springboot.graphql.core.context.ContextHolder;
 import alvin.study.springboot.graphql.infra.entity.Org;
 import alvin.study.springboot.graphql.infra.entity.User;
 
@@ -119,8 +118,6 @@ public abstract class IntegrationTest {
      */
     private User user;
 
-    private GraphQLContext context;
-
     @BeforeEach
     @Transactional
     protected void beforeEach() {
@@ -134,16 +131,20 @@ public abstract class IntegrationTest {
             user = newBuilder(UserBuilder.class).withOrgId(org.getId()).create();
         }
 
-        context = GraphQLContext.of(Map.of(
-            ContextKey.ORG, org,
-            ContextKey.USER, user));
+        var context = new Context();
+        context.put(ContextKey.KEY_ORG, org);
+        context.put(ContextKey.KEY_USER, user);
+
+        ContextHolder.setValue(context);
     }
 
     /**
      * 每次测试结束, 进行清理工作
      */
     @AfterEach
-    protected void afterEach() {}
+    protected void afterEach() {
+        ContextHolder.reset();
+    }
 
     protected Org currentOrg() {
         return org;
@@ -151,10 +152,6 @@ public abstract class IntegrationTest {
 
     protected User currentUser() {
         return user;
-    }
-
-    protected GraphQLContext context() {
-        return context;
     }
 
     /**

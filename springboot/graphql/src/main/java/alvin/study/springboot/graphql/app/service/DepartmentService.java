@@ -35,13 +35,10 @@ public class DepartmentService {
      * @return {@link Department} 类型部门实体对象的 {@link Optional} 包装对象
      */
     @Transactional(readOnly = true)
-    public Department findById(long orgId, long id) {
+    public Department findById(long id) {
         return Optional.ofNullable(
-            departmentMapper.selectOne(Wrappers.lambdaQuery(Department.class)
-                    .eq(Department::getOrgId, orgId)
-                    .eq(Department::getId, id)))
-                .orElseThrow(
-                    () -> new NotFoundException(String.format("Department not exist by id = %d", id)));
+            departmentMapper.selectById(id))
+                .orElseThrow(() -> new NotFoundException(String.format("Department not exist by id = %d", id)));
     }
 
     /**
@@ -51,10 +48,8 @@ public class DepartmentService {
      * @return {@link Department} 类型部门实体集合
      */
     @Transactional(readOnly = true)
-    public List<Department> listByIds(long orgId, Collection<Long> departmentIds) {
-        return departmentMapper.selectList(Wrappers.lambdaQuery(Department.class)
-                .eq(Department::getOrgId, orgId)
-                .in(Department::getId, departmentIds));
+    public List<Department> listByIds(Collection<Long> departmentIds) {
+        return departmentMapper.selectByIds(departmentIds);
     }
 
     /**
@@ -79,10 +74,7 @@ public class DepartmentService {
         if (department.getParentId() == department.getId()) {
             throw new InputException("Cannot set parent department as self");
         }
-        if (departmentMapper.update(department, Wrappers.lambdaUpdate(Department.class)
-                .eq(Department::getOrgId, department.getOrgId())
-                .eq(Department::getId, department.getId()))
-            == 0) {
+        if (departmentMapper.updateById(department) == 0) {
             throw new NotFoundException(String.format("Department not exist by id = %d", department.getId()));
         }
     }
@@ -95,9 +87,8 @@ public class DepartmentService {
      * @return {@link IPage} 类型分页对象, 包含一页数量的 {@link Department} 类型子部门实体集合
      */
     @Transactional(readOnly = true)
-    public IPage<Department> listChildren(IPage<Department> page, long orgId, long parentId) {
+    public IPage<Department> listChildren(IPage<Department> page, long parentId) {
         var query = Wrappers.lambdaQuery(Department.class)
-                .eq(Department::getOrgId, orgId)
                 .eq(Department::getParentId, parentId);
         return departmentMapper.selectPage(page, query);
     }
@@ -110,10 +101,7 @@ public class DepartmentService {
      */
     @Transactional
     public boolean delete(long id) {
-        return departmentMapper.update(Wrappers.lambdaUpdate(Department.class)
-                .set(Department::getDeleted, 1)
-                .eq(Department::getId, id))
-               > 0;
+        return departmentMapper.deleteById(id) > 0;
     }
 
     /**
@@ -123,7 +111,7 @@ public class DepartmentService {
      * @return 雇员所属部门的 {@link Department} 类型实体集合
      */
     @Transactional(readOnly = true)
-    public List<DepartmentEmployee> listByEmployeeIds(long orgId, Collection<Long> employeeIds) {
-        return departmentEmployeeMapper.selectByEmployeeIds(orgId, employeeIds);
+    public List<DepartmentEmployee> listByEmployeeIds(Collection<Long> employeeIds) {
+        return departmentEmployeeMapper.selectByEmployeeIds(employeeIds);
     }
 }

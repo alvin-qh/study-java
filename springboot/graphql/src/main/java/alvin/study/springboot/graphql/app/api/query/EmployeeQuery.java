@@ -13,16 +13,12 @@ import com.google.common.base.Functions;
 
 import lombok.RequiredArgsConstructor;
 
-import graphql.GraphQLContext;
-
 import alvin.study.springboot.graphql.app.api.query.common.AuditedBaseQuery;
-import alvin.study.springboot.graphql.app.context.ContextKey;
 import alvin.study.springboot.graphql.app.service.DepartmentService;
 import alvin.study.springboot.graphql.app.service.EmployeeService;
 import alvin.study.springboot.graphql.infra.entity.Department;
 import alvin.study.springboot.graphql.infra.entity.DepartmentEmployee;
 import alvin.study.springboot.graphql.infra.entity.Employee;
-import alvin.study.springboot.graphql.infra.entity.Org;
 
 /**
  * 对应 {@link Employee} 类型的 GraphQL 查询对象
@@ -44,8 +40,8 @@ public class EmployeeQuery extends AuditedBaseQuery<Employee> {
      * @return {@link Employee} 类型雇员实体对象
      */
     @QueryMapping
-    public Employee employee(@Argument long id, GraphQLContext ctx) {
-        return employeeService.findById(ctx.<Org>get(ContextKey.ORG).getId(), id);
+    public Employee employee(@Argument long id) {
+        return employeeService.findById(id);
     }
 
     /**
@@ -55,7 +51,7 @@ public class EmployeeQuery extends AuditedBaseQuery<Employee> {
      * @return {@link Department} 类型部门实体对象集合
      */
     @BatchMapping
-    public Map<Employee, List<Department>> departments(List<Employee> entities, GraphQLContext ctx) {
+    public Map<Employee, List<Department>> departments(List<Employee> entities) {
         if (entities == null || entities.isEmpty()) {
             return Map.of();
         }
@@ -63,9 +59,7 @@ public class EmployeeQuery extends AuditedBaseQuery<Employee> {
         var empMap = entities.stream()
                 .collect(Collectors.toMap(Employee::getId, Functions.identity()));
 
-        var employeeDepts = departmentService.listByEmployeeIds(
-            ctx.<Org>get(ContextKey.ORG).getId(),
-            empMap.keySet());
+        var employeeDepts = departmentService.listByEmployeeIds(empMap.keySet());
 
         return employeeDepts.stream()
                 .filter(e -> empMap.containsKey(e.getEmployeeId()))

@@ -25,6 +25,7 @@ import alvin.study.springboot.graphql.IntegrationTest;
 import alvin.study.springboot.graphql.app.context.ContextKey;
 import alvin.study.springboot.graphql.app.service.OrgService;
 import alvin.study.springboot.graphql.app.service.UserService;
+import alvin.study.springboot.graphql.core.context.ContextHolder;
 import alvin.study.springboot.graphql.infra.entity.Org;
 import alvin.study.springboot.graphql.infra.entity.User;
 import alvin.study.springboot.graphql.util.security.Jwt;
@@ -54,7 +55,7 @@ public class ApiAuthInterceptorTest extends IntegrationTest {
     private ExecutionInput.Builder mockedBuilder;
 
     private HttpHeaders buildHttpHeaders() {
-        var token = userService.login(currentOrg().getId(), currentUser().getAccount(), PASSWORD);
+        var token = userService.login(currentUser().getAccount(), PASSWORD);
 
         var headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + token);
@@ -83,7 +84,9 @@ public class ApiAuthInterceptorTest extends IntegrationTest {
         var interceptor = new ApiAuthInterceptor(jwt, orgService, userService);
         interceptor.intercept(mockedRequest, mockedChain);
 
-        then(((Org) contextMap.get(ContextKey.ORG)).getId()).isEqualTo(currentOrg().getId());
-        then(((User) contextMap.get(ContextKey.USER)).getId()).isEqualTo(currentUser().getId());
+        var ctx = ContextHolder.getValue();
+
+        then(((Org) ctx.get(ContextKey.KEY_ORG)).getId()).isEqualTo(currentOrg().getId());
+        then(((User) ctx.get(ContextKey.KEY_USER)).getId()).isEqualTo(currentUser().getId());
     }
 }

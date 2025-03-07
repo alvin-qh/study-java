@@ -16,45 +16,25 @@ public class EmployeeQueryTest extends WebTest {
         Employee employee;
 
         try (var ignore = beginTx(false)) {
-            department1 = newBuilder(DepartmentBuilder.class)
-                    .withAuditorId(currentUser().getId())
-                    .withOrgId(currentOrg().getId())
-                    .create();
+            department1 = newBuilder(DepartmentBuilder.class).create();
+            department2 = newBuilder(DepartmentBuilder.class).create();
+            department3 = newBuilder(DepartmentBuilder.class).create();
 
-            department2 = newBuilder(DepartmentBuilder.class)
-                    .withAuditorId(currentUser().getId())
-                    .withOrgId(currentOrg().getId())
-                    .create();
-
-            department3 = newBuilder(DepartmentBuilder.class)
-                    .withAuditorId(currentUser().getId())
-                    .withOrgId(currentOrg().getId())
-                    .create();
-
-            employee = newBuilder(EmployeeBuilder.class)
-                    .withAuditorId(currentUser().getId())
-                    .withOrgId(currentOrg().getId())
-                    .create();
+            employee = newBuilder(EmployeeBuilder.class).create();
 
             newBuilder(DepartmentEmployeeBuilder.class)
                     .withDepartmentId(department1.getId())
                     .withEmployeeId(employee.getId())
-                    .withAuditorId(currentUser().getId())
-                    .withOrgId(currentOrg().getId())
                     .create();
 
             newBuilder(DepartmentEmployeeBuilder.class)
                     .withDepartmentId(department2.getId())
                     .withEmployeeId(employee.getId())
-                    .withAuditorId(currentUser().getId())
-                    .withOrgId(currentOrg().getId())
                     .create();
 
             newBuilder(DepartmentEmployeeBuilder.class)
                     .withDepartmentId(department3.getId())
                     .withEmployeeId(employee.getId())
-                    .withAuditorId(currentUser().getId())
-                    .withOrgId(currentOrg().getId())
                     .create();
         }
 

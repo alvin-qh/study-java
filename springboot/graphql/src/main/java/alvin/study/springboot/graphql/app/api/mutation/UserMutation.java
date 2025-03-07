@@ -8,14 +8,10 @@ import org.springframework.stereotype.Controller;
 
 import lombok.RequiredArgsConstructor;
 
-import graphql.GraphQLContext;
-
 import alvin.study.springboot.graphql.app.api.mutation.common.BaseMutation;
-import alvin.study.springboot.graphql.app.context.ContextKey;
 import alvin.study.springboot.graphql.app.model.MutationResult;
 import alvin.study.springboot.graphql.app.model.UserGroup;
 import alvin.study.springboot.graphql.app.service.UserService;
-import alvin.study.springboot.graphql.infra.entity.Org;
 import alvin.study.springboot.graphql.infra.entity.User;
 
 @Controller
@@ -27,8 +23,8 @@ public class UserMutation extends BaseMutation {
      * 用户输入对象类型
      */
     static record UserInput(String account, String password, UserGroup group) {
-        public User toEntity(GraphQLContext ctx, @Nullable Long id) {
-            var user = completeAuditedEntity(new User(), ctx);
+        public User toEntity(@Nullable Long id) {
+            var user = new User();
             user.setId(id);
             user.setAccount(account);
             user.setPassword(password);
@@ -42,20 +38,20 @@ public class UserMutation extends BaseMutation {
     }
 
     @MutationMapping
-    public MutationResult<User> createUser(@Argument UserInput input, GraphQLContext ctx) {
-        User user = input.toEntity(ctx, null);
+    public MutationResult<User> createUser(@Argument UserInput input) {
+        User user = input.toEntity(null);
         userService.create(user);
         return MutationResult.of(user);
     }
 
     @MutationMapping
-    public MutationResult<User> updateUser(@Argument Long id, @Argument UserInput input, GraphQLContext ctx) {
-        User user = input.toEntity(ctx, id);
+    public MutationResult<User> updateUser(@Argument Long id, @Argument UserInput input) {
+        User user = input.toEntity(id);
         return MutationResult.of(userService.update(user));
     }
 
     @MutationMapping
-    public boolean deleteUser(@Argument Long id, GraphQLContext ctx) {
-        return userService.delete(ctx.<Org>get(ContextKey.ORG).getId(), id);
+    public boolean deleteUser(@Argument Long id) {
+        return userService.delete(id);
     }
 }

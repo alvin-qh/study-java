@@ -37,10 +37,6 @@ mutation createEmployee($input: EmployeeInput!) {
       email
       title
       info
-      departments {
-        id
-        name
-      }
     }
   }
 }
@@ -53,14 +49,10 @@ mutation updateEmployee($id: ID!, $input: EmployeeInput!) {
       email
       title
       info
-      departments {
-        id
-        name
-      }
     }
   }
 }
 
 mutation deleteEmployee($id: ID!) {
-  deleteUser(id: $id)
+  deleteEmployee(id: $id)
 }

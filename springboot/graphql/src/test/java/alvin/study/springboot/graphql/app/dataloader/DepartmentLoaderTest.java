@@ -8,12 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.junit.jupiter.api.Test;
 
-import alvin.study.springboot.graphql.app.dataloader.common.DataloaderTest;
+import alvin.study.springboot.graphql.IntegrationTest;
 import alvin.study.springboot.graphql.builder.DepartmentBuilder;
 import alvin.study.springboot.graphql.infra.entity.Department;
 import alvin.study.springboot.graphql.infra.mapper.DepartmentMapper;
 
-public class DepartmentLoaderTest extends DataloaderTest {
+public class DepartmentLoaderTest extends IntegrationTest {
     @Autowired
     private DepartmentMapper departmentMapper;
 
@@ -22,23 +22,14 @@ public class DepartmentLoaderTest extends DataloaderTest {
         Department department1, department2, department3;
 
         try (var ignore = beginTx(false)) {
-            department1 = newBuilder(DepartmentBuilder.class)
-                    .withOrgId(currentOrg().getId())
-                    .create();
-
-            department2 = newBuilder(DepartmentBuilder.class)
-                    .withOrgId(currentOrg().getId())
-                    .create();
-
-            department3 = newBuilder(DepartmentBuilder.class)
-                    .withOrgId(currentOrg().getId())
-                    .create();
+            department1 = newBuilder(DepartmentBuilder.class).create();
+            department2 = newBuilder(DepartmentBuilder.class).create();
+            department3 = newBuilder(DepartmentBuilder.class).create();
         }
 
         var loader = new DepartmentLoader(departmentMapper);
         var result = loader.apply(
-            Set.of(department1.getId(), department2.getId(), department3.getId()),
-            buildBatchLoaderEnvironment());
+            Set.of(department1.getId(), department2.getId(), department3.getId()), null);
 
         var map = result.block();
         then(map.get(department1.getId()).getId()).isEqualTo(department1.getId());

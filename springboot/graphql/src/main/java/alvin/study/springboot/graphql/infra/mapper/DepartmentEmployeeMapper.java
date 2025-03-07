@@ -9,8 +9,6 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-
 import alvin.study.springboot.graphql.infra.entity.DepartmentEmployee;
 import alvin.study.springboot.graphql.infra.entity.common.AuditedEntity;
 import alvin.study.springboot.graphql.infra.entity.common.TenantedEntity;
@@ -118,7 +116,6 @@ public interface DepartmentEmployeeMapper extends BaseMapper<DepartmentEmployee>
             join employee e on e.id=de.employee_id
             where d.deleted=0
                 and e.deleted=0
-                and d.org_id=#{orgId}
                 and de.employee_id in
             <foreach collection="employeeIds" item="id" separator="," open="(" close=")">
                 #{id}
@@ -126,7 +123,5 @@ public interface DepartmentEmployeeMapper extends BaseMapper<DepartmentEmployee>
         </script>
         """)
     @ResultMap("departmentEmployeeResultMap")
-    List<DepartmentEmployee> selectByEmployeeIds(
-            @Param("orgId") long orgId,
-            @Param("employeeIds") Collection<Long> employeeIds);
+    List<DepartmentEmployee> selectByEmployeeIds(@Param("employeeIds") Collection<Long> employeeIds);
 }

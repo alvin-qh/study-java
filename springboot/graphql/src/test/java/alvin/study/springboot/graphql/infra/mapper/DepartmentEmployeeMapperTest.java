@@ -25,48 +25,32 @@ public class DepartmentEmployeeMapperTest extends IntegrationTest {
         Employee employee1, employee2;
 
         try (var ignore = beginTx(false)) {
-            department1 = newBuilder(DepartmentBuilder.class)
-                    .withOrgId(currentOrg().getId())
-                    .create();
+            department1 = newBuilder(DepartmentBuilder.class).create();
+            department2 = newBuilder(DepartmentBuilder.class).create();
+            department3 = newBuilder(DepartmentBuilder.class).create();
 
-            department2 = newBuilder(DepartmentBuilder.class)
-                    .withOrgId(currentOrg().getId())
-                    .create();
+            employee1 = newBuilder(EmployeeBuilder.class).create();
 
-            department3 = newBuilder(DepartmentBuilder.class)
-                    .withOrgId(currentOrg().getId())
-                    .create();
-
-            employee1 = newBuilder(EmployeeBuilder.class)
-                    .withOrgId(currentOrg().getId())
-                    .create();
-
-            employee2 = newBuilder(EmployeeBuilder.class)
-                    .withOrgId(currentOrg().getId())
-                    .create();
+            employee2 = newBuilder(EmployeeBuilder.class).create();
 
             newBuilder(DepartmentEmployeeBuilder.class)
                     .withEmployeeId(employee1.getId())
                     .withDepartmentId(department1.getId())
-                    .withOrgId(currentOrg().getId())
                     .create();
 
             newBuilder(DepartmentEmployeeBuilder.class)
                     .withEmployeeId(employee1.getId())
                     .withDepartmentId(department2.getId())
-                    .withOrgId(currentOrg().getId())
                     .create();
 
             newBuilder(DepartmentEmployeeBuilder.class)
                     .withEmployeeId(employee2.getId())
                     .withDepartmentId(department3.getId())
-                    .withOrgId(currentOrg().getId())
                     .create();
         }
 
-        var departmentEmployees = departmentEmployeeMapper.selectByEmployeeIds(
-            currentOrg().getId(),
-            List.of(employee1.getId(), employee2.getId()));
+        var departmentEmployees
+            = departmentEmployeeMapper.selectByEmployeeIds(List.of(employee1.getId(), employee2.getId()));
 
         // 验证结果
         then(departmentEmployees).hasSize(3);

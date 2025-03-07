@@ -8,13 +8,14 @@ import io.micrometer.common.lang.Nullable;
 
 import lombok.RequiredArgsConstructor;
 
+import alvin.study.springboot.graphql.app.context.ContextKey;
 import alvin.study.springboot.graphql.app.model.MutationResult;
 import alvin.study.springboot.graphql.app.service.OrgService;
+import alvin.study.springboot.graphql.core.context.ContextHolder;
 import alvin.study.springboot.graphql.core.exception.ForbiddenException;
 import alvin.study.springboot.graphql.infra.entity.Org;
 import alvin.study.springboot.graphql.infra.entity.User;
 import alvin.study.springboot.graphql.infra.entity.UserGroup;
-import graphql.GraphQLContext;
 
 @Controller
 @RequiredArgsConstructor
@@ -33,17 +34,19 @@ public class OrgMutation {
         }
     }
 
-    private void checkUserPermission(GraphQLContext ctx) {
+    private void checkUserPermission() {
+        var ctx = ContextHolder.getValue();
+
         // 获取当前登录用户
-        var user = ctx.<User>get("user");
+        var user = ctx.<User>get(ContextKey.KEY_USER);
         if (user == null || user.getGroup() != UserGroup.ADMIN) {
             throw new ForbiddenException("Only admin user allowed");
         }
     }
 
     @MutationMapping
-    public MutationResult<Org> createOrg(@Argument OrgInput input, GraphQLContext ctx) {
-        checkUserPermission(ctx);
+    public MutationResult<Org> createOrg(@Argument OrgInput input) {
+        checkUserPermission();
 
         var org = input.toEntity(null);
         orgService.create(org);
@@ -51,16 +54,16 @@ public class OrgMutation {
     }
 
     @MutationMapping
-    public MutationResult<Org> updateOrg(@Argument Long id, @Argument OrgInput input, GraphQLContext ctx) {
-        checkUserPermission(ctx);
+    public MutationResult<Org> updateOrg(@Argument Long id, @Argument OrgInput input) {
+        checkUserPermission();
 
         var org = input.toEntity(id);
         return MutationResult.of(orgService.update(org));
     }
 
     @MutationMapping
-    public boolean deleteOrg(@Argument Long id, GraphQLContext ctx) {
-        checkUserPermission(ctx);
+    public boolean deleteOrg(@Argument Long id) {
+        checkUserPermission();
 
         return orgService.delete(id);
     }

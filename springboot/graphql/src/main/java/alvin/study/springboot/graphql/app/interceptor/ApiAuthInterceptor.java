@@ -11,6 +11,8 @@ import com.google.common.base.Strings;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import reactor.core.publisher.Mono;
+
 import alvin.study.springboot.graphql.app.context.ContextKey;
 import alvin.study.springboot.graphql.app.service.OrgService;
 import alvin.study.springboot.graphql.app.service.UserService;
@@ -18,7 +20,6 @@ import alvin.study.springboot.graphql.core.context.Context;
 import alvin.study.springboot.graphql.core.context.ContextHolder;
 import alvin.study.springboot.graphql.core.exception.ForbiddenException;
 import alvin.study.springboot.graphql.util.security.Jwt;
-import reactor.core.publisher.Mono;
 
 @Slf4j
 @Component
@@ -51,7 +52,7 @@ public class ApiAuthInterceptor implements WebGraphQlInterceptor {
                 var payload = jwt.verify(token);
 
                 var org = orgService.findById(Long.parseLong(payload.getAudience().getFirst()));
-                var user = userService.findById(org.getId(), Long.parseLong(payload.getIssuer()));
+                var user = userService.findById(Long.parseLong(payload.getIssuer()));
 
                 var context = new Context();
                 context.put(ContextKey.KEY_ORG, org);
@@ -67,10 +68,6 @@ public class ApiAuthInterceptor implements WebGraphQlInterceptor {
             }
         }
 
-        try {
-            return chain.next(request);
-        } finally {
-            ContextHolder.reset();
-        }
+        return chain.next(request);
     }
 }

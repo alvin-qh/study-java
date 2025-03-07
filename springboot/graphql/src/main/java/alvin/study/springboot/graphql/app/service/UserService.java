@@ -40,9 +40,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public User findById(long id) {
         return Optional.ofNullable(
-            userMapper.selectOne(Wrappers.lambdaQuery(User.class)
-                    .eq(User::getOrgId, orgId)
-                    .eq(User::getId, id)))
+            userMapper.selectById(id))
                 .orElseThrow(() -> new NotFoundException(String.format("User not exist by id = %d", id)));
     }
 
@@ -81,11 +79,10 @@ public class UserService {
      */
     @Transactional
     public User update(User user) {
-        var existUser = findById(user.getOrgId(), user.getId());
+        var existUser = userMapper.selectById(user.getId());
         existUser.setAccount(user.getAccount());
         existUser.setPassword(user.getPassword());
         existUser.setGroup(user.getGroup());
-        existUser.setUpdatedBy(user.getUpdatedBy());
 
         if (userMapper.updateById(encryptUserPassword(existUser)) == 0) {
             throw new InputException(new NotFoundException(String.format("User not exist by id = %d", user.getId())));
@@ -101,19 +98,14 @@ public class UserService {
      * @return {@code true} 表示删除成功, {@code false} 表示删除失败
      */
     @Transactional
-    public boolean delete(long orgId, long id) {
-        return userMapper.update(Wrappers.lambdaUpdate(User.class)
-                .set(User::getDeleted, 1)
-                .eq(User::getId, id)
-                .eq(User::getOrgId, orgId))
-               > 0;
+    public boolean delete(long id) {
+        return userMapper.deleteById(id) > 0;
     }
 
     @Transactional(readOnly = true)
-    public String login(long orgId, String account, String password) {
+    public String login(String account, String password) {
         var user = userMapper.selectOne(
             Wrappers.lambdaQuery(User.class)
-                    .eq(User::getOrgId, orgId)
                     .eq(User::getAccount, account));
 
         if (user == null) {

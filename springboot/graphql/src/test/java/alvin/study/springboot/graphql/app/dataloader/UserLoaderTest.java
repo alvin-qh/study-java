@@ -8,12 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.junit.jupiter.api.Test;
 
-import alvin.study.springboot.graphql.app.dataloader.common.DataloaderTest;
+import alvin.study.springboot.graphql.IntegrationTest;
 import alvin.study.springboot.graphql.builder.UserBuilder;
 import alvin.study.springboot.graphql.infra.entity.User;
 import alvin.study.springboot.graphql.infra.mapper.UserMapper;
 
-public class UserLoaderTest extends DataloaderTest {
+public class UserLoaderTest extends IntegrationTest {
     @Autowired
     private UserMapper userMapper;
 
@@ -22,23 +22,16 @@ public class UserLoaderTest extends DataloaderTest {
         User user1, user2, user3;
 
         try (var ignore = beginTx(false)) {
-            user1 = newBuilder(UserBuilder.class)
-                    .withOrgId(currentOrg().getId())
-                    .create();
+            user1 = newBuilder(UserBuilder.class).create();
 
-            user2 = newBuilder(UserBuilder.class)
-                    .withOrgId(currentOrg().getId())
-                    .create();
+            user2 = newBuilder(UserBuilder.class).create();
 
-            user3 = newBuilder(UserBuilder.class)
-                    .withOrgId(currentOrg().getId())
-                    .create();
+            user3 = newBuilder(UserBuilder.class).create();
         }
 
         var loader = new UserLoader(userMapper);
         var result = loader.apply(
-            Set.of(user1.getId(), user2.getId(), user3.getId()),
-            buildBatchLoaderEnvironment());
+            Set.of(user1.getId(), user2.getId(), user3.getId()), null);
 
         var map = result.block();
         then(map.get(user1.getId()).getId()).isEqualTo(user1.getId());

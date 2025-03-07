@@ -101,3 +101,4 @@ application:
     session:
       period: PT2H
   zone: UTC
+  env: production

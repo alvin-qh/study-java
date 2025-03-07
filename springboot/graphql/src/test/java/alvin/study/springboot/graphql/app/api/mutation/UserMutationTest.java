@@ -36,7 +36,7 @@ public class UserMutationTest extends WebTest {
         var id = resp.path("createUser.result.id")
                 .entity(Long.class).get();
 
-        var user = userService.findById(currentOrg().getId(), id);
+        var user = userService.findById(id);
 
         resp.path("createUser.result")
                 .matchesJson("""
@@ -53,10 +53,7 @@ public class UserMutationTest extends WebTest {
 
     @Test
     void deleteUser_shouldDeleteExistUser() {
-        var user = newBuilder(UserBuilder.class)
-                .withAuditorId(currentUser().getId())
-                .withOrgId(currentOrg().getId())
-                .create();
+        var user = newBuilder(UserBuilder.class).create();
 
         var result = qlTester().documentName("user")
                 .operationName("deleteUser")
@@ -68,16 +65,13 @@ public class UserMutationTest extends WebTest {
 
         then(result).isTrue();
 
-        thenThrownBy(() -> userService.findById(currentOrg().getId(), user.getId()))
+        thenThrownBy(() -> userService.findById(user.getId()))
                 .isInstanceOf(NotFoundException.class);
     }
 
     @Test
     void updateUser_shouldUpdateExistUser() throws Exception {
-        var expectedUser = newBuilder(UserBuilder.class)
-                .withAuditorId(currentUser().getId())
-                .withOrgId(currentOrg().getId())
-                .create();
+        var expectedUser = newBuilder(UserBuilder.class).create();
 
         var input = new UserMutation.UserInput(
             "updated_" + expectedUser.getAccount(),
@@ -100,7 +94,7 @@ public class UserMutationTest extends WebTest {
                     expectedUser.getId(),
                     expectedUser.getAccount()));
 
-        var actualUser = userService.findById(expectedUser.getOrgId(), expectedUser.getId());
+        var actualUser = userService.findById(expectedUser.getId());
         then(actualUser.getAccount()).isEqualTo("updated_" + expectedUser.getAccount());
         then(actualUser.getPassword()).isEqualTo(passwordUtil.encrypt("test~123"));
     }

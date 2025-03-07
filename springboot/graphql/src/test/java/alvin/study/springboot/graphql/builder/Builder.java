@@ -36,19 +36,6 @@ public abstract class Builder<T> {
         return this;
     }
 
-    public Builder<T> withAuditorId(Long userId) {
-        this.createdBy = userId;
-        this.updatedBy = userId;
-        return this;
-    }
-
-    public Builder<T> with(Long orgId, boolean isNullable) {
-        if (isNullable) {
-            this.orgId = orgId;
-        }
-        return this;
-    }
-
     /**
      * 填充 {@code orgId} 字段
      *

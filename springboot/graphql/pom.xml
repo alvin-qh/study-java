@@ -66,7 +66,6 @@
         <groupId>org.springframework.graphql</groupId>
         <artifactId>spring-graphql-test</artifactId>
         <version>${version.spring-graphql-test}</version>
-        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.mockito</groupId>
@@ -77,6 +76,11 @@
         <groupId>org.mockito</groupId>
         <artifactId>mockito-junit-jupiter</artifactId>
         <version>${version.mockito}</version>
+      </dependency>
+      <dependency>
+        <groupId>p6spy</groupId>
+        <artifactId>p6spy</artifactId>
+        <version>${version.p6spy}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -186,6 +190,11 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>p6spy</groupId>
+      <artifactId>p6spy</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

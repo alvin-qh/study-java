@@ -27,36 +27,30 @@ public class DepartmentServiceTest extends IntegrationTest {
 
     @Test
     void create_shouldCreateDepartment() {
-        var expectedDepartment = newBuilder(DepartmentBuilder.class)
-                .withOrgId(currentOrg().getId())
-                .build();
+        var expectedDepartment = newBuilder(DepartmentBuilder.class).build();
 
         departmentService.create(expectedDepartment);
 
-        var actualDepartment = departmentService.findById(currentOrg().getId(), expectedDepartment.getId());
+        var actualDepartment = departmentService.findById(expectedDepartment.getId());
         then(actualDepartment.getId()).isEqualTo(expectedDepartment.getId());
     }
 
     @Test
     void delete_shouldDeleteExistDepartment() {
-        var department = newBuilder(DepartmentBuilder.class)
-                .withOrgId(currentOrg().getId())
-                .create();
+        var department = newBuilder(DepartmentBuilder.class).create();
 
-        var result = departmentService.delete(currentOrg().getId(), department.getId());
+        var result = departmentService.delete(department.getId());
         then(result).isTrue();
 
-        thenThrownBy(() -> departmentService.findById(currentOrg().getId(), department.getId()))
+        thenThrownBy(() -> departmentService.findById(department.getId()))
                 .isInstanceOf(NotFoundException.class);
     }
 
     @Test
     void findById_shouldFindUserById() {
-        var expectedDepartment = newBuilder(DepartmentBuilder.class)
-                .withOrgId(currentOrg().getId())
-                .create();
+        var expectedDepartment = newBuilder(DepartmentBuilder.class).create();
 
-        var actualDepartment = departmentService.findById(currentOrg().getId(), expectedDepartment.getId());
+        var actualDepartment = departmentService.findById(expectedDepartment.getId());
         then(actualDepartment.getId()).isEqualTo(expectedDepartment.getId());
     }
 
@@ -66,47 +60,31 @@ public class DepartmentServiceTest extends IntegrationTest {
         Employee employee1, employee2;
 
         try (var ignore = beginTx(false)) {
-            department1 = newBuilder(DepartmentBuilder.class)
-                    .withOrgId(currentOrg().getId())
-                    .create();
+            department1 = newBuilder(DepartmentBuilder.class).create();
+            department2 = newBuilder(DepartmentBuilder.class).create();
+            department3 = newBuilder(DepartmentBuilder.class).create();
 
-            department2 = newBuilder(DepartmentBuilder.class)
-                    .withOrgId(currentOrg().getId())
-                    .create();
-
-            department3 = newBuilder(DepartmentBuilder.class)
-                    .withOrgId(currentOrg().getId())
-                    .create();
-
-            employee1 = newBuilder(EmployeeBuilder.class)
-                    .withOrgId(currentOrg().getId())
-                    .create();
-
-            employee2 = newBuilder(EmployeeBuilder.class)
-                    .withOrgId(currentOrg().getId())
-                    .create();
+            employee1 = newBuilder(EmployeeBuilder.class).create();
+            employee2 = newBuilder(EmployeeBuilder.class).create();
 
             newBuilder(DepartmentEmployeeBuilder.class)
                     .withEmployeeId(employee1.getId())
                     .withDepartmentId(department1.getId())
-                    .withOrgId(currentOrg().getId())
                     .create();
 
             newBuilder(DepartmentEmployeeBuilder.class)
                     .withEmployeeId(employee1.getId())
                     .withDepartmentId(department2.getId())
-                    .withOrgId(currentOrg().getId())
                     .create();
 
             newBuilder(DepartmentEmployeeBuilder.class)
                     .withEmployeeId(employee2.getId())
                     .withDepartmentId(department3.getId())
-                    .withOrgId(currentOrg().getId())
                     .create();
         }
 
         var departmentEmployees
-            = departmentService.listByEmployeeIds(currentOrg().getId(), List.of(employee1.getId(), employee2.getId()));
+            = departmentService.listByEmployeeIds(List.of(employee1.getId(), employee2.getId()));
 
         // 验证结果
         then(departmentEmployees).hasSize(3);
@@ -141,20 +119,12 @@ public class DepartmentServiceTest extends IntegrationTest {
         Department department1, department2, department3;
 
         try (var ignore = beginTx(false)) {
-            department1 = newBuilder(DepartmentBuilder.class)
-                    .withOrgId(currentOrg().getId())
-                    .create();
-
-            department2 = newBuilder(DepartmentBuilder.class)
-                    .withOrgId(currentOrg().getId())
-                    .create();
-
-            department3 = newBuilder(DepartmentBuilder.class)
-                    .withOrgId(currentOrg().getId())
-                    .create();
+            department1 = newBuilder(DepartmentBuilder.class).create();
+            department2 = newBuilder(DepartmentBuilder.class).create();
+            department3 = newBuilder(DepartmentBuilder.class).create();
         }
 
-        var departments = departmentService.listByIds(currentOrg().getId(), List.of(
+        var departments = departmentService.listByIds(List.of(
             department1.getId(),
             department2.getId(),
             department3.getId()));
@@ -171,33 +141,26 @@ public class DepartmentServiceTest extends IntegrationTest {
         Department child1, child2, child3, child4, child5;
 
         try (var ignore = beginTx(false)) {
-            parent = newBuilder(DepartmentBuilder.class)
-                    .withOrgId(currentOrg().getId())
-                    .create();
+            parent = newBuilder(DepartmentBuilder.class).create();
 
             child1 = newBuilder(DepartmentBuilder.class)
                     .withParent(parent.getId())
-                    .withOrgId(currentOrg().getId())
                     .create();
 
             child2 = newBuilder(DepartmentBuilder.class)
                     .withParent(parent.getId())
-                    .withOrgId(currentOrg().getId())
                     .create();
 
             child3 = newBuilder(DepartmentBuilder.class)
                     .withParent(parent.getId())
-                    .withOrgId(currentOrg().getId())
                     .create();
 
             child4 = newBuilder(DepartmentBuilder.class)
                     .withParent(parent.getId())
-                    .withOrgId(currentOrg().getId())
                     .create();
 
             child5 = newBuilder(DepartmentBuilder.class)
                     .withParent(parent.getId())
-                    .withOrgId(currentOrg().getId())
                     .create();
         }
 
@@ -207,7 +170,7 @@ public class DepartmentServiceTest extends IntegrationTest {
                 .withOrder("-id")
                 .build();
 
-        page = departmentService.listChildren(page, currentOrg().getId(), parent.getId());
+        page = departmentService.listChildren(page, parent.getId());
         then(page.getPages()).isEqualTo(2);
         then(page.getTotal()).isEqualTo(5);
         then(page.getSize()).isEqualTo(3);
@@ -223,7 +186,7 @@ public class DepartmentServiceTest extends IntegrationTest {
                 .withOrder("-id")
                 .build();
 
-        page = departmentService.listChildren(page, currentOrg().getId(), parent.getId());
+        page = departmentService.listChildren(page, parent.getId());
         then(page.getPages()).isEqualTo(2);
         then(page.getTotal()).isEqualTo(5);
         then(page.getSize()).isEqualTo(3);
@@ -235,9 +198,7 @@ public class DepartmentServiceTest extends IntegrationTest {
 
     @Test
     void update_shouldUpdateDepartment() {
-        var department = newBuilder(DepartmentBuilder.class)
-                .withOrgId(currentOrg().getId())
-                .create();
+        var department = newBuilder(DepartmentBuilder.class).create();
 
         var originDepartmentName = department.getName();
 
@@ -245,7 +206,7 @@ public class DepartmentServiceTest extends IntegrationTest {
 
         departmentService.update(department);
 
-        department = departmentService.findById(currentOrg().getId(), department.getId());
+        department = departmentService.findById(department.getId());
         then(department.getName()).isEqualTo("updated_" + originDepartmentName);
     }
 }

@@ -10,10 +10,8 @@ import lombok.RequiredArgsConstructor;
 import graphql.GraphQLContext;
 
 import alvin.study.springboot.graphql.app.api.query.common.AuditedBaseQuery;
-import alvin.study.springboot.graphql.app.context.ContextKey;
 import alvin.study.springboot.graphql.app.model.UserGroup;
 import alvin.study.springboot.graphql.app.service.UserService;
-import alvin.study.springboot.graphql.infra.entity.Org;
 import alvin.study.springboot.graphql.infra.entity.User;
 
 /**
@@ -37,7 +35,7 @@ public class UserQuery extends AuditedBaseQuery<User> {
     @QueryMapping
     public User user(@Argument long id, GraphQLContext ctx) {
         // 查询用户
-        return userService.findById(ctx.<Org>get(ContextKey.ORG).getId(), id);
+        return userService.findById(id);
     }
 
     @SchemaMapping

@@ -2,33 +2,31 @@
   "properties": [
     {
       "name": "application.security.jwt.key",
-      "type": "java.lang.String",
-      "description": "A description for 'application.security.jwt.key'"
+      "type": "java.lang.String"
     },
     {
       "name": "application.security.jwt.jti",
-      "type": "java.lang.String",
-      "description": "A description for 'application.security.jwt.jti'"
+      "type": "java.lang.String"
     },
     {
       "name": "application.security.session.period",
-      "type": "java.lang.String",
-      "description": "A description for 'application.security.session.period'"
+      "type": "java.lang.String"
     },
     {
       "name": "application.zone",
-      "type": "java.lang.String",
-      "description": "A description for 'application.zone'"
+      "type": "java.lang.String"
     },
     {
       "name": "application.security.hash.algorithm",
-      "type": "java.lang.String",
-      "description": "A description for 'application.security.hash.algorithm'"
+      "type": "java.lang.String"
     },
     {
       "name": "application.security.hash.key",
-      "type": "java.lang.String",
-      "description": "A description for 'application.security.hash.key'"
+      "type": "java.lang.String"
+    },
+    {
+      "name": "application.env",
+      "type": "java.lang.String"
     }
   ]
 }

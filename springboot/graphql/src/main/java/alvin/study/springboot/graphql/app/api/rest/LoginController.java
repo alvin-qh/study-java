@@ -38,7 +38,7 @@ public class LoginController {
     @ResponseBody
     LoginDto login(@Valid @RequestBody LoginForm form) {
         try {
-            var token = userService.login(form.orgId(), form.account(), form.password());
+            var token = userService.login(form.account(), form.password());
             return new LoginDto(token);
         } catch (UnauthorizedException e) {
             throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED, e.getMessage());
