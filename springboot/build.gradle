@@ -33,6 +33,7 @@ subprojects {
                    "com.google.guava:guava:${VER_GUAVA}"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     developmentOnly "org.springframework.boot:spring-boot-devtools:${VER_SPRING_BOOT}"
+    runtimeOnly "com.lmax:disruptor:${VER_DISRUPTOR}"
     testImplementation "org.springframework.boot:spring-boot-starter-test",
                        "org.assertj:assertj-core:${VER_ASSERTJ}"
   }

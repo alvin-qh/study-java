@@ -3,6 +3,9 @@ plugins {
   id "org.flywaydb.flyway" version "${VER_FLYWAY}" apply false
 }
 
+group = "alvin.study"
+version = "1.0.0-SNAPSHOT"
+
 allprojects {
   apply plugin: "java"
 

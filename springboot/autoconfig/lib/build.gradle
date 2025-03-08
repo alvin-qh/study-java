@@ -1,2 +1,15 @@
+group = 'alvin.study'
+version = '1.0.0-SNAPSHOT'
+
+jar {
+  enabled = true
+  archiveBaseName = project.group
+  archiveFileName = "alvin.study.springboot-autoconfig-lib.${version}.${archiveExtension.get()}"
+}
+
+bootJar {
+  enabled = false
+}
+
 dependencies {
 }

@@ -7,7 +7,7 @@ plugins {
  */
 springBoot {
   // 设置入口类
-  mainClass = "alvin.study.springboot.kickstart.Main"
+  mainClass = "alvin.study.springboot.graphql.Main"
 }
 
 /**

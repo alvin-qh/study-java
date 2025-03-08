@@ -22,6 +22,7 @@ pluginManagement {
 rootProject.name = "study-java"
 
 include(
+  ":se",
   ":se:annotation",
   ":se:binary",
   ":se:collection",
@@ -38,6 +39,7 @@ include(
 )
 
 include(
+  ":testing",
   ":testing:testcase",
   ":testing:assertj",
   ":testing:awaitility",
@@ -50,12 +52,14 @@ include(
 )
 
 include(
+  ":misc",
   ":misc:cli",
   ":misc:jackson",
   ":misc:jwt",
 )
 
 include(
+  ":guava",
   ":guava:cache",
   ":guava:collect",
   ":guava:common",
@@ -68,6 +72,7 @@ include(
 )
 
 include(
+  ":guice",
   ":guice:aspect",
   ":guice:bind",
   ":guice:inject",
@@ -76,23 +81,28 @@ include(
 )
 
 include(
+  ":springboot",
   ":springboot:mvc",
   ":springboot:spel",
   ":springboot:testing",
   ":springboot:validator",
   ":springboot:aop",
   ":springboot:jpa",
+  ":springboot:autoconfig",
   ":springboot:autoconfig:lib",
   ":springboot:autoconfig:app",
+  ":springboot:datasource",
   ":springboot:datasource:dynamic",
   ":springboot:datasource:multiple",
   ":springboot:jooq",
   ":springboot:mybatis",
   ":springboot:security",
   ":springboot:shiro",
-  // ":springboot:springdoc",
+  ":springboot:springdoc",
   ":springboot:graphql",
 )
+
+// findProject(":springboot:autoconfig:lib")?.name = "springboot-autoconfig-lib"
 
 // include(
 //   ":springcloud:nacos",

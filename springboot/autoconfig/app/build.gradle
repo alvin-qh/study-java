@@ -6,13 +6,16 @@ bootJar {
   exclude "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA", "META-INF/*.MF"
 
   manifest {
-    attributes "Implementation-Title": "Study Spring Boot AutoConfig"
+    attributes "Implementation-Title": "Study Spring Boot AutoConfig App"
     attributes "Implementation-Version": projectVersion.version
   }
 
   archiveBaseName = project.group
-  archiveFileName = "alvin.study.springboot-autoconfig.${archiveExtension.get()}"
+  archiveFileName = "alvin.study.springboot-autoconfig-app.${archiveExtension.get()}"
 }
+
+group 'MYCOMPANY.GROUP'
+version '0.0.1-SNAPSHOT'
 
 dependencies {
   implementation project(":springboot:autoconfig:lib")
