@@ -1,9 +1,9 @@
 buildscript {
   // 遍历所有的依赖
   configurations["classpath"].resolutionStrategy.eachDependency {
-    if (requested.group == "org.jooq") {
-      useVersion "${VER_JOOQ}" // 将所有对 Jooq 的依赖替换为最新版本
-    }
+      if (requested.group.startsWith("org.jooq") && requested.name.startsWith("jooq")) {
+          useVersion("${VER_JOOQ}")
+      }
   }
 }
 
@@ -80,7 +80,7 @@ jooq {
             name = "org.jooq.meta.h2.H2Database"
             includes = "PUBLIC.*"
             excludes = "PUBLIC.schema_version | PUBLIC.flyway_schema_history"
-            recordVersionFields = "version"
+            // recordVersionFields = "version"
 
             // 特殊字段类型处理
             forcedTypes {
@@ -152,9 +152,12 @@ tasks.named("generateJooq").configure {
 }
 
 dependencies {
-  implementation "org.springframework.boot:spring-boot-starter-jooq",
-                 "org.springframework.boot:spring-boot-starter-web",
+  implementation ("org.springframework.boot:spring-boot-starter-jooq") {
+    exclude group: "org.jooq", module: "jooq"
+  }
+  implementation "org.springframework.boot:spring-boot-starter-web",
                  "org.springframework.boot:spring-boot-starter-jdbc",
+                 "org.jooq:jooq:${VER_JOOQ}",
                  "org.modelmapper:modelmapper:${VER_MODELMAPPER}",
                  "org.modelmapper.extensions:modelmapper-jooq:${VER_MODELMAPPER}",
                  "commons-codec:commons-codec:${VER_COMMONS_CODEC}",

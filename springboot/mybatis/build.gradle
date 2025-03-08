@@ -45,6 +45,6 @@ dependencies {
                  "org.modelmapper:modelmapper:${VER_MODELMAPPER}",
                  "commons-codec:commons-codec:${VER_COMMONS_CODEC}",
                  "com.h2database:h2:${VER_H2_DB}"
-  testImplementation "p6spy:p6spy:${VER_P6SPY}"
   runtimeOnly "org.flywaydb:flyway-core:${VER_FLYWAY}"
+  testImplementation "p6spy:p6spy:${VER_P6SPY}"
 }

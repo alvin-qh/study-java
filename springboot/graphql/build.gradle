@@ -41,19 +41,27 @@ flyway {
 }
 
 dependencies {
-  implementation libs.main.springboot.kickstart,
-    libs.main.springboot.web,
-    libs.main.springboot.validator,
-    libs.main.springboot.mybatisPlus,
-    libs.main.commonsCodec,
-    libs.main.h2,
-    libs.main.jwt,
-    libs.main.modelmapper
-
-  developmentOnly libs.main.springboot.devtools
-
-  testImplementation libs.test.springboot.kickstart,
-    libs.test.springboot.web
-
-  runtimeOnly libs.main.flyway
+  implementation "org.springframework.boot:spring-boot-starter-graphql",
+                 "org.springframework.boot:spring-boot-starter-web",
+                 "org.springframework.boot:spring-boot-starter-jdbc",
+                 "org.springframework.boot:spring-boot-starter-validation",
+                 "com.baomidou:mybatis-plus-jsqlparser:${VER_MYBATIS_PLUS}",
+                 "com.graphql-java:graphql-java-extended-scalars:${VER_GRAPHQL}",
+                 "com.graphql-java:graphql-java-extended-validation:${VER_GRAPHQL}",
+                 "io.micrometer:context-propagation:${VAR_CONTEXT_PROPAGATION}",
+                 "org.modelmapper:modelmapper:${VER_MODELMAPPER}",
+                 "commons-codec:commons-codec:${VER_COMMONS_CODEC}",
+                 "com.h2database:h2:${VER_H2_DB}"
+  implementation ("com.baomidou:mybatis-plus-spring-boot3-starter:${VER_MYBATIS_PLUS}") {
+    exclude group: "org.springframework.boot", module: "*"
+  }
+  implementation ("com.auth0:java-jwt:${VER_AUTH0_JWT}") {
+    exclude group: "com.fasterxml.jackson.core", module: "*"
+  }
+  runtimeOnly "org.flywaydb:flyway-core:${VER_FLYWAY}"
+  testImplementation "org.springframework.graphql:spring-graphql-test:${VER_GRAPHQL_SPRING_TEST}",
+                     "org.springframework.boot:spring-boot-starter-webflux",
+                     "org.mockito:mockito-core:${VER_MOCKITO}",
+                     "org.mockito:mockito-junit-jupiter:${VER_MOCKITO}",
+                     "p6spy:p6spy:${VER_P6SPY}"
 }
