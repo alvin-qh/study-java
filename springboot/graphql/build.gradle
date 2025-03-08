@@ -1,24 +1,5 @@
 plugins {
-  id "org.springframework.boot"
   id "org.flywaydb.flyway"
-}
-
-dependencies {
-  implementation libs.main.springboot.kickstart,
-    libs.main.springboot.web,
-    libs.main.springboot.validator,
-    libs.main.springboot.mybatisPlus,
-    libs.main.commonsCodec,
-    libs.main.h2,
-    libs.main.jwt,
-    libs.main.modelmapper
-
-  developmentOnly libs.main.springboot.devtools
-
-  testImplementation libs.test.springboot.kickstart,
-    libs.test.springboot.web
-
-  runtimeOnly libs.main.flyway
 }
 
 /**
@@ -57,4 +38,22 @@ flyway {
     "filesystem:${projectDir}/src/main/resources/migration"
   ]
   table = "schema_version"
+}
+
+dependencies {
+  implementation libs.main.springboot.kickstart,
+    libs.main.springboot.web,
+    libs.main.springboot.validator,
+    libs.main.springboot.mybatisPlus,
+    libs.main.commonsCodec,
+    libs.main.h2,
+    libs.main.jwt,
+    libs.main.modelmapper
+
+  developmentOnly libs.main.springboot.devtools
+
+  testImplementation libs.test.springboot.kickstart,
+    libs.test.springboot.web
+
+  runtimeOnly libs.main.flyway
 }

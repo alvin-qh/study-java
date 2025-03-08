@@ -1,3 +1,12 @@
+buildscript {
+  // 遍历所有的依赖
+  configurations["classpath"].resolutionStrategy.eachDependency {
+    if (requested.group == "org.jooq") {
+      useVersion "${VER_JOOQ}" // 将所有对 Jooq 的依赖替换为最新版本
+    }
+  }
+}
+
 // 需要将 Spring 依赖的 JOOQ 版本进行替换, 参见 settings.gradle 中 buildscript 部分的配置
 plugins {
   id "nu.studer.jooq" version "${VER_GRADLE_JOOQ}"
@@ -143,13 +152,13 @@ tasks.named("generateJooq").configure {
 }
 
 dependencies {
-  implementation "org.jooq:jooq:${VER_JOOQ}",
-                 ""
-    libs.main.springboot.jdbc,
-    libs.main.commonsCodec,
-    libs.main.h2
-
-  jooqGenerator libs.main.h2
-
-  runtimeOnly libs.main.flyway
+  implementation "org.springframework.boot:spring-boot-starter-jooq",
+                 "org.springframework.boot:spring-boot-starter-web",
+                 "org.springframework.boot:spring-boot-starter-jdbc",
+                 "org.modelmapper:modelmapper:${VER_MODELMAPPER}",
+                 "org.modelmapper.extensions:modelmapper-jooq:${VER_MODELMAPPER}",
+                 "commons-codec:commons-codec:${VER_COMMONS_CODEC}",
+                 "com.h2database:h2:${VER_H2_DB}"
+  runtimeOnly "org.flywaydb:flyway-core:${VER_FLYWAY}"
+  jooqGenerator "com.h2database:h2:${VER_H2_DB}"
 }

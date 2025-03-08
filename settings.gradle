@@ -19,15 +19,6 @@ pluginManagement {
 //   id "de.fayard.refreshVersions"
 // }
 
-buildscript {
-  // 遍历所有的依赖
-  configurations["classpath"].resolutionStrategy.eachDependency {
-    if (requested.group == "org.jooq") {
-      useVersion "${VER_JOOQ}" // 将所有对 Jooq 的依赖替换为最新版本
-    }
-  }
-}
-
 rootProject.name = "study-java"
 
 include(
@@ -95,7 +86,7 @@ include(
   ":springboot:autoconfig:app",
   ":springboot:datasource:dynamic",
   ":springboot:datasource:multiple",
-  // ":springboot:jooq",
+  ":springboot:jooq",
   ":springboot:mybatis",
   // ":springboot:security",
   // ":springboot:shiro",
