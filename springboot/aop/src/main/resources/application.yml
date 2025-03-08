@@ -3,5 +3,7 @@
 #
 # 配置 Spring Boot
 spring:
+  main:
+    banner-mode: off
   application:
     name: study-springboot-aop
