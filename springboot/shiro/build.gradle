@@ -1,26 +1,5 @@
 plugins {
-  id "org.springframework.boot"
   id "org.flywaydb.flyway"
-}
-
-dependencies {
-  implementation libs.main.springboot.shiro,
-    libs.main.springboot.web,
-    libs.main.springboot.mybatisPlus,
-    libs.main.springboot.redis,
-    libs.main.springboot.validator,
-    libs.main.h2,
-    libs.main.commonsCodec,
-    libs.main.commonsPool2,
-    libs.main.jwt,
-    libs.main.modelmapper
-
-  developmentOnly libs.main.springboot.devtools
-
-  testImplementation libs.test.springboot.web,
-    libs.test.springboot.security
-
-  runtimeOnly libs.main.flyway
 }
 
 springBoot {
@@ -47,4 +26,32 @@ flyway {
     "filesystem:${projectDir}/src/main/resources/migration"
   ]
   table = "schema_version"
+}
+
+dependencies {
+  implementation ("org.apache.shiro:shiro-spring:${VER_SHIRO}:jakarta") {
+    exclude group: "org.apache.shiro", module: "shiro-core"
+    exclude group: "org.apache.shiro", module: "shiro-web"
+  }
+  implementation ("org.apache.shiro:shiro-core:${VER_SHIRO}:jakarta")
+  implementation ("org.apache.shiro:shiro-web:${VER_SHIRO}:jakarta") {
+    exclude group: "org.apache.shiro", module: "shiro-core"
+  }
+  implementation ("com.baomidou:mybatis-plus-spring-boot3-starter:${VER_MYBATIS_PLUS}") {
+    exclude group: "org.springframework.boot", module: "*"
+  }
+  implementation ("com.auth0:java-jwt:${VER_AUTH0_JWT}") {
+    exclude group: "com.fasterxml.jackson.core", module: "*"
+  }
+  implementation "org.springframework.boot:spring-boot-starter-web",
+                 "org.springframework.boot:spring-boot-starter-jdbc",
+                 "org.springframework.boot:spring-boot-starter-data-redis",
+                 "org.springframework.boot:spring-boot-starter-validation",
+                 "com.baomidou:mybatis-plus-jsqlparser:${VER_MYBATIS_PLUS}",
+                 "org.apache.commons:commons-pool2:${VER_COMMONS_POOL2}",
+                 "commons-codec:commons-codec:${VER_COMMONS_CODEC}",
+                 "org.modelmapper:modelmapper:${VER_MODELMAPPER}",
+                 "com.h2database:h2:${VER_H2_DB}"
+  runtimeOnly "org.flywaydb:flyway-core:${VER_FLYWAY}"
+  testImplementation "org.springframework.boot:spring-boot-starter-webflux"
 }

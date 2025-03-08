@@ -89,7 +89,7 @@ include(
   ":springboot:jooq",
   ":springboot:mybatis",
   ":springboot:security",
-  // ":springboot:shiro",
+  ":springboot:shiro",
   // ":springboot:springdoc",
   ":springboot:graphql",
 )
