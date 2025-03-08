@@ -11,7 +11,6 @@ import alvin.study.springboot.security.infra.entity.User;
 /**
  * 对 JWT 字符串进行验证的 {@link Authentication} 接口类型
  */
-@Deprecated(forRemoval = true, since = "3.0")
 public class JwtAuthenticationToken implements Authentication {
     /**
      * 存储 JWT 字符串

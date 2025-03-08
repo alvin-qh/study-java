@@ -37,7 +37,12 @@
       </dependency>
       <dependency>
         <groupId>com.baomidou</groupId>
-        <artifactId>mybatis-plus-boot-starter</artifactId>
+        <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+        <version>${version.mybatis-plus}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus-jsqlparser</artifactId>
         <version>${version.mybatis-plus}</version>
       </dependency>
       <dependency>
@@ -65,6 +70,27 @@
       <artifactId>spring-boot-starter-security</artifactId>
     </dependency>
     <dependency>
+      <!-- Spring Boot JDBC 依赖 -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-jdbc</artifactId>
+    </dependency>
+    <dependency>
+      <!-- Mybatis-Plus 依赖 -->
+      <groupId>com.baomidou</groupId>
+      <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.baomidou</groupId>
+      <artifactId>mybatis-plus-jsqlparser</artifactId>
+      <version>${version.mybatis-plus}</version>
+    </dependency>
+    <dependency>
       <!-- JWT 依赖 -->
       <groupId>com.auth0</groupId>
       <artifactId>java-jwt</artifactId>
@@ -74,33 +100,6 @@
           <artifactId>*</artifactId>
         </exclusion>
       </exclusions>
-    </dependency>
-    <dependency>
-      <!-- Spring Boot JDBC 依赖 -->
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-jdbc</artifactId>
-    </dependency>
-    <dependency>
-      <!-- Mybatis-Plus 依赖 -->
-      <groupId>com.baomidou</groupId>
-      <artifactId>mybatis-plus-boot-starter</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-        <!-- spring 升级到 3.2 以后, mybatis-plus 的相关组件未跟上升级 -->
-        <exclusion>
-          <groupId>org.mybatis</groupId>
-          <artifactId>mybatis-spring</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <!-- spring 升级到 3.2 以后, mybatis-plus 的相关组件未跟上升级 -->
-    <dependency>
-      <groupId>org.mybatis</groupId>
-      <artifactId>mybatis-spring</artifactId>
-      <version>${version.mybatis-spring}</version>
     </dependency>
     <dependency>
       <!-- Redis 依赖 -->

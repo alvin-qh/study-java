@@ -76,7 +76,7 @@
     <version.javafaker>1.0.2</version.javafaker>
     <version.awaitility>4.3.0</version.awaitility>
     <version.p6spy>3.9.1</version.p6spy>
-    <version.spring-security-test>6.4.2</version.spring-security-test>
+    <version.spring-security-test>6.4.3</version.spring-security-test>
     <version.spring-graphql-test>1.3.4</version.spring-graphql-test>
     <!-- End test dependencies -->
 

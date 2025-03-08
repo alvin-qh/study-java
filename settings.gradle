@@ -88,7 +88,7 @@ include(
   ":springboot:datasource:multiple",
   ":springboot:jooq",
   ":springboot:mybatis",
-  // ":springboot:security",
+  ":springboot:security",
   // ":springboot:shiro",
   // ":springboot:springdoc",
   ":springboot:graphql",
