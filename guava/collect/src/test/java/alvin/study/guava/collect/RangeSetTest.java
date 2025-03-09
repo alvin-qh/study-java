@@ -4,8 +4,6 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.stream.IntStream;
 
-import org.junit.jupiter.api.Test;
-
 import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.ImmutableRangeSet;
 import com.google.common.collect.Iterables;
@@ -13,47 +11,61 @@ import com.google.common.collect.Range;
 import com.google.common.collect.RangeSet;
 import com.google.common.collect.TreeRangeSet;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * {@link RangeSet} 相当于是多个区间的组合
  *
  * <p>
- * {@link RangeSet} 接口表示一个 {@link Range} 对象的集合, 由零或多个非空的, 不连续的 {@link Range} 对象组成
+ * {@link RangeSet} 接口表示一个 {@link Range} 对象的集合,
+ * 由零或多个非空的, 不连续的 {@link Range} 对象组成
  * </p>
  *
  * <p>
- * 可以向 {@link RangeSet} 中添加 {@link Range} 对象, 如果新添加的对象和集合中已有的对象连续, 则会合并这两个对象; 如果新添加的对象为空
- * (即 {@link Range#isEmpty()} 为 {@code true}), 则忽略该对象; 如果添加的对象和集合中所有对象都不连续, 则添加该对象
+ * 可以向 {@link RangeSet} 中添加 {@link Range} 对象,
+ * 如果新添加的对象和集合中已有的对象连续, 则会合并这两个对象; 如果新添加的对象为空
+ * (即 {@link Range#isEmpty()} 为 {@code true}), 则忽略该对象;
+ * 如果添加的对象和集合中所有对象都不连续, 则添加该对象
  * </p>
  *
  * <p>
- * {@link RangeSet} 集合可以把其包含的多个区间作为一个整体, 和另一个区间 (或 {@link RangeSet} 集合) 进行交
- * ({@code intersects}/{@code intersection}), 并 ({@code add}/{@code addAll}), 差 ({@code remove}/{@code RemoveAll})
+ * {@link RangeSet} 集合可以把其包含的多个区间作为一个整体,
+ * 和另一个区间 (或 {@link RangeSet} 集合) 进行交
+ * ({@code intersects}/{@code intersection}), 并
+ * ({@code add}/{@code addAll}), 差 ({@code remove}/{@code RemoveAll})
  * 集的计算, 以及求自身补 ({@code complement}) 集的计算
  * </p>
  *
  * <p>
- * Guava 中, {@link RangeSet} 接口提供了两个实现类: {@link TreeRangeSet} 以及 {@link ImmutableRangeSet}, 前者基于
- * {@link java.util.TreeMap TreeMap} 实现; 后者为一个不可变的 {@link RangeSet} 类型
+ * Guava 中, {@link RangeSet} 接口提供了两个实现类:
+ * {@link TreeRangeSet} 以及 {@link ImmutableRangeSet}, 前者基于
+ * {@link java.util.TreeMap TreeMap} 实现; 后者为一个不可变的
+ * {@link RangeSet} 类型
  * </p>
  */
 class RangeSetTest {
     /**
-     * 实例化一个 {@link RangeSet} 集合对象, 并向其中添加若干 {@link Range} 对象
+     * 实例化一个 {@link RangeSet} 集合对象, 并向其中添加若干
+     * {@link Range} 对象
      *
      * <p>
      * {@link TreeRangeSet#create()} 方法用于创建一个空的集合对象
      * </p>
      *
      * <p>
-     * {@link TreeRangeSet#add(Range)} 方法将集合和给定区间求并集. 即: 如果是包含关系, 取区间范围较大的; 如果是连接关系,
-     * 则连接为一个区间; 如果不是连接关系, 则添加该给定区间
+     * {@link TreeRangeSet#add(Range)} 方法将集合和给定区间求并集.
+     * 即: 如果是包含关系, 取区间范围较大的; 如果是连接关系, 则连接为一个区间;
+     * 如果不是连接关系, 则添加该给定区间
      * </p>
      *
      * <p>
-     * 也可以通过 {@link TreeRangeSet#addAll(RangeSet)} 方法进行两个区间集合直接的并集操作
+     * 也可以通过 {@link TreeRangeSet#addAll(RangeSet)}
+     * 方法进行两个区间集合直接的并集操作
      * </p>
      *
-     * @return {@link RangeSet} 集合对象, 内部包含 {@code [1..20), (50..100]} 两部分区间的 {@link Range} 对象
+     * @return {@link RangeSet} 集合对象, 内部包含
+     *         {@code [1..20), (50..100]} 两部分区间的
+     *         {@link Range} 对象
      */
     private static RangeSet<Integer> createRangeSet() {
         // 创建一个 RangeSet 集合对象
@@ -78,7 +90,8 @@ class RangeSetTest {
      * 检查指定的值是否包含在 {@link RangeSet} 定义的区间内
      *
      * <p>
-     * {@link RangeSet#contains(Comparable)} 方法表示, 一个给定值, 只要被 {@link RangeSet} 中的任意一个 {@link Range} 对象包含,
+     * {@link RangeSet#contains(Comparable)} 方法表示, 一个给定值,
+     * 只要被 {@link RangeSet} 中的任意一个 {@link Range} 对象包含,
      * 则返回 {@code true}
      * </p>
      */
@@ -114,13 +127,15 @@ class RangeSetTest {
      * 从一个 {@link RangeSet} 对象中, 获取包含给定值的 {@link Range} 对象
      *
      * <p>
-     * 对于一个给定的值, {@link RangeSet#rangeContaining(Comparable)} 方法返回包含该值的 {@link Range} 对象,
-     * 如果给定的值不属于任何一个范围, 则返回 {@code null} 值
+     * 对于一个给定的值, {@link RangeSet#rangeContaining(Comparable)}
+     * 方法返回包含该值的 {@link Range} 对象, 如果给定的值不属于任何一个范围,
+     * 则返回 {@code null} 值
      * </p>
      *
      * <p>
-     * 注意, 返回的 {@link Range} 对象是经过 {@link RangeSet} 计算合并后的对象, 参考: {@link #createRangeSet()} 方法, 本例中的
-     * {@link RangeSet} 仅包含 {@code [1..20), (50..100]} 两个 {@link Range} 区间
+     * 注意, 返回的 {@link Range} 对象是经过 {@link RangeSet} 计算合并后的对象,
+     * 参考: {@link #createRangeSet()} 方法, 本例中的 {@link RangeSet} 仅包含
+     * {@code [1..20), (50..100]} 两个 {@link Range} 区间
      * </p>
      */
     @Test
@@ -132,24 +147,28 @@ class RangeSetTest {
         then(rangeSet.rangeContaining(0)).isNull();
 
         // 5 在 [1..20) 范围内
-        then(rangeSet.rangeContaining(5)).isEqualTo(Range.closedOpen(1, 20));
+        then(rangeSet.rangeContaining(5))
+                .isEqualTo(Range.closedOpen(1, 20));
 
         // 20 不包含在任何范围内
         then(rangeSet.rangeContaining(20)).isNull();
 
         // 80 包含在 (50..100] 范围内
-        then(rangeSet.rangeContaining(80)).isEqualTo(Range.openClosed(50, 100));
+        then(rangeSet.rangeContaining(80))
+                .isEqualTo(Range.openClosed(50, 100));
     }
 
     /**
      * 确认 {@link RangeSet} 对象中是否包含指定的区间值
      *
      * <p>
-     * {@link RangeSet#encloses(Range)} 方法如果返回 {@code true} 则表示该对象包含参数指定的区间
+     * {@link RangeSet#encloses(Range)} 方法如果返回 {@code true}
+     * 则表示该对象包含参数指定的区间
      * </p>
      *
      * <p>
-     * 本例中, {@link RangeSet} 包含内 {@code [1..20), (50..100]} 两个区间
+     * 本例中, {@link RangeSet} 包含内 {@code [1..20), (50..100]}
+     * 两个区间
      * </p>
      */
     @Test
@@ -181,7 +200,8 @@ class RangeSetTest {
      * 获取一个包含 {@link RangeSet} 中所有区间的区间
      *
      * <p>
-     * {@link RangeSet#span()} 方法返回一个 {@link Range} 对象, 可以包含 {@link RangeSet} 中的任意区间
+     * {@link RangeSet#span()} 方法返回一个 {@link Range} 对象, 可以包含
+     * {@link RangeSet} 中的任意区间
      * </p>
      *
      * <p>
@@ -203,8 +223,10 @@ class RangeSetTest {
      * 获取 {@link RangeSet} 中所有区间的补集
      *
      * <p>
-     * {@link RangeSet#complement()} 方法返回一个新的 {@link RangeSet} 对象, 其中包含的 {@link Range} 对象恰好是原
-     * {@link RangeSet} 集合中范围的补集, 即返回的 {@link RangeSet} 和原始的 {@link RangeSet} 合并的结果为 {@code (-∞..∞)}
+     * {@link RangeSet#complement()} 方法返回一个新的 {@link RangeSet} 对象,
+     * 其中包含的 {@link Range} 对象恰好是原 {@link RangeSet} 集合中范围的补集,
+     * 即返回的 {@link RangeSet} 和原始的 {@link RangeSet} 合并的结果为
+     * {@code (-∞..∞)}
      * </p>
      *
      * <p>
@@ -219,7 +241,8 @@ class RangeSetTest {
         // 获取原 RangeSet 对象的补集集合
         var compRangeSet = rangeSet.complement();
 
-        // 确认补集 RangeSet 中包含 (-∞, 1), [20, 50] 以及 (100, ∞) 这三部分区间, 和 [1..20), (50..100] 形成补集
+        // 确认补集 RangeSet 中包含 (-∞, 1), [20, 50] 以及 (100, ∞) 这三部分区间,
+        // 和 [1..20), (50..100] 形成补集
         then(compRangeSet.asRanges()).containsExactly(
             Range.lessThan(1),
             Range.closed(20, 50),
@@ -230,15 +253,18 @@ class RangeSetTest {
      * 获取 {@link RangeSet} 对象和指定区间的交集结果
      *
      * <p>
-     * {@link RangeSet#subRangeSet(Range)} 方法返回其所有区间和所给区间相交的结果, 所有交集组成一个新的 {@link RangeSet} 对象
+     * {@link RangeSet#subRangeSet(Range)} 方法返回其所有区间和所给区间相交的结果,
+     * 所有交集组成一个新的 {@link RangeSet} 对象
      * </p>
      *
      * <p>
-     * 如果 {@link RangeSet} 对象中不存在能够包含参数 {@link Range} 定义的区间的情况, 则返回 {@code null} 值
+     * 如果 {@link RangeSet} 对象中不存在能够包含参数 {@link Range} 定义的区间的情况,
+     * 则返回 {@code null} 值
      * </p>
      *
      * <p>
-     * 在本例中, 要么返回 {@code [1..20), (50..100]} 这两个区间的一个, 要么返回 {@code null} 值
+     * 在本例中, 要么返回 {@code [1..20), (50..100]} 这两个区间的一个,
+     * 要么返回 {@code null} 值
      * </p>
      */
     @Test
@@ -256,7 +282,8 @@ class RangeSetTest {
 
         // [1..20), (50..100] 和 (15..60) 的交集为 (15..20), (50, 60)
         subRangeSet = rangeSet.subRangeSet(Range.open(15, 60));
-        then(subRangeSet.asRanges()).containsExactly(Range.open(15, 20), Range.open(50, 60));
+        then(subRangeSet.asRanges())
+                .containsExactly(Range.open(15, 20), Range.open(50, 60));
 
         // [1..20), (50..100] 和 [30, 40] 不存在交集
         subRangeSet = rangeSet.subRangeSet(Range.closed(30, 40));
@@ -267,7 +294,8 @@ class RangeSetTest {
      * 判断 {@link RangeSet} 是否和所给区间相交
      *
      * <p>
-     * {@link RangeSet#intersects(Range)} 方法返回 {@code true}, 就相当于 {@link RangeSet#subRangeSet(Range)} 返回了非空结果
+     * {@link RangeSet#intersects(Range)} 方法返回 {@code true},
+     * 就相当于 {@link RangeSet#subRangeSet(Range)} 返回了非空结果
      * </p>
      */
     @Test
@@ -292,7 +320,8 @@ class RangeSetTest {
      * 将 {@link RangeSet} 对象包含的区间组成集合, 按区间定义从小到大排序
      *
      * <p>
-     * {@link RangeSet#asRanges()} 返回一个 {@link java.util.Set Set} 集合, 包含所有的区间, 且顺序为区间定义较小的在前
+     * {@link RangeSet#asRanges()} 返回一个 {@link java.util.Set Set} 集合,
+     * 包含所有的区间, 且顺序为区间定义较小的在前
      * </p>
      *
      * <p>
@@ -315,12 +344,16 @@ class RangeSetTest {
      * 将 {@link RangeSet} 对象包含的区间组成集合, 按区间定义从大到小排序
      *
      * <p>
-     * {@link RangeSet#asDescendingSetOfRanges()} 返回一个 {@link java.util.Set Set} 集合, 包含所有的区间, 这一点和
-     * {@link RangeSet#asRanges()} 类似, 不同的是, {@link RangeSet#asDescendingSetOfRanges()} 返回的结果中, 区间定义较大的在前
+     * {@link RangeSet#asDescendingSetOfRanges()} 返回一个
+     * {@link java.util.Set Set} 集合, 包含所有的区间, 这一点和
+     * {@link RangeSet#asRanges()} 类似, 不同的是,
+     * {@link RangeSet#asDescendingSetOfRanges()} 返回的结果中,
+     * 区间定义较大的在前
      * </p>
      *
      * <p>
-     * 在本例中, 返回的集合中按顺序包含 {@code (50..100], [1..20)} 这两个区间元素
+     * 在本例中, 返回的集合中按顺序包含 {@code (50..100], [1..20)}
+     * 这两个区间元素
      * </p>
      */
     @Test
@@ -339,12 +372,14 @@ class RangeSetTest {
      * 对 {@link RangeSet} 集合和给定区间求差集
      *
      * <p>
-     * {@link RangeSet#remove(Range)} 方法将区间集合和所给区间求差集. 即: 如果区间为包含关系, 则拆分区间, 去除相差的部分;
-     * 如果区间不存在关系, 则不进行操作
+     * {@link RangeSet#remove(Range)} 方法将区间集合和所给区间求差集.
+     * 即: 如果区间为包含关系, 则拆分区间, 去除相差的部分; 如果区间不存在关系,
+     * 则不进行操作
      * </p>
      *
      * <p>
-     * 在本例中, 求区间 {@code [1..20), (50..100]} 和 {@code [5..8), (80..90)} 的差集, 结果为 {@code 4} 部分, 分别为:
+     * 在本例中, 求区间 {@code [1..20), (50..100]} 和 {@code [5..8), (80..90)}
+     * 的差集, 结果为 {@code 4} 部分, 分别为:
      * {@code [1..5), [8..20), (50..80], [80..100]}
      * </p>
      */
@@ -369,7 +404,8 @@ class RangeSetTest {
      * 将 {@link RangeSet} 中的区间定义清空
      *
      * <p>
-     * {@link RangeSet#clear()} 将对象中存储的区间情况, 另 {@link RangeSet#isEmpty()} 返回 {@code true}
+     * {@link RangeSet#clear()} 将对象中存储的区间情况, 另
+     * {@link RangeSet#isEmpty()} 返回 {@code true}
      * </p>
      *
      * <p>
@@ -377,8 +413,9 @@ class RangeSetTest {
      * </p>
      *
      * <p>
-     * 在本例中, 从原区间 {@code [1..20), (50..100]} 中删除 {@code [5..8), (80..90)} 两个区间, 将原区间分割为 {@code 4} 部分,
-     * 分别为: {@code [1..5), [8..20), (50..80], [80..100]}
+     * 在本例中, 从原区间 {@code [1..20), (50..100]} 中删除 {@code [5..8), (80..90)}
+     * 两个区间, 将原区间分割为 {@code 4} 部分, 分别为:
+     * {@code [1..5), [8..20), (50..80], [80..100]}
      * </p>
      */
     @Test
@@ -399,11 +436,13 @@ class RangeSetTest {
      * 获取 {@link ImmutableRangeSet} 中所有区间包含的值
      *
      * <p>
-     * {@link ImmutableRangeSet#asSet(DiscreteDomain)} 根据 {@link DiscreteDomain} 参数, 返回区间内的所有数值
+     * {@link ImmutableRangeSet#asSet(DiscreteDomain)} 根据 {@link DiscreteDomain}
+     * 参数, 返回区间内的所有数值
      * </p>
      *
      * <p>
-     * 在本例中, 区间 {@code [1..20), (50..100]} 包含的数值包括 {@code [1, 2, ..., 19], [51, 52, ..., 100]}
+     * 在本例中, 区间 {@code [1..20), (50..100]} 包含的数值包括
+     * {@code [1, 2, ..., 19], [51, 52, ..., 100]}
      * </p>
      */
     @Test
@@ -420,20 +459,24 @@ class RangeSetTest {
     }
 
     /**
-     * 求 {@link ImmutableRangeSet} 和另一个 {@link RangeSet} 对象的并集
+     * 求 {@link ImmutableRangeSet} 和另一个 {@link RangeSet}
+     * 对象的并集
      *
      * <p>
-     * {@link ImmutableRangeSet#union(RangeSet)} 方法返回一个新的 {@link ImmutableRangeSet} 对象, 包括两个区间集合的并集结果
+     * {@link ImmutableRangeSet#union(RangeSet)} 方法返回一个新的
+     * {@link ImmutableRangeSet} 对象, 包括两个区间集合的并集结果
      * </p>
      *
      * <p>
-     * {@link ImmutableRangeSet#union(RangeSet)} 方法相当于将两个对象中包含的区间添加 ({@code addAll}) 到另一个集合中, 参考
+     * {@link ImmutableRangeSet#union(RangeSet)}
+     * 方法相当于将两个对象中包含的区间添加 ({@code addAll}) 到另一个集合中, 参考
      * {@link #createRangeSet()} 方法
      * </p>
      *
      * <p>
-     * 在本例中, 区间 {@code [1..20), (50..100]} 和区间 {@code (5..15), [30..40], [50..100)} 求并集的结果为 {@code [1, 20),
-     * [30..40], [50..100]}
+     * 在本例中, 区间 {@code [1..20), (50..100]} 和区间
+     * {@code (5..15), [30..40], [50..100)} 求并集的结果为
+     * {@code [1, 20), [30..40], [50..100]}
      * </p>
      */
     @Test
@@ -468,18 +511,20 @@ class RangeSetTest {
      * 求 {@link ImmutableRangeSet} 和另一个 {@link RangeSet} 对象的差集
      *
      * <p>
-     * {@link ImmutableRangeSet#difference(RangeSet)} 方法返回一个新的 {@link ImmutableRangeSet} 对象,
-     * 包括两个区间集合的差集结果
+     * {@link ImmutableRangeSet#difference(RangeSet)} 方法返回一个新的
+     * {@link ImmutableRangeSet} 对象, 包括两个区间集合的差集结果
      * </p>
      *
      * <p>
-     * {@link ImmutableRangeSet#difference(RangeSet)} 方法相当于从一个集合中删除 ({@code removeAll}) 另一个集合, 参考
+     * {@link ImmutableRangeSet#difference(RangeSet)} 方法相当于从一个集合中删除
+     * ({@code removeAll}) 另一个集合, 参考
      * {@link #remove_shouldComputeDifferenceRange()} 方法
      * </p>
      *
      * <p>
-     * 在本例中, 区间 {@code [1..20), (50..100]} 和区间 {@code (5..15), [30..40], [50..100)} 求差集的结果为 {@code [1, 5],
-     * [15..20), [100..100]}
+     * 在本例中, 区间 {@code [1..20), (50..100]} 和区间
+     * {@code (5..15), [30..40], [50..100)} 求差集的结果为
+     * {@code [1, 5], [15..20), [100..100]}
      * </p>
      */
     @Test
@@ -511,20 +556,23 @@ class RangeSetTest {
     }
 
     /**
-     * 求 {@link ImmutableRangeSet} 和另一个 {@link RangeSet} 对象的交集
+     * 求 {@link ImmutableRangeSet} 和另一个 {@link RangeSet}
+     * 对象的交集
      *
      * <p>
-     * {@link ImmutableRangeSet#intersection(RangeSet)} 方法返回一个新的 {@link ImmutableRangeSet} 对象,
-     * 包括两个区间集合的交集结果
+     * {@link ImmutableRangeSet#intersection(RangeSet)} 方法返回一个新的
+     * {@link ImmutableRangeSet} 对象, 包括两个区间集合的交集结果
      * </p>
      *
      * <p>
-     * {@link ImmutableRangeSet#intersection(RangeSet)} 方法相当于从一个集合中删除 ({@code removeAll}) 另一个集合的补集,
-     * 即 {@code rangeSet1.removeAll(rangeSet2.complement())}
+     * {@link ImmutableRangeSet#intersection(RangeSet)}
+     * 方法相当于从一个集合中删除 ({@code removeAll}) 另一个集合的补集, 即
+     * {@code rangeSet1.removeAll(rangeSet2.complement())}
      * </p>
      *
      * <p>
-     * 在本例中, 区间 {@code [1..20), (50..100]} 和区间 {@code (5..15), [30..40], [50..100)} 求交集的结果为
+     * 在本例中, 区间 {@code [1..20), (50..100]} 和区间
+     * {@code (5..15), [30..40], [50..100)} 求交集的结果为
      * {@code [5..15], (50, 100)}
      * </p>
      */

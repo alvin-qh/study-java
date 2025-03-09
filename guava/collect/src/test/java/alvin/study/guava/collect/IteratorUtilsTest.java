@@ -5,18 +5,19 @@ import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 import java.util.Iterator;
 
-import org.junit.jupiter.api.Test;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * 测试 {@link Iterators} 工具类
  *
  * <p>
- * {@link Iterators} 工具类提供了一组对 {@link java.util.Iterator Iterator} 迭代器对象进行操作的辅助方法
+ * {@link Iterators} 工具类提供了一组对 {@link java.util.Iterator Iterator}
+ * 迭代器对象进行操作的辅助方法
  * </p>
  */
 class IteratorUtilsTest {
@@ -24,8 +25,9 @@ class IteratorUtilsTest {
      * 将一个迭代器对象内的元素添加到另一个集合中
      *
      * <p>
-     * {@link Iterators#addAll(java.util.Collection, java.util.Iterator) Iterators.addAll(Collection, Iterator)} 方法用
-     * 于将一个迭代器进行迭代, 并把得到的元素添加到指定的集合对象中
+     * {@link Iterators#addAll(java.util.Collection, java.util.Iterator)
+     * Iterators.addAll(Collection, Iterator)} 方法用于将一个迭代器进行迭代,
+     * 并把得到的元素添加到指定的集合对象中
      * </p>
      */
     @Test
@@ -48,8 +50,8 @@ class IteratorUtilsTest {
      * 确认一个迭代器迭代得到的所有元素都满足指定条件
      *
      * <p>
-     * {@link Iterators#all(java.util.Iterator, com.google.common.base.Predicate) Iterators.all(Iterator, Predicate)}
-     * 方法用于判断迭代器中的所有元素均符合指定条件
+     * {@link Iterators#all(java.util.Iterator, com.google.common.base.Predicate)
+     * Iterators.all(Iterator, Predicate)} 方法用于判断迭代器中的所有元素均符合指定条件
      * </p>
      */
     @Test
@@ -70,8 +72,8 @@ class IteratorUtilsTest {
      * 确认一个迭代器迭代得到的任一元素满足指定条件
      *
      * <p>
-     * {@link Iterators#any(java.util.Iterator, com.google.common.base.Predicate) Iterators.any(Iterator, Predicate)}
-     * 方法用于判断迭代器中至少有一个元素符合指定条件
+     * {@link Iterators#any(java.util.Iterator, com.google.common.base.Predicate)
+     * Iterators.any(Iterator, Predicate)} 方法用于判断迭代器中至少有一个元素符合指定条件
      * </p>
      */
     @Test
@@ -92,8 +94,8 @@ class IteratorUtilsTest {
      * 将多个迭代器合并成一个, 以便可以一次性进行迭代
      *
      * <p>
-     * {@link Iterators#concat(java.util.Iterator...) Iterators.concat(Iterator...)} 方法将多个迭代器对象合并成一个, 从而可以
-     * 通过一次迭代, 遍历多个迭代器内容
+     * {@link Iterators#concat(java.util.Iterator...) Iterators.concat(Iterator...)}
+     * 方法将多个迭代器对象合并成一个, 从而可以通过一次迭代, 遍历多个迭代器内容
      * </p>
      */
     @Test
@@ -112,14 +114,18 @@ class IteratorUtilsTest {
      * 将多个迭代器合并成一个, 以便可以一次性进行迭代
      *
      * <p>
-     * {@link Iterators#consumingIterator(java.util.Iterator) Iterators.consumingIterator(Iterator)} 方法用于包装一个迭代器
-     * 对象, 得到代理迭代器 ({@link com.google.common.collect.UnmodifiableIterator UnmodifiableIterator} 类型) 对象在迭代过程
-     * 中会删除被迭代元素, 会导致对应集合中相应元素删除, 在迭代完毕后, 对应集合会被清空
+     * {@link Iterators#consumingIterator(java.util.Iterator)
+     * Iterators.consumingIterator(Iterator)} 方法用于包装一个迭代器对象,
+     * 得到代理迭代器 ({@link com.google.common.collect.UnmodifiableIterator
+     * UnmodifiableIterator} 类型) 对象在迭代过程中会删除被迭代元素,
+     * 会导致对应集合中相应元素删除, 在迭代完毕后, 对应集合会被清空
      * </p>
      *
      * <p>
-     * 注意, 被包装的迭代器必须支持 {@link java.util.Iterator#remove() Iterator.remove()} 方法, 否则在调用
-     * {@link com.google.common.collect.UnmodifiableIterator#next() UnmodifiableIterator.next()} 时会抛出异常
+     * 注意, 被包装的迭代器必须支持 {@link java.util.Iterator#remove()
+     * Iterator.remove()} 方法, 否则在调用
+     * {@link com.google.common.collect.UnmodifiableIterator#next()
+     * UnmodifiableIterator.next()} 时会抛出异常
      * </p>
      */
     @SuppressWarnings("null")
@@ -150,8 +156,8 @@ class IteratorUtilsTest {
      * 将多个迭代器合并成一个, 以便可以一次性进行迭代
      *
      * <p>
-     * {@link Iterators#contains(java.util.Iterator, Object) Iterators.contains(Iterator, Object)} 方法用于从一个迭代器中
-     * 确认是否包含指定的元素值
+     * {@link Iterators#contains(java.util.Iterator, Object)
+     * Iterators.contains(Iterator, Object)} 方法用于从一个迭代器中确认是否包含指定的元素值
      * </p>
      */
     @Test
@@ -173,12 +179,13 @@ class IteratorUtilsTest {
      * </p>
      *
      * <p>
-     * 循环迭代内部为一个可迭代对象的引用, 并从该对象获取迭代器对象, 一旦获取的迭代器迭代结束, 则重新获取迭代器对象重新开始迭代
+     * 循环迭代内部为一个可迭代对象的引用, 并从该对象获取迭代器对象, 一旦获取的迭代器迭代结束,
+     * 则重新获取迭代器对象重新开始迭代
      * </p>
      *
      * <p>
-     * 本例中, 将一个长度为 {@code 5} 的 {@link java.util.List List} 对象进行包装, 并对其进行 {@code 10} 次迭代, 实际上是将
-     * {@code List} 对象通过迭代器进行了两轮迭代
+     * 本例中, 将一个长度为 {@code 5} 的 {@link java.util.List List} 对象进行包装,
+     * 并对其进行 {@code 10} 次迭代, 实际上是将 {@code List} 对象通过迭代器进行了两轮迭代
      * </p>
      */
     @Test
@@ -205,7 +212,8 @@ class IteratorUtilsTest {
      *
      * <p>
      * {@link Iterators#filter(java.util.Iterator, com.google.common.base.Predicate)
-     * Iterators.filter(Iterator, Predicate)} 方法返回一个结果迭代器对象, 只包含所给迭代器中符合条件的元素值
+     * Iterators.filter(Iterator, Predicate)} 方法返回一个结果迭代器对象,
+     * 只包含所给迭代器中符合条件的元素值
      * </p>
      */
     @Test
@@ -222,8 +230,9 @@ class IteratorUtilsTest {
      * 通过迭代器, 统计指定元素出现的次数
      *
      * <p>
-     * {@link Iterators#frequency(java.util.Iterator, Object) Iterators.frequency(Iterator, Object)} 方法用于将迭代过程中
-     * 获得的元素逐一和目标对象进行比较, 并统计和目标对象相等的元素个数
+     * {@link Iterators#frequency(java.util.Iterator, Object)
+     * Iterators.frequency(Iterator, Object)}
+     * 方法用于将迭代过程中获得的元素逐一和目标对象进行比较, 并统计和目标对象相等的元素个数
      * </p>
      */
     @Test
@@ -241,14 +250,14 @@ class IteratorUtilsTest {
      *
      * <p>
      * {@link Iterators#find(java.util.Iterator, com.google.common.base.Predicate, Object)
-     * Iterators.find(Iterator, Predicate, Object)} 方法遍历迭代器, 并找到第一个符合条件的元素, 如果迭代器中不包含符合
-     * 条件的元素, 则返回所给的默认值
+     * Iterators.find(Iterator, Predicate, Object)} 方法遍历迭代器,
+     * 并找到第一个符合条件的元素, 如果迭代器中不包含符合条件的元素, 则返回所给的默认值
      * </p>
      *
      * <p>
      * {@link Iterators#tryFind(java.util.Iterator, com.google.common.base.Predicate)
-     * Iterators.tryFind(Iterator, Predicate)} 和 {@code find} 方法类似, 返回一个 {@link com.google.common.base.Optional
-     * Optional} 类型对象作为结果, 该对象存储
+     * Iterators.tryFind(Iterator, Predicate)} 和 {@code find} 方法类似, 返回一个
+     * {@link com.google.common.base.Optional Optional} 类型对象作为结果, 该对象存储
      * 查找到的元素或为空
      * </p>
      */
@@ -279,15 +288,17 @@ class IteratorUtilsTest {
      * 通过迭代器, 将得到的元素按顺序平均分配到指定数量的其它集合中
      *
      * <p>
-     * {@link Iterators#partition(java.util.Iterator, int) Iterators.partition(Iterator, int)} 方法遍历迭代器, 并将得到的
-     * 元素按顺序存入到另外的指定数量的集合中. 例如: 将集合 {@code [1, 2, 3]} 分到两个数组中, 结果为 {@code [[1, 2], [3]]}
+     * {@link Iterators#partition(java.util.Iterator, int)
+     * Iterators.partition(Iterator, int)} 方法遍历迭代器, 并将得到的元素按顺序存入到另外的指定数量的集合中.
+     * 例如: 将集合 {@code [1, 2, 3]} 分到两个数组中, 结果为 {@code [[1, 2], [3]]}
      * </p>
      *
      * <p>
-     * {@link Iterators#paddedPartition(java.util.Iterator, int) Iterators.paddedPartition(Iterator, int)} 方法与
-     * {@link Iterators#partition(java.util.Iterator, int) Iterators.partition(Iterator, int)} 方法基本类似, 但要求结果中
-     * 每个数组的元素个数都是一致的, 如果元素数量不足, 则以 {@code null} 填充. 例如: 将集合 {@code [1, 2, 3]} 分到两个数组中, 结果为
-     * {@code [[1, 2], [3, null]]}
+     * {@link Iterators#paddedPartition(java.util.Iterator, int)
+     * Iterators.paddedPartition(Iterator, int)} 方法与
+     * {@link Iterators#partition(java.util.Iterator, int) Iterators.partition(Iterator, int)}
+     * 方法基本类似, 但要求结果中每个数组的元素个数都是一致的, 如果元素数量不足, 则以 {@code null} 填充.
+     * 例如: 将集合 {@code [1, 2, 3]} 分到两个数组中, 结果为 {@code [[1, 2], [3, null]]}
      * </p>
      */
     @SuppressWarnings("null")
@@ -316,23 +327,28 @@ class IteratorUtilsTest {
      * 测试从迭代器中获取指定元素值
      *
      * <p>
-     * {@link Iterators#getNext(java.util.Iterator, Object) Iterators.getNext(Iterator, Object)} 方法获取迭代器的下一个元素
-     * 值, 如果迭代器已迭代完毕, 则返回所给的默认值
+     * {@link Iterators#getNext(java.util.Iterator, Object)
+     * Iterators.getNext(Iterator, Object)} 方法获取迭代器的下一个元素值,
+     * 如果迭代器已迭代完毕, 则返回所给的默认值
      * </p>
      *
      * <p>
-     * {@link Iterators#getLast(java.util.Iterator, Object) Iterators.getLast(Iterator, Object)} 方法获取迭代器的最后一个元
-     * 素, 如果迭代器已迭代完毕, 则返回所给的默认值
+     * {@link Iterators#getLast(java.util.Iterator, Object)
+     * Iterators.getLast(Iterator, Object)} 方法获取迭代器的最后一个元素,
+     * 如果迭代器已迭代完毕, 则返回所给的默认值
      * </p>
      *
      * <p>
-     * {@link Iterators#get(java.util.Iterator, int, Object) Iterators.get(Iterator, int, Object)} 方法获取迭代指定次数后的
-     * 元素值, 如果迭代器在指定次数前已经迭代完毕, 则返回所给的默认值
+     * {@link Iterators#get(java.util.Iterator, int, Object)
+     * Iterators.get(Iterator, int, Object)} 方法获取迭代指定次数后的元素值,
+     * 如果迭代器在指定次数前已经迭代完毕, 则返回所给的默认值
      * </p>
      *
      * <p>
-     * {@link Iterators#getOnlyElement(java.util.Iterator, Object) Iterators.getOnlyElement(Iterator, Object)} 方法获取
-     * 迭代器中唯一的元素, 即迭代器只包含一个元素时, 返回该元素值; 如果迭代器不包含元素, 则返回默认值; 如果迭代器包含多个元素, 则抛出异常
+     * {@link Iterators#getOnlyElement(java.util.Iterator, Object)
+     * Iterators.getOnlyElement(Iterator, Object)} 方法获取迭代器中唯一的元素,
+     * 即迭代器只包含一个元素时, 返回该元素值; 如果迭代器不包含元素, 则返回默认值;
+     * 如果迭代器包含多个元素, 则抛出异常
      * </p>
      */
     @SuppressWarnings("null")
@@ -395,8 +411,8 @@ class IteratorUtilsTest {
      *
      * <p>
      * {@link Iterators#indexOf(java.util.Iterator, com.google.common.base.Predicate)
-     * Iterators.indexOf(Iterator, Predicate)} 方法遍历迭代器, 并找到第一个符合条件的元素并返回其索引, 如果迭代器中不包含符合
-     * 条件的元素, 则返回 {@code -1}
+     * Iterators.indexOf(Iterator, Predicate)} 方法遍历迭代器,
+     * 并找到第一个符合条件的元素并返回其索引, 如果迭代器中不包含符合条件的元素, 则返回 {@code -1}
      * </p>
      */
     @Test
@@ -418,8 +434,8 @@ class IteratorUtilsTest {
      *
      * <p>
      * {@link Iterators#transform(java.util.Iterator, com.google.common.base.Function)
-     * Iterators.transform(Iterator, Function)} 方法包装一个迭代器, 返回新迭代器, 新迭代器在迭代过程中可以将原迭代器得到的元素进行转换
-     * 后返回
+     * Iterators.transform(Iterator, Function)} 方法包装一个迭代器,
+     * 返回新迭代器, 新迭代器在迭代过程中可以将原迭代器得到的元素进行转换后返回
      * </p>
      */
     @Test
@@ -437,8 +453,9 @@ class IteratorUtilsTest {
      * 限制迭代器的迭代次数
      *
      * <p>
-     * {@link Iterators#limit(java.util.Iterator, int) Iterators.limit(Iterator, int)} 方法包装一个迭代器, 返回新迭代器,
-     * 且返回的新迭代器的迭代次数被限制在指定次数内
+     * {@link Iterators#limit(java.util.Iterator, int)
+     * Iterators.limit(Iterator, int)} 方法包装一个迭代器,
+     * 返回新迭代器, 且返回的新迭代器的迭代次数被限制在指定次数内
      * </p>
      */
     @Test
@@ -456,13 +473,14 @@ class IteratorUtilsTest {
      * 对多个迭代器内容进行归并排序
      *
      * <p>
-     * {@link Iterators#mergeSorted(Iterable, java.util.Comparator) Iterators.limit(Iterable, Comparator)} 方法对多个
-     * 迭代器内容进行归并排序, 得到一个存储归并结果且内容有序的迭代器对象
+     * {@link Iterators#mergeSorted(Iterable, java.util.Comparator)
+     * Iterators.limit(Iterable, Comparator)} 方法对多个迭代器内容进行归并排序,
+     * 得到一个存储归并结果且内容有序的迭代器对象
      * </p>
      *
      * <p>
-     * 注意: {@code mergeSorted} 方法本身不对输入的迭代器排序, 所以要保证输入的每个迭代器内部有序, 且排序规则要和后面进行归并排序的规则
-     * 保持一致
+     * 注意: {@code mergeSorted} 方法本身不对输入的迭代器排序,
+     * 所以要保证输入的每个迭代器内部有序, 且排序规则要和后面进行归并排序的规则保持一致
      * </p>
      */
     @Test
@@ -485,8 +503,8 @@ class IteratorUtilsTest {
      * 确认两个迭代器对象的元素完全相等
      *
      * <p>
-     * {@link Iterators#elementsEqual(Iterator, Iterator)} 用于判断两个迭代器包含的元素完全相等, 即: 数量一致,
-     * 且对应位置的元素相等
+     * {@link Iterators#elementsEqual(Iterator, Iterator)}
+     * 用于判断两个迭代器包含的元素完全相等, 即: 数量一致, 且对应位置的元素相等
      * </p>
      */
     @Test

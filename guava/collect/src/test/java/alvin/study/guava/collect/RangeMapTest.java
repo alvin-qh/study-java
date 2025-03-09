@@ -3,42 +3,50 @@ package alvin.study.guava.collect;
 import static org.assertj.core.api.BDDAssertions.entry;
 import static org.assertj.core.api.BDDAssertions.then;
 
-import org.junit.jupiter.api.Test;
-
 import com.google.common.collect.Range;
 import com.google.common.collect.RangeMap;
 import com.google.common.collect.TreeRangeMap;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * {@link RangeMap} 存储了区间和指定值的对应关系
  *
  * <p>
- * {@link RangeMap} 接口存储了 {@link Range} 与指定类型组成的键值对, 随后即可通过区间内的值查找对应的键值
+ * {@link RangeMap} 接口存储了 {@link Range} 与指定类型组成的键值对,
+ * 随后即可通过区间内的值查找对应的键值
  * </p>
  *
  * <p>
- * Guava 中, {@link RangeMap} 接口了实现类: {@link TreeRangeMap}, 相当于基于 {@link java.util.TreeMap TreeMap} 类型实现的类型
+ * Guava 中, {@link RangeMap} 接口了实现类: {@link TreeRangeMap},
+ * 相当于基于 {@link java.util.TreeMap TreeMap} 类型实现的类型
  * </p>
  */
 class RangeMapTest {
     /**
-     * 实例化一个 {@link RangeMap} 对象, 并向其中添加若干 {@link Range} => {@link String} 键值对
+     * 实例化一个 {@link RangeMap} 对象, 并向其中添加若干
+     * {@link Range} => {@link String} 键值对
      *
      * <p>
      * {@link TreeRangeMap#create()} 方法用于创建一个空对象
      * </p>
      *
      * <p>
-     * {@link TreeRangeMap#put(Range, Object)} 向对象中添加新的键值对, 如果新添加的区间和原有的某个区间相交, 则原区间重叠的那部分会
-     * 划给新区间. 例如添加两个键值对: {@code (1..10] => "A"} 及 {@code (5..20) => "B"}, 则添加后的键值对为:
+     * {@link TreeRangeMap#put(Range, Object)} 向对象中添加新的键值对,
+     * 如果新添加的区间和原有的某个区间相交, 则原区间重叠的那部分会
+     * 划给新区间. 例如添加两个键值对: {@code (1..10] => "A"} 及
+     * {@code (5..20) => "B"}, 则添加后的键值对为:
      * {@code (1..5] => "A"} 及 {@code (5..20) => "B"}
      * </p>
      *
      * <p>
-     * 也可以通过 {@link TreeRangeMap#putAll(RangeMap)} 方法进行两个 {@link RangeMap} 对象直接的合并操作
+     * 也可以通过 {@link TreeRangeMap#putAll(RangeMap)} 方法进行两个
+     * {@link RangeMap} 对象直接的合并操作
      * </p>
      *
-     * @return {@link RangeMap} 对象, 内部包含 {@code (1..5] => "A", (5..20) => "B", (30..∞) => "C"} 三个键值对
+     * @return {@link RangeMap} 对象, 内部包含
+     *         {@code (1..5] => "A", (5..20) => "B", (30..∞) => "C"}
+     *         三个键值对
      */
     private RangeMap<Integer, String> createRangeMap() {
         var rangeMap = TreeRangeMap.<Integer, String>create();
@@ -59,8 +67,8 @@ class RangeMapTest {
      * 获取 {@code Map<Range, Object>} 类型的对象
      *
      * <p>
-     * {@link RangeMap#asMapOfRanges()} 返回一个 {@link java.util.Map Map} 对象, 以 {@link Range} 对象为 Key, 以
-     * {@link RangeMap} 指定类型值为 Value
+     * {@link RangeMap#asMapOfRanges()} 返回一个 {@link java.util.Map Map}
+     * 对象, 以 {@link Range} 对象为 Key, 以 {@link RangeMap} 指定类型值为 Value
      * </p>
      *
      * <p>
@@ -83,7 +91,8 @@ class RangeMapTest {
      * 获取 {@code Map<Range, Object>} 类型的对象
      *
      * <p>
-     * {@link RangeMap#asDescendingMapOfRanges()} 返回一个 {@link java.util.Map Map} 对象, 以 {@link Range} 对象为 Key,
+     * {@link RangeMap#asDescendingMapOfRanges()} 返回一个
+     * {@link java.util.Map Map} 对象, 以 {@link Range} 对象为 Key,
      * 以 {@link RangeMap} 指定类型值为 Value
      * </p>
      *
@@ -107,18 +116,22 @@ class RangeMapTest {
      * 添加一个键值对
      *
      * <p>
-     * {@link RangeMap#putCoalescing(Range, Object)} 方法和 {@link RangeMap#put(Range, Object)} 方法类似, 都是添加一个以
+     * {@link RangeMap#putCoalescing(Range, Object)} 方法和
+     * {@link RangeMap#put(Range, Object)} 方法类似, 都是添加一个以
      * {@link Range} 对象为 Key 的键值对
      * </p>
      *
      * <p>
-     * {@link RangeMap#putCoalescing(Range, Object)} 方法的特殊之处在于, 如果添加的键值对的 Key 和已有的 Key 区间连续, 且 Value
-     * 相同, 则会合并 Key 区间, 将两个键值对合并为一个
+     * {@link RangeMap#putCoalescing(Range, Object)} 方法的特殊之处在于,
+     * 如果添加的键值对的 Key 和已有的 Key 区间连续, 且 Value 相同,
+     * 则会合并 Key 区间, 将两个键值对合并为一个
      * </p>
      *
      * <p>
-     * 大部分情况下, 不合并 Key 表示的区间并不会影响 {@link RangeMap} 对象根据区间查询的能力, 而且合并区间会带来额外的计算量,
-     * 所以除非有特殊需求, 一般情况下使用 {@link RangeMap#put(Range, Object)} 方法即可
+     * 大部分情况下, 不合并 Key 表示的区间并不会影响 {@link RangeMap}
+     * 对象根据区间查询的能力, 而且合并区间会带来额外的计算量,
+     * 所以除非有特殊需求, 一般情况下使用
+     * {@link RangeMap#put(Range, Object)} 方法即可
      * </p>
      */
     @Test
@@ -154,17 +167,20 @@ class RangeMapTest {
      * 合并一个键值对
      *
      * <p>
-     * {@link RangeMap#merge(Range, Object, java.util.function.BiFunction) RangeMap.merge(Range, Object, BiFunction)}
-     * 方法将一个区间合并到 {@link RangeMap} 对象中
+     * {@link RangeMap#merge(Range, Object, java.util.function.BiFunction)
+     * RangeMap.merge(Range, Object, BiFunction)} 方法将一个区间合并到
+     * {@link RangeMap} 对象中
      * </p>
      *
      * <p>
-     * 若待合并的区间的某个部分已存在, 会拆分新添加的区间 Key, 区间重合部分通过 {@code BiFunction} 参数确定以该部分区间为键的键值;
+     * 若待合并的区间的某个部分已存在, 会拆分新添加的区间 Key, 区间重合部分通过
+     * {@code BiFunction} 参数确定以该部分区间为键的键值;
      * 不重合部分以新的键值进行添加
      * </p>
      *
      * <p>
-     * 例如: 在 {@code (1..5] => "A", (5..20) => "B", [30..∞) => "C"} 基础上添加新键值对 {@code [15..30] => "D"}, 所得结果为
+     * 例如: 在 {@code (1..5] => "A", (5..20) => "B", [30..∞) => "C"}
+     * 基础上添加新键值对 {@code [15..30] => "D"}, 所得结果为
      * {@code (1..5] => "A", (5..15) => "B", [15..20) => "D", [20..30) => "D", [30..30] => "D", (30..∞) => "C"}
      * </p>
      *
@@ -173,7 +189,8 @@ class RangeMapTest {
      * </p>
      *
      * <p>
-     * 如果 {@code BiFunction} 参数返回 {@code null} 值, 则在合并时, 会删除重复区间部分的 Key (拆分后删除重复区间部分)
+     * 如果 {@code BiFunction} 参数返回 {@code null} 值, 则在合并时,
+     * 会删除重复区间部分的 Key (拆分后删除重复区间部分)
      * </p>
      */
     @Test
@@ -223,12 +240,13 @@ class RangeMapTest {
      * 通过区间中的某个值获取对应的键值
      *
      * <p>
-     * {@link RangeMap#get(Comparable)} 方法通过区间内的某个值, 获取 {@link RangeMap} 对象中存储的键值对的值
+     * {@link RangeMap#get(Comparable)} 方法通过区间内的某个值,
+     * 获取 {@link RangeMap} 对象中存储的键值对的值
      * </p>
      *
      * <p>
-     * 例如: 在 {@code (1..5] => "A", (5..20) => "B", [30..∞) => "C"} 中, 通过 {@code 3} 可以获得键值对
-     * {@code (1..5] => "A"} 对应的值 {@code "A"}
+     * 例如: 在 {@code (1..5] => "A", (5..20) => "B", [30..∞) => "C"} 中,
+     * 通过 {@code 3} 可以获得键值对 {@code (1..5] => "A"} 对应的值 {@code "A"}
      * </p>
      */
     @Test
@@ -256,12 +274,13 @@ class RangeMapTest {
      * 通过区间中的某个值获取对应的键值
      *
      * <p>
-     * {@link RangeMap#getEntry(Comparable)} 方法通过区间内的某个值, 获取 {@link RangeMap} 对象中存储的键值对
+     * {@link RangeMap#getEntry(Comparable)} 方法通过区间内的某个值,
+     * 获取 {@link RangeMap} 对象中存储的键值对
      * </p>
      *
      * <p>
-     * 例如: 在 {@code (1..5] => "A", (5..20) => "B", [30..∞) => "C"} 中, 通过 {@code 3} 可以获得键值对
-     * {@code (1..5] => "A"}
+     * 例如: 在 {@code (1..5] => "A", (5..20) => "B", [30..∞) => "C"} 中,
+     * 通过 {@code 3} 可以获得键值对 {@code (1..5] => "A"}
      * </p>
      */
     @Test
@@ -270,16 +289,21 @@ class RangeMapTest {
         var rangeMap = createRangeMap();
 
         // 通过 3 获取键值对 (1..5] => "A"
-        then(rangeMap.getEntry(3)).isEqualTo(entry(Range.openClosed(1, 5), "A"));
+        then(rangeMap.getEntry(3))
+                .isEqualTo(entry(Range.openClosed(1, 5), "A"));
         // 通过 5 获取键值对 (1..5] => "A"
-        then(rangeMap.getEntry(5)).isEqualTo(entry(Range.openClosed(1, 5), "A"));
+        then(rangeMap.getEntry(5))
+                .isEqualTo(entry(Range.openClosed(1, 5), "A"));
 
         // 通过 8 获取键值对 (5..20) => "B"
-        then(rangeMap.getEntry(8)).isEqualTo(entry(Range.open(5, 20), "B"));
+        then(rangeMap.getEntry(8))
+                .isEqualTo(entry(Range.open(5, 20), "B"));
         // 通过 30 获取键值对 [30..∞) => "C"
-        then(rangeMap.getEntry(30)).isEqualTo(entry(Range.atLeast(30), "C"));
+        then(rangeMap.getEntry(30))
+                .isEqualTo(entry(Range.atLeast(30), "C"));
         // 通过 30 获取键值对 [30..∞) => "C"
-        then(rangeMap.getEntry(100000)).isEqualTo(entry(Range.atLeast(30), "C"));
+        then(rangeMap.getEntry(100000))
+                .isEqualTo(entry(Range.atLeast(30), "C"));
 
         // 25 无对应区间的键值对
         then(rangeMap.get(25)).isNull();
@@ -289,12 +313,13 @@ class RangeMapTest {
      * 获取所给区间和 {@link RangeMap} 相交的结果
      *
      * <p>
-     * {@link RangeMap#subRangeMap(Range)} 方法通过区间内的某个值, 获取 {@link RangeMap} 对象中存储的键值对
+     * {@link RangeMap#subRangeMap(Range)} 方法通过区间内的某个值,
+     * 获取 {@link RangeMap} 对象中存储的键值对
      * </p>
      *
      * <p>
-     * 例如: 在 {@code (1..5] => "A", (5..20) => "B", [30..∞) => "C"} 中, 获取其与区间 {@code [2..25]} 相交的部分, 结果为
-     * {@code [2..5], (5..20)}
+     * 例如: 在 {@code (1..5] => "A", (5..20) => "B", [30..∞) => "C"} 中,
+     * 获取其与区间 {@code [2..25]} 相交的部分, 结果为 {@code [2..5], (5..20)}
      * </p>
      */
     @Test
@@ -318,8 +343,8 @@ class RangeMapTest {
      * </p>
      *
      * <p>
-     * 例如: 在 {@code (1..5] => "A", (5..20) => "B", [30..∞) => "C"} 中, 获取其与区间 {@code [2..25]} 的差集, 结果为
-     * {@code (1..2), [30..∞)}
+     * 例如: 在 {@code (1..5] => "A", (5..20) => "B", [30..∞) => "C"}
+     * 中, 获取其与区间 {@code [2..25]} 的差集, 结果为 {@code (1..2), [30..∞)}
      * </p>
      */
     @Test

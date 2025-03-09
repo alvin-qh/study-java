@@ -17,15 +17,17 @@ import org.junit.jupiter.api.Test;
  * 测试排序对象
  *
  * <p>
- * {@link Ordering} 类提供了一系列和排序相关的方法, 其对象既可以用于 {@link Collections#sort(List, java.util.Comparator)
- * Collections.sort(List, Comparator)} 方法 (或 {@link List#sort(java.util.Comparator) List.sort(Comparator)} 方法)
+ * {@link Ordering} 类提供了一系列和排序相关的方法, 其对象既可以用于
+ * {@link Collections#sort(List, java.util.Comparator)
+ * Collections.sort(List, Comparator)} 方法
+ * (或 {@link List#sort(java.util.Comparator) List.sort(Comparator)} 方法)
  * 进行排序, 也可以通过 {@link Ordering#isOrdered(Iterable)} 方法验证集合是否有序
  * </p>
  *
  * <p>
- * {@link ComparisonChain#start()} 方法用于返回一个 {@link ComparisonChain} 对象,
- * 用于通过多个比较方法组织一个比较链, 规则为: 链条上优先比较的结果如果非 {@code 0},
- * 则整体返回该结果, 否则执行链条上下一级的比较方法. 比较时可以使用
+ * {@link ComparisonChain#start()} 方法用于返回一个 {@link ComparisonChain}
+ * 对象, 用于通过多个比较方法组织一个比较链, 规则为: 链条上优先比较的结果如果非
+ * {@code 0}, 则整体返回该结果, 否则执行链条上下一级的比较方法. 比较时可以使用
  * {@link java.util.Comparator} 对象或 {@link Ordering} 对象指定比较规则
  * </p>
  */
@@ -38,8 +40,9 @@ class OrderingTest {
      * </p>
      *
      * <p>
-     * 得到的 {@link Ordering} 排序对象可以用于 {@link Collections#sort(List, java.util.Comparator)
-     * Collections.sort(List, Comparator)} 方法以及 {@link List#sort(java.util.Comparator) List#sort(Comparator)} 等排序
+     * 得到的 {@link Ordering} 排序对象可以用于
+     * {@link Collections#sort(List, java.util.Comparator) Collections.sort(List, Comparator)}
+     * 方法以及 {@link List#sort(java.util.Comparator) List#sort(Comparator)} 等排序
      * 方法
      * </p>
      */
@@ -60,7 +63,8 @@ class OrderingTest {
      * 进行一次无效排序
      *
      * <p>
-     * {@link Ordering#allEqual()} 排序对象内部在比较任何两个对象值时都返回相等, 通过这种规则排序集合, 排序前后的元素排列不发生变化
+     * {@link Ordering#allEqual()} 排序对象内部在比较任何两个对象值时都返回相等,
+     * 通过这种规则排序集合, 排序前后的元素排列不发生变化
      * </p>
      */
     @Test
@@ -80,7 +84,8 @@ class OrderingTest {
      * 在排序结果中让 {@code null} 值在最前
      *
      * <p>
-     * 通过 {@link Ordering#nullsFirst()} 方法创建的排序对象, 可以在排序结果中令 {@code null} 值在最前面
+     * 通过 {@link Ordering#nullsFirst()} 方法创建的排序对象, 可以在排序结果中令
+     * {@code null} 值在最前面
      * </p>
      *
      * <p>
@@ -105,7 +110,8 @@ class OrderingTest {
      * 在排序结果中让 {@code null} 值在最后
      *
      * <p>
-     * 通过 {@link Ordering#nullsLast()} 方法创建的排序对象, 可以在排序结果中令 {@code null} 值在最后面
+     * 通过 {@link Ordering#nullsLast()} 方法创建的排序对象, 可以在排序结果中令
+     * {@code null} 值在最后面
      * </p>
      *
      * <p>
@@ -130,7 +136,8 @@ class OrderingTest {
      * 改变现有的排序规则为逆序
      *
      * <p>
-     * {@link Ordering#reverse()} 方法可以将一个 {@link Ordering} 对象的排序规则改为逆序
+     * {@link Ordering#reverse()} 方法可以将一个 {@link Ordering}
+     * 对象的排序规则改为逆序
      * </p>
      */
     @Test
@@ -150,11 +157,13 @@ class OrderingTest {
      * 判断一个集合是否在指定的排序对象上有序
      *
      * <p>
-     * 通过 {@link Ordering#isOrdered(Iterable)} 方法可以判断集合对于该排序对象是否有序, 是否有序的规则是由该排序对象的比较方法来确定的
+     * 通过 {@link Ordering#isOrdered(Iterable)} 方法可以判断集合对于该排序对象是否有序,
+     * 是否有序的规则是由该排序对象的比较方法来确定的
      * </p>
      *
      * <p>
-     * 通过 {@link Ordering#isStrictlyOrdered(Iterable)} 为严格判断集合有序性, 即集合中不能包含相等的元素
+     * 通过 {@link Ordering#isStrictlyOrdered(Iterable)} 为严格判断集合有序性,
+     * 即集合中不能包含相等的元素
      * </p>
      */
     @Test
@@ -191,13 +200,14 @@ class OrderingTest {
      * 根据排序规则获取集合中最大 (或最小) 的若干值
      *
      * <p>
-     * 通过 {@link Ordering#greatestOf(Iterable, int)} 方法可以从一个集合中获取最大的若干值, 通过
-     * {@link Ordering#leastOf(Iterable, int)} 方法可以从集合中获取最小的若干值
+     * 通过 {@link Ordering#greatestOf(Iterable, int)} 方法可以从一个集合中获取最大的若干值,
+     * 通过 {@link Ordering#leastOf(Iterable, int)} 方法可以从集合中获取最小的若干值
      * </p>
      *
      * <p>
-     * 所谓"最大"和"最小", 都是相对于 {@link Ordering} 对象而言的, 即基于其排序规则定义的最大最小值, 简言之, 就是通过该
-     * {@link Ordering} 对象对集合排序后, 集合中位于前面的值被认为是较小值, 位于后面的值被认为较大
+     * 所谓"最大"和"最小", 都是相对于 {@link Ordering} 对象而言的, 即基于其排序规则定义的最大最小值,
+     * 简言之, 就是通过该 {@link Ordering} 对象对集合排序后, 集合中位于前面的值被认为是较小值,
+     * 位于后面的值被认为较大
      * </p>
      */
     @Test
@@ -228,13 +238,16 @@ class OrderingTest {
      * 根据排序规则计算几个值中最大 (最小) 的值
      *
      * <p>
-     * 通过 {@link Ordering#max(Object, Object, Object, Object...)} 方法可以从若干值中计算最大值若干值, 通过
-     * {@link Ordering#min(Object, Object, Object, Object...)} 方法可以从集合中获取最小的若干值
+     * 通过 {@link Ordering#max(Object, Object, Object, Object...)}
+     * 方法可以从若干值中计算最大值若干值, 通过
+     * {@link Ordering#min(Object, Object, Object, Object...)}
+     * 方法可以从集合中获取最小的若干值
      * </p>
      *
      * <p>
-     * 所谓"最大"和"最小", 都是相对于 {@link Ordering} 对象而言的, 即基于其排序规则定义的最大最小值, 简言之, 就是通过该
-     * {@link Ordering} 对象对集合排序后, 集合中位于前面的值被认为是较小值, 位于后面的值被认为较大
+     * 所谓"最大"和"最小", 都是相对于 {@link Ordering} 对象而言的, 即基于其排序规则定义的最大最小值,
+     * 简言之, 就是通过该 {@link Ordering} 对象对集合排序后, 集合中位于前面的值被认为是较小值,
+     * 位于后面的值被认为较大
      * </p>
      */
     @Test
@@ -268,13 +281,14 @@ class OrderingTest {
      * 从原集合中拷贝一份有序的集合副本
      *
      * <p>
-     * 使用 {@link Collections#sort(List, java.util.Comparator) Collections.sort(List, Comparator)} 或者
-     * {@link List#sort(java.util.Comparator) List.sort(Comparator)} 方法均是在现有集合上进行排序, 即会改变现有集合
+     * 使用 {@link Collections#sort(List, java.util.Comparator)
+     * Collections.sort(List, Comparator)} 或者 {@link List#sort(java.util.Comparator)
+     * List.sort(Comparator)} 方法均是在现有集合上进行排序, 即会改变现有集合
      * </p>
      *
      * <p>
-     * 如果希望排序后仍能保留原始集合, 可以将原集合 copy 一份后对副本进行排序, {@link Ordering#sortedCopy(Iterable)} 方法就是上述操作
-     * 的简化方法
+     * 如果希望排序后仍能保留原始集合, 可以将原集合 copy 一份后对副本进行排序,
+     * {@link Ordering#sortedCopy(Iterable)} 方法就是上述操作的简化方法
      * </p>
      */
     @Test
@@ -299,12 +313,14 @@ class OrderingTest {
      * 对 mapping 后的结果进行排序
      *
      * <p>
-     * 某些时候, 集合元素的顺序并不是由集合元素本身的值来决定, 而是将元素值进行一次转换, 基于转换后的结果进行排序
+     * 某些时候, 集合元素的顺序并不是由集合元素本身的值来决定, 而是将元素值进行一次转换,
+     * 基于转换后的结果进行排序
      * </p>
      *
      * <p>
-     * {@link Ordering#onResultOf(com.google.common.base.Function) Ordering.onResultOf(Function)} 方法用于对待排序的元素进行
-     * 一次 mapping, 并基于 mapping 的结果对元素进行排序
+     * {@link Ordering#onResultOf(com.google.common.base.Function)
+     * Ordering.onResultOf(Function)} 方法用于对待排序的元素进行 一次 mapping,
+     * 并基于 mapping 的结果对元素进行排序
      * </p>
      */
     @Test
@@ -328,7 +344,8 @@ class OrderingTest {
      * 通过集合元素的 {@link Object#toString()} 结果进行排序
      *
      * <p>
-     * 该方法相当于 {@code Ordering.natural().<Integer>onResultOf(n -> n.toString())} 调用的简化形式
+     * 该方法相当于 {@code Ordering.natural().<Integer>onResultOf(n -> n.toString())}
+     * 调用的简化形式
      * </p>
      */
     @Test
@@ -350,22 +367,26 @@ class OrderingTest {
      * 自定义排序规则, 且采用两级排序规则
      *
      * <p>
-     * {@link Ordering#from(java.util.Comparator) Ordering.from(Comparator)} 可以根据一个比较规则建立排序对象
+     * {@link Ordering#from(java.util.Comparator) Ordering.from(Comparator)}
+     * 可以根据一个比较规则建立排序对象
      * </p>
      *
      * <p>
-     * 如果要对通过定义的比较规则得出相等结果的元素通过其它规则再做一次排序, 则可以通过 {@link Ordering#compound(java.util.Comparator)
-     * Ordering.compound(Comparator)} 方法定义第二级排序规则
+     * 如果要对通过定义的比较规则得出相等结果的元素通过其它规则再做一次排序, 则可以通过
+     * {@link Ordering#compound(java.util.Comparator) Ordering.compound(Comparator)}
+     * 方法定义第二级排序规则
      * </p>
      *
      * <p>
-     * 即通过第一级排序规则为不等的, 按照第一级规则得出大小结果, 如果第一级规则为相等的, 通过第二级规则得出大小结果
+     * 即通过第一级排序规则为不等的, 按照第一级规则得出大小结果, 如果第一级规则为相等的,
+     * 通过第二级规则得出大小结果
      * </p>
      */
     @Test
     void compound_shouldSortListByTwoLevelOrderingRule() {
         // 设定两级排序规则
-        // 所谓两级排序规则, 即在第一级排序规则的作用下, 如果两个元素相等, 则使用第二级排序规则进行排序
+        // 所谓两级排序规则, 即在第一级排序规则的作用下, 如果两个元素相等,
+        // 则使用第二级排序规则进行排序
         // 第一级排序按元素值的余数排序 (逆序), 第二级排序按元素值的大小排序 (自然序)
         var ordering
             = Ordering.<Integer>from((l, r) -> r % 2 - l % 2).compound(Comparator.comparingInt((Integer l) -> l));
@@ -382,8 +403,8 @@ class OrderingTest {
      * 定义更多层级的排序规则
      *
      * <p>
-     * 如果两级排序仍无法满足需求, 则可以通过 {@link Ordering#compound(Iterable)} 方法, 通过一个 {@link java.util.Comparator}
-     * 对象集合定义多级比较
+     * 如果两级排序仍无法满足需求, 则可以通过 {@link Ordering#compound(Iterable)} 方法,
+     * 通过一个 {@link java.util.Comparator} 对象集合定义多级比较
      * </p>
      */
     @Test
@@ -405,7 +426,8 @@ class OrderingTest {
      * 某些时候, 元素的大小比较规则是固定的, 即指定 A > B, 而不是通过某种算法来计算
      *
      * <p>
-     * {@link Ordering#explicit(List)} 方法通过一个集合来指定固定的排序规则, 规则为: 集合中前面的值小于后面的值
+     * {@link Ordering#explicit(List)} 方法通过一个集合来指定固定的排序规则,
+     * 规则为: 集合中前面的值小于后面的值
      * </p>
      *
      * <p>
@@ -444,11 +466,13 @@ class OrderingTest {
      * 进行一次伪随机排序
      *
      * <p>
-     * {@link Ordering#arbitrary()} 方法通过为元素计算一个 UID, 并通过该 UID 对元素进行排序, 所以排序结果无法预期
+     * {@link Ordering#arbitrary()} 方法通过为元素计算一个 UID,
+     * 并通过该 UID 对元素进行排序, 所以排序结果无法预期
      * </p>
      *
      * <p>
-     * 但该算法保证在同一个 JDK 进程中, 对相同元素的集合, 无论进行多少次此类排序, 排序结果均为一致
+     * 但该算法保证在同一个 JDK 进程中, 对相同元素的集合, 无论进行多少次此类排序,
+     * 排序结果均为一致
      * </p>
      */
     @Test
@@ -457,7 +481,8 @@ class OrderingTest {
 
         var list = Lists.newArrayList(2, 1, 3, 5, 4);
 
-        // 进行一次任意顺序排序 (即排序结果不具备任何有意义的顺序), 且排序结果可复现 (即同一个集合的排序结果是无序且稳定的)
+        // 进行一次任意顺序排序 (即排序结果不具备任何有意义的顺序), 且排序结果可复现
+        // (即同一个集合的排序结果是无序且稳定的)
         var result1 = ordering.sortedCopy(list);
 
         // 确认在定义的 ordering 对象上, 排序结果有序
@@ -473,13 +498,15 @@ class OrderingTest {
      * 测试通过比较链对对象进行比较
      *
      * <p>
-     * 在对象比较大小时, 往往需要比较对象的多个属性. {@link ComparisonChain} 类可以产生一个比较链, 以简化
+     * 在对象比较大小时, 往往需要比较对象的多个属性. {@link ComparisonChain}
+     * 类可以产生一个比较链, 以简化
      * {@link java.util.Comparator#compare(Object, Object)} 方法的重写步骤
      * </p>
      *
      * <p>
-     * 比较链的基本规则是, 先按链条上优先的规则进行比较, 如果返回相等的结果, 则再通过之后的规则进行比较,
-     * 直到返回非相等结果或链条上所有的规则都比较完毕, 类似于如下语句:
+     * 比较链的基本规则是, 先按链条上优先的规则进行比较, 如果返回相等的结果,
+     * 则再通过之后的规则进行比较, 直到返回非相等结果或链条上所有的规则都比较完毕,
+     * 类似于如下语句:
      * </p>
      *
      * <pre>

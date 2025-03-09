@@ -36,16 +36,18 @@ public class IdMap extends ForwardingMap<Long, String> {
      * @param key   要添加的键值
      * @param value 要添加的 Value 值
      * @return 如果添加成功则返回 {@code true}, 反之返回 {@code false}
-     * @throws NullPointerException     如果 {@code key} 参数为 {@code null} 时, 抛出该异常
-     * @throws IllegalArgumentException 如果 {@code value} 参数为 {@code null} 或空字符串时,
+     * @throws NullPointerException     如果 {@code key} 参数为 {@code null} 时,
      *                                  抛出该异常
+     * @throws IllegalArgumentException 如果 {@code value} 参数为 {@code null}
+     *                                  或空字符串时, 抛出该异常
      */
     @Override
     public String put(@Nonnull Long key, @Nonnull String value) {
         Preconditions.checkNotNull(key);
 
         if (Strings.isNullOrEmpty(value)) {
-            throw new IllegalArgumentException("value argument cannot be null or empty");
+            throw new IllegalArgumentException(
+                "value argument cannot be null or empty");
         }
 
         return delegatedMap.put(key, value);
@@ -63,7 +65,8 @@ public class IdMap extends ForwardingMap<Long, String> {
         Preconditions.checkNotNull(map).forEach((key, value) -> {
             Preconditions.checkNotNull(key);
             if (Strings.isNullOrEmpty(value)) {
-                throw new IllegalArgumentException("map argument cannot include null or empty string value");
+                throw new IllegalArgumentException(
+                    "map argument cannot include null or empty string value");
             }
         });
 
@@ -74,7 +77,8 @@ public class IdMap extends ForwardingMap<Long, String> {
      * 重写 {@link Map#entrySet()} 方法
      *
      * <p>
-     * 本方法返回 {@link IdMapEntry} 类型 (即 {@link Map.Entry} 类型的代理类型) 的 {@link Set} 集合
+     * 本方法返回 {@link IdMapEntry} 类型 (即 {@link Map.Entry} 类型的代理类型)
+     * 的 {@link Set} 集合
      * </p>
      *
      * @return {@link IdMapEntry} 类型的 {@link Set} 集合
@@ -112,7 +116,8 @@ public class IdMap extends ForwardingMap<Long, String> {
         public static Entry<Long, String> entry(Long key, String value) {
             Preconditions.checkNotNull(key);
             if (Strings.isNullOrEmpty(value)) {
-                throw new IllegalArgumentException("value argument cannot be null or empty");
+                throw new IllegalArgumentException(
+                    "value argument cannot be null or empty");
             }
             return new IdMapEntry(Map.entry(key, value));
         }

@@ -17,8 +17,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nonnull;
 
-import org.junit.jupiter.api.Test;
-
 import com.google.common.base.Equivalence;
 import com.google.common.collect.ContiguousSet;
 import com.google.common.collect.HashBiMap;
@@ -30,12 +28,14 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
 import com.google.common.primitives.Ints;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * 演示 Guava {@link Map} 对象工具类
  *
  * <p>
- * {@link Maps} 类提供了一系列静态方法用于创建和操作 {@link HashMap}, {@link TreeMap},
- * {@link LinkedHashMap}, {@link EnumMap},
+ * {@link Maps} 类提供了一系列静态方法用于创建和操作 {@link HashMap},
+ * {@link TreeMap}, {@link LinkedHashMap}, {@link EnumMap},
  * 以及 {@link ConcurrentHashMap} 等 {@link Map} 类型对象的方法
  * </p>
  */
@@ -45,9 +45,9 @@ class MapUtilsTest {
      *
      * <p>
      * {@link Maps#asMap(java.util.Set, com.google.common.base.Function)
-     * Maps#asMap(Set, Function)} 通过一个 Key 的
-     * {@link java.util.Set Set} 集合以及一个映射函数创建 {@link Map} 对象, 该 {@link Map} 对象的
-     * Value 值是通过 Key 值映射得到的
+     * Maps#asMap(Set, Function)} 通过一个 Key 的 {@link java.util.Set Set}
+     * 集合以及一个映射函数创建 {@link Map} 对象, 该 {@link Map} 对象的 Value
+     * 值是通过 Key 值映射得到的
      * </p>
      */
     @Test
@@ -76,9 +76,9 @@ class MapUtilsTest {
      *
      * <p>
      * {@link Maps#uniqueIndex(Iterable, com.google.common.base.Function)
-     * Maps#uniqueIndex(Iterable, Function)} 通过一个
-     * Value 的可迭代对象以及一个映射函数创建 {@link Map} 对象, 该 {@link Map} 对象的 Key 值是通过 Value
-     * 值映射得到的
+     * Maps#uniqueIndex(Iterable, Function)} 通过一个 Value
+     * 的可迭代对象以及一个映射函数创建 {@link Map} 对象, 该 {@link Map} 对象的 Key
+     * 值是通过 Value 值映射得到的
      * </p>
      */
     @Test
@@ -107,17 +107,18 @@ class MapUtilsTest {
      *
      * <p>
      * 创建 {@link HashMap} 对象
+     *
      * <ul>
      * <li>
-     * 通过 {@link {@link Maps#newHashMap()} 方法可以创建一个 {@link HashMap} 对象. 该方法有一系列重载,
-     * 通过不同类型参数构建
-     * {@link HashMap} 对象, 包括:
+     * 通过 {@link {@link Maps#newHashMap()} 方法可以创建一个 {@link HashMap} 对象.
+     * 该方法有一系列重载, 通过不同类型参数构建 {@link HashMap} 对象, 包括:
+     *
      * <ul>
      * <li>
      * {@link Maps#newHashMap()}, 构建一个空的 {@link HashMap} 对象, 相当于直接执行
-     * {@link HashMap#HashMap()} 构造器.
-     * 注意: 如果只是为了得到一个空集合且不会修改它, 则应该使用 {@link ImmutableMap#of()} 方法, 或在 JDK 9 之后使用
-     * {@link Map#of()} 方法
+     * {@link HashMap#HashMap()} 构造器. 注意: 如果只是为了得到一个空集合且不会修改它,
+     * 则应该使用 {@link ImmutableMap#of()} 方法, 或在 JDK 9 之后使用 {@link Map#of()}
+     * 方法
      * </li>
      * <li>
      * {@link Maps#newHashMap(Map)}, 通过一系列键值对构建 {@link HashMap} 对象
@@ -129,10 +130,9 @@ class MapUtilsTest {
      * <ul>
      * <li>
      * {@link Maps#newHashMapWithExpectedSize(int)} 方法用于产生一个空 {@link HashMap} 对象,
-     * 并设置预期的 {@code capacity}
-     * 属性, 该对象可以在元素数量到达预期值前, 避免内存重新分配. 注意, 该方法已标记为过期, 应该直接使用
-     * {@code new HashMap(int)}
-     * 构造方法, 通过参数设置 {@code capacity} 值
+     * 并设置预期的 {@code capacity} 属性, 该对象可以在元素数量到达预期值前, 避免内存重新分配.
+     * 注意, 该方法已标记为过期, 应该直接使用 {@code new HashMap(int)} 构造方法,
+     * 通过参数设置 {@code capacity} 值
      * </li>
      * </ul>
      * </li>
@@ -152,8 +152,8 @@ class MapUtilsTest {
      * </li>
      * <li>
      * {@link Maps#newLinkedHashMapWithExpectedSize(int)} 方法创建具备元素个数预设值的
-     * {@link LinkedHashMap} 类型对象,
-     * 类似于 {@link LinkedHashMap#LinkedHashMap(int)} 方法
+     * {@link LinkedHashMap} 类型对象, 类似于 {@link LinkedHashMap#LinkedHashMap(int)}
+     * 方法
      * </li>
      * </ul>
      * </p>
@@ -167,13 +167,12 @@ class MapUtilsTest {
      * </li>
      * <li>
      * {@link Maps#newTreeMap(java.util.SortedMap) Maps.newTreeMap(SortedMap)}
-     * 方法通过一系列有序键值对来构建 {@link TreeMap}
-     * 类型对象
+     * 方法通过一系列有序键值对来构建 {@link TreeMap} 类型对象
      * </li>
      * <li>
      * {@link Maps#newTreeMap(java.util.Comparator) Maps.newTreeMap(Comparator)}
-     * 方法创建 {@link TreeMap} 类型对象,
-     * 并设置 Key 比较的方法, 该比较方法会影响到集合内部构建二叉树时元素的排列顺序
+     * 方法创建 {@link TreeMap} 类型对象, 并设置 Key 比较的方法,
+     * 该比较方法会影响到集合内部构建二叉树时元素的排列顺序
      * </li>
      * </ul>
      * </p>
@@ -182,20 +181,22 @@ class MapUtilsTest {
      * 创建 {@link ConcurrentHashMap} 对象
      * <ul>
      * <li>
-     * {@link Maps#newConcurrentMap()} 方法可以创建空 {@link ConcurrentHashMap} 类型对象, 相当于调用
-     * {@link ConcurrentHashMap#ConcurrentHashMap()} 构造器
+     * {@link Maps#newConcurrentMap()} 方法可以创建空 {@link ConcurrentHashMap}
+     * 类型对象, 相当于调用 {@link ConcurrentHashMap#ConcurrentHashMap()} 构造器
      * </li>
+     * </ul>
      * </p>
      *
      * <p>
      * 创建 {@link EnumMap} 对象
      * <ul>
      * <li>
-     * {@link Maps#newEnumMap(Class)} 通过包含枚举对象的可迭代对象即枚举类型产生一个 {@link EnumMap} 对象,
-     * 内部存储不重复的枚举对象
+     * {@link Maps#newEnumMap(Class)} 通过包含枚举对象的可迭代对象即枚举类型产生一个
+     * {@link EnumMap} 对象, 内部存储不重复的枚举对象
      * </li>
      * <li>
-     * {@link Maps#newEnumMap(Map)} 通过一组 Key 为枚举的键值对构建 {@link EnumMap} 对象
+     * {@link Maps#newEnumMap(Map)} 通过一组 Key 为枚举的键值对构建
+     * {@link EnumMap} 对象
      * </li>
      * </ul>
      * </p>
@@ -207,11 +208,10 @@ class MapUtilsTest {
      * {@link Maps#newIdentityHashMap()} 返回 {@link IdentityHashMap} 类型对象
      * </li>
      * <li>
-     * 在其它的 {@link Map} 集合中, Key 的比较是通过 {@link Object#equals(Object)} 方法进行的, 而
-     * {@link IdentityHashMap}
-     * 对象中, Key 的比较是通过 {@code ==} 运算符进行的, 即 {@link IdentityHashMap} 允许存储"值"相同,
-     * 但"引用"不同的多个 Key, 例如:
-     * 若干个 {@code new String("A")} 对象
+     * 在其它的 {@link Map} 集合中, Key 的比较是通过 {@link Object#equals(Object)}
+     * 方法进行的, 而 {@link IdentityHashMap} 对象中, Key 的比较是通过 {@code ==}
+     * 运算符进行的, 即 {@link IdentityHashMap} 允许存储"值"相同, 但 "引用" 不同的多个 Key,
+     * 例如: 若干个 {@code new String("A")} 对象
      * </li>
      * </ul>
      * </p>
@@ -315,8 +315,8 @@ class MapUtilsTest {
      *
      * <p>
      * {@link Maps#difference(Map, Map, com.google.common.base.Equivalence)
-     * Maps.difference(Map, Map, Equivalence)}
-     * 方法用于计算两个 {@link Map} 对象的差异, 返回 {@link com.google.common.collect.MapDifference
+     * Maps.difference(Map, Map, Equivalence)} 方法用于计算两个 {@link Map}
+     * 对象的差异, 返回 {@link com.google.common.collect.MapDifference
      * MapDifference} 对象
      * </p>
      *
@@ -325,41 +325,40 @@ class MapUtilsTest {
      * <ul>
      * <li>
      * {@link com.google.common.collect.MapDifference#areEqual()
-     * MapDifference.areEqual()}, 返回 {@code true} 表示两个
-     * {@link Map} 对象相同, 否则表示两个 {@link Map} 对象不同
+     * MapDifference.areEqual()}, 返回 {@code true} 表示两个 {@link Map}
+     * 对象相同, 否则表示两个 {@link Map} 对象不同
      * </li>
      * <li>
      * {@link com.google.common.collect.MapDifference#entriesInCommon()
-     * MapDifference.entriesInCommon()}, 返回一个
-     * {@link Map} 对象, 表示两个 {@link Map} 对象中相同的键值对
+     * MapDifference.entriesInCommon()}, 返回一个 {@link Map} 对象,
+     * 表示两个 {@link Map} 对象中相同的键值对
      * </li>
      * <li>
      * {@link com.google.common.collect.MapDifference#entriesDiffering()
-     * MapDifference.entriesDiffering()}, 返回一个
-     * {@code Map<K, ValueDifference>} 对象, 表示两个 {@link Map} 对象中 Key 相同但 Value
-     * 不同的键值对, 其中:
+     * MapDifference.entriesDiffering()}, 返回一个 {@code Map<K, ValueDifference>}
+     * 对象, 表示两个 {@link Map} 对象中 Key 相同但 Value 不同的键值对, 其中:
      * <ul>
      * <li>
      * {@link com.google.common.collect.MapDifference.ValueDifference#leftValue()
-     * ValueDifference.leftValue()}
-     * 方法返回第一个 {@link Map} 参数中 Key 对应的 Value 值
+     * ValueDifference.leftValue()} 方法返回第一个 {@link Map} 参数中 Key
+     * 对应的 Value 值
      * </li>
      * <li>
      * {@link com.google.common.collect.MapDifference.ValueDifference#rightValue()
-     * ValueDifference.rightValue()}
-     * 方法返回第二个 {@link Map} 参数中 Key 对应的 Value 值
+     * ValueDifference.rightValue()} 方法返回第二个 {@link Map} 参数中 Key 对应的
+     * Value 值
      * </li>
      * </ul>
      * </li>
      * <li>
      * {@link com.google.common.collect.MapDifference#entriesOnlyOnLeft()
-     * MapDifference.entriesOnlyOnLeft()}
-     * 表示包含在第一个 {@link Map} 参数但不包含在第二个 {@link Map} 参数的键值对
+     * MapDifference.entriesOnlyOnLeft()} 表示包含在第一个 {@link Map}
+     * 参数但不包含在第二个 {@link Map} 参数的键值对
      * </li>
      * <li>
      * {@link com.google.common.collect.MapDifference#entriesOnlyOnRight()
-     * MapDifference.entriesOnlyOnRight()}
-     * 表示包含在第二个 {@link Map} 参数但不包含在第一个 {@link Map} 参数的键值对
+     * MapDifference.entriesOnlyOnRight()} 表示包含在第二个 {@link Map}
+     * 参数但不包含在第一个 {@link Map} 参数的键值对
      * </li>
      * </ul>
      * </p>
@@ -418,8 +417,8 @@ class MapUtilsTest {
      * 将 {@link Properties} 对象转为 {@link ImmutableMap} 对象
      *
      * <p>
-     * {@link Maps#fromProperties(Properties)} 方法将一个 {@link Properties} 对象转为
-     * {@link ImmutableMap} 对象,
+     * {@link Maps#fromProperties(Properties)} 方法将一个
+     * {@link Properties} 对象转为 {@link ImmutableMap} 对象,
      * 即一个不变 {@link Map} 对象, Key 和 Value 均为 {@link String} 类型
      * </p>
      */
@@ -448,26 +447,27 @@ class MapUtilsTest {
      * <p>
      * {@link Maps#filterEntries(Map, com.google.common.base.Predicate)
      * Maps.filterEntries(Map, Predicate)}
-     * 方法用于对一个 {@link Map} 对象的键值对 ({@link Map.Entry} 对象) 通过条件函数进行过滤, 并返回包含过滤后键值对的
-     * {@link Map}
-     * 对象
+     * 方法用于对一个 {@link Map} 对象的键值对 ({@link Map.Entry} 对象)
+     * 通过条件函数进行过滤, 并返回包含过滤后键值对的 {@link Map} 对象
      * </p>
      *
      * <p>
-     * 返回结果为 {@code Maps.FilteredEntryMap} 类型对象, 该对象为原 {@link Map} 对象的代理对象,
-     * 在获取键值的时候才会执行过滤函数,
+     * 返回结果为 {@code Maps.FilteredEntryMap} 类型对象,
+     * 该对象为原 {@link Map} 对象的代理对象, 在获取键值的时候才会执行过滤函数,
      * 所以如果对原 {@link Map} 对象的键值对进行修改, 可能会影响到过滤结果
      * </p>
      */
     @Test
     void filterEntries_shouldFilterEntriesByCondition() {
-        var map = Maps.newLinkedHashMap(ImmutableMap.of("A", 100, "B", 200, "C", 300, "D", 400));
+        var map = Maps.newLinkedHashMap(
+            ImmutableMap.of("A", 100, "B", 200, "C", 300, "D", 400));
 
         // 保存元音字母的 Set 集合
         var vowels = ImmutableSet.of("A", "E", "I", "O", "U");
 
         // 对 Map 对象进行过滤
-        var filteredMap = Maps.filterEntries(map, e -> !vowels.contains(e.getKey()) && e.getValue() / 100 % 2 == 0);
+        var filteredMap = Maps.filterEntries(map,
+            e -> !vowels.contains(e.getKey()) && e.getValue() / 100 % 2 == 0);
         // 确认过滤结果
         then(filteredMap).hasSize(2).containsKeys("B", "D");
 
@@ -482,19 +482,20 @@ class MapUtilsTest {
      *
      * <p>
      * {@link Maps#filterKeys(Map, com.google.common.base.Predicate)
-     * Maps.filterKeys(Map, Predicate)} 方法用于对一个
-     * {@link Map} 对象的 Key 通过条件函数进行过滤, 并返回包含过滤后键值对的 {@link Map} 对象
+     * Maps.filterKeys(Map, Predicate)} 方法用于对一个 {@link Map} 对象的
+     * Key 通过条件函数进行过滤, 并返回包含过滤后键值对的 {@link Map} 对象
      * </p>
      *
      * <p>
-     * 返回结果为 {@code Maps.FilteredKeyMap} 类型对象, 该对象为原 {@link Map} 对象的代理对象, 在获取 Key
-     * 的时候才会执行过滤函数,
-     * 所以如果对原 {@link Map} 对象的键值对进行修改, 可能会影响到过滤结果
+     * 返回结果为 {@code Maps.FilteredKeyMap} 类型对象, 该对象为原 {@link Map}
+     * 对象的代理对象, 在获取 Key 的时候才会执行过滤函数, 所以如果对原 {@link Map}
+     * 对象的键值对进行修改, 可能会影响到过滤结果
      * </p>
      */
     @Test
     void filterKeys_shouldFilterKeysByCondition() {
-        var map = Maps.newLinkedHashMap(ImmutableMap.of("A", 100, "B", 200, "C", 300, "D", 400));
+        var map = Maps.newLinkedHashMap(
+            ImmutableMap.of("A", 100, "B", 200, "C", 300, "D", 400));
 
         // 保存元音字母的 Set 集合
         var vowels = ImmutableSet.of("A", "E", "I", "O", "U");
@@ -521,9 +522,9 @@ class MapUtilsTest {
      * </p>
      *
      * <p>
-     * 返回结果为 {@code Maps.FilteredEntryMap} 类型对象, 该对象为原 {@link Map} 对象的代理对象, 在获取 Key
-     * 的时候才会执行过滤函数,
-     * 所以如果对原 {@link Map} 对象的键值对进行修改, 可能会影响到过滤结果
+     * 返回结果为 {@code Maps.FilteredEntryMap} 类型对象, 该对象为原 {@link Map}
+     * 对象的代理对象, 在获取 Key 的时候才会执行过滤函数, 所以如果对原 {@link Map}
+     * 对象的键值对进行修改, 可能会影响到过滤结果
      * </p>
      */
     @Test
@@ -546,8 +547,8 @@ class MapUtilsTest {
      *
      * <p>
      * {@link Maps#subMap(java.util.NavigableMap, Range) Maps.subMap(NavigableMap,
-     * Range)} 根据一个 {@link Range} 对象对
-     * {@link Map} 的 Key 进行过滤, 返回在范围内 Key 的键值对组成的 {@link Map} 对象
+     * Range)} 根据一个 {@link Range} 对象对 {@link Map} 的 Key 进行过滤,
+     * 返回在范围内 Key 的键值对组成的 {@link Map} 对象
      * </p>
      */
     @Test
@@ -569,9 +570,8 @@ class MapUtilsTest {
      *
      * <p>
      * {@link Maps#immutableEntry(Object, Object) Maps#immutableEntry(K, V)}
-     * 方法返回一个不可变的
-     * {@link Map.Entry} 对象, 类似于 {@link Map#entry(Object, Object) Map.entry(K, V)}
-     * 方法, 只是返回的结果不可变
+     * 方法返回一个不可变的 {@link Map.Entry} 对象, 类似于
+     * {@link Map#entry(Object, Object) Map.entry(K, V)} 方法, 只是返回的结果不可变
      * </p>
      */
     @Test
@@ -589,15 +589,15 @@ class MapUtilsTest {
      * <p>
      * {@link Maps#unmodifiableBiMap(com.google.common.collect.BiMap)
      * Maps.unmodifiableBiMap(BiMap)} 可以将一个
-     * {@link com.google.common.collect.BiMap BiMap} 类型对象包装为不可修改的 {@link Map} 对象
+     * {@link com.google.common.collect.BiMap BiMap} 类型对象包装为不可修改的
+     * {@link Map} 对象
      * </p>
      *
      * <p>
      * {@link Maps#unmodifiableNavigableMap(java.util.NavigableMap)
-     * Maps.unmodifiableNavigableMap(NavigableMap)}
-     * 可以将一个 {@link java.util.NavigableMap NavigableMap} 类型对象包装为不可修改的 {@link Map} 对象
-     * (在 JDK 1.8 以上版本,
-     * 请使用
+     * Maps.unmodifiableNavigableMap(NavigableMap)} 可以将一个
+     * {@link java.util.NavigableMap NavigableMap} 类型对象包装为不可修改的
+     * {@link Map} 对象 (在 JDK 1.8 以上版本, 请使用
      * {@link java.util.Collections#unmodifiableNavigableMap(java.util.NavigableMap)
      * Collections.unmodifiableNavigableMap(NavigableMap)}) 方法)
      * </p>
@@ -643,8 +643,8 @@ class MapUtilsTest {
      *
      * <p>
      * {@link Maps#toMap(Iterable, com.google.common.base.Function)
-     * Maps.toMap(Iterable, Function)} 方法可以将一个包含 Key
-     * 的可迭代对象转为 {@link Map} 对象, {@link Map} 的 Value 值由映射函数通过 Key 得到
+     * Maps.toMap(Iterable, Function)} 方法可以将一个包含 Key 的可迭代对象转为
+     * {@link Map} 对象, {@link Map} 的 Value 值由映射函数通过 Key 得到
      * </p>
      */
     @Test
@@ -690,8 +690,7 @@ class MapUtilsTest {
      *
      * <p>
      * JDK 8 之后, 针对 {@link java.util.NavigableMap NavigableMap} 和
-     * {@link java.util.SortedMap SortedMap}, 建议使用
-     * JDK 自带的
+     * {@link java.util.SortedMap SortedMap}, 建议使用 JDK 自带的
      * {@link java.util.Collections#synchronizedNavigableMap(java.util.NavigableMap)
      * Collections.synchronizedNavigableMap(NavigableMap)} 以及
      * {@link java.util.Collections#synchronizedSortedMap(java.util.SortedMap)
@@ -716,19 +715,18 @@ class MapUtilsTest {
     }
 
     /**
-     * 通过一个转换函数, 将 {@link Map} 集合中 {@link Map.Entry} 对象的 Value 进行转换, 得到包含转换后
-     * {@link Map.Entry} 对象的
-     * {@link Map} 对象
+     * 通过一个转换函数, 将 {@link Map} 集合中 {@link Map.Entry} 对象的 Value 进行转换,
+     * 得到包含转换后 {@link Map.Entry} 对象的 {@link Map} 对象
      *
      * <p>
-     * 转换函数是一个符合 {@link Maps.EntryTransformer} 接口的 Lambda 表达式, 该接口方法有两个参数分别代表
-     * {@link Map.Entry}
-     * 对象的 Key 和 Value 值, 一个返回值表示将 Value 进行转换后得到的值
+     * 转换函数是一个符合 {@link Maps.EntryTransformer} 接口的 Lambda 表达式,
+     * 该接口方法有两个参数分别代表 {@link Map.Entry} 对象的 Key 和 Value 值,
+     * 一个返回值表示将 Value 进行转换后得到的值
      * </p>
      *
      * <p>
-     * 返回结果是一个 {@code Maps.TransformedEntriesMap} 类型的对象, 该对象是对原 {@link Map} 对象的一个代理,
-     * 所以对原 {@link Map}
+     * 返回结果是一个 {@code Maps.TransformedEntriesMap} 类型的对象,
+     * 该对象是对原 {@link Map} 对象的一个代理, 所以对原 {@link Map}
      * 对象进行的修改, 有可能会导致转换结果的改变
      * </p>
      */
@@ -755,11 +753,12 @@ class MapUtilsTest {
     }
 
     /**
-     * 通过一个转换函数, 将 {@link Map} 集合中键值对的 Value 进行转换, 返回一个新 {@link Map} 对象
+     * 通过一个转换函数, 将 {@link Map} 集合中键值对的 Value 进行转换,
+     * 返回一个新 {@link Map} 对象
      *
      * <p>
-     * 返回结果是一个 {@code Maps.TransformedEntriesMap} 类型的对象, 该对象是对原 {@link Map} 对象的一个代理,
-     * 所以对原 {@link Map}
+     * 返回结果是一个 {@code Maps.TransformedEntriesMap} 类型的对象,
+     * 该对象是对原 {@link Map} 对象的一个代理, 所以对原 {@link Map}
      * 对象进行的修改, 有可能会导致转换结果的改变
      * </p>
      */

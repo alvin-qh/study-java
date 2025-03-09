@@ -5,8 +5,6 @@ import static org.assertj.core.api.Assertions.tuple;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
-import org.junit.jupiter.api.Test;
-
 import com.google.common.collect.ArrayTable;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableList;
@@ -14,20 +12,34 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Table;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * {@link Table} 是一个嵌套结构类型, 用于记录一个表格的所有单元格
  *
  * <p>
- * {@link Table} 的每个单元格都需要通过两个 Key 来标识, 即行标识 (RowKey) 和列标识 (ColumnKey), 两个标识交叉的位置即为单元格
+ * {@link Table} 的每个单元格都需要通过两个 Key 来标识, 即行标识
+ * (RowKey) 和列标识 (ColumnKey), 两个标识交叉的位置即为单元格
  * </p>
  *
  * <p>
- * {@link Table} 的内部存储包括使用 {@link java.util.Map Map} 和通过数组两种方式, 具体为:
+ * {@link Table} 的内部存储包括使用 {@link java.util.Map Map}
+ * 和通过数组两种方式, 具体为:
+ *
  * <ul>
- * <li>{@link HashBasedTable}, 即 {@code HashMap<R, HashMap<C, V>>}</li>
- * <li>{@link com.google.common.collect.TreeBasedTable TreeBasedTable}, 即 {@code TreeMap<R, TreeMap<C, V>>}</li>
- * <li>{@link ImmutableTable}, 即 {@code ImmutableMap<R, ImmutableMap<C, V>>}</li>
- * <li>{@link ArrayTable}, 通过二维数组实现的 {@code Table}, 需要在初始化时明确行列数</li>
+ * <li>
+ * {@link HashBasedTable}, 即 {@code HashMap<R, HashMap<C, V>>}
+ * </li>
+ * <li>
+ * {@link com.google.common.collect.TreeBasedTable TreeBasedTable},
+ * 即 {@code TreeMap<R, TreeMap<C, V>>}
+ * </li>
+ * <li>
+ * {@link ImmutableTable}, 即 {@code ImmutableMap<R, ImmutableMap<C, V>>}
+ * </li>
+ * <li>
+ * {@link ArrayTable}, 通过二维数组实现的 {@code Table}, 需要在初始化时明确行列数
+ * </li>
  * </ul>
  * </p>
  *
@@ -37,52 +49,89 @@ import com.google.common.collect.Table;
  * <li>
  * 向表格中添加单元格:
  * <ul>
- * <li>{@link Table#put(Object, Object, Object)}, 通过行标识和列标识设置一个单元格值</li>
- * <li>{@link Table#putAll(Table)}, 将另一个 {@code Table} 对象的值存储到当前 {@code Table} 对象中</li>
+ * <li>
+ * {@link Table#put(Object, Object, Object)}, 通过行标识和列标识设置一个单元格值
+ * </li>
+ * <li>
+ * {@link Table#putAll(Table)}, 将另一个 {@code Table} 对象的值存储到当前
+ * {@code Table} 对象中
+ * </li>
  * </ul>
  * </li>
  * <li>
  * 获取表格内容 (包括单元格, 行或列):
  * <ul>
- * <li>{@link Table#get(Object, Object)}, 通过行标识和列标识获取一个单元格值</li>
- * <li>{@link Table#row(Object)}, 通过行标识获取当前行所有列的 {@code Map<C, V>} 结果</li>
- * <li>{@link Table#column(Object)}, 通过列标识获取当前列所有行的 {@code Map<R, V>} 结果</li>
+ * <li>
+ * {@link Table#get(Object, Object)}, 通过行标识和列标识获取一个单元格值
+ * </li>
+ * <li>
+ * {@link Table#row(Object)}, 通过行标识获取当前行所有列的 {@code Map<C, V>} 结果
+ * </li>
+ * <li>
+ * {@link Table#column(Object)}, 通过列标识获取当前列所有行的 {@code Map<R, V>}
+ * 结果
+ * </li>
  * </ul>
  * </li>
  * <li>
  * 匹配表格内容:
  * <ul>
- * <li>{@link Table#contains(Object, Object)}, 通过行标识和列标识, 确认一个单元格是否存在</li>
- * <li>{@link Table#containsRow(Object)}, 通过行标识确认该行是否存在</li>
- * <li>{@link Table#containsColumn(Object)}, 通过列标识确认该列是否存在</li>
- * <li>{@link Table#containsValue(Object)}, 确认 {@code Table} 中是否包含指定值的单元格</li>
+ * <li>
+ * {@link Table#contains(Object, Object)}, 通过行标识和列标识, 确认一个单元格是否存在
+ * </li>
+ * <li>
+ * {@link Table#containsRow(Object)}, 通过行标识确认该行是否存在
+ * </li>
+ * <li>
+ * {@link Table#containsColumn(Object)}, 通过列标识确认该列是否存在
+ * </li>
+ * <li>
+ * {@link Table#containsValue(Object)}, 确认 {@code Table} 中是否包含指定值的单元格
+ * </li>
  * </ul>
  * </li>
  * <li>
  * 行列标识操作:
  * <ul>
- * <li>{@link Table#rowKeySet()}, 获取表格中所有的行标识</li>
- * <li>{@link Table#columnKeySet()}, 获取表格中所有的列标识</li>
- * <li>{@link Table#cellSet()}, 获取所有单元格组成的集合, 单元格由 {@link Table.Cell} 接口对象表示</li>
+ * <li>
+ * {@link Table#rowKeySet()}, 获取表格中所有的行标识
+ * </li>
+ * <li>
+ * {@link Table#columnKeySet()}, 获取表格中所有的列标识
+ * </li>
+ * <li>
+ * {@link Table#cellSet()}, 获取所有单元格组成的集合, 单元格由 {@link Table.Cell}
+ * 接口对象表示
+ * </li>
  * </ul>
  * </li>
  * <li>
  * 行列内容:
  * <ul>
- * <li>{@link Table#rowMap()}, 得到一个以行标识为 Key, 包含每行所有单元格的 {@code Map} 对象, 类似 {@code Map<R, Map<C, V>>} 类型</li>
- * <li>{@link Table#columnMap()}, 得到一个以列标识为 Key, 包含每列所有单元格的 {@code Map} 对象, 类似 {@code Map<C, Map<R, V>>} 类型</li>
+ * <li>
+ * {@link Table#rowMap()}, 得到一个以行标识为 Key, 包含每行所有单元格的 {@code Map}
+ * 对象, 类似 {@code Map<R, Map<C, V>>} 类型
+ * </li>
+ * <li>
+ * {@link Table#columnMap()}, 得到一个以列标识为 Key, 包含每列所有单元格的 {@code Map}
+ * 对象, 类似 {@code Map<C, Map<R, V>>} 类型
+ * </li>
  * </ul>
  * </li>
  * <li>
  * 获取全部值:
  * <ul>
- * <li>{@link Table#values()}, 获取表格中所有单元格值组成的集合</li>
+ * <li>
+ * {@link Table#values()}, 获取表格中所有单元格值组成的集合
+ * </li>
  * </ul>
  * </li>
  * <li>
  * 删除表格单元格
  * <ul>
- * <li>{@link Table#remove(Object, Object)}, 根据行标识和列标识删除一个单元格</li>
+ * <li>
+ * {@link Table#remove(Object, Object)}, 根据行标识和列标识删除一个单元格
+ * </li>
  * </ul>
  * </li>
  * </ul>
@@ -168,7 +217,8 @@ class TableTest {
      * </p>
      *
      * <p>
-     * {@link com.google.common.collect.TreeBasedTable TreeBasedTable} 除存储方式不同外, 其余操作和 {@link HashBasedTable}
+     * {@link com.google.common.collect.TreeBasedTable TreeBasedTable} 除存储方式不同外,
+     * 其余操作和 {@link HashBasedTable}
      * 一致
      * </p>
      */
@@ -212,12 +262,18 @@ class TableTest {
         then(table.columnKeySet()).containsExactly("A", "B", "C", "D");
 
         // 获取所有的单元格, 为一个 Table.Cell 类型对象, 这里展开成为 Tuple 类型对象进行测试
-        then(table.cellSet()).extracting("rowKey", "columnKey", "value").containsExactly(
-            tuple(0, "A", "A0"), tuple(0, "B", "B0"), tuple(0, "C", "C0"), tuple(0, "D", "D0"),
-            tuple(1, "A", "A1"), tuple(1, "B", "B1"), tuple(1, "C", "C1"), tuple(1, "D", "D1"),
-            tuple(2, "A", "A2"), tuple(2, "B", "B2"), tuple(2, "C", "C2"), tuple(2, "D", "D2"),
-            tuple(3, "A", "A3"), tuple(3, "B", "B3"), tuple(3, "C", "C3"), tuple(3, "D", "D3"),
-            tuple(4, "A", "A4"), tuple(4, "B", "B4"), tuple(4, "C", "C4"), tuple(4, "D", "D4"));
+        then(table.cellSet()).extracting("rowKey", "columnKey", "value")
+                .containsExactly(
+                    tuple(0, "A", "A0"), tuple(0, "B", "B0"),
+                    tuple(0, "C", "C0"), tuple(0, "D", "D0"),
+                    tuple(1, "A", "A1"), tuple(1, "B", "B1"),
+                    tuple(1, "C", "C1"), tuple(1, "D", "D1"),
+                    tuple(2, "A", "A2"), tuple(2, "B", "B2"),
+                    tuple(2, "C", "C2"), tuple(2, "D", "D2"),
+                    tuple(3, "A", "A3"), tuple(3, "B", "B3"),
+                    tuple(3, "C", "C3"), tuple(3, "D", "D3"),
+                    tuple(4, "A", "A4"), tuple(4, "B", "B4"),
+                    tuple(4, "C", "C4"), tuple(4, "D", "D4"));
 
         // 获取所有行对应的内容 Map, 为 Map<C, V> 类型, 即列标识和单元格值对应关系
         then(table.rowMap()).containsExactly(
@@ -251,12 +307,13 @@ class TableTest {
      * 测试 {@link HashBasedTable} 的创建及各类操作
      *
      * <p>
-     * 本测试中使用的用例和前一个测试一致, 参考 {@link #hashBasedTable_shouldCreateAndUseTable()} 测试方法
+     * 本测试中使用的用例和前一个测试一致, 参考 {@link #hashBasedTable_shouldCreateAndUseTable()}
+     * 测试方法
      * </p>
      *
      * <p>
-     * 注意, 基于数组的 {@link ArrayTable} 对象一旦实例化后, 其行数, 列数以及行列标识符都已经确定, 后续无法更改, 只能基于已定义的行列标识
-     * 符读写对应单元格内容
+     * 注意, 基于数组的 {@link ArrayTable} 对象一旦实例化后, 其行数, 列数以及行列标识符都已经确定,
+     * 后续无法更改, 只能基于已定义的行列标识符读写对应单元格内容
      * </p>
      *
      * <p>
@@ -277,7 +334,8 @@ class TableTest {
 
         // 除初始化时指定的行列标识符外, 使用其它的标识符会导致异常, 即基于数组的 Table 无法扩充行列
         // 这里抛出的异常为参数异常, 即所给的行列标识符参数不合法
-        thenThrownBy(() -> table.put(3, "E", "E3")).isInstanceOf(IllegalArgumentException.class);
+        thenThrownBy(() -> table.put(3, "E", "E3"))
+                .isInstanceOf(IllegalArgumentException.class);
 
         // 确认根据行列标识获取的单元格值
         then(table.get(1, "B")).isEqualTo("B1");
@@ -310,12 +368,18 @@ class TableTest {
         then(table.columnKeySet()).containsExactly("A", "B", "C", "D");
 
         // 获取所有的单元格, 为一个 Table.Cell 类型对象, 这里展开成为 Tuple 类型对象进行测试
-        then(table.cellSet()).extracting("rowKey", "columnKey", "value").containsExactly(
-            tuple(0, "A", "A0"), tuple(0, "B", "B0"), tuple(0, "C", "C0"), tuple(0, "D", "D0"),
-            tuple(1, "A", "A1"), tuple(1, "B", "B1"), tuple(1, "C", "C1"), tuple(1, "D", "D1"),
-            tuple(2, "A", "A2"), tuple(2, "B", "B2"), tuple(2, "C", "C2"), tuple(2, "D", "D2"),
-            tuple(3, "A", "A3"), tuple(3, "B", "B3"), tuple(3, "C", "C3"), tuple(3, "D", "D3"),
-            tuple(4, "A", "A4"), tuple(4, "B", "B4"), tuple(4, "C", "C4"), tuple(4, "D", "D4"));
+        then(table.cellSet()).extracting("rowKey", "columnKey", "value")
+                .containsExactly(
+                    tuple(0, "A", "A0"), tuple(0, "B", "B0"),
+                    tuple(0, "C", "C0"), tuple(0, "D", "D0"),
+                    tuple(1, "A", "A1"), tuple(1, "B", "B1"),
+                    tuple(1, "C", "C1"), tuple(1, "D", "D1"),
+                    tuple(2, "A", "A2"), tuple(2, "B", "B2"),
+                    tuple(2, "C", "C2"), tuple(2, "D", "D2"),
+                    tuple(3, "A", "A3"), tuple(3, "B", "B3"),
+                    tuple(3, "C", "C3"), tuple(3, "D", "D3"),
+                    tuple(4, "A", "A4"), tuple(4, "B", "B4"),
+                    tuple(4, "C", "C4"), tuple(4, "D", "D4"));
 
         // 获取所有行对应的内容 Map, 为 Map<C, V> 类型
         then(table.rowMap()).containsExactly(
@@ -347,16 +411,18 @@ class TableTest {
      * 测试 {@link ImmutableTable} 的创建及各类操作
      *
      * <p>
-     * 本测试中使用的用例和前一个测试一致, 参考 {@link #hashBasedTable_shouldCreateAndUseTable()} 测试方法
+     * 本测试中使用的用例和前一个测试一致, 参考 {@link #hashBasedTable_shouldCreateAndUseTable()}
+     * 测试方法
      * </p>
      *
      * <p>
-     * 因为 {@link ImmutableTable} 对象一旦创建, 就无法对单元格进行修改, 所以需要通过 {@link ImmutableTable.Builder} 对象来构建
-     * {@link ImmutableTable} 对象
+     * 因为 {@link ImmutableTable} 对象一旦创建, 就无法对单元格进行修改, 所以需要通过
+     * {@link ImmutableTable.Builder} 对象来构建 {@link ImmutableTable} 对象
      * </p>
      *
      * <p>
-     * 注意, 基于数组的 {@link ImmutableTable} 对象一旦实例化后, 不能对其进行任何修改 (包括添加, 删除等), 会导致异常抛出
+     * 注意, 基于数组的 {@link ImmutableTable} 对象一旦实例化后, 不能对其进行任何修改
+     * (包括添加, 删除等), 会导致异常抛出
      * </p>
      * sy
      */
@@ -381,7 +447,8 @@ class TableTest {
 
         // 不可变对象无法添加或修改单元格值
         // 这里给出的异常时不支持该操作异常
-        thenThrownBy(() -> table.put(3, "E", "E3")).isInstanceOf(UnsupportedOperationException.class);
+        thenThrownBy(() -> table.put(3, "E", "E3"))
+                .isInstanceOf(UnsupportedOperationException.class);
 
         // 确认根据行列标识获取的单元格值
         then(table.get(1, "B")).isEqualTo("B1");
@@ -414,12 +481,18 @@ class TableTest {
         then(table.columnKeySet()).containsExactly("A", "B", "C", "D");
 
         // 获取所有的单元格, 为一个 Table.Cell 类型对象, 这里展开成为 Tuple 类型对象进行测试
-        then(table.cellSet()).extracting("rowKey", "columnKey", "value").containsExactly(
-            tuple(0, "A", "A0"), tuple(0, "B", "B0"), tuple(0, "C", "C0"), tuple(0, "D", "D0"),
-            tuple(1, "A", "A1"), tuple(1, "B", "B1"), tuple(1, "C", "C1"), tuple(1, "D", "D1"),
-            tuple(2, "A", "A2"), tuple(2, "B", "B2"), tuple(2, "C", "C2"), tuple(2, "D", "D2"),
-            tuple(3, "A", "A3"), tuple(3, "B", "B3"), tuple(3, "C", "C3"), tuple(3, "D", "D3"),
-            tuple(4, "A", "A4"), tuple(4, "B", "B4"), tuple(4, "C", "C4"), tuple(4, "D", "D4"));
+        then(table.cellSet()).extracting("rowKey", "columnKey", "value")
+                .containsExactly(
+                    tuple(0, "A", "A0"), tuple(0, "B", "B0"),
+                    tuple(0, "C", "C0"), tuple(0, "D", "D0"),
+                    tuple(1, "A", "A1"), tuple(1, "B", "B1"),
+                    tuple(1, "C", "C1"), tuple(1, "D", "D1"),
+                    tuple(2, "A", "A2"), tuple(2, "B", "B2"),
+                    tuple(2, "C", "C2"), tuple(2, "D", "D2"),
+                    tuple(3, "A", "A3"), tuple(3, "B", "B3"),
+                    tuple(3, "C", "C3"), tuple(3, "D", "D3"),
+                    tuple(4, "A", "A4"), tuple(4, "B", "B4"),
+                    tuple(4, "C", "C4"), tuple(4, "D", "D4"));
 
         // 获取所有行对应的内容 Map, 为 Map<C, V> 类型
         then(table.rowMap()).containsExactly(
@@ -443,6 +516,7 @@ class TableTest {
             "A4", "B4", "C4", "D4");
 
         // 不可变 Table 无法删除单元格
-        thenThrownBy(() -> table.remove(2, "B")).isInstanceOf(UnsupportedOperationException.class);
+        thenThrownBy(() -> table.remove(2, "B"))
+                .isInstanceOf(UnsupportedOperationException.class);
     }
 }

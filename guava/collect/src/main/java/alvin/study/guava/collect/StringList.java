@@ -38,13 +38,14 @@ public class StringList extends ForwardingList<String> {
      *
      * @param str 要添加的元素
      * @return 如果添加成功则返回 {@code true}, 反之返回 {@code false}
-     * @throws IllegalArgumentException 如果 {@code element} 参数为 {@code null} 或空字符串时,
-     *                                  抛出该异常
+     * @throws IllegalArgumentException 如果 {@code element} 参数为 {@code null}
+     *                                  或空字符串时, 抛出该异常
      */
     @Override
     public boolean add(String str) {
         if (Strings.isNullOrEmpty(str)) {
-            throw new IllegalArgumentException("str argument must not null or empty string");
+            throw new IllegalArgumentException(
+                "str argument must not null or empty string");
         }
         return delegatedList.add(str);
     }
@@ -65,7 +66,8 @@ public class StringList extends ForwardingList<String> {
     public boolean addAll(Collection<? extends String> collection) {
         Preconditions.checkNotNull(collection).forEach(v -> {
             if (Strings.isNullOrEmpty(v)) {
-                throw new IllegalArgumentException("collection argument cannot contain null or empty string");
+                throw new IllegalArgumentException(
+                    "collection argument cannot contain null or empty string");
             }
         });
 
