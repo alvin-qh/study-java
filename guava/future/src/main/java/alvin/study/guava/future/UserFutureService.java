@@ -38,7 +38,7 @@ public class UserFutureService {
      */
     @SneakyThrows
     private static void delay() {
-        Thread.sleep(1000);
+        Thread.sleep(100);
     }
 
     /**
