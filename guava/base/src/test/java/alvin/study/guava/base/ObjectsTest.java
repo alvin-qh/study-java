@@ -29,8 +29,8 @@ import org.junit.jupiter.api.Test;
  * </p>
  *
  * <p>
- * {@link MoreObjects#firstNonNull(Object, Object)} 用于对两个值进行是否为 {@code null} 判断,
- * 行为如下:
+ * {@link MoreObjects#firstNonNull(Object, Object)} 用于对两个值进行是否为
+ * {@code null} 判断, 行为如下:
  * <ul>
  * <li>如果两个参数都不为 {@code null}, 则返回第一个参数的值</li>
  * <li>如果第一个参数为 {@code null}, 则返回第二个参数的值</li>
@@ -38,9 +38,9 @@ import org.junit.jupiter.api.Test;
  * </p>
  *
  * <p>
- * {@link MoreObjects#toStringHelper(Class)} 方法用于辅助将对象转为字符串表达, 返回一个
- * {@link MoreObjects.ToStringHelper} 类型对象,
- * 通过该对象的 {@code add} 方法和 {@code addValue} 方法生成字符串结果
+ * {@link MoreObjects#toStringHelper(Class)} 方法用于辅助将对象转为字符串表达,
+ * 返回一个 {@link MoreObjects.ToStringHelper} 类型对象, 通过该对象的 {@code add}
+ * 方法和 {@code addValue} 方法生成字符串结果
  * </p>
  */
 class ObjectsTest {
@@ -116,14 +116,13 @@ class ObjectsTest {
      * 在两个引用中选择非 {@code null} 的返回
      *
      * <p>
-     * {@link MoreObjects#firstNonNull(Object, Object)} 方法, 当第一个参数不为 {@code null} 时,
-     * 返回第一个参数值, 否则返回第二个
-     * 参数值
+     * {@link MoreObjects#firstNonNull(Object, Object)} 方法, 当第一个参数不为
+     * {@code null} 时, 返回第一个参数值, 否则返回第二个参数值
      * </p>
      *
      * <p>
-     * 特别的, 如果两个参数都为 {@code null}, 则抛出 {@link NullPointerException} 异常,
-     * 即该方法不允许两个参数均为 {@code null}
+     * 特别的, 如果两个参数都为 {@code null}, 则抛出 {@link NullPointerException}
+     * 异常, 即该方法不允许两个参数均为 {@code null}
      * </p>
      */
     @Test
@@ -149,14 +148,14 @@ class ObjectsTest {
      * 测试产生对象字符串描述的辅助方法
      *
      * <p>
-     * {@link MoreObjects#toStringHelper(Object)} 方法可以协助产生所需类型对象的字符串描述, 可以简化重写
-     * {@link Object#toString()} 方法的步骤
+     * {@link MoreObjects#toStringHelper(Object)} 方法可以协助产生所需类型对象的字符串描述,
+     * 可以简化重写 {@link Object#toString()} 方法的步骤
      * </p>
      *
      * <p>
-     * {@link MoreObjects#toStringHelper(Object)} 的参数只是为了取一个类名称字符串, 所以该方法还有
-     * {@link MoreObjects#toStringHelper(Class)} 和 {@link MoreObjects#toStringHelper(String)}
-     * 这两个重载方法, 其功能都是一致的
+     * {@link MoreObjects#toStringHelper(Object)} 的参数只是为了取一个类名称字符串,
+     * 所以该方法还有 {@link MoreObjects#toStringHelper(Class)} 和
+     * {@link MoreObjects#toStringHelper(String)} 这两个重载方法, 其功能都是一致的
      * </p>
      */
     @Test

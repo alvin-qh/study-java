@@ -203,7 +203,8 @@ class OptionalTest {
     @Test
     void presentInstances_shouldFlatOptionalInCollection() {
         // 将集合中的 Optional 对象展开
-        var ints = Optional.presentInstances(List.of(Optional.of(1), Optional.of(2)));
+        var ints = Optional.presentInstances(
+            List.of(Optional.of(1), Optional.of(2)));
         then(ints).containsExactly(1, 2);
     }
 }

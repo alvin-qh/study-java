@@ -34,22 +34,24 @@ class StringUtilsTest {
      * </p>
      *
      * <p>
-     * {@link Joiner#skipNulls()} 方法表示, 在连接字符串的时候, 忽略值为 {@code null} 的元素值
+     * {@link Joiner#skipNulls()} 方法表示, 在连接字符串的时候, 忽略值为 {@code null}
+     * 的元素值
      * </p>
      *
      * <p>
-     * {@link Joiner#useForNull(String)} 方法表示, 在连接字符串的时候, 如果遇到值为 {@code null}
-     * 的元素, 将其替换为指定的字符串
+     * {@link Joiner#useForNull(String)} 方法表示, 在连接字符串的时候, 如果遇到值为
+     * {@code null} 的元素, 将其替换为指定的字符串
      * </p>
      *
      * <p>
-     * {@link Joiner#withKeyValueSeparator(String)} 方法用于连接一个 {@link java.util.Map Map}
-     * 对象中的所有键值对时, 指定 Key 与 Value 之间的分隔符
+     * {@link Joiner#withKeyValueSeparator(String)} 方法用于连接一个
+     * {@link java.util.Map Map} 对象中的所有键值对时, 指定 Key 与 Value 之间的分隔符
      * </p>
      *
      * <p>
-     * {@link Joiner#appendTo(StringBuilder, Iterable)} 方法和 {@link Joiner#join(Iterable)}
-     * 方法类似, 只是不直接返回字符串, 而是将产生的字符串放到指定的 {@link StringBuilder} 对象中
+     * {@link Joiner#appendTo(StringBuilder, Iterable)} 方法和
+     * {@link Joiner#join(Iterable)} 方法类似, 只是不直接返回字符串,
+     * 而是将产生的字符串放到指定的 {@link StringBuilder} 对象中
      * </p>
      */
     @Test
@@ -321,15 +323,15 @@ class StringUtilsTest {
      * 的格式
      * </li>
      * <li>
-     * {@link CaseFormat#LOWER_UNDERSCORE}, 将单词格式化为形如 {@code lower_underscore}
-     * 的格式
+     * {@link CaseFormat#LOWER_UNDERSCORE}, 将单词格式化为形如
+     * {@code lower_underscore} 的格式
      * </li>
      * <li>
      * {@link CaseFormat#UPPER_CAMEL}, 将单词格式化为形如 {@code UpperCamel} 的格式
      * </li>
      * <li>
-     * {@link CaseFormat#UPPER_UNDERSCORE}, 将单词格式化为形如 {@code UPPER_UNDERSCORE}
-     * 的格式
+     * {@link CaseFormat#UPPER_UNDERSCORE}, 将单词格式化为形如
+     * {@code UPPER_UNDERSCORE} 的格式
      * </li>
      * </ul>
      * </p>
