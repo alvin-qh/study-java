@@ -15,7 +15,19 @@
   </parent>
 
   <modules>
-    <module>common</module>
+    <!--
+    对 Guava 库的 `com.google.common.base` 包功能进行演示, 包括:
+    - 对象基本操作: `Objects`, `MoreObjects` 类型;
+    - 字符串基本操作: `Strings`, `Splitter` 等类型;
+    - 可选值: `Optional` 类型;
+    - 条件预先判断: `Preconditions` 类型;
+    - 异常处理: `Throwables` 类型;
+    - 条件验证: `Verify` 类型;
+    -->
+    <module>base</module>
+    <!-- 对 Guava 库的 `com.google.common.primitives` 包功能进行演示 -->
+    <module>primitives</module>
+    <!-- 对 Guava 库的 `com.google.common.cache` 包功能进行演示 -->
     <module>cache</module>
     <module>io</module>
     <module>collect</module>

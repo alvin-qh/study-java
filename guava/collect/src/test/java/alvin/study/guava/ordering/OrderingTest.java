@@ -1,4 +1,4 @@
-package alvin.study.guava.common;
+package alvin.study.guava.ordering;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
@@ -6,11 +6,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
-
+import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * 测试排序对象
@@ -19,6 +20,13 @@ import com.google.common.collect.Ordering;
  * {@link Ordering} 类提供了一系列和排序相关的方法, 其对象既可以用于 {@link Collections#sort(List, java.util.Comparator)
  * Collections.sort(List, Comparator)} 方法 (或 {@link List#sort(java.util.Comparator) List.sort(Comparator)} 方法)
  * 进行排序, 也可以通过 {@link Ordering#isOrdered(Iterable)} 方法验证集合是否有序
+ * </p>
+ *
+ * <p>
+ * {@link ComparisonChain#start()} 方法用于返回一个 {@link ComparisonChain} 对象,
+ * 用于通过多个比较方法组织一个比较链, 规则为: 链条上优先比较的结果如果非 {@code 0},
+ * 则整体返回该结果, 否则执行链条上下一级的比较方法. 比较时可以使用
+ * {@link java.util.Comparator} 对象或 {@link Ordering} 对象指定比较规则
  * </p>
  */
 class OrderingTest {
@@ -459,5 +467,45 @@ class OrderingTest {
         // 确认通过同一个排序对象, 对集合再次排序, 排序结果和前一次一致
         var result2 = ordering.sortedCopy(list);
         then(result2).containsExactlyElementsOf(result1);
+    }
+
+    /**
+     * 测试通过比较链对对象进行比较
+     *
+     * <p>
+     * 在对象比较大小时, 往往需要比较对象的多个属性. {@link ComparisonChain} 类可以产生一个比较链, 以简化
+     * {@link java.util.Comparator#compare(Object, Object)} 方法的重写步骤
+     * </p>
+     *
+     * <p>
+     * 比较链的基本规则是, 先按链条上优先的规则进行比较, 如果返回相等的结果, 则再通过之后的规则进行比较,
+     * 直到返回非相等结果或链条上所有的规则都比较完毕, 类似于如下语句:
+     * </p>
+     *
+     * <pre>
+     * var result = compare1(a, b);
+     * if (result == 0) {
+     *     result = compare2(c, d);
+     *     if (result == 0) {
+     *         result = compare3(a, d);
+     *     }
+     * }
+     * return result;
+     * </pre>
+     */
+    @Test
+    void compare_shouldUseChainToCompareObjects() {
+        var obj1 = Integer.valueOf(100);
+        var obj2 = Integer.valueOf(100);
+        var obj3 = Integer.valueOf(200);
+
+        // 定义两级比较条件, 因为 obj1 和 obj2 相等, 所以结果为 obj2 和 obj3 的比较结果
+        var r = ComparisonChain.start()
+                .compare(obj1, obj2)
+                .compare(obj2, obj3, Ordering.explicit(obj3, obj2))
+                .result();
+
+        // 确认最终结果为 obj2 和 obj3 比较的结果
+        then(r).isEqualTo(1);
     }
 }

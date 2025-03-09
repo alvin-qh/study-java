@@ -1,12 +1,9 @@
-package alvin.study.guava.common;
+package alvin.study.guava.primitives;
 
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 import java.math.BigInteger;
-
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Booleans;
@@ -23,20 +20,25 @@ import com.google.common.primitives.UnsignedInts;
 import com.google.common.primitives.UnsignedLong;
 import com.google.common.primitives.UnsignedLongs;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * 针对于简单类型的一组操作方法
  *
  * <p>
- * Guava 在 {@code com.google.common.primitive} 包下包含了一组工具类, 用于针对简单对象进行操作
+ * Guava 在 {@code com.google.common.primitive} 包下包含了一组工具类,
+ * 用于针对简单对象进行操作
  * </p>
  *
  * <p>
- * 该组工具类主要是针对于简单对象数组进行操作, 避免因需要集合操作将简单对象放入集合引发的装箱和拆箱动作导致性能损耗
+ * 该组工具类主要是针对于简单对象数组进行操作,
+ * 避免因需要集合操作将简单对象放入集合引发的装箱和拆箱动作导致性能损耗
  * </p>
  *
  * <p>
- * 针对不同的简单类型, Guava 提供了 {@link Bytes}, {@link Shorts}, {@link Ints}, {@link Longs}, {@link Floats},
- * {@link Doubles}, {@link Chars} 以及 {@link Booleans} 等工具类, 对应不同的简单类型进行操作
+ * 针对不同的简单类型, Guava 提供了 {@link Bytes}, {@link Shorts},
+ * {@link Ints}, {@link Longs}, {@link Floats}, {@link Doubles},
+ * {@link Chars} 以及 {@link Booleans} 等工具类, 对应不同的简单类型进行操作
  * </p>
  */
 class PrimitivesTest {
@@ -44,21 +46,26 @@ class PrimitivesTest {
      * 将简单类型元素包装为 {@link java.util.List List} 集合
      *
      * <p>
-     * 通过各工具类的 {@code asList} 方法, 可以将一个简单对象数组 (或简单对象不定参数) 转化为 {@link java.util.List} 集合
+     * 通过各工具类的 {@code asList} 方法, 可以将一个简单对象数组 (或简单对象不定参数)
+     * 转化为 {@link java.util.List} 集合
      * </p>
      */
     @Test
     void asList_shouldCollectNumbersToList() {
         // 将 byte 类型数组转为 List 集合
         {
-            var list = Bytes.asList((byte) 0x1, (byte) 0x2, (byte) 0x3, (byte) 0x4, (byte) 0x5);
-            then(list).containsExactly((byte) 1, (byte) 2, (byte) 3, (byte) 4, (byte) 5);
+            var list = Bytes.asList(
+                (byte) 0x1, (byte) 0x2, (byte) 0x3, (byte) 0x4, (byte) 0x5);
+            then(list).containsExactly(
+                (byte) 1, (byte) 2, (byte) 3, (byte) 4, (byte) 5);
         }
 
         // 将 short 类型数组转为 List 集合
         {
-            var list = Shorts.asList((short) 1, (short) 2, (short) 3, (short) 4, (short) 5);
-            then(list).containsExactly((short) 1, (short) 2, (short) 3, (short) 4, (short) 5);
+            var list = Shorts.asList(
+                (short) 1, (short) 2, (short) 3, (short) 4, (short) 5);
+            then(list).containsExactly(
+                (short) 1, (short) 2, (short) 3, (short) 4, (short) 5);
         }
 
         // 将 int 类型数组转为 List 集合
@@ -102,22 +109,25 @@ class PrimitivesTest {
      * 将长度较长类型转为长度较短类型时, 检查数值是否越界
      *
      * <p>
-     * 例如: 将一个 {@code long} 类型数值转为 {@code int} 类型时, 如果 {@code long} 类型数值超出了 {@code int} 类型的取值范围,
-     * 则 Java 的强制类型转换会将超出部分丢弃, 导致转换结果错误且不可预期
+     * 例如: 将一个 {@code long} 类型数值转为 {@code int} 类型时, 如果 {@code long}
+     * 类型数值超出了 {@code int} 类型的取值范围, 则 Java 的强制类型转换会将超出部分丢弃,
+     * 导致转换结果错误且不可预期
      * </p>
      *
      * <p>
-     * 正确的做法是, 检查 {@code long} 类型数值是否在 {@link Integer#MIN_VALUE} 和 {@link Integer#MAX_VALUE} 之间, 如果超出,
-     * 则抛出异常, 如果未超出, 则进行转换
+     * 正确的做法是, 检查 {@code long} 类型数值是否在 {@link Integer#MIN_VALUE}
+     * 和 {@link Integer#MAX_VALUE} 之间, 如果超出, 则抛出异常, 如果未超出, 则进行转换
      * </p>
      *
      * <p>
-     * {@link Shorts#checkedCast(long)} 和 {@link Ints#checkedCast(long)} 方法即完成上述操作, 前者是将一个整数转为
-     * {@code short} 类型, 后者转为 {@link int} 类型. 如无法完成转换, 则抛出 {@link IllegalArgumentException} 异常
+     * {@link Shorts#checkedCast(long)} 和 {@link Ints#checkedCast(long)}
+     * 方法即完成上述操作, 前者是将一个整数转为 {@code short} 类型, 后者转为 {@link int} 类型.
+     * 如无法完成转换, 则抛出 {@link IllegalArgumentException} 异常
      * </p>
      *
      * <p>
-     * 其它简单类型未提供转换检测的方法, 因为其它类型的应用场景不涉及这类转换操作; 另外, 浮点数的二进制存储和整数不同, 也不涉及此类转换检测
+     * 其它简单类型未提供转换检测的方法, 因为其它类型的应用场景不涉及这类转换操作;
+     * 另外, 浮点数的二进制存储和整数不同, 也不涉及此类转换检测
      * </p>
      */
     @Test
@@ -166,7 +176,8 @@ class PrimitivesTest {
      * 将整数转为长度较小的整数, 且限定饱和范围
      *
      * <p>
-     * {@link Shorts#saturatedCast(long)} 和 {@link Ints#saturatedCast(long)} 方法在无法完成转换时采取如下策略:
+     * {@link Shorts#saturatedCast(long)} 和 {@link Ints#saturatedCast(long)}
+     * 方法在无法完成转换时采取如下策略:
      * <ul>
      * <li>
      * 若所给整数大于 {@code MAX_VALUE}, 则转换后的结果为 {@code MAX_VALUE}
@@ -178,7 +189,8 @@ class PrimitivesTest {
      * </p>
      *
      * <p>
-     * 其它简单类型未提供类型转换的方法, 因为其它类型的应用场景不涉及这类转换操作; 另外, 浮点数的二进制存储和整数不同, 也不涉及此类转换
+     * 其它简单类型未提供类型转换的方法, 因为其它类型的应用场景不涉及这类转换操作;
+     * 另外, 浮点数的二进制存储和整数不同, 也不涉及此类转换
      * </p>
      */
     @Test
@@ -221,23 +233,28 @@ class PrimitivesTest {
      * 将字符串转为数值, 且在转换失败后不抛出异常
      *
      * <p>
-     * JDK 数值类型的 {@code parse...} 方法用于将字符串转为数值 (整数或浮点数), 且在转换失败后抛出运行时异常
-     * {@link NumberFormatException} (例如 {@link Integer#parseInt(String, int)}). 这类方法返回简单类型对象
+     * JDK 数值类型的 {@code parse...} 方法用于将字符串转为数值 (整数或浮点数),
+     * 且在转换失败后抛出运行时异常 {@link NumberFormatException}
+     * (例如 {@link Integer#parseInt(String, int)}), 这类方法返回简单类型对象
      * </p>
      *
      * <p>
-     * Guava 提供了该方面转换不抛出异常的版本, 即 {@code tryParse} 方法, 例如: {@link Ints#tryParse(String, int)}, 如果转换失败,
-     * 则返回 {@code null} 值. 这类方法返回引用类型对象
+     * Guava 提供了该方面转换不抛出异常的版本, 即 {@code tryParse} 方法,
+     * 例如: {@link Ints#tryParse(String, int)}, 如果转换失败, 则返回
+     * {@code null} 值. 这类方法返回引用类型对象
      * </p>
      *
      * <p>
-     * 所以 Guava 的版本避免了异常捕获的开销, 但引入了对象拆箱的开销, 根据不同情况, 按需使用即可
+     * 所以 Guava 的版本避免了异常捕获的开销, 但引入了对象拆箱的开销, 根据不同情况,
+     * 按需使用即可
      * </p>
      *
      * <p>
-     * Guava 只为 4 中简单类型提供了该方法, 分别为: {@link Ints}, {@link Longs}, {@link Floats} 和 {@link Doubles},
-     * 其它类型一般情况下不涉及此类转换 (或可被其它类型转换取代, 例如 {@link Ints#tryParse(String, int)} 可覆盖 {@code short} 类型).
-     * 如需其它类型的转换, 可以使用 JDK 版本, 例如: {@link Boolean#parseBoolean(String)} 方法
+     * Guava 只为四种简单类型提供了该方法, 分别为: {@link Ints}, {@link Longs},
+     * {@link Floats} 和 {@link Doubles}, 其它类型一般情况下不涉及此类转换
+     * (或可被其它类型转换取代, 例如 {@link Ints#tryParse(String, int)}
+     * 可覆盖 {@code short} 类型). 如需其它类型的转换, 可以使用 JDK 版本,
+     * 例如: {@link Boolean#parseBoolean(String)} 方法
      * </p>
      */
     @Test
@@ -291,16 +308,19 @@ class PrimitivesTest {
      * 从 {@code byte} 数组中创建整数值
      *
      * <p>
-     * 整数都是由若干个 {@code byte} 组成 (例如 {@code int} 类型由 4 个 {@code byte} 构成), 所以给定确定数量的 {@code byte},
+     * 整数都是由若干个 {@code byte} 组成 (例如 {@code int} 类型由 4 个
+     * {@code byte} 构成), 所以给定确定数量的 {@code byte},
      * 即可将它们拼装成对应类型的整数值
      * </p>
      *
      * <p>
-     * Guava 提供 {@code fromBytes} 方法来完成此类操作, 不同简单类型对应的 {@code byte} 数量也不同
+     * Guava 提供 {@code fromBytes} 方法来完成此类操作, 不同简单类型对应的
+     * {@code byte} 数量也不同
      * </p>
      *
      * <p>
-     * 浮点类型的存储方式和整数不同, 且在不同系统上都有所差异, 所以不存在需要将浮点数和 {@code byte} 数组相互转换的情况
+     * 浮点类型的存储方式和整数不同, 且在不同系统上都有所差异, 所以不存在需要将浮点数和
+     * {@code byte} 数组相互转换的情况
      * </p>
      */
     @Test
@@ -312,18 +332,21 @@ class PrimitivesTest {
             then(val).isEqualTo((short) 0x1234);
 
             // 将 [0x12, 0x34] 转为 0x1234
-            val = Shorts.fromByteArray(new byte[] { (byte) 0x12, (byte) 0x34 });
+            val = Shorts.fromByteArray(
+                new byte[] { (byte) 0x12, (byte) 0x34 });
             then(val).isEqualTo((short) 0x1234);
         }
 
         // 将 4 个 byte 转为一个 int 数值
         {
             // 将 0x12, 0x34, 0x56 和 0x78 转为 0x12345678
-            var val = Ints.fromBytes((byte) 0x12, (byte) 0x34, (byte) 0x56, (byte) 0x78);
+            var val = Ints.fromBytes(
+                (byte) 0x12, (byte) 0x34, (byte) 0x56, (byte) 0x78);
             then(val).isEqualTo(0x12345678);
 
             // 将 [0x12, 0x34, 0x56, 0x78] 转为 0x12345678
-            val = Ints.fromByteArray(new byte[] { (byte) 0x12, (byte) 0x34, (byte) 0x56, (byte) 0x78 });
+            val = Ints.fromByteArray(
+                new byte[] { (byte) 0x12, (byte) 0x34, (byte) 0x56, (byte) 0x78 });
             then(val).isEqualTo(0x12345678);
         }
 
@@ -348,16 +371,19 @@ class PrimitivesTest {
      * 将整数转为对应的 {@code byte} 数组
      *
      * <p>
-     * 整数都是由若干个 {@code byte} 组成 (例如 {@code int} 类型由 4 个 {@code byte} 构成), 所以对于给定类型的整数值,
-     * 可以转换为不同长度的 {@code byte} 数组
+     * 整数都是由若干个 {@code byte} 组成 (例如 {@code int} 类型由 4 个
+     * {@code byte} 构成), 所以对于给定类型的整数值, 可以转换为不同长度的
+     * {@code byte} 数组
      * </p>
      *
      * <p>
-     * Guava 提供 {@code toBytes} 方法来完成此类操作, 不同简单类型得到的 {@code byte} 数量也不同
+     * Guava 提供 {@code toBytes} 方法来完成此类操作, 不同简单类型得到的
+     * {@code byte} 数量也不同
      * </p>
      *
      * <p>
-     * 浮点类型的存储方式和整数不同, 且在不同系统上都有所差异, 所以不存在需要将浮点数和 {@code byte} 数组相互转换的情况
+     * 浮点类型的存储方式和整数不同, 且在不同系统上都有所差异,
+     * 所以不存在需要将浮点数和 {@code byte} 数组相互转换的情况
      * </p>
      */
     @Test
@@ -390,13 +416,15 @@ class PrimitivesTest {
      * 在简单类型数组中查找指定元素的索引
      *
      * <p>
-     * JDK 的集合类型提供了 {@link java.util.List#indexOf(Object) List.indexOf(T)} 和
-     * {@link java.util.List#lastIndexOf(Object) List.lastIndexOf(T)} 方法完成在集合中进行查找, 但对于简单对象数组,
+     * JDK 的集合类型提供了 {@link java.util.List#indexOf(Object)
+     * List.indexOf(T)} 和 {@link java.util.List#lastIndexOf(Object)
+     * List.lastIndexOf(T)} 方法完成在集合中进行查找, 但对于简单对象数组,
      * 则难以转化为集合对象, 在转换过程中涉及的装箱操作也会降低执行效率
      * </p>
      *
      * <p>
-     * Guava 提供了 {@code indexOf} 和 {@code lastIndexOf} 可以协助在简单对象数值中执行查询, 可以查询元素的索引以及子数组的索引
+     * Guava 提供了 {@code indexOf} 和 {@code lastIndexOf} 方法,
+     * 可以协助在简单对象数值中执行查询, 可以查询元素的索引以及子数组的索引
      * </p>
      */
     @Test
@@ -542,15 +570,17 @@ class PrimitivesTest {
      * 将简单类型数组连接为字符串
      *
      * <p>
-     * 通过各工具类的 {@code join} 方法, 可以将一个简单类型数组元素连接为字符串, 类似于 {@link String#join(CharSequence, Iterable)}
-     * 方法, 但后者只接受元素类型为字符串类型的集合参数
+     * 通过各工具类的 {@code join} 方法, 可以将一个简单类型数组元素连接为字符串,
+     * 类似于 {@link String#join(CharSequence, Iterable)} 方法,
+     * 但后者只接受元素类型为字符串类型的集合参数
      * </p>
      */
     @Test
     void join_shouldJoinArrayToString() {
         // 将 short 类型数组连接为字符串
         {
-            var str = Shorts.join(">>", (short) 1, (short) 2, (short) 3, (short) 4, (short) 5);
+            var str = Shorts.join(
+                ">>", (short) 1, (short) 2, (short) 3, (short) 4, (short) 5);
             then(str).isEqualTo("1>>2>>3>>4>>5");
         }
 
@@ -568,7 +598,8 @@ class PrimitivesTest {
 
         // 将 float 类型数组连接为字符串
         {
-            var str = Floats.join(">>", 0.1f, 0.2f, 0.3f, 0.4f, 0.5f);
+            var str = Floats.join(
+                ">>", 0.1f, 0.2f, 0.3f, 0.4f, 0.5f);
             then(str).isEqualTo("0.1>>0.2>>0.3>>0.4>>0.5");
         }
 
@@ -594,13 +625,15 @@ class PrimitivesTest {
      * </p>
      *
      * <p>
-     * 若一个 {@link com.google.common.base.Converter Converter} 对象可以将 A 类型值转为 B 类型, 则
-     * {@link com.google.common.base.Converter#reverse() Converter.reverse()} 方法返回的对象可以将 B 类型值转为 A 类型
+     * 若一个 {@link com.google.common.base.Converter Converter}
+     * 对象可以将 A 类型值转为 B 类型, 则 {@link com.google.common.base.Converter#reverse()
+     * Converter.reverse()} 方法返回的对象可以将 B 类型值转为 A 类型
      * </p>
      *
      * <p>
-     * Guava 为数值类型工具类提供了这类转换器, 包括: {@link Shorts#stringConverter()}, {@link Ints#stringConverter()},
-     * {@link Longs#stringConverter()}, {@link Floats#stringConverter()} 和 {@link Doubles#stringConverter()} 方法
+     * Guava 为数值类型工具类提供了这类转换器, 包括: {@link Shorts#stringConverter()},
+     * {@link Ints#stringConverter()}, {@link Longs#stringConverter()},
+     * {@link Floats#stringConverter()} 和 {@link Doubles#stringConverter()} 方法
      * </p>
      */
     @Test
@@ -610,12 +643,17 @@ class PrimitivesTest {
             var convert = Shorts.stringConverter();
 
             // 将字符串转为 short 数值
-            then(convert.convert("10010")).isInstanceOf(Short.class).isEqualTo((short) 10010);
+            then(convert.convert("10010"))
+                    .isInstanceOf(Short.class)
+                    .isEqualTo((short) 10010);
+
             // 将集合中的字符串批量转为 short 数值
-            then(convert.convertAll(ImmutableList.of("1", "2"))).containsExactly((short) 1, (short) 2);
+            then(convert.convertAll(ImmutableList.of("1", "2")))
+                    .containsExactly((short) 1, (short) 2);
 
             // 获取反向转换器对象, 将 short 数值转为字符串值
-            then(convert.reverse().convert((short) 10010)).isEqualTo("10010");
+            then(convert.reverse().convert((short) 10010))
+                    .isEqualTo("10010");
         }
 
         // 获取转换器, 在 int 数值和字符串之间转换
@@ -623,12 +661,17 @@ class PrimitivesTest {
             var convert = Ints.stringConverter();
 
             // 将字符串转为 int 数值
-            then(convert.convert("10010")).isInstanceOf(Integer.class).isEqualTo(10010);
+            then(convert.convert("10010"))
+                    .isInstanceOf(Integer.class)
+                    .isEqualTo(10010);
+
             // 将集合中的字符串批量转为 int 数值
-            then(convert.convertAll(ImmutableList.of("1", "2"))).containsExactly(1, 2);
+            then(convert.convertAll(ImmutableList.of("1", "2")))
+                    .containsExactly(1, 2);
 
             // 获取反向转换器对象, 将 int 数值转为字符串值
-            then(convert.reverse().convert(10010)).isEqualTo("10010");
+            then(convert.reverse().convert(10010))
+                    .isEqualTo("10010");
         }
 
         // 获取转换器, 在 long 数值和字符串之间转换
@@ -636,12 +679,17 @@ class PrimitivesTest {
             var convert = Longs.stringConverter();
 
             // 将字符串转为 long 数值
-            then(convert.convert("10010")).isInstanceOf(Long.class).isEqualTo(10010L);
+            then(convert.convert("10010"))
+                    .isInstanceOf(Long.class)
+                    .isEqualTo(10010L);
+
             // 将集合中的字符串批量转为 long 数值
-            then(convert.convertAll(ImmutableList.of("1", "2"))).containsExactly(1L, 2L);
+            then(convert.convertAll(ImmutableList.of("1", "2")))
+                    .containsExactly(1L, 2L);
 
             // 获取反向转换器对象, 将 long 数值转为字符串值
-            then(convert.reverse().convert(10010L)).isEqualTo("10010");
+            then(convert.reverse().convert(10010L))
+                    .isEqualTo("10010");
         }
 
         // 获取转换器, 在 float 数值和字符串之间转换
@@ -649,12 +697,17 @@ class PrimitivesTest {
             var convert = Floats.stringConverter();
 
             // 将字符串转为 float 数值
-            then(convert.convert("100.1")).isInstanceOf(Float.class).isEqualTo(100.10f);
+            then(convert.convert("100.1"))
+                    .isInstanceOf(Float.class)
+                    .isEqualTo(100.10f);
+
             // 将集合中的字符串批量转为 short 数值
-            then(convert.convertAll(ImmutableList.of("0.1", "0.2"))).containsExactly(0.1f, 0.2f);
+            then(convert.convertAll(ImmutableList.of("0.1", "0.2")))
+                    .containsExactly(0.1f, 0.2f);
 
             // 获取反向转换器对象, 将 float 数值转为字符串值
-            then(convert.reverse().convert(100.10f)).isEqualTo("100.1");
+            then(convert.reverse().convert(100.10f))
+                    .isEqualTo("100.1");
         }
 
         // 获取转换器, 在 double 数值和字符串之间转换
@@ -662,12 +715,17 @@ class PrimitivesTest {
             var convert = Doubles.stringConverter();
 
             // 将字符串转为 double 数值
-            then(convert.convert("100.1")).isInstanceOf(Double.class).isEqualTo(100.10);
+            then(convert.convert("100.1"))
+                    .isInstanceOf(Double.class)
+                    .isEqualTo(100.10);
+
             // 将集合中的字符串批量转为 double 数值
-            then(convert.convertAll(ImmutableList.of("0.1", "0.2"))).containsExactly(0.1, 0.2);
+            then(convert.convertAll(ImmutableList.of("0.1", "0.2")))
+                    .containsExactly(0.1, 0.2);
 
             // 获取反向转换器对象, 将 double 数值转为字符串值
-            then(convert.reverse().convert(100.10)).isEqualTo("100.1");
+            then(convert.reverse().convert(100.10))
+                    .isEqualTo("100.1");
         }
     }
 
@@ -765,7 +823,8 @@ class PrimitivesTest {
      * 在简单对象数组中查找一个值是否存在
      *
      * <p>
-     * 简单对象工具类的 {@code contains} 方法用于查询一个值是否在数组中存在, 并返回 {@code true} 或 {@code false}
+     * 简单对象工具类的 {@code contains} 方法用于查询一个值是否在数组中存在,
+     * 并返回 {@code true} 或 {@code false}
      * </p>
      */
     @Test
@@ -823,7 +882,8 @@ class PrimitivesTest {
      * 从数值数组中找到最大值或最小值
      *
      * <p>
-     * 对于表示数值的简单对象, 其工具类的 {@code max} 和 {@code min} 方法用于在数值中找到最大值或最小值, 这些方法包括:
+     * 对于表示数值的简单对象, 其工具类的 {@code max} 和 {@code min}
+     * 方法用于在数值中找到最大值或最小值, 这些方法包括:
      * {@link Shorts#max(short...)}/{@link Shorts#min(short...)},
      * {@link Ints#max(int...)}/{@link Ints#min(int...)},
      * {@link Longs#max(long...)}/{@link Longs#min(long...)},
@@ -832,8 +892,8 @@ class PrimitivesTest {
      * </p>
      *
      * <p>
-     * JDK 中提供的方法 ({@link Math#max(int, int)} 和 {@link Math#min(int, int)}) 方法也为各种数值简单类型提供了重载,
-     * 但只能进行两个值的比较, 多个值就得嵌套或循环调用
+     * JDK 中提供的方法 ({@link Math#max(int, int)} 和 {@link Math#min(int, int)})
+     * 方法也为各种数值简单类型提供了重载, 但只能进行两个值的比较, 多个值就得嵌套或循环调用
      * </p>
      */
     @Test
@@ -962,16 +1022,19 @@ class PrimitivesTest {
      * 对简单对象数组进行逆序排序 (从大到小)
      *
      * <p>
-     * JDK 的 {@link java.util.Arrays Arrays} 工具类提供了 {@link java.util.Arrays#sort(int[]) Arrays.sort(int[])}
-     * 方法以及各种简单对象数组类型的重载, 可以对简单类型数组进行自然序排序 (从小到大); Guava 提供的 {@code sortDescending}
-     * 方法可以进行逆序排序 (从大到小), 作为 JDK 方法的补充
+     * JDK 的 {@link java.util.Arrays Arrays} 工具类提供了
+     * {@link java.util.Arrays#sort(int[]) Arrays.sort(int[])}
+     * 方法以及各种简单对象数组类型的重载, 可以对简单类型数组进行自然序排序 (从小到大);
+     * Guava 提供的 {@code sortDescending} 方法可以进行逆序排序 (从大到小),
+     * 作为 JDK 方法的补充
      * </p>
      *
      * <p>
-     * Guava 对常用数值类型提供了逆序排序方法, 包括: {@link Shorts#sortDescending(short[])},
-     * {@link Ints#sortDescending(int[])}, {@link Longs#sortDescending(long[])}, {@link Floats#sortDescending(float[])},
-     * {@link Doubles#sortDescending(double[])} 和 {@link Chars#sortDescending(char[])}, 对使用场景不高的 {@code byte}
-     * 和 {@code boolean} 类型未提供逆序排序方法
+     * Guava 对常用数值类型提供了逆序排序方法, 包括:
+     * {@link Shorts#sortDescending(short[])}, {@link Ints#sortDescending(int[])},
+     * {@link Longs#sortDescending(long[])}, {@link Floats#sortDescending(float[])},
+     * {@link Doubles#sortDescending(double[])} 和 {@link Chars#sortDescending(char[])},
+     * 对使用场景不高的 {@code byte} 和 {@code boolean} 类型未提供逆序排序方法
      * </p>
      */
     @Test
@@ -1029,28 +1092,113 @@ class PrimitivesTest {
      * 旋转数组元素
      *
      * <p>
-     * 该方法相当于 {@link java.util.Collections#rotate(java.util.List, int) Collections.rotate(List, int)}
-     * 的简单类型数组版本
+     * 该方法相当于 {@link java.util.Collections#rotate(java.util.List, int)
+     * Collections.rotate(List, int)} 的简单类型数组版本
      * </p>
      */
-    @Disabled
+    @Test
     void rotate_shouldRotateArrayElements() {
-        // todo: 下个版本会增加 Ints.rotate 等方法, 届时增加演示
+        // 对 short 类型数组进行旋转
+        {
+            var array = new short[] { 1, 2, 3 };
+
+            Shorts.rotate(array, 1);
+            then(array).containsExactly(3, 1, 2);
+
+            Shorts.rotate(array, -1);
+            then(array).containsExactly(1, 2, 3);
+
+            Shorts.rotate(array, 3);
+            then(array).containsExactly(1, 2, 3);
+        }
+
+        // 对 int 类型数组进行旋转
+        {
+            var array = new int[] { 1, 2, 3 };
+
+            Ints.rotate(array, 1);
+            then(array).containsExactly(3, 1, 2);
+
+            Ints.rotate(array, -1);
+            then(array).containsExactly(1, 2, 3);
+
+            Ints.rotate(array, 3);
+            then(array).containsExactly(1, 2, 3);
+        }
+
+        // 对 long 类型数组进行旋转
+        {
+            var array = new long[] { 1, 2, 3 };
+
+            Longs.rotate(array, 1);
+            then(array).containsExactly(3, 1, 2);
+
+            Longs.rotate(array, -1);
+            then(array).containsExactly(1, 2, 3);
+
+            Longs.rotate(array, 3);
+            then(array).containsExactly(1, 2, 3);
+        }
+
+        // 对 float 类型数组进行旋转
+        {
+            var array = new float[] { 0.1f, 0.2f, 0.3f };
+
+            Floats.rotate(array, 1);
+            then(array).containsExactly(0.3f, 0.1f, 0.2f);
+
+            Floats.rotate(array, -1);
+            then(array).containsExactly(0.1f, 0.2f, 0.3f);
+
+            Floats.rotate(array, 3);
+            then(array).containsExactly(0.1f, 0.2f, 0.3f);
+        }
+
+        // 对 double 类型数组进行旋转
+        {
+            var array = new double[] { 0.1, 0.2, 0.3 };
+
+            Doubles.rotate(array, 1);
+            then(array).containsExactly(0.3, 0.1, 0.2);
+
+            Doubles.rotate(array, -1);
+            then(array).containsExactly(0.1, 0.2, 0.3);
+
+            Doubles.rotate(array, 3);
+            then(array).containsExactly(0.1, 0.2, 0.3);
+        }
+
+        // 对 char 类型数组进行旋转
+        {
+            var array = new char[] { 'A', 'B', 'C' };
+
+            Chars.rotate(array, 1);
+            then(array).containsExactly('C', 'A', 'B');
+
+            Chars.rotate(array, -1);
+            then(array).containsExactly('A', 'B', 'C');
+
+            Chars.rotate(array, 3);
+            then(array).containsExactly('A', 'B', 'C');
+        }
     }
 
     /**
      * 为数组扩展新的存储空间
      *
      * <p>
-     * 简单对象工具类的 {@code ensureCapacity} 方法用于对数组空间进行扩展, 即将产生一个空间更大的新数组, 将原数组的内容复制到新数组,
-     * 其余空间使用 {@code 0} 或 {@code false} 填充
+     * 简单对象工具类的 {@code ensureCapacity} 方法用于对数组空间进行扩展,
+     * 即将产生一个空间更大的新数组, 将原数组的内容复制到新数组, 其余空间使用
+     * {@code 0} 或 {@code false} 填充
      * </p>
      *
      * <p>
-     * {@code ensureCapacity(array, minLength, padding)}, 第一个参数即原数组; 第二个参数为扩展的最小长度, 如果该值小于等于原数组长度,
-     * 则不对原数组进行扩展, 直接返回原数组引用; 第三个参数可以为 {@code 0}, 也可以为一个增长值. 后两个参数表达的语义为:
-     * 将数组扩长度扩展到 {@code minLength} 大小, 并为之后扩展预留 {@code padding} 个位置. 所以最终返回的数组长度为
-     * {@code minLength + padding}
+     * {@code ensureCapacity(array, minLength, padding)},
+     * 第一个参数即原数组; 第二个参数为扩展的最小长度, 如果该值小于等于原数组长度,
+     * 则不对原数组进行扩展, 直接返回原数组引用; 第三个参数可以为 {@code 0},
+     * 也可以为一个增长值. 后两个参数表达的语义为: 将数组扩长度扩展到
+     * {@code minLength} 大小, 并为之后扩展预留 {@code padding} 个位置.
+     * 所以最终返回的数组长度为 {@code minLength + padding}
      * </p>
      */
     @Test
@@ -1195,8 +1343,10 @@ class PrimitivesTest {
      * 将变量值修正到指定区间内
      *
      * <p>
-     * 简单类型工具类的 {@code constrainToRange} 方法可以将一个变量值进行修正, 让其符合指定区间. 即, 如果所给变量值在区间范围内,
-     * 则返回该变量值; 如果所给变量小于区间下限, 则返回区间下限值; 如果所给变量大于区间上限值, 则返回区间上限值
+     * 简单类型工具类的 {@code constrainToRange} 方法可以将一个变量值进行修正,
+     * 让其符合指定区间. 即, 如果所给变量值在区间范围内, 则返回该变量值;
+     * 如果所给变量小于区间下限, 则返回区间下限值; 如果所给变量大于区间上限值,
+     * 则返回区间上限值
      * </p>
      *
      * <p>
@@ -1204,7 +1354,8 @@ class PrimitivesTest {
      * </p>
      *
      * <p>
-     * 除 {@link Bytes} 类外, 其它简单类型工具类都包含 {@code constrainToRange} 方法
+     * 除 {@link Bytes} 类外, 其它简单类型工具类都包含
+     * {@code constrainToRange} 方法
      * </p>
      */
     @Test
@@ -1303,7 +1454,8 @@ class PrimitivesTest {
      * 比较两个简单类型的数组
      *
      * <p>
-     * 简单类型工具类的 {@code lexicographicalComparator} 方法返回一个比较器对象, 可以对特定类型的数组进行比较. 比较规则是:
+     * 简单类型工具类的 {@code lexicographicalComparator} 方法返回一个比较器对象,
+     * 可以对特定类型的数组进行比较. 比较规则是:
      * 逐元素进行比较, 每个元素通过字典序进行比较 (即数字按大小比较, 字符按字典顺序进行比较)
      * </p>
      *
@@ -1317,56 +1469,90 @@ class PrimitivesTest {
         {
             var comparator = Shorts.lexicographicalComparator();
 
-            then(comparator.compare(new short[] { 1, 2, 3 }, new short[] { 1, 2, 3 })).isEqualTo(0);
-            then(comparator.compare(new short[] { 1, 2, 3, 4 }, new short[] { 1, 2, 3 })).isEqualTo(1);
-            then(comparator.compare(new short[] { 1, 2 }, new short[] { 1, 2, 3 })).isEqualTo(-1);
+            then(comparator.compare(
+                new short[] { 1, 2, 3 },
+                new short[] { 1, 2, 3 })).isEqualTo(0);
+            then(comparator.compare(
+                new short[] { 1, 2, 3, 4 },
+                new short[] { 1, 2, 3 })).isEqualTo(1);
+            then(comparator.compare(
+                new short[] { 1, 2 },
+                new short[] { 1, 2, 3 })).isEqualTo(-1);
         }
 
         // 对 int 类型数组进行比较
         {
             var comparator = Ints.lexicographicalComparator();
 
-            then(comparator.compare(new int[] { 1, 2, 3 }, new int[] { 1, 2, 3 })).isEqualTo(0);
-            then(comparator.compare(new int[] { 1, 2, 3, 4 }, new int[] { 1, 2, 3 })).isEqualTo(1);
-            then(comparator.compare(new int[] { 1, 2 }, new int[] { 1, 2, 3 })).isEqualTo(-1);
+            then(comparator.compare(
+                new int[] { 1, 2, 3 },
+                new int[] { 1, 2, 3 })).isEqualTo(0);
+            then(comparator.compare(
+                new int[] { 1, 2, 3, 4 },
+                new int[] { 1, 2, 3 })).isEqualTo(1);
+            then(comparator.compare(
+                new int[] { 1, 2 },
+                new int[] { 1, 2, 3 })).isEqualTo(-1);
         }
 
         // 对 long 类型数组进行比较
         {
             var comparator = Longs.lexicographicalComparator();
 
-            then(comparator.compare(new long[] { 1L, 2L, 3L }, new long[] { 1L, 2L, 3L })).isEqualTo(0);
-            then(comparator.compare(new long[] { 1L, 2L, 3L, 4L }, new long[] { 1L, 2L, 3L })).isEqualTo(1);
-            then(comparator.compare(new long[] { 1L, 2L }, new long[] { 1L, 2L, 3L })).isEqualTo(-1);
+            then(comparator.compare(
+                new long[] { 1L, 2L, 3L },
+                new long[] { 1L, 2L, 3L })).isEqualTo(0);
+            then(comparator.compare(
+                new long[] { 1L, 2L, 3L, 4L },
+                new long[] { 1L, 2L, 3L })).isEqualTo(1);
+            then(comparator.compare(
+                new long[] { 1L, 2L },
+                new long[] { 1L, 2L, 3L })).isEqualTo(-1);
         }
 
         // 对 float 类型数组进行比较
         {
             var comparator = Floats.lexicographicalComparator();
 
-            then(comparator.compare(new float[] { 0.1f, 0.2f, 0.3f }, new float[] { 0.1f, 0.2f, 0.3f })).isEqualTo(0);
+            then(comparator.compare(
+                new float[] { 0.1f, 0.2f, 0.3f },
+                new float[] { 0.1f, 0.2f, 0.3f })).isEqualTo(0);
             then(comparator.compare(
                 new float[] { 0.1f, 0.2f, 0.3f, 0.4f },
                 new float[] { 0.1f, 0.2f, 0.3f })).isEqualTo(1);
-            then(comparator.compare(new float[] { 0.1f, 0.2f }, new float[] { 0.1f, 0.2f, 0.3f })).isEqualTo(-1);
+            then(comparator.compare(
+                new float[] { 0.1f, 0.2f },
+                new float[] { 0.1f, 0.2f, 0.3f })).isEqualTo(-1);
         }
 
         // 对 double 类型数组进行比较
         {
             var comparator = Doubles.lexicographicalComparator();
 
-            then(comparator.compare(new double[] { 0.1, 0.2, 0.3 }, new double[] { 0.1, 0.2, 0.3 })).isEqualTo(0);
-            then(comparator.compare(new double[] { 0.1, 0.2, 0.3, 0.4 }, new double[] { 0.1, 0.2, 0.3 })).isEqualTo(1);
-            then(comparator.compare(new double[] { 0.1, 0.2 }, new double[] { 0.1, 0.2, 0.3 })).isEqualTo(-1);
+            then(comparator.compare(
+                new double[] { 0.1, 0.2, 0.3 },
+                new double[] { 0.1, 0.2, 0.3 })).isEqualTo(0);
+            then(comparator.compare(
+                new double[] { 0.1, 0.2, 0.3, 0.4 },
+                new double[] { 0.1, 0.2, 0.3 })).isEqualTo(1);
+            then(comparator.compare(
+                new double[] { 0.1, 0.2 },
+                new double[] { 0.1, 0.2, 0.3 })).isEqualTo(-1);
         }
 
         // 对 char 类型数组进行比较
         {
             var comparator = Chars.lexicographicalComparator();
 
-            then(comparator.compare(new char[] { 'A', 'B', 'C' }, new char[] { 'A', 'B', 'C' })).isEqualTo(0);
-            then(comparator.compare(new char[] { 'A', 'B', 'C', 'D' }, new char[] { 'A', 'B', 'C' })).isEqualTo(1);
-            then(comparator.compare(new char[] { 'A', 'B' }, new char[] { 'A', 'B', 'C' })).isEqualTo(-1);
+            then(comparator.compare(
+                new char[] { 'A', 'B', 'C' },
+                new char[] { 'A', 'B', 'C' })).isEqualTo(0);
+            then(comparator.compare(
+                new char[] { 'A', 'B', 'C', 'D' },
+                new char[] { 'A', 'B', 'C' })).isEqualTo(1);
+            then(comparator.compare(
+                new char[] { 'A', 'B' },
+                new char[] { 'A', 'B', 'C' })).isEqualTo(-1);
         }
 
         // 对 boolean 类型数组进行比较
@@ -1379,7 +1565,9 @@ class PrimitivesTest {
             then(comparator.compare(
                 new boolean[] { true, false, true, false },
                 new boolean[] { true, false, true })).isEqualTo(1);
-            then(comparator.compare(new boolean[] { true, false }, new boolean[] { true, false, true })).isEqualTo(-1);
+            then(comparator.compare(
+                new boolean[] { true, false },
+                new boolean[] { true, false, true })).isEqualTo(-1);
         }
     }
 
@@ -1392,9 +1580,9 @@ class PrimitivesTest {
      * </p>
      *
      * <p>
-     * 在 Java 中, 集合存储的必须为 {@link Object} 引用类型 (例如: {@code List<Integer>}), 而数组允许存储简单类型
-     * (例如: {@code int[]}), 通过 {@link java.util.List#toArray()} 方法获得的是引用类型数组, 需要逐元素拆箱才能得到简单对象数组,
-     * 该方法简化了这类操作
+     * 在 Java 中, 集合存储的必须为 {@link Object} 引用类型 (例如: {@code List<Integer>}),
+     * 而数组允许存储简单类型 (例如: {@code int[]}), 通过 {@link java.util.List#toArray()}
+     * 方法获得的是引用类型数组, 需要逐元素拆箱才能得到简单对象数组, 该方法简化了这类操作
      * </p>
      */
     @Test
@@ -1402,49 +1590,57 @@ class PrimitivesTest {
         // 将 Collection<Byte> 转为 byte[]
         {
             var array = Bytes.toArray(ImmutableList.of(0x1, 0x2, 0x3));
-            then(array).isInstanceOf(byte[].class).containsExactly(0x1, 0x2, 0x3);
+            then(array).isInstanceOf(byte[].class)
+                    .containsExactly(0x1, 0x2, 0x3);
         }
 
         // 将 Collection<Sort> 转为 short[]
         {
             var array = Shorts.toArray(ImmutableList.of(1, 2, 3));
-            then(array).isInstanceOf(short[].class).containsExactly(1, 2, 3);
+            then(array).isInstanceOf(short[].class)
+                    .containsExactly(1, 2, 3);
         }
 
         // 将 Collection<Integer> 转为 int[]
         {
             var array = Ints.toArray(ImmutableList.of(1, 2, 3));
-            then(array).isInstanceOf(int[].class).containsExactly(1, 2, 3);
+            then(array).isInstanceOf(int[].class)
+                    .containsExactly(1, 2, 3);
         }
 
         // 将 Collection<Long> 转为 long[]
         {
             var array = Longs.toArray(ImmutableList.of(1, 2, 3));
-            then(array).isInstanceOf(long[].class).containsExactly(1, 2, 3);
+            then(array).isInstanceOf(long[].class)
+                    .containsExactly(1, 2, 3);
         }
 
         // 将 Collection<Float> 转为 float[]
         {
             var array = Floats.toArray(ImmutableList.of(0.1, 0.2, 0.3));
-            then(array).isInstanceOf(float[].class).containsExactly(0.1f, 0.2f, 0.3f);
+            then(array).isInstanceOf(float[].class)
+                    .containsExactly(0.1f, 0.2f, 0.3f);
         }
 
         // 将 Collection<Double> 转为 double[]
         {
             var array = Doubles.toArray(ImmutableList.of(0.1, 0.2, 0.3));
-            then(array).isInstanceOf(double[].class).containsExactly(0.1, 0.2, 0.3);
+            then(array).isInstanceOf(double[].class)
+                    .containsExactly(0.1, 0.2, 0.3);
         }
 
         // 将 Collection<Char> 转为 char[]
         {
             var array = Chars.toArray(ImmutableList.of('A', 'B', 'C'));
-            then(array).isInstanceOf(char[].class).containsExactly('A', 'B', 'C');
+            then(array).isInstanceOf(char[].class)
+                    .containsExactly('A', 'B', 'C');
         }
 
         // 将 Collection<Boolean> 转为 boolean[]
         {
             var array = Booleans.toArray(ImmutableList.of(true, false, true));
-            then(array).isInstanceOf(boolean[].class).containsExactly(true, false, true);
+            then(array).isInstanceOf(boolean[].class)
+                    .containsExactly(true, false, true);
         }
     }
 
@@ -1452,44 +1648,52 @@ class PrimitivesTest {
      * 测试无符号类型
      *
      * <p>
-     * Guava 拓展了 Java 的整数类型, 增加了包括 {@link UnsignedInteger} 以及 {@link UnsignedLong} 无符号整数类型以及
-     * {@link UnsignedBytes}, {@link UnsignedInts} 以及 {@link UnsignedLongs} 工具类
+     * Guava 拓展了 Java 的整数类型, 增加了包括 {@link UnsignedInteger} 以及
+     * {@link UnsignedLong} 无符号整数类型以及{@link UnsignedBytes},
+     * {@link UnsignedInts} 以及 {@link UnsignedLongs} 工具类
      * </p>
      *
      * <p>
-     * 在计算机系统中, 整数符号是通过二进制最高位来表示的, 最高位为 {@code 1} 表示负数; 最高位为 {@code 0} 表示正数, 剩余的位数表示数值
+     * 在计算机系统中, 整数符号是通过二进制最高位来表示的, 最高位为 {@code 1} 表示负数;
+     * 最高位为 {@code 0} 表示正数, 剩余的位数表示数值
      * </p>
      *
      * <p>
-     * 计算机在内存中使用补码 (反码 + 1) 的形式保存"负数", 以达到通过加法运算器求减法的目标. 例如: {@code byte 2} 的二进制为
-     * {@code 00000010b}, 则 {@code byte -2} 的值为其补码, 即 {@code 11111101b + 1b = 11111110b}
+     * 计算机在内存中使用补码 (反码 + 1) 的形式保存"负数", 以达到通过加法运算器求减法的目标.
+     * 例如: {@code byte 2} 的二进制为 {@code 00000010b}, 则 {@code byte -2}
+     * 的值为其补码, 即 {@code 11111101b + 1b = 11111110b}
      * </p>
      *
      * <p>
-     * 所谓"无符号", 即不将最高位作为符号位, 将所有的二进制都作为数值, 此时 {@code byte -2} 的值 {@code 11111110b} 表示整数
-     * {@code 254}
+     * 所谓"无符号", 即不将最高位作为符号位, 将所有的二进制都作为数值,
+     * 此时 {@code byte -2} 的值 {@code 11111110b} 表示整数 {@code 254}
      * </p>
      *
      * <p>
-     * 所以无论是有符号整数或是无符号整数, 其二进制表示都是一致的, 例如 {@code byte -1} 转为的无符号为 {@code byte 255}, 二进制都是
-     * {@code 11111111b}, 对无符号整数的"加", "减", "乘", 都可以转为对应的无符号整数进行操作. 但涉及"除", "比较", "指数", "对数"
-     * 等运算, 相同二进制位的无符号和有符号整数, 计算结果不同
+     * 所以无论是有符号整数或是无符号整数, 其二进制表示都是一致的, 例如 {@code byte -1}
+     * 转为的无符号为 {@code byte 255}, 二进制都是 {@code 11111111b},
+     * 对无符号整数的"加", "减", "乘", 都可以转为对应的无符号整数进行操作.
+     * 但涉及"除", "比较", "指数", "对数" 等运算, 相同二进制位的无符号和有符号整数,
+     * 计算结果不同
      * </p>
      *
      * <p>
-     * 在 JDK 9 之前, Java 并不直接支持无符号类型, 如果要对无符号类型进行运算, 需要自行通过位运算符进行, 例如要将一个 {@code int}
-     * 值 {@code n} 转为无符号类型, 则需要进行 {@code n & 0x00000000FFFFFFFFL} 这类运算将符号位设置为 {@code 0} 并保留有效数字位不变,
-     * 其结果是一个 {@code long} 类型
+     * 在 JDK 9 之前, Java 并不直接支持无符号类型, 如果要对无符号类型进行运算,
+     * 需要自行通过位运算符进行, 例如要将一个 {@code int} 值 {@code n} 转为无符号类型,
+     * 则需要进行 {@code n & 0x00000000FFFFFFFFL} 这类运算将符号位设置为 {@code 0}
+     * 并保留有效数字位不变, 其结果是一个 {@code long} 类型
      * </p>
      *
      * <p>
-     * JDK 9 之后, 增加了类似 {@link Integer#toUnsignedLong(int)}, {@link Integer#toUnsignedString(int)} 以及
+     * JDK 9 之后, 增加了类似 {@link Integer#toUnsignedLong(int)},
+     * {@link Integer#toUnsignedString(int)} 以及
      * {@link Integer#compareUnsigned(int, int)} 方法, 以支持有限的无符号整数操作
      * </p>
      *
      * <p>
-     * Guava 提供了更为完备的无符号整数相关方法, 但由于 Java 的简单类型并不支持无符号整数, 所以无符号整数仍是基于有符号数进程存储的
-     * (基于相同的二进制值), 只是在运算和转换时表现为无符号数
+     * Guava 提供了更为完备的无符号整数相关方法, 但由于 Java 的简单类型并不支持无符号整数,
+     * 所以无符号整数仍是基于有符号数进程存储的 (基于相同的二进制值),
+     * 只是在运算和转换时表现为无符号数
      * </p>
      */
     @Test
@@ -1509,7 +1713,8 @@ class PrimitivesTest {
         // 测试无符号长整数的最大值
         {
             var max = UnsignedLong.MAX_VALUE;
-            then(max.bigIntegerValue()).isEqualTo(new BigInteger("FFFFFFFFFFFFFFFF", 16));
+            then(max.bigIntegerValue())
+                    .isEqualTo(new BigInteger("FFFFFFFFFFFFFFFF", 16));
         }
 
         // 对无符号整数进行比较
@@ -1530,7 +1735,8 @@ class PrimitivesTest {
             var i2 = -1; // 0xFFFFFFFF, 11111111111111111111111111111111b
 
             var u1 = UnsignedInteger.fromIntBits(i1);
-            then(u1.longValue()).isEqualTo(Integer.toUnsignedLong(i1)).isEqualTo(i1 & 0x00000000FFFFFFFFL);
+            then(u1.longValue()).isEqualTo(Integer.toUnsignedLong(i1))
+                    .isEqualTo(i1 & 0x00000000FFFFFFFFL);
 
             var u2 = UnsignedInteger.fromIntBits(i2);
             then(u2.longValue()).isEqualTo(i2 & 0x00000000FFFFFFFFL);

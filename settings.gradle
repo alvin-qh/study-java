@@ -60,9 +60,10 @@ include(
 
 include(
   ":guava",
+  ":guava:base",
+  ":guava:primitives",
   ":guava:cache",
   ":guava:collect",
-  ":guava:common",
   ":guava:eventbus",
   ":guava:future",
   ":guava:graphs",
