@@ -39,7 +39,8 @@ public class UserRepository {
      * 插入 {@link User} 对象
      *
      * <p>
-     * 该方法不会向消息总线发送消息, 因为缓存在未命中后, {@link LoadingCache} 对象会通过内部的加载方法读取数据源
+     * 该方法不会向消息总线发送消息, 因为缓存在未命中后, {@link LoadingCache}
+     * 对象会通过内部的加载方法读取数据源
      * </p>
      *
      * @param user {@link User} 对象
@@ -57,7 +58,8 @@ public class UserRepository {
      * 更新 {@link User} 对象
      *
      * <p>
-     * 该方法会在更新完实体后, 向消息总线发送 {@link UserUpdateEvent} 事件, 以更新缓存
+     * 该方法会在更新完实体后, 向消息总线发送 {@link UserUpdateEvent} 事件,
+     * 以更新缓存
      * </p>
      *
      * @param user {@link User} 对象
@@ -78,7 +80,8 @@ public class UserRepository {
      * 删除 {@link User} 对象
      *
      * <p>
-     * 该方法会在更新完实体后, 向消息总线发送 {@link UserDeleteEvent} 事件, 以删除缓存
+     * 该方法会在更新完实体后, 向消息总线发送 {@link UserDeleteEvent} 事件,
+     * 以删除缓存
      * </p>
      *
      * @param userId {@link User} 实体的 {@code id} 属性值
@@ -101,6 +104,7 @@ public class UserRepository {
         return userStorage.values()
                 .stream()
                 .map(User::id)
-                .collect(BloomFilter.toBloomFilter((id, into) -> into.putLong(id), expectedInsertions, 0.001));
+                .collect(BloomFilter.toBloomFilter(
+                    (id, into) -> into.putLong(id), expectedInsertions, 0.001));
     }
 }
