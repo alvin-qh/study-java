@@ -23,8 +23,10 @@ public final class EventBusManager implements Closeable {
 
     // 当前类型的单例对象
     private static final EventBusManager INSTANCE = new EventBusManager();
+
     // 存储 EventBus 对象的 Map 对象
     private final Map<String, EventBus> eventBusMap = new ConcurrentHashMap<>();
+
     // 异步线程执行器
     private ExecutorService executorService = null;
 
@@ -67,10 +69,12 @@ public final class EventBusManager implements Closeable {
     }
 
     /**
-     * 通过一个名称标识注册一个 {@link EventBus} 对象, 并为事件处理设定异常处理对象
+     * 通过一个名称标识注册一个 {@link EventBus} 对象,
+     * 并为事件处理设定异常处理对象
      *
      * <p>
-     * {@link SubscriberExceptionHandler#handleException(Throwable, com.google.common.eventbus.SubscriberExceptionContext)
+     * {@link SubscriberExceptionHandler#handleException(Throwable,
+     * com.google.common.eventbus.SubscriberExceptionContext)
      * SubscriberExceptionHandler.handleException(Throwable, SubscriberExceptionContext)}
      * 方法会对对事件处理过程中产生的异常进行集中处理
      * </p>
@@ -93,10 +97,12 @@ public final class EventBusManager implements Closeable {
     }
 
     /**
-     * 通过一个名称标识注册一个异步 {@link EventBus} 对象, 并为事件处理设定异常处理对象
+     * 通过一个名称标识注册一个异步 {@link EventBus} 对象,
+     * 并为事件处理设定异常处理对象
      *
      * <p>
-     * {@link SubscriberExceptionHandler#handleException(Throwable, com.google.common.eventbus.SubscriberExceptionContext)
+     * {@link SubscriberExceptionHandler#handleException(Throwable,
+     * com.google.common.eventbus.SubscriberExceptionContext)
      * SubscriberExceptionHandler.handleException(Throwable, SubscriberExceptionContext)}
      * 方法会对对事件处理过程中产生的异常进行集中处理
      * </p>
@@ -131,6 +137,12 @@ public final class EventBusManager implements Closeable {
         return executorService;
     }
 
+    /**
+     * 获取消息总线 {@link EventBus} 对象
+     *
+     * @param name 消息总线名称
+     * @return {@link EventBus} 类型对象
+     */
     public EventBus getBus(String name) {
         return eventBusMap.computeIfAbsent(name, n -> {
             throw new IllegalArgumentException(String.format("Event bus \"%s\" was not exist", n));
@@ -141,13 +153,14 @@ public final class EventBusManager implements Closeable {
      * 释放被注册的 {@link EventBus} 对象
      *
      * <p>
-     * 该方法只提供测试使用, 在生产代码中, 不应该释放已经注册过的 {@link EventBus} 对象, 而应该使用
-     * {@link EventBus#unregister(Object)} 方法来释放一个订阅
+     * 该方法只提供测试使用, 在生产代码中, 不应该释放已经注册过的 {@link EventBus} 对象,
+     * 而应该使用 {@link EventBus#unregister(Object)} 方法来释放一个订阅
      * </p>
      *
      * <p>
-     * 本方法只是从 {@code Map} 中删除了 {@link EventBus} 对象, 但如果该 {@link EventBus} 发生的订阅未被解除, 则这个
-     * {@link EventBus} 对象无法被垃圾回收, 会导致内存泄漏
+     * 本方法只是从 {@code Map} 中删除了 {@link EventBus} 对象, 但如果该
+     * {@link EventBus} 发生的订阅未被解除, 则这个 {@link EventBus}
+     * 对象无法被垃圾回收, 会导致内存泄漏
      * </p>
      *
      * @param name 要释放的 {@link EventBus} 对象的注册名
@@ -159,7 +172,7 @@ public final class EventBusManager implements Closeable {
     }
 
     /**
-     * 关闭 EventBus 管理器
+     * 关闭 {@link EventBus} 实例表示的消息总线
      */
     @Override
     public void close() {

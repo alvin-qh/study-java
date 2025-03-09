@@ -6,12 +6,15 @@ import com.google.common.eventbus.EventBus;
  * {@link Handler} 接口的基本实现, 为当前对象增加事件订阅
  *
  * <p>
- * {@link EventBus#register(Object)} 方法将一个对象注册为事件监听对象, 当一个事件被发布时, 事件监听对象中标记了
- * {@link com.google.common.eventbus.Subscribe @Subscribe} 注解的方法将接收到对应类型的事件对象进行处理
+ * {@link EventBus#register(Object)} 方法将一个对象注册为事件监听对象,
+ * 当一个事件被发布时, 事件监听对象中标记了
+ * {@link com.google.common.eventbus.Subscribe @Subscribe}
+ * 注解的方法将接收到对应类型的事件对象进行处理
  * </p>
  *
  * <p>
- * 当前类型用于将通过自身产生的对象注册到指定的 {@link EventBus} 对象中, 参见 {@link #AbstractHandler()} 构造器方法
+ * 当前类型用于将通过自身产生的对象注册到指定的 {@link EventBus} 对象中,
+ * 参见 {@link #AbstractHandler()} 构造器方法
  * </p>
  */
 public abstract class AbstractHandler implements Handler {

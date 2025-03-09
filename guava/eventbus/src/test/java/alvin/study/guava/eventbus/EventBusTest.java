@@ -6,12 +6,10 @@ import static org.awaitility.Awaitility.await;
 
 import java.util.concurrent.TimeUnit;
 
+import com.google.common.collect.Lists;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-
-import com.google.common.collect.Lists;
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.SubscriberExceptionHandler;
 
 import alvin.study.guava.eventbus.event.Event.Action;
 import alvin.study.guava.eventbus.event.UserEvent;
@@ -20,11 +18,13 @@ import alvin.study.guava.eventbus.model.User;
 import alvin.study.guava.eventbus.repository.UserRepository;
 
 /**
- * 测试通过 {@link com.google.common.eventbus.EventBus EventBus} 通过观察者模式进行事件处理
+ * 测试通过 {@link com.google.common.eventbus.EventBus EventBus}
+ * 通过观察者模式进行事件处理
  */
 class EventBusTest {
     /**
-     * 在每次测试后执行, 释放之前产生的 {@link com.google.common.eventbus.EventBus EventBus} 对象
+     * 在每次测试后执行, 释放之前产生的 {@link com.google.common.eventbus.EventBus
+     * EventBus} 对象
      */
     @AfterEach
     void afterEach() {
@@ -40,7 +40,8 @@ class EventBusTest {
      * </p>
      *
      * <p>
-     * 事件订阅在 {@link UserHandler} 类对象中进行, 由 {@link UserHandler#onUserCreated(UserEvent)} 方法处理事件
+     * 事件订阅在 {@link UserHandler} 类对象中进行, 由
+     * {@link UserHandler#onUserCreated(UserEvent)} 方法处理事件
      * </p>
      *
      * <p>
@@ -54,6 +55,7 @@ class EventBusTest {
 
         // 实例化事件发送方对象
         var repository = new UserRepository();
+
         // 实例化事件订阅方对象
         var handler = new UserHandler(false);
 
@@ -63,6 +65,7 @@ class EventBusTest {
 
         // 确认 UserRepository.insertUser 方法执行成功
         then(repository.getUserMap()).containsExactly(entry(user.getId(), user));
+
         // 确认 UserHandler.onUserCreated 方法执行成功
         then(handler.getUserMap()).containsExactly(entry(user.getId(), user));
 
@@ -78,8 +81,9 @@ class EventBusTest {
      * </p>
      *
      * <p>
-     * 事件订阅在 {@link UserHandler} 类对象中进行, 由 {@link UserHandler#onUserCreated(UserEvent)} 方法处理事件, 为体现异步特点,
-     * 通过 {@code UserHandler(true)} 方式构造对象
+     * 事件订阅在 {@link UserHandler} 类对象中进行, 由
+     * {@link UserHandler#onUserCreated(UserEvent)} 方法处理事件,
+     * 为体现异步特点, 通过 {@code UserHandler(true)} 方式构造对象
      * </p>
      *
      * <p>
@@ -93,6 +97,7 @@ class EventBusTest {
 
         // 实例化事件发送方对象
         var repository = new UserRepository();
+
         // 实例化事件订阅方对象
         var handler = new UserHandler(true);
 
@@ -115,13 +120,18 @@ class EventBusTest {
      * 测试事件处理过程中的异常处理
      *
      * <p>
-     * {@link EventBus} 在处理订阅时, 会捕获事件处理方法抛出的所有异常, 并通过内部的一个异常处理对象对其进行处理 (注意处理方法为记录日志),
-     * 并不会把异常继续传递, 也不会导致事件发送方因为异常导致的连锁失败
+     * {@link com.google.common.eventbus.EventBus EventBus} 在处理订阅时,
+     * 会捕获事件处理方法抛出的所有异常, 并通过内部的一个异常处理对象对其进行处理
+     * (注意处理方法为记录日志), 并不会把异常继续传递,
+     * 也不会导致事件发送方因为异常导致的连锁失败
      * </p>
      *
      * <p>
-     * 如果希望进行更为复杂的异常处理, 可以在创建 {@link EventBus} 对象时, 设置自定义的异常处理对象, 为一个
-     * {@link SubscriberExceptionHandler} 类型对象
+     * 如果希望进行更为复杂的异常处理, 可以在创建
+     * {@link com.google.common.eventbus.EventBus EventBus} 对象时,
+     * 设置自定义的异常处理对象, 为一个
+     * {@link com.google.common.eventbus.SubscriberExceptionHandler
+     * SubscriberExceptionHandler} 类型对象
      * </p>
      */
     @Test

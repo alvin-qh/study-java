@@ -4,18 +4,19 @@ package alvin.study.guava.eventbus.event;
  * 事件接口, 表示发送到事件总线的事件对象类型
  *
  * <p>
- * 通过该接口, 给事件的发布和订阅提供一个标准, 而不是令任意类型对象都可以进行发布订阅, 造成系统语义上的混乱
+ * 通过该接口, 给事件的发布和订阅提供一个标准, 而不是令任意类型对象都可以进行发布订阅,
+ * 造成系统语义上的混乱
  * </p>
  *
  * <p>
  * 在事件发布时, 应该发布该接口类型对象, 参考:
- * {@link alvin.study.eventbus.repository.UserRepository#insertUser(alvin.study.eventbus.model.User)
+ * {@link alvin.study.guava.eventbus.repository.UserRepository#insertUser(alvin.study.guava.eventbus.model.User)
  * UserRepository.insertUser(User)} 方法中的事件发布
  * </p>
  *
  * <p>
- * 在事件订阅时, 应该订阅该接口类型, 参考: {@link alvin.study.eventbus.handler.UserHandler#onUserCreated(UserEvent)
- * UserHandler#onUserCreated(UserEvent)} 方法
+ * 在事件订阅时, 应该订阅该接口类型, 参考: {@link alvin.study.guava.eventbus.handler.UserHandler#onUserCreated(UserEvent)
+ * UserHandler.onUserCreated(UserEvent)} 方法
  * </p>
  */
 public interface Event<T> {
@@ -24,7 +25,7 @@ public interface Event<T> {
      *
      * @return 载荷对象
      */
-     T payload();
+    T payload();
 
     /**
      * 获取事件的相关行为

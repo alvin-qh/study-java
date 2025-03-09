@@ -16,11 +16,13 @@ import alvin.study.guava.eventbus.model.User;
  * {@link User} 类型对象持久化类
  *
  * <p>
- * {@link EventBus#post(Object)} 方法用于发布一个事件, 被发布的事件根据类型会分配给该类型订阅方法, 对该事件进行处理
+ * {@link EventBus#post(Object)} 方法用于发布一个事件,
+ * 被发布的事件根据类型会分配给该类型订阅方法, 对该事件进行处理
  * </p>
  *
  * <p>
- * 在本例中, 发布的事件对象应该为一个实现 {@link alvin.study.eventbus.event.Event Event} 接口类型的对象
+ * 在本例中, 发布的事件对象应该为一个实现
+ * {@link alvin.study.eventbus.event.Event Event} 接口类型的对象
  * </p>
  */
 public class UserRepository {
