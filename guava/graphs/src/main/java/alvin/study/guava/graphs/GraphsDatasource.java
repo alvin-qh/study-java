@@ -45,28 +45,37 @@ public class GraphsDatasource<N, E> {
      * 构建图对象
      *
      * <p>
-     * 图是由一组"节点"两两连接组成的数据结构, 如果两个节点相连接, 则表示这两个节点间存在一条"边", 根据边是否具有指向性, 图又分为"有向图"和
-     * "无向图", 所以图可以由如下二元组集合表示 {@code [(节点1, 节点2), (节点2, 节点3), ..., (节点 n-1, 节点 n)]}
+     * 图是由一组"节点"两两连接组成的数据结构, 如果两个节点相连接,
+     * 则表示这两个节点间存在一条"边", 根据边是否具有指向性,
+     * 图又分为 "有向图" 和 "无向图", 所以图可以由如下二元组集合表示
+     * {@code [(节点1, 节点2), (节点2, 节点3), ..., (节点 n-1, 节点 n)]}
      * </p>
      *
      * <p>
-     * 本方法通过 {@code directed} 参数是否为 {@code true} 指定创建"有向图"或"无向图", 其中:
+     * 本方法通过 {@code directed} 参数是否为 {@code true}
+     * 指定创建 "有向图" 或 "无向图", 其中:
      * <ul>
      * <li>
-     * 有向图的边由 {@code EndpointPair.Ordered} 类型对象表示, 在该类型中, {@code A → B} 和 {@code B → A} 被认为不相等
+     * 有向图的边由 {@code EndpointPair.Ordered} 类型对象表示,
+     * 在该类型中, {@code A → B} 和 {@code B → A} 被认为不相等
      * </li>
      * <li>
-     * 无向图的边由 {@code EndpointPair.Unordered} 类型对象表示, 在该类型中, {@code A → B} 和 {@code B → A} 被认为是相等的
+     * 无向图的边由 {@code EndpointPair.Unordered} 类型对象表示,
+     * 在该类型中, {@code A → B} 和 {@code B → A} 被认为是相等的
      * </li>
      * </ul>
      * </p>
      *
-     * @param directed          {@code true} 表示要创建"有向图", 否则创建"无向图"
-     * @param nodeOrder         设置图中"节点"的迭代顺序, 即 {@link com.google.common.graph.Graph#nodes() Graph.nodes()}
-     *                          方法返回的集合元素顺序, 参见 {@link ElementOrder} 类型, 默认为 {@link ElementOrder#unordered()}
-     * @param incidentEdgeOrder 设置图中"边"迭代顺序, 即 {@link com.google.common.graph.Graph#edges() Graph.edges()}
-     *                          方法返回的集合元素顺序, 只能取值为 {@link ElementOrder#unordered()} (默认值) 以及
-     *                          {@link ElementOrder#stable()}
+     * @param directed          {@code true} 表示要创建"有向图",
+     *                          否则创建"无向图"
+     * @param nodeOrder         设置图中"节点"的迭代顺序,
+     *                          即 {@link com.google.common.graph.Graph#nodes() Graph.nodes()}
+     *                          方法返回的集合元素顺序, 参见 {@link ElementOrder} 类型,
+     *                          默认为 {@link ElementOrder#unordered()}
+     * @param incidentEdgeOrder 设置图中"边"迭代顺序, 即
+     *                          {@link com.google.common.graph.Graph#edges() Graph.edges()}
+     *                          方法返回的集合元素顺序, 只能取值为 {@link ElementOrder#unordered()}
+     *                          (默认值) 以及 {@link ElementOrder#stable()}
      * @param allowsSelfLoops   是否允许节点自环
      * @return {@link MutableGraph} 对象, 表示一个图对象 (包括"有向图"和"无向图")
      */
@@ -96,28 +105,35 @@ public class GraphsDatasource<N, E> {
      * 构建图对象
      *
      * <p>
-     * 图是由一组"节点"两两连接组成的数据结构, 如果两个节点相连接, 则表示这两个节点间存在一条"边", 根据边是否具有指向性, 图又分为"有向图"和
-     * "无向图", {@code [(节点1, 节点2), (节点2, 节点3), ..., (节点 n-1, 节点 n)]}
+     * 图是由一组"节点"两两连接组成的数据结构, 如果两个节点相连接, 则表示这两个节点间存在一条"边",
+     * 根据边是否具有指向性, 图又分为"有向图"和 "无向图",
+     * {@code [(节点1, 节点2), (节点2, 节点3), ..., (节点 n-1, 节点 n)]}
      * </p>
      *
      * <p>
-     * 本方法通过 {@code directed} 参数是否为 {@code true} 指定创建"有向图"或"无向图", 其中:
+     * 本方法通过 {@code directed} 参数是否为 {@code true} 指定创建"有向图"或"无向图",
+     * 其中:
      * <ul>
      * <li>
-     * 有向图的边由 {@code EndpointPair.Ordered} 类型对象表示, 在该类型中, {@code A → B} 和 {@code B → A} 被认为不相等
+     * 有向图的边由 {@code EndpointPair.Ordered} 类型对象表示, 在该类型中,
+     * {@code A → B} 和 {@code B → A} 被认为不相等
      * </li>
      * <li>
-     * 无向图的边由 {@code EndpointPair.Unordered} 类型对象表示, 在该类型中, {@code A → B} 和 {@code B → A} 被认为是相等的
+     * 无向图的边由 {@code EndpointPair.Unordered} 类型对象表示, 在该类型中,
+     * {@code A → B} 和 {@code B → A} 被认为是相等的
      * </li>
      * </ul>
      * </p>
      *
      * @param directed          {@code true} 表示要创建"有向图", 否则创建"无向图"
-     * @param nodeOrder         设置图中"节点"的迭代顺序, 即 {@link com.google.common.graph.Graph#nodes() Graph.nodes()}
-     *                          方法返回的集合元素顺序, 参见 {@link ElementOrder} 类型, 默认为 {@link ElementOrder#unordered()}
-     * @param incidentEdgeOrder 设置图中"边"迭代顺序, 即 {@link com.google.common.graph.Graph#edges() Graph.edges()}
-     *                          方法返回的集合元素顺序, 只能取值为 {@link ElementOrder#unordered()} (默认值) 以及
-     *                          {@link ElementOrder#stable()}
+     * @param nodeOrder         设置图中"节点"的迭代顺序, 即
+     *                          {@link com.google.common.graph.Graph#nodes() Graph.nodes()}
+     *                          方法返回的集合元素顺序, 参见 {@link ElementOrder} 类型,
+     *                          默认为 {@link ElementOrder#unordered()}
+     * @param incidentEdgeOrder 设置图中"边"迭代顺序, 即
+     *                          {@link com.google.common.graph.Graph#edges() Graph.edges()}
+     *                          方法返回的集合元素顺序, 只能取值为 {@link ElementOrder#unordered()}
+     *                          (默认值) 以及 {@link ElementOrder#stable()}
      * @return {@link MutableGraph} 对象, 表示一个图对象 (包括"有向图"和"无向图")
      */
     public MutableGraph<N> buildGraph(
@@ -131,16 +147,20 @@ public class GraphsDatasource<N, E> {
      * 创建具备"边权重值"的图对象
      *
      * <p>
-     * 为图的每一条"边"赋予"权重值", 权重值可以表示任何含意 (距离, 费用, 时间等等), 所以具备边权重值的图可以由如下三元组集合表示:
+     * 为图的每一条"边"赋予"权重值", 权重值可以表示任何含意 (距离, 费用, 时间等等),
+     * 所以具备边权重值的图可以由如下三元组集合表示:
      * {@code [(节点1, 节点2, 权重值), (节点2, 节点3, 权重值), ..., (节点 n-1, 节点 n, 权重值)]}
      * </p>
      *
      * @param directed          {@code true} 表示要创建"有向图", 否则创建"无向图"
-     * @param nodeOrder         设置图中"节点"的迭代顺序, 即 {@link com.google.common.graph.ValueGraph#nodes() ValueGraph.nodes()}
-     *                          方法返回的集合元素顺序, 参见 {@link ElementOrder} 类型, 默认为 {@link ElementOrder#unordered()}
-     * @param incidentEdgeOrder 设置图中"边"迭代顺序, 即 {@link com.google.common.graph.ValueGraph#edges() ValueGraph.edges()}
-     *                          方法返回的集合元素顺序, 只能取值为 {@link ElementOrder#unordered()} (默认值) 以及
-     *                          {@link ElementOrder#stable()}
+     * @param nodeOrder         设置图中"节点"的迭代顺序, 即
+     *                          {@link com.google.common.graph.ValueGraph#nodes() ValueGraph.nodes()}
+     *                          方法返回的集合元素顺序, 参见 {@link ElementOrder} 类型,
+     *                          默认为 {@link ElementOrder#unordered()}
+     * @param incidentEdgeOrder 设置图中"边"迭代顺序, 即
+     *                          {@link com.google.common.graph.ValueGraph#edges() ValueGraph.edges()}
+     *                          方法返回的集合元素顺序, 只能取值为 {@link ElementOrder#unordered()}
+     *                          (默认值) 以及 {@link ElementOrder#stable()}
      * @return {@link MutableValueGraph} 对象, 表示一个具有边权重的图对象 (包括"有向图"和"无向图")
      */
     public MutableValueGraph<N, E> buildValueGraph(
@@ -162,21 +182,27 @@ public class GraphsDatasource<N, E> {
      * 构建一个"网络"类型对象
      *
      * <p>
-     * 连通的两个节点可以具备多条边 (平行边), 每个边由一个对象值表示, 所以具备边权重值的图可以由如下三元组集合表示:
-     * {@code [(节点1, 节点2, 边1), (节点1, 节点2, 边2), (节点2, 节点3, 边3), ..., (节点 m, 节点 n, 边4)]}, 可以看到,
-     * 相同的两个节点可以对应不同的边
+     * 连通的两个节点可以具备多条边 (平行边), 每个边由一个对象值表示,
+     * 所以具备边权重值的图可以由如下三元组集合表示:
+     * {@code [(节点1, 节点2, 边1), (节点1, 节点2, 边2), (节点2, 节点3, 边3), ..., (节点 m, 节点 n, 边4)]},
+     * 可以看到, 相同的两个节点可以对应不同的边
      * </p>
      *
      * <p>
-     * 注意, {@code Network} 和 {@code ValueGraph} 的边表示形式非常不同, 前者的"边"由一个独立对象表示, 每两个节点间可以具备多个"边对象",
+     * 注意, {@code Network} 和 {@code ValueGraph} 的边表示形式非常不同,
+     * 前者的"边"由一个独立对象表示, 每两个节点间可以具备多个"边对象",
      * 后者的边是一个 {@link EndpointPair} 类型对象, 表示组成边的两个节点
      * </p>
      *
      * @param directed  {@code true} 表示要创建"有向图", 否则创建"无向图"
-     * @param nodeOrder 设置"节点"的迭代顺序, 即 {@link com.google.common.graph.Network#nodes() Network.nodes()}
-     *                  方法返回的集合元素顺序, 参见 {@link ElementOrder} 类型, 默认为 {@link ElementOrder#unordered()}
-     * @param edgeOrder 设置图对象中"边"迭代顺序, 即 {@link com.google.common.graph.Network#edges() Network.edges()}
-     *                  方法返回的集合元素顺序, 参见 {@link ElementOrder} 接口类型, 默认为 {@link ElementOrder#unordered()}
+     * @param nodeOrder 设置"节点"的迭代顺序, 即
+     *                  {@link com.google.common.graph.Network#nodes() Network.nodes()}
+     *                  方法返回的集合元素顺序, 参见 {@link ElementOrder} 类型,
+     *                  默认为 {@link ElementOrder#unordered()}
+     * @param edgeOrder 设置图对象中"边"迭代顺序, 即
+     *                  {@link com.google.common.graph.Network#edges() Network.edges()}
+     *                  方法返回的集合元素顺序, 参见 {@link ElementOrder} 接口类型,
+     *                  默认为 {@link ElementOrder#unordered()}
      * @return {@link MutableNetwork} 对象, 表示一个网络对象 (包括"有向网络"和"无向网络")
      */
     public MutableNetwork<N, E> buildNetwork(
@@ -202,13 +228,15 @@ public class GraphsDatasource<N, E> {
      * @return 原数据中的节点集合
      */
     public Set<N> nodes() {
-        return edges.stream().flatMap(e -> Stream.of(e.node1(), e.node2())).collect(Collectors.toSet());
+        return edges.stream().flatMap(
+            e -> Stream.of(e.node1(), e.node2())).collect(Collectors.toSet());
     }
 
     /**
      * 以"有方向"模式获取原数据中的"边"集合
      *
-     * @param inverse 反转"边"中的"原"和"目标"节点, 即 {@code nodeU} 和 {@code nodeV} 节点
+     * @param inverse 反转"边"中的"原"和"目标"节点,
+     *                即 {@code nodeU} 和 {@code nodeV} 节点
      * @return 原数据中的"边"集合
      */
     public List<EndpointPair<N>> orderedEdges(boolean inverse) {
@@ -220,7 +248,8 @@ public class GraphsDatasource<N, E> {
     /**
      * 以"无方向"模式获取原数据中的"边"集合
      *
-     * @param inverse 反转"边"中的"原"和"目标"节点, 即 {@code nodeU} 和 {@code nodeV} 节点
+     * @param inverse 反转"边"中的"原"和"目标"节点,
+     *                即 {@code nodeU} 和 {@code nodeV} 节点
      * @return 原数据中的"边"集合
      */
     public List<EndpointPair<N>> unOrderedEdges(boolean inverse) {
@@ -233,7 +262,8 @@ public class GraphsDatasource<N, E> {
      * 获取原数据中指定节点的"相邻节点"
      *
      * <p>
-     * 所谓原数据相邻节点, 即若"边"数组中, 如果有一个节点值和所给节点值相等, 则另一个节点值即为所给节点的"相邻节点"
+     * 所谓原数据相邻节点, 即若"边"数组中, 如果有一个节点值和所给节点值相等,
+     * 则另一个节点值即为所给节点的"相邻节点"
      * </p>
      *
      * @param node 指定节点值
@@ -258,7 +288,8 @@ public class GraphsDatasource<N, E> {
      * 获取原数据中指定节点的"前序相邻节点"
      *
      * <p>
-     * 所谓原数据相邻节点, 即若"边"数组中, 如果第二个节点值和所给节点值相等, 则第一个节点值即为所给节点的"前序相邻节点"
+     * 所谓原数据相邻节点, 即若"边"数组中, 如果第二个节点值和所给节点值相等,
+     * 则第一个节点值即为所给节点的"前序相邻节点"
      * </p>
      *
      * @param node 指定节点值
@@ -279,7 +310,8 @@ public class GraphsDatasource<N, E> {
      * 获取原数据中指定节点的"后续相邻节点"
      *
      * <p>
-     * 所谓原数据相邻节点, 即若"边"数组中, 如果第一个节点值和所给节点值相等, 则第二个节点值即为所给节点的"后续相邻节点"
+     * 所谓原数据相邻节点, 即若"边"数组中, 如果第一个节点值和所给节点值相等,
+     * 则第二个节点值即为所给节点的"后续相邻节点"
      * </p>
      *
      * @param node 指定节点值
@@ -304,13 +336,14 @@ public class GraphsDatasource<N, E> {
      * </p>
      *
      * <p>
-     * 对于构建无权重图 ({@link com.google.common.graph.Graph Graph}) 类型来说, 只有两个节点值有效, 边权重值的类型总是为
-     * {@link Void} 且其值为 {@code null}
+     * 对于构建无权重图 ({@link com.google.common.graph.Graph Graph}) 类型来说,
+     * 只有两个节点值有效, 边权重值的类型总是为 {@link Void} 且其值为 {@code null}
      * </p>
      *
      * <p>
-     * 对于构建有权重图 ({@link com.google.common.graph.ValueGraph ValueGraph}) 和网络
-     * ({@link com.google.common.graph.Network Network}) 来说, 需要同时包括两个节点值和边权重值
+     * 对于构建有权重图 ({@link com.google.common.graph.ValueGraph ValueGraph})
+     * 和网络 ({@link com.google.common.graph.Network Network}) 来说,
+     * 需要同时包括两个节点值和边权重值
      * </p>
      */
     public static class Edge<N, E> {

@@ -5,11 +5,11 @@ import static org.assertj.core.api.BDDAssertions.then;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
-
 import com.google.common.graph.ElementOrder;
 import com.google.common.graph.EndpointPair;
 import com.google.common.graph.Graphs;
+
+import org.junit.jupiter.api.Test;
 
 import alvin.study.guava.graphs.GraphsDatasource.Edge;
 
@@ -42,17 +42,20 @@ class TestGraphUtils {
      * 判断当前"图"对象是否包含"环"
      *
      * <p>
-     * 通过 {@link Graphs#hasCycle(com.google.common.graph.Graph) Graphs.hasCycle(Graph)} 方法可以判断一个图对象中是否包含"环"
+     * 通过 {@link Graphs#hasCycle(com.google.common.graph.Graph)
+     * Graphs.hasCycle(Graph)} 方法可以判断一个图对象中是否包含"环"
      * </p>
      *
      * <p>
-     * 所谓的"环", 即从图中的某个节点出发, 经过若干条"边"后, 仍能回到该节点, 所以这条路径可以无限循环下去, 也就是说该图中有一个环
+     * 所谓的 "环", 即从图中的某个节点出发, 经过若干条 "边" 后, 仍能回到该节点,
+     * 所以这条路径可以无限循环下去, 也就是说该图中有一个环
      * </p>
      *
      * <p>
-     * 特殊的, 如果图中的一条边, 起始节点和终止节点都是它自身, 也称为"自环", 这种情况默认是不允许的, 除非在构建图对象时, 通过
-     * {@link com.google.common.graph.GraphBuilder#allowsSelfLoops(boolean) GraphBuilder.allowsSelfLoops(true)}
-     * 方法允许图中可以发生此情况
+     * 特殊的, 如果图中的一条边, 起始节点和终止节点都是它自身, 也称为 "自环",
+     * 这种情况默认是不允许的, 除非在构建图对象时, 通过
+     * {@link com.google.common.graph.GraphBuilder#allowsSelfLoops(boolean)
+     * GraphBuilder.allowsSelfLoops(true)} 方法允许图中可以发生此情况
      * </p>
      *
      * <p>
@@ -60,14 +63,16 @@ class TestGraphUtils {
      * </p>
      *
      * <p>
-     * 在本例中, 原始数据中的 {@code 9 → 1} 这条边使得整个图具有一个"环", 即从节点 {@code 1} 开始可以回到自身. 删除 {@code 9 → 1}
-     * 这条边后, 整个图就不存在任何"环", 成为一个"有向无环图"
+     * 在本例中, 原始数据中的 {@code 9 → 1} 这条边使得整个图具有一个 "环",
+     * 即从节点 {@code 1} 开始可以回到自身. 删除 {@code 9 → 1}
+     * 这条边后, 整个图就不存在任何 "环", 成为一个 "有向无环图"
      * </p>
      */
     @Test
     void hasCycle_shouldCheckIfGraphHasCycle() {
         // 构建有向图, 且允许产生节点自环
-        var graph = datasource.buildGraph(true, ElementOrder.insertion(), ElementOrder.stable(), true);
+        var graph = datasource.buildGraph(
+            true, ElementOrder.insertion(), ElementOrder.stable(), true);
         // 确认图对象允许节点自环
         then(graph.allowsSelfLoops()).isTrue();
 
@@ -88,7 +93,8 @@ class TestGraphUtils {
      *
      * <p>
      * 通过 {@link Graphs#inducedSubgraph(com.google.common.graph.Graph, Iterable)
-     * Graphs.inducedSubgraph(Graph, Iterable)} 方法可以通过一个图中的某几个节点, 获取该图的一个子图
+     * Graphs.inducedSubgraph(Graph, Iterable)} 方法可以通过一个图中的某几个节点,
+     * 获取该图的一个子图
      * </p>
      *
      * <p>
@@ -98,7 +104,8 @@ class TestGraphUtils {
     @Test
     void inducedSubgraph_shouldGetSubgraphByGivenNodes() {
         // 构建一个有向图
-        var graph = datasource.buildGraph(true, ElementOrder.insertion(), ElementOrder.stable());
+        var graph = datasource.buildGraph(
+            true, ElementOrder.insertion(), ElementOrder.stable());
 
         // 获取指定节点的子图
         var subgraph = Graphs.inducedSubgraph(graph, List.of(2, 3, 4, 6, 8));
@@ -128,23 +135,26 @@ class TestGraphUtils {
      * </p>
      *
      * <p>
-     * 所谓可到达节点, 即在图中, 无论经过多少条边, 可以最终连通 {@code A} 和 {@code B} 这两个点, 即表示 {@code A} 节点可以到达
+     * 所谓可到达节点, 即在图中, 无论经过多少条边, 可以最终连通 {@code A} 和 {@code B}
+     * 这两个点, 即表示 {@code A} 节点可以到达
      * {@code B} 节点
      * </p>
      *
      * <p>
-     * {@code reachableNodes} 方法是通过 BFS (广度优先) 算法寻找连通节点的, 所以结果的顺序是按照与所给节点的距离排序的,
-     * 且"所给节点本身"总是排在结果的第一个 (自己总是可以到达自己)
+     * {@code reachableNodes} 方法是通过 BFS (广度优先) 算法寻找连通节点的,
+     * 所以结果的顺序是按照与所给节点的距离排序的, 且 "所给节点本身" 总是排在结果的第一个
+     * (自己总是可以到达自己)
      * </p>
      *
      * <p>
-     * 因为本例是一个"全连通图", 所以一个节点可以到达任意其它节点
+     * 因为本例是一个 "全连通图", 所以一个节点可以到达任意其它节点
      * </p>
      */
     @Test
     void reachableNodes_shouldFindReachableNodesOfGivenNode() {
         // 构建一个有向图
-        var graph = datasource.buildGraph(true, ElementOrder.insertion(), ElementOrder.stable());
+        var graph = datasource.buildGraph(
+            true, ElementOrder.insertion(), ElementOrder.stable());
 
         // 查询给定节点可以到达的所有其它节点
         var nodes = Graphs.reachableNodes(graph, 6);
@@ -153,15 +163,16 @@ class TestGraphUtils {
     }
 
     /**
-     * 获取图的"传递闭包"
+     * 获取图的 "传递闭包"
      *
      * <p>
-     * 通过 {@link Graphs#transitiveClosure(com.google.common.graph.Graph) Graphs.transitiveClosure(Graph)}
-     * 方法可以获取指定图的传递闭包结果
+     * 通过 {@link Graphs#transitiveClosure(com.google.common.graph.Graph)
+     * Graphs.transitiveClosure(Graph)} 方法可以获取指定图的传递闭包结果
      * </p>
      *
      * <p>
-     * 在一个图中, 如果两个点最终可以连通, 则建立一条边直接将这两点连通, 最终结果形成一个包含额外边的新图, 称为原图的"传递闭包"
+     * 在一个图中, 如果两个点最终可以连通, 则建立一条边直接将这两点连通,
+     * 最终结果形成一个包含额外边的新图, 称为原图的 "传递闭包"
      * </p>
      */
     @Test
@@ -256,8 +267,8 @@ class TestGraphUtils {
      * 获取有向图的"反转图"
      *
      * <p>
-     * 通过 {@link Graphs#transpose(com.google.common.graph.Graph) Graphs.transpose(Graph)}
-     * 方法可以获取指定图的反转图结果
+     * 通过 {@link Graphs#transpose(com.google.common.graph.Graph)
+     * Graphs.transpose(Graph)} 方法可以获取指定图的反转图结果
      * </p>
      *
      * <p>
