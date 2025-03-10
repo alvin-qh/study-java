@@ -1,4 +1,4 @@
-package alvin.study.guava.future;
+package alvin.study.guava.concurrent;
 
 import static org.assertj.core.api.Assertions.tuple;
 import static org.assertj.core.api.BDDAssertions.then;
@@ -34,7 +34,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import alvin.study.guava.future.model.User;
+import alvin.study.guava.concurrent.model.User;
 
 /**
  * 测试 Guava 中的多任务组件库
@@ -78,8 +78,9 @@ class FuturesTest {
      * <ul>
      * <li>
      * 参数 1 是通过
-     * {@link com.google.common.util.concurrent.ListeningExecutorService#submit(java.util.concurrent.Callable)
-     * ListeningExecutorService.submit(Callable)} 方法 (有返回值) 或
+     * {@link com.google.common.util.concurrent.ListeningExecutorService#submit(
+     * java.util.concurrent.Callable) ListeningExecutorService.submit(Callable)}
+     * 方法 (有返回值) 或
      * {@link com.google.common.util.concurrent.ListeningExecutorService#submit(Runnable)
      * ListeningExecutorService.submit(Runnable)} 方法 (无返回值) 获得, 为一个
      * {@link ListenableFuture} 类型对象

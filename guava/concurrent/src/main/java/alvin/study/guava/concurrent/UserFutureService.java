@@ -1,4 +1,4 @@
-package alvin.study.guava.future;
+package alvin.study.guava.concurrent;
 
 import java.util.Map;
 import java.util.Optional;
@@ -12,7 +12,7 @@ import com.google.common.util.concurrent.MoreExecutors;
 
 import lombok.SneakyThrows;
 
-import alvin.study.guava.future.model.User;
+import alvin.study.guava.concurrent.model.User;
 
 /**
  * 用于演示异步任务的用户相关服务类

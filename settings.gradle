@@ -65,7 +65,7 @@ include(
   ":guava:cache",
   ":guava:collect",
   ":guava:eventbus",
-  ":guava:future",
+  ":guava:concurrent",
   ":guava:graphs",
   ":guava:hashing",
   ":guava:io",

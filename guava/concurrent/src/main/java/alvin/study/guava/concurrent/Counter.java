@@ -1,4 +1,4 @@
-package alvin.study.guava.future;
+package alvin.study.guava.concurrent;
 
 import lombok.Getter;
 

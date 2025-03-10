@@ -1,4 +1,4 @@
-package alvin.study.guava.future;
+package alvin.study.guava.concurrent;
 
 /**
  * 测试异步任务的斐波那契计算类

@@ -158,7 +158,8 @@ class TestValueGraph {
             // 确认有向图中各个节点的后继节点
             for (var node : graph.nodes()) {
                 var successors = graph.successors(node);
-                then(successors).containsExactlyInAnyOrderElementsOf(datasource.postNeighbors(node));
+                then(successors)
+                        .containsExactlyInAnyOrderElementsOf(datasource.postNeighbors(node));
             }
         }
 
@@ -177,7 +178,8 @@ class TestValueGraph {
         @Test
         void adjacentNodes_shouldGetAdjacentNodesOfDirectedValueGraph() {
             // 构建有向图
-            var graph = datasource.buildValueGraph(true, ElementOrder.insertion(), ElementOrder.stable());
+            var graph = datasource.buildValueGraph(
+                true, ElementOrder.insertion(), ElementOrder.stable());
 
             // 获取有向图中各个节点的邻接节点, 确认由其前趋和后继节点组成
             for (var node : graph.nodes()) {
@@ -324,12 +326,15 @@ class TestValueGraph {
                 false, ElementOrder.insertion(), ElementOrder.stable());
 
             // 确认无向图包含的节点
-            then(graph.nodes()).containsExactlyInAnyOrderElementsOf(datasource.nodes());
+            then(graph.nodes())
+                    .containsExactlyInAnyOrderElementsOf(datasource.nodes());
 
             // 确认无向图包含的边, 无向图的边由 EndpointPair.Unordered 类型对象表示
             // 对于无向图来说, 边的节点顺序对调之后, 仍和之前相等
-            then(graph.edges()).containsExactlyInAnyOrderElementsOf(datasource.unOrderedEdges(false));
-            then(graph.edges()).containsExactlyInAnyOrderElementsOf(datasource.unOrderedEdges(true));
+            then(graph.edges())
+                    .containsExactlyInAnyOrderElementsOf(datasource.unOrderedEdges(false));
+            then(graph.edges())
+                    .containsExactlyInAnyOrderElementsOf(datasource.unOrderedEdges(true));
         }
 
         /**
@@ -349,7 +354,8 @@ class TestValueGraph {
         @Test
         void hasEdgeConnecting_shouldCheckIfHasEdgeBetweenTwoNodesInUndirectedValueGraph() {
             // 构建无向图
-            var graph = datasource.buildValueGraph(false, ElementOrder.insertion(), ElementOrder.stable());
+            var graph = datasource.buildValueGraph(
+                false, ElementOrder.insertion(), ElementOrder.stable());
 
             // 确认具有边的两个节点是连通的
             var connected = graph.hasEdgeConnecting(2, 5);
@@ -386,7 +392,8 @@ class TestValueGraph {
             // 确认有向图中各个节点的前趋节点
             for (var node : graph.nodes()) {
                 var predecessors = graph.predecessors(node);
-                then(predecessors).containsExactlyInAnyOrderElementsOf(datasource.neighbors(node));
+                then(predecessors)
+                        .containsExactlyInAnyOrderElementsOf(datasource.neighbors(node));
             }
         }
 
@@ -406,12 +413,14 @@ class TestValueGraph {
         @Test
         void successors_shouldGetSuccessorsNodesOfUndirectedValueGraph() {
             // 构建无向图
-            var graph = datasource.buildValueGraph(false, ElementOrder.insertion(), ElementOrder.stable());
+            var graph = datasource.buildValueGraph(
+                false, ElementOrder.insertion(), ElementOrder.stable());
 
             // 确认有向图中各个节点的前趋节点
             for (var node : graph.nodes()) {
                 var predecessors = graph.successors(node);
-                then(predecessors).containsExactlyInAnyOrderElementsOf(datasource.neighbors(node));
+                then(predecessors)
+                        .containsExactlyInAnyOrderElementsOf(datasource.neighbors(node));
             }
         }
 
@@ -436,7 +445,8 @@ class TestValueGraph {
             // 确认有向图中各个节点的前趋节点
             for (var node : graph.nodes()) {
                 var predecessors = graph.adjacentNodes(node);
-                then(predecessors).containsExactlyInAnyOrderElementsOf(datasource.neighbors(node));
+                then(predecessors)
+                        .containsExactlyInAnyOrderElementsOf(datasource.neighbors(node));
             }
         }
 
