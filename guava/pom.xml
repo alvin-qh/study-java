@@ -30,12 +30,16 @@
     <!-- 对 Guava 库的 `com.google.common.cache` 包功能进行演示 -->
     <module>cache</module>
     <module>io</module>
+    <!-- 对 Guava 库的 `com.google.common.collect` 包功能进行演示 -->
     <module>collect</module>
+    <!-- 对 Guava 库的 `com.google.common.reflect` 包功能进行演示 -->
     <module>reflect</module>
     <module>eventbus</module>
+    <!-- 对 Guava 库的 `com.google.common.util.concurrent` 包功能进行演示 -->
     <module>concurrent</module>
     <!-- 对 Guava 库的 `com.google.common.graph` 包功能进行演示 -->
     <module>graphs</module>
+    <!-- 对 Guava 库的 `com.google.common.hash` 包功能进行演示 -->
     <module>hashing</module>
   </modules>
 
