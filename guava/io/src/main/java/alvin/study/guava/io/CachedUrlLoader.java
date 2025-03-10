@@ -32,8 +32,8 @@ import lombok.Getter;
  * 演示通过 {@link ByteSource} 从网络或者缓存文件中读取数据
  *
  * <p>
- * 本例中利用了 {@link ByteSource} 的抽象性, 即将文件资源或者网络资源统一包装为 {@link ByteSource} 类型对象,
- * 对于下游读取数据的操作来说,
+ * 本例中利用了 {@link ByteSource} 的抽象性, 即将文件资源或者网络资源统一包装为
+ * {@link ByteSource} 类型对象, 对于下游读取数据的操作来说,
  * 就无需区分到底使用了何种数据源来读取数据
  * </p>
  *
@@ -43,8 +43,10 @@ import lombok.Getter;
  */
 public class CachedUrlLoader implements AutoCloseable {
     // 定义一个当前用户可读写的文件权限集
-    private static final FileAttribute<Set<PosixFilePermission>> FILE_ATTR_RW = PosixFilePermissions
-            .asFileAttribute(PosixFilePermissions.fromString("rw-------"));
+    private static final FileAttribute<Set<PosixFilePermission>> FILE_ATTR_RW
+        = PosixFilePermissions
+                .asFileAttribute(PosixFilePermissions.fromString("rw-------"));
+
     // 定义更新缓存使用的线程池
     private final Executor executor = new ThreadPoolExecutor(
         1,
@@ -53,6 +55,7 @@ public class CachedUrlLoader implements AutoCloseable {
         TimeUnit.SECONDS,
         new ArrayBlockingQueue<>(100),
         new ThreadPoolExecutor.AbortPolicy());
+
     // 定义保存缓存对象的 Map
     private Map<URI, CacheInfo> cacheMap = new ConcurrentHashMap<>();
 
@@ -95,8 +98,14 @@ public class CachedUrlLoader implements AutoCloseable {
             if (cache == null || cache.isExpired(30, TimeUnit.MINUTES)) {
                 try {
                     // 创建缓存文件并将缓存数据写入文件
-                    var cacheFile = Files.createTempFile("guava-url-cache", ".tmp", FILE_ATTR_RW);
-                    Files.write(cacheFile, data, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
+                    var cacheFile = Files.createTempFile(
+                        "guava-url-cache", ".tmp", FILE_ATTR_RW);
+
+                    Files.write(
+                        cacheFile,
+                        data,
+                        StandardOpenOption.WRITE,
+                        StandardOpenOption.TRUNCATE_EXISTING);
 
                     // 更新缓存对象
                     cacheMap.put(uri, new CacheInfo(cacheFile));

@@ -10,24 +10,25 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.attribute.PosixFilePermissions;
 
-import org.junit.jupiter.api.Test;
-
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Files;
 import com.google.common.io.MoreFiles;
 import com.google.common.io.RecursiveDeleteOption;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * 测试文件工具类
  *
  * <p>
- * Guava 提供了 {@link Files} 类, 该类封装了针对于文件对象 ({@link File} 类型对象) 操作的一系列方法
+ * Guava 提供了 {@link Files} 类, 该类封装了针对于文件对象 ({@link File} 类型对象)
+ * 操作的一系列方法
  * </p>
  *
  * <p>
- * Guava 提供了 {@link MoreFiles} 类, 该类封装了针对于路径对象 ({@link java.nio.file.Path Path}
- * 类型对象) 操作的一系列方法
+ * Guava 提供了 {@link MoreFiles} 类, 该类封装了针对于路径对象
+ * ({@link java.nio.file.Path Path} 类型对象) 操作的一系列方法
  * </p>
  *
  * <p>
@@ -46,7 +47,8 @@ class FileUtilsTest {
      *
      * <p>
      * 通过
-     * {@link MoreFiles#deleteRecursively(java.nio.file.Path, com.google.common.io.RecursiveDeleteOption...)
+     * {@link MoreFiles#deleteRecursively(java.nio.file.Path,
+     * com.google.common.io.RecursiveDeleteOption...)
      * MoreFiles.deleteRecursively(Path, RecursiveDeleteOption...)}
      * 方法可以"递归地"删除指定目录下的所有文件和子目录
      * </p>
@@ -75,9 +77,8 @@ class FileUtilsTest {
      * </p>
      *
      * <p>
-     * 例如一个文件 {@code /aa/bb/cc/d.txt}, 则文件所在的目录为 {@code /aa/bb/cc}, 如果该目录不存在, 则
-     * {@code createParentDirs}
-     * 方法可以创建该目录 (包括其上级目录)
+     * 例如一个文件 {@code /aa/bb/cc/d.txt}, 则文件所在的目录为 {@code /aa/bb/cc},
+     * 如果该目录不存在, 则 {@code createParentDirs} 方法可以创建该目录 (包括其上级目录)
      * </p>
      */
     @Test
@@ -108,13 +109,16 @@ class FileUtilsTest {
      *
      * <p>
      * 通过
-     * {@link MoreFiles#createParentDirectories(Path, java.nio.file.attribute.FileAttribute...)
-     * MoreFiles.createParentDirectories(Path, FileAttribute...)} 方法用于创建一个文件所在的路径
+     * {@link MoreFiles#createParentDirectories(Path,
+     * java.nio.file.attribute.FileAttribute...)
+     * MoreFiles.createParentDirectories(Path, FileAttribute...)}
+     * 方法用于创建一个文件所在的路径
      * </p>
      *
      * <p>
-     * 例如一个文件 {@code /aa/bb/cc/d.txt}, 则文件所在的目录为 {@code /aa/bb/cc}, 如果该目录不存在, 则
-     * {@code createParentDirectories} 方法可以创建该目录 (包括其上级目录)
+     * 例如一个文件 {@code /aa/bb/cc/d.txt}, 则文件所在的目录为 {@code /aa/bb/cc},
+     * 如果该目录不存在, 则 {@code createParentDirectories} 方法可以创建该目录
+     * (包括其上级目录)
      * </p>
      */
     @Test
@@ -129,7 +133,8 @@ class FileUtilsTest {
         then(parentPath).doesNotExist();
 
         // 路径应该具备 rwx 三个权限属性
-        var attrs = PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rwx------"));
+        var attrs = PosixFilePermissions.asFileAttribute(
+            PosixFilePermissions.fromString("rwx------"));
         try {
             // 创建文件所在的目录
             MoreFiles.createParentDirectories(newFile, attrs);
@@ -149,8 +154,8 @@ class FileUtilsTest {
      * </p>
      *
      * <p>
-     * 通过 {@link Files#getNameWithoutExtension(String)} 方法用于获取一个文件名的主文件名,
-     * 即文件名中去掉了路径和扩展名部分
+     * 通过 {@link Files#getNameWithoutExtension(String)}
+     * 方法用于获取一个文件名的主文件名, 即文件名中去掉了路径和扩展名部分
      * </p>
      */
     @Test
@@ -170,13 +175,13 @@ class FileUtilsTest {
      * 获取指定文件的文件名和扩展名
      *
      * <p>
-     * 通过 {@link MoreFiles#getFileExtension(Path)} 方法用于获取一个 {@link Path} 对象所表示文件的扩展名
+     * 通过 {@link MoreFiles#getFileExtension(Path)} 方法用于获取一个 {@link Path}
+     * 对象所表示文件的扩展名
      * </p>
      *
      * <p>
-     * 通过 {@link MoreFiles#getNameWithoutExtension(Path)} 方法用于获取一个 {@link Path}
-     * 对象表示文件的主文件名,
-     * 即文件名中去掉了路径和扩展名部分
+     * 通过 {@link MoreFiles#getNameWithoutExtension(Path)} 方法用于获取一个
+     * {@link Path} 对象表示文件的主文件名, 即文件名中去掉了路径和扩展名部分
      * </p>
      */
     @Test
@@ -193,22 +198,21 @@ class FileUtilsTest {
     }
 
     /**
-     * 从 {@link File} 对象创建 {@link java.io.BufferedWriter BufferedWriter} 以及
-     * {@link java.io.BufferedReader
-     * BufferedReader} 对象
+     * 从 {@link File} 对象创建 {@link java.io.BufferedWriter BufferedWriter}
+     * 以及 {@link java.io.BufferedReader BufferedReader} 对象
      *
      * <p>
      * 通过 {@link Files#newWriter(File, java.nio.charset.Charset)
      * Files.newWriter(File, Charset)} 方法用于通过一个
-     * {@link File} 对象, 创建一个 {@link java.io.BufferedWriter BufferedWriter} 对象,
-     * 用于对文件进行写入
+     * {@link File} 对象, 创建一个 {@link java.io.BufferedWriter BufferedWriter}
+     * 对象, 用于对文件进行写入
      * </p>
      *
      * <p>
      * 通过 {@link Files#newReader(File, java.nio.charset.Charset)
      * Files.newReader(File, Charset)} 方法用于通过一个
-     * {@link File} 对象, 创建一个 {@link java.io.BufferedReader BufferedReader} 对象,
-     * 用于对文件进行读取
+     * {@link File} 对象, 创建一个 {@link java.io.BufferedReader BufferedReader}
+     * 对象, 用于对文件进行读取
      * </p>
      */
     @Test
@@ -259,13 +263,14 @@ class FileUtilsTest {
      * 创建内存映射文件
      *
      * <p>
-     * 通过 {@link Files#map(File, MapMode, long)} 方法可以用于创建内存映射文件, 返回一个
-     * {@link java.nio.MappedByteBuffer
-     * MappedByteBuffer} 对象, 表示一个和文件进行映射的缓冲区对象
+     * 通过 {@link Files#map(File, MapMode, long)} 方法可以用于创建内存映射文件,
+     * 返回一个 {@link java.nio.MappedByteBuffer MappedByteBuffer} 对象,
+     * 表示一个和文件进行映射的缓冲区对象
      * </p>
      *
      * <p>
-     * 所谓内存映射文件, 即将文件和内存地址进行对应, 通过底层 IO, 即可以通过内存读取方式读取文件内容
+     * 所谓内存映射文件, 即将文件和内存地址进行对应, 通过底层 IO,
+     * 即可以通过内存读取方式读取文件内容
      * </p>
      */
     @Test
@@ -305,8 +310,8 @@ class FileUtilsTest {
      * 通过 {@link File} 对象创建空文件
      *
      * <p>
-     * 通过 {@link Files#touch(File)} 方法用于新建一个空文件 (当文件不存在时), 类似于 linux 的 {@code touch}
-     * 命令
+     * 通过 {@link Files#touch(File)} 方法用于新建一个空文件 (当文件不存在时),
+     * 类似于 linux 的 {@code touch} 命令
      * </p>
      */
     @Test
@@ -329,8 +334,8 @@ class FileUtilsTest {
      * 通过 {@link Path} 对象创建空文件
      *
      * <p>
-     * 通过 {@link MoreFiles#touch(Path)} 方法用于新建一个空文件 (当文件不存在时), 类似于 linux 的
-     * {@code touch} 命令
+     * 通过 {@link MoreFiles#touch(Path)} 方法用于新建一个空文件 (当文件不存在时),
+     * 类似于 linux 的 {@code touch} 命令
      * </p>
      */
     @Test
@@ -366,16 +371,17 @@ class FileUtilsTest {
      * 对于当前路径 {@code "."}, 简化结果仍为 {@code "."}
      * </li>
      * <li>
-     * 对于路径前包含 {@code "./"} 部分的, 简化后会删除这部分, 例如 {@code "./t.txt"} => {@code "t.txt"}
+     * 对于路径前包含 {@code "./"} 部分的, 简化后会删除这部分, 例如
+     * {@code "./t.txt"} => {@code "t.txt"}
      * </li>
      * <li>
-     * 对于路径中包括 {@code "../"} 部分的, 简化后会进行展开, 例如 {@code "/aa/bb/../t.txt"} =>
+     * 对于路径中包括 {@code "../"} 部分的, 简化后会进行展开, 例如
+     * {@code "/aa/bb/../t.txt"} =>
      * {@code "/aa/t.txt"}
      * </li>
      * <li>
-     * 对于路径中包括多余 {@code "/"} 部分的, 简化后会被删除 (除了最开头的 {@code "/"} 字符), 例如
-     * {@code "//aa//bb/"} =>
-     * {@code "/aa/bb"}
+     * 对于路径中包括多余 {@code "/"} 部分的, 简化后会被删除 (除了最开头的
+     * {@code "/"} 字符), 例如 {@code "//aa//bb/"} => {@code "/aa/bb"}
      * </li>
      * </ul>
      * </p>
@@ -432,7 +438,8 @@ class FileUtilsTest {
      * </p>
      *
      * <p>
-     * 通过 {@link Files#toByteArray(File)} 方法可以文件内容全部读取, 返回包含文件内容的字节数组
+     * 通过 {@link Files#toByteArray(File)} 方法可以文件内容全部读取,
+     * 返回包含文件内容的字节数组
      * </p>
      */
     @Test
@@ -454,9 +461,8 @@ class FileUtilsTest {
      * 列举指定目录中的所有文件和子目录, 指定目录由 {@link Path} 类型对象表示
      *
      * <p>
-     * 通过 {@link MoreFiles#listFiles(Path)} 方法可以列举指定目录中的内容, 包括文件和子目录, 列举的结果为一个
-     * {@link Path}
-     * 类型对象集合
+     * 通过 {@link MoreFiles#listFiles(Path)} 方法可以列举指定目录中的内容,
+     * 包括文件和子目录, 列举的结果为一个 {@link Path} 类型对象集合
      * </p>
      *
      * <p>

@@ -7,9 +7,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-import org.junit.jupiter.api.Test;
-
 import com.google.common.io.Closer;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * 测试 Guava 的流关闭器
@@ -20,13 +20,11 @@ import com.google.common.io.Closer;
  * <ul>
  * <li>
  * 通过 {@link Closer#register(java.io.Closeable) Closer.register(Closeable)}
- * 方法注册所有相关的 {@code Closeable}
- * 接口对象
+ * 方法注册所有相关的 {@code Closeable} 接口对象
  * </li>
  * <li>
  * 当代码执行过程中出现异常, 需要通过 {@link Closer#rethrow(Throwable)
- * Closer.rethrow(Throwable)} 方法对异常进行抛出处理,
- * 抛出方式参见
+ * Closer.rethrow(Throwable)} 方法对异常进行抛出处理, 抛出方式参见
  * {@link com.google.common.base.Throwables#propagateIfPossible(Throwable, Class)
  * Throwables.propagateIfPossible(Throwable, Class)} 方法以及
  * {@code ThrowablesTest.propagateIfPossible_shouldThrowSpecifiedExceptionOrUncheckedException()}
@@ -37,7 +35,8 @@ import com.google.common.io.Closer;
  */
 class CloserTest {
     /**
-     * 演示通过 {@link Closer} 类型对 {@link java.io.Closeable Closeable} 接口对象进行统一关闭
+     * 演示通过 {@link Closer} 类型对 {@link java.io.Closeable Closeable}
+     * 接口对象进行统一关闭
      */
     @Test
     void closer_shouldCloseCloseableObject() throws IOException {

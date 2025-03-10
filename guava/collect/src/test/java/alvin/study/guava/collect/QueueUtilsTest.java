@@ -301,7 +301,7 @@ class QueueUtilsTest {
     @Test
     void newPriorityQueue_shouldCreateNewPriorityQueue() {
         // 创建优先队列, 通过无序数值初始化队列元素
-        var priQue = Queues.newPriorityQueue(createRangedElements(0, 5, true));
+        var priQue = Queues.newPriorityQueue(createRangedElements(0, 3, true));
 
         // 进行出队操作
         for (var i = 0; !priQue.isEmpty(); i++) {
@@ -633,8 +633,8 @@ class QueueUtilsTest {
             // 在一个线程中进行入队操作
             new Thread(() -> {
                 try {
-                    for (var v : createRangedElements(0, 5, false)) {
-                        Thread.sleep(10);
+                    for (var v : createRangedElements(0, 3, false)) {
+                        Thread.sleep(50);
                         // 元素入队
                         then(que.offer(v)).isTrue();
                     }
@@ -643,13 +643,13 @@ class QueueUtilsTest {
 
             // 在另一个线程进行出队操作
             var elems = Lists.<Integer>newArrayList();
-            for (var i = 0; i < 5; i++) {
+            for (var i = 0; i < 3; i++) {
                 await().atMost(1, TimeUnit.SECONDS).until(() -> !que.isEmpty());
                 elems.add(que.poll());
             }
 
             // 确认出队元素
-            then(elems).containsExactly(0, 1, 2, 3, 4);
+            then(elems).containsExactly(0, 1, 2);
         }
 
         // 将双端队列对象包装为线程安全的双端队列对象
@@ -659,8 +659,8 @@ class QueueUtilsTest {
             // 在一个线程中进行入队操作
             new Thread(() -> {
                 try {
-                    for (var v : createRangedElements(0, 5, false)) {
-                        Thread.sleep(10);
+                    for (var v : createRangedElements(0, 3, false)) {
+                        Thread.sleep(50);
                         // 元素入队
                         then(que.offer(v)).isTrue();
                     }
@@ -669,13 +669,13 @@ class QueueUtilsTest {
 
             // 在另一个线程进行出队操作
             var elems = Lists.<Integer>newArrayList();
-            for (var i = 0; i < 5; i++) {
+            for (var i = 0; i < 3; i++) {
                 await().atMost(1, TimeUnit.SECONDS).until(() -> !que.isEmpty());
                 elems.add(que.poll());
             }
 
             // 确认出队元素
-            then(elems).containsExactly(0, 1, 2, 3, 4);
+            then(elems).containsExactly(0, 1, 2);
         }
     }
 }

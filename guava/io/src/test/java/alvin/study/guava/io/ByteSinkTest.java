@@ -9,31 +9,32 @@ import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.PosixFilePermissions;
 
-import org.junit.jupiter.api.Test;
-
 import com.google.common.io.MoreFiles;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * 测试 {@link com.google.common.io.ByteSink ByteSink} 类型用于写入字节数据
  *
  * <p>
- * {@link com.google.common.io.ByteSink ByteSink} 类型相当于一个字节内容输出的抽象, 理论上,
- * 所有可以输出字节数据的目标都可以抽象为
- * {@code ByteSink} 类型对象
+ * {@link com.google.common.io.ByteSink ByteSink} 类型相当于一个字节内容输出的抽象,
+ * 理论上, 所有可以输出字节数据的目标都可以抽象为 {@code ByteSink} 类型对象
  * </p>
  *
  * <p>
- * Guava 默认提供了两种产生 {@link com.google.common.io.ByteSink ByteSink} 对象的方法, 分别为:
+ * Guava 默认提供了两种产生 {@link com.google.common.io.ByteSink ByteSink}
+ * 对象的方法, 分别为:
  * <ul>
  * <li>
- * {@link com.google.common.io.Files#asByteSink(java.io.File, com.google.common.io.FileWriteMode...)
- * Files.asByteSink(File, FileWriteMode...)} 方法, 用于通过一个 {@code File} 对象创建
- * {@code ByteSink} 对象
+ * {@link com.google.common.io.Files#asByteSink(java.io.File,
+ * com.google.common.io.FileWriteMode...)
+ * Files.asByteSink(File, FileWriteMode...)} 方法, 用于通过一个 {@code File}
+ * 对象创建 {@code ByteSink} 对象
  * </li>
  * <li>
  * {@link MoreFiles#asByteSink(java.nio.file.Path, java.nio.file.OpenOption...)
- * MoreFiles.asByteSink(Path, OpenOption...)} 方法, 用于通过一个 {@code Path} 对象创建
- * {@code ByteSink} 对象
+ * MoreFiles.asByteSink(Path, OpenOption...)} 方法, 用于通过一个 {@code Path}
+ * 对象创建 {@code ByteSink} 对象
  * </li>
  * </ul>
  * </p>
@@ -43,15 +44,17 @@ class ByteSinkTest {
      * 测试字节数据的写入
      *
      * <p>
-     * 通过 {@link com.google.common.io.ByteSink#write(byte[]) ByteSink.write(byte[])}
-     * 方法可以将字节数据通过指定的
-     * {@code ByteSink} 对象写入目标中
+     * 通过 {@link com.google.common.io.ByteSink#write(byte[])
+     * ByteSink.write(byte[])} 方法可以将字节数据通过指定的 {@code ByteSink}
+     * 对象写入目标中
      * </p>
      */
     @Test
     void write_shouldWriteByteArrayIntoByteSink() throws IOException {
         // 创建一个临时文件
-        var attrs = PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rw-------"));
+        var attrs = PosixFilePermissions.asFileAttribute(
+            PosixFilePermissions.fromString("rw-------"));
+
         var path = Files.createTempFile("guava-sink", ".tmp", attrs);
 
         try {
@@ -75,14 +78,16 @@ class ByteSinkTest {
      *
      * <p>
      * 通过 {@link com.google.common.io.ByteSink#writeFrom(java.io.InputStream)
-     * ByteSink.writeFrom(InputStream)}
-     * 方法可以从 {@link java.io.InputStream InputStream} 对象中读取数据并写入 {@code ByteSink} 对象中
+     * ByteSink.writeFrom(InputStream)} 方法可以从 {@link java.io.InputStream
+     * InputStream} 对象中读取数据并写入 {@code ByteSink} 对象中
      * </p>
      */
     @Test
     void writeFrom_shouldWriteIntoByteSinkFromInputStream() throws IOException {
         // 创建一个临时文件
-        var attrs = PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rw-------"));
+        var attrs = PosixFilePermissions.asFileAttribute(
+            PosixFilePermissions.fromString("rw-------"));
+
         var path = Files.createTempFile("guava-sink", ".tmp", attrs);
 
         try {
@@ -111,8 +116,8 @@ class ByteSinkTest {
      * <p>
      * 通过 {@link com.google.common.io.ByteSink#openStream() ByteSink.openStream()}
      * 方法从
-     * {@code ByteSink} 对象上打开一个 {@code OutputStream} 对象, 并通过该 {@code OutputStream}
-     * 对象进行数据写入
+     * {@code ByteSink} 对象上打开一个 {@code OutputStream} 对象, 并通过该
+     * {@code OutputStream} 对象进行数据写入
      * </p>
      *
      * <p>
@@ -125,7 +130,9 @@ class ByteSinkTest {
     @Test
     void openStream_shouldOpenOutputStreamFromByteSink() throws IOException {
         // 创建一个临时文件
-        var attrs = PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rw-------"));
+        var attrs = PosixFilePermissions.asFileAttribute(
+            PosixFilePermissions.fromString("rw-------"));
+
         var path = Files.createTempFile("guava-sink", ".tmp", attrs);
 
         try {

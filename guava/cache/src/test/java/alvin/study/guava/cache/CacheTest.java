@@ -381,7 +381,7 @@ class CacheTest {
         // 构建缓存对象, 并指定 load 方法如何从数据源读取对象
         // 设定每个被缓存对象的过期时间为 2 秒
         var cache = CacheBuilder.newBuilder()
-                .expireAfterWrite(2, TimeUnit.SECONDS)
+                .expireAfterWrite(100, TimeUnit.MILLISECONDS)
                 .build();
         // 确认此时缓存内容为空
         then(cache.size()).isEqualTo(0);
@@ -392,8 +392,8 @@ class CacheTest {
         cache.put(3L, new User(3L, "Lucy"));
         then(cache.size()).isEqualTo(3);
 
-        // 等待 2.1 秒钟, 令之前缓存的对象失效
-        Thread.sleep(2100);
+        // 等待 110ms, 令之前缓存的对象失效
+        Thread.sleep(110);
 
         // 添加一个新缓存项, 此时会从缓存中删除最早的一项过期项,
         // 所以添加后缓存内对象个数仍为 3

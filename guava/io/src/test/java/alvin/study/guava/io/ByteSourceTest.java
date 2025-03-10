@@ -15,8 +15,6 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.Nonnull;
 import javax.sql.DataSource;
 
-import org.junit.jupiter.api.Test;
-
 import com.google.common.hash.Hashing;
 import com.google.common.io.ByteProcessor;
 import com.google.common.io.ByteSource;
@@ -24,13 +22,14 @@ import com.google.common.io.MoreFiles;
 import com.google.common.io.Resources;
 import com.google.common.primitives.Bytes;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * 测试通过 {@link ByteSource} 类型读取数据
  *
  * <p>
- * {@link ByteSource} 类型对象是 Guava 针对一系列字节输入设备的抽象 (例如文件或网络), 理论上,
- * 所有可以读取字节数据的源都可以抽象为
- * {@link ByteSource} 类型对象
+ * {@link ByteSource} 类型对象是 Guava 针对一系列字节输入设备的抽象 (例如文件或网络),
+ * 理论上, 所有可以读取字节数据的源都可以抽象为 {@link ByteSource} 类型对象
  * </p>
  *
  * <p>
@@ -44,17 +43,15 @@ import com.google.common.primitives.Bytes;
  * <li>
  * {@link MoreFiles#asByteSource(java.nio.file.Path, java.nio.file.OpenOption...)
  * MoreFiles.asByteSource(Path, OpenOption...)} 方法, 用于通过一个
- * {@link java.nio.file.Path Path} 对象创建
- * {@link ByteSource} 对象
+ * {@link java.nio.file.Path Path} 对象创建 {@link ByteSource} 对象
  * </li>
  * <li>
- * {@link Resources#asByteSource(java.net.URL) Resources.asByteSource(URL)} 方法,
- * 用于通过一个 {@link java.net.URL URL}
- * 对象创建 {@link ByteSource} 对象
+ * {@link Resources#asByteSource(java.net.URL) Resources.asByteSource(URL)}
+ * 方法, 用于通过一个 {@link java.net.URL URL} 对象创建 {@link ByteSource} 对象
  * </li>
  * <li>
- * {@link com.google.common.io.CharSource#asByteSource(java.nio.charset.Charset)
- * CharSource.asByteSource(Charset)} 方法,
+ * {@link com.google.common.io.CharSource#asByteSource(
+ * java.nio.charset.Charset) CharSource.asByteSource(Charset)} 方法,
  * 用于通过一个 {@link com.google.common.io.CharSource CharSource} 对象创建
  * {@link ByteSource} 对象
  * </li>
@@ -62,8 +59,8 @@ import com.google.common.primitives.Bytes;
  * </p>
  *
  * <p>
- * 可以参考 {@link CachedUrlLoader} 范例, 演示了从网络资源读取数据时, 如何通过 {@link ByteSource}
- * 类型对象来抽象网络资源和缓存文件资源这两种不同的数据源
+ * 可以参考 {@link CachedUrlLoader} 范例, 演示了从网络资源读取数据时, 如何通过
+ * {@link ByteSource} 类型对象来抽象网络资源和缓存文件资源这两种不同的数据源
  * </p>
  */
 class ByteSourceTest {
@@ -71,27 +68,27 @@ class ByteSourceTest {
      * 将一个 {@code byte} 数组包装为 {@link ByteSource} 类型对象
      *
      * <p>
-     * 通过 {@link ByteSource#isEmpty()} 方法可以确定对象中是否包含数据, 返回值为 {@code true} 表示一个空的
-     * {@link ByteSource}
+     * 通过 {@link ByteSource#isEmpty()} 方法可以确定对象中是否包含数据,
+     * 返回值为 {@code true} 表示一个空的 {@link ByteSource}
      * 对象
      * </p>
      *
      * <p>
-     * 通过 {@link ByteSource#wrap(byte[])} 方法可以将一个 {@code byte} 数组包装为
-     * {@link ByteSource} 类型对象,
-     * 通过包装后的对象可以读取到被包装的 {@link byte} 数组内容
+     * 通过 {@link ByteSource#wrap(byte[])} 方法可以将一个 {@code byte}
+     * 数组包装为 {@link ByteSource} 类型对象, 通过包装后的对象可以读取到被包装的
+     * {@link byte} 数组内容
      * </p>
      *
      * <p>
-     * 通过 {@link ByteSource#sizeIfKnown()} 方法可以获取 {@link ByteSource} 包含数据的长度. 但如果当前
-     * {@link ByteSource}
-     * 实现类无法获取到自身包含数据的长度, 则返回空的 {@link com.google.common.base.Optional Optional} 对象
+     * 通过 {@link ByteSource#sizeIfKnown()} 方法可以获取 {@link ByteSource}
+     * 包含数据的长度. 但如果当前 {@link ByteSource} 实现类无法获取到自身包含数据的长度,
+     * 则返回空的 {@link com.google.common.base.Optional Optional} 对象
      * </p>
      *
      * <p>
-     * 通过 {@link ByteSource#size()} 方法先通过 {@link ByteSource#sizeIfKnown()} 方法获取长度,
-     * 如果当前 {@link ByteSource}
-     * 类型不支持, 则通过完全读取 {@link ByteSource} 中的内容来求长度
+     * 通过 {@link ByteSource#size()} 方法先通过 {@link ByteSource#sizeIfKnown()}
+     * 方法获取长度, 如果当前 {@link ByteSource} 类型不支持, 则通过完全读取
+     * {@link ByteSource} 中的内容来求长度
      * </p>
      */
     @Test
@@ -114,14 +111,13 @@ class ByteSourceTest {
      * 从 {@link ByteSource} 中读取数据
      *
      * <p>
-     * 通过 {@link ByteSource#read()} 方法读取 {@link ByteSource} 中包含的全部内容, 返回一个
-     * {@code byte} 数组
+     * 通过 {@link ByteSource#read()} 方法读取 {@link ByteSource} 中包含的全部内容,
+     * 返回一个 {@code byte} 数组
      * </p>
      *
      * <p>
-     * 通过 {@link ByteSource#read(ByteProcessor)} 方法读取 {@link ByteSource} 中包含的全部内容,
-     * 并将读取的内容进行转化后,
-     * 返回转化后的对象
+     * 通过 {@link ByteSource#read(ByteProcessor)} 方法读取 {@link ByteSource}
+     * 中包含的全部内容, 并将读取的内容进行转化后, 返回转化后的对象
      * </p>
      */
     @Test
@@ -160,7 +156,8 @@ class ByteSourceTest {
     }
 
     /**
-     * 将 {@link ByteSource} 对象的内容拷贝到 {@link java.io.OutputStream OutputStream} 对象中
+     * 将 {@link ByteSource} 对象的内容拷贝到 {@link java.io.OutputStream
+     * OutputStream} 对象中
      *
      * <p>
      * 通过 {@link ByteSource#copyTo(java.io.OutputStream)
@@ -185,14 +182,13 @@ class ByteSourceTest {
     }
 
     /**
-     * 将 {@link ByteSource} 对象的内容拷贝到 {@link com.google.common.io.ByteSink ByteSink}
-     * 对象中
+     * 将 {@link ByteSource} 对象的内容拷贝到 {@link com.google.common.io.ByteSink
+     * ByteSink} 对象中
      *
      * <p>
      * 通过 {@link ByteSource#copyTo(com.google.common.io.ByteSink)
-     * ByteSource.copyTo(ByteSink)} 方法可以将
-     * {@link ByteSource} 对象的数据全部复制到 {@link com.google.common.io.ByteSink ByteSink}
-     * 对象中
+     * ByteSource.copyTo(ByteSink)} 方法可以将 {@link ByteSource} 对象的数据全部复制到
+     * {@link com.google.common.io.ByteSink ByteSink} 对象中
      * </p>
      */
     @Test
@@ -225,9 +221,10 @@ class ByteSourceTest {
      * 将多个 {@link ByteSource} 对象连接为一个 {@link ByteSource} 对象
      *
      * <p>
-     * {@link ByteSource#concat(ByteSource...)} 方法可以将多个 {@link ByteSource} 对象连接为一个,
-     * 读取数据的时候按照链接是的顺序,
-     * 依次读取每个 {@link ByteSource} 中的内容, 让这些 {@link ByteSource} 对象看起来如同一个
+     * {@link ByteSource#concat(ByteSource...)} 方法可以将多个
+     * {@link ByteSource} 对象连接为一个, 读取数据的时候按照链接是的顺序,
+     * 依次读取每个 {@link ByteSource} 中的内容, 让这些 {@link ByteSource}
+     * 对象看起来如同一个
      * </p>
      */
     @Test
@@ -252,9 +249,8 @@ class ByteSourceTest {
      *
      * <p>
      * 通过 {@link ByteSource#hash(com.google.common.hash.HashFunction)
-     * ByteSource.hash(HashFunction)} 方法可以对
-     * {@link ByteSource} 对象中的数据求散列, 其中 {@link com.google.common.hash.HashFunction
-     * HashFunction} 散列计算对象可以从
+     * ByteSource.hash(HashFunction)} 方法可以对 {@link ByteSource} 对象中的数据求散列,
+     * 其中 {@link com.google.common.hash.HashFunction HashFunction} 散列计算对象可以从
      * {@link Hashing} 类中获得 (例如 {@link Hashing#sha256()})
      * </p>
      */
@@ -278,8 +274,7 @@ class ByteSourceTest {
      *
      * <p>
      * 通过 {@link ByteSource#slice(long, long)} 方法可以将指定 {@link ByteSource}
-     * 的一部分内容分割成为新的 {@link ByteSource}
-     * 对象
+     * 的一部分内容分割成为新的 {@link ByteSource} 对象
      * </p>
      */
     @Test
@@ -324,15 +319,14 @@ class ByteSourceTest {
      * 测试通过 {@link ByteSource} 对象创建 {@link java.io.InputStream InputStream} 对象
      *
      * <p>
-     * 通过 {@link ByteSource#openStream()} 方法可以建立一个用于从 {@link ByteSource} 读取数据的
-     * {@link java.io.InputStream
-     * InputStream} 对象
+     * 通过 {@link ByteSource#openStream()} 方法可以建立一个用于从 {@link ByteSource}
+     * 读取数据的 {@link java.io.InputStream InputStream} 对象
      * </p>
      *
      * <p>
-     * 通过 {@link ByteSource#openBufferedStream()} 方法可以建立一个用于从 {@link ByteSource}
-     * 读取数据的
-     * {@link java.io.BufferedInputStream BufferedInputStream} 对象
+     * 通过 {@link ByteSource#openBufferedStream()} 方法可以建立一个用于从
+     * {@link ByteSource} 读取数据的 {@link java.io.BufferedInputStream
+     * BufferedInputStream} 对象
      * </p>
      */
     @Test
@@ -356,7 +350,8 @@ class ByteSourceTest {
      * 测试 {@link CachedUrlLoader} 类, 从网络资源或缓存中读取数据
      *
      * <p>
-     * 本例是 {@link DataSource} 类型的典型应用, 即将数据源进行抽象, 以隐藏数据源本身, 以便以一种统一的方式进行数据读取
+     * 本例是 {@link DataSource} 类型的典型应用, 即将数据源进行抽象, 以隐藏数据源本身,
+     * 以便以一种统一的方式进行数据读取
      * </p>
      */
     @Test
@@ -372,7 +367,9 @@ class ByteSourceTest {
 
             // 等待缓存完毕
             await().atMost(2, TimeUnit.SECONDS)
-                    .untilAsserted(() -> then(loader.cacheInfo("https://www.baidu.com")).isPresent());
+                    .untilAsserted(
+                        () -> then(loader.cacheInfo("https://www.baidu.com"))
+                                .isPresent());
 
             // 获取缓存对象
             var cache = loader.cacheInfo("https://www.baidu.com").get();
@@ -381,7 +378,8 @@ class ByteSourceTest {
             // 确认缓存有效期正确
             then(cache.getCreatedAt()).isBefore(Instant.now());
 
-            // 再次读取网络数据, 由于前一次读取已经形成了缓存, 所以本次操作不会访问网络资源, 而是从缓存中直接读取数据
+            // 再次读取网络数据, 由于前一次读取已经形成了缓存, 所以本次操作不会访问网络资源,
+            // 而是从缓存中直接读取数据
             var dataFromCache = loader.loadHTML("https://www.baidu.com");
             then(dataFromUrl).isEqualTo(dataFromCache);
 
@@ -397,8 +395,8 @@ class ByteSourceTest {
      *
      * <p>
      * 通过 {@link ByteSource#asCharSource(java.nio.charset.Charset)
-     * ByteSource.asCharSource(Charset)}
-     * 方法可以将一个字节数据源 ({@link ByteSource}) 转为字符数据源
+     * ByteSource.asCharSource(Charset)} 方法可以将一个字节数据源
+     * ({@link ByteSource}) 转为字符数据源
      * ({@link com.google.common.io.CharSource CharSource}),
      * 以便直接对数据源存储的字节数据以字符编码进行读取
      * </p>

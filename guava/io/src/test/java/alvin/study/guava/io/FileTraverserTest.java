@@ -14,10 +14,6 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.StreamSupport;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -26,30 +22,40 @@ import com.google.common.collect.Queues;
 import com.google.common.graph.Traverser;
 import com.google.common.io.Files;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 /**
  * 演示各类文件遍历操作
  *
  * <p>
- * Guava 库的 {@link Files#fileTraverser()} 方法返回一个文件遍历器 {@link com.google.common.graph.Traverser Traverser} 对象,
+ * Guava 库的 {@link Files#fileTraverser()} 方法返回一个文件遍历器
+ * {@link com.google.common.graph.Traverser Traverser} 对象,
  * 该对象通过如下方法对文件进行遍历:
  * <ul>
  * <li>
- * {@link com.google.common.graph.Traverser#breadthFirst(Object) Traverser.breadthFirst(File)}
- * 方法用于对一个目录及其子目录进行"广度优先"遍历, 即先对某一级目录的所有文件进行遍历, 之后在进入下一级目录进行遍历
+ * {@link com.google.common.graph.Traverser#breadthFirst(Object)
+ * Traverser.breadthFirst(File)} 方法用于对一个目录及其子目录进行 "广度优先" 遍历,
+ * 即先对某一级目录的所有文件进行遍历, 之后在进入下一级目录进行遍历
  * </li>
  * <li>
- * {@link com.google.common.graph.Traverser#depthFirstPreOrder(Object) Traverser.depthFirstPreOrder(File)}
- * 方法用于对一个目录及其子目录进行正序"深度优先"遍历, 即先从顶层目录依次向下层目录访问, 到达最底层目录后, 依次向上访问每一级目录中的文件
+ * {@link com.google.common.graph.Traverser#depthFirstPreOrder(Object)
+ * Traverser.depthFirstPreOrder(File)} 方法用于对一个目录及其子目录进行正序
+ * "深度优先" 遍历, 即先从顶层目录依次向下层目录访问, 到达最底层目录后,
+ * 依次向上访问每一级目录中的文件
  * </li>
  * <li>
- * {@link com.google.common.graph.Traverser#depthFirstPostOrder(Object) Traverser.depthFirstPostOrder(File)}
- * 方法用于对一个目录及其子目录进行逆序"深度优先"遍历, 即先到达最底层的目录, 然后依次向上访问每一级目录以及其中的文件
+ * {@link com.google.common.graph.Traverser#depthFirstPostOrder(Object)
+ * Traverser.depthFirstPostOrder(File)} 方法用于对一个目录及其子目录进行逆序
+ * "深度优先" 遍历, 即先到达最底层的目录, 然后依次向上访问每一级目录以及其中的文件
  * </li>
  * </ul>
  * </p>
  *
  * <p>
- * 类似 Guava 库, 通过 JDK 自带的库也可以实现类似的结果, 包括使用 JDK6 的 IO 库, JDK 7 的 NIO 库以及 JDK 8 的扩展方法
+ * 类似 Guava 库, 通过 JDK 自带的库也可以实现类似的结果, 包括使用 JDK6 的 IO 库,
+ * JDK 7 的 NIO 库以及 JDK 8 的扩展方法
  * </p>
  */
 class FileTraverserTest {
@@ -131,8 +137,11 @@ class FileTraverserTest {
      * @param onFile 参数为所遍历文件的回调函数
      */
     private void fileRecursive(File dir, Consumer<File> onFile) {
-        Preconditions.checkArgument(dir.isDirectory(), "Argument dir must be a directory");
-        Preconditions.checkArgument(onFile != null, "Argument onFile must non null");
+        Preconditions.checkArgument(
+            dir.isDirectory(), "Argument dir must be a directory");
+
+        Preconditions.checkArgument(
+            onFile != null, "Argument onFile must non null");
 
         // 获取文件夹下的内容
         var files = dir.listFiles();
@@ -299,13 +308,16 @@ class FileTraverserTest {
      * 通过 NIO2 进行文件遍历
      *
      * <p>
-     * 通过 {@link java.nio.file.Files#newDirectoryStream(Path) Files.newDirectoryStream(Path)} 方法可以获取文件夹下的内容,
-     * 返回结果为 {@link java.nio.file.DirectoryStream DirectoryStream} 类型对象, 通过其
-     * {@link java.nio.file.DirectoryStream#forEach(Consumer) DirectoryStream.forEach(Consumer)} 方法可以对这些内容进行遍历
+     * 通过 {@link java.nio.file.Files#newDirectoryStream(Path)
+     * Files.newDirectoryStream(Path)} 方法可以获取文件夹下的内容,
+     * 返回结果为 {@link java.nio.file.DirectoryStream DirectoryStream} 类型对象,
+     * 通过其 {@link java.nio.file.DirectoryStream#forEach(Consumer)
+     * DirectoryStream.forEach(Consumer)} 方法可以对这些内容进行遍历
      * </p>
      *
      * <p>
-     * 注意, {@link java.nio.file.DirectoryStream DirectoryStream} 对象需要通过 {@code close} 方法关闭
+     * 注意, {@link java.nio.file.DirectoryStream DirectoryStream} 对象需要通过
+     * {@code close} 方法关闭
      * </p>
      *
      * <p>
@@ -368,13 +380,14 @@ class FileTraverserTest {
      * 通过 NIO2 进行文件遍历
      *
      * <p>
-     * 通过 {@link java.nio.file.Files#list(Path) Files.list(Path)} 方法可以获取一个 {@link java.util.stream.Stream Stream}
-     * 对象, 其中包含了该路径下所有文件夹和文件, 可以进行遍历
+     * 通过 {@link java.nio.file.Files#list(Path) Files.list(Path)} 方法可以获取一个
+     * {@link java.util.stream.Stream Stream} 对象, 其中包含了该路径下所有文件夹和文件,
+     * 可以进行遍历
      * </p>
      *
      * <p>
-     * 注意, {@link java.nio.file.Files#list(Path) Files.list(Path)} 方法返回的 {@link java.util.stream.Stream Stream}
-     * 对象需要通过 {@code close} 方法进行关闭
+     * 注意, {@link java.nio.file.Files#list(Path) Files.list(Path)} 方法返回的
+     * {@link java.util.stream.Stream Stream} 对象需要通过 {@code close} 方法进行关闭
      * </p>
      *
      * <p>
@@ -436,19 +449,23 @@ class FileTraverserTest {
      * 通过 NIO2 进行文件遍历
      *
      * <p>
-     * 通过 {@link java.nio.file.Files#walk(Path, java.nio.file.FileVisitOption...) Files.walk(Path, FileVisitOption...)}
-     * 方法可以获取一个 {@link java.util.stream.Stream Stream}对象, 其中包含了该路径下所有文件夹和文件及其全部子文件夹内容, 可以进行遍历
+     * 通过 {@link java.nio.file.Files#walk(Path, java.nio.file.FileVisitOption...)
+     * Files.walk(Path, FileVisitOption...)} 方法可以获取一个
+     * {@link java.util.stream.Stream Stream} 对象,
+     * 其中包含了该路径下所有文件夹和文件及其全部子文件夹内容, 可以进行遍历
      * </p>
      *
      * <p>
-     * {@link java.nio.file.Files#walk(Path, java.nio.file.FileVisitOption...) Files.walk(Path, FileVisitOption...)}
-     * 可以递归性的一次性获取一个文件夹下面的所有内容, 其算法基于深度优先算法 (DFS), 可以通过方法参数控制最多要深入的目录层级, 默认为
+     * {@link java.nio.file.Files#walk(Path, java.nio.file.FileVisitOption...)
+     * Files.walk(Path, FileVisitOption...)} 可以递归性的一次性获取一个文件夹下面的所有内容,
+     * 其算法基于深度优先算法 (DFS), 可以通过方法参数控制最多要深入的目录层级, 默认为
      * {@link Integer#MAX_VALUE}, 表示不限制, 直到遍历到目录树的最深层次为止
      * </p>
      *
      * <p>
-     * 注意, {@link java.nio.file.Files#walk(Path, java.nio.file.FileVisitOption...) Files.walk(Path, FileVisitOption...)}
-     * 方法返回的 {@link java.util.stream.Stream Stream} 对象需要通过 {@code close} 方法进行关闭
+     * 注意, {@link java.nio.file.Files#walk(Path, java.nio.file.FileVisitOption...)
+     * Files.walk(Path, FileVisitOption...)} 方法返回的 {@link java.util.stream.Stream
+     * Stream} 对象需要通过 {@code close} 方法进行关闭
      * </p>
      *
      * <p>
@@ -493,14 +510,17 @@ class FileTraverserTest {
      *
      * <p>
      * 通过 {@link java.nio.file.Files#walkFileTree(Path, java.nio.file.FileVisitor)
-     * Files.walkFileTree(Path, FileVisitor)} 方法对指定的路径下所有内容 (包括子文件夹) 进行遍历, 并通过一个
-     * {@link java.nio.file.FileVisitor FileVisitor} 回调获取每次遍历的内容
+     * Files.walkFileTree(Path, FileVisitor)} 方法对指定的路径下所有内容 (包括子文件夹)
+     * 进行遍历, 并通过一个 {@link java.nio.file.FileVisitor FileVisitor}
+     * 回调获取每次遍历的内容
      * </p>
      *
      * <p>
-     * 在 {@link java.nio.file.FileVisitor FileVisitor} 回调中, 可以通过返回不同的 {@link FileVisitResult}
-     * 对象以继续或停止之后的操作, 参见 {@link FileVisitResult#TERMINATE}, {@link FileVisitResult#CONTINUE},
-     * {@link FileVisitResult#SKIP_SIBLINGS} 以及 {@link FileVisitResult#SKIP_SUBTREE} 值
+     * 在 {@link java.nio.file.FileVisitor FileVisitor} 回调中, 可以通过返回不同的
+     * {@link FileVisitResult} 对象以继续或停止之后的操作, 参见
+     * {@link FileVisitResult#TERMINATE}, {@link FileVisitResult#CONTINUE},
+     * {@link FileVisitResult#SKIP_SIBLINGS} 以及 {@link FileVisitResult#SKIP_SUBTREE}
+     * 值
      * </p>
      *
      * <p>
@@ -540,15 +560,18 @@ class FileTraverserTest {
      * 通过 Guava 进行文件遍历
      *
      * <p>
-     * Guava 的 {@link Files#fileTraverser()} 方法可以返回一个 {@link Traverser} 对象, 通过该对象可以对指定的文件树进行遍历
+     * Guava 的 {@link Files#fileTraverser()} 方法可以返回一个 {@link Traverser} 对象,
+     * 通过该对象可以对指定的文件树进行遍历
      * </p>
      *
      * <p>
-     * {@link Traverser#breadthFirst(Object) Traverser.breadthFirst(File)} 方法可以对指定路径进行广度优先遍历 (BFS)
+     * {@link Traverser#breadthFirst(Object) Traverser.breadthFirst(File)}
+     * 方法可以对指定路径进行广度优先遍历 (BFS)
      * </p>
      *
      * <p>
-     * {@link Traverser#depthFirstPreOrder(Object) Traverser.depthFirstPreOrder(File)} 方法可以对指定路径进行正序深度优先遍历
+     * {@link Traverser#depthFirstPreOrder(Object) Traverser.depthFirstPreOrder(File)}
+     * 方法可以对指定路径进行正序深度优先遍历
      * (DFS)
      * </p>
      *
@@ -558,10 +581,11 @@ class FileTraverserTest {
      * </p>
      *
      * <p>
-     * 注意, 为了保证遍历结果顺序的稳定, 本例中并未直接使用 {@link Files#fileTraverser()} 方法, 而是通过
-     * {@link Traverser#forTree(com.google.common.graph.SuccessorsFunction) Traverser.forTree(SuccessorsFunction)}
-     * 方法构建了一个专用于文件遍历的"树形结构"遍历器, 并为每次文件查询结果增加了排序操作以保证最终结果的稳定,
-     * {@link Files#fileTraverser()} 内部也是类似实现
+     * 注意, 为了保证遍历结果顺序的稳定, 本例中并未直接使用 {@link Files#fileTraverser()}
+     * 方法, 而是通过 {@link Traverser#forTree(com.google.common.graph.SuccessorsFunction)
+     * Traverser.forTree(SuccessorsFunction)} 方法构建了一个专用于文件遍历的"树形结构"遍历器,
+     * 并为每次文件查询结果增加了排序操作以保证最终结果的稳定, {@link Files#fileTraverser()}
+     * 内部也是类似实现
      * </p>
      */
     @Test
