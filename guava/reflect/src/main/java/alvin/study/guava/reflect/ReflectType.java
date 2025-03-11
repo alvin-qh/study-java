@@ -29,8 +29,8 @@ public final class ReflectType {
     }
 
     /**
-     * 产生 {@code List<T>} 泛型类型, 通过 {@link TypeToken} 对象来指定 {@code T} 泛型参数类型,
-     * 即泛型参数本身也可以为泛型类型
+     * 产生 {@code List<T>} 泛型类型, 通过 {@link TypeToken}
+     * 对象来指定 {@code T} 泛型参数类型, 即泛型参数本身也可以为泛型类型
      *
      * @param elementType 通过 {@link TypeToken} 对象表示的泛型参数类型
      * @param <T>         泛型参数
@@ -43,8 +43,10 @@ public final class ReflectType {
 
     /**
      * 产生 {@code Map<K, V>} 泛型类型, 指定 {@code K, V} 泛型参数类型
+     *
      * <p>
-     * 和 {@link #listOf(TypeToken)} 方法类似, 也可以编写参数为 {@link TypeToken} 类型的参数
+     * 和 {@link #listOf(TypeToken)} 方法类似, 也可以编写参数为
+     * {@link TypeToken} 类型的参数
      *
      * @param keyType   Key 的泛型类型
      * @param valueType Value 的泛型类型

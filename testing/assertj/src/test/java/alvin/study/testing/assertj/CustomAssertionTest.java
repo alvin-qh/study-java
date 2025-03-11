@@ -1,17 +1,19 @@
 package alvin.study.testing.assertj;
 
-import alvin.study.testing.assertj.custom.SoftAssertions;
-import alvin.study.testing.testcase.model.User;
-import org.junit.jupiter.api.Test;
-
 import static alvin.study.testing.assertj.custom.Assertions.assertThat;
 import static alvin.study.testing.assertj.custom.Assertions.then;
+
+import org.junit.jupiter.api.Test;
+
+import alvin.study.testing.assertj.custom.SoftAssertions;
+import alvin.study.testing.testcase.model.User;
 
 /**
  * 测试自定义断言
  *
  * <p>
- * 自定义断言可以更简单和更精确的测试目标类型, 参考 {@link alvin.study.assertj.custom.UserAssert UserAssert} 以及
+ * 自定义断言可以更简单和更精确的测试目标类型, 参考
+ * {@link alvin.study.assertj.custom.UserAssert UserAssert} 以及
  * {@link SoftAssertions} 类型
  * </p>
  */

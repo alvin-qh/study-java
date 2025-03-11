@@ -1,32 +1,34 @@
 package alvin.study.testing.hamcrest.matcher;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeDiagnosingMatcher;
+import static org.hamcrest.Matchers.not;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.hamcrest.Matchers.not;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeDiagnosingMatcher;
 
 /**
  * 针对 {@link Optional} 对象进行匹配的 {@link Matcher} 接口对象
  *
  * <p>
- * 该匹配器接收一个 {@link Optional} 类型对象, 并匹配器是否包含内容, 即 {@link Optional#isPresent()} 为
- * {@code true}
+ * 该匹配器接收一个 {@link Optional} 类型对象, 并匹配器是否包含内容,
+ * 即 {@link Optional#isPresent()} 为 {@code true}
  * </p>
  *
  * <p>
- * 该匹配器还可以设置一组下级匹配器, 当传入的 {@link Optional} 对象不为空时, 进一步调用下一级的匹配器对
- * {@link Optional} 对象包含的内容进行匹配
+ * 该匹配器还可以设置一组下级匹配器, 当传入的 {@link Optional}
+ * 对象不为空时, 进一步调用下一级的匹配器对 {@link Optional}
+ * 对象包含的内容进行匹配
  * </p>
  *
  * <p>
- * 当前类型的超类 {@link TypeSafeDiagnosingMatcher} 表示一个"类型安全"并且"包含下一级 {@link Matcher}"
- * 对象的类型, 相当于结合了 {@link org.hamcrest.TypeSafeMatcher TypeSafeMatcher} (类型安全
- * Matcher) 以及 {@link org.hamcrest.DiagnosingMatcher DiagnosingMatcher} (具备下一级
- * Matcher) 这两个超类
+ * 当前类型的超类 {@link TypeSafeDiagnosingMatcher}
+ * 表示一个 "类型安全" 并且 "包含下一级 {@link Matcher}" 对象的类型,
+ * 相当于结合了 {@link org.hamcrest.TypeSafeMatcher TypeSafeMatcher}
+ * (类型安全 Matcher) 以及 {@link org.hamcrest.DiagnosingMatcher
+ * DiagnosingMatcher} (具备下一级 Matcher) 这两个超类
  * </p>
  *
  * @param <T> 要匹配的对象类型, 即 {@link Optional Optional&lt; T&gt;}
@@ -39,17 +41,20 @@ public class IsPresent<T> extends TypeSafeDiagnosingMatcher<Optional<? extends T
      * 构造器, 传入下级 {@link Matcher} 对象集合迭代器
      *
      * <p>
-     * 下级 {@link Matcher} 对象集合迭代器将在 {@link #presentThen(Matcher...)} 方法中进行传递
+     * 下级 {@link Matcher} 对象集合迭代器将在
+     * {@link #presentThen(Matcher...)} 方法中进行传递
      * </p>
      *
-     * @param matchers 下级 {@link Matcher} 对象集合迭代器, {@code null} 表示无需继续下一级匹配操作
+     * @param matchers 下级 {@link Matcher} 对象集合迭代器,
+     *                 {@code null} 表示无需继续下一级匹配操作
      */
     protected IsPresent(Iterable<Matcher<? extends T>> matchers) {
         this.matchers = matchers;
     }
 
     /**
-     * 构造一个 {@link Matcher} 对象, 用于匹配 {@link Optional#isPresent()} 是否为 {@code true}
+     * 构造一个 {@link Matcher} 对象, 用于匹配
+     * {@link Optional#isPresent()} 是否为 {@code true}
      *
      * @param <T> 任意类型
      * @return {@link IsPresent} 类型对象
@@ -59,17 +64,20 @@ public class IsPresent<T> extends TypeSafeDiagnosingMatcher<Optional<? extends T
     }
 
     /**
-     * 构造一个 {@link Matcher} 对象, 用于匹配 {@link Optional#isPresent()} 是否为 {@code false}
+     * 构造一个 {@link Matcher} 对象, 用于匹配
+     * {@link Optional#isPresent()} 是否为 {@code false}
      *
      * @param <T> 任意类型
-     * @return {@link org.hamcrest.core.IsNot IsNot(IsPresent)} 类型对象
+     * @return {@link org.hamcrest.core.IsNot IsNot(IsPresent)}
+     *         类型对象
      */
     public static <T> Matcher<Optional<? extends T>> notPresent() {
         return not(present());
     }
 
     /**
-     * 构造一个 {@link Matcher} 对象, 用于匹配 {@link Optional#isPresent()} 是否为 {@code true},
+     * 构造一个 {@link Matcher} 对象, 用于匹配
+     * {@link Optional#isPresent()} 是否为 {@code true},
      * 且在匹配成功后执行下级 {@link Matcher} 集合进一步进行匹配
      *
      * @param <T> 任意类型
@@ -84,14 +92,15 @@ public class IsPresent<T> extends TypeSafeDiagnosingMatcher<Optional<? extends T
      * 将当前匹配失败的信息拼入整体匹配失败信息流中
      *
      * <p>
-     * 匹配失败时, 需要输出当前 {@link Matcher} 的期望信息, 对于 {@link #matchers} 字段为空的情况, 期望值为
+     * 匹配失败时, 需要输出当前 {@link Matcher} 的期望信息,
+     * 对于 {@link #matchers} 字段为空的情况, 期望值为
      * {@code "<present>"} 常量值
      * </p>
      *
      * <p>
      * 如果 {@link #matchers} 字段不为空, 则通过
-     * {@link Description#appendList(String, String, String, Iterable)} 方法对下级
-     * {@link Matcher} 对象的匹配结果进行拼装
+     * {@link Description#appendList(String, String, String,
+     * Iterable)} 方法对下级 {@link Matcher} 对象的匹配结果进行拼装
      * </p>
      */
     @Override

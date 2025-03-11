@@ -110,7 +110,8 @@ class EventBusTest {
 
         // 等待 UserHandler.onUserCreated 方法在 5 秒内被执行
         await().atMost(5, TimeUnit.SECONDS)
-                .untilAsserted(() -> then(handler.getUserMap()).containsExactly(entry(user.getId(), user)));
+                .untilAsserted(
+                    () -> then(handler.getUserMap()).containsExactly(entry(user.getId(), user)));
 
         // 解除事件订阅
         handler.unregister();

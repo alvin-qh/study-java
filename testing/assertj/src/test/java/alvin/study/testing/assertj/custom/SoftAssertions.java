@@ -1,21 +1,24 @@
 package alvin.study.testing.assertj.custom;
 
-import alvin.study.testing.testcase.model.User;
+import java.util.function.Consumer;
+
 import org.assertj.core.api.AbstractSoftAssertions;
 import org.assertj.core.api.SoftAssertionsProvider;
 import org.assertj.core.api.StandardSoftAssertionsProvider;
 
-import java.util.function.Consumer;
+import alvin.study.testing.testcase.model.User;
 
 /**
  * 定义 Softly 断言入口类
  *
  * <p>
- * 从 {@link AbstractSoftAssertions} 类型继承, 通过 {@link AbstractSoftAssertions#proxy(Class, Class, Object)} 方法
- * 将断言类包装为 Softly 断言对象
+ * 从 {@link AbstractSoftAssertions} 类型继承, 通过
+ * {@link AbstractSoftAssertions#proxy(Class, Class, Object)}
+ * 方法将断言类包装为 Softly 断言对象
  * </p>
  */
-public class SoftAssertions extends AbstractSoftAssertions implements StandardSoftAssertionsProvider {
+public class SoftAssertions extends AbstractSoftAssertions
+                            implements StandardSoftAssertionsProvider {
     /**
      * 通过 lambda 使用 Softly 断言
      *

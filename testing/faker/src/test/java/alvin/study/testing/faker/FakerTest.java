@@ -1,11 +1,12 @@
 package alvin.study.testing.faker;
 
-import com.github.javafaker.Faker;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Locale;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import com.github.javafaker.Faker;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * 通过 {@link Faker} 类型对象可以伪造各类测试数据
@@ -128,16 +129,19 @@ class FakerTest {
      * 测试产生一个符合指定正则表达式的数据
      *
      * <p>
-     * 通过 {@link com.github.javafaker.service.FakeValuesService FakeValuesService} 对象可以根据一个正则表达式产生数据
+     * 通过 {@link com.github.javafaker.service.FakeValuesService
+     * FakeValuesService} 对象可以根据一个正则表达式产生数据
      * </p>
      *
      * <p>
-     * {@link Faker#regexify(String)} 内部调用了 {@link com.github.javafaker.service.FakeValuesService FakeValuesService}
-     * 对象
+     * {@link Faker#regexify(String)} 内部调用了
+     * {@link com.github.javafaker.service.FakeValuesService
+     * FakeValuesService} 对象
      * </p>
      *
      * <p>
-     * 另外, 生成数据使用的正则表达式和匹配数据的正则表达式略有不同, 例如不能加 {@code ^} 或 {@code $} 字符等
+     * 另外, 生成数据使用的正则表达式和匹配数据的正则表达式略有不同,
+     * 例如不能加 {@code ^} 或 {@code $} 字符等
      * </p>
      */
     @Test
@@ -155,17 +159,20 @@ class FakerTest {
      * 测试产生随机数服务
      *
      * <p>
-     * 通过 {@link com.github.javafaker.service.RandomService RandomService} 对象可以产生各类随机数
+     * 通过 {@link com.github.javafaker.service.RandomService RandomService}
+     * 对象可以产生各类随机数
      * </p>
      *
      * <p>
-     * {@link Faker#random()} 方法返回 {@link com.github.javafaker.service.RandomService RandomService} 对象
+     * {@link Faker#random()} 方法返回
+     * {@link com.github.javafaker.service.RandomService RandomService} 对象
      * </p>
      */
     @Test
     void random_shouldGenerateRandomValue() {
         // 产生 Faker 对象, 指定数据的地域
         var faker = new Faker(Locale.CHINA);
+
         // 获取随机数服务对象
         var service = faker.random();
 
@@ -184,16 +191,19 @@ class FakerTest {
      * 通过一个字符串 Key 获取对应的伪造值
      *
      * <p>
-     * 通过 {@link com.github.javafaker.service.FakeValuesService FakeValuesService} 对象可以解析一个字符串 Key
+     * 通过 {@link com.github.javafaker.service.FakeValuesService
+     * FakeValuesService} 对象可以解析一个字符串 Key
      * </p>
      *
      * <p>
-     * {@link Faker#resolve(String)} 内部调用了 {@link com.github.javafaker.service.FakeValuesService FakeValuesService}
-     * 对象
+     * {@link Faker#resolve(String)} 内部调用了
+     * {@link com.github.javafaker.service.FakeValuesService
+     * FakeValuesService} 对象
      * </p>
      *
      * <p>
-     * 例如 {@code faker.resolve("internet.avatar")} 相当于调用 {@code faker.internet().avatar()} 方法
+     * 例如 {@code faker.resolve("internet.avatar")} 相当于调用
+     * {@code faker.internet().avatar()} 方法
      * </p>
      */
     @Test

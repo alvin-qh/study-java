@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.assertj.core.api.Condition;
+
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -41,13 +42,16 @@ class AssertionTest {
      * 通过 {@link Condition} 对象或 {@code matches} 方法进行匹配
      *
      * <p>
-     * 对于一部分复杂的断言逻辑, 无法通过简单的判断完成, 此时可以通过 {@link Condition} 对象进行匹配,
-     * 其内部调用一个 {@link java.util.function.Predicate Predicate} 函数对象执行判断逻辑
+     * 对于一部分复杂的断言逻辑, 无法通过简单的判断完成, 此时可以通过
+     * {@link Condition} 对象进行匹配, 其内部调用一个
+     * {@link java.util.function.Predicate Predicate}
+     * 函数对象执行判断逻辑
      * </p>
      *
      * <p>
      * 如果需要简化代码, 也可以通过 {@code matches} 方法直接通过一个
-     * {@link java.util.function.Predicate Predicate} 函数对象执行判断逻辑
+     * {@link java.util.function.Predicate Predicate}
+     * 函数对象执行判断逻辑
      * </p>
      */
     @Test
@@ -56,17 +60,22 @@ class AssertionTest {
         var obj = new User(1, "Alvin");
 
         // 定义一个 Condition 对象, 断言是否满足该 Condition 对象
-        var cond = new Condition<User>(user -> user.getName().equals("Alvin"), "Check name");
+        var cond = new Condition<User>(
+            user -> user.getName().equals("Alvin"),
+            "Check name");
         assertThat(obj).is(cond);
         assertThat(obj).has(cond);
 
         // 定义另一个 Condition 对象, 断言是否无需满足该 Condition 对象
-        cond = new Condition<>(user -> user.getName().equals("Emma"), "Check name");
+        cond = new Condition<>(
+            user -> user.getName().equals("Emma"),
+            "Check name");
         assertThat(obj).isNot(cond);
         assertThat(obj).doesNotHave(cond);
 
         // 直接利用 Predicate 对象进行条件匹配
-        assertThat(obj).matches(user -> user.getName().equals("Alvin"));
+        assertThat(obj).matches(
+            user -> user.getName().equals("Alvin"));
 
         // 定义多个 Condition 对象
         var condId = new Condition<User>() {
@@ -92,8 +101,10 @@ class AssertionTest {
 
         // 断言一个对象是否满足所有指定的 Condition 对象
         assertThat(obj).is(allOf(condId, condName));
+
         // 断言一个对象是否满足任意一个 Condition 对象
         assertThat(obj).is(anyOf(condId, condName, condBad));
+
         // 断言一个对象是否不满足指定的 Condition 对象
         assertThat(obj).is(not(condBad));
     }
@@ -105,12 +116,16 @@ class AssertionTest {
     void comparator_shouldAssertValueByCustomComparator() {
         // 自定义比较器进行断言
         var num = 100;
-        assertThat(num).usingComparator((l, r) -> l / 10 - r).isEqualTo(10);
+        assertThat(num)
+                .usingComparator((l, r) -> l / 10 - r)
+                .isEqualTo(10);
     }
 
     /**
-     * 与 {@link org.assertj.core.api.Assertions#assertThat assertThat} 静态方法类似, 也可以通过
-     * {@link org.assertj.core.api.BDDAssertions#then then} 方法进行断言, 属于另一种断言格式
+     * 与 {@link org.assertj.core.api.Assertions#assertThat
+     * assertThat} 静态方法类似, 也可以通过
+     * {@link org.assertj.core.api.BDDAssertions#then then}
+     * 方法进行断言, 属于另一种断言格式
      */
     @Test
     void bdd_shouldMakeAssertionWithBDDFormat() {
@@ -118,17 +133,25 @@ class AssertionTest {
         var obj = new User(1, "Alvin");
 
         // 定义一个 Condition 对象, 断言是否满足该 Condition 对象
-        var cond = new Condition<User>(user -> user.getName().equals("Alvin"), "Check name");
+        var cond = new Condition<User>(
+            user -> user.getName()
+                    .equals("Alvin"),
+            "Check name");
         then(obj).is(cond);
         then(obj).has(cond);
 
         // 定义另一个 Condition 对象, 断言是否无需满足该 Condition 对象
-        cond = new Condition<>(user -> user.getName().equals("Emma"), "Check name");
+        cond = new Condition<>(
+            user -> user.getName()
+                    .equals("Emma"),
+            "Check name");
         then(obj).isNot(cond);
         then(obj).doesNotHave(cond);
 
         // 直接利用 Predicate 对象进行条件匹配
-        then(obj).matches(user -> user.getName().equals("Alvin"));
+        then(obj).matches(
+            user -> user.getName()
+                    .equals("Alvin"));
     }
 
     /**
@@ -198,9 +221,12 @@ class AssertionTest {
         then("Hello").isNotEmpty();
 
         // 断言字符串和期待字符串的比较
-        then("Hello").isEqualToIgnoringCase("hello");
-        then("Hello").isEqualToIgnoringWhitespace(" Hello ");
-        then("Hello").isEqualToIgnoringNewLines("Hel\nlo");
+        then("Hello")
+                .isEqualToIgnoringCase("hello");
+        then("Hello")
+                .isEqualToIgnoringWhitespace(" Hello ");
+        then("Hello")
+                .isEqualToIgnoringNewLines("Hel\nlo");
 
         // 断言字符串是否以期待字符串开头或结尾
         then("Hello").startsWith("H");
@@ -286,7 +312,9 @@ class AssertionTest {
         then(list).anyMatch(n -> n % 2 == 1);
 
         // 对集合元素通过条件进行过滤, 断言过滤结果
-        then(list).filteredOn(n -> n > 0).containsExactly(1, 2, 3, 3);
+        then(list)
+                .filteredOn(n -> n > 0)
+                .containsExactly(1, 2, 3, 3);
         // 对集合元素进行转换后, 断言转换后的结果
         then(list).map(String::valueOf)
                 .filteredOn(s -> !s.isEmpty())
@@ -347,7 +375,9 @@ class AssertionTest {
 
         // 断言 Map 对象的键值对个数
         then(map).hasSize(2);
-        then(map).size().isGreaterThan(1).isLessThan(3);
+        then(map).size()
+                .isGreaterThan(1)
+                .isLessThan(3);
 
         // 断言 Map 对象中是否包含指定的 Key
         then(map).containsKey("A");
@@ -362,11 +392,15 @@ class AssertionTest {
 
         // 断言 Map 对象是否包含指定的键值对
         then(map).containsEntry("B", 2);
-        then(map).contains(entry("A", 1), entry("B", 2));
+        then(map).contains(
+            entry("A", 1),
+            entry("B", 2));
 
         // 断言指定的 Key 对应的 Value 是否符合期待值
-        then(map).extracting("A").isEqualTo(1);
-        then(map).extracting("A", "B").contains(1, 2);
+        then(map).extracting("A")
+                .isEqualTo(1);
+        then(map).extracting("A", "B")
+                .contains(1, 2);
 
         var keyCond = new Condition<String>(
             key -> "A".equals(key) || "B".equals(key),
@@ -386,7 +420,9 @@ class AssertionTest {
         then(map).hasEntrySatisfying(keyCond, valueCond);
         then(map).hasEntrySatisfying("B", valueCond);
         then(map).hasEntrySatisfying(
-            new Condition<>(e -> keyCond.matches(e.getKey()) && valueCond.matches(e.getValue()), ""));
+            new Condition<>(e -> keyCond.matches(e.getKey()) &&
+                                 valueCond.matches(e.getValue()),
+                ""));
     }
 
     /**
@@ -409,13 +445,18 @@ class AssertionTest {
      * </p>
      *
      * <p>
-     * {@code as} 和 {@code describedAs} 方法的含义是相同的, 注意: 设置描述必须在断言之前调用
+     * {@code as} 和 {@code describedAs} 方法的含义是相同的,
+     * 注意: 设置描述必须在断言之前调用
      * </p>
      */
     @Test
     @Disabled("Just a demo")
     void as_shouldGivenTestName() {
-        then(100 > 99).as("Number compare").isFalse();
-        then(100 > 99).describedAs("Number compare").isFalse();
+        then(100 > 99)
+                .as("Number compare")
+                .isFalse();
+        then(100 > 99)
+                .describedAs("Number compare")
+                .isFalse();
     }
 }

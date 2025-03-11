@@ -1,31 +1,36 @@
 package alvin.study.testing.junit.parameterized;
 
+import java.lang.reflect.Field;
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.support.AnnotationConsumer;
-
-import java.lang.reflect.Field;
-import java.util.stream.Stream;
 
 /**
  * 测试假设参数提供器
  *
  * <p>
  * 该提供器由 {@link VariableSource @VariableSource} 注解指定, 参考
- * {@link org.junit.jupiter.params.provider.ArgumentsSource @ArgumentsSource} 注解
+ * {@link org.junit.jupiter.params.provider.ArgumentsSource @ArgumentsSource}
+ * 注解
  * </p>
  *
  * <p>
  * {@link ArgumentsProvider} 接口说明该类型提供了假设参数
- * ({@link ArgumentsProvider#provideArguments(ExtensionContext)} 方法)
+ * ({@link ArgumentsProvider#provideArguments(ExtensionContext)}
+ * 方法)
  * </p>
  *
  * <p>
- * {@link AnnotationConsumer} 接口说明了该类型需要从指定注解中获取信息, 来提供假设参数
+ * {@link AnnotationConsumer} 接口说明了该类型需要从指定注解中获取信息,
+ * 来提供假设参数
  * </p>
  */
-public class VariableArgumentsProvider implements ArgumentsProvider, AnnotationConsumer<VariableSource> {
+public class VariableArgumentsProvider implements
+                                       ArgumentsProvider,
+                                       AnnotationConsumer<VariableSource> {
     // 保存假设参数的字段名
     private String variableName;
 
@@ -48,7 +53,8 @@ public class VariableArgumentsProvider implements ArgumentsProvider, AnnotationC
                 // 从字段中获取字段值
                 .map(this::getValue)
                 // 为获取到结果, 抛出异常
-                .orElseThrow(() -> new IllegalArgumentException("Failed to load test arguments"));
+                .orElseThrow(
+                    () -> new IllegalArgumentException("Failed to load test arguments"));
     }
 
     /**

@@ -1,10 +1,10 @@
 package alvin.study.testing.junit.parameterized;
 
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.params.converter.ArgumentConversionException;
 import org.junit.jupiter.params.converter.ArgumentConverter;
-
-import java.time.LocalDate;
 
 /**
  * 用于将测试提供的假设值从字符串类型转为 {@link LocalDate} 类型
@@ -15,7 +15,8 @@ import java.time.LocalDate;
  *
  * <p>
  * 转换需实现 {@link ArgumentConverter} 接口, 且在测试参数中通过
- * {@link org.junit.jupiter.params.converter.ConvertWith @ConvertWith} 注解来指定转换类型
+ * {@link org.junit.jupiter.params.converter.ConvertWith @ConvertWith}
+ * 注解来指定转换类型
  * </p>
  */
 public class SlashyDateConverter implements ArgumentConverter {

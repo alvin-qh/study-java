@@ -1,16 +1,18 @@
 package alvin.study.testing.assertj.custom;
 
-import alvin.study.testing.testcase.model.User;
+import java.util.Objects;
+
 import org.assertj.core.api.AbstractAssert;
 
-import java.util.Objects;
+import alvin.study.testing.testcase.model.User;
 
 /**
  * 对 {@link User} 类型进行断言的断言类
  */
 public class UserAssert extends AbstractAssert<UserAssert, User> {
     /**
-     * 构造器, 实例化断言对象, 本构造器不公开, 必须通过 {@link Assertions#assertThat(User)} 方法创建
+     * 构造器, 实例化断言对象, 本构造器不公开, 必须通过
+     * {@link Assertions#assertThat(User)} 方法创建
      *
      * @param actual 要断言的目标对象
      */

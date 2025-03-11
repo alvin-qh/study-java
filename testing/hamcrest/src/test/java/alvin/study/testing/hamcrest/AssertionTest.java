@@ -45,10 +45,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import alvin.study.testing.testcase.model.User;
 import alvin.study.testing.testcase.service.UserService;
@@ -67,20 +68,24 @@ class AssertionTest {
      *
      * <p>
      * hamcrest 框架的断言原语起始于一个
-     * {@link org.hamcrest.MatcherAssert#assertThat(Object, org.hamcrest.Matcher)
-     * MatcherAssert.assertThat(Object, Matcher)} 方法, 第一个参数为要断言的值, 第二个参数是执行断言的匹配器对象
+     * {@link org.hamcrest.MatcherAssert#assertThat(
+     * Object, org.hamcrest.Matcher)
+     * MatcherAssert.assertThat(Object, Matcher)} 方法,
+     * 第一个参数为要断言的值, 第二个参数是执行断言的匹配器对象
      * </p>
      *
      * <p>
      * {@link org.hamcrest.Matchers#is Matchers.is} 方法和
-     * {@link org.hamcrest.Matchers#not Matchers.not} 是两个最基本的断言方法, 返回对应的
-     * {@link org.hamcrest.Matcher Matcher} 对象, 表示"是"或"不是"这两个基本概念, 其断言可以针对值,
+     * {@link org.hamcrest.Matchers#not Matchers.not}
+     * 是两个最基本的断言方法, 返回对应的 {@link org.hamcrest.Matcher
+     * Matcher} 对象, 表示"是"或"不是"这两个基本概念, 其断言可以针对值,
      * 也可以针对下一级的 {@link org.hamcrest.Matcher Matcher} 对象
      * </p>
      *
      * <p>
-     * {@link org.hamcrest.MatcherAssert#assertThat MatcherAssert.assertThat}
-     * 方法也可以在第一个参数中传递断言信息, 在测试报告中可以看到
+     * {@link org.hamcrest.MatcherAssert#assertThat
+     * MatcherAssert.assertThat} 方法也可以在第一个参数中传递断言信息,
+     * 在测试报告中可以看到
      * </p>
      */
     @Test
@@ -93,15 +98,17 @@ class AssertionTest {
      * 等值断言
      *
      * <p>
-     * 对于两个值来说, {@link org.hamcrest.Matchers#is(Object) Matchers.is(Object)} 和
-     * {@link org.hamcrest.Matchers#equalTo(Object) Matchers.equalTo(Object)}
-     * 的结果是相同的, 均是通过 {@link Object#equals(Object)} 方法的结果, 对是否等值进行断言
+     * 对于两个值来说, {@link org.hamcrest.Matchers#is(Object)
+     * Matchers.is(Object)} 和 {@link org.hamcrest.Matchers#equalTo(Object)
+     * Matchers.equalTo(Object)} 的结果是相同的, 均是通过
+     * {@link Object#equals(Object)} 方法的结果, 对是否等值进行断言
      * </p>
      *
      * <p>
      * 但 hamcrest 希望用 {@link org.hamcrest.Matchers#is(org.hamcrest.Matcher)
-     * Matchers.is(Matcher)} 作为断言原语的谓语, 下一级 {@link org.hamcrest.Matcher Matcher}
-     * 对象作为宾语, 这样以被断言值为主语的主谓宾部分就完善了, 可以在测试失败后显式完整的断言结果
+     * Matchers.is(Matcher)} 作为断言原语的谓语, 下一级
+     * {@link org.hamcrest.Matcher Matcher} 对象作为宾语,
+     * 这样以被断言值为主语的主谓宾部分就完善了, 可以在测试失败后显式完整的断言结果
      * </p>
      *
      * <p>
@@ -135,20 +142,22 @@ class AssertionTest {
      * {@code null} 和 非{@code null} 断言
      *
      * <p>
-     * {@link org.hamcrest.Matchers#nullValue() Matchers.nullValue()} 用于对主语是否为
-     * {@code null} 进行断言
+     * {@link org.hamcrest.Matchers#nullValue() Matchers.nullValue()}
+     * 用于对主语是否为 {@code null} 进行断言
      * </p>
      *
      * <p>
      * {@link org.hamcrest.Matchers#notNullValue() Matchers.notNullValue()}
      * 用于对主语是否不为 {@code null} 进行断言, 相当于
-     * {@link org.hamcrest.Matchers#not(org.hamcrest.Matcher) Matchers.not(Matcher)}
-     * 和 {@link org.hamcrest.Matchers#nullValue() Matchers.nullValue()} 的组合
+     * {@link org.hamcrest.Matchers#not(org.hamcrest.Matcher)
+     * Matchers.not(Matcher)} 和 {@link org.hamcrest.Matchers#nullValue()
+     * Matchers.nullValue()} 的组合
      * </p>
      *
      * <p>
      * 进一步的, {@link org.hamcrest.Matchers#notNullValue(Class)
-     * Matchers.notNullValue(Class)} 用于对主语不为 {@code null} 时是否匹配具体类型进行断言
+     * Matchers.notNullValue(Class)} 用于对主语不为 {@code null}
+     * 时是否匹配具体类型进行断言
      * </p>
      */
     @Test
@@ -168,15 +177,15 @@ class AssertionTest {
      * 类型匹配断言
      *
      * <p>
-     * {@link org.hamcrest.Matchers#instanceOf(Class) Matchers.instanceOf(Class)}
-     * 用于对主语的类型是否匹配进行断言
+     * {@link org.hamcrest.Matchers#instanceOf(Class)
+     * Matchers.instanceOf(Class)} 用于对主语的类型是否匹配进行断言
      * </p>
      *
      * <p>
-     * {@link org.hamcrest.Matchers#isA(Class) Matchers.isA(Class)} 相当于是
-     * {@link org.hamcrest.Matchers#is(org.hamcrest.Matcher) Matchers.is(Matcher)}
-     * 和 {@link org.hamcrest.Matchers#instanceOf(Class) Matchers.instanceOf(Class)}
-     * 的组合
+     * {@link org.hamcrest.Matchers#isA(Class) Matchers.isA(Class)}
+     * 相当于是 {@link org.hamcrest.Matchers#is(org.hamcrest.Matcher)
+     * Matchers.is(Matcher)} 和 {@link org.hamcrest.Matchers#instanceOf(Class)
+     * Matchers.instanceOf(Class)} 的组合
      * </p>
      */
     @Test
@@ -201,12 +210,13 @@ class AssertionTest {
      *
      * <p>
      * {@link org.hamcrest.Matchers#emptyOrNullString()
-     * Matchers.emptyOrNullString()} 用于断言主语是否为一个空或 {@code null} 值的字符串
+     * Matchers.emptyOrNullString()} 用于断言主语是否为一个空或 {@code null}
+     * 值的字符串
      * </p>
      *
      * <p>
-     * 对于字符串等值断言, 则直接使用
-     * {@link org.hamcrest.Matchers#equalTo(Object) Matchers.equalTo(Object)} 断言即可
+     * 对于字符串等值断言, 则直接使用 {@link org.hamcrest.Matchers#equalTo(Object)
+     * Matchers.equalTo(Object)} 断言即可
      * </p>
      *
      * <p>
@@ -264,14 +274,14 @@ class AssertionTest {
      *
      * <p>
      * {@link org.hamcrest.Matchers#array(org.hamcrest.Matcher...)
-     * Matchers.array(Matcher)} 方法用于通过一组 {@link org.hamcrest.Matcher Matcher} 对象,
-     * 来对主语数组的元素进行逐一匹配断言
+     * Matchers.array(Matcher)} 方法用于通过一组 {@link org.hamcrest.Matcher
+     * Matcher} 对象, 来对主语数组的元素进行逐一匹配断言
      * </p>
      *
      * <p>
      * {@link org.hamcrest.Matchers#arrayContaining(Object...)
-     * Matchers.arrayContaining(Object...)} 方法用于对主语数组的元素按顺序进行匹配; 而
-     * {@link org.hamcrest.Matchers#arrayContaining(List)
+     * Matchers.arrayContaining(Object...)} 方法用于对主语数组的元素按顺序进行匹配;
+     * 而 {@link org.hamcrest.Matchers#arrayContaining(List)
      * Matchers.arrayContaining(List&lt; Matcher&gt;)} 和
      * {@link org.hamcrest.Matchers#arrayContaining(org.hamcrest.Matcher...)
      * Matchers.arrayContaining(Matcher...)} 则用于通过一组 {@link org.hamcrest.Matcher
@@ -286,7 +296,8 @@ class AssertionTest {
      * {@link org.hamcrest.Matchers#arrayContainingInAnyOrder(java.util.Collection)
      * Matchers.arrayContainingInAnyOrder(Collection&lt; Matcher&gt;)} 以及
      * {@link org.hamcrest.Matchers#arrayContainingInAnyOrder(org.hamcrest.Matcher...)
-     * Matchers.arrayContainingInAnyOrder(Matcher...)} 和上述三个方法功能类似, 但不匹配主语数组的元素顺序
+     * Matchers.arrayContainingInAnyOrder(Matcher...)} 和上述三个方法功能类似,
+     * 但不匹配主语数组的元素顺序
      * </p>
      *
      * <p>
@@ -304,7 +315,8 @@ class AssertionTest {
      * {@link org.hamcrest.Matchers#hasItemInArray(Object)
      * Matchers.hasItemInArray(Object)} 和
      * {@link org.hamcrest.Matchers#hasItemInArray(org.hamcrest.Matcher)
-     * Matchers.hasItemInArray(Matcher)} 方法用于对主语数组是否包含指定元素或指定元素是否匹配某个
+     * Matchers.hasItemInArray(Matcher)}
+     * 方法用于对主语数组是否包含指定元素或指定元素是否匹配某个
      * {@link org.hamcrest.Matcher Matcher} 对象进行断言
      */
     @Test
@@ -340,12 +352,12 @@ class AssertionTest {
      *
      * <p>
      * {@link org.hamcrest.Matchers#contains(Object...)
-     * Matchers.contains(Object...)} 方法用于对主语集合的元素按顺序进行匹配; 而
-     * {@link org.hamcrest.Matchers#contains(List) Matchers.contains(List&lt;
-     * Matcher&gt;)} 和
+     * Matchers.contains(Object...)} 方法用于对主语集合的元素按顺序进行匹配;
+     * 而 {@link org.hamcrest.Matchers#contains(List)
+     * Matchers.contains(List&lt;Matcher&gt;)} 和
      * {@link org.hamcrest.Matchers#contains(org.hamcrest.Matcher...)
-     * Matchers.contains(Matcher...)} 则用于通过一组 {@link org.hamcrest.Matcher
-     * Matcher} 对象对主语数组的元素按顺序进行匹配
+     * Matchers.contains(Matcher...)} 则用于通过一组
+     * {@link org.hamcrest.Matcher Matcher} 对象对主语数组的元素按顺序进行匹配
      * </p>
      *
      * <p>
@@ -354,7 +366,8 @@ class AssertionTest {
      * {@link org.hamcrest.Matchers#containsInAnyOrder(java.util.Collection)
      * Matchers.containsInAnyOrder(Collection&lt; Matcher&gt;)} 以及
      * {@link org.hamcrest.Matchers#containsInAnyOrder(org.hamcrest.Matcher...)
-     * Matchers.containsInAnyOrder(Matcher...)} 和上述三个方法功能类似, 但不匹配主语集合的元素顺序
+     * Matchers.containsInAnyOrder(Matcher...)} 和上述三个方法功能类似,
+     * 但不匹配主语集合的元素顺序
      * </p>
      *
      * <p>
@@ -364,16 +377,18 @@ class AssertionTest {
      * Matchers.iterableWithSize(Matcher)} 方法通过遍历迭代器的方式对主语集合的长度进行断言;
      * {@link org.hamcrest.Matchers#hasSize(int) Matchers.hasSize(int)} 以及
      * {@link org.hamcrest.Matchers#hasSize(org.hamcrest.Matcher)
-     * Matchers.hasSize(Matcher)} 方法则是通过主语集合对象的 {@code size()} 方法对其长度进行断言, 若主语集合无
-     * {@code size()} 方法, 则抛出异常
+     * Matchers.hasSize(Matcher)} 方法则是通过主语集合对象的 {@code size()}
+     * 方法对其长度进行断言, 若主语集合无 {@code size()} 方法, 则抛出异常
      * </p>
      *
      * <p>
-     * {@link org.hamcrest.Matchers#empty() Matchers.empty()} 方法用于对主语集合是否为空数组进行断言
+     * {@link org.hamcrest.Matchers#empty() Matchers.empty()}
+     * 方法用于对主语集合是否为空数组进行断言
      * </p>
      *
      * <p>
-     * {@link org.hamcrest.Matchers#hasItem(Object) Matchers.hasItem(Object)} 和
+     * {@link org.hamcrest.Matchers#hasItem(Object)
+     * Matchers.hasItem(Object)} 和
      * {@link org.hamcrest.Matchers#hasItem(org.hamcrest.Matcher)
      * Matchers.hasItem(Matcher)} 方法用于对主语集合是否包含指定元素或指定元素是否匹配某个
      * {@link org.hamcrest.Matcher Matcher} 对象进行断言
@@ -416,29 +431,31 @@ class AssertionTest {
      * Map 集合匹配断言
      *
      * <p>
-     * {@link org.hamcrest.Matchers#hasKey(Object) Matchers.hasKey(Object)} 和
-     * {@link org.hamcrest.Matchers#hasKey(org.hamcrest.Matcher)
-     * Matchers.hasKey(Matcher)} 方法用于匹配主语 {@link Map} 中是否包含指定的 {@code Key} 值
+     * {@link org.hamcrest.Matchers#hasKey(Object) Matchers.hasKey(Object)}
+     * 和 {@link org.hamcrest.Matchers#hasKey(org.hamcrest.Matcher)
+     * Matchers.hasKey(Matcher)} 方法用于匹配主语 {@link Map} 中是否包含指定的
+     * {@code Key} 值
      * </p>
      *
      * <p>
-     * {@link org.hamcrest.Matchers#hasValue(Object) Matchers.hasValue(Object)} 和
-     * {@link org.hamcrest.Matchers#hasValue(org.hamcrest.Matcher)
-     * Matchers.hasValue(Matcher)} 方法用于匹配主语 {@link Map} 中是否包含指定的 {@code Value} 值
+     * {@link org.hamcrest.Matchers#hasValue(Object) Matchers.hasValue(Object)}
+     * 和 {@link org.hamcrest.Matchers#hasValue(org.hamcrest.Matcher)
+     * Matchers.hasValue(Matcher)} 方法用于匹配主语 {@link Map} 中是否包含指定的
+     * {@code Value} 值
      * </p>
      *
      * <p>
      * {@link org.hamcrest.Matchers#hasEntry(Object, Object)
      * Matchers.hasValue(Object, Object)} 和
      * {@link org.hamcrest.Matchers#hasEntry(org.hamcrest.Matcher, org.hamcrest.Matcher)
-     * Matchers.hasValue(Matcher, Matcher)} 方法用于匹配主语 {@link Map} 中是否包含指定的
-     * {@link Map.Entry} 键值对
+     * Matchers.hasValue(Matcher, Matcher)} 方法用于匹配主语 {@link Map}
+     * 中是否包含指定的 {@link Map.Entry} 键值对
      * </p>
      *
      * <p>
      * 可以通过 {@link org.hamcrest.Matchers#allOf(org.hamcrest.Matcher...)
-     * Matchers.allOf(Matcher...)} 匹配器匹配一组 {@link org.hamcrest.Matcher Matcher} 对象,
-     * 以对多个键值对进行匹配
+     * Matchers.allOf(Matcher...)} 匹配器匹配一组
+     * {@link org.hamcrest.Matcher Matcher} 对象, 以对多个键值对进行匹配
      * </p>
      */
     @Test
@@ -462,25 +479,30 @@ class AssertionTest {
      * 自定义匹配规则进行断言
      *
      * <p>
-     * 通过 {@link alvin.study.hamcrest.matcher.IsTruly#truly() IsTruly.truly()} 以及
-     * {@link alvin.study.hamcrest.matcher.IsTruly#falsely() IsTruly.falsely()}
-     * 对主语对象是否表示 {@code true} 或 {@code false} 进行断言
+     * 通过 {@link alvin.study.testing.hamcrest.matcher.IsTruly#truly()
+     * IsTruly.truly()} 以及
+     * {@link alvin.study.testing.hamcrest.matcher.IsTruly#falsely()
+     * IsTruly.falsely()} 对主语对象是否表示 {@code true} 或 {@code false}
+     * 进行断言
      * </p>
      *
      * <p>
      * 通过
-     * {@link alvin.study.hamcrest.matcher.ObjectOf#objectOf(java.util.function.Function, org.hamcrest.Matcher)
-     * ObjectOf.objectOf(Function, Matcher)} 方法以主语对象为参数进行回调, 并对返回结果进行匹配
+     * {@link alvin.study.testing.hamcrest.matcher.ObjectOf#objectOf(
+     * java.util.function.Function, org.hamcrest.Matcher)
+     * ObjectOf.objectOf(Function, Matcher)} 方法以主语对象为参数进行回调,
+     * 并对返回结果进行匹配
      * </p>
      *
      * <p>
-     * 通过 {@link alvin.study.hamcrest.matcher.IsPresent#present()
+     * 通过 {@link alvin.study.testing.hamcrest.matcher.IsPresent#present()
      * IsPresent.present()},
-     * {@link alvin.study.hamcrest.matcher.IsPresent#notPresent()
+     * {@link alvin.study.testing.hamcrest.matcher.IsPresent#notPresent()
      * IsPresent.notPresent()} 方法对主语 {@link Optional} 对象的
      * {@link Optional#isPresent()} 是否为 {@code true} 进行断言;
-     * {@link alvin.study.hamcrest.matcher.IsPresent#presentThen(org.hamcrest.Matcher...)
-     * IsPresent.presentThen(Matcher...)} 方法对主语 {@link Optional} 对象包含的对象进行一组匹配, 进行断言
+     * {@link alvin.study.testing.hamcrest.matcher.IsPresent#presentThen(
+     * org.hamcrest.Matcher...) IsPresent.presentThen(Matcher...)}
+     * 方法对主语 {@link Optional} 对象包含的对象进行一组匹配, 进行断言
      * </p>
      */
     @Test

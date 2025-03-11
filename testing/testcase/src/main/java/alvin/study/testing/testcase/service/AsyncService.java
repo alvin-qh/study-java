@@ -1,8 +1,5 @@
 package alvin.study.testing.testcase.service;
 
-import alvin.study.testing.testcase.model.User;
-import lombok.SneakyThrows;
-
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -10,24 +7,35 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
+import lombok.SneakyThrows;
+
+import alvin.study.testing.testcase.model.User;
+
 /**
  * 为测试 Awaitility 库定义测试类型
  *
  * <p>
- * 为了模拟异步操作, 本类型的方法设定了"执行时间"的概念, 即方法内部会通过线程执行异步操作, 并等待指定的时间 (模拟现实中执行方法所需时间)
+ * 为了模拟异步操作, 本类型的方法设定了"执行时间"的概念,
+ * 即方法内部会通过线程执行异步操作, 并等待指定的时间
+ * (模拟现实中执行方法所需时间)
  * </p>
  */
 public class AsyncService {
     // 执行普通方法需等待的时长
-    private static final int DELAY = 1000;
+    private static final int DELAY = 50;
+
     // 初始化方法需等待的时长
-    private static final int INIT_DELAY = 2000;
+    private static final int INIT_DELAY = 100;
+
     // 异步线程执行器
     private final Executor executor = queuedExecutor(1, 10);
+
     // Value 值
     private final AtomicLong value = new AtomicLong(0);
+
     // User 值
     private final AtomicReference<User> userRef = new AtomicReference<>();
+
     // 是否初始化完毕的标记量
     private volatile boolean initialized = false;
 
@@ -35,7 +43,8 @@ public class AsyncService {
      * 实例化一个执行器 ({@link Executor} 对象
      *
      * <p>
-     * 执行器内部是一个线程池 (Thread Pool), 通过从线程池中获取一个空闲线程并执行代码来进行异步操作
+     * 执行器内部是一个线程池 (Thread Pool),
+     * 通过从线程池中获取一个空闲线程并执行代码来进行异步操作
      * </p>
      *
      * @param coreSize 线程池的最小线程数
@@ -45,7 +54,8 @@ public class AsyncService {
     private static Executor queuedExecutor(int coreSize, int maxSize) {
         return new ThreadPoolExecutor(
             coreSize, // 核心线程数, 即线程池维护的最小线程数
-            maxSize,  // 最大线程数, 即线程池最大可达到的线程数, 达到该数量后, 即便任务再多, 也不会增加线程数
+            maxSize,  // 最大线程数, 即线程池最大可达到的线程数,
+                      // 达到该数量后, 即便任务再多, 也不会增加线程数
             5,        // 放弃一个任务前等待的时间
             TimeUnit.SECONDS, // keepAliveTime 参数的单位
             new ArrayBlockingQueue<>(maxSize * 10),  // 组织任务的队列对象
@@ -67,7 +77,8 @@ public class AsyncService {
      * 初始化方法
      *
      * <p>
-     * 初始化方法耗时 {@link #INIT_DELAY} 毫秒, 通过 {@link #isInitialized()} 方法判断是否初始化完毕
+     * 初始化方法耗时 {@link #INIT_DELAY} 毫秒, 通过
+     * {@link #isInitialized()} 方法判断是否初始化完毕
      * </p>
      */
     public void initialize() {

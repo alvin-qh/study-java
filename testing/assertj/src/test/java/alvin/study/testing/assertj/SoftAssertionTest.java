@@ -6,6 +6,7 @@ import org.assertj.core.api.BDDSoftAssertions;
 import org.assertj.core.api.SoftAssertions;
 import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
 import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
+
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
  * 测试软断言的使用
  *
  * <p>
- * 所谓"软断言", 即在测试执行过程中, 即使断言失败也不会中断测试. 在一个测试方法执行完毕后, 报告完整的测试结果, 包括所有未通过的断言情况
+ * 所谓"软断言", 即在测试执行过程中, 即使断言失败也不会中断测试.
+ * 在一个测试方法执行完毕后, 报告完整的测试结果, 包括所有未通过的断言情况
  * </p>
  */
 @Disabled
@@ -37,9 +39,15 @@ class SoftAssertionTest {
             var softly = new SoftAssertions();
             try {
                 // 通过软断言对象进行断言
-                softly.assertThat(x).as("should x is equal to y").isEqualTo(y);
-                softly.assertThat(x).as("should x is great than y").isGreaterThan(y);
-                softly.assertThat(y).as("should x is less and equal to than y").isLessThanOrEqualTo(x);
+                softly.assertThat(x)
+                        .as("should x is equal to y")
+                        .isEqualTo(y);
+                softly.assertThat(x)
+                        .as("should x is great than y")
+                        .isGreaterThan(y);
+                softly.assertThat(y)
+                        .as("should x is less and equal to than y")
+                        .isLessThanOrEqualTo(x);
             } finally {
                 // 测试方法结束前产生测试报告
                 softly.assertAll();
@@ -57,9 +65,15 @@ class SoftAssertionTest {
             // 通过 try ... resource 语法产生一个结束后自动产生测试报告的软断言对象
             try (var softly = new AutoCloseableSoftAssertions()) {
                 // 通过软断言对象进行断言
-                softly.assertThat(x).as("should x is equal to y").isEqualTo(y);
-                softly.assertThat(x).as("should x is great than y").isGreaterThan(y);
-                softly.assertThat(y).as("should x is less and equal to than y").isLessThanOrEqualTo(x);
+                softly.assertThat(x)
+                        .as("should x is equal to y")
+                        .isEqualTo(y);
+                softly.assertThat(x)
+                        .as("should x is great than y")
+                        .isGreaterThan(y);
+                softly.assertThat(y)
+                        .as("should x is less and equal to than y")
+                        .isLessThanOrEqualTo(x);
             }
         }
 
@@ -75,14 +89,21 @@ class SoftAssertionTest {
             // 通过一个 Lambda 表达式进行软断言, 表达式执行完毕后自动生成测试报告
             SoftAssertions.assertSoftly(softly -> {
                 // 通过软断言对象进行断言
-                softly.assertThat(x).as("should x is equal to y").isEqualTo(y);
-                softly.assertThat(x).as("should x is great than y").isGreaterThan(y);
-                softly.assertThat(y).as("should x is less and equal to than y").isLessThanOrEqualTo(x);
+                softly.assertThat(x)
+                        .as("should x is equal to y")
+                        .isEqualTo(y);
+                softly.assertThat(x)
+                        .as("should x is great than y")
+                        .isGreaterThan(y);
+                softly.assertThat(y)
+                        .as("should x is less and equal to than y")
+                        .isLessThanOrEqualTo(x);
             });
         }
 
         /**
-         * 通过 BDD 格式进行断言, 并通过 {@link BDDSoftAssertions#assertAll()} 方法完成断言报告
+         * 通过 BDD 格式进行断言, 并通过 {@link BDDSoftAssertions#assertAll()}
+         * 方法完成断言报告
          */
         @Test
         void bdd_shouldSoftAssertionWorked() {
@@ -93,9 +114,15 @@ class SoftAssertionTest {
             var softly = new BDDSoftAssertions();
             try {
                 // 通过软断言对象进行断言
-                softly.then(x).as("should x is equal to y").isEqualTo(y);
-                softly.then(x).as("should x is great than y").isGreaterThan(y);
-                softly.then(y).as("should x is less and equal to than y").isLessThanOrEqualTo(x);
+                softly.then(x)
+                        .as("should x is equal to y")
+                        .isEqualTo(y);
+                softly.then(x)
+                        .as("should x is great than y")
+                        .isGreaterThan(y);
+                softly.then(y)
+                        .as("should x is less and equal to than y")
+                        .isLessThanOrEqualTo(x);
             } finally {
                 // 测试方法结束前产生测试报告
                 softly.assertAll();
@@ -103,7 +130,8 @@ class SoftAssertionTest {
         }
 
         /**
-         * 通过 BDD 格式进行断言, 并通过 {@link AutoCloseableBDDSoftAssertions#close()} 方法完成断言报告
+         * 通过 BDD 格式进行断言, 并通过 {@link AutoCloseableBDDSoftAssertions#close()}
+         * 方法完成断言报告
          */
         @Test
         void bdd_shouldAutoClosedSoftAssertionWorked() {
@@ -113,14 +141,21 @@ class SoftAssertionTest {
             // 通过 try ... resource 语法产生一个结束后自动产生测试报告的软断言对象
             try (var softly = new AutoCloseableBDDSoftAssertions()) {
                 // 通过软断言对象进行断言
-                softly.then(x).as("should x is equal to y").isEqualTo(y);
-                softly.then(x).as("should x is great than y").isGreaterThan(y);
-                softly.then(y).as("should x is less and equal to than y").isLessThanOrEqualTo(x);
+                softly.then(x)
+                        .as("should x is equal to y")
+                        .isEqualTo(y);
+                softly.then(x)
+                        .as("should x is great than y")
+                        .isGreaterThan(y);
+                softly.then(y)
+                        .as("should x is less and equal to than y")
+                        .isLessThanOrEqualTo(x);
             }
         }
 
         /**
-         * 通过 BDD 格式进行断言, 并通过 {@link BDDSoftAssertions#thenSoftly(java.util.function.Consumer)
+         * 通过 BDD 格式进行断言, 并通过
+         * {@link BDDSoftAssertions#thenSoftly(java.util.function.Consumer)
          * BDDSoftAssertions.thenSoftly(Consumer)} 方法完成断言报告
          */
         @Test
@@ -131,9 +166,15 @@ class SoftAssertionTest {
             // 通过 try ... resource 语法产生一个结束后自动产生测试报告的软断言对象
             BDDSoftAssertions.thenSoftly(softly -> {
                 // 通过软断言对象进行断言
-                softly.then(x).as("should x is equal to y").isEqualTo(y);
-                softly.then(x).as("should x is great than y").isGreaterThan(y);
-                softly.then(y).as("should x is less and equal to than y").isLessThanOrEqualTo(x);
+                softly.then(x)
+                        .as("should x is equal to y")
+                        .isEqualTo(y);
+                softly.then(x)
+                        .as("should x is great than y")
+                        .isGreaterThan(y);
+                softly.then(y)
+                        .as("should x is less and equal to than y")
+                        .isLessThanOrEqualTo(x);
             });
         }
     }
@@ -162,9 +203,15 @@ class SoftAssertionTest {
 
             try {
                 // 通过软断言对象进行断言
-                softly.assertThat(x).as("should x is equal to y").isEqualTo(y);
-                softly.assertThat(x).as("should x is great than y").isGreaterThan(y);
-                softly.assertThat(y).as("should x is less and equal to than y").isLessThanOrEqualTo(x);
+                softly.assertThat(x)
+                        .as("should x is equal to y")
+                        .isEqualTo(y);
+                softly.assertThat(x)
+                        .as("should x is great than y")
+                        .isGreaterThan(y);
+                softly.assertThat(y)
+                        .as("should x is less and equal to than y")
+                        .isLessThanOrEqualTo(x);
             } finally {
                 // 测试方法结束前产生测试报告
                 softly.assertAll();
@@ -172,7 +219,8 @@ class SoftAssertionTest {
         }
 
         /**
-         * 通过 BDD 格式进行断言, 并通过 {@link BDDSoftAssertions#assertAll()} 方法完成断言报告
+         * 通过 BDD 格式进行断言, 并通过 {@link BDDSoftAssertions#assertAll()}
+         * 方法完成断言报告
          */
         @Test
         void softBdd_shouldSoftAssertionWork() {
@@ -181,9 +229,15 @@ class SoftAssertionTest {
 
             try {
                 // 通过软断言对象进行断言
-                bddSoftly.then(x).as("should x is equal to y").isEqualTo(y);
-                bddSoftly.then(x).as("should x is great than y").isGreaterThan(y);
-                bddSoftly.then(y).as("should x is less and equal to than y").isLessThanOrEqualTo(x);
+                bddSoftly.then(x)
+                        .as("should x is equal to y")
+                        .isEqualTo(y);
+                bddSoftly.then(x)
+                        .as("should x is great than y")
+                        .isGreaterThan(y);
+                bddSoftly.then(y)
+                        .as("should x is less and equal to than y")
+                        .isLessThanOrEqualTo(x);
             } finally {
                 // 测试方法结束前产生测试报告
                 bddSoftly.assertAll();

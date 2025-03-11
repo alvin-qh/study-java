@@ -1,10 +1,11 @@
 package alvin.study.testing.junit.parameterized;
 
-import alvin.study.testing.testcase.model.User;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
 import org.junit.jupiter.params.aggregator.ArgumentsAggregationException;
 import org.junit.jupiter.params.aggregator.ArgumentsAggregator;
+
+import alvin.study.testing.testcase.model.User;
 
 /**
  * 将 csv 数据聚合成 {@link User} 对象的数据聚合类型

@@ -25,21 +25,50 @@
     - 条件验证: `Verify` 类型;
     -->
     <module>base</module>
-    <!-- 对 Guava 库的 `com.google.common.primitives` 包功能进行演示 -->
+    <!--
+    对 Guava 库的 `com.google.common.primitives` 包功能进行演示
+    `primitives` 包提供了一些基本类型的包装类
+    -->
     <module>primitives</module>
-    <!-- 对 Guava 库的 `com.google.common.cache` 包功能进行演示 -->
+    <!--
+    对 Guava 库的 `com.google.common.cache` 包功能进行演示
+    `cache` 包提供了一些缓存相关的功能
+    -->
     <module>cache</module>
+    <!--
+    对 Guava 库的 `com.google.common.io` 包功能进行演示
+    `io` 包提供了一些 IO 相关的功能
+    -->
     <module>io</module>
-    <!-- 对 Guava 库的 `com.google.common.collect` 包功能进行演示 -->
+    <!--
+    对 Guava 库的 `com.google.common.collect` 包功能进行演示
+    `collect` 包提供了一些集合相关的功能
+    -->
     <module>collect</module>
-    <!-- 对 Guava 库的 `com.google.common.reflect` 包功能进行演示 -->
+    <!--
+    对 Guava 库的 `com.google.common.reflect` 包功能进行演示
+    `reflect` 包提供了一些反射相关的功能
+    -->
     <module>reflect</module>
+    <!--
+    对 Guava 库的 `com.google.common.eventbus` 包功能进行演示
+    `eventbus` 包提供了一些事件相关的功能
+    -->
     <module>eventbus</module>
-    <!-- 对 Guava 库的 `com.google.common.util.concurrent` 包功能进行演示 -->
+    <!--
+    对 Guava 库的 `com.google.common.util.concurrent` 包功能进行演示
+    `concurrent` 包提供了一些并发相关的功能
+    -->
     <module>concurrent</module>
-    <!-- 对 Guava 库的 `com.google.common.graph` 包功能进行演示 -->
+    <!--
+    对 Guava 库的 `com.google.common.graph` 包功能进行演示
+    `graphs` 包提供了一些图相关的功能
+    -->
     <module>graphs</module>
-    <!-- 对 Guava 库的 `com.google.common.hash` 包功能进行演示 -->
+    <!--
+    对 Guava 库的 `com.google.common.hash` 包功能进行演示
+    `hashing` 包提供了一些哈希相关的功能
+    -->
     <module>hashing</module>
   </modules>
 

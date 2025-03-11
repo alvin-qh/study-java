@@ -18,7 +18,8 @@ class ClassFinderTest {
     @Test
     void inPackage_shouldFindClassInPackageByPackageName() throws IOException {
         // 查找 alvin.study.future 包下所有类
-        var classes = ClassFinder.inPackage("alvin.study.guava.reflect.model");
+        var classes = ClassFinder.inPackage(
+            "alvin.study.guava.reflect.model");
 
         // 确认结果正确
         then(classes)
