@@ -1,38 +1,44 @@
 package alvin.study.testing.pioneer;
 
-import org.junit.jupiter.api.Test;
-import org.junitpioneer.jupiter.StdErr;
-import org.junitpioneer.jupiter.StdIn;
-import org.junitpioneer.jupiter.StdIo;
-import org.junitpioneer.jupiter.StdOut;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junitpioneer.jupiter.StdErr;
+import org.junitpioneer.jupiter.StdIn;
+import org.junitpioneer.jupiter.StdIo;
+import org.junitpioneer.jupiter.StdOut;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * 替换 {@link System#in} 和 {@link System#out}, 用于测试标准输入输出
  *
  * <p>
- * 注解 {@link StdIo @StdIo} 后, {@link System#in} 和 {@link System#out} 两个对象会被替换, 参考:
+ * 注解 {@link StdIo @StdIo} 后, {@link System#in} 和 {@link System#out}
+ * 两个对象会被替换, 参考:
  * {@link System#setIn(java.io.InputStream) System.setIn(InputStream)} 和
  * {@link System#setOut(java.io.PrintStream) System.setOut(PrintStream)} 以及
  * {@link System#setErr(java.io.PrintStream) System.setErr(PrintStream)} 方法
  * </p>
  *
  * <p>
- * 可以为测试方法设置类型为 {@link StdOut}, {@link StdErr} 以及 {@link StdIn} 参数, 其中:
+ * 可以为测试方法设置类型为 {@link StdOut}, {@link StdErr} 以及 {@link StdIn} 参数,
+ * 其中:
  * <ul>
  * <li>
- * {@link StdOut} 参数对应 {@link System#out} 对象, 可以用来读取 {@link System#out} 输出的内容
+ * {@link StdOut} 参数对应 {@link System#out} 对象, 可以用来读取 {@link System#out}
+ * 输出的内容
  * </li>
  * <li>
- * {@link StdErr} 参数对应 {@link System#err} 对象, 可以用来读取 {@link System#err} 输出的内容
+ * {@link StdErr} 参数对应 {@link System#err} 对象, 可以用来读取 {@link System#err}
+ * 输出的内容
  * </li>
  * <li>
- * {@link StdIn} 参数对应 {@link System#in} 对象, 可以用来读取 {@link System#in} 输入的内容
+ * {@link StdIn} 参数对应 {@link System#in} 对象, 可以用来读取 {@link System#in}
+ * 输入的内容
  * </li>
  * </ul>
  * </p>
@@ -41,7 +47,8 @@ class StandardIoTest {
     /**
      * 测试通过 {@link StdIo @StdIo} 注解替换 {@link System#in} 对象
      *
-     * @param out {@link StdOut} 对象, 用于读取 {@link System#out} 输出的内容
+     * @param out {@link StdOut} 对象, 用于读取 {@link System#out}
+     *            输出的内容
      */
     @Test
     @StdIo
@@ -60,7 +67,8 @@ class StandardIoTest {
     /**
      * 测试通过 {@link StdIo @StdIo} 注解替换 {@link System#err} 对象
      *
-     * @param err {@link StdErr} 对象, 用于读取 {@link System#err} 输出的内容
+     * @param err {@link StdErr} 对象, 用于读取 {@link System#err}
+     *            输出的内容
      */
     @Test
     @StdIo
