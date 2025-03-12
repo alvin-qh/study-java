@@ -1,9 +1,10 @@
 package alvin.study.testing.junit;
 
-import alvin.study.testing.junit.tag.ImportantTagTest;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
+
+import alvin.study.testing.junit.tag.ImportantTagTest;
 
 /**
  * 演示在测试中使用 Tag

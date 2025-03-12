@@ -1,12 +1,12 @@
 package alvin.study.testing.junit;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  * 测试注入一个临时路径

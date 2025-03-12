@@ -323,26 +323,40 @@ class AssertionTest {
     void arrays_shouldAssertArrayIfMatchedMatchers() {
         // 判断一个数组是否和指定的元素值匹配
         assertThat(new Integer[] { 1, 2, 3 }, is(arrayContaining(1, 2, 3)));
+
         // 判断一个数组是否和指定的匹配器匹配
-        assertThat(new Integer[] { 1, 2, 3 }, is(array(equalTo(1), equalTo(2), equalTo(3))));
+        assertThat(new Integer[] { 1, 2, 3 }, is(array(
+            equalTo(1),
+            equalTo(2),
+            equalTo(3))));
+
         // 判断一个数组是否和指定的匹配器匹配
-        assertThat(new Integer[] { 1, 2, 3 }, is(arrayContaining(equalTo(1), equalTo(2), equalTo(3))));
+        assertThat(new Integer[] { 1, 2, 3 }, is(arrayContaining(
+            equalTo(1),
+            equalTo(2),
+            equalTo(3))));
 
         // 判断一个数组是否和指定的元素值匹配 (忽略元素顺序)
         assertThat(new Integer[] { 1, 2, 3 }, is(arrayContainingInAnyOrder(3, 2, 1)));
+
         // 判断一个数组是否和指定的匹配器匹配 (忽略匹配器顺序)
-        assertThat(new Integer[] { 1, 2, 3 }, is(arrayContainingInAnyOrder(equalTo(2), equalTo(1), equalTo(3))));
+        assertThat(new Integer[] { 1, 2, 3 }, is(arrayContainingInAnyOrder(
+            equalTo(2),
+            equalTo(1),
+            equalTo(3))));
 
         // 判断一个数组元素数量是否匹配
         assertThat(new Integer[] { 1, 2, 3 }, is(arrayWithSize(equalTo(3))));
 
         // 判断一个数组是否为空
         assertThat(new Integer[] {}, is(emptyArray()));
+
         // 判断一个数组是否不为空
         assertThat(new Integer[] { 1, 2, 3 }, not(emptyArray()));
 
         // 判断一个数组是否包含指定元素
         assertThat(new Integer[] { 1, 2, 3 }, is(hasItemInArray(2)));
+
         // 判断一个数组的元素是否匹配指定的匹配器
         assertThat(new Integer[] { 1, 2, 3 }, is(hasItemInArray(greaterThan(2))));
     }
@@ -397,32 +411,54 @@ class AssertionTest {
     void collection_shouldAssertCollectionIfMatchedMatchers() {
         // 判断一个集合是否和指定的元素值匹配
         assertThat(List.of(1, 2, 3), is(contains(1, 2, 3)));
+
         // 判断一个集合是否和指定的元素匹配器匹配
-        assertThat(List.of(1, 2, 3), is(contains(equalTo(1), equalTo(2), equalTo(3))));
+        assertThat(List.of(1, 2, 3), is(contains(
+            equalTo(1),
+            equalTo(2),
+            equalTo(3))));
+
         // 判断一个集合是否和指定的元素匹配器匹配
-        assertThat(List.of(1, 2, 3), is(contains(List.of(equalTo(1), equalTo(2), equalTo(3)))));
+        assertThat(List.of(1, 2, 3), is(contains(
+            List.of(
+                equalTo(1),
+                equalTo(2),
+                equalTo(3)))));
 
         // 判断一个集合是否和指定的元素值匹配 (忽略元素顺序)
         assertThat(List.of(1, 2, 3), is(containsInAnyOrder(2, 1, 3)));
+
         // 判断一个集合是否和指定的元素匹配器匹配 (忽略匹配器顺序)
-        assertThat(List.of(1, 2, 3), is(containsInAnyOrder(equalTo(2), equalTo(1), equalTo(3))));
+        assertThat(List.of(1, 2, 3), is(containsInAnyOrder(
+            equalTo(2),
+            equalTo(1),
+            equalTo(3))));
+
         // 判断一个集合是否和指定的元素匹配器匹配 (忽略匹配器顺序)
-        assertThat(List.of(1, 2, 3), is(containsInAnyOrder(List.of(equalTo(2), equalTo(1), equalTo(3)))));
+        assertThat(List.of(1, 2, 3), is(containsInAnyOrder(
+            List.of(
+                equalTo(2),
+                equalTo(1),
+                equalTo(3)))));
 
         // 判断一个集合是否可迭代且元素数量符合预期
         assertThat(List.of(1, 2, 3), is(iterableWithSize(3)));
+
         // 判断一个集合是否可迭代且元素数量符合预期
         assertThat(Set.copyOf(List.of(1, 2, 2)), is(iterableWithSize(2)));
+
         // 判断一个集合元素数量是否符合预期
         assertThat(List.of(1, 2), is(hasSize(equalTo(2))));
 
         // 判断一个集合为空
         assertThat(List.of(), is(empty()));
+
         // 判断一个集合是否不为空
         assertThat(List.of(1, 2, 3), not(empty()));
 
         // 判断一个集合是否包含指定元素
         assertThat(List.of(1, 2, 3), is(hasItem(2)));
+
         // 判断一个集合元素是否能匹配指定的匹配器
         assertThat(List.of(1, 2, 3), is(hasItem(greaterThan(2)))); // 是否包含大于 2 的元素
     }

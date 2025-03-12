@@ -21,11 +21,12 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
+import lombok.SneakyThrows;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import alvin.study.testing.testcase.model.User;
-import lombok.SneakyThrows;
 
 /**
  * 测试 junit 框架的断言方法
@@ -42,8 +43,8 @@ class AssertionTest {
      * 可以直接在断言方法的最后一个参数传入 {@link String} 对象, 表示当断言失败后显示的错误信息
      * </li>
      * <li>
-     * 也可以在断言方法的最后一个参数传入一个 {@link java.util.function.Supplier Supplier} 类型的参数,
-     * 表示当断言失败后获取错误信息的 lambda 表达式
+     * 也可以在断言方法的最后一个参数传入一个 {@link java.util.function.Supplier Supplier}
+     * 类型的参数, 表示当断言失败后获取错误信息的 lambda 表达式
      * </li>
      * </ul>
      * </p>
@@ -92,7 +93,8 @@ class AssertionTest {
      *
      * <p>
      * {@link Assertions#assertNull(Object)} 和
-     * {@link Assertions#assertNotNull(Object)} 方法用于对一个对象引用是否为 {@code null} 进行断言
+     * {@link Assertions#assertNotNull(Object)} 方法用于对一个对象引用是否为
+     * {@code null} 进行断言
      * </p>
      */
     @Test
@@ -108,8 +110,8 @@ class AssertionTest {
      * 对两个值是否相等进行断言
      *
      * <p>
-     * 对于值类型, 是否相等是通过 {@code ==} 运算符返回的; 对于引用类型, 是否相等的结果是通过
-     * {@link Object#equals(Object)} 方法返回的
+     * 对于值类型, 是否相等是通过 {@code ==} 运算符返回的; 对于引用类型,
+     * 是否相等的结果是通过 {@link Object#equals(Object)} 方法返回的
      * </p>
      *
      * <p>
@@ -129,13 +131,13 @@ class AssertionTest {
      * 对集合内容是否相等进行断言
      *
      * <p>
-     * {@link Assertions#assertArrayEquals(Object[], Object[])} 用于对两个数组内容进行比较,
-     * 对其是否一致进行断言
+     * {@link Assertions#assertArrayEquals(Object[], Object[])}
+     * 用于对两个数组内容进行比较, 对其是否一致进行断言
      * </p>
      *
      * <p>
-     * {@link Assertions#assertIterableEquals(Iterable, Iterable)} 用于对两迭代器进行比较,
-     * 对其迭代的集合元素是否一致进行断言
+     * {@link Assertions#assertIterableEquals(Iterable, Iterable)}
+     * 用于对两迭代器进行比较, 对其迭代的集合元素是否一致进行断言
      * </p>
      */
     @Test
@@ -151,11 +153,13 @@ class AssertionTest {
      * 对对象引用是否相同进行断言
      *
      * <p>
-     * {@link Assertions#assertSame(Object, Object)} 用于比较两个引用是否相同, 对其比较结果进行断言
+     * {@link Assertions#assertSame(Object, Object)} 用于比较两个引用是否相同,
+     * 对其比较结果进行断言
      * </p>
      *
      * <p>
-     * {@link Assertions#assertNotSame(Object, Object)} 用于比较两个引用是否不同, 对其比较结果进行断言
+     * {@link Assertions#assertNotSame(Object, Object)} 用于比较两个引用是否不同,
+     * 对其比较结果进行断言
      * </p>
      */
     @Test

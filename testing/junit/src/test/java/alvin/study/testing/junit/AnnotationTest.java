@@ -33,14 +33,13 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.condition.OS;
 
-// @formatter:off
-
 /**
  * 演示 junit 框架中注解的使用
  *
  * <p>
- * {@link TestMethodOrder @TestMethodOrder} 注解表示要启用按顺序执行测试, 此时测试方法上的 {@link Order @Order} 注解生效. 一般
- * 而言, 不应该给测试方法指定顺序, 而应该通过代码顺序组织测试结构
+ * {@link TestMethodOrder @TestMethodOrder}
+ * 注解表示要启用按顺序执行测试, 此时测试方法上的 {@link Order @Order}
+ * 注解生效. 一般而言, 不应该给测试方法指定顺序, 而应该通过代码顺序组织测试结构
  * </p>
  */
 @TestMethodOrder(OrderAnnotation.class)
@@ -107,10 +106,8 @@ class AnnotationTest {
                 "beforeEach",
                 "runTest2",
                 "afterEach",
-                "afterAll"
-            ),
-            TEST_LIST
-        );
+                "afterAll"),
+            TEST_LIST);
     }
 
     /**
@@ -143,7 +140,8 @@ class AnnotationTest {
      * 演示用于定义测试元数据的一组注解
      *
      * <p>
-     * {@link org.junit.jupiter.api.Order @Order} 注解用于定义测试方法的执行顺序, 数值较小的会先被执行
+     * {@link org.junit.jupiter.api.Order @Order} 注解用于定义测试方法的执行顺序,
+     * 数值较小的会先被执行
      * </p>
      *
      * <p>
@@ -152,8 +150,9 @@ class AnnotationTest {
      * </p>
      *
      * <p>
-     * {@link org.junit.jupiter.api.RepeatedTest @RepeatedTest} 用于定义测试方法重复执行的次数.
-     * 如果值为 {@code 1}, 表示重复 1 次, 加上原本要执行的 1 次, 该测试方法总共执行 2 次
+     * {@link org.junit.jupiter.api.RepeatedTest @RepeatedTest}
+     * 用于定义测试方法重复执行的次数. 如果值为 {@code 1}, 表示重复 1 次,
+     * 加上原本要执行的 1 次, 该测试方法总共执行 2 次
      * </p>
      */
     @Order(1)
