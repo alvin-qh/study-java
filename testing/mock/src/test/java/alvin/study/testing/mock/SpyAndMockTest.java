@@ -1,25 +1,30 @@
 package alvin.study.testing.mock;
 
-import alvin.study.testing.testcase.model.User;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.mockito.Mockito.when;
+
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import alvin.study.testing.testcase.model.User;
 
 /**
  * 演示 {@link Spy @Spy} 和 {@link Mock @Mock} 注解的异同
  *
  * <p>
- * {@link Spy @Spy} 注解相当于执行了 {@link org.mockito.Mockito#spy(Object) Mockito.spy(Object)} 方法, 得到一个仿冒对象
+ * {@link Spy @Spy} 注解相当于执行了 {@link org.mockito.Mockito#spy(Object)
+ * Mockito.spy(Object)} 方法, 得到一个仿冒对象
  * </p>
  *
  * <p>
- * 和 {@link Mock @Mock} 得到的仿冒对象不同, {@link Spy @Spy} 注解的仿冒对象在调用其方法会执行原对象的方法, 除非重新设置了方法行为;
- * 而 {@link Mock @Mock} 得到的仿冒对象在调用其方法时, 会返回 {@code null}, {@code 0} 等值, 除非重新设置了方法的返回值
+ * 和 {@link Mock @Mock} 得到的仿冒对象不同, {@link Spy @Spy}
+ * 注解的仿冒对象在调用其方法会执行原对象的方法, 除非重新设置了方法行为;
+ * 而 {@link Mock @Mock} 得到的仿冒对象在调用其方法时, 会返回 {@code null},
+ * {@code 0} 等值, 除非重新设置了方法的返回值
  * </p>
  */
 @ExtendWith(MockitoExtension.class)
@@ -36,7 +41,8 @@ class SpyAndMockTest {
      * 测试通过 {@link Spy @Spy} 注解仿冒的对象
      *
      * <p>
-     * 默认情况下, 通过 {@link Spy @Spy} 注解仿冒的对象, 在调用其方法时, 执行原对象方法, 返回原对象方法返回值
+     * 默认情况下, 通过 {@link Spy @Spy} 注解仿冒的对象, 在调用其方法时,
+     * 执行原对象方法, 返回原对象方法返回值
      * </p>
      *
      * <p>
@@ -62,7 +68,8 @@ class SpyAndMockTest {
      * 测试通过 {@link Mock @Mock} 注解仿冒的对象
      *
      * <p>
-     * 默认情况下, 通过 {@link Mock @Mock} 注解仿冒的对象, 在调用其方法时, 返回 {@code null} 或 {@code 0} 值
+     * 默认情况下, 通过 {@link Mock @Mock} 注解仿冒的对象, 在调用其方法时,
+     * 返回 {@code null} 或 {@code 0} 值
      * </p>
      *
      * <p>

@@ -1,16 +1,17 @@
 package alvin.study.testing.mock;
 
-import alvin.study.testing.testcase.controller.UserController;
-import alvin.study.testing.testcase.model.User;
-import alvin.study.testing.testcase.service.UserService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.util.Optional;
-
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import java.util.Optional;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import alvin.study.testing.testcase.controller.UserController;
+import alvin.study.testing.testcase.model.User;
+import alvin.study.testing.testcase.service.UserService;
 
 /**
  * 使用 {@link org.mockito.Mockito Mockito} API 模仿对象
@@ -24,7 +25,8 @@ class MockApiTest {
      * 在测试执行前执行
      *
      * <p>
-     * 通过 {@link org.mockito.Mockito#mock(Class) Mockito.mock(Class)} 方法仿冒一个对象
+     * 通过 {@link org.mockito.Mockito#mock(Class) Mockito.mock(Class)}
+     * 方法仿冒一个对象
      * </p>
      */
     @BeforeEach
@@ -34,7 +36,8 @@ class MockApiTest {
         var userService = mock(UserService.class);
 
         // 设置仿冒对象的行为
-        when(userService.findByName("Alvin")).thenReturn(Optional.of(new User(1, "Alvin")));
+        when(userService.findByName("Alvin"))
+                .thenReturn(Optional.of(new User(1, "Alvin")));
 
         // 将模仿后的对象作为参数传递到其它对象
         userController = new UserController(userService);
@@ -44,7 +47,8 @@ class MockApiTest {
      * 测试 {@link UserController#getUser(String)} 方法
      *
      * <p>
-     * 该方法内部使用了仿冒的 {@link UserService#findByName(String)} 方法
+     * 该方法内部使用了仿冒的 {@link UserService#findByName(String)}
+     * 方法
      * </p>
      */
     @Test
