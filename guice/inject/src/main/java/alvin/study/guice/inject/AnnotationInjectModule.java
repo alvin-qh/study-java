@@ -23,24 +23,29 @@ public class AnnotationInjectModule extends AbstractModule {
      * 配置模块
      *
      * <p>
-     * {@link AbstractModule#bind(Class)} 用于绑定一个类型, 返回一个 {@link com.google.inject.binder.AnnotatedBindingBuilder
+     * {@link AbstractModule#bind(Class)} 用于绑定一个类型, 返回一个
+     * {@link com.google.inject.binder.AnnotatedBindingBuilder
      * AnnotatedBindingBuilder} 接口对象, 用于进一步配置类型绑定的目标
      * </p>
      *
      * <p>
      * {@link com.google.inject.binder.AnnotatedBindingBuilder#annotatedWith(Class)
-     * AnnotatedBindingBuilder.annotatedWith(Class&lt;? extends Annotation&gt;)} 表示绑定范围由一个注解来确定,
-     * 即同一个类型可以通过不同的注解类型, 绑定到不同的目标上, 返回一个
-     * {@link com.google.inject.binder.LinkedBindingBuilder LinkedBindingBuilder} 接口对象
+     * AnnotatedBindingBuilder.annotatedWith(Class&lt;? extends Annotation&gt;)}
+     * 表示绑定范围由一个注解来确定, 即同一个类型可以通过不同的注解类型, 绑定到不同的目标上,
+     * 返回一个 {@link com.google.inject.binder.LinkedBindingBuilder
+     * LinkedBindingBuilder} 接口对象
      * </p>
      *
      * <p>
      * {@link com.google.inject.binder.LinkedBindingBuilder#toInstance(Object)
-     * LinkedBindingBuilder.toInstance(Object)} 方法表示将给定的泛型类型绑定到一个实际的对象上
+     * LinkedBindingBuilder.toInstance(Object)}
+     * 方法表示将给定的泛型类型绑定到一个实际的对象上
      * </p>
      *
      * <p>
-     * <code>binder.bind(BindDemo.class).annotatedWith(A.class).toInstance(new InjectDemo(...))</code>
+     * <code>
+     * binder.bind(BindDemo.class).annotatedWith(A.class).toInstance(new InjectDemo(...))
+     * </code>
      * 这段代码说明的是, 当注入的 {@link InjectDemo} 类型字段时, 实际会注入该类型的具体对象
      * </p>
      */
@@ -56,7 +61,8 @@ public class AnnotationInjectModule extends AbstractModule {
      * 绑定时使用注解: 将一个 Provider 对象通过 {@link B @B} 注解进行绑定
      *
      * <p>
-     * {@link Provides @Provides} 注解标识该方法是一个 {@link InjectDemo} 类型对象的提供器
+     * {@link Provides @Provides} 注解标识该方法是一个 {@link InjectDemo}
+     * 类型对象的提供器
      * </p>
      */
     @B

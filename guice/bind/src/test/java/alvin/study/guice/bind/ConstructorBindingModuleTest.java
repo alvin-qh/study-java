@@ -4,9 +4,9 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 import jakarta.inject.Inject;
 
-import org.junit.jupiter.api.Test;
-
 import com.google.inject.Module;
+
+import org.junit.jupiter.api.Test;
 
 import alvin.study.guice.bind.ConstructorBindingModule.BindDemoImpl;
 import alvin.study.guice.bind.inte.BindDemo;

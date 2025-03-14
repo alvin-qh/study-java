@@ -12,7 +12,8 @@ import alvin.study.guice.inject.bean.InjectDemo;
  * 多实例绑定注入
  *
  * <p>
- * 多实例绑定, 即把同一类型 (或名称) 的实例绑定在一个集合对象中. 根据需要不同, 具备 {@link Multibinder} 和
+ * 多实例绑定, 即把同一类型 (或名称) 的实例绑定在一个集合对象中. 根据需要不同,
+ * 具备 {@link Multibinder} 和
  * {@link MapBinder} 两种方式可以选择, 前者的注入结果是一个 {@link java.util.Set Set} 集合, 后者是一个
  * {@link java.util.Map Map} 集合
  * </p>

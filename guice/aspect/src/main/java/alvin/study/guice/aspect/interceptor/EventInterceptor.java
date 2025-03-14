@@ -58,7 +58,11 @@ public class EventInterceptor implements MethodInterceptor {
      */
     @SneakyThrows
     private static String getHandlerName(EventHandler handler) {
-        var method = handler.getClass().getMethod("handler", Object.class, Method.class, Object[].class);
+        var method = handler.getClass().getMethod(
+            "handler",
+            Object.class,
+            Method.class,
+            Object[].class);
         var annotation = method.getAnnotation(Handler.class);
         return annotation.name();
     }
@@ -79,7 +83,10 @@ public class EventInterceptor implements MethodInterceptor {
                 var handler = handlers.get(annotation.handler());
                 if (handler != null) {
                     // 调用方法处理事件
-                    handler.handler(invocation.getThis(), invocation.getMethod(), invocation.getArguments());
+                    handler.handler(
+                        invocation.getThis(),
+                        invocation.getMethod(),
+                        invocation.getArguments());
                 }
             }
         } catch (Throwable ignore) {}

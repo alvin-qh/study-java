@@ -4,10 +4,10 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 import jakarta.inject.Inject;
 
-import org.junit.jupiter.api.Test;
-
 import com.google.inject.Key;
 import com.google.inject.Module;
+
+import org.junit.jupiter.api.Test;
 
 import alvin.study.guice.bind.AnnotationBindingModule.BindDemoA;
 import alvin.study.guice.bind.AnnotationBindingModule.BindDemoB;
@@ -56,8 +56,10 @@ class AnnotationBindingModuleTest extends BaseModuleTest {
     @Test
     void bind_shouldGetObjectByInjector() {
         // 通过 Injector 对象和注解类型获取绑定在 BindDemo 类型上的对象
-        var bindDemoA = injector.getInstance(Key.get(BindDemo.class, A.class));
-        var bindDemoB = injector.getInstance(Key.get(BindDemo.class, B.class));
+        var bindDemoA = injector.getInstance(
+            Key.get(BindDemo.class, A.class));
+        var bindDemoB = injector.getInstance(
+            Key.get(BindDemo.class, B.class));
 
         // 确认获取的对象和注入的对象一致
         then(bindDemoA).isSameAs(this.bindDemoA);

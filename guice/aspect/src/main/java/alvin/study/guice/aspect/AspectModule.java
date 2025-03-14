@@ -54,14 +54,14 @@ public class AspectModule extends AbstractModule {
      * 配置模块
      *
      * <p>
-     * {@link Multibinder} 对象中可以添加多个绑定关系, 并在容器中产生一个 {@link java.util.Set} 集合, 注入该集合,
-     * 集合中的各个元素即为通过设置的绑定关系产生的对象实例
+     * {@link Multibinder} 对象中可以添加多个绑定关系, 并在容器中产生一个 {@link java.util.Set} 集合,
+     * 注入该集合, 集合中的各个元素即为通过设置的绑定关系产生的对象实例
      * </p>
      *
      * <p>
-     * {@link Multibinder#newSetBinder(com.google.inject.Binder, Class, java.lang.annotation.Annotation)
-     * Multibinder.newSetBinder(Binder, Class, Annotation)} 用于产生一个
-     * {@link Multibinder} 实例对象
+     * {@link Multibinder#newSetBinder(com.google.inject.Binder, Class,
+     * java.lang.annotation.Annotation) Multibinder.newSetBinder(Binder, Class, Annotation)}
+     * 用于产生一个 {@link Multibinder} 实例对象
      * </p>
      *
      * <p>
@@ -74,10 +74,10 @@ public class AspectModule extends AbstractModule {
      * LinkedBindingBuilder.toInstance(Object)} 创建一个绑定关系, 类似的方法还包括:
      * {@link com.google.inject.binder.LinkedBindingBuilder#to(Class)
      * LinkedBindingBuilder.to(Class)},
-     * {@link com.google.inject.binder.LinkedBindingBuilder#toConstructor(java.lang.reflect.Constructor)
-     * LinkedBindingBuilder.toConstructor(Constructor)},
-     * {@link com.google.inject.binder.LinkedBindingBuilder#toProvider(com.google.inject.Provider)}
-     * LinkedBindingBuilder.toProvider(Provider)} 等方法
+     * {@link com.google.inject.binder.LinkedBindingBuilder#toConstructor(
+     * java.lang.reflect.Constructor) LinkedBindingBuilder.toConstructor(Constructor)},
+     * {@link com.google.inject.binder.LinkedBindingBuilder#toProvider(
+     * com.google.inject.Provider)} LinkedBindingBuilder.toProvider(Provider)} 等方法
      * </p>
      *
      * <p>
@@ -87,7 +87,8 @@ public class AspectModule extends AbstractModule {
      * </p>
      *
      * <p>
-     * {@link AbstractModule#bindInterceptor(com.google.inject.matcher.Matcher, com.google.inject.matcher.Matcher, org.aopalliance.intercept.MethodInterceptor...)
+     * {@link AbstractModule#bindInterceptor(com.google.inject.matcher.Matcher,
+     * com.google.inject.matcher.Matcher, org.aopalliance.intercept.MethodInterceptor...)
      * AbstractModule.bindInterceptor(Matcher&lt;? super Class&lt;? &gt;&gt;,
      * Matcher&lt;? super Method&gt;, MethodInterceptor...)} 方法用于设置一组拦截器,
      * 第一个参数为要拦截的类, 第二个参数为要拦截的方法类型, 后续参数为 1 或多个拦截器实例

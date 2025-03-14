@@ -8,12 +8,12 @@ import java.util.Set;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
-import org.junit.jupiter.api.Test;
-
 import com.google.inject.Key;
 import com.google.inject.Module;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
+
+import org.junit.jupiter.api.Test;
 
 import alvin.study.guice.bind.inte.BindDemo;
 
@@ -22,16 +22,16 @@ import alvin.study.guice.bind.inte.BindDemo;
  */
 class MultiBinderModuleTest extends BaseModuleTest {
     /**
-     * 注入 {@link com.google.inject.multibindings.Multibinder Multibinder} 绑定的
-     * {@link Set} 对象集合
+     * 注入 {@link com.google.inject.multibindings.Multibinder Multibinder}
+     * 绑定的 {@link Set} 对象集合
      */
     @Inject
     @Named("boundSet")
     private Set<Integer> boundSet;
 
     /**
-     * 注入 {@link com.google.inject.multibindings.MapBinder MapBinder} 绑定的
-     * {@link Map} 对象集合
+     * 注入 {@link com.google.inject.multibindings.MapBinder MapBinder}
+     * 绑定的 {@link Map} 对象集合
      */
     @Inject
     @Named("boundMap")

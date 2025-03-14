@@ -20,13 +20,16 @@ import com.google.inject.name.Names;
  * 辅助注入包括:
  * <ul>
  * <li>
- * {@link AssistedInject @AssistedInject} 注解, 标记在构造器上, 表示构造器的参数需进行辅助注入
+ * {@link AssistedInject @AssistedInject} 注解, 标记在构造器上,
+ * 表示构造器的参数需进行辅助注入
  * </li>
  * <li>
- * {@link Assisted @Assisted} 注解, 标记在构造器参数上, 表示这个参数需要手动传递, 其余未标记的参数会被自动注入
+ * {@link Assisted @Assisted} 注解, 标记在构造器参数上, 表示这个参数需要手动传递,
+ * 其余未标记的参数会被自动注入
  * </li>
  * <li>
- * 使用辅助注入的类型无法直接通过 {@link jakarta.inject.Inject @Inject} 注解注入, 必须通过一个工厂类进行构建
+ * 使用辅助注入的类型无法直接通过 {@link jakarta.inject.Inject @Inject} 注解注入,
+ * 必须通过一个工厂类进行构建
  * </li>
  * </ul>
  * </p>
@@ -48,12 +51,15 @@ public class AssistedInjectModule extends AbstractModule {
      */
     @Override
     protected void configure() {
-        // 安装工厂类模块 (通过 FactoryModuleBuilder.build 方法创建), 指定通过那个工厂类型来创建工厂对象
-        install(new FactoryModuleBuilder().build(ConnectionFactory.class));
+        // 安装工厂类模块 (通过 FactoryModuleBuilder.build 方法创建),
+        // 指定通过那个工厂类型来创建工厂对象
+        install(new FactoryModuleBuilder()
+                .build(ConnectionFactory.class));
 
         /*
          * 如果需要将绑定绑定到类型, 则需进一步使用 .implement 方法指定接口和实现类的关系
-         * install(new FactoryModuleBuilder().implement(Connection.class, ConnectionImpl.class)
+         * install(new FactoryModuleBuilder()
+         * .implement(Connection.class, ConnectionImpl.class)
          * .build(ConnectionFactory.class));
          */
 
@@ -69,8 +75,9 @@ public class AssistedInjectModule extends AbstractModule {
      * 参数辅助注入类型的工厂
      *
      * <p>
-     * 对构造器方法具备 {@link AssistedInject @AssistedInject} 注解的类型, 由于一部分参数需要注入, 所以无法直接通过
-     * {@code new} 操作符创建实例, 需要创建如下工厂接口, 并在 {@link AbstractModule#configure()} 方法中通过
+     * 对构造器方法具备 {@link AssistedInject @AssistedInject} 注解的类型,
+     * 由于一部分参数需要注入, 所以无法直接通过 {@code new} 操作符创建实例,
+     * 需要创建如下工厂接口, 并在 {@link AbstractModule#configure()} 方法中通过
      * {@code install(new FactoryModuleBuilder().build(ConnectionFactory.class))}
      * 安装为子模块
      * </p>
@@ -89,7 +96,8 @@ public class AssistedInjectModule extends AbstractModule {
          * </p>
          *
          * <p>
-         * 该方法对应 {@link Connection#Connection(String, int, String, String)} 构造器方法
+         * 该方法对应 {@link Connection#Connection(String, int, String, String)}
+         * 构造器方法
          * </p>
          *
          * @param account  对应 {@link Connection} 类型的 {@code account} 参数
@@ -107,8 +115,8 @@ public class AssistedInjectModule extends AbstractModule {
          * </p>
          *
          * <p>
-         * 无参方法, 对应 {@link Connection#Connection(String, int)} 构造器方法, 即类型无需手动传参的构造器
-         * (均为自动注入参数或无参数)
+         * 无参方法, 对应 {@link Connection#Connection(String, int)} 构造器方法,
+         * 即类型无需手动传参的构造器 (均为自动注入参数或无参数)
          * </p>
          */
         Connection createAnonymous();
@@ -147,7 +155,8 @@ public class AssistedInjectModule extends AbstractModule {
         }
 
         /**
-         * 即使没有需要自动注入的参数, {@link AssistedInject @AssistedInject} 注解也不能省略, 否则工厂会报错
+         * 即使没有需要自动注入的参数, {@link AssistedInject @AssistedInject} 注解也不能省略,
+         * 否则工厂会报错
          */
         @AssistedInject
         public Connection(

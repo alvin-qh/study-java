@@ -5,11 +5,11 @@ import static org.assertj.core.api.BDDAssertions.then;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
-import org.junit.jupiter.api.Test;
-
 import com.google.inject.Key;
 import com.google.inject.Module;
 import com.google.inject.name.Names;
+
+import org.junit.jupiter.api.Test;
 
 import alvin.study.guice.bind.NamedBindingModule.BindDemoA;
 import alvin.study.guice.bind.NamedBindingModule.BindDemoB;
@@ -53,8 +53,10 @@ class NamedBindingModuleTest extends BaseModuleTest {
      */
     @Test
     void bind_shouldGetObjectByInjector() {
-        var bindDemoA = injector.getInstance(Key.get(BindDemo.class, Names.named("A")));
-        var bindDemoB = injector.getInstance(Key.get(BindDemo.class, Names.named("B")));
+        var bindDemoA = injector.getInstance(
+            Key.get(BindDemo.class, Names.named("A")));
+        var bindDemoB = injector.getInstance(
+            Key.get(BindDemo.class, Names.named("B")));
 
         then(bindDemoA).isSameAs(this.bindDemoA);
         then(bindDemoB).isSameAs(this.bindDemoB);

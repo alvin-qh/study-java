@@ -9,11 +9,11 @@ import java.util.TreeSet;
 
 import jakarta.inject.Inject;
 
-import org.junit.jupiter.api.Test;
-
 import com.google.inject.Key;
 import com.google.inject.Module;
 import com.google.inject.TypeLiteral;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * 测试 {@link GenericBindingModule} 类型
@@ -49,10 +49,12 @@ class GenericBindingModuleTest extends BaseModuleTest {
         then(intSet).isEmpty();
 
         then(doubleSet).isInstanceOf(TreeSet.class);
-        then(doubleSet).containsExactlyInAnyOrder(1.1, 1.2, 1.3, 1.4);
+        then(doubleSet)
+                .containsExactlyInAnyOrder(1.1, 1.2, 1.3, 1.4);
 
         then(stringSet).isInstanceOf(LinkedHashSet.class);
-        then(stringSet).containsExactlyInAnyOrder("a", "b", "c", "d");
+        then(stringSet)
+                .containsExactlyInAnyOrder("a", "b", "c", "d");
     }
 
     /**
@@ -60,9 +62,12 @@ class GenericBindingModuleTest extends BaseModuleTest {
      */
     @Test
     void bind_shouldGetObjectByInjector() {
-        var intSet = injector.getInstance(Key.get(new TypeLiteral<Set<Integer>>() {}));
-        var doubleSet = injector.getInstance(Key.get(new TypeLiteral<Set<Double>>() {}));
-        var strSet = injector.getInstance(Key.get(new TypeLiteral<Set<String>>() {}));
+        var intSet = injector.getInstance(
+            Key.get(new TypeLiteral<Set<Integer>>() {}));
+        var doubleSet = injector.getInstance(
+            Key.get(new TypeLiteral<Set<Double>>() {}));
+        var strSet = injector.getInstance(
+            Key.get(new TypeLiteral<Set<String>>() {}));
 
         then(intSet).isSameAs(this.intSet);
         then(doubleSet).isSameAs(this.doubleSet);
