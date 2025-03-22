@@ -1,7 +1,3 @@
-plugins {
-  id "com.github.ben-manes.versions" version "${VER_GRADLE_DEP_VERSIONS}"
-}
-
 group = "alvin.study.quarkus"
 version = "1.0-SNAPSHOT"
 
