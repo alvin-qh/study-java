@@ -14,9 +14,6 @@ bootJar {
   archiveFileName = "alvin.study.springboot-autoconfig-app.${archiveExtension.get()}"
 }
 
-group 'MYCOMPANY.GROUP'
-version '0.0.1-SNAPSHOT'
-
 dependencies {
   implementation project(":springboot:autoconfig:lib")
 }

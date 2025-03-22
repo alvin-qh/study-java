@@ -4,6 +4,7 @@ import org.springframework.graphql.server.WebGraphQlInterceptor;
 import org.springframework.graphql.server.WebGraphQlRequest;
 import org.springframework.graphql.server.WebGraphQlResponse;
 import org.springframework.http.HttpHeaders;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Strings;
@@ -36,7 +37,7 @@ public class ApiAuthInterceptor implements WebGraphQlInterceptor {
     private final UserService userService;
 
     @Override
-    public Mono<WebGraphQlResponse> intercept(WebGraphQlRequest request, Chain chain) {
+    public Mono<WebGraphQlResponse> intercept(@NonNull WebGraphQlRequest request, @NonNull Chain chain) {
         log.info("Execute operation \"{}\"", request.getOperationName());
 
         if (!INTROSPECTION_QUERY.equals(request.getOperationName())) {

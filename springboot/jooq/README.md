@@ -30,7 +30,7 @@ JOOQ 相关代码 (Pojo, Record 和 Table 类型) 是通过 JOOQ Generator 生�
 ```groovy
 plugins {
   // Flyway DB Migration 插件
-  id "org.flywaydb.flyway" version "${VER_FLYWAY}"
+  id "org.flywaydb.flyway" version "${VER_GRADLE_FLYWAY}"
   // Jooq 代码生成器插件
   id "nu.studer.jooq" version "${VER_GRADLE_JOOQ}"
 }
@@ -50,7 +50,7 @@ plugins {
 dependencies {
   implementation "org.jooq:jooq:${VER_JOOQ}",              // JOOQ 依赖
                  "com.h2database:h2:${VER_H2_DB}"          // 数据库驱动
-  runtimeOnly    "org.flywaydb:flyway-core:${VER_FLYWAY}"  // Flyway 依赖
+  runtimeOnly    "org.flywaydb:flyway-core:${VER_GRADLE_FLYWAY}"  // Flyway 依赖
   jooqGenerator  "com.h2database:h2:${VER_H2_DB}"          // JOOQ 代码生成器的数据库驱动
 }
 ```
