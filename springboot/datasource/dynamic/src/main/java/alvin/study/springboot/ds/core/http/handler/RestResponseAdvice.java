@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -64,7 +66,9 @@ public class RestResponseAdvice implements ResponseBodyAdvice<Object> {
      * </p>
      */
     @Override
-    public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
+    public boolean supports(
+            @NonNull MethodParameter returnType,
+            @NonNull Class<? extends HttpMessageConverter<?>> converterType) {
         // 获取 controller 方法的返回值类型
         var retType = Optional.ofNullable(returnType.getMethod()).map(Method::getReturnType).orElseThrow();
 
@@ -87,12 +91,12 @@ public class RestResponseAdvice implements ResponseBodyAdvice<Object> {
      */
     @Override
     public ResponseDto<?> beforeBodyWrite(
-            Object body,
-            MethodParameter returnType,
-            MediaType selectedContentType,
-            Class<? extends HttpMessageConverter<?>> selectedConverterType,
-            ServerHttpRequest request,
-            ServerHttpResponse response) {
+            @Nullable Object body,
+            @NonNull MethodParameter returnType,
+            @NonNull MediaType selectedContentType,
+            @NonNull Class<? extends HttpMessageConverter<?>> selectedConverterType,
+            @NonNull ServerHttpRequest request,
+            @NonNull ServerHttpResponse response) {
         return ResponseDto.success(body);
     }
 

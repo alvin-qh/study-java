@@ -1,11 +1,12 @@
 package alvin.study.springboot.ds.app.endpoint;
 
 import static org.assertj.core.api.BDDAssertions.then;
-
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+
+import org.junit.jupiter.api.Test;
 
 import alvin.study.springboot.ds.IntegrationTest;
 import alvin.study.springboot.ds.app.domain.model.DataDto;
@@ -42,6 +43,8 @@ class DataControllerTest extends IntegrationTest {
                 .returnResult()
                 .getResponseBody();
 
+        assertNotNull(resp);
+
         // 确认响应信息正确
         then(resp.getStatus()).isZero();
         then(resp.getPayload().getId()).isNotNull();
@@ -53,6 +56,8 @@ class DataControllerTest extends IntegrationTest {
                 .expectBody(RESP_TYPE)
                 .returnResult()
                 .getResponseBody();
+
+        assertNotNull(resp);
 
         // 确认响应信息正确
         then(resp.getPayload().getName()).isEqualTo("db-name-1");

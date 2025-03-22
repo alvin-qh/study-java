@@ -54,14 +54,19 @@ public class TableCleaner {
     public void clearAllTables(String... exclude) {
         var excludeSet = Set.of(exclude);
 
+        var datasource = template.getDataSource();
+        if (datasource == null) {
+            throw new NullPointerException("datasource is null value");
+        }
+
         // 获取数据库连接地址
-        var connectUrl = template.getDataSource().getConnection().getMetaData().getURL();
+        var connectUrl = datasource.getConnection().getMetaData().getURL();
 
         String schema;
         String tableType;
         // 根据不同的数据库连接, 获取对应的 schema 和 tableType 参数
         if (connectUrl.startsWith("jdbc:mysql")) {
-            schema = template.getDataSource().getConnection().getCatalog(); // MySQL schema
+            schema = datasource.getConnection().getCatalog(); // MySQL schema
             tableType = "BASE TABLE"; // MySql 表类型
         } else {
             schema = "PUBLIC"; // h2 schema

@@ -79,7 +79,7 @@ public class DataController {
                 HttpStatus.NOT_FOUND,
                 "resource_not_exist",
                 HttpHeaders.EMPTY,
-                null,
+                "".getBytes(),
                 null);
         }
     }
