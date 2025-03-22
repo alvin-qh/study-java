@@ -11,7 +11,7 @@ pluginManagement {
 
   plugins {
     // id("de.fayard.refreshVersions") version "${VER_PLUGIN_REFRESH_VERSIONS}"
-    id "io.quarkus" version "${VER_QUARKUS}"
+    id "io.quarkus" version "${VER_QUARKUS}" apply false
   }
 }
 
@@ -103,15 +103,13 @@ include(
   ":springboot:graphql",
 )
 
-// findProject(":springboot:autoconfig:lib")?.name = "springboot-autoconfig-lib"
-
-// include(
+include(
 //   ":springcloud:nacos",
-//   ":springcloud:eureka:server",
-//   ":springcloud:eureka:client",
+  ":springcloud:eureka:server",
+  ":springcloud:eureka:client",
 //   ":springcloud:gateway:server",
 //   ":springcloud:gateway:client",
-// )
+)
 
 include(
   ":quarkus:util",

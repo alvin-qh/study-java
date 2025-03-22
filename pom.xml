@@ -43,7 +43,7 @@
     <version.log4j>2.24.3</version.log4j>
     <version.disruptor>4.0.0</version.disruptor>
 
-    <version.guava>33.4.0-jre</version.guava>
+    <version.guava>33.4.5-jre</version.guava>
     <version.lombok>1.18.36</version.lombok>
     <version.commons-codec>1.18.0</version.commons-codec>
     <version.commons-pool2>2.12.1</version.commons-pool2>
@@ -52,7 +52,7 @@
     <version.hikari-cp>6.2.1</version.hikari-cp>
     <version.jooq>3.20.1</version.jooq>
     <version.mybatis-plus>3.5.10.1</version.mybatis-plus>
-    <version.flyway>11.3.4</version.flyway>
+    <version.flyway>11.4.1</version.flyway>
 
     <version.spring-boot>3.4.4</version.spring-boot>
     <version.spring-cloud>2024.0.0</version.spring-cloud>
@@ -67,12 +67,12 @@
     <!-- End dev dependencies -->
 
     <!-- Begin test dependencies -->
-    <version.junit>5.12.0</version.junit>
+    <version.junit>5.12.1</version.junit>
     <version.junit-pioneer>2.3.0</version.junit-pioneer>
     <version.testng>7.11.0</version.testng>
     <version.hamcrest>3.0</version.hamcrest>
     <version.assertj>3.27.3</version.assertj>
-    <version.mockito>5.16.0</version.mockito>
+    <version.mockito>5.16.1</version.mockito>
     <version.javafaker>1.0.2</version.javafaker>
     <version.awaitility>4.3.0</version.awaitility>
     <version.p6spy>3.9.1</version.p6spy>
@@ -95,6 +95,7 @@
     <version.maven-resources>3.3.1</version.maven-resources>
     <version.maven-jandex>1.2.3</version.maven-jandex>
     <version.maven-versions>2.18.0</version.maven-versions>
+    <version.maven-enforcer>3.5.0</version.maven-enforcer>
   </properties>
 
   <!-- 包含子项目所在的路径名 -->
@@ -105,7 +106,7 @@
     <module>guava</module>
     <module>guice</module>
     <module>springboot</module>
-    <!-- <module>springcloud</module> -->
+    <module>springcloud</module>
     <module>quarkus</module>
   </modules>
 
@@ -124,12 +125,6 @@
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
         <version>${version.lombok}</version>
-      </dependency>
-      <dependency>
-        <!-- H2 DB 驱动依赖 -->
-        <groupId>com.h2database</groupId>
-        <artifactId>h2</artifactId>
-        <version>${version.h2}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -168,12 +163,6 @@
           <version>${version.maven-exec}</version>
         </plugin>
         <plugin>
-          <!-- 数据库 Migration 插件 -->
-          <groupId>org.flywaydb</groupId>
-          <artifactId>flyway-maven-plugin</artifactId>
-          <version>${version.maven-flyway}</version>
-        </plugin>
-        <plugin>
           <!-- 辅助构建插件 -->
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
@@ -184,6 +173,11 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-resources-plugin</artifactId>
           <version>${version.maven-resources}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>${version.maven-enforcer}</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -228,11 +222,34 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>versions-maven-plugin</artifactId>
         <version>${version.maven-versions}</version>
+        <configuration>
+          <generateBackupPoms>false</generateBackupPoms>
+          <ignoredVersions>.*M.*,.*alpha.*,.*MR.*,.*-rc*.*</ignoredVersions>
+        </configuration>
         <executions>
           <execution>
             <goals>
               <goal>display-dependency-updates</goal>
             </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>enforce-maven</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireMavenVersion>
+                  <version>3.0</version>
+                </requireMavenVersion>
+              </rules>
+            </configuration>
           </execution>
         </executions>
       </plugin>

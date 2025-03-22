@@ -1,5 +1,5 @@
-plugins {
-  id "com.github.ben-manes.versions" version "${VER_GRADLE_DEP_VERSIONS}"
+tasks.named("dependencyUpdates").configure {
+  // configure the task, for example wrt. resolution strategies
 }
 
 subprojects {

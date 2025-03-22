@@ -1,7 +1,3 @@
-plugins {
-  id "com.github.ben-manes.versions" version "${VER_GRADLE_DEP_VERSIONS}"
-}
-
 subprojects {
   if (!new File(projectDir, "src").exists()) {
     return

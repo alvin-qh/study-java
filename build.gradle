@@ -1,13 +1,20 @@
 plugins {
-  id "com.github.ben-manes.versions" version "${VER_GRADLE_DEP_VERSIONS}"
-  id "org.flywaydb.flyway" version "${VER_FLYWAY}" apply false
+  id "com.github.ben-manes.versions" version "${VER_GRADLE_DEP_VERSIONS}" apply false
+  id "org.flywaydb.flyway" version "${VER_GRADLE_FLYWAY}" apply false
 }
 
 group = "alvin.study"
 version = "1.0.0-SNAPSHOT"
 
+def isNonStable = { String version ->
+  def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) }
+  def regex = /^[0-9,.v-]+(-r)?$/
+  return !stableKeyword && !(version ==~ regex)
+}
+
 allprojects {
   apply plugin: "java"
+  apply plugin: "com.github.ben-manes.versions"
 
   java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -60,6 +67,12 @@ allprojects {
   clean {
     delete "${projectDir}/bin"
     delete "${projectDir}/build"
+  }
+
+  tasks.named("dependencyUpdates").configure {
+    rejectVersionIf {
+      isNonStable(it.candidate.version) && !isNonStable(it.currentVersion)
+    }
   }
 }
 
