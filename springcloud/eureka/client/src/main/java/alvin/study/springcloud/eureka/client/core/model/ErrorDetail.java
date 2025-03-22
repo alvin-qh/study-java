@@ -1,13 +1,14 @@
 package alvin.study.springcloud.eureka.client.core.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-
 import java.io.Serializable;
 import java.util.Map;
+
+import jakarta.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.Getter;
 
 /**
  * 包装标准的错误信息
@@ -83,8 +84,8 @@ public class ErrorDetail implements Serializable {
      */
     @JsonCreator
     ErrorDetail(
-        @JsonProperty("errorParameters") Map<String, String[]> errorParameters,
-        @JsonProperty("errorFields") Map<String, String[]> errorFields) {
+            @JsonProperty("errorParameters") Map<String, String[]> errorParameters,
+            @JsonProperty("errorFields") Map<String, String[]> errorFields) {
         this.errorParameters = errorParameters;
         this.errorFields = errorFields;
     }
@@ -95,7 +96,6 @@ public class ErrorDetail implements Serializable {
      * @param errorParameters 请求参数错误信息键值对
      * @return {@link ErrorDetail} 对象
      */
-    @Contract(value = "_ -> new", pure = true)
     public static @NotNull ErrorDetail withErrorParameters(Map<String, String[]> errorParameters) {
         return new ErrorDetail(errorParameters, null);
     }
@@ -106,7 +106,6 @@ public class ErrorDetail implements Serializable {
      * @param errorFields body 请求字段错误键值对
      * @return ErrorDetail 对象
      */
-    @Contract(value = "_ -> new", pure = true)
     public static @NotNull ErrorDetail withErrorFields(Map<String, String[]> errorFields) {
         return new ErrorDetail(null, errorFields);
     }

@@ -1,12 +1,13 @@
 package alvin.study.springcloud.eureka.client.endpoint;
 
-import alvin.study.springcloud.eureka.client.endpoint.model.HelloDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import alvin.study.springcloud.eureka.client.endpoint.model.HelloDto;
 
 /**
  * 测试用 Controller 类型

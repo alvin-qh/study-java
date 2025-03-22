@@ -1,12 +1,13 @@
 package alvin.study.springcloud.eureka.client.conf;
 
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * Jackson JSON 序列化配置
@@ -24,12 +25,12 @@ public class JacksonConfig {
     @Bean
     Jackson2ObjectMapperBuilderCustomizer addCustomBigDecimalDeserialization() {
         return builder -> builder.serializationInclusion(Include.NON_NULL)
-            .featuresToDisable(MapperFeature.DEFAULT_VIEW_INCLUSION)
-            // 遇到未知属性不抛出错误
-            .featuresToDisable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-            // 日期时间以字符串而不是 timestamp 输出
-            .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-            // 空类型不抛出错误
-            .featuresToDisable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+                .featuresToDisable(MapperFeature.DEFAULT_VIEW_INCLUSION)
+                // 遇到未知属性不抛出错误
+                .featuresToDisable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+                // 日期时间以字符串而不是 timestamp 输出
+                .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+                // 空类型不抛出错误
+                .featuresToDisable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
     }
 }

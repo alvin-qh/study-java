@@ -1,18 +1,3 @@
-plugins {
-  id "org.springframework.boot"
-}
-
-dependencies {
-  implementation libs.main.springcloud.eureka.client,
-    libs.main.springcloud.openFeign,
-    libs.main.springboot.validator
-
-  developmentOnly libs.main.springboot.devtools
-
-  testImplementation libs.test.springboot.web,
-    libs.main.springcloud.loadBalancer
-}
-
 springBoot {
   mainClass = "alvin.study.springcloud.eureka.client.Main"
 }
@@ -27,4 +12,12 @@ bootJar {
 
   archiveBaseName = project.group
   archiveFileName = "alvin.study.springcloud-eureka-client.${archiveExtension.get()}"
+}
+
+dependencies {
+  implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client",
+                 "org.springframework.cloud:spring-cloud-starter-openfeign",
+                 "org.springframework.boot:spring-boot-starter-validation"
+  testImplementation "org.springframework.cloud:spring-cloud-starter-loadbalancer",
+                     "org.awaitility:awaitility:${VER_AWAITILITY}"
 }

@@ -24,5 +24,4 @@ import org.springframework.context.annotation.Profile;
 })
 @Configuration("config.eureka.server")
 @EnableEurekaServer
-public class EurekaServerConfig {
-}
+public class EurekaServerConfig {}

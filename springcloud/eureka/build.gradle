@@ -4,9 +4,7 @@ subprojects {
   }
 
   dependencies {
-    implementation libs.main.springboot.web,
-      libs.main.springboot.actuator
-
-    testImplementation libs.test.awaitility
+    implementation "org.springframework.boot:spring-boot-starter-web",
+                   "org.springframework.boot:spring-boot-starter-actuator"
   }
 }

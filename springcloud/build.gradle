@@ -1,22 +1,23 @@
 plugins {
   id "org.springframework.boot" version "${VER_SPRING_BOOT}" apply false
-  id "io.spring.dependency-management" version "${VER_GRADLE_SPRING_DEPENDENCY_MANAGEMENT}" apply false
+  id "io.spring.dependency-management" version "${VER_GRADLE_SPRING_DEP_MGR}" apply false
 }
 
-group "alvin.study.springcloud"
-version "1.0-SNAPSHOT"
+group = "alvin.study.springcloud"
+version = "1.0-SNAPSHOT"
 
 subprojects {
   if (!new File(projectDir, "src").exists()) {
     return
   }
 
+  apply plugin: "org.springframework.boot"
   apply plugin: "io.spring.dependency-management"
 
   dependencyManagement {
     imports {
-      mavenBom "org.springframework.cloud:spring-cloud-dependencies:${VAR_SPRING_CLOUD}"
-      mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:${VAR_ALIBABA_CLOUD}"
+      mavenBom "org.springframework.cloud:spring-cloud-dependencies:${VER_SPRING_CLOUD}"
+      mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:${VER_ALIBABA_CLOUD}"
       mavenBom "org.springframework.boot:spring-boot-dependencies:${VER_SPRING_BOOT}"
     }
   }
@@ -27,13 +28,13 @@ subprojects {
   }
 
   dependencies {
-    implementation libs.main.springcloud.starter,
-      libs.main.springboot.starter,
-      libs.main.springboot.log4j,
-      libs.main.guava
-
-    annotationProcessor libs.main.springboot.annotationProcessor
-
-    testImplementation libs.test.springboot.starter
+    implementation "org.springframework.cloud:spring-cloud-starter",
+                   "org.springframework.boot:spring-boot-starter",
+                   "org.springframework.boot:spring-boot-starter-log4j2",
+                   "com.google.guava:guava:${VER_GUAVA}"
+    developmentOnly "org.springframework.boot:spring-boot-devtools"
+    runtimeOnly "com.lmax:disruptor:${VER_DISRUPTOR}"
+    testImplementation "org.springframework.boot:spring-boot-starter-test",
+                       "org.assertj:assertj-core:${VER_ASSERTJ}"
   }
 }

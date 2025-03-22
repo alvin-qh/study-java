@@ -1,10 +1,11 @@
 package alvin.study.springcloud.eureka.client.service;
 
-import alvin.study.springcloud.eureka.client.core.model.ResponseWrapper;
-import alvin.study.springcloud.eureka.client.endpoint.model.HelloDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import alvin.study.springcloud.eureka.client.core.model.ResponseWrapper;
+import alvin.study.springcloud.eureka.client.endpoint.model.HelloDto;
 
 /**
  * 通过 OpenFeign 框架通过 Eureka 访问服务

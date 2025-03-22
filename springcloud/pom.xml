@@ -16,8 +16,8 @@
 
   <modules>
     <module>eureka</module>
-    <module>nacos</module>
-    <module>gateway</module>
+    <!-- <module>nacos</module> -->
+    <!-- <module>gateway</module> -->
   </modules>
 
   <dependencyManagement>
@@ -37,14 +37,14 @@
       <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-dependencies</artifactId>
-        <version>${version.spirng-cloud}</version>
+        <version>${version.spring-cloud}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>com.alibaba.cloud</groupId>
         <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-        <version>${version.alibaba-clould}</version>
+        <version>${version.alibaba-cloud}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -53,7 +53,6 @@
         <artifactId>disruptor</artifactId>
         <version>${version.disruptor}</version>
       </dependency>
-
       <dependency>
         <groupId>org.awaitility</groupId>
         <artifactId>awaitility</artifactId>
@@ -61,8 +60,25 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
   <dependencies>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-log4j2</artifactId>
+    </dependency>
+    <dependency>
+      <!-- Log4j2 异步依赖 -->
+      <groupId>com.lmax</groupId>
+      <artifactId>disruptor</artifactId>
+      <scope>runtime</scope>
+    </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
@@ -80,29 +96,10 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-log4j2</artifactId>
-    </dependency>
-    <dependency>
-      <!-- Log4j2 异步依赖 -->
-      <groupId>com.lmax</groupId>
-      <artifactId>disruptor</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
-
   <build>
     <pluginManagement>
       <plugins>
@@ -114,7 +111,6 @@
         </plugin>
       </plugins>
     </pluginManagement>
-
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

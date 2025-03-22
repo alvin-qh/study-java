@@ -1,12 +1,15 @@
 package alvin.study.springcloud.eureka.client.core.model;
 
-import alvin.study.springcloud.eureka.client.util.Servlets;
+import java.time.Instant;
+
+import jakarta.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
 
-import java.time.Instant;
+import lombok.Getter;
+
+import alvin.study.springcloud.eureka.client.util.Servlets;
 
 /**
  * Controller 返回结果包装类型
@@ -49,11 +52,11 @@ public final class ResponseWrapper<T> {
      */
     @JsonCreator
     ResponseWrapper(
-        @JsonProperty("retCode") int retCode,
-        @JsonProperty("errMsg") String errMsg,
-        @JsonProperty("payload") T payload,
-        @JsonProperty("path") String path,
-        @JsonProperty("timestamp") Instant timestamp) {
+            @JsonProperty("retCode") int retCode,
+            @JsonProperty("errMsg") String errMsg,
+            @JsonProperty("payload") T payload,
+            @JsonProperty("path") String path,
+            @JsonProperty("timestamp") Instant timestamp) {
         this.retCode = retCode;
         this.errMsg = errMsg;
         this.payload = payload;
@@ -68,7 +71,7 @@ public final class ResponseWrapper<T> {
      * @param payload 负载对象
      * @return {@link ResponseWrapper} 对象
      */
-    public static <T> @NotNull ResponseWrapper<T> success(T payload) {
+    public static <T> ResponseWrapper<T> success(T payload) {
         var request = Servlets.getHttpServletRequest();
         return new ResponseWrapper<>(0, null, payload, request.getRequestURI(), Instant.now());
     }
