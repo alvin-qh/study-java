@@ -12,8 +12,9 @@ import java.nio.file.attribute.PosixFilePermissions;
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;
 
-import javax.annotation.Nonnull;
 import javax.sql.DataSource;
+
+import jakarta.annotation.Nonnull;
 
 import com.google.common.hash.Hashing;
 import com.google.common.io.ByteProcessor;

@@ -18,9 +18,8 @@ import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Arrays;
 
-import javax.annotation.Nonnull;
-
-import org.checkerframework.checker.nullness.qual.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 import com.google.common.base.Preconditions;
 import com.google.common.io.ByteProcessor;
