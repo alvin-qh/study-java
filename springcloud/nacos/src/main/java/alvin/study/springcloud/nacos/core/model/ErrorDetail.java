@@ -1,10 +1,11 @@
 package alvin.study.springcloud.nacos.core.model;
 
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
 
-import java.util.Map;
+import lombok.Getter;
 
 /**
  * 包装标准的错误信息
@@ -80,8 +81,8 @@ public class ErrorDetail {
      */
     @JsonCreator
     ErrorDetail(
-        @JsonProperty("errorParameters") Map<String, String[]> errorParameters,
-        @JsonProperty("errorFields") Map<String, String[]> errorFields) {
+            @JsonProperty("errorParameters") Map<String, String[]> errorParameters,
+            @JsonProperty("errorFields") Map<String, String[]> errorFields) {
         this.errorParameters = errorParameters;
         this.errorFields = errorFields;
     }

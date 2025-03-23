@@ -1,5 +1,8 @@
 package alvin.study.springcloud.nacos.util;
 
+import java.util.List;
+import java.util.Properties;
+
 import com.alibaba.nacos.api.PropertyKeyConst;
 import com.alibaba.nacos.api.config.ConfigFactory;
 import com.alibaba.nacos.api.config.ConfigService;
@@ -10,11 +13,8 @@ import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.listener.EventListener;
 import com.alibaba.nacos.api.naming.pojo.Instance;
-import com.google.common.base.Strings;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.Properties;
+import com.google.common.base.Strings;
 
 /**
  * Nacos 工具类
@@ -35,11 +35,11 @@ public final class NacosUtil {
      * @param namespace  Nacos 相关命名空间
      */
     public NacosUtil(
-        String username,
-        String password,
-        String serverAddr,
-        String configNamespace,
-        String namingNamespace) throws NacosException {
+            String username,
+            String password,
+            String serverAddr,
+            String configNamespace,
+            String namingNamespace) throws NacosException {
         var props = new Properties();
         // 设置服务访问登录用户名
         props.setProperty(PropertyKeyConst.USERNAME, username);
@@ -73,7 +73,7 @@ public final class NacosUtil {
      * @return {@code true} 表示成功创建配置
      */
     public boolean publishConfig(
-        String dataId, String group, String content, @NotNull ConfigType type) throws NacosException {
+            String dataId, String group, String content, ConfigType type) throws NacosException {
         return configService.publishConfig(dataId, group, content, type.getType());
     }
 
@@ -108,10 +108,10 @@ public final class NacosUtil {
      * @param port        服务开放的网络端口
      */
     public void registerService(
-        String serviceName,
-        String group,
-        String ipAddress,
-        int port) throws NacosException {
+            String serviceName,
+            String group,
+            String ipAddress,
+            int port) throws NacosException {
         namingService.registerInstance(serviceName, group, ipAddress, port);
     }
 
@@ -124,10 +124,10 @@ public final class NacosUtil {
      * @param port        服务开放的网络端口
      */
     public void deregisterInstance(
-        String serviceName,
-        String group,
-        String ipAddress,
-        int port) throws NacosException {
+            String serviceName,
+            String group,
+            String ipAddress,
+            int port) throws NacosException {
         namingService.deregisterInstance(serviceName, group, ipAddress, port);
     }
 

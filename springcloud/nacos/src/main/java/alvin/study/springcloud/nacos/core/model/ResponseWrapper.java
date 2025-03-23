@@ -1,11 +1,13 @@
 package alvin.study.springcloud.nacos.core.model;
 
-import alvin.study.springcloud.nacos.util.http.Servlets;
+import java.time.Instant;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Getter;
 
-import java.time.Instant;
+import alvin.study.springcloud.nacos.util.http.Servlets;
 
 /**
  * Controller 返回结果包装类型
@@ -48,11 +50,11 @@ public final class ResponseWrapper<T> {
      */
     @JsonCreator
     ResponseWrapper(
-        @JsonProperty("retCode") int retCode,
-        @JsonProperty("errMsg") String errMsg,
-        @JsonProperty("payload") T payload,
-        @JsonProperty("path") String path,
-        @JsonProperty("timestamp") Instant timestamp) {
+            @JsonProperty("retCode") int retCode,
+            @JsonProperty("errMsg") String errMsg,
+            @JsonProperty("payload") T payload,
+            @JsonProperty("path") String path,
+            @JsonProperty("timestamp") Instant timestamp) {
         this.retCode = retCode;
         this.errMsg = errMsg;
         this.payload = payload;

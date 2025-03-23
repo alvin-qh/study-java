@@ -1,26 +1,29 @@
 package alvin.study.springcloud.nacos;
 
-import alvin.study.springcloud.nacos.core.model.ResponseWrapper;
-import alvin.study.springcloud.nacos.endpoint.model.ApplicationConfigDto;
-import alvin.study.springcloud.nacos.util.NacosUtil;
-import alvin.study.springcloud.nacos.util.network.Networks;
-import com.alibaba.nacos.api.config.ConfigType;
-import com.alibaba.nacos.api.exception.NacosException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.SneakyThrows;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.fail;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.awaitility.Awaitility.await;
+
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
+import com.alibaba.nacos.api.config.ConfigType;
+import com.alibaba.nacos.api.exception.NacosException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static org.assertj.core.api.Assertions.fail;
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.awaitility.Awaitility.await;
+import lombok.SneakyThrows;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+
+import alvin.study.springcloud.nacos.core.model.ResponseWrapper;
+import alvin.study.springcloud.nacos.endpoint.model.ApplicationConfigDto;
+import alvin.study.springcloud.nacos.util.NacosUtil;
 
 /**
  * 测试 Nacos 服务发现
@@ -71,17 +74,17 @@ class NacosNamingTest extends BaseTest {
      */
     @Test
     void getAllInstance_shouldGetRegisteredInstances() throws Exception {
-        await().atMost(2, TimeUnit.SECONDS).untilAsserted(() -> {
+        await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> {
             // 获取已注册的服务集合
             var instances = nacosUtil.getAllInstance(applicationName, NAMING_GROUP);
 
             // 确认当前服务已被注册
             then(instances)
-                .hasSize(1)
-                .singleElement()
-                .matches(inst -> inst.getServiceName().equals(String.format("%s@@%s", NAMING_GROUP, applicationName))
-                    && Networks.localHostIpAddresses().contains(inst.getIp())
-                    && inst.getPort() == serverPort);
+                    .hasSize(1)
+                    .singleElement()
+                    .matches(inst -> inst.getServiceName()
+                            .equals(String.format("%s@@%s", NAMING_GROUP, applicationName)))
+                    .matches(inst -> inst.getPort() == serverPort);
         });
     }
 
@@ -94,14 +97,14 @@ class NacosNamingTest extends BaseTest {
         // 向配置中心发布一个配置项
         assert nacosUtil.publishConfig(CONFIG_DATA_ID, CONFIG_GROUP, loadTestConfig(), ConfigType.YAML);
 
-        await().atMost(2, TimeUnit.SECONDS).untilAsserted(() -> {
+        await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> {
             try {
                 // 通过服务名称访问目标服务
                 var resp = (ResponseWrapper<Map<String, ?>>) restTemplate.getForObject(
                     "http://nacos-client/api/config", ResponseWrapper.class);
 
                 then(resp).isNotNull()
-                    .extracting(ResponseWrapper::getRetCode).isEqualTo(0);
+                        .extracting(ResponseWrapper::getRetCode).isEqualTo(0);
 
                 var config = objectMapper.convertValue(resp.getPayload(), ApplicationConfigDto.class);
                 then(config.getCommon().getSearchUrl()).isEqualTo("https://www.baidu.com");

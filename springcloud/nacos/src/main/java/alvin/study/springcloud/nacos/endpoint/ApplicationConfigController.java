@@ -1,13 +1,15 @@
 package alvin.study.springcloud.nacos.endpoint;
 
-import alvin.study.springcloud.nacos.core.model.ApplicationConfig;
-import alvin.study.springcloud.nacos.endpoint.mapper.ApplicationConfigMapper;
-import alvin.study.springcloud.nacos.endpoint.model.ApplicationConfigDto;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import lombok.RequiredArgsConstructor;
+
+import alvin.study.springcloud.nacos.core.model.ApplicationConfig;
+import alvin.study.springcloud.nacos.endpoint.mapper.ApplicationConfigMapper;
+import alvin.study.springcloud.nacos.endpoint.model.ApplicationConfigDto;
 
 /**
  * 获取应用程序配置的 Controller 类型
@@ -31,7 +33,5 @@ public class ApplicationConfigController {
      */
     @GetMapping
     @ResponseBody
-    ApplicationConfigDto getConfig() {
-        return configMapper.toDto(config);
-    }
+    ApplicationConfigDto getConfig() { return configMapper.toDto(config); }
 }

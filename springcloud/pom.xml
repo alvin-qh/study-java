@@ -16,7 +16,7 @@
 
   <modules>
     <module>eureka</module>
-    <!-- <module>nacos</module> -->
+    <module>nacos</module>
     <!-- <module>gateway</module> -->
   </modules>
 

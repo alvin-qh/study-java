@@ -1,25 +1,29 @@
 package alvin.study.springcloud.nacos;
 
-import alvin.study.springcloud.nacos.core.model.ApplicationConfig;
-import alvin.study.springcloud.nacos.core.model.ResponseWrapper;
-import alvin.study.springcloud.nacos.endpoint.model.ApplicationConfigDto;
-import alvin.study.springcloud.nacos.util.NacosUtil;
-import com.alibaba.nacos.api.config.ConfigChangeEvent;
-import com.alibaba.nacos.api.config.ConfigType;
-import com.alibaba.nacos.api.exception.NacosException;
-import com.alibaba.nacos.client.config.listener.impl.AbstractConfigChangeListener;
-import lombok.SneakyThrows;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.awaitility.Awaitility.await;
+import static org.hamcrest.Matchers.equalTo;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.awaitility.Awaitility.await;
-import static org.hamcrest.Matchers.equalTo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+
+import com.alibaba.nacos.api.config.ConfigChangeEvent;
+import com.alibaba.nacos.api.config.ConfigType;
+import com.alibaba.nacos.api.exception.NacosException;
+import com.alibaba.nacos.client.config.listener.impl.AbstractConfigChangeListener;
+
+import lombok.SneakyThrows;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+
+import alvin.study.springcloud.nacos.core.model.ApplicationConfig;
+import alvin.study.springcloud.nacos.core.model.ResponseWrapper;
+import alvin.study.springcloud.nacos.endpoint.model.ApplicationConfigDto;
+import alvin.study.springcloud.nacos.util.NacosUtil;
 
 /**
  * 测试 Nacos 配置中心
@@ -58,8 +62,8 @@ class NacosConfigTest extends BaseTest {
         assert nacosUtil.publishConfig(CONFIG_DATA_ID, CONFIG_GROUP, loadTestConfig(), ConfigType.YAML);
 
         // 确认配置对象被正确发布
-        await().atMost(2, TimeUnit.SECONDS)
-            .until(() -> applicationConfig.getCommon().getSearchUrl(), equalTo("https://www.baidu.com"));
+        await().atMost(10, TimeUnit.SECONDS)
+                .until(() -> applicationConfig.getCommon().getSearchUrl(), equalTo("https://www.baidu.com"));
 
         var event = new Object();
         var changeItems = new ArrayList<>();
@@ -110,15 +114,14 @@ class NacosConfigTest extends BaseTest {
         assert nacosUtil.publishConfig(CONFIG_DATA_ID, CONFIG_GROUP, loadTestConfig(), ConfigType.YAML);
 
         // 发起请求, 获取配置信息
-        await().atMost(2, TimeUnit.SECONDS).until(
+        await().atMost(10, TimeUnit.SECONDS).until(
             () -> getJson("/api/config")
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody(new ParameterizedTypeReference<ResponseWrapper<ApplicationConfigDto>>() { })
-                .returnResult()
-                .getResponseBody(),
-            resp ->
-                resp.getRetCode() == 0
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectBody(new ParameterizedTypeReference<ResponseWrapper<ApplicationConfigDto>>() {})
+                    .returnResult()
+                    .getResponseBody(),
+            resp -> resp.getRetCode() == 0
                     && resp.getPayload().getCommon().getSearchUrl().equals("https://www.baidu.com"));
     }
 

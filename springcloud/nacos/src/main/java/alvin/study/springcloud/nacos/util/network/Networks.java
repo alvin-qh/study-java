@@ -1,18 +1,16 @@
 package alvin.study.springcloud.nacos.util.network;
 
-import lombok.SneakyThrows;
-import org.jetbrains.annotations.NotNull;
-
 import java.net.NetworkInterface;
 import java.util.HashSet;
 import java.util.Set;
+
+import lombok.SneakyThrows;
 
 /**
  * 网络相关工具类
  */
 public final class Networks {
-    private Networks() {
-    }
+    private Networks() {}
 
     /**
      * 获取当前主机的所有 IP 地址
@@ -20,7 +18,7 @@ public final class Networks {
      * @return 当前主机 IP 地址集合
      */
     @SneakyThrows
-    public static @NotNull Set<String> localHostIpAddresses() {
+    public static Set<String> localHostIpAddresses() {
         // 保存 IP 地址的 Set 集合
         var ips = new HashSet<String>();
 

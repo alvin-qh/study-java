@@ -3,7 +3,7 @@ version: "3.9"
 services:
   percona:
     # nacos 配置存储数据库
-    image: percona/percona-server
+    image: percona/percona-server:8.0
     hostname: percona
     container_name: percona
     restart: always
@@ -36,7 +36,7 @@ services:
       start_period: 10s
   # 启动 3 个 nacos 实例
   nacos1:
-    image: nacos/nacos-server:v2.2.3
+    image: nacos/nacos-server:v2.5.1
     hostname: nacos1
     container_name: nacos1
     env_file:
@@ -70,7 +70,7 @@ services:
       retries: 5
       start_period: 10s
   nacos2:
-    image: nacos/nacos-server:v2.2.3
+    image: nacos/nacos-server:v2.5.1
     hostname: nacos2
     container_name: nacos2
     env_file:
@@ -102,7 +102,7 @@ services:
       retries: 5
       start_period: 10s
   nacos3:
-    image: nacos/nacos-server:v2.2.3
+    image: nacos/nacos-server:v2.5.1
     hostname: nacos3
     container_name: nacos3
     env_file:
@@ -135,7 +135,7 @@ services:
       start_period: 10s
   # 启动 nginx 服务进行负载均衡
   nginx:
-    image: nginx
+    image: nginx:1.27
     hostname: nginx
     container_name: nginx
     volumes:

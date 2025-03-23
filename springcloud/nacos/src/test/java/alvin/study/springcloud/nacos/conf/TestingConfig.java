@@ -1,13 +1,15 @@
 package alvin.study.springcloud.nacos.conf;
 
-import alvin.study.springcloud.nacos.util.NacosUtil;
-import com.alibaba.nacos.api.exception.NacosException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
+
+import com.alibaba.nacos.api.exception.NacosException;
+
+import alvin.study.springcloud.nacos.util.NacosUtil;
 
 /**
  * Nacos 相关配置类型
@@ -31,11 +33,11 @@ public class TestingConfig {
      */
     @Bean
     NacosUtil nacosUtil(
-        @Value("${spring.cloud.nacos.username}") String username,
-        @Value("${spring.cloud.nacos.password}") String password,
-        @Value("${spring.cloud.nacos.server-addr}") String serverAddr,
-        @Value("${spring.cloud.nacos.config.namespace:}") String configNamespace,
-        @Value("${spring.cloud.nacos.discovery.namespace:}") String namingNamespace) throws NacosException {
+            @Value("${spring.cloud.nacos.username}") String username,
+            @Value("${spring.cloud.nacos.password}") String password,
+            @Value("${spring.cloud.nacos.server-addr}") String serverAddr,
+            @Value("${spring.cloud.nacos.config.namespace:}") String configNamespace,
+            @Value("${spring.cloud.nacos.discovery.namespace:}") String namingNamespace) throws NacosException {
         // 实例化对象
         return new NacosUtil(username, password, serverAddr, configNamespace, namingNamespace);
     }

@@ -1,10 +1,11 @@
 package alvin.study.springcloud.nacos.core.model;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 映射 Nacos 配置的类型

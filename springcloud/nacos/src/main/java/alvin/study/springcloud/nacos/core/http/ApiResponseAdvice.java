@@ -1,12 +1,13 @@
 package alvin.study.springcloud.nacos.core.http;
 
-import alvin.study.springcloud.nacos.core.model.ErrorDetail;
-import alvin.study.springcloud.nacos.core.model.ResponseWrapper;
-import com.google.common.base.Joiner;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Path;
-import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
+import jakarta.validation.constraints.NotNull;
+
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,9 +26,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.stream.Collectors;
+import com.google.common.base.Joiner;
+
+import lombok.extern.slf4j.Slf4j;
+
+import alvin.study.springcloud.nacos.core.model.ErrorDetail;
+import alvin.study.springcloud.nacos.core.model.ResponseWrapper;
 
 /**
  * 对 Controller 的返回结果进行处理
@@ -135,7 +139,7 @@ public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BindException.class)
-    public ResponseWrapper<ErrorDetail> handle(@NotNull BindException e) {
+    public ResponseWrapper<ErrorDetail> handle(BindException e) {
         var fieldErrors = e.getBindingResult().getFieldErrors().stream()
                 .collect(Collectors.toMap(
                     FieldError::getField,

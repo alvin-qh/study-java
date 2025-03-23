@@ -1,7 +1,7 @@
 package alvin.study.springcloud.nacos.util.http;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.jetbrains.annotations.NotNull;
+
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -14,7 +14,7 @@ public final class Servlets {
      *
      * @return 当前请求的 {@link HttpServletRequest} 对象
      */
-    public static @NotNull HttpServletRequest getHttpServletRequest() {
+    public static HttpServletRequest getHttpServletRequest() {
         // 获取请求参数
         var attr = RequestContextHolder.currentRequestAttributes();
         if (!(attr instanceof ServletRequestAttributes reqAttr)) {
