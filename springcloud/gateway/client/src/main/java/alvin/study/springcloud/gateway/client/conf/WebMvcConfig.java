@@ -1,11 +1,13 @@
 package alvin.study.springcloud.gateway.client.conf;
 
-import alvin.study.springcloud.gateway.client.core.http.interceptor.LoggingInterceptor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import lombok.RequiredArgsConstructor;
+
+import alvin.study.springcloud.gateway.client.core.http.interceptor.LoggingInterceptor;
 
 /**
  * 配置 WEB 应用服务
@@ -25,8 +27,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 // 如果依赖中同时包含了 spring-boot-web 和 spring-cloud-gateway, 则配置 spring-boot-web 时需要禁止 spring-cloud-gateway
 // 的自动配置, 这只在通过 @Profile 注解将当前项目在不同配置下分别启动为 Web 应用和 Gateway 时适用
 // @EnableAutoConfiguration(exclude = {
-//     GatewayAutoConfiguration.class,
-//     GatewayClassPathWarningAutoConfiguration.class
+// GatewayAutoConfiguration.class,
+// GatewayClassPathWarningAutoConfiguration.class
 // })
 @RequiredArgsConstructor
 public class WebMvcConfig implements WebMvcConfigurer {
@@ -42,9 +44,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         // 添加日志拦截器
         registry.addInterceptor(loggingInterceptor)
-            // 设置拦截器要拦截的访问路径
-            .addPathPatterns("/**")
-            // 设置拦截器不拦截的访问路径
-            .excludePathPatterns("/static/**");
+                // 设置拦截器要拦截的访问路径
+                .addPathPatterns("/**")
+                // 设置拦截器不拦截的访问路径
+                .excludePathPatterns("/static/**");
     }
 }

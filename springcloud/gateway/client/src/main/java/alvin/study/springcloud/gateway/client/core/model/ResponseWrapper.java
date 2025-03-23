@@ -1,12 +1,13 @@
 package alvin.study.springcloud.gateway.client.core.model;
 
-import alvin.study.springcloud.gateway.client.util.http.Servlets;
+import java.time.Instant;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
 
-import java.time.Instant;
+import lombok.Getter;
+
+import alvin.study.springcloud.gateway.client.util.http.Servlets;
 
 /**
  * Controller 返回结果包装类型
@@ -49,11 +50,11 @@ public final class ResponseWrapper<T> {
      */
     @JsonCreator
     ResponseWrapper(
-        @JsonProperty("retCode") int retCode,
-        @JsonProperty("errMsg") String errMsg,
-        @JsonProperty("payload") T payload,
-        @JsonProperty("path") String path,
-        @JsonProperty("timestamp") Instant timestamp) {
+            @JsonProperty("retCode") int retCode,
+            @JsonProperty("errMsg") String errMsg,
+            @JsonProperty("payload") T payload,
+            @JsonProperty("path") String path,
+            @JsonProperty("timestamp") Instant timestamp) {
         this.retCode = retCode;
         this.errMsg = errMsg;
         this.payload = payload;
@@ -68,7 +69,7 @@ public final class ResponseWrapper<T> {
      * @param payload 负载对象
      * @return {@link ResponseWrapper} 对象
      */
-    public static <T> @NotNull ResponseWrapper<T> success(T payload) {
+    public static <T> ResponseWrapper<T> success(T payload) {
         var request = Servlets.getHttpServletRequest();
         return new ResponseWrapper<>(0, null, payload, request.getRequestURI(), Instant.now());
     }
@@ -81,7 +82,7 @@ public final class ResponseWrapper<T> {
      * @param detail  错误详细信息对象
      * @return {@link ResponseWrapper} 对象
      */
-    public static @NotNull ResponseWrapper<ErrorDetail> error(int retCode, String errMsg, ErrorDetail detail) {
+    public static ResponseWrapper<ErrorDetail> error(int retCode, String errMsg, ErrorDetail detail) {
         var request = Servlets.getHttpServletRequest();
         return new ResponseWrapper<>(retCode, errMsg, detail, request.getRequestURI(), Instant.now());
     }
@@ -93,7 +94,7 @@ public final class ResponseWrapper<T> {
      * @param errMsg  返回错误信息
      * @return {@link ResponseWrapper} 对象
      */
-    public static @NotNull ResponseWrapper<Void> error(int retCode, String errMsg) {
+    public static ResponseWrapper<Void> error(int retCode, String errMsg) {
         var request = Servlets.getHttpServletRequest();
         return new ResponseWrapper<>(retCode, errMsg, null, request.getRequestURI(), Instant.now());
     }

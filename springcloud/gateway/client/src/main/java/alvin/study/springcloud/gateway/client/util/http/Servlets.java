@@ -1,10 +1,12 @@
 package alvin.study.springcloud.gateway.client.util.http;
 
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 /**
  * Servlet 相关工具类

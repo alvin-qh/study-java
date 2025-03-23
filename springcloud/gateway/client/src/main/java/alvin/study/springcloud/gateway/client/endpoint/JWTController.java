@@ -1,11 +1,5 @@
 package alvin.study.springcloud.gateway.client.endpoint;
 
-import alvin.study.springcloud.gateway.client.endpoint.model.AuthDto;
-import alvin.study.springcloud.gateway.client.util.http.Headers;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.exceptions.JWTDecodeException;
-import com.google.common.base.Strings;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -13,6 +7,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.exceptions.JWTDecodeException;
+
+import com.google.common.base.Strings;
+
+import lombok.extern.slf4j.Slf4j;
+
+import alvin.study.springcloud.gateway.client.endpoint.model.AuthDto;
+import alvin.study.springcloud.gateway.client.util.http.Headers;
 
 /**
  * 身份验证后端服务控制器

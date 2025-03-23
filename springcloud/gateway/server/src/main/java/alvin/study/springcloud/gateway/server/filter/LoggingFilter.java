@@ -1,7 +1,8 @@
 package alvin.study.springcloud.gateway.server.filter;
 
-import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
+import java.net.InetSocketAddress;
+import java.util.Optional;
+
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.cloud.gateway.support.ipresolver.XForwardedRemoteAddressResolver;
@@ -9,10 +10,10 @@ import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Mono;
 
-import java.net.InetSocketAddress;
-import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
+
+import reactor.core.publisher.Mono;
 
 /**
  * 记录 Log 的全局过滤器
@@ -72,7 +73,7 @@ public class LoggingFilter implements GlobalFilter, Ordered {
      *
      * @param exchange 请求交互对象
      */
-    private void recordLog(@NotNull ServerWebExchange exchange) {
+    private void recordLog(ServerWebExchange exchange) {
         // 获取请求对象
         var request = exchange.getRequest();
 
@@ -83,16 +84,16 @@ public class LoggingFilter implements GlobalFilter, Ordered {
 
         // 输出日志
         log.info("""
-                New request coming:
-                Request Path:
-                  {}
+            New request coming:
+            Request Path:
+              {}
 
-                Headers:
-                  {}
+            Headers:
+              {}
 
-                Remote Host:
-                  {}:{}
-                """,
+            Remote Host:
+              {}:{}
+            """,
             // 输出请求的目标路径
             request.getPath().value(),
             // 输出请求的 HTTP 头信息
@@ -107,7 +108,7 @@ public class LoggingFilter implements GlobalFilter, Ordered {
      * @param headers HTTP 头信息集合
      * @return 解析结果组成的字符串
      */
-    private @NotNull String resolveHeaders(@NotNull HttpHeaders headers) {
+    private String resolveHeaders(HttpHeaders headers) {
         var sb = new StringBuilder();
         headers.forEach((name, value) -> {
             if (!sb.isEmpty()) {

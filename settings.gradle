@@ -107,8 +107,8 @@ include(
   ":springcloud:nacos",
   ":springcloud:eureka:server",
   ":springcloud:eureka:client",
-//   ":springcloud:gateway:server",
-//   ":springcloud:gateway:client",
+  ":springcloud:gateway:server",
+  ":springcloud:gateway:client",
 )
 
 include(

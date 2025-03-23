@@ -1,13 +1,16 @@
 package alvin.study.springcloud.gateway.client;
 
-import alvin.study.springcloud.gateway.client.conf.TestingConfig;
-import alvin.study.springcloud.gateway.client.core.model.ResponseWrapper;
-import alvin.study.springcloud.gateway.client.endpoint.model.AppInfoDto;
-import alvin.study.springcloud.gateway.client.endpoint.model.AuthDto;
-import alvin.study.springcloud.gateway.client.util.http.Headers;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.fail;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.awaitility.Awaitility.await;
+
+import java.time.Instant;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -16,14 +19,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.Instant;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.fail;
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.awaitility.Awaitility.await;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import alvin.study.springcloud.gateway.client.conf.TestingConfig;
+import alvin.study.springcloud.gateway.client.core.model.ResponseWrapper;
+import alvin.study.springcloud.gateway.client.endpoint.model.AppInfoDto;
+import alvin.study.springcloud.gateway.client.endpoint.model.AuthDto;
+import alvin.study.springcloud.gateway.client.util.http.Headers;
 
 /**
  * 测试网关断言
@@ -34,9 +36,10 @@ class PredicatesTest {
     // cspell: disable
     // 定义 JWT 测试凭证
     private static final String JWT_VALUE = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJ0aGlyZC1wYXJ0Iiwic3ViIjoi"
-        + "dV9iOTg5YzllYS1lMDdiLTQyNjMtYWU5OC0xMWQ2YjFiMGUzMjciLCJpc3MiOiJBbHZpbiIsInN1Yl91c2VyX3R5cGUiOiJlbXBsb3l"
-        + "lZSIsImV4cCI6OTk5OTk5OTk5OSwic3ViX29yZ19jb2RlIjoib19hNGVmMzAiLCJpYXQiOjE1MDI5MzkxNzB9.JxVRbYIyAJisOwncR"
-        + "aisEvL8ge51HDhqfd45SfxLW2I";
+                                            + "dV9iOTg5YzllYS1lMDdiLTQyNjMtYWU5OC0xMWQ2YjFiMGUzMjciLCJpc3MiOiJBbHZpbiIsI"
+                                            + "nN1Yl91c2VyX3R5cGUiOiJlbXBsb3llZSIsImV4cCI6OTk5OTk5OTk5OSwic3ViX29yZ19jb2"
+                                            + "RlIjoib19hNGVmMzAiLCJpYXQiOjE1MDI5MzkxNzB9.JxVRbYIyAJisOwncRaisEvL8ge51HD"
+                                            + "hqfd45SfxLW2I";
     // cspell: enable
 
     /**
@@ -69,13 +72,12 @@ class PredicatesTest {
                     "http://gateway/backend/api/info",
                     HttpMethod.GET,
                     null,
-                    new ParameterizedTypeReference<ResponseWrapper<AppInfoDto>>() { }
-                ).getBody();
+                    new ParameterizedTypeReference<ResponseWrapper<AppInfoDto>>() {}).getBody();
 
                 // 确认响应正确
                 then(resp).isNotNull()
-                    .extracting(ResponseWrapper::getRetCode, ResponseWrapper::getPath)
-                    .contains(0, "/api/info");
+                        .extracting(ResponseWrapper::getRetCode, ResponseWrapper::getPath)
+                        .contains(0, "/api/info");
 
                 // 确认相应内容符合预期
                 var payload = resp.getPayload();
@@ -126,13 +128,12 @@ class PredicatesTest {
                     "http://gateway/auth",
                     HttpMethod.GET,
                     new HttpEntity<>(null, headers),
-                    new ParameterizedTypeReference<ResponseWrapper<AuthDto>>() { }
-                ).getBody();
+                    new ParameterizedTypeReference<ResponseWrapper<AuthDto>>() {}).getBody();
 
                 // 确认响应正确
                 then(resp).isNotNull()
-                    .extracting(ResponseWrapper::getRetCode, ResponseWrapper::getPath)
-                    .contains(0, "/auth");
+                        .extracting(ResponseWrapper::getRetCode, ResponseWrapper::getPath)
+                        .contains(0, "/auth");
 
                 // 确认相应内容符合预期
                 var payload = resp.getPayload();

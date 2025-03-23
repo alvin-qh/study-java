@@ -2,11 +2,12 @@ package alvin.study.springcloud.gateway.client.core.http.interceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
+
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Spring Web MVC 拦截器, 在控制器执行前后对请求进行拦截操作
@@ -59,7 +60,7 @@ public class LoggingInterceptor implements HandlerInterceptor, Ordered {
      *
      * @param request 当前请求对象
      */
-    private void recordLog(@NotNull HttpServletRequest request) {
+    private void recordLog(HttpServletRequest request) {
         log.info("""
             New request coming:
             Request Path:
@@ -83,7 +84,7 @@ public class LoggingInterceptor implements HandlerInterceptor, Ordered {
      * @param request 当前请求对象
      * @return 解析后信息组成的字符串
      */
-    private @NotNull String resolveHeaders(@NotNull HttpServletRequest request) {
+    private String resolveHeaders(HttpServletRequest request) {
         var sb = new StringBuilder();
 
         // 获取请求头所有名称的迭代器

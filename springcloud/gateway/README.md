@@ -155,9 +155,9 @@ docker-compose -f cloud-gateway/docker/docker-compose.yml up
 1. 启动应用服务集群
 
     ```bash
-    ./gradlew :springcloud:gateway:client:bootRun --args="--server.port=8081"
+    gradle :springcloud:gateway:client:bootRun --args="--server.port=8081"
 
-    ./gradlew :springcloud:gateway:client:bootRun --args="--server.port=8082"
+    gradle :springcloud:gateway:client:bootRun --args="--server.port=8082"
     ```
 
    此时在 `8081` 和 `8082` 端口各自启动了一个 Web 服务
@@ -165,7 +165,7 @@ docker-compose -f cloud-gateway/docker/docker-compose.yml up
 2. 启动 Gateway 服务
 
     ```bash
-    ./gradlew :springcloud:gateway:server:bootRun
+    gradle :springcloud:gateway:server:bootRun
     ```
 
    此时在 `8080` 端口上启动了网关服务
@@ -173,7 +173,7 @@ docker-compose -f cloud-gateway/docker/docker-compose.yml up
 3. 执行测试
 
     ```bash
-    ./gradlew :springcloud:gateway:client:test
+    gradle :springcloud:gateway:client:test
     ```
 
 所有服务启动后, 可以正确执行测试
@@ -186,7 +186,7 @@ docker-compose -f cloud-gateway/docker/docker-compose.yml up
 
   ```bash
   curl -L -X GET 'localhost:8080/backend/api/info' \
-      -H 'Accept: application/json' | json_pp
+       -H 'Accept: application/json' | json_pp
   ```
 
 - 测试自定义 JWT 断言

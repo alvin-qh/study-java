@@ -1,9 +1,7 @@
-version: "3.9"
-
 services:
   # 启动 nacos 实例
   nacos:
-    image: nacos/nacos-server:v2.2.3
+    image: nacos/nacos-server:v2.5.1
     hostname: nacos
     container_name: nacos
     env_file:
