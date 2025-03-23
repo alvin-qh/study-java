@@ -1,21 +1,3 @@
-plugins {
-  id "org.springframework.boot"
-}
-
-dependencies {
-  implementation libs.main.springcloud.nacos.config,
-    libs.main.springcloud.nacos.discovery,
-    libs.main.springboot.web,
-    libs.main.springboot.validator,
-    libs.main.springboot.actuator
-
-  developmentOnly libs.main.springboot.devtools
-
-  testImplementation libs.test.springboot.web,
-    libs.main.springcloud.loadBalancer,
-    libs.test.awaitility
-}
-
 springBoot {
   mainClass = "alvin.study.springcloud.nacos.Main"
 }
@@ -30,4 +12,18 @@ bootJar {
 
   archiveBaseName = project.group
   archiveFileName = "alvin.study.springcloud-nacos.${archiveExtension.get()}"
+}
+
+dependencies {
+  implementation ("com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config") {
+    exclude group: "org.springframework.cloud", module: "spring-cloud-starter-bootstrap"
+  }
+  implementation ("com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery") {
+    exclude group: "org.springframework.cloud", module: "spring-cloud-starter-bootstrap"
+  }
+  implementation "org.springframework.boot:spring-boot-starter-web",
+                 "org.springframework.boot:spring-boot-starter-validation"
+  testImplementation "org.springframework.cloud:spring-cloud-starter-loadbalancer",
+                     "org.springframework.boot:spring-boot-starter-webflux",
+                     "org.awaitility:awaitility:${VER_AWAITILITY}"
 }
