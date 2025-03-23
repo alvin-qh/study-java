@@ -2,7 +2,7 @@ buildscript {
   // 遍历所有的依赖
   configurations["classpath"].resolutionStrategy.eachDependency {
       if (requested.group.startsWith("org.jooq") && requested.name.startsWith("jooq")) {
-          useVersion("${VER_JOOQ}")
+          useVersion "${VER_JOOQ}"
       }
   }
 }
@@ -58,6 +58,8 @@ jooq {
   // 配置 JOOQ 代码生成
   configurations {
     main {
+      generateSchemaSourceOnCompilation = true
+
       // 代码生成工具配置
       generationTool {
         logging = org.jooq.meta.jaxb.Logging.INFO   // 生成过程中日志级别

@@ -102,16 +102,6 @@
 
   <dependencies>
     <dependency>
-      <!-- Spring Boot Web 依赖 -->
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-    <dependency>
-      <!-- Spring Boot JDBC 依赖 -->
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-jdbc</artifactId>
-    </dependency>
-    <dependency>
       <!-- Spring Boot GraphQL 依赖 -->
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-graphql</artifactId>
@@ -125,6 +115,21 @@
       <!-- GraphQL 扩展验证注解依赖 -->
       <groupId>com.graphql-java</groupId>
       <artifactId>graphql-java-extended-validation</artifactId>
+    </dependency>
+    <dependency>
+      <!-- Spring Boot Web 依赖 -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <!-- Spring Boot Bean 验证依赖 -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
+    <dependency>
+      <!-- Spring Boot JDBC 依赖 -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-jdbc</artifactId>
     </dependency>
     <dependency>
       <!-- Spring Boot Mybatis 依赖 -->
@@ -152,11 +157,6 @@
           <artifactId>*</artifactId>
         </exclusion>
       </exclusions>
-    </dependency>
-    <dependency>
-      <!-- Spring Boot Bean 验证依赖 -->
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-validation</artifactId>
     </dependency>
     <dependency>
       <!-- Apache Common Codec 依赖 -->
