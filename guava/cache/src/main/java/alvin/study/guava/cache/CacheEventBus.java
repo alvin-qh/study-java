@@ -3,8 +3,6 @@ package alvin.study.guava.cache;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import jakarta.annotation.Nonnull;
-
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.SubscriberExceptionContext;
 import com.google.common.eventbus.SubscriberExceptionHandler;
@@ -53,7 +51,7 @@ public final class CacheEventBus implements SubscriberExceptionHandler {
      * </p>
      */
     @Override
-    public void handleException(@Nonnull Throwable ex, @Nonnull SubscriberExceptionContext ctx) {
+    public void handleException(Throwable ex, SubscriberExceptionContext ctx) {
         // 对 RuntimeException 类型异常继续向上传递
         if (ex instanceof RuntimeException rex) {
             throw rex;
@@ -73,7 +71,7 @@ public final class CacheEventBus implements SubscriberExceptionHandler {
      *
      * @param event {@link Event} 类型对象, 表示一个事件
      */
-    public void post(@Nonnull Event<?> event) {
+    public void post(Event<?> event) {
         eventBus.post(event);
     }
 
@@ -83,7 +81,7 @@ public final class CacheEventBus implements SubscriberExceptionHandler {
      * @param observer 用于对缓存进行后续处理的 {@link CacheObserver}
      *                 类型对象
      */
-    public void register(@Nonnull CacheObserver observer) {
+    public void register(CacheObserver observer) {
         eventBus.register(observer);
     }
 }

@@ -1,8 +1,5 @@
 package alvin.study.se.reflect.scan;
 
-import alvin.study.se.reflect.scan.match.Matcher;
-import jakarta.annotation.Nonnull;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.JarURLConnection;
@@ -12,6 +9,8 @@ import java.util.Enumeration;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.jar.JarFile;
+
+import alvin.study.se.reflect.scan.match.Matcher;
 
 /**
  * 类型扫描器
@@ -62,7 +61,7 @@ public final class ClassScanner {
      * @param url {@link URL} 对象, 表示资源的定位
      * @return 转换成的路径
      */
-    private static String toPath(@Nonnull URL url) {
+    private static String toPath(URL url) {
         // 从资源 URL 中获取路径名, 该路径
         var path = url.getPath();
 
@@ -104,7 +103,7 @@ public final class ClassScanner {
      * @param packageDir Jar 文件的资源 URL
      * @return {@link JarFile} 对象
      */
-    private static JarFile packageDirToJarFile(@Nonnull URL packageDir) {
+    private static JarFile packageDirToJarFile(URL packageDir) {
         try {
             return ((JarURLConnection) packageDir.openConnection()).getJarFile();
         } catch (IOException e) {
@@ -142,7 +141,7 @@ public final class ClassScanner {
      * @throws PackageScanFailedException 在读取 {@code .class} 文件或者 {@code .jar}
      *                                    文件时发生错误
      */
-    public Set<Class<?>> in(@Nonnull String... packageNames) {
+    public Set<Class<?>> in(String... packageNames) {
         // 存放结果的 Set 集合
         var classes = new LinkedHashSet<Class<?>>();
 

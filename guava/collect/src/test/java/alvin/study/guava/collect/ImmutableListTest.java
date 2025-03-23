@@ -50,7 +50,7 @@ class ImmutableListTest {
      * 可以支持 1 ~ n 个参数的情况
      * </p>
      */
-    @SuppressWarnings({ "deprecation", "null" })
+    @SuppressWarnings({ "deprecation" })
     @Test
     void of_shouldCreateImmutableListByElements() {
         var list = ImmutableList.of(1, 2, 3, 4);

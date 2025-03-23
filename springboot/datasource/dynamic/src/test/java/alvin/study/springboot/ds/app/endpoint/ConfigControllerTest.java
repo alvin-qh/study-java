@@ -2,7 +2,6 @@ package alvin.study.springboot.ds.app.endpoint;
 
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -47,8 +46,6 @@ public class ConfigControllerTest extends IntegrationTest {
                 .expectBody(RESP_TYPE)
                 .returnResult()
                 .getResponseBody();
-
-        assertNotNull(resp);
 
         // 确认返回响应结果正确
         then(resp.getStatus()).isZero();

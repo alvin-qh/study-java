@@ -10,8 +10,6 @@ import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.util.List;
 
-import jakarta.annotation.Nonnull;
-
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.io.CharSource;
@@ -154,7 +152,7 @@ class CharSourceTest {
             private final List<String> lines = Lists.newArrayList();
 
             @Override
-            public boolean processLine(@Nonnull String line) {
+            public boolean processLine(String line) {
                 // 将 CharSource 中读取到的行字符串进行保存
                 return lines.add(line);
             }

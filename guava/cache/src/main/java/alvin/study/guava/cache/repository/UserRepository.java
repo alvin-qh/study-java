@@ -5,8 +5,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-import jakarta.annotation.Nonnull;
-
 import com.google.common.cache.LoadingCache;
 import com.google.common.hash.BloomFilter;
 
@@ -45,7 +43,7 @@ public class UserRepository {
      *
      * @param user {@link User} 对象
      */
-    public void insertUser(@Nonnull User user) {
+    public void insertUser(User user) {
         userStorage.compute(user.id(), (key, value) -> {
             if (value != null) {
                 throw new IllegalArgumentException("id %d already exists");
@@ -64,7 +62,7 @@ public class UserRepository {
      *
      * @param user {@link User} 对象
      */
-    public void updateUser(@Nonnull User user) {
+    public void updateUser(User user) {
         userStorage.compute(user.id(), (key, value) -> {
             if (value == null) {
                 throw new IllegalArgumentException("id %d not exists");

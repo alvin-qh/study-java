@@ -42,7 +42,6 @@ class OptionalTest {
      * {@link Optional} 对象的 {@link Optional#get()} 方法返回其包装的引用
      * </p>
      */
-    @SuppressWarnings("null")
     @Test
     void of_shouldWrapNonNullReference() {
         var obj = new Object();
@@ -102,7 +101,6 @@ class OptionalTest {
      * </ul>
      * </p>
      */
-    @SuppressWarnings("null")
     @Test
     void fromNullable_shouldWrapNullableReference() {
         // 通过一个 null 引用构建 Optional 对象

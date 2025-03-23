@@ -21,8 +21,6 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.IntStream;
 
-import jakarta.annotation.Nonnull;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.FutureCallback;
@@ -116,7 +114,7 @@ class FuturesTest {
                  * 计算任务处理成功后的回调, 将计算结果作为参数传递
                  */
                 @Override
-                public void onSuccess(@Nonnull Integer result) {
+                public void onSuccess(Integer result) {
                     // 保存计算结果
                     results[n - 1] = result;
                 }
@@ -125,7 +123,7 @@ class FuturesTest {
                  * 计算任务处理失败后的回调, 将计算过程中产生的异常作为参数传递
                  */
                 @Override
-                public void onFailure(@Nonnull Throwable t) {
+                public void onFailure(Throwable t) {
                     throw new IllegalStateException("Cannot calculate fibonacci value", t);
                 }
             },
@@ -172,7 +170,7 @@ class FuturesTest {
                  * 计算任务处理成功后的回调, 将批量任务计算结果的集合作为参数传递
                  */
                 @Override
-                public void onSuccess(@Nonnull List<Integer> result) {
+                public void onSuccess(List<Integer> result) {
                     // 将计算结果复制到集合对象中
                     numbers.addAll(result);
                 }
@@ -181,7 +179,7 @@ class FuturesTest {
                  * 计算任务处理失败后的回调, 将计算过程中产生的异常作为参数传递
                  */
                 @Override
-                public void onFailure(@Nonnull Throwable t) {
+                public void onFailure(Throwable t) {
                     throw new UnsupportedOperationException("Unimplemented method 'onFailure'");
                 }
             },
@@ -308,13 +306,13 @@ class FuturesTest {
                 // 回调函数
                 new FutureCallback<>() {
                     @Override
-                    public void onSuccess(@Nonnull ImmutableList<User> result) {
+                    public void onSuccess(ImmutableList<User> result) {
                         // 将任务执行结果加入集合
                         createdResults.addAll(result);
                     }
 
                     @Override
-                    public void onFailure(@Nonnull Throwable t) {}
+                    public void onFailure(Throwable t) {}
                 },
                 MoreExecutors.directExecutor());
         }
@@ -347,7 +345,7 @@ class FuturesTest {
                 // 回调函数
                 new FutureCallback<>() {
                     @Override
-                    public void onSuccess(@Nonnull List<Optional<User>> result) {
+                    public void onSuccess(List<Optional<User>> result) {
                         // 将任务执行结果加入集合
                         result.stream()
                                 .filter(Optional::isPresent)
@@ -356,7 +354,7 @@ class FuturesTest {
                     }
 
                     @Override
-                    public void onFailure(@Nonnull Throwable t) {}
+                    public void onFailure(Throwable t) {}
                 },
                 MoreExecutors.directExecutor());
         }
@@ -415,13 +413,13 @@ class FuturesTest {
             // 异步执行完毕后的回调, 传递执行结果
             new FutureCallback<>() {
                 @Override
-                public void onSuccess(@Nonnull List<User> result) {
+                public void onSuccess(List<User> result) {
                     // 保存用户创建任务结果
                     createdUsers.addAll(result);
                 }
 
                 @Override
-                public void onFailure(@Nonnull Throwable t) {}
+                public void onFailure(Throwable t) {}
             },
             // 结果回调所在的线程执行器
             MoreExecutors.directExecutor());
@@ -455,13 +453,13 @@ class FuturesTest {
                 findUsersTask,
                 new FutureCallback<>() {
                     @Override
-                    public void onSuccess(@Nonnull List<User> result) {
+                    public void onSuccess(List<User> result) {
                         // 保存执行结果
                         foundUsers.addAll(result);
                     }
 
                     @Override
-                    public void onFailure(@Nonnull Throwable t) {}
+                    public void onFailure(Throwable t) {}
                 },
                 // 执行结果回调任务的线程执行器
                 MoreExecutors.directExecutor());
@@ -489,13 +487,13 @@ class FuturesTest {
                 findUsersTask,
                 new FutureCallback<>() {
                     @Override
-                    public void onSuccess(@Nonnull List<User> result) {
+                    public void onSuccess(List<User> result) {
                         // 保存执行结果
                         asyncFoundUsers.addAll(result);
                     }
 
                     @Override
-                    public void onFailure(@Nonnull Throwable t) {}
+                    public void onFailure(Throwable t) {}
                 },
                 MoreExecutors.directExecutor());
         }
@@ -573,13 +571,13 @@ class FuturesTest {
                 // 回调函数
                 new FutureCallback<>() {
                     @Override
-                    public void onSuccess(@Nonnull User result) {
+                    public void onSuccess(User result) {
                         // 保存任务结果
                         userRef.set(result);
                     }
 
                     @Override
-                    public void onFailure(@Nonnull Throwable t) {
+                    public void onFailure(Throwable t) {
                         fail();
                     }
                 },
@@ -627,12 +625,12 @@ class FuturesTest {
                 // 回调函数
                 new FutureCallback<>() {
                     @Override
-                    public void onSuccess(@Nonnull User result) {
+                    public void onSuccess(User result) {
                         userRef.set(result);
                     }
 
                     @Override
-                    public void onFailure(@Nonnull Throwable t) {
+                    public void onFailure(Throwable t) {
                         fail();
                     }
                 },
@@ -676,12 +674,12 @@ class FuturesTest {
                 // 回调函数
                 new FutureCallback<>() {
                     @Override
-                    public void onSuccess(@Nonnull User result) {
+                    public void onSuccess(User result) {
                         fail();
                     }
 
                     @Override
-                    public void onFailure(@Nonnull Throwable t) {
+                    public void onFailure(Throwable t) {
                         exceptionRef.set(t);
                     }
                 },
@@ -727,12 +725,12 @@ class FuturesTest {
                 // 回调函数
                 new FutureCallback<>() {
                     @Override
-                    public void onSuccess(@Nonnull User result) {
+                    public void onSuccess(User result) {
                         userRef.set(result);
                     }
 
                     @Override
-                    public void onFailure(@Nonnull Throwable t) {
+                    public void onFailure(Throwable t) {
                         fail();
                     }
                 },
@@ -799,10 +797,10 @@ class FuturesTest {
                 timeoutTask,
                 new FutureCallback<>() {
                     @Override
-                    public void onSuccess(@Nonnull User result) {}
+                    public void onSuccess(User result) {}
 
                     @Override
-                    public void onFailure(@Nonnull Throwable t) {
+                    public void onFailure(Throwable t) {
                         exceptionRef.set(t);
                     }
                 },
@@ -834,13 +832,13 @@ class FuturesTest {
                 timeoutTask,
                 new FutureCallback<>() {
                     @Override
-                    public void onSuccess(@Nonnull User result) {
+                    public void onSuccess(User result) {
                         // 保存任务执行结果
                         userRef.set(result);
                     }
 
                     @Override
-                    public void onFailure(@Nonnull Throwable t) {}
+                    public void onFailure(Throwable t) {}
                 },
                 MoreExecutors.directExecutor());
 

@@ -1,7 +1,9 @@
 package alvin.study.springboot.ds.core;
 
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -9,9 +11,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 在每次测试执行前, 将测试数据库的表清空
@@ -53,14 +54,16 @@ public class TableCleaner {
     public void clearAllTables(String... exclude) {
         var excludeSet = Set.of(exclude);
 
+        var datasource = template.getDataSource();
+
         // 获取数据库连接地址
-        var connectUrl = template.getDataSource().getConnection().getMetaData().getURL();
+        var connectUrl = datasource.getConnection().getMetaData().getURL();
 
         String schema;
         String tableType;
         // 根据不同的数据库连接, 获取对应的 schema 和 tableType 参数
         if (connectUrl.startsWith("jdbc:mysql")) {
-            schema = template.getDataSource().getConnection().getCatalog(); // MySQL schema
+            schema = datasource.getConnection().getCatalog(); // MySQL schema
             tableType = "BASE TABLE"; // MySql 表类型
         } else {
             schema = "PUBLIC"; // h2 schema

@@ -3,8 +3,6 @@ package alvin.study.springboot.graphql.app.api.mutation;
 import java.util.List;
 import java.util.Map;
 
-import jakarta.annotation.Nullable;
-
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.stereotype.Controller;
@@ -27,7 +25,7 @@ public class EmployeeMutation extends BaseMutation {
             String title,
             Map<String, Object> info,
             List<Long> departmentIds) {
-        public Employee toEntity(@Nullable Long id) {
+        public Employee toEntity(Long id) {
             var employee = new Employee();
             employee.setId(id);
             employee.setName(name);

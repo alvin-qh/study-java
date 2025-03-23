@@ -18,8 +18,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import jakarta.annotation.Nonnull;
-
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.io.ByteSource;
@@ -235,7 +233,7 @@ public class CachedUrlLoader implements AutoCloseable {
          * @param unit 缓存有效时间单位
          * @return {@code false} 表示缓存已过期
          */
-        public boolean isExpired(long val, @Nonnull TimeUnit unit) {
+        public boolean isExpired(long val, TimeUnit unit) {
             return Instant.now().isAfter(createdAt.plus(val, unit.toChronoUnit()));
         }
     }

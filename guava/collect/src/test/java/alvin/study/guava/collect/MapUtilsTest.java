@@ -15,8 +15,6 @@ import java.util.Properties;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-import jakarta.annotation.Nonnull;
-
 import com.google.common.base.Equivalence;
 import com.google.common.collect.ContiguousSet;
 import com.google.common.collect.HashBiMap;
@@ -380,7 +378,7 @@ class MapUtilsTest {
              * @return {@code true} 表示 {@code a} 和 {@code b} 参数相同
              */
             @Override
-            protected boolean doEquivalent(@Nonnull Integer a, @Nonnull Integer b) {
+            protected boolean doEquivalent(Integer a, Integer b) {
                 return a.intValue() == b.intValue();
             }
 
@@ -390,7 +388,7 @@ class MapUtilsTest {
              * @return 给定 {@code t} 参数的 Hash 值
              */
             @Override
-            protected int doHash(@Nonnull Integer t) {
+            protected int doHash(Integer t) {
                 return Ints.hashCode(t);
             }
         });

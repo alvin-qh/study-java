@@ -1,14 +1,12 @@
 package alvin.study.se.concurrent.service;
 
-import lombok.NoArgsConstructor;
-import lombok.SneakyThrows;
-
-import jakarta.annotation.Nonnull;
-
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+
+import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
 
 /**
  * 用于测试异步调用的服务类
@@ -39,7 +37,7 @@ public class BlockedService {
      * @param model 要保存的模型对象
      * @return 是否保存成功
      */
-    public boolean saveModel(@Nonnull Model model) {
+    public boolean saveModel(Model model) {
         delay();
 
         if (modelMap.containsKey(model.id())) {

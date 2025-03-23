@@ -1,10 +1,5 @@
 package alvin.study.se.jdbc.mptt.repository;
 
-import alvin.study.se.jdbc.datasource.ConnectionManager;
-import alvin.study.se.jdbc.mptt.model.MPTT;
-import jakarta.annotation.Nonnull;
-import lombok.RequiredArgsConstructor;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,6 +7,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import lombok.RequiredArgsConstructor;
+
+import alvin.study.se.jdbc.datasource.ConnectionManager;
+import alvin.study.se.jdbc.mptt.model.MPTT;
 
 /**
  * 对 MPTT 表进行增删改查操作的持久化类
@@ -27,7 +27,7 @@ public class MPTTRepository {
      * @param rs {@link java.sql.ResultSet ResultSet} 结果集对象
      * @return {@link MPTT} 类型对象集合
      */
-    private List<MPTT> resultSetToList(@Nonnull ResultSet rs) throws SQLException {
+    private List<MPTT> resultSetToList(ResultSet rs) throws SQLException {
         // 对于空结果集, 返回空集合
         if (!rs.next()) {
             return List.of();
@@ -96,7 +96,7 @@ public class MPTTRepository {
      * @param conn 数据库连接对象
      * @param mptt {@link MPTT} 类型实体对象
      */
-    private void insert(@Nonnull Connection conn, @Nonnull MPTT mptt) throws SQLException {
+    private void insert(Connection conn, MPTT mptt) throws SQLException {
         // 执行插入语句, 要求返回新纪录的自增 ID
         try (var stat = conn.prepareStatement(
             "INSERT INTO `mptt` (`name`, `pid`, `lft`, `rht`) VALUES (?, ?, ?, ?)",

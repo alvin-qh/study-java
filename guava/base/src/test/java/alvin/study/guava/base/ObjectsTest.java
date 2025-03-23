@@ -67,7 +67,6 @@ class ObjectsTest {
      * </p>
      */
     @Test
-    @SuppressWarnings("null")
     void equal_shouldCheckTwoObjectsIfEquals() {
         var obj1 = Integer.valueOf(100);
         var obj2 = Integer.valueOf(100);
@@ -126,7 +125,6 @@ class ObjectsTest {
      * </p>
      */
     @Test
-    @SuppressWarnings("null")
     void firstNonNull_shouldGetNotNullBetweenTwoReferences() {
         var obj1 = new Object();
         var obj2 = new Object();

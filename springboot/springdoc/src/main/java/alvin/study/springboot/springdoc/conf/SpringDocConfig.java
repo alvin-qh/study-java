@@ -2,8 +2,6 @@ package alvin.study.springboot.springdoc.conf;
 
 import java.time.Instant;
 
-import jakarta.annotation.Nonnull;
-
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
@@ -162,7 +160,7 @@ public class SpringDocConfig {
      * @param path      API 的访问 URI
      * @return {@link Operation} 对象
      */
-    private Operation customizeOperation(@Nonnull Operation operation, String path) {
+    private Operation customizeOperation(Operation operation, String path) {
         // 读取操作的所有响应, 并处理其中 200 响应的内容
         var content = operation.getResponses().get("200").getContent();
         // 遍历每个相应内容, 进行个性化处理

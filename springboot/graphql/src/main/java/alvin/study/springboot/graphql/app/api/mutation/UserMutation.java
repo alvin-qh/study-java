@@ -1,7 +1,5 @@
 package alvin.study.springboot.graphql.app.api.mutation;
 
-import jakarta.annotation.Nullable;
-
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.stereotype.Controller;
@@ -23,7 +21,7 @@ public class UserMutation extends BaseMutation {
      * 用户输入对象类型
      */
     static record UserInput(String account, String password, UserGroup group) {
-        public User toEntity(@Nullable Long id) {
+        public User toEntity(Long id) {
             var user = new User();
             user.setId(id);
             user.setAccount(account);

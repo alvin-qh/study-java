@@ -11,7 +11,6 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import jakarta.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -225,7 +224,7 @@ public final class ProcessUtil {
          * @param handle {@link ProcessHandle} 对象
          * @return 转换后的当前类型对象
          */
-        private static ProcessInfo of(@Nonnull ProcessHandle handle) {
+        private static ProcessInfo of(ProcessHandle handle) {
             return new ProcessInfo(
                 handle.pid(),
                 handle.isAlive(),

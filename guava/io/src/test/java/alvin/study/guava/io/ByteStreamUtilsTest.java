@@ -18,9 +18,6 @@ import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Arrays;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
-
 import com.google.common.base.Preconditions;
 import com.google.common.io.ByteProcessor;
 import com.google.common.io.ByteStreams;
@@ -139,7 +136,7 @@ class ByteStreamUtilsTest {
                 private final ByteArrayOutputStream bio = new ByteArrayOutputStream();
 
                 @Override
-                public boolean processBytes(@Nonnull byte[] buf, int off, int len) {
+                public boolean processBytes(byte[] buf, int off, int len) {
                     // 将输入的数据存储输出字节流对象中
                     bio.write(buf, off, len);
                     return true;
@@ -147,7 +144,7 @@ class ByteStreamUtilsTest {
 
                 @Override
                 @SneakyThrows
-                public @Nullable Staff getResult() {
+                public Staff getResult() {
                     try (bio) {
                         bio.flush();
                         // 将字节流存储的数据反序列化为对象

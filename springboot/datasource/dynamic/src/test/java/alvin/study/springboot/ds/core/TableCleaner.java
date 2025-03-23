@@ -55,9 +55,6 @@ public class TableCleaner {
         var excludeSet = Set.of(exclude);
 
         var datasource = template.getDataSource();
-        if (datasource == null) {
-            throw new NullPointerException("datasource is null value");
-        }
 
         // 获取数据库连接地址
         var connectUrl = datasource.getConnection().getMetaData().getURL();

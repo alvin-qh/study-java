@@ -404,7 +404,6 @@ class StringUtilsTest {
      * </p>
      */
     @Test
-    @SuppressWarnings("null")
     void emptyToNull_checkStringIfNullOrEmpty() {
         then(Strings.isNullOrEmpty("")).isTrue();
         then(Strings.isNullOrEmpty(null)).isTrue();

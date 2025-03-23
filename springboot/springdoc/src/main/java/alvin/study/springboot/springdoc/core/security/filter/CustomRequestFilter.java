@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -118,9 +116,7 @@ public class CustomRequestFilter extends OncePerRequestFilter {
      * @param request  请求对象
      * @return 是否匹配成功
      */
-    private static boolean checkIfMatcherMatches(
-            @Nonnull AntPathRequestMatcher[] matchers,
-            HttpServletRequest request) {
+    private static boolean checkIfMatcherMatches(AntPathRequestMatcher[] matchers, HttpServletRequest request) {
         for (var matcher : matchers) {
             if (matcher.matches(request)) {
                 return true;
@@ -182,8 +178,8 @@ public class CustomRequestFilter extends OncePerRequestFilter {
      */
     @SneakyThrows
     private CustomAuthenticationToken checkAsBasicAuth(
-            @Nonnull HttpServletRequest request,
-            @Nonnull HttpServletResponse response) {
+            HttpServletRequest request,
+            HttpServletResponse response) {
         var token = request.getHeader(Headers.AUTHORIZATION);
         if (Strings.isNullOrEmpty(token)) {
             // 如果 Header 中不包含 Authorization 头信息, 则返回包含 WWW-Authenticate
@@ -224,7 +220,7 @@ public class CustomRequestFilter extends OncePerRequestFilter {
      * @return 用户凭证对象
      */
     @SneakyThrows
-    private @Nullable CustomAuthenticationToken checkAsJwtAuth(@Nonnull HttpServletRequest request) {
+    private CustomAuthenticationToken checkAsJwtAuth(HttpServletRequest request) {
         var token = request.getHeader(Headers.AUTHORIZATION);
         if (Strings.isNullOrEmpty(token)) {
             // 如果 Header 中不包含 JWT 串, 则不生成用户凭证

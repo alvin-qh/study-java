@@ -128,7 +128,6 @@ class IteratorUtilsTest {
      * UnmodifiableIterator.next()} 时会抛出异常
      * </p>
      */
-    @SuppressWarnings("null")
     @Test
     void consumingIterator_shouldReadAndRemoveElementsByIterator() {
         {
@@ -261,7 +260,6 @@ class IteratorUtilsTest {
      * 查找到的元素或为空
      * </p>
      */
-    @SuppressWarnings("null")
     @Test
     void find_shouldFindElementFromIterator() {
         // 定义集合对象
@@ -301,7 +299,6 @@ class IteratorUtilsTest {
      * 例如: 将集合 {@code [1, 2, 3]} 分到两个数组中, 结果为 {@code [[1, 2], [3, null]]}
      * </p>
      */
-    @SuppressWarnings("null")
     @Test
     void partition_shouldSplitIteratorIntoPartitions() {
         // 定义集合
@@ -351,7 +348,6 @@ class IteratorUtilsTest {
      * 如果迭代器包含多个元素, 则抛出异常
      * </p>
      */
-    @SuppressWarnings("null")
     @Test
     void getElement_shouldGetNeededElementFromIterator() {
         {

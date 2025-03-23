@@ -12,8 +12,6 @@ import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import jakarta.annotation.Nonnull;
-
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.io.CharStreams;
@@ -101,7 +99,7 @@ class CharStreamUtilsTest {
                 private final List<String> lines = Lists.newArrayList();
 
                 @Override
-                public boolean processLine(@Nonnull String line) {
+                public boolean processLine(String line) {
                     // 将读取的结果进行保存
                     return lines.add(line);
                 }

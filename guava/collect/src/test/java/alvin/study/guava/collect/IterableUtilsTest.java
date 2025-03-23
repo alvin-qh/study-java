@@ -124,7 +124,6 @@ class IterableUtilsTest {
      * Iterator.remove()} 方法, 否则在迭代过程中会抛出异常
      * </p>
      */
-    @SuppressWarnings("null")
     @Test
     void consumingIterable_shouldReadAndRemoveElementsByIterable() {
         {
@@ -257,7 +256,6 @@ class IterableUtilsTest {
      * 类型对象作为结果, 该对象存储查找到的元素或为空
      * </p>
      */
-    @SuppressWarnings("null")
     @Test
     void find_shouldFindElementFromIterableObject() {
         // 定义集合对象
@@ -345,7 +343,6 @@ class IterableUtilsTest {
      * 如果包含多个元素, 则抛出异常
      * </p>
      */
-    @SuppressWarnings("null")
     @Test
     void getElement_shouldGetFirstElementFromIterables() {
         {

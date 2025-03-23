@@ -7,8 +7,6 @@ import java.util.PriorityQueue;
 import java.util.function.ToIntFunction;
 import java.util.stream.Stream;
 
-import jakarta.annotation.Nonnull;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.MultimapBuilder;
@@ -151,10 +149,10 @@ public final class GraphPaths {
      *         否则包含一个 {@link PathValue} 类型对象, 记录了路径和路径距离
      */
     public static <N, E> Optional<PathValue<N>> getShortestPath(
-            @Nonnull ValueGraph<N, E> graph,
-            @Nonnull N fromNode,
-            @Nonnull N toNode,
-            @Nonnull ToIntFunction<E> distanceFn) {
+            ValueGraph<N, E> graph,
+            N fromNode,
+            N toNode,
+            ToIntFunction<E> distanceFn) {
         // 记录节点和路径值关系的 Map 对象
         var nodeMap = Maps.<N, PathValue<N>>newHashMap();
 

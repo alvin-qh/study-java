@@ -1,7 +1,5 @@
 package alvin.study.springboot.security.conf;
 
-import jakarta.annotation.Nonnull;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -142,9 +140,7 @@ public class SecurityConfig {
      */
     @Bean
     @Order(1)
-    SecurityFilterChain filterChain(
-            @Nonnull HttpSecurity security,
-            @Nonnull JwtRequestFilter jwtRequestFilter) throws Exception {
+    SecurityFilterChain filterChain(HttpSecurity security, JwtRequestFilter jwtRequestFilter) throws Exception {
         return security
                 // 禁用 CSRF 重复提交检验
                 .csrf(AbstractHttpConfigurer::disable)

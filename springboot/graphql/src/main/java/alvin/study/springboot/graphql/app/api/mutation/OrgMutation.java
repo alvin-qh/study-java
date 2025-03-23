@@ -4,8 +4,6 @@ import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.stereotype.Controller;
 
-import io.micrometer.common.lang.Nullable;
-
 import lombok.RequiredArgsConstructor;
 
 import alvin.study.springboot.graphql.app.context.ContextKey;
@@ -26,7 +24,7 @@ public class OrgMutation {
      * 用户输入对象类型
      */
     static record OrgInput(String name) {
-        Org toEntity(@Nullable Long id) {
+        Org toEntity(Long id) {
             var org = new Org();
             org.setId(id);
             org.setName(name);

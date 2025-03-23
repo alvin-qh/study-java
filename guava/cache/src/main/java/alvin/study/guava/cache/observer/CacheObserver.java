@@ -1,7 +1,5 @@
 package alvin.study.guava.cache.observer;
 
-import jakarta.annotation.Nonnull;
-
 import com.google.common.cache.LoadingCache;
 import com.google.common.eventbus.Subscribe;
 
@@ -49,7 +47,7 @@ public class CacheObserver {
      *              {@link User} 实体被更新
      */
     @Subscribe
-    public void onUserUpdated(@Nonnull UserUpdateEvent event) {
+    public void onUserUpdated(UserUpdateEvent event) {
         var user = event.getEntry();
         cache.refresh(user.id());
     }
@@ -65,7 +63,7 @@ public class CacheObserver {
      *              {@link User} 实体被删除
      */
     @Subscribe
-    public void onUserDeleted(@Nonnull UserDeleteEvent event) {
+    public void onUserDeleted(UserDeleteEvent event) {
         var user = event.getEntry();
         cache.invalidate(user.id());
     }

@@ -3,8 +3,6 @@ package alvin.study.springboot.aop.aspect;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
-import jakarta.annotation.Nonnull;
-
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -264,7 +262,7 @@ public class MethodAdvice {
      * @throws Throwable 抛出目标方法可能会抛出的异常
      */
     @Around("point()")
-    public Object around(@Nonnull ProceedingJoinPoint jp) throws Throwable {
+    public Object around(ProceedingJoinPoint jp) throws Throwable {
         log.info("[MethodAdvice] Method \"{}\" was called, and raised exception is ", jp.getSignature());
 
         messageQueue.add(new Message(

@@ -2,7 +2,6 @@ package alvin.study.springboot.ds.conf;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -17,7 +16,7 @@ public class WebConfig implements WebMvcConfigurer {
      * 添加拦截器
      */
     @Override
-    public void addInterceptors(@NonNull InterceptorRegistry registry) {
+    public void addInterceptors(InterceptorRegistry registry) {
         // 添加拦截器
         registry.addInterceptor(apiHandlerInterceptor)
                 // 添加拦截器要拦截的 url 范围

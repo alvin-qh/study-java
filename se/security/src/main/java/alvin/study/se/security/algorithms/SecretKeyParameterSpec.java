@@ -1,14 +1,14 @@
 package alvin.study.se.security.algorithms;
 
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import org.apache.commons.codec.binary.Hex;
-
-import jakarta.annotation.Nullable;
+import java.security.spec.AlgorithmParameterSpec;
 
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.security.spec.AlgorithmParameterSpec;
+
+import org.apache.commons.codec.binary.Hex;
+
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 对称加密密钥和初始向量类型
@@ -36,7 +36,7 @@ public final class SecretKeyParameterSpec {
      *
      * @return 加密向量对象
      */
-    public @Nullable AlgorithmParameterSpec getParameterSpec() {
+    public AlgorithmParameterSpec getParameterSpec() {
         if (iv == null || iv.length == 0) {
             return null;
         }

@@ -16,7 +16,6 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import jakarta.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -179,8 +178,8 @@ public final class Streams {
      * @return {@code stream} 转换得到的 {@link Set} 对象
      */
     public static <T, R> Set<R> toSet(
-            @Nonnull Stream<? extends T> stream,
-            @Nonnull Function<? super T, ? extends R> mapper,
+            Stream<? extends T> stream,
+            Function<? super T, ? extends R> mapper,
             boolean omitNull) {
         var rs = stream.map(mapper);
         if (omitNull) {
@@ -197,8 +196,8 @@ public final class Streams {
      *         对象
      */
     private static <T, K, U> Collector<T, ?, Map<K, U>> toLinkedMap(
-            @Nonnull Function<? super T, ? extends K> keyMapper,
-            @Nonnull Function<? super T, ? extends U> valueMapper,
+            Function<? super T, ? extends K> keyMapper,
+            Function<? super T, ? extends U> valueMapper,
             boolean omitKeyNull) {
         return Collector.of(
             // 集合对象创建函数
@@ -231,9 +230,9 @@ public final class Streams {
      * @return {@link Map} 对象
      */
     public static <K, V, U> Map<K, V> toMap(
-            @Nonnull Stream<? extends U> stream,
-            @Nonnull Function<? super U, ? extends K> keyMapper,
-            @Nonnull Function<? super U, ? extends V> valueMapper,
+            Stream<? extends U> stream,
+            Function<? super U, ? extends K> keyMapper,
+            Function<? super U, ? extends V> valueMapper,
             boolean omitKeyNull) {
         return stream.collect(toLinkedMap(keyMapper, valueMapper, omitKeyNull));
     }
@@ -250,8 +249,8 @@ public final class Streams {
      * @return {@link Map} 对象
      */
     public static <K, V> Map<K, V> toMap(
-            @Nonnull Stream<? extends V> stream,
-            @Nonnull Function<? super V, ? extends K> keyMapper,
+            Stream<? extends V> stream,
+            Function<? super V, ? extends K> keyMapper,
             boolean omitKeyNull) {
         return toMap(stream, keyMapper, Function.identity(), omitKeyNull);
     }
@@ -267,8 +266,8 @@ public final class Streams {
      * @return 转换后的 {@link List} 对象
      */
     public static <T, R> List<T> flatList(
-            @Nonnull Stream<? extends R> stream,
-            @Nonnull Function<? super R, Stream<? extends T>> mapper,
+            Stream<? extends R> stream,
+            Function<? super R, Stream<? extends T>> mapper,
             boolean omitNull) {
         var rs = stream.flatMap(mapper);
         if (omitNull) {
@@ -288,8 +287,8 @@ public final class Streams {
      * @return 转换后的 {@link Set} 对象
      */
     public static <T, R> Set<T> flatSet(
-            @Nonnull Stream<? extends R> stream,
-            @Nonnull Function<? super R, Stream<? extends T>> mapper,
+            Stream<? extends R> stream,
+            Function<? super R, Stream<? extends T>> mapper,
             boolean omitNull) {
         var rs = stream.flatMap(mapper);
         if (omitNull) {

@@ -47,7 +47,7 @@ class ImmutableMapTest {
      * 的顺序, 交替传递键值, 构建 Map 对象
      * </p>
      */
-    @SuppressWarnings({ "null", "deprecation" })
+    @SuppressWarnings({ "deprecation" })
     @Test
     void of_shouldCreateImmutableMap() {
         var map = ImmutableMap.of("A", 100, "B", 200);
@@ -148,7 +148,6 @@ class ImmutableMapTest {
      * 则会导致抛出异常
      * </p>
      */
-    @SuppressWarnings("null")
     @Test
     void builder_shouldBuildImmutableMap() {
         // 创建一个 Builder 对象, 分批添加键值对, 构建不变 Map 对象
@@ -195,7 +194,6 @@ class ImmutableMapTest {
      * {@link ImmutableMap.Builder#buildKeepingLast()} 不会在构建过程中产生键重复异常
      * </p>
      */
-    @SuppressWarnings("null")
     @Test
     void builder_shouldBuildImmutableMapAndKeepLastValueIfKeyDuplicate() {
         // 通过 buildKeepingLast 方法, 不会因为添加了重复键导致异常

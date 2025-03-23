@@ -9,8 +9,6 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.regex.Pattern;
 
-import jakarta.annotation.Nonnull;
-
 import org.apache.commons.codec.binary.Base64;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -85,7 +83,7 @@ public class RSAKeyLoader {
      * @param endLine   密钥结束标识符
      * @return 密钥的有效部分
      */
-    private static String fixKeyString(@Nonnull String keyString, String beginLine, String endLine) {
+    private static String fixKeyString(String keyString, String beginLine, String endLine) {
         /// 定位到密钥有效部分的起始位置
         var start = keyString.indexOf(beginLine);
         if (start < 0) {

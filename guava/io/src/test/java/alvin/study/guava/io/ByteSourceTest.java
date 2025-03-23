@@ -14,8 +14,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.sql.DataSource;
 
-import jakarta.annotation.Nonnull;
-
 import com.google.common.hash.Hashing;
 import com.google.common.io.ByteProcessor;
 import com.google.common.io.ByteSource;
@@ -136,7 +134,7 @@ class ByteSourceTest {
             private final ByteArrayOutputStream os = new ByteArrayOutputStream();
 
             @Override
-            public boolean processBytes(@Nonnull byte[] buf, int off, int len) {
+            public boolean processBytes(byte[] buf, int off, int len) {
                 // 将每次读取的内容存入 OutputStream 对象
                 os.write(buf, off, len);
                 return true;

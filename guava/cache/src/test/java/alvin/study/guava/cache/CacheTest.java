@@ -12,8 +12,6 @@ import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-import jakarta.annotation.Nonnull;
-
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -215,7 +213,7 @@ class CacheTest {
         var cache = CacheBuilder.newBuilder()
                 .build(new CacheLoader<Long, User>() {
                     @Override
-                    public User load(@Nonnull Long key) {
+                    public User load(Long key) {
                         // 从数据源读取对象, 并在无法读取结果时抛出异常
                         return repository.findUserById(key).orElseThrow();
                     }
@@ -501,7 +499,7 @@ class CacheTest {
         var cache = CacheBuilder.newBuilder()
                 .build(new CacheLoader<Long, Optional<User>>() {
                     @Override
-                    public Optional<User> load(@Nonnull Long key) {
+                    public Optional<User> load(Long key) {
                         return repository.findUserById(key);
                     }
                 });
@@ -556,7 +554,7 @@ class CacheTest {
                     private final BloomFilter<Long> bloomFilter = repository.toBloomFilter(1000);
 
                     @Override
-                    public User load(@Nonnull Long key) {
+                    public User load(Long key) {
                         // 通过布隆过滤器确认数据是否存在
                         if (!bloomFilter.mightContain(key)) {
                             // 数据不存在的清空
@@ -677,7 +675,7 @@ class CacheTest {
                 .refreshAfterWrite(200, TimeUnit.MILLISECONDS)
                 .build(new CacheLoader<Long, User>() {
                     @Override
-                    public User load(@Nonnull Long key) {
+                    public User load(Long key) {
                         return repository.findUserById(key).orElseThrow();
                     }
                 });
@@ -733,7 +731,7 @@ class CacheTest {
         var cache = CacheBuilder.newBuilder()
                 .build(new CacheLoader<Long, User>() {
                     @Override
-                    public User load(@Nonnull Long key) {
+                    public User load(Long key) {
                         return repository.findUserById(key).orElseThrow();
                     }
                 });
@@ -791,7 +789,7 @@ class CacheTest {
                 .recordStats()
                 .build(new CacheLoader<Long, User>() {
                     @Override
-                    public User load(@Nonnull Long key) {
+                    public User load(Long key) {
                         return repository.findUserById(key).orElseThrow();
                     }
                 });
@@ -896,7 +894,7 @@ class CacheTest {
                 })
                 .build(new CacheLoader<Long, User>() {
                     @Override
-                    public User load(@Nonnull Long key) {
+                    public User load(Long key) {
                         return repository.findUserById(key).orElseThrow();
                     }
                 });

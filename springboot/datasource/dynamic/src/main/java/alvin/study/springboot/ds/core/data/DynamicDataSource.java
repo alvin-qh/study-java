@@ -10,7 +10,6 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.springframework.jdbc.datasource.AbstractDataSource;
-import org.springframework.lang.NonNull;
 
 import com.google.common.base.Strings;
 
@@ -89,7 +88,7 @@ public class DynamicDataSource extends AbstractDataSource {
 
     @SuppressWarnings("unchecked")
     @Override
-    public @NonNull <T> T unwrap(Class<T> iface) throws SQLException {
+    public <T> T unwrap(Class<T> iface) throws SQLException {
         if (iface.isInstance(this)) {
             return (T) this;
         }

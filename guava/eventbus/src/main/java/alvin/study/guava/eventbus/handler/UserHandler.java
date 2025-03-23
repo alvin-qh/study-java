@@ -3,8 +3,6 @@ package alvin.study.guava.eventbus.handler;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import jakarta.annotation.Nonnull;
-
 import com.google.common.base.Preconditions;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -84,7 +82,7 @@ public class UserHandler extends AbstractHandler {
      */
     @Subscribe
     @SneakyThrows
-    public void onUserCreated(@Nonnull UserEvent event) {
+    public void onUserCreated(UserEvent event) {
         var user = event.payload();
         // 为演示异常处理, 这里为 User.id 为 0 的情况抛出异常
         Preconditions.checkArgument(

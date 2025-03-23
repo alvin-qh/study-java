@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import jakarta.annotation.Nonnull;
-
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -32,8 +30,7 @@ public final class AnnotationUtil {
      * @param annotationType 注解类型
      * @return 对象中所有被注解方法以及注解组成的 {@link Map} 对象
      */
-    public static <T extends Annotation> Optional<T> getClassAnnotation(@Nonnull Class<?> clazz,
-            Class<T> annotationType) {
+    public static <T extends Annotation> Optional<T> getClassAnnotation(Class<?> clazz, Class<T> annotationType) {
         return Optional.ofNullable(clazz.getAnnotation(annotationType));
     }
 
@@ -47,7 +44,7 @@ public final class AnnotationUtil {
      * @return 所有符合条件的注解对象的集合
      */
     public static <T extends Annotation> List<T> getFieldAnnotation(
-            @Nonnull Class<?> clazz,
+            Class<?> clazz,
             String fieldName,
             Class<T> annotationType) {
 
@@ -72,7 +69,7 @@ public final class AnnotationUtil {
      * @return 所有符合条件的注解对象的集合
      */
     public static <T extends Annotation> List<T> getMethodAnnotation(
-            @Nonnull Class<?> clazz,
+            Class<?> clazz,
             String methodName,
             Class<T> annotationType) {
         // 遍历对象上的所有方法

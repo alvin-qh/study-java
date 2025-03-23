@@ -1,11 +1,5 @@
 package alvin.study.se.collection;
 
-import com.google.common.collect.Iterators;
-
-import jakarta.annotation.Nonnull;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,6 +16,11 @@ import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Stream;
+
+import com.google.common.collect.Iterators;
+
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 /**
  * 集合操作工具类, 用于演示集合的常见操作
@@ -327,7 +326,7 @@ public final class Colls {
      * @param iter 迭代器对象
      * @return {@code coll} 集合是否被修改
      */
-    public static <T> boolean addAll(Collection<? super T> coll, @Nonnull Iterator<? extends T> iter) {
+    public static <T> boolean addAll(Collection<? super T> coll, Iterator<? extends T> iter) {
         boolean wasModified = false;
         while (iter.hasNext()) {
             wasModified |= coll.add(iter.next());
@@ -343,7 +342,7 @@ public final class Colls {
      * @param iter 可迭代对象
      * @return {@code coll} 集合是否被修改
      */
-    public static <T> boolean addAll(Collection<? super T> coll, @Nonnull Iterable<? extends T> iter) {
+    public static <T> boolean addAll(Collection<? super T> coll, Iterable<? extends T> iter) {
         boolean wasModified = false;
         for (var e : iter) {
             wasModified |= coll.add(e);
@@ -396,7 +395,7 @@ public final class Colls {
      * @param iter 迭代器对象
      * @return {@code true} 表示 {@code iter} 参数中至少一个元素包含在 {@code coll} 参数集合中
      */
-    private static boolean anyInCollection(@Nonnull Collection<?> coll, Iterator<?> iter) {
+    private static boolean anyInCollection(Collection<?> coll, Iterator<?> iter) {
         if (coll.size() >= MIN_COLLECTION_SIZE) {
             coll = Set.copyOf(coll);
         }
@@ -448,7 +447,7 @@ public final class Colls {
      * @param iter 迭代器对象
      * @return {@code true} 表示 {@code iter} 参数中的全部元素都包含在 {@code coll} 参数集合中
      */
-    private static boolean allInCollection(@Nonnull Collection<?> coll, Iterator<?> iter) {
+    private static boolean allInCollection(Collection<?> coll, Iterator<?> iter) {
         if (coll.size() >= MIN_COLLECTION_SIZE) {
             coll = Set.copyOf(coll);
         }

@@ -1,7 +1,5 @@
 package alvin.study.springboot.graphql.app.api.mutation;
 
-import jakarta.annotation.Nullable;
-
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.stereotype.Controller;
@@ -21,7 +19,7 @@ public class DepartmentMutation extends BaseMutation {
     private final DepartmentService departmentService;
 
     static record DepartmentInput(String name, Long parentId) {
-        public Department toEntity(@Nullable Long id) {
+        public Department toEntity(Long id) {
             var department = new Department();
             department.setId(id);
             department.setName(name);

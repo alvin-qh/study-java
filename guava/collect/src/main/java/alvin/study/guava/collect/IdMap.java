@@ -6,8 +6,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import jakarta.annotation.Nonnull;
-
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ForwardingMap;
@@ -42,7 +40,7 @@ public class IdMap extends ForwardingMap<Long, String> {
      *                                  或空字符串时, 抛出该异常
      */
     @Override
-    public String put(@Nonnull Long key, @Nonnull String value) {
+    public String put(Long key, String value) {
         Preconditions.checkNotNull(key);
 
         if (Strings.isNullOrEmpty(value)) {
@@ -61,7 +59,7 @@ public class IdMap extends ForwardingMap<Long, String> {
      *                                  {@code null} 的元素 时, 抛出该异常
      */
     @Override
-    public void putAll(@Nonnull Map<? extends Long, ? extends String> map) {
+    public void putAll(Map<? extends Long, ? extends String> map) {
         Preconditions.checkNotNull(map).forEach((key, value) -> {
             Preconditions.checkNotNull(key);
             if (Strings.isNullOrEmpty(value)) {

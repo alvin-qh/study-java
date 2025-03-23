@@ -5,7 +5,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -58,9 +57,7 @@ public class ApiHandlerInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(
-            @NonNull HttpServletRequest request,
-            @NonNull HttpServletResponse response,
-            @NonNull Object handler) throws Exception {
+            HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("Visiting \"{}\"", request.getRequestURI());
 
         // 获取 X-Org-Code 请求头, 获取组织代码
