@@ -50,6 +50,20 @@ public class ThreadTest {
                 .matches(id -> id instanceof Long && ((long) id) > 0);
     }
 
+    /**
+     * 测试线程中断
+     *
+     * <p>
+     * 通过 {@link Thread#interrupt()} 方法可以打断对应线程, 线程被打断后, 会抛出
+     * {@link InterruptedException} 异常, 通过在线程内捕获该异常即可结束线程
+     * </p>
+     *
+     * <p>
+     * 被打断的线程必须具备一个等待调用, 例如调用了 {@link Thread#sleep(long)} 方法,
+     * 这类方法均具备可抛出 {@link InterruptedException} 异常的声明,
+     * 如果线程中未调用此类函数, 则该线程不会被打断
+     * </p>
+     */
     @Test
     @SneakyThrows
     void interceptor_shouldInterceptThread() {
