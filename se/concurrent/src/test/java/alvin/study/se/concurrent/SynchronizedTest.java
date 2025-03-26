@@ -3,6 +3,7 @@ package alvin.study.se.concurrent;
 import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import lombok.SneakyThrows;
 
@@ -148,8 +149,19 @@ public class SynchronizedTest {
      * </p>
      *
      * <p>
+     * 在一个线程的 {@code synchronized} 代码块中, 可以通过互斥对象的 {@link Object#wait()}
+     * 方法进入等待
+     * </p>
+     *
+     * <p>
      * 进入等待的线程会暂停运行并暂时退出同步代码块, 直到被通知后立即回到同步代码块,
      * 继续运行后续代码
+     * </p>
+     *
+     * <p>
+     * 在另一个线程的 {@code synchronized} 代码块中, 可以通过同一个互斥对象的
+     * {@link Object#notify()} 方法发出通知, 此时如果存在等待中的线程,
+     * 则等待中线程的其中一个会被唤醒
      * </p>
      *
      * <p>
@@ -221,5 +233,60 @@ public class SynchronizedTest {
         for (var i = 0; i < target.size() - 1; i++) {
             then(target.get(i + 1) - target.get(i)).isEqualTo(1);
         }
+    }
+
+    /**
+     * 测试一次性通知所有等待中的线程
+     *
+     * <p>
+     * 在 {@code synchronized} 代码块中, 通过互斥对象的 {@link Object#notifyAll()}
+     * 方法可以通知此时此刻所有正在等待的线程, 所有等待线程会被唤醒
+     * </p>
+     */
+    @Test
+    @SneakyThrows
+    void notifyAll_shouldWaitForNotifyAll() {
+        // 定义线程数组
+        var threads = new Thread[10];
+
+        // 用于记录各个线程运行结果的集合
+        var results = new HashSet<Long>();
+
+        // 批量创建 10 个线程
+        for (var i = 0; i < threads.length; i++) {
+            threads[i] = new Thread(() -> {
+                try {
+                    synchronized (results) {
+                        // 进入等待
+                        results.wait();
+
+                        // 保存线程执行结果
+                        results.add(Thread.currentThread().threadId());
+                    }
+                } catch (InterruptedException e) {}
+            });
+
+            // 启动线程
+            threads[i].start();
+        }
+
+        Thread.sleep(100);
+
+        // 此时子线程都在等待, 结果集合为空
+        then(results).isEmpty();
+
+        // 发出通知, 由于 `notifyAll()` 方法会唤醒所有正在等待的线程,
+        // 故所有线程会在同一时刻开始执行
+        synchronized (results) {
+            results.notifyAll();
+        }
+
+        // 等待所有线程结束
+        for (var thread : threads) {
+            thread.join();
+        }
+
+        // 此时结果集合应该有 10 个元素, 且为所有子线程执行的结果
+        then(results).hasSize(10);
     }
 }
