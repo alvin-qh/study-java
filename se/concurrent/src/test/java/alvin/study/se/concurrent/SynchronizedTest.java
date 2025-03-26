@@ -289,4 +289,17 @@ public class SynchronizedTest {
         // 此时结果集合应该有 10 个元素, 且为所有子线程执行的结果
         then(results).hasSize(10);
     }
+
+    @Test
+    @SneakyThrows
+    void wait_shouldWaitTimeout() {
+        var mutex = new Object();
+
+        synchronized (mutex) {
+            var ts = System.currentTimeMillis();
+            mutex.wait(100);
+
+            then(System.currentTimeMillis() - ts).isGreaterThanOrEqualTo(100);
+        }
+    }
 }
