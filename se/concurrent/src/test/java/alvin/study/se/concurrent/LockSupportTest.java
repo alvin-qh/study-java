@@ -10,7 +10,7 @@ import java.util.concurrent.locks.LockSupport;
 import org.junit.jupiter.api.Test;
 
 /**
- * 演示通过 {@link LockSupport} 类型执行更加底层的缩操作
+ * 演示通过 {@link LockSupport} 类型执行更加底层的锁操作
  */
 class LockSupportTest {
     /**
@@ -37,24 +37,25 @@ class LockSupportTest {
      * 将线程阻塞指定的时间
      *
      * <p>
-     * 通过 {@link LockSupport#parkNanos(long)} 方法可以将当前线程阻塞指定的时间 (时间单位为纳秒), 并在等待指定时间后唤醒线程,
-     * 该方法类似于 {@link Thread#sleep(long)} 方法
+     * 通过 {@link LockSupport#parkNanos(long)} 方法可以将当前线程阻塞指定的时间 (时间单位为纳秒),
+     * 并在等待指定时间后唤醒线程, 该方法类似于 {@link Thread#sleep(long)} 方法
      * </p>
      *
      * <p>
-     * 和 {@link Thread#sleep(long)} 方法不同, {@code parkNanos} 方法更为底层, 而 {@code sleep} 方法是借助
-     * {@link LockSupport#park()} 和自旋锁实现, 会对系统资源有占用
+     * 和 {@link Thread#sleep(long)} 方法不同, {@code parkNanos} 方法更为底层, 而
+     * {@code sleep} 方法是借助 {@link LockSupport#park()} 和自旋锁实现, 会对系统资源有占用
      * </p>
      *
      * <p>
-     * {@link Thread#sleep(long)} 方法在线程 {@code interrupt} 后会抛出 {@link InterruptedException} 异常来中断阻塞, 而
-     * {@link LockSupport#parkNanos(long)} 方法只是结束阻塞, 继续执行后续代码, 但线程状态已经为 {@code interrupted} (即
-     * {@link Thread#isInterrupted()}) 会返回 {@code true}
+     * {@link Thread#sleep(long)} 方法在线程 {@code interrupt} 后会抛出
+     * {@link InterruptedException} 异常来中断阻塞, 而 {@link LockSupport#parkNanos(long)}
+     * 方法只是结束阻塞, 继续执行后续代码, 但线程状态已经为 {@code interrupted}
+     * (即 {@link Thread#isInterrupted()}) 会返回 {@code true}
      * </p>
      *
      * <p>
-     * 在执行 {@link LockSupport#parkNanos(long)} 过程中的线程状态为 {@code TIMED_WAITING}, 这一点和执行
-     * {@link Thread#sleep(long)} 方法以及 {@link Object#wait(long)} 是一致的
+     * 在执行 {@link LockSupport#parkNanos(long)} 过程中的线程状态为 {@code TIMED_WAITING},
+     * 这一点和执行 {@link Thread#sleep(long)} 方法以及 {@link Object#wait(long)} 是一致的
      * </p>
      */
     @Test
@@ -78,11 +79,13 @@ class LockSupportTest {
      * 阻塞线程到指定时间
      *
      * <p>
-     * 通过 {@link LockSupport#parkUntil(long)} 方法可以将当前线程阻塞到指定的时间, 并在到达指定时间后唤醒线程
+     * 通过 {@link LockSupport#parkUntil(long)} 方法可以将当前线程阻塞到指定的时间,
+     * 并在到达指定时间后唤醒线程
      * </p>
      *
      * <p>
-     * {@code parkUntil} 方法的参数是一个 UTC 时区, 从 1970-01-01 开始计数的毫秒数, 可以通过 {@link Instant} 类进行获取
+     * {@code parkUntil} 方法的参数是一个从 1970-01-01 开始计数的毫秒数 (UTC 时区),
+     * 可以通过 {@link Instant} 类进行获取
      * </p>
      */
     @Test
@@ -109,8 +112,8 @@ class LockSupportTest {
      * 阻塞当前线程, 并由另一个线程结束阻塞
      *
      * <p>
-     * 通过在当前线程执行 {@link LockSupport#park()} 方法可以对当前线程一直阻塞, 直到另一个线程执行了
-     * {@link LockSupport#unpark(Thread)} 方法, 被阻塞线程解除阻塞
+     * 通过在当前线程执行 {@link LockSupport#park()} 方法可以对当前线程一直阻塞,
+     * 直到另一个线程执行了 {@link LockSupport#unpark(Thread)} 方法, 被阻塞线程解除阻塞
      * </p>
      */
     @Test
@@ -179,7 +182,8 @@ class LockSupportTest {
      * </p>
      *
      * <p>
-     * 通过 {@link LockSupport#getBlocker(Thread)} 方法可以在另一个线程中, 通过被阻塞线程对象获取到阻塞线程传递的对象
+     * 通过 {@link LockSupport#getBlocker(Thread)} 方法可以在另一个线程中,
+     * 通过被阻塞线程对象获取到阻塞线程传递的对象
      * </p>
      */
     @Test

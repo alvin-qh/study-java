@@ -10,7 +10,28 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
 /**
- * 测试线程互斥锁
+ * 测试线程互斥
+ *
+ * 通过 {@code synchronized} 关键字, 可以对任意 Java 对象进行互斥操作,
+ * 所谓的互斥操作, 即:
+ *
+ * <ul>
+ * <li>
+ * 可以通过 {@code synchronized} 关键字以及一个对象定义一个代码块,
+ * (该对象可以为任意对象), 多个线程会依次进入该以该对象为互斥对象的代码块,
+ * 且每次只有一个线程可进入代码块, 其它线程进入等待
+ * </li>
+ * <li>
+ * 也可以通过 {@code synchronized} 关键字修饰一个方法,
+ * 则表示整个方法的代码为互斥, 即每次只有一个线程可以执行该方法,
+ * 其它线程进入等待
+ * </li>
+ * <li>
+ * {@code synchronized} 关键字定义的互斥锁为不可重入的非公平锁,
+ * 即以获得锁的线程不能重复获取同一个锁, 且在锁上等待的线程在锁解除后,
+ * 会随机获取到锁
+ * </li>
+ * </ul>
  */
 public class SynchronizedTest {
     /**
@@ -290,16 +311,71 @@ public class SynchronizedTest {
         then(results).hasSize(10);
     }
 
+    /**
+     * 测试等待超时
+     *
+     * <p>
+     * 在 {@code synchronized} 代码块中, 通过互斥对象的 {@link Object#wait(long)}
+     * 方法可以指定等待时间, 如果在指定时间内没有收到通知, 则会继续运行后续代码
+     * </p>
+     *
+     * <p>
+     * 可以通过 {@link System#currentTimeMillis()} (或 {@link System#nanoTime()})
+     * 方法对等待进行计时, 并通过计时结果判断等待是否超时, 例如
+     *
+     * <pre>
+     * var ts = System.currentTimeMillis();
+     * obj.wait(100);
+     *
+     * var success = System.currentTimeMillis() - ts &lt; 100;
+     * </pre>
+     *
+     * 参见上述代码, 当 `success` 为 `true`, 则说明在 100ms 内收到通知, 等待成功,
+     * 否则表示等待失败
+     * </p>
+     */
     @Test
     @SneakyThrows
     void wait_shouldWaitTimeout() {
         var mutex = new Object();
 
+        // 测试等待超时的情况
         synchronized (mutex) {
+            // 记录等待前的时间
             var ts = System.currentTimeMillis();
+
+            // 执行等待, 等待 `100ms`
             mutex.wait(100);
 
+            // 等待时间应该大于等于 `100ms`, 表示等待失败
             then(System.currentTimeMillis() - ts).isGreaterThanOrEqualTo(100);
+        }
+
+        // 测试等待成功的情况
+        synchronized (mutex) {
+            // 启动一个线程, 模拟发出通知
+            var thread = new Thread(() -> {
+                try {
+                    // 休眠 90ms 后发出通知
+                    Thread.sleep(90);
+
+                    synchronized (mutex) {
+                        mutex.notify();
+                    }
+                } catch (InterruptedException e) {}
+            });
+
+            // 启动线程
+            thread.start();
+
+            // 记录等待前的时间
+            var ts = System.currentTimeMillis();
+
+            // 执行等待, 等待 `100ms`
+            mutex.wait(100, 100);
+
+            // 等待时间应该小于 `100ms`, 表示等待成功
+            then(System.currentTimeMillis() - ts).isLessThan(100);
         }
     }
 }
