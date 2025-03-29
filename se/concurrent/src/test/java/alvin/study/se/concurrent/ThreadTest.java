@@ -78,7 +78,7 @@ public class ThreadTest {
                     // 令线程休眠 100ms, 线程可以在休眠 (或等待) 的语句上被打断
                     Thread.sleep(100);
                 }
-            } catch (InterruptedException e) {
+            } catch (InterruptedException ignore) {
                 // 线程被打断时, 会抛出 `InterruptedException` 异常
                 results.add(-1);
             }

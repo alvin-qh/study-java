@@ -9,6 +9,8 @@ import lombok.SneakyThrows;
 
 import org.junit.jupiter.api.Test;
 
+import alvin.study.se.concurrent.util.Counter;
+
 /**
  * 测试线程互斥
  *
@@ -34,33 +36,6 @@ import org.junit.jupiter.api.Test;
  * </ul>
  */
 public class SynchronizedTest {
-    /**
-     * 定义一个数字对象, 用于对一个数字从 `1` 开始自加
-     */
-    class Number {
-        private int value = 1;
-
-        /**
-         * 对 `value` 字段进行非原子的自加操作
-         */
-        public void increment() {
-            this.value++;
-        }
-
-        /**
-         * 对 `value` 字段进行原子化的自加操作, 此时该方法将以当前对象作为互斥对象
-         */
-        public synchronized void incrementSynchronized() {
-            this.value++;
-        }
-
-        public int getValue() { return value; }
-
-        public void reset() {
-            this.value = 0;
-        }
-    };
-
     /**
      * 启动两个线程, 并且同时运行指定的任务
      *
@@ -108,13 +83,13 @@ public class SynchronizedTest {
     @Test
     @SneakyThrows
     void synchronized_shouldMakeThreadSynchronized() {
-        var num = new Number();
+        var counter = new Counter();
 
         // 定义线程运行对象
         var runner = (Runnable) () -> {
             // 运行 `10000` 次, 每次自加 `1`, 没有任何互斥处理
             for (var i = 0; i < 10000; i++) {
-                num.increment();
+                counter.increment();
             }
         };
 
@@ -123,16 +98,16 @@ public class SynchronizedTest {
 
         // 验证数字是否被正确自加, 两个线程针对 `num` 对象各进行 `10000` 次自加操作,
         // 但最终结果却小于 `20000`, 这是因为 `num` 对象的自加不是原子操作
-        then(num.getValue()).isLessThan(20000);
+        then(counter.getValue()).isLessThan(20000);
 
-        num.reset();
+        counter.reset();
 
         // 定义线程运行对象
         runner = (Runnable) () -> {
             // 运行 `10000` 次, 每次自加 `1`, 这次通过互斥锁对 `num` 对象进行原子化自加操作
             for (var i = 0; i < 10000; i++) {
-                synchronized (num) {
-                    num.increment();
+                synchronized (counter) {
+                    counter.increment();
                 }
             }
         };
@@ -141,15 +116,15 @@ public class SynchronizedTest {
         startTwoThreadsWithRunner(runner);
 
         // 这次结果为 `20000`, 表示`num` 对象的自加为原子操作
-        then(num.getValue()).isEqualTo(20000);
+        then(counter.getValue()).isEqualTo(20000);
 
-        num.reset();
+        counter.reset();
 
         // 定义线程运行对象
         runner = (Runnable) () -> {
             // 运行 `10000` 次, 每次自加 `1`, 这次调用原子化方法对 `num` 对象进行自加操作
             for (var i = 0; i < 10000; i++) {
-                num.incrementSynchronized();
+                counter.incrementSynchronized();
             }
         };
 
@@ -157,7 +132,7 @@ public class SynchronizedTest {
         startTwoThreadsWithRunner(runner);
 
         // 这次结果为 `20000`, 表示`num` 对象的自加为原子操作
-        then(num.getValue()).isEqualTo(20000);
+        then(counter.getValue()).isEqualTo(20000);
     }
 
     /**
@@ -220,7 +195,7 @@ public class SynchronizedTest {
                         }
                     }
                 }
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException ignore) {}
         });
 
         // 启动线程
@@ -284,7 +259,7 @@ public class SynchronizedTest {
                         // 保存线程执行结果
                         results.add(Thread.currentThread().threadId());
                     }
-                } catch (InterruptedException e) {}
+                } catch (InterruptedException ignore) {}
             });
 
             // 启动线程
@@ -362,7 +337,7 @@ public class SynchronizedTest {
                     synchronized (mutex) {
                         mutex.notify();
                     }
-                } catch (InterruptedException e) {}
+                } catch (InterruptedException ignore) {}
             });
 
             // 启动线程

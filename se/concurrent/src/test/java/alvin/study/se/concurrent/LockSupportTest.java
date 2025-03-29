@@ -14,26 +14,6 @@ import org.junit.jupiter.api.Test;
  */
 class LockSupportTest {
     /**
-     * 将秒数转换为纳秒数
-     *
-     * @param seconds 要转换的秒数
-     * @return 转换后的纳秒数
-     */
-    private static long toNanos(long seconds) {
-        return TimeUnit.SECONDS.toNanos(seconds);
-    }
-
-    /**
-     * 将纳秒数转换为秒数
-     *
-     * @param nanos 要转换的纳秒数
-     * @return 转换后的秒数
-     */
-    private static long toSeconds(long nanos) {
-        return TimeUnit.NANOSECONDS.toSeconds(nanos);
-    }
-
-    /**
      * 将线程阻塞指定的时间
      *
      * <p>
@@ -62,7 +42,7 @@ class LockSupportTest {
     void parkNanos_shouldSuspendThreadForAWhile() throws InterruptedException {
         var thread = new Thread(() -> {
             // 将当前线程阻塞 1 秒钟
-            LockSupport.parkNanos(toNanos(1L));
+            LockSupport.parkNanos(TimeUnit.MILLISECONDS.toNanos(100L));
         });
 
         var startNanos = System.nanoTime();
@@ -72,7 +52,7 @@ class LockSupportTest {
         thread.join();
 
         // 确认线程整个执行时间为 1s
-        then(toSeconds(System.nanoTime() - startNanos)).isEqualTo(1L);
+        then(TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNanos)).isBetween(100L, 110L);
     }
 
     /**
@@ -92,7 +72,7 @@ class LockSupportTest {
     void parkUntil_shouldSuspendThreadToSpecifiedTime() throws InterruptedException {
         var thread = new Thread(() -> {
             // 设置当前时间 2s 后为阻塞结束时间
-            var deadline = Instant.now().plus(2, ChronoUnit.SECONDS).toEpochMilli();
+            var deadline = Instant.now().plus(100, ChronoUnit.MILLIS).toEpochMilli();
 
             // 阻塞当前线程直到指定的结束时间
             LockSupport.parkUntil(deadline);
@@ -104,8 +84,8 @@ class LockSupportTest {
         thread.start();
         thread.join();
 
-        // 确认线程整个执行时间为 2s
-        then(toSeconds(System.nanoTime() - startNanos)).isBetween(1L, 2L);
+        // 确认线程整个执行时间为 100ms±10ms
+        then(TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNanos)).isBetween(90L, 110L);
     }
 
     /**
@@ -125,8 +105,8 @@ class LockSupportTest {
         // 用于解除阻塞的线程
         new Thread(() -> {
             try {
-                // 等待 1 秒
-                Thread.sleep(1000);
+                // 等待 100ms
+                Thread.sleep(100);
                 // 通过线程对象解除其阻塞
                 LockSupport.unpark(thread);
             } catch (InterruptedException ignored) {}
@@ -138,8 +118,8 @@ class LockSupportTest {
         thread.start();
         thread.join();
 
-        // 确认被阻塞线程需要 1s 后解除阻塞
-        then(toSeconds(System.nanoTime() - startNanos)).isEqualTo(1L);
+        // 确认被阻塞线程需要 100ms 后解除阻塞
+        then(TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNanos)).isEqualTo(100L);
     }
 
     /**
