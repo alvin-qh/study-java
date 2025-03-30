@@ -2,8 +2,6 @@ package alvin.study.se.concurrent;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
-import java.time.Duration;
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -13,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import alvin.study.se.concurrent.util.FaireCounter;
 import alvin.study.se.concurrent.util.SystemInfo;
+import alvin.study.se.concurrent.util.Threads;
 
 /**
  * 测试 {@link java.util.concurrent.locks.Lock Lock} 接口
@@ -444,6 +443,8 @@ public class LockTest {
                 // 确认在指定条件对象上的等待队列长度
                 // 当一个子线程等待成功后, 该队列长度依次递减
                 then(lock.getWaitQueueLength(cond1)).isEqualTo(threads.length - i);
+
+                // 发出通知, 令一个在 `cond1` 条件上等待的线程被唤醒
                 cond1.signal();
             } finally {
                 lock.unlock();
@@ -458,16 +459,79 @@ public class LockTest {
             lock.unlock();
         }
 
+        // 等待所有子线程结束
+        then(Threads.joinAll(threads, 100)).isTrue();
+
         // 确认所有子线程都等待成功
         then(waitCount.get()).isEqualTo(threads.length);
+    }
+
+    /**
+     * 测试通过 {@link java.util.concurrent.locks.Condition Condition}
+     * 对象一次性通知所有等待线程
+     */
+    @Test
+    @SneakyThrows
+    void condition_shouldNotifyAllByCondition() {
+        // 创建锁对象
+        var lock = new ReentrantLock();
+
+        // 从锁对象中创建条件对象
+        var cond = lock.newCondition();
+
+        // 记录等待成功线程数
+        var waitCount = new AtomicInteger(0);
+
+        var threads = new Thread[10];
+
+        // 启动 10 个线程, 并在每个线程中获取锁, 并等待条件对象
+        for (var i = 0; i < threads.length; i++) {
+            threads[i] = new Thread(() -> {
+                // 等待锁并获取锁
+                lock.lock();
+                try {
+                    // 等待条件对象
+                    // 当条件对象进入等待后, 当前线程会暂时释放锁,
+                    // 等待条件对象发出通知后, 当前线程会重新获取锁并继续执行
+                    cond.await();
+
+                    // 等待成功后, 增加等待成功线程数
+                    waitCount.incrementAndGet();
+                } catch (InterruptedException e) {
+                    // do nothing
+                } finally {
+                    // 解除锁
+                    lock.unlock();
+                }
+            });
+
+            // 启动线程
+            threads[i].start();
+        }
+
+        // 等待 10ms, 令所有子线程都进入等待
+        Thread.sleep(10);
+
+        // 按子线程的数量, 发出通知, 令每个子线程都等待成功
+        lock.lock();
+        try {
+            // 确认有子线程在指定条件对象上等待
+            then(lock.hasWaiters(cond)).isTrue();
+
+            // 确认在指定条件对象上的等待队列长度
+            // 当一个子线程等待成功后, 该队列长度依次递减
+            then(lock.getWaitQueueLength(cond)).isEqualTo(threads.length);
+
+            // 发出通知, 令所有在 `cond` 条件上等待的线程都被唤醒
+            cond.signalAll();
+        } finally {
+            lock.unlock();
+        }
 
         // 等待所有子线程结束
-        then(Arrays.stream(threads).allMatch(t -> {
-            try {
-                return t.join(Duration.ofMillis(100));
-            } catch (InterruptedException e) {
-                return false;
-            }
-        })).isTrue();
+        then(Threads.joinAll(threads, 100)).isTrue();
+
+        // 确认所有子线程都等待成功
+        then(waitCount.get()).isEqualTo(threads.length);
     }
 }
