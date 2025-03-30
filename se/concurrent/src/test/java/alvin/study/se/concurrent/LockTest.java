@@ -305,6 +305,42 @@ public class LockTest {
      * </p>
      *
      * <p>
+     * {@link java.util.concurrent.locks.Condition Condition}
+     * 对象的作用是用来在一个线程中进入等待, 另一个线程发出通知唤醒前者, 其包括的方法为:
+     * <ul>
+     * <li>
+     * {@link java.util.concurrent.locks.Condition#await() Condition.await()}
+     * 方法, 该方法会释放锁, 并且当前线程进入等待, 直到被另一个线程调用
+     * {@link java.util.concurrent.locks.Condition#signal() Condition.signal()}
+     * 方法, 唤醒等待的线程
+     * </li>
+     * <li>
+     * {@link java.util.concurrent.locks.Condition#awaitNanos(long)
+     * Condition.awaitNanos(long)} 方法, 该方法可以指定线程等待的时长, 单位为纳秒,
+     * 可通过该方法的返回值判断是否等待成功, 该方法返回实际等待时间, 如果返回值小于参数值,
+     * 则表示等待成功, 如果返回 `0` 或负数, 则表示等待失败
+     * </li>
+     * <li>
+     * {@link java.util.concurrent.locks.Condition#await(long, java.util.concurrent.TimeUnit)
+     * Condition.await(long, TimeUnit)} 方法, 该方法可以通过一个数值和时间单位参数,
+     * 指定线程等待时长
+     * </li>
+     * <li>
+     * {@link java.util.concurrent.locks.Condition#awaitUntil(java.util.Date)
+     * Condition.awaitUntil(java.util.Date)} 方法, 该方法可以指定一个
+     * {@link java.util.Date Date} 对象, 表示等待的截止时间, 该方法会一直等待,
+     * 直到收到通知或到达截止时间
+     * </li>
+     * <li>
+     * {@link java.util.concurrent.locks.Condition#signal() Condition.signal()}
+     * 方法用于发出一个通知, 该方法会唤醒所有等待线程中的一个
+     * </li>
+     * <li>
+     * {@link java.util.concurrent.locks.Condition#signalAll() Condition.signalAll()}
+     * 方法用于发出一个通知, 该方法会唤醒所有等待线程
+     * </p>
+     *
+     * <p>
      * 要使用条件, 需要先获取锁, 在获取锁的基础上, 进入等待或发出通知, 例如对于如下锁对象
      *
      * <pre>
@@ -349,43 +385,72 @@ public class LockTest {
         // 创建锁对象
         var lock = new ReentrantLock();
 
-        // 
+        // 从锁对象中创建两个条件对象
+        // `cond1` 用于主线程对子线程的控制
+        // `cond2` 用于子线程对主线程的控制
         var cond1 = lock.newCondition();
         var cond2 = lock.newCondition();
 
-        var unlockCount = new AtomicInteger(0);
+        // 记录等待成功线程数
+        var waitCount = new AtomicInteger(0);
 
         var threads = new Thread[10];
+
+        // 启动 10 个线程, 并在每个线程中获取锁, 并等待条件对象
         for (var i = 0; i < threads.length; i++) {
             threads[i] = new Thread(() -> {
+                // 等待锁并获取锁
                 lock.lock();
                 try {
+                    // 等待条件对象
+                    // 当条件对象进入等待后, 当前线程会暂时释放锁,
+                    // 等待条件对象发出通知后, 当前线程会重新获取锁并继续执行
                     cond1.await();
 
-                    if (unlockCount.incrementAndGet() == threads.length) {
+                    // 等待成功后, 增加等待成功线程数
+                    // 如果全部子线程都等待成功, 则发出通知
+                    if (waitCount.incrementAndGet() == threads.length) {
+                        // 确认主线程在该条件对象上等待
+                        then(lock.hasWaiters(cond2)).isTrue();
+
+                        // 确认等待队列长度为 `1`
+                        then(lock.getWaitQueueLength(cond2)).isEqualTo(1);
+
+                        // 通过条件对象发出通知
                         cond2.signal();
                     }
                 } catch (InterruptedException e) {
                     // do nothing
                 } finally {
+                    // 解除锁
                     lock.unlock();
                 }
             });
 
+            // 启动线程
             threads[i].start();
         }
 
+        // 等待 10ms, 令所有子线程都进入等待
         Thread.sleep(10);
 
+        // 按子线程的数量, 发出通知, 令每个子线程都等待成功
         for (var i = 0; i < threads.length; i++) {
             lock.lock();
             try {
+                // 确认有子线程在指定条件对象上等待
+                then(lock.hasWaiters(cond1)).isTrue();
+
+                // 确认在指定条件对象上的等待队列长度
+                // 当一个子线程等待成功后, 该队列长度依次递减
+                then(lock.getWaitQueueLength(cond1)).isEqualTo(threads.length - i);
                 cond1.signal();
             } finally {
                 lock.unlock();
             }
         }
 
+        // 等待子线程发送到主线程的通知
         lock.lock();
         try {
             cond2.await();
@@ -393,8 +458,10 @@ public class LockTest {
             lock.unlock();
         }
 
-        then(unlockCount.get()).isEqualTo(threads.length);
+        // 确认所有子线程都等待成功
+        then(waitCount.get()).isEqualTo(threads.length);
 
+        // 等待所有子线程结束
         then(Arrays.stream(threads).allMatch(t -> {
             try {
                 return t.join(Duration.ofMillis(100));
