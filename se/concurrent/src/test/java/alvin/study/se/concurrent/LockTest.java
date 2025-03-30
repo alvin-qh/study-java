@@ -2,6 +2,9 @@ package alvin.study.se.concurrent;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 
 import lombok.SneakyThrows;
@@ -290,5 +293,114 @@ public class LockTest {
         for (var thread : threads) {
             thread.join();
         }
+    }
+
+    /**
+     * 测试 {@link ReentrantLock} 锁的条件相关方法
+     *
+     * <p>
+     * {@link ReentrantLock} 锁的条件为一个 {@link java.util.concurrent.locks.Condition
+     * Condition} 类型对象，用于线程间传递事件通知, 即有一个线程中进入等待,
+     * 由另一个线程发出通知唤醒前者
+     * </p>
+     *
+     * <p>
+     * 要使用条件, 需要先获取锁, 在获取锁的基础上, 进入等待或发出通知, 例如对于如下锁对象
+     *
+     * <pre>
+     * var lock = new ReentrantLock();
+     * </pre>
+     *
+     * 可以为其创建一个条件对象
+     *
+     * <pre>
+     * var cond = lock.newCondition();
+     * </pre>
+     *
+     * 在一个线程中进入等待:
+     *
+     * <pre>
+     * // 先获取到锁
+     * lock.lock();
+     * try {
+     *     // 进入等待
+     *     cond.await();
+     * } finally {
+     *     // 解锁
+     *     lock.unlock();
+     * }
+     * </pre>
+     *
+     * 在另一个线程中发出通知:
+     *
+     * <pre>
+     * lock.lock();
+     * try {
+     *     cond.signal();
+     * } finally {
+     *     lock.unlock();
+     * }
+     * </pre>
+     * </p>
+     */
+    @Test
+    @SneakyThrows
+    void condition_shouldGetConditionOnLock() {
+        // 创建锁对象
+        var lock = new ReentrantLock();
+
+        // 
+        var cond1 = lock.newCondition();
+        var cond2 = lock.newCondition();
+
+        var unlockCount = new AtomicInteger(0);
+
+        var threads = new Thread[10];
+        for (var i = 0; i < threads.length; i++) {
+            threads[i] = new Thread(() -> {
+                lock.lock();
+                try {
+                    cond1.await();
+
+                    if (unlockCount.incrementAndGet() == threads.length) {
+                        cond2.signal();
+                    }
+                } catch (InterruptedException e) {
+                    // do nothing
+                } finally {
+                    lock.unlock();
+                }
+            });
+
+            threads[i].start();
+        }
+
+        Thread.sleep(10);
+
+        for (var i = 0; i < threads.length; i++) {
+            lock.lock();
+            try {
+                cond1.signal();
+            } finally {
+                lock.unlock();
+            }
+        }
+
+        lock.lock();
+        try {
+            cond2.await();
+        } finally {
+            lock.unlock();
+        }
+
+        then(unlockCount.get()).isEqualTo(threads.length);
+
+        then(Arrays.stream(threads).allMatch(t -> {
+            try {
+                return t.join(Duration.ofMillis(100));
+            } catch (InterruptedException e) {
+                return false;
+            }
+        })).isTrue();
     }
 }
