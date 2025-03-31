@@ -1,13 +1,18 @@
 package alvin.study.se.concurrent;
 
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.awaitility.Awaitility.await;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
 
 import lombok.SneakyThrows;
 
 import org.junit.jupiter.api.Test;
+
+import alvin.study.se.concurrent.service.Fibonacci;
 
 /**
  * 测试 Java 线程
@@ -98,5 +103,40 @@ public class ThreadTest {
 
         // 确认线程在正确位置被打断
         then(results).containsExactly(0, 1, 2, 3, 4, -1);
+    }
+
+    /**
+     * 通过 {@link FutureTask} 类型执行一个线程, 并返回执行结果
+     *
+     * <p>
+     * 普通线程执行的 {@link Runnable} 接口返回值为 `void`,
+     * 即意味着无法从线程中返回值, 而 {@link FutureTask}
+     * 类型则可以获取线程的返回值
+     * </p>
+     *
+     * <p>
+     * {@link FutureTask} 类实现了 {@link Runnable} 接口,
+     * 所以其对象可以作为参数传递给线程对象, 在线程执行完该接口方法后, 会令其
+     * {@link FutureTask#isDone()} 方法返回 {@code true}, 且可以通过
+     * {@link FutureTask#get()} 方法返回执行结果
+     * </p>
+     */
+    @Test
+    void futureTask_shouldGetResultOfThreadByFutureTask() throws Exception {
+        // 定义 FutureTask 对象, 设置线程回调函数
+        var task = new FutureTask<>(() -> Fibonacci.calculate(20));
+
+        // 实例化线程对象并启动
+        var thread = new Thread(task);
+        thread.start();
+
+        // 等待异步任务结束
+        await().atMost(5, TimeUnit.SECONDS).until(task::isDone);
+
+        // 确认异步任务结束后, 线程也已经结束
+        then(thread.isAlive()).isFalse();
+
+        // 确认计算结果
+        then(task.get()).isEqualTo(6765);
     }
 }
