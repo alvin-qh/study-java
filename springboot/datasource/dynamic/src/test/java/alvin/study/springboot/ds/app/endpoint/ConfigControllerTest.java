@@ -3,6 +3,8 @@ package alvin.study.springboot.ds.app.endpoint;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 
@@ -40,12 +42,13 @@ public class ConfigControllerTest extends IntegrationTest {
         configService.createConfig("test-org-1");
 
         // 创建指定的 org 配置
-        var resp = postJson("/api/config/{0}", "test-org-1", "test-org-2")
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody(RESP_TYPE)
-                .returnResult()
-                .getResponseBody();
+        var resp = Objects.requireNonNull(
+            postJson("/api/config/{0}", "test-org-1", "test-org-2")
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectBody(RESP_TYPE)
+                    .returnResult()
+                    .getResponseBody());
 
         // 确认返回响应结果正确
         then(resp.getStatus()).isZero();

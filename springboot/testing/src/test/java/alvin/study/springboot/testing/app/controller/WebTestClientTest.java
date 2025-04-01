@@ -3,6 +3,7 @@ package alvin.study.springboot.testing.app.controller;
 import static org.assertj.core.api.BDDAssertions.then;
 
 import java.time.Duration;
+import java.util.Objects;
 
 import org.assertj.core.api.InstanceOfAssertFactories;
 
@@ -114,16 +115,16 @@ class WebTestClientTest {
         var bodyType = new ParameterizedTypeReference<ResponseWrapper<TestModel>>() {};
 
         // 执行测试
-        var resp = client.mutate().responseTimeout(Duration.ofSeconds(30)).build()
-                .get()
-                .uri("/testing?name={name}&clock={clock}", "Alvin", CLOCK)
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody(bodyType).returnResult()
-                .getResponseBody();
+        var resp = Objects.requireNonNull(
+            client.mutate().responseTimeout(Duration.ofSeconds(30)).build()
+                    .get()
+                    .uri("/testing?name={name}&clock={clock}", "Alvin", CLOCK)
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectBody(bodyType).returnResult()
+                    .getResponseBody());
 
-        then(resp).isNotNull()
-                .extracting("path", "retCode", "retMsg")
+        then(resp).extracting("path", "retCode", "retMsg")
                 .containsExactly("/testing", 0, "success");
 
         var assertion = then(resp.getPayload()).isNotNull();
@@ -194,16 +195,16 @@ class WebTestClientTest {
         var bodyType = new ParameterizedTypeReference<ResponseWrapper<ErrorDetail>>() {};
 
         // 执行测试
-        var resp = client.mutate().responseTimeout(Duration.ofSeconds(30)).build()
-                .get()
-                .uri("/testing")
-                .exchange()
-                .expectStatus().isBadRequest()
-                .expectBody(bodyType).returnResult()
-                .getResponseBody();
+        var resp = Objects.requireNonNull(
+            client.mutate().responseTimeout(Duration.ofSeconds(30)).build()
+                    .get()
+                    .uri("/testing")
+                    .exchange()
+                    .expectStatus().isBadRequest()
+                    .expectBody(bodyType).returnResult()
+                    .getResponseBody());
 
-        then(resp).isNotNull()
-                .extracting("path", "retCode", "retMsg")
+        then(resp).extracting("path", "retCode", "retMsg")
                 .contains("/testing", 400, "missing_request_args");
 
         var payload = resp.getPayload();

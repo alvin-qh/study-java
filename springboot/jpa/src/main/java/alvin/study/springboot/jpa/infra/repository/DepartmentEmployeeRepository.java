@@ -6,6 +6,7 @@ import jakarta.persistence.OrderBy;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.lang.NonNull;
 
 import alvin.study.springboot.jpa.infra.entity.Department;
 import alvin.study.springboot.jpa.infra.entity.DepartmentEmployee;
@@ -32,6 +33,7 @@ public interface DepartmentEmployeeRepository extends CrudRepository<DepartmentE
      */
     @Override
     @OrderBy("id asc")
+    @NonNull
     List<DepartmentEmployee> findAll();
 
     /**

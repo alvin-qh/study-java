@@ -2,6 +2,8 @@ package alvin.study.springboot.mvc.app.api.controller;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
+import java.util.Objects;
+
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 
@@ -30,15 +32,14 @@ class I18nControllerTest extends WebTest {
     void get_shouldGetMessageByDefaultLanguage() {
         // 发起 GET 测试请求/Applications/Visual Studio
         // Code.app/Contents/Resources/app/out/vs/code/electron-sandbox/workbench/workbench.html
-        var resp = getJson(
-            "/api/i18n?key={key}&args={args}",
-            "application.name", "MVC")
-                    .exchange()
-                    .expectStatus().isOk()
-                    .expectBody(SUCCESS_TYPE).returnResult() // 获取响应结果
-                    .getResponseBody(); // 获取响应结果的 body
-
-        then(resp).isNotNull();
+        var resp = Objects.requireNonNull(
+            getJson(
+                "/api/i18n?key={key}&args={args}",
+                "application.name", "MVC")
+                        .exchange()
+                        .expectStatus().isOk()
+                        .expectBody(SUCCESS_TYPE).returnResult() // 获取响应结果
+                        .getResponseBody()); // 获取响应结果的 body
 
         // 确认返回的 key 正确
         then(resp.payload().key()).isEqualTo("application.name");
@@ -57,15 +58,13 @@ class I18nControllerTest extends WebTest {
     @Test
     void get_shouldGetMessageByAcceptHeader() {
         // 发起 GET 测试请求
-        var resp = getJson("/api/i18n?key={key}&args={args}", "application.name", "MVC")
-                .header(HttpHeaders.ACCEPT_LANGUAGE, "zh-CN")
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody(SUCCESS_TYPE).returnResult() // 获取响应结果
-                .getResponseBody(); // 获取响应结果的
-        // body
-
-        then(resp).isNotNull();
+        var resp = Objects.requireNonNull(
+            getJson("/api/i18n?key={key}&args={args}", "application.name", "MVC")
+                    .header(HttpHeaders.ACCEPT_LANGUAGE, "zh-CN")
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectBody(SUCCESS_TYPE).returnResult() // 获取响应结果
+                    .getResponseBody()); // 获取响应结果的 body
 
         // 确认返回的 key 正确
         then(resp.payload().key()).isEqualTo("application.name");
@@ -84,13 +83,12 @@ class I18nControllerTest extends WebTest {
     @Test
     void get_shouldGetMessageByLangParameter() {
         // 发起 GET 测试请求, 传递 lang 参数
-        var resp = getJson("/api/i18n?key={key}&args={args}&lang={lang}", "application.name", "MVC", "zh-CN")
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody(SUCCESS_TYPE).returnResult() // 获取响应结果
-                .getResponseBody(); // 获取响应结果的 body
-
-        then(resp).isNotNull();
+        var resp = Objects.requireNonNull(
+            getJson("/api/i18n?key={key}&args={args}&lang={lang}", "application.name", "MVC", "zh-CN")
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectBody(SUCCESS_TYPE).returnResult() // 获取响应结果
+                    .getResponseBody()); // 获取响应结果的 body
 
         // 确认返回的 key 正确
         then(resp.payload().key()).isEqualTo("application.name");

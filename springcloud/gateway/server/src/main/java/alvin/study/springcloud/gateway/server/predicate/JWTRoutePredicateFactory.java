@@ -16,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.server.ServerWebExchange;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 /**
@@ -85,22 +86,21 @@ public class JWTRoutePredicateFactory extends AbstractRoutePredicateFactory<JWTR
         if (this.jwtVerifier == null) {
             // 打印配置信息
             log.info("""
-                    Get predicate arguments:
-                      Header Name: {}
-                      Algorithm: {}
-                      Security Key: {}
-                      Audience: {}
-                    """,
+                Get predicate arguments:
+                  Header Name: {}
+                  Algorithm: {}
+                  Security Key: {}
+                  Audience: {}
+                """,
                 config.headerName,
                 config.algorithm.getName(),
                 config.securityKey,
-                config.audience
-            );
+                config.audience);
 
             // 创建 JWT 验证对象
             this.jwtVerifier = JWT.require(config.algorithm.build(config.securityKey))
-                .withAudience(config.audience)
-                .build();
+                    .withAudience(config.audience)
+                    .build();
         }
 
         // 返回断言对象
@@ -109,7 +109,7 @@ public class JWTRoutePredicateFactory extends AbstractRoutePredicateFactory<JWTR
             var headers = exchange.getRequest().getHeaders();
 
             // 获取指定名称的请求头
-            var token = headers.getFirst(config.getHeaderName());
+            var token = Objects.requireNonNull(headers.getFirst(config.getHeaderName()));
             if (Strings.isNullOrEmpty(token) || !token.startsWith(Headers.BEARER)) {
                 // 如果不是 Bearer Token, 则断言失败
                 return false;

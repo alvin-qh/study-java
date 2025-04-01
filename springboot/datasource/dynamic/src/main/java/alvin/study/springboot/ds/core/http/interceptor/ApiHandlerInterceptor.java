@@ -3,10 +3,10 @@ package alvin.study.springboot.ds.core.http.interceptor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.google.common.base.Strings;
@@ -57,18 +57,15 @@ public class ApiHandlerInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(
-            HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+            @NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull Object handler) throws Exception {
         log.info("Visiting \"{}\"", request.getRequestURI());
 
         // 获取 X-Org-Code 请求头, 获取组织代码
         var org = request.getHeader(HEADER_ORG);
         if (Strings.isNullOrEmpty(org)) {
-            throw HttpClientErrorException.create(
-                HttpStatus.FORBIDDEN,
-                "org_header_required",
-                HttpHeaders.EMPTY,
-                "".getBytes(),
-                null);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "org_header_required");
         }
         log.info("Get org=\"{}\" from http header", org);
 
@@ -81,12 +78,7 @@ public class ApiHandlerInterceptor implements HandlerInterceptor {
 
             log.info("Set datasource key=\"{}\" with org=\"{}\"", config.getDbName(), org);
         } catch (ConfigNotExistException e) {
-            throw HttpClientErrorException.create(
-                HttpStatus.FORBIDDEN,
-                "org_not_exist",
-                HttpHeaders.EMPTY,
-                "".getBytes(),
-                null);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "org_not_exist");
         }
 
         return true;

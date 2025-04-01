@@ -1,12 +1,11 @@
 package alvin.study.springboot.mvc.app.api.controller;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -83,13 +82,7 @@ public class ContextController {
             Long userId = context.get(Context.KEY_USER_ID);
             return new ContextDto(orgCode, userId);
         } catch (NoContextAttributeException e) {
-            throw HttpClientErrorException.create(
-                e.getMessage(),
-                HttpStatus.BAD_REQUEST,
-                "no_org_code",
-                HttpHeaders.EMPTY,
-                null,
-                null);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "no_org_code");
         }
     }
 }

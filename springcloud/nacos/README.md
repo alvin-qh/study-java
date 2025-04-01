@@ -2,6 +2,7 @@
 
 - [Nacos](#nacos)
   - [1. Nacos 集群配置](#1-nacos-集群配置)
+  - [2. 启动 Docker 镜像](#2-启动-docker-镜像)
   - [2. Spring Cloud Starter Alibaba Nacos Config 版本差异](#2-spring-cloud-starter-alibaba-nacos-config-版本差异)
   - [3. 服务发现](#3-服务发现)
     - [3.1. 服务注册](#31-服务注册)
@@ -43,6 +44,12 @@
    - `8849,9849` 端口需要通过 `stream` 协议进行代理 (TCP)
 
    具体配置参见 [docker/conf/nginx.conf](docker/conf/nginx.conf) 配置
+
+## 2. 启动 Docker 镜像
+
+```bash
+docker compose -f springcloud/nacos/docker/docker-compose.yml up
+```
 
 ## 2. Spring Cloud Starter Alibaba Nacos Config 版本差异
 

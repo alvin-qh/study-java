@@ -9,6 +9,7 @@ import org.slf4j.event.Level;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.lang.NonNull;
 
 import lombok.SneakyThrows;
 
@@ -33,7 +34,7 @@ public class TestContextInitializer implements ApplicationContextInitializer<Con
      */
     @Override
     @SneakyThrows
-    public void initialize(ConfigurableApplicationContext context) {
+    public void initialize(@NonNull ConfigurableApplicationContext context) {
         var properties = Main.getDefaultProperties();
 
         // 配置多进程下测试数据库连接

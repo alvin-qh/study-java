@@ -12,11 +12,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import lombok.extern.slf4j.Slf4j;
@@ -64,7 +66,9 @@ public class RestResponseAdvice implements ResponseBodyAdvice<Object> {
      * </p>
      */
     @Override
-    public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
+    public boolean supports(
+            @NonNull MethodParameter returnType,
+            @NonNull Class<? extends HttpMessageConverter<?>> converterType) {
         // 获取 controller 方法的返回值类型
         var retType = Optional.ofNullable(returnType.getMethod()).map(Method::getReturnType).orElseThrow();
 
@@ -87,12 +91,12 @@ public class RestResponseAdvice implements ResponseBodyAdvice<Object> {
      */
     @Override
     public ResponseDto<?> beforeBodyWrite(
-            Object body,
-            MethodParameter returnType,
-            MediaType selectedContentType,
-            Class<? extends HttpMessageConverter<?>> selectedConverterType,
-            ServerHttpRequest request,
-            ServerHttpResponse response) {
+            @Nullable Object body,
+            @NonNull MethodParameter returnType,
+            @NonNull MediaType selectedContentType,
+            @NonNull Class<? extends HttpMessageConverter<?>> selectedConverterType,
+            @NonNull ServerHttpRequest request,
+            @NonNull ServerHttpResponse response) {
         return ResponseDto.success(body);
     }
 
@@ -100,26 +104,28 @@ public class RestResponseAdvice implements ResponseBodyAdvice<Object> {
      * 统一异常处理方法
      *
      * <p>
-     * 处理 {@link HttpClientErrorException} 类型异常
+     * 处理 {@link ResponseStatusException} 类型异常
      * </p>
      *
      * <p>
-     * 该异常表示一个客户端异常, 即客户端发送的请求无效导致的异常
+     * 该异常表示一个 HTTP 错误状态, 即返回到客户端的 HTTP 状态码
      * </p>
      *
      * <p>
      * 一般情况下这类异常反馈给客户端为 {@code 400 BAD_REQUEST} 错误响应
      * </p>
      *
-     * @param e {@link HttpClientErrorException} 类型异常对象
+     * @param e {@link ResponseStatusException} 类型异常对象
      * @return 包装为 {@link ResponseWrapper} 类型的响应结果
      */
     @ResponseBody
-    @ExceptionHandler(HttpClientErrorException.class)
-    public ResponseEntity<ResponseDto<ClientError>> handle(HttpClientErrorException e) {
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<ResponseDto<ClientError>> handle(ResponseStatusException e) {
         log.warn("Some error raised and will return to client", e);
 
-        var resp = ResponseDto.error(e.getStatusCode().value(), ClientError.create(e.getStatusText(), e.getMessage()));
+        var resp = ResponseDto.error(
+            e.getStatusCode().value(),
+            ClientError.create(e.getStatusCode().toString(), e.getMessage()));
         return new ResponseEntity<>(resp, e.getStatusCode());
     }
 

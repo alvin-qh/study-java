@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.fail;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.awaitility.Awaitility.await;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,10 +55,9 @@ class NamingDiscoveryTest {
     void get_shouldVisitServiceByServiceName() {
         await().atMost(2, TimeUnit.SECONDS).untilAsserted(() -> {
             try {
-                var resp = restTemplate.getForObject("http://eureka-client/api/hello", ResponseWrapper.class);
-                then(resp)
-                        .isNotNull()
-                        .extracting(ResponseWrapper::getRetCode)
+                var resp = Objects.requireNonNull(
+                    restTemplate.getForObject("http://eureka-client/api/hello", ResponseWrapper.class));
+                then(resp).extracting(ResponseWrapper::getRetCode)
                         .isEqualTo(0);
 
                 var dto = objectMapper.convertValue(resp.getPayload(), HelloDto.class);

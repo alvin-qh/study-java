@@ -19,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -26,7 +28,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import com.google.common.base.Joiner;
@@ -86,8 +88,8 @@ public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
      */
     @Override
     public boolean supports(
-            MethodParameter returnType,
-            Class<? extends HttpMessageConverter<?>> converterType) {
+            @NonNull MethodParameter returnType,
+            @NonNull Class<? extends HttpMessageConverter<?>> converterType) {
         // 获取 Controller 方法的返回值类型
         var retType = Optional.ofNullable(returnType.getMethod())
                 .map(Method::getReturnType)
@@ -116,12 +118,12 @@ public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
      */
     @Override
     public Object beforeBodyWrite(
-            Object body, // controller 方法返回的返回值
-            MethodParameter returnType,
-            MediaType selectedContentType,
-            Class<? extends HttpMessageConverter<?>> selectedConverterType,
-            ServerHttpRequest request,
-            ServerHttpResponse response) {
+            @Nullable Object body, // controller 方法返回的返回值
+            @NonNull MethodParameter returnType,
+            @NonNull MediaType selectedContentType,
+            @NonNull Class<? extends HttpMessageConverter<?>> selectedConverterType,
+            @NonNull ServerHttpRequest request,
+            @NonNull ServerHttpResponse response) {
         // 返回 ResponseWrapper 对象
         return success(body);
     }
@@ -274,26 +276,26 @@ public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
      * 处理客户端异常
      *
      * <p>
-     * 处理 {@link HttpClientErrorException} 类型异常
+     * 处理 {@link ResponseStatusException} 类型异常
      * </p>
      *
      * <p>
-     * 该异常表示一个客户端异常, 即客户端发送的请求无效导致的异常
+     * 该异常表示一个 HTTP 错误状态, 即返回到客户端的 HTTP 状态码
      * </p>
      *
      * <p>
      * 一般情况下这类异常反馈给客户端为 {@code 400 BAD_REQUEST} 错误响应
      * </p>
      *
-     * @param e {@link HttpClientErrorException} 类型异常对象
+     * @param e {@link ResponseStatusException} 类型异常对象
      * @return 包装为 {@link ResponseWrapper} 类型的响应结果
      */
     @ResponseBody
     @ExceptionHandler
-    public ResponseEntity<ResponseWrapper<Void>> handle(HttpClientErrorException e) {
+    public ResponseEntity<ResponseWrapper<Void>> handle(ResponseStatusException e) {
         warnLog(e);
 
-        var resp = error(e.getStatusCode().value(), e.getStatusText());
+        var resp = error(e.getStatusCode().value(), e.getReason());
         return new ResponseEntity<>(resp, e.getStatusCode());
     }
 }

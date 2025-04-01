@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.lang.NonNull;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import lombok.RequiredArgsConstructor;
@@ -57,7 +58,7 @@ public class JpaConfig implements AuditorAware<Long> {
      * 获取审计字段 (即数据的创建人 {@code created_by} 和修改人 {@code updated_by}) 对应的用户 {@code id}
      */
     @Override
-    public Optional<Long> getCurrentAuditor() {
+    public @NonNull Optional<Long> getCurrentAuditor() {
         // 如果不存在上下文, 则返回空
         if (context == null) {
             return Optional.empty();

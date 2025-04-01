@@ -3,10 +3,10 @@ package alvin.study.springboot.mvc.app.api.interceptor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.google.common.base.Strings;
 
@@ -76,21 +76,16 @@ public class ApiHandlerInterceptor implements PathsHandlerInterceptor {
      */
     @Override
     public boolean preHandle(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            Object handler) {
+            @NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull Object handler) {
         log.info("Visiting \"{}\"", request.getRequestURI());
 
         // 从 http 请求头中获取用户 ID
         var auth = request.getHeader(HEADER_AUTH);
         if (!Strings.isNullOrEmpty(auth)) {
             if (!auth.startsWith(TOKEN_PREFIX)) {
-                throw HttpClientErrorException.create(
-                    HttpStatus.BAD_REQUEST,
-                    "invalid_bearer_token",
-                    HttpHeaders.EMPTY,
-                    null,
-                    null);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid_bearer_token");
             }
 
             var token = auth.substring(TOKEN_PREFIX.length()).trim();
@@ -102,13 +97,7 @@ public class ApiHandlerInterceptor implements PathsHandlerInterceptor {
                 context.set(Context.KEY_ORG_CODE, payload.getAudience().get(0));
                 context.set(Context.KEY_USER_ID, Long.parseLong(payload.getIssuer()));
             } catch (Exception e) {
-                throw HttpClientErrorException.create(
-                    e.getMessage(),
-                    HttpStatus.BAD_REQUEST,
-                    "invalid_bearer_token",
-                    HttpHeaders.EMPTY,
-                    null,
-                    null);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid_bearer_token");
             }
         }
         return true;

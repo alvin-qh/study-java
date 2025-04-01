@@ -443,7 +443,7 @@ public class ExpressionsTest {
 
         // 在表达式中声明一个二维 List 集合
         expression = parser.parseExpression("#{ { {1, 2, 3}, {4, 5} } }");
-        value = expression.getValue(context, List.class);
+        value = Objects.requireNonNull(expression.getValue(context, List.class));
         then(value.get(0)).asInstanceOf(InstanceOfAssertFactories.LIST).containsExactly(1, 2, 3);
         then(value.get(1)).asInstanceOf(InstanceOfAssertFactories.LIST).containsExactly(4, 5);
 
@@ -455,7 +455,7 @@ public class ExpressionsTest {
 
         // 通过 root 对象表示的集合元素, 在表达式中声明集合
         expression = parser.parseExpression("#{ { {[0], [1]}, {[2], [3]} } }");
-        value = expression.getValue(context, users, List.class);
+        value = Objects.requireNonNull(expression.getValue(context, users, List.class));
         then(value.get(0)).asInstanceOf(InstanceOfAssertFactories.LIST).containsExactly(users.get(0), users.get(1));
         then(value.get(1)).asInstanceOf(InstanceOfAssertFactories.LIST).containsExactly(users.get(2), users.get(3));
     }

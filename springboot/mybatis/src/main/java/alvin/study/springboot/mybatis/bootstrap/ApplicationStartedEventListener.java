@@ -5,6 +5,7 @@ import java.util.TimeZone;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
@@ -36,7 +37,9 @@ public class ApplicationStartedEventListener implements ApplicationListener<Appl
     /**
      * 构造器, 注入所需的值
      */
-    public ApplicationStartedEventListener(@Value("${application.zone}") String timezone, ObjectMapper objectMapper) {
+    public ApplicationStartedEventListener(
+            @Value("${application.zone}") String timezone,
+            ObjectMapper objectMapper) {
         this.timezone = Strings.isNullOrEmpty(timezone) ? "UTC" : timezone;
         this.objectMapper = objectMapper;
     }
@@ -45,7 +48,7 @@ public class ApplicationStartedEventListener implements ApplicationListener<Appl
      * 应用程序启动事件处理
      */
     @Override
-    public void onApplicationEvent(ApplicationStartedEvent event) {
+    public void onApplicationEvent(@NonNull ApplicationStartedEvent event) {
         // 设置上下文环境的时区变量
         TimeZone.setDefault(TimeZone.getTimeZone(this.timezone));
         System.setProperty("user.timezone", this.timezone);

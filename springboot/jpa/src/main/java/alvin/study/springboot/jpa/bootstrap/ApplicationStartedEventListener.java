@@ -5,6 +5,7 @@ import java.util.TimeZone;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Strings;
@@ -41,7 +42,7 @@ public class ApplicationStartedEventListener implements ApplicationListener<Appl
      * </p>
      */
     @Override
-    public void onApplicationEvent(ApplicationStartedEvent event) {
+    public void onApplicationEvent(@NonNull ApplicationStartedEvent event) {
         // 设置上下文环境的时区变量
         TimeZone.setDefault(TimeZone.getTimeZone(this.timezone));
         System.setProperty("user.timezone", this.timezone);

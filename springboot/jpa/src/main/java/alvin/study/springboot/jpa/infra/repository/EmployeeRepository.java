@@ -5,6 +5,7 @@ import java.util.List;
 import jakarta.persistence.OrderBy;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.lang.NonNull;
 
 import alvin.study.springboot.jpa.infra.entity.Employee;
 import alvin.study.springboot.jpa.infra.repository.ext.EmployeeRepositoryExt;
@@ -39,5 +40,6 @@ public interface EmployeeRepository extends CrudRepository<Employee, Long>, Empl
      */
     @Override
     @OrderBy("id asc")
+    @NonNull
     List<Employee> findAll();
 }

@@ -5,6 +5,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 import static org.awaitility.Awaitility.await;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,11 +101,12 @@ class NacosNamingTest extends BaseTest {
         await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> {
             try {
                 // 通过服务名称访问目标服务
-                var resp = (ResponseWrapper<Map<String, ?>>) restTemplate.getForObject(
-                    "http://nacos-client/api/config", ResponseWrapper.class);
+                var resp = Objects.requireNonNull(
+                    (ResponseWrapper<Map<String, ?>>) restTemplate.getForObject(
+                        "http://nacos-client/api/config",
+                        ResponseWrapper.class));
 
-                then(resp).isNotNull()
-                        .extracting(ResponseWrapper::getRetCode).isEqualTo(0);
+                then(resp).extracting(ResponseWrapper::getRetCode).isEqualTo(0);
 
                 var config = objectMapper.convertValue(resp.getPayload(), ApplicationConfigDto.class);
                 then(config.getCommon().getSearchUrl()).isEqualTo("https://www.baidu.com");

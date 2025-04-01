@@ -6,17 +6,17 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.graphql.execution.DataFetcherExceptionResolverAdapter;
 import org.springframework.graphql.execution.ErrorType;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 
-import graphql.GraphQLError;
-import graphql.GraphqlErrorBuilder;
-import graphql.schema.DataFetchingEnvironment;
-
 import alvin.study.springboot.graphql.core.exception.ErrorCode;
 import alvin.study.springboot.graphql.core.exception.ErrorExtensionCode;
 import alvin.study.springboot.graphql.core.exception.GraphqlBaseException;
+import graphql.GraphQLError;
+import graphql.GraphqlErrorBuilder;
+import graphql.schema.DataFetchingEnvironment;
 
 /**
  * Graphql 错误处理器
@@ -44,7 +44,9 @@ public class GraphqlErrorResolver extends DataFetcherExceptionResolverAdapter {
     private static final String UNKNOWN_ERROR = "Unknown error";
 
     @Override
-    protected GraphQLError resolveToSingleError(Throwable ex, DataFetchingEnvironment env) {
+    protected GraphQLError resolveToSingleError(
+            @NonNull Throwable ex,
+            @NonNull DataFetchingEnvironment env) {
         if (ex instanceof GraphqlBaseException e) {
             log.error("GraphQL error: {}", e.getMessage(), e);
             return GraphqlErrorBuilder.newError()

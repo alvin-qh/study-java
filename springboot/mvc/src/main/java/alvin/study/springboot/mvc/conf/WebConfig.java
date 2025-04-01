@@ -14,6 +14,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -124,7 +125,7 @@ public class WebConfig implements WebMvcConfigurer, WebServerFactoryCustomizer<C
      * @see PathsHandlerInterceptor#getExcludePathPatterns()
      */
     @Override
-    public void addInterceptors(InterceptorRegistry registry) {
+    public void addInterceptors(@NonNull InterceptorRegistry registry) {
         // 遍历拦截器集合
         for (var interceptor : this.interceptors) {
             // 获取该拦截器生效的 url 集合
@@ -182,7 +183,7 @@ public class WebConfig implements WebMvcConfigurer, WebServerFactoryCustomizer<C
      * </p>
      */
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    public void addResourceHandlers(@NonNull ResourceHandlerRegistry registry) {
         registry
                 // 设置静态资源 URL 访问路径
                 .addResourceHandler("/static/**")

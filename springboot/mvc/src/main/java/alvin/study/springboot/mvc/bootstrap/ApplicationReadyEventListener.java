@@ -2,6 +2,7 @@ package alvin.study.springboot.mvc.bootstrap;
 
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ public class ApplicationReadyEventListener implements ApplicationListener<Applic
      * 处理应用程序初始化完毕事件
      */
     @Override
-    public void onApplicationEvent(ApplicationReadyEvent event) {
+    public void onApplicationEvent(@NonNull ApplicationReadyEvent event) {
         log.info("Application was ready");
     }
 }

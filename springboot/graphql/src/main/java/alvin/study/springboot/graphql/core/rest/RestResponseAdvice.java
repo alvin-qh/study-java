@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
@@ -72,8 +74,8 @@ public class RestResponseAdvice implements ResponseBodyAdvice<Object> {
      */
     @Override
     public boolean supports(
-            MethodParameter returnType,
-            Class<? extends HttpMessageConverter<?>> converterType) {
+            @NonNull MethodParameter returnType,
+            @NonNull Class<? extends HttpMessageConverter<?>> converterType) {
         var method = returnType.getMethod();
         if (method == null) {
             return false;
@@ -103,12 +105,12 @@ public class RestResponseAdvice implements ResponseBodyAdvice<Object> {
      */
     @Override
     public Object beforeBodyWrite(
-            Object body, // controller 方法返回的返回值
-            MethodParameter returnType,
-            MediaType selectedContentType,
-            Class<? extends HttpMessageConverter<?>> selectedConverterType,
-            ServerHttpRequest request,
-            ServerHttpResponse response) {
+            @Nullable Object body, // controller 方法返回的返回值
+            @NonNull MethodParameter returnType,
+            @NonNull MediaType selectedContentType,
+            @NonNull Class<? extends HttpMessageConverter<?>> selectedConverterType,
+            @NonNull ServerHttpRequest request,
+            @NonNull ServerHttpResponse response) {
         // 返回表示正确的 Response 对象
         return ResponseWrapper.success(body);
     }

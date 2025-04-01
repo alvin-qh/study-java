@@ -6,6 +6,7 @@ import jakarta.persistence.OrderBy;
 
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.lang.NonNull;
 
 import alvin.study.springboot.jpa.infra.entity.Department;
 
@@ -37,5 +38,6 @@ public interface DepartmentRepository extends CrudRepository<Department, Long>, 
      */
     @Override
     @OrderBy("id asc")
+    @NonNull
     List<Department> findAll();
 }

@@ -12,10 +12,10 @@ import org.apache.shiro.cache.CacheManager;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import io.lettuce.core.RedisException;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import io.lettuce.core.RedisException;
 
 /**
  * 缓存管理器类型
@@ -187,9 +187,6 @@ public class RedisCacheManager implements CacheManager {
             public Collection<V> values() {
                 try {
                     var keys = redis.keys(makeKey("*"));
-                    if (keys == null) {
-                        return List.of();
-                    }
 
                     return Optional.ofNullable(redis.opsForValue().multiGet(keys))
                             .orElse(List.of())

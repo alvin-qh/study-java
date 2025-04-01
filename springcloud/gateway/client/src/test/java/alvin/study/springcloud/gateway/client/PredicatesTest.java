@@ -6,6 +6,7 @@ import static org.awaitility.Awaitility.await;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,15 +69,15 @@ class PredicatesTest {
         await().atMost(2, TimeUnit.SECONDS).untilAsserted(() -> {
             try {
                 // 发起请求
-                var resp = restTemplate.exchange(
-                    "http://gateway/backend/api/info",
-                    HttpMethod.GET,
-                    null,
-                    new ParameterizedTypeReference<ResponseWrapper<AppInfoDto>>() {}).getBody();
+                var resp = Objects.requireNonNull(
+                    restTemplate.exchange(
+                        "http://gateway/backend/api/info",
+                        HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<ResponseWrapper<AppInfoDto>>() {}).getBody());
 
                 // 确认响应正确
-                then(resp).isNotNull()
-                        .extracting(ResponseWrapper::getRetCode, ResponseWrapper::getPath)
+                then(resp).extracting(ResponseWrapper::getRetCode, ResponseWrapper::getPath)
                         .contains(0, "/api/info");
 
                 // 确认相应内容符合预期
@@ -124,15 +125,15 @@ class PredicatesTest {
         await().atMost(2, TimeUnit.SECONDS).untilAsserted(() -> {
             try {
                 // 发起请求
-                var resp = restTemplate.exchange(
-                    "http://gateway/auth",
-                    HttpMethod.GET,
-                    new HttpEntity<>(null, headers),
-                    new ParameterizedTypeReference<ResponseWrapper<AuthDto>>() {}).getBody();
+                var resp = Objects.requireNonNull(
+                    restTemplate.exchange(
+                        "http://gateway/auth",
+                        HttpMethod.GET,
+                        new HttpEntity<>(null, headers),
+                        new ParameterizedTypeReference<ResponseWrapper<AuthDto>>() {}).getBody());
 
                 // 确认响应正确
-                then(resp).isNotNull()
-                        .extracting(ResponseWrapper::getRetCode, ResponseWrapper::getPath)
+                then(resp).extracting(ResponseWrapper::getRetCode, ResponseWrapper::getPath)
                         .contains(0, "/auth");
 
                 // 确认相应内容符合预期

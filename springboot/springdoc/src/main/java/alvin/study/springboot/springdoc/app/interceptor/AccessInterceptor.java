@@ -3,6 +3,8 @@ package alvin.study.springboot.springdoc.app.interceptor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -36,10 +38,10 @@ public class AccessInterceptor implements HandlerInterceptor {
      */
     @Override
     public void postHandle(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            Object handler,
-            ModelAndView modelAndView) {
+            @NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull Object handler,
+            @Nullable ModelAndView modelAndView) {
         // 获取登录信息
         var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null) {

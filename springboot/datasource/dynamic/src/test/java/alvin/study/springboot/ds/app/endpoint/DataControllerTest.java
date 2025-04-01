@@ -2,6 +2,8 @@ package alvin.study.springboot.ds.app.endpoint;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 
@@ -34,25 +36,27 @@ class DataControllerTest extends IntegrationTest {
         configService.createConfig("test-org-1");
 
         // 在指定配置对应的 org 下创建数据
-        var resp = postJson("/api/data", "test-org-1")
-                .bodyValue(new DataForm("db-name-1", "db-value-1"))
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody(RESP_TYPE)
-                .returnResult()
-                .getResponseBody();
+        var resp = Objects.requireNonNull(
+            postJson("/api/data", "test-org-1")
+                    .bodyValue(new DataForm("db-name-1", "db-value-1"))
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectBody(RESP_TYPE)
+                    .returnResult()
+                    .getResponseBody());
 
         // 确认响应信息正确
         then(resp.getStatus()).isZero();
         then(resp.getPayload().getId()).isNotNull();
 
         // 根据正确的 org 获取数据信息
-        resp = getJson("/api/data/{0}", "test-org-1", resp.getPayload().getId())
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody(RESP_TYPE)
-                .returnResult()
-                .getResponseBody();
+        resp = Objects.requireNonNull(
+            getJson("/api/data/{0}", "test-org-1", resp.getPayload().getId())
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectBody(RESP_TYPE)
+                    .returnResult()
+                    .getResponseBody());
 
         // 确认响应信息正确
         then(resp.getPayload().getName()).isEqualTo("db-name-1");

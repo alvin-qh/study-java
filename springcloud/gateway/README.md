@@ -115,7 +115,7 @@ mvn spring-boot:run -Dspring-boot.run.arguments="--server.port=8081"
 首先需要启动 Nacos 容器
 
 ```bash
-docker-compose -f cloud-gateway/docker/docker-compose.yml up
+docker compose -f springcloud/gateway/docker/docker-compose.yml up
 ```
 
 其次启动其它服务

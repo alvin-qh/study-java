@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.JWTDecodeException;
@@ -80,12 +80,12 @@ public class JWTController {
     AuthDto get(@RequestHeader(Headers.AUTHORIZATION) String authorization) {
         if (Strings.isNullOrEmpty(authorization)) {
             // 验证 authorization 参数是否有效: 非空字符串
-            throw HttpClientErrorException.create(HttpStatus.UNAUTHORIZED, "invalid_jwt", null, null, null);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "invalid_jwt");
         }
 
         if (!authorization.startsWith(Headers.BEARER)) {
             // 验证 authorization 参数是否有效: 以 Bearer 开头
-            throw HttpClientErrorException.create(HttpStatus.UNAUTHORIZED, "invalid_jwt", null, null, null);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "invalid_jwt");
         }
 
         // 提取变量中 JWT 部分
@@ -105,7 +105,7 @@ public class JWTController {
                 payload.getExpiresAtAsInstant());
         } catch (JWTDecodeException e) {
             log.error("Invalid JWT {}", token, e);
-            throw HttpClientErrorException.create(HttpStatus.UNAUTHORIZED, "invalid_jwt", null, null, null);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "invalid_jwt", e);
         }
     }
 }

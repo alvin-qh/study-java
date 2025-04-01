@@ -2,6 +2,8 @@ package alvin.study.springboot.mvc.app.api.controller;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 
@@ -35,14 +37,12 @@ class ContextControllerTest extends WebTest {
         var token = jwt.encode("alvin.org", "1001");
 
         // 发起 GET 测试请求
-        var resp = getJson("/api/context")
-                .header("Authorization", "Bearer " + token).exchange()
-                .expectStatus().isOk() // 返回成功
-                .expectBody(SUCCESS_TYPE).returnResult() // 获取响应结果
-                .getResponseBody(); // 获取响应结果的 body
-
-        // 确认返回响应内容
-        then(resp).isNotNull();
+        var resp = Objects.requireNonNull(
+            getJson("/api/context")
+                    .header("Authorization", "Bearer " + token).exchange()
+                    .expectStatus().isOk() // 返回成功
+                    .expectBody(SUCCESS_TYPE).returnResult() // 获取响应结果
+                    .getResponseBody()); // 获取响应结果的 body
 
         // 确认 payload 的信息, 为 ContextDto 类型
         var payload = resp.payload();
@@ -60,14 +60,12 @@ class ContextControllerTest extends WebTest {
     @Test
     void get_shouldGet400ErrorWhenTokenMissed() {
         // 发起 GET 测试请求
-        var resp = getJson("/api/context")
-                .exchange()
-                .expectStatus().is4xxClientError() // 返回 400 错误
-                .expectBody(ERROR_TYPE).returnResult() // 获取响应结果
-                .getResponseBody(); // 获取响应结果的 body
-
-        // 确认返回响应内容
-        then(resp).isNotNull();
+        var resp = Objects.requireNonNull(
+            getJson("/api/context")
+                    .exchange()
+                    .expectStatus().is4xxClientError() // 返回 400 错误
+                    .expectBody(ERROR_TYPE).returnResult() // 获取响应结果
+                    .getResponseBody()); // 获取响应结果的 body
 
         // 确认 response 的返回代码和信息
         then(resp.retCode()).isEqualTo(400);
@@ -84,15 +82,13 @@ class ContextControllerTest extends WebTest {
     @Test
     void get_shouldGet400ErrorWhenTokenIsInvalid() {
         // 发起 GET 测试请求
-        var resp = getJson("/api/context")
-                .header("Authorization", "abcd")
-                .exchange()
-                .expectStatus().is4xxClientError() // 返回 400 错误
-                .expectBody(ERROR_TYPE).returnResult() // 获取响应结果
-                .getResponseBody(); // 获取响应结果的 body
-
-        // 确认返回响应内容
-        then(resp).isNotNull();
+        var resp = Objects.requireNonNull(
+            getJson("/api/context")
+                    .header("Authorization", "abcd")
+                    .exchange()
+                    .expectStatus().is4xxClientError() // 返回 400 错误
+                    .expectBody(ERROR_TYPE).returnResult() // 获取响应结果
+                    .getResponseBody()); // 获取响应结果的 body
 
         // 确认 response 的返回代码和信息
         then(resp.retCode()).isEqualTo(400);

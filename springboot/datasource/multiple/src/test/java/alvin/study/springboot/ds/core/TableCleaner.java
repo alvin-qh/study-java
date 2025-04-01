@@ -2,6 +2,7 @@ package alvin.study.springboot.ds.core;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ public class TableCleaner {
     public void clearAllTables(String... exclude) {
         var excludeSet = Set.of(exclude);
 
-        var datasource = template.getDataSource();
+        var datasource = Objects.requireNonNull(template.getDataSource());
 
         // 获取数据库连接地址
         var connectUrl = datasource.getConnection().getMetaData().getURL();

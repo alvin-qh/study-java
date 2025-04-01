@@ -97,6 +97,10 @@ public class UserService {
 
         // 调用 findAll 方法进行动态查询
         return userRepository.findAll((root, query, cb) -> {
+            if (query == null) {
+                return null;
+            }
+
             // 创建查询条件对象, conjunction 方法创建一个永真的查询条件, 即此时的的查询条件为 where 1=1
             // 之所以这么做, 是为了方便后续继续连接各种查询条件
             // var predicate = cb.conjunction();

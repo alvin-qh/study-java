@@ -1,6 +1,7 @@
 package alvin.study.springboot.springdoc.conf;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -26,7 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
      * @param registry Spring 拦截器注册对象
      */
     @Override
-    public void addInterceptors(InterceptorRegistry registry) {
+    public void addInterceptors(@NonNull InterceptorRegistry registry) {
         // 添加拦截器
         registry
                 .addInterceptor(accessInterceptor)

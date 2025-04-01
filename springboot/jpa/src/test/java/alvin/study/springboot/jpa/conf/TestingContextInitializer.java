@@ -7,6 +7,7 @@ import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.lang.NonNull;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
@@ -37,7 +38,7 @@ public class TestingContextInitializer implements ApplicationContextInitializer<
      */
     @Override
     @SneakyThrows
-    public void initialize(ConfigurableApplicationContext applicationContext) {
+    public void initialize(@NonNull ConfigurableApplicationContext applicationContext) {
         // 获取 Main 类中定义的额外的 Spring 配置项
         var properties = Main.getDefaultProperties(
         // Pair.of("spring.datasource.hikari.pool-name", "cp-alvin-study-test"),

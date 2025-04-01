@@ -3,6 +3,7 @@ package alvin.study.springboot.shiro.app.endpoint;
 import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.assertj.core.api.InstanceOfAssertFactories;
 
@@ -240,13 +241,12 @@ class HomeControllerTest extends IntegrationTest {
         // 访问 3 次以查看缓存的使用情况
         for (var i = 0; i < 3; i++) {
             // 访问服务器获取菜单, 并确认该用户智能获取到角色权限允许的那部分菜单项
-            var json = getJson("/menu")
-                    .exchange()
-                    .expectStatus().isOk()
-                    .expectBody(PathMap.class).returnResult()
-                    .getResponseBody();
-
-            then(json).isNotNull();
+            var json = Objects.requireNonNull(
+                getJson("/menu")
+                        .exchange()
+                        .expectStatus().isOk()
+                        .expectBody(PathMap.class).returnResult()
+                        .getResponseBody());
 
             then((Object) json.getByPath("items")).asInstanceOf(InstanceOfAssertFactories.LIST).hasSize(2);
             then((Object) json.getByPath("items[0].text")).isEqualTo("I");

@@ -2,6 +2,7 @@ package alvin.study.springcloud.gateway.client.conf;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -41,7 +42,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
      * @param registry 拦截器注册对象
      */
     @Override
-    public void addInterceptors(InterceptorRegistry registry) {
+    public void addInterceptors(@NonNull InterceptorRegistry registry) {
         // 添加日志拦截器
         registry.addInterceptor(loggingInterceptor)
                 // 设置拦截器要拦截的访问路径

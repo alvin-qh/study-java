@@ -95,6 +95,10 @@ public class DepartmentService {
 
         // 调用 repository 方法进行动态查询
         return departmentRepository.findAll((root, query, cb) -> {
+            if (query == null) {
+                return null;
+            }
+
             // 指定 fetch 操作 (即 join fetch)
             var fetch = root.<Department, Department>fetch("children");
 

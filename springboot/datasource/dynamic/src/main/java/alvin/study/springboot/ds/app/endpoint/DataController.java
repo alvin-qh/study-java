@@ -3,7 +3,6 @@ package alvin.study.springboot.ds.app.endpoint;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -74,13 +73,7 @@ public class DataController {
             // 返回结果
             return ResponseDto.success(dto);
         } catch (Exception e) {
-            throw HttpClientErrorException.create(
-                "Cannot found resource",
-                HttpStatus.NOT_FOUND,
-                "resource_not_exist",
-                HttpHeaders.EMPTY,
-                "".getBytes(),
-                null);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "resource_not_exist", e);
         }
     }
 }

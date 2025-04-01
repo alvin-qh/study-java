@@ -42,13 +42,13 @@ class HomeControllerTest extends IntegrationTest {
         }
 
         // 访问 HOME 资源并设置 Authorization HTTP 头
-        var resp = getJson("/")
+        var resp = Objects.requireNonNull(getJson("/")
                 .exchange()
                 .expectStatus().is2xxSuccessful()
                 .expectBody(HomeDto.class).returnResult()
-                .getResponseBody();
+                .getResponseBody());
 
-        then(Objects.requireNonNull(resp).getWelcome()).isEqualTo("Welcome " + currentUser().getAccount());
+        then(resp.getWelcome()).isEqualTo("Welcome " + currentUser().getAccount());
     }
 
     /**
@@ -239,13 +239,12 @@ class HomeControllerTest extends IntegrationTest {
         // 访问 3 次以查看缓存的使用情况
         for (var i = 0; i < 3; i++) {
             // 访问服务器获取菜单, 并确认该用户智能获取到角色权限允许的那部分菜单项
-            var json = getJson("/menu")
-                    .exchange()
-                    .expectStatus().isOk()
-                    .expectBody(PathMap.class).returnResult()
-                    .getResponseBody();
-
-            then(json).isNotNull();
+            var json = Objects.requireNonNull(
+                getJson("/menu")
+                        .exchange()
+                        .expectStatus().isOk()
+                        .expectBody(PathMap.class).returnResult()
+                        .getResponseBody());
 
             then((Object) json.getByPath("items")).asInstanceOf(InstanceOfAssertFactories.LIST).hasSize(2);
 
