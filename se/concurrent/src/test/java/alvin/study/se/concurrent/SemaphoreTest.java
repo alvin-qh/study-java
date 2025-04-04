@@ -82,4 +82,12 @@ public class SemaphoreTest {
         // 确认结果的第三项和第四项的时间差值, 应该在 100ms 左右
         then(results.get(2) - results.get(1)).isBetween(100L, 110L);
     }
+
+    @Test
+    void acquire_shouldControlBetweenThreads() {
+        var semaphore = new Semaphore(1000);
+        then(semaphore.availablePermits()).isEqualTo(1000);
+
+        var threads = new Threads[10];
+    }
 }
