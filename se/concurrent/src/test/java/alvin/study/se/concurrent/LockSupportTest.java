@@ -7,6 +7,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.LockSupport;
 
+import lombok.SneakyThrows;
+
 import org.junit.jupiter.api.Test;
 
 /**
@@ -17,29 +19,34 @@ class LockSupportTest {
      * 将线程阻塞指定的时间
      *
      * <p>
-     * 通过 {@link LockSupport#parkNanos(long)} 方法可以将当前线程阻塞指定的时间 (时间单位为纳秒),
-     * 并在等待指定时间后唤醒线程, 该方法类似于 {@link Thread#sleep(long)} 方法
+     * 通过 {@link LockSupport#parkNanos(long)} 方法可以将当前线程阻塞指定的时间
+     * (时间单位为纳秒), 并在等待指定时间后唤醒线程, 该方法类似于
+     * {@link Thread#sleep(long)} 方法
      * </p>
      *
      * <p>
-     * 和 {@link Thread#sleep(long)} 方法不同, {@code parkNanos} 方法更为底层, 而
-     * {@code sleep} 方法是借助 {@link LockSupport#park()} 和自旋锁实现, 会对系统资源有占用
+     * 和 {@link Thread#sleep(long)} 方法不同, {@code parkNanos} 方法更为底层,
+     * 而 {@code sleep} 方法是借助 {@link LockSupport#park()} 和自旋锁实现,
+     * 会对系统资源有占用
      * </p>
      *
      * <p>
      * {@link Thread#sleep(long)} 方法在线程 {@code interrupt} 后会抛出
-     * {@link InterruptedException} 异常来中断阻塞, 而 {@link LockSupport#parkNanos(long)}
-     * 方法只是结束阻塞, 继续执行后续代码, 但线程状态已经为 {@code interrupted}
-     * (即 {@link Thread#isInterrupted()}) 会返回 {@code true}
+     * {@link InterruptedException} 异常来中断阻塞, 而
+     * {@link LockSupport#parkNanos(long)} 方法只是结束阻塞, 继续执行后续代码,
+     * 但线程状态已经为 {@code interrupted} (即 {@link Thread#isInterrupted()})
+     * 会返回 {@code true}
      * </p>
      *
      * <p>
-     * 在执行 {@link LockSupport#parkNanos(long)} 过程中的线程状态为 {@code TIMED_WAITING},
-     * 这一点和执行 {@link Thread#sleep(long)} 方法以及 {@link Object#wait(long)} 是一致的
+     * 在执行 {@link LockSupport#parkNanos(long)} 过程中的线程状态为
+     * {@code TIMED_WAITING}, 这一点和执行 {@link Thread#sleep(long)} 方法以及
+     * {@link Object#wait(long)} 是一致的
      * </p>
      */
     @Test
-    void parkNanos_shouldSuspendThreadForAWhile() throws InterruptedException {
+    @SneakyThrows
+    void parkNanos_shouldSuspendThreadForAWhile() {
         var thread = new Thread(() -> {
             // 将当前线程阻塞 1 秒钟
             LockSupport.parkNanos(TimeUnit.MILLISECONDS.toNanos(100L));
@@ -69,7 +76,8 @@ class LockSupportTest {
      * </p>
      */
     @Test
-    void parkUntil_shouldSuspendThreadToSpecifiedTime() throws InterruptedException {
+    @SneakyThrows
+    void parkUntil_shouldSuspendThreadToSpecifiedTime() {
         var thread = new Thread(() -> {
             // 设置当前时间 2s 后为阻塞结束时间
             var deadline = Instant.now().plus(100, ChronoUnit.MILLIS).toEpochMilli();
@@ -93,11 +101,13 @@ class LockSupportTest {
      *
      * <p>
      * 通过在当前线程执行 {@link LockSupport#park()} 方法可以对当前线程一直阻塞,
-     * 直到另一个线程执行了 {@link LockSupport#unpark(Thread)} 方法, 被阻塞线程解除阻塞
+     * 直到另一个线程执行了 {@link LockSupport#unpark(Thread)} 方法,
+     * 被阻塞线程解除阻塞
      * </p>
      */
     @Test
-    void parkAndUnpack_shouldPackOneThreadAndUnpackAtOtherThread() throws InterruptedException {
+    @SneakyThrows
+    void parkAndUnpack_shouldPackOneThreadAndUnpackAtOtherThread() {
         // 用于测试阻塞线程
         // 将当前线程阻塞
         var thread = new Thread(LockSupport::park);
@@ -126,16 +136,20 @@ class LockSupportTest {
      * 阻塞当前线程并在线程间传递值
      *
      * <p>
-     * 通过 {@link LockSupport#park(Object)}, {@link LockSupport#parkUntil(Object, long)} 以及
-     * {@link LockSupport#parkUntil(Object, long)} 方法, 可以在阻塞当前线程的同时传递一个对象值
+     * 通过 {@link LockSupport#park(Object)},
+     * {@link LockSupport#parkUntil(Object, long)} 以及
+     * {@link LockSupport#parkUntil(Object, long)} 方法,
+     * 可以在阻塞当前线程的同时传递一个对象值
      * </p>
      *
      * <p>
-     * 通过 {@link LockSupport#getBlocker(Thread)} 方法可以在另一个线程中, 通过被阻塞线程对象获取到阻塞线程传递的对象
+     * 通过 {@link LockSupport#getBlocker(Thread)} 方法可以在另一个线程中,
+     * 通过被阻塞线程对象获取到阻塞线程传递的对象
      * </p>
      */
     @Test
-    void parkObject_shouldPassBlockerObjectBetweenThread() throws InterruptedException {
+    @SneakyThrows
+    void parkObject_shouldPassBlockerObjectBetweenThread() {
         // 用于测试阻塞线程
         var thread = new Thread(() -> {
             // 将当前线程阻塞, 并传递一个字符串值
@@ -158,7 +172,8 @@ class LockSupportTest {
      * 在线程间传递值但并不阻塞当前线程
      *
      * <p>
-     * 通过 {@link LockSupport#setCurrentBlocker(Object)} 可以在线程间传递一个对象值
+     * 通过 {@link LockSupport#setCurrentBlocker(Object)}
+     * 可以在线程间传递一个对象值
      * </p>
      *
      * <p>
@@ -167,7 +182,8 @@ class LockSupportTest {
      * </p>
      */
     @Test
-    void setCurrentBlocker_shouldPassBlockerObjectBetweenThread() throws InterruptedException {
+    @SneakyThrows
+    void setCurrentBlocker_shouldPassBlockerObjectBetweenThread() {
         var state = new Object();
 
         // 用于测试阻塞线程

@@ -37,7 +37,7 @@ import alvin.study.se.concurrent.util.Threads;
  * 类对象作为互斥锁时性能更好
  * </p>
  */
-public class LockTest {
+class LockTest {
     /**
      * 测试 {@link ReentrantLock} 锁为公平锁时是否真正公平
      *

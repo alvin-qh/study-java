@@ -33,7 +33,7 @@ import alvin.study.se.concurrent.util.Threads;
 /**
  * 测试 Java 线程
  */
-public class ThreadTest {
+class ThreadTest {
     /**
      * 测试线程启动和停止
      *
@@ -756,6 +756,9 @@ public class ThreadTest {
 
         // 确认线程状态为运行中
         then(thread.isAlive()).isTrue();
+
+        // 确认线程代码执行到 `ref.wait()` 语句
+        Thread.sleep(10);
 
         // 发送通知, 令线程继续执行
         synchronized (ref) {

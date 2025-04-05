@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 
 import alvin.study.se.concurrent.service.BlockedService;
 import alvin.study.se.concurrent.service.BlockedService.Model;
-import alvin.study.se.concurrent.util.ExecutorCreator;
+import alvin.study.se.concurrent.util.ThreadPool;
 
 /**
  * 通过 {@link CompletableFuture} 简化异步代码编写
@@ -53,14 +53,14 @@ import alvin.study.se.concurrent.util.ExecutorCreator;
  * </p>
  */
 class CompletableFutureTest {
-    private final ExecutorCreator executorCreator = new ExecutorCreator();
+    private final ThreadPool threadPool = new ThreadPool();
 
     /**
      * 在每个测试之后执行, 关闭线程池
      */
     @AfterEach
     void afterEach() {
-        executorCreator.close();
+        threadPool.close();
     }
 
     /**
@@ -131,7 +131,7 @@ class CompletableFutureTest {
         var service = new BlockedService(new Model(1L, "Alvin"));
 
         // 创建线程池执行器对象
-        var executor = executorCreator.arrayBlockingQueueExecutor(20);
+        var executor = threadPool.arrayBlockingQueueExecutor(20);
 
         // 启动异步任务
         var future = CompletableFuture.supplyAsync(() -> service.loadModel(1L), executor);
@@ -793,7 +793,7 @@ class CompletableFutureTest {
      *
      * <p>
      * 本例中计算任务不多, 线程主要损耗来自于阻塞等待, 可以看作是 IO 密集型任务, 所以使用
-     * {@link ExecutorCreator#synchronousQueueExecutor(int)} 方法来创建线程池,
+     * {@link ThreadPool#synchronousQueueExecutor(int)} 方法来创建线程池,
      * 即用大量线程执行任务以应对线程阻塞情况, 提高并发性能
      * </p>
      */
@@ -802,7 +802,7 @@ class CompletableFutureTest {
         var service = new BlockedService();
 
         // 创建线程池对象, 使用大量线程保证并发性, 即每个任务均有一个线程来执行 (IO 密集型)
-        var executor = executorCreator.synchronousQueueExecutor(0);
+        var executor = threadPool.synchronousQueueExecutor(0);
 
         // 根任务: 产生一系列随机数据, 模拟从网络抓取数据的情形
         var f0 = CompletableFuture.supplyAsync(() -> {

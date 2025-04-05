@@ -6,16 +6,19 @@ import static org.awaitility.Awaitility.await;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
+import lombok.SneakyThrows;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import alvin.study.se.concurrent.service.Fibonacci;
-import alvin.study.se.concurrent.util.ExecutorCreator;
+import alvin.study.se.concurrent.util.ThreadPool;
 
 /**
  * 线程池测试
@@ -89,14 +92,38 @@ import alvin.study.se.concurrent.util.ExecutorCreator;
  * </p>
  */
 class ThreadPoolTest {
-    private final ExecutorCreator executorCreator = new ExecutorCreator();
+    private final ThreadPool threadPool = new ThreadPool();
 
     /**
      * 在每个测试之后执行, 关闭线程池
      */
     @AfterEach
     void afterEach() {
-        executorCreator.close();
+        threadPool.close();
+    }
+
+    @Test
+    void newFixedThreadPool_shouldCreateFixedSizeThreadPoolByExecutors() {
+        try (var executor = Executors.newFixedThreadPool(2)) {
+            var results = new ArrayList<Long>();
+
+            for (var i = 0; i < 4; i++) {
+                executor.submit(() -> {
+                    try {
+                        results.add(System.currentTimeMillis());
+                        Thread.sleep(200);
+                    } catch (InterruptedException ignore) {}
+                });
+            }
+
+            await().atMost(1, TimeUnit.SECONDS).until(() -> results.size() == 4);
+
+            then(results).hasSize(4);
+            then(results.get(1) - results.get(0)).isLessThan(10);
+            then(results.get(3) - results.get(2)).isLessThan(10);
+
+            then(results.get(2) - results.get(1)).isBetween(200L, 210L);
+        }
     }
 
     /**
@@ -109,9 +136,10 @@ class ThreadPoolTest {
      * </p>
      */
     @Test
-    void futureTask_shouldCreateFutureTaskBySubmitThreadPool() throws Exception {
+    @SneakyThrows
+    void futureTask_shouldCreateFutureTaskBySubmitThreadPool() {
         // 创建线程池执行器对象
-        var executor = executorCreator.arrayBlockingQueueExecutor(20);
+        var executor = threadPool.arrayBlockingQueueExecutor(20);
 
         // 提交一个任务
         var task = executor.submit(() -> Fibonacci.calculate(20));
@@ -139,7 +167,7 @@ class ThreadPoolTest {
         var resultCount = new AtomicInteger();
 
         // 创建线程池执行器对象
-        var executor = executorCreator.arrayBlockingQueueExecutor(20);
+        var executor = threadPool.arrayBlockingQueueExecutor(20);
 
         // 循环 20 次, 提交 20 个任务
         for (var i = 1; i <= 20; i++) {
@@ -164,8 +192,10 @@ class ThreadPoolTest {
         then(tasks).allMatch(Future::isDone);
 
         // 确认任务计算结果
-        then(tasks).map(Future::get).containsExactly(1, 2, 3, 5, 8, 13, 21,
-            34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946);
+        then(tasks).map(Future::get)
+                .containsExactly(
+                    1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144,
+                    233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946);
     }
 
     /**
@@ -178,7 +208,8 @@ class ThreadPoolTest {
      * </p>
      */
     @Test
-    void invokeAll_shouldSubmitMultiTasksAndInvokeThemAll() throws InterruptedException {
+    @SneakyThrows
+    void invokeAll_shouldSubmitMultiTasksAndInvokeThemAll() {
         // 任务计数器, 计算已完成任务数
         var resultCount = new AtomicInteger();
 
@@ -196,7 +227,7 @@ class ThreadPoolTest {
                 .toList();
 
         // 创建线程池执行器对象
-        var executor = executorCreator.arrayBlockingQueueExecutor(20);
+        var executor = threadPool.arrayBlockingQueueExecutor(20);
         // 执行所有任务
         var futures = executor.invokeAll(tasks, 5, TimeUnit.SECONDS);
 
@@ -226,7 +257,8 @@ class ThreadPoolTest {
      * </p>
      */
     @Test
-    void invokeAny_shouldSubmitMultiTasksAndInvokeAnyOfThem() throws Exception {
+    @SneakyThrows
+    void invokeAny_shouldSubmitMultiTasksAndInvokeAnyOfThem() {
         var rand = new Random();
 
         // 保存 FutureTask 的集合对象
@@ -240,7 +272,7 @@ class ThreadPoolTest {
                 .toList();
 
         // 创建线程池执行器对象
-        var executor = executorCreator.arrayBlockingQueueExecutor(20);
+        var executor = threadPool.arrayBlockingQueueExecutor(20);
 
         // 执行任务集合, 持续执行 500ms, 返回第一个执行成功任务的结果, 其余任务都被取消
         var result = executor.invokeAny(tasks, 200, TimeUnit.MILLISECONDS);
@@ -254,7 +286,8 @@ class ThreadPoolTest {
      * 为任务队列的线程池
      */
     @Test
-    void cachedPool_shouldSubmitTaskIntoThreadPoolWithSynchronousQueue() throws InterruptedException {
+    @SneakyThrows
+    void cachedPool_shouldSubmitTaskIntoThreadPoolWithSynchronousQueue() {
         // 任务计数器, 计算已完成任务数
         var resultCount = new AtomicInteger();
 
@@ -274,7 +307,7 @@ class ThreadPoolTest {
                 .toList();
 
         // 创建线程池执行器对象, 使用 SynchronousQueue 作为任务队列
-        var executor = executorCreator.synchronousQueueExecutor(0);
+        var executor = threadPool.synchronousQueueExecutor(0);
 
         // 执行集合中所有任务, 共执行 1s, 实际应该在 150~200ms 内执行完
         var result = executor.invokeAll(tasks, 1, TimeUnit.SECONDS);
@@ -285,4 +318,7 @@ class ThreadPoolTest {
         // 确认任务执行结果
         then(result).map(Future::get).allMatch(s -> s.matches("^[0-3]?\\d-Success$"));
     }
+
+    @Test
+    void virtualPool_shouldCreateThreadPoolForVirtualThread() {}
 }

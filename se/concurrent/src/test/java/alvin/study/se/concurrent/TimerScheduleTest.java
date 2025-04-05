@@ -1,89 +1,111 @@
 package alvin.study.se.concurrent;
 
-import alvin.study.se.concurrent.delay.DelayedValue;
-import alvin.study.se.concurrent.util.ExecutorCreator;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.awaitility.Awaitility.await;
 
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.DelayQueue;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.awaitility.Awaitility.await;
+import lombok.SneakyThrows;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+
+import alvin.study.se.concurrent.delay.DelayedValue;
+import alvin.study.se.concurrent.util.ThreadPool;
 
 /**
  * 测试延时任务
  *
  * <p>
- * {@link ScheduledExecutorService} 接口用于表示一个延时异步任务执行器, 该执行器通过
- * {@link ScheduledExecutorService#schedule(java.util.concurrent.Callable, long, TimeUnit)
- * ScheduledExecutorService.schedule(Callable, long, TimeUnit)} 方法提交一个延时任务, 该任务会在指定的时间之后执行
+ * {@link java.util.concurrent.ScheduledExecutorService
+ * ScheduledExecutorService} 接口用于表示一个延时异步任务执行器,
+ * 该执行器通过 {@link java.util.concurrent.ScheduledExecutorService#schedule(
+ * java.util.concurrent.Callable, long, TimeUnit)
+ * ScheduledExecutorService.schedule(Callable, long, TimeUnit)}
+ * 方法提交一个延时任务, 该任务会在指定的时间之后执行
  * </p>
  *
  * <p>
- * {@link ScheduledThreadPoolExecutor} 类型实现了 {@link ScheduledExecutorService} 接口, 即通过线程池的方式处理延时异步任务,
- * {@link ScheduledThreadPoolExecutor} 从 {@link java.util.concurrent.ThreadPoolExecutor ThreadPoolExecutor} 类继承,
- * 两者的主要区别在于前者使用了"延时队列"来作为任务队列
+ * {@link java.util.concurrent.ScheduledThreadPoolExecutor
+ * ScheduledThreadPoolExecutor} 类型实现了
+ * {@link java.util.concurrent.ScheduledExecutorService
+ * ScheduledExecutorService} 接口, 即通过线程池的方式处理延时异步任务,
+ * {@link java.util.concurrent.ScheduledThreadPoolExecutor
+ * ScheduledThreadPoolExecutor} 从
+ * {@link java.util.concurrent.ThreadPoolExecutor
+ * ThreadPoolExecutor} 类继承, 两者的主要区别在于前者使用了 "延时队列"
+ * 来作为任务队列
  * </p>
  *
  * <p>
- * {@link ScheduledThreadPoolExecutor#execute(Runnable)} 和
- * {@link ScheduledThreadPoolExecutor#submit(java.util.concurrent.Callable)
- * ScheduledThreadPoolExecutor.submit(Callable)} 方法的语义未发生变化, 但也可以理解为提交了"延时时间为 {@code 0}"的延时任务
+ * {@link java.util.concurrent.ScheduledThreadPoolExecutor#execute(Runnable)
+ * ScheduledExecutorService.execute(Runnable)} 和
+ * {@link java.util.concurrent.ScheduledThreadPoolExecutor#submit(
+ * java.util.concurrent.Callable)
+ * ScheduledThreadPoolExecutor.submit(Callable)} 方法的语义未发生变化,
+ * 但也可以理解为提交了"延时时间为 {@code 0}"的延时任务
  * </p>
  *
  * <p>
- * 另外, {@link Timer} 类也可以处理定时任务, 且两者具有类似的方法, 和 {@link ScheduledExecutorService} 相比, {@link Timer}
- * 也是通过延时队列来作为任务队列的, 但后者只启动了一个线程(而不是通过线程池), 所以一旦队列中有某个任务执行时间过久或被阻塞,
- * 这会影响到之后的所有其它任务
+ * 另外, {@link Timer} 类也可以处理定时任务, 且两者具有类似的方法, 和
+ * {@link java.util.concurrent.ScheduledExecutorService
+ * ScheduledExecutorService} 相比, {@link Timer}
+ * 也是通过延时队列来作为任务队列的, 但后者只启动了一个线程(而不是通过线程池),
+ * 所以一旦队列中有某个任务执行时间过久或被阻塞, 这会影响到之后的所有其它任务
  * </p>
  *
  * <p>
- * 且 {@link Timer} 类型属于较早期的 API, 使用已经过时的 {@link java.util.Date Date} 和 {@link java.util.Calendar
- * Calendar} 类型来表示时间
+ * 且 {@link Timer} 类型属于较早期的 API, 使用已经过时的
+ * {@link java.util.Date Date} 和 {@link java.util.Calendar Calendar}
+ * 类型来表示时间
  * </p>
  */
 class TimerScheduleTest {
-    private final ExecutorCreator executorCreator = new ExecutorCreator();
+    private final ThreadPool threadPool = new ThreadPool();
 
     /**
      * 每次测试结束后执行, 用于关闭线程池
      */
     @AfterEach
     void afterEach() {
-        executorCreator.close();
+        threadPool.close();
     }
 
     /**
      * 测试延时队列
      *
      * <p>
-     * 延时队列 ({@link DelayQueue}) 是一种阻塞式优先队列 ({@link java.util.concurrent.PriorityBlockingQueue
-     * PriorityBlockingQueue}), 其队列元素具备延时, 在时间到达后方可按时间到达的顺序从队列中获取
+     * 延时队列 ({@link DelayQueue}) 是一种阻塞式优先队列
+     * ({@link java.util.concurrent.PriorityBlockingQueue PriorityBlockingQueue}),
+     * 其队列元素具备延时, 在时间到达后方可按时间到达的顺序从队列中获取
      * </p>
      *
      * <p>
-     * {@link DelayQueue} 中的元素类型必须实现自 {@link java.util.concurrent.Delayed Delayed} 接口, 其中:
+     * {@link DelayQueue} 中的元素类型必须实现自 {@link java.util.concurrent.Delayed
+     * Delayed} 接口, 其中:
      * <ul>
      * <li>
-     * {@link java.util.concurrent.Delayed#getDelay(TimeUnit) Delayed.getDelay(TimeUnit)} 方法用于确定延时剩余时间,
-     * 当其返回值小于等于 {@code 0} 后, 方可从队列中取出
+     * {@link java.util.concurrent.Delayed#getDelay(TimeUnit)
+     * Delayed.getDelay(TimeUnit)} 方法用于确定延时剩余时间, 当其返回值小于等于 {@code 0}
+     * 后, 方可从队列中取出
      * </li>
      * <li>
-     * {@link java.util.concurrent.Delayed#compareTo(Object)}
-     * Delayed.compareTo(Delayed)} 方法比较两个队列元素, 用于确定元素在队列中的"优先级", 比较结果越小的元素具有越高的出队优先级
+     * {@link java.util.concurrent.Delayed#compareTo(Object)
+     * Delayed.compareTo(Delayed)} 方法比较两个队列元素, 用于确定元素在队列中的"优先级",
+     * 比较结果越小的元素具有越高的出队优先级
      * </li>
      * </ul>
-     * 参考 {@link DelayedValue} 类型
      * </p>
+     *
+     * @see DelayedValue
      */
     @Test
-    void delayQueue_shouldGetDelayedValueFromQueue() throws InterruptedException {
+    @SneakyThrows
+    void delayQueue_shouldGetDelayedValueFromQueue() {
         // 创建延时队列
         var queue = new DelayQueue<DelayedValue<Integer>>();
 
@@ -119,32 +141,37 @@ class TimerScheduleTest {
      * 测试设定延时任务
      *
      * <p>
-     * 通过 {@link ScheduledExecutorService#schedule(java.util.concurrent.Callable, long, TimeUnit)
-     * ScheduledExecutorService.schedule(Callable, long, TimeUnit)} 方法可以提交一个延时任务, 后两个参数指定延时时间
-     * (从当前时间起), 到达指定时间后, 任务才会被执行
+     * 通过 {@link java.util.concurrent.ScheduledExecutorService#schedule(
+     * java.util.concurrent.Callable, long, TimeUnit)
+     * ScheduledExecutorService.schedule(Callable, long, TimeUnit)}
+     * 方法可以提交一个延时任务, 后两个参数指定延时时间 (从当前时间起), 到达指定时间后,
+     * 任务才会被执行
      * </p>
      *
      * <p>
-     * {@code schedule} 方法返回 {@link java.util.concurrent.ScheduledFuture ScheduledFuture} 类型对象,
-     * 用于查看任务执行情况, 获取任务执行结果, 包括:
+     * {@code schedule} 方法返回 {@link java.util.concurrent.ScheduledFuture
+     * ScheduledFuture} 类型对象, 用于查看任务执行情况, 获取任务执行结果, 包括:
      * <ul>
      * <li>
-     * 通过 {@link java.util.concurrent.ScheduledFuture#isDone() ScheduledFuture.isDone()} 方法查看任务是否执行完毕
+     * 通过 {@link java.util.concurrent.ScheduledFuture#isDone()
+     * ScheduledFuture.isDone()} 方法查看任务是否执行完毕
      * </li>
      * <li>
-     * 通过 {@link java.util.concurrent.ScheduledFuture#get() ScheduledFuture.get()} 方法获取任务执行结果
+     * 通过 {@link java.util.concurrent.ScheduledFuture#get()
+     * ScheduledFuture.get()} 方法获取任务执行结果
      * </li>
      * <li>
-     * 通过 {@link java.util.concurrent.ScheduledFuture#getDelay(TimeUnit) ScheduledFuture.getDelay(TimeUnit)}
-     * 方法获取任务剩余延时时间
+     * 通过 {@link java.util.concurrent.ScheduledFuture#getDelay(TimeUnit)
+     * ScheduledFuture.getDelay(TimeUnit)} 方法获取任务剩余延时时间
      * </li>
      * </ul>
      * </p>
      */
     @Test
-    void scheduleFuture_shouldScheduleTaskAfterWhile() throws Exception {
+    @SneakyThrows
+    void scheduleFuture_shouldScheduleTaskAfterWhile() {
         // 创建延时任务线程池
-        try (var executor = executorCreator.scheduledExecutor(0)) {
+        try (var executor = threadPool.scheduledExecutor(0)) {
             // 记录起始时间
             var startedMillis = System.currentTimeMillis();
 
@@ -168,14 +195,15 @@ class TimerScheduleTest {
      * 测试设定延时任务
      *
      * <p>
-     * 通过 {@link Timer#schedule(TimerTask, long)} 方法可以提交一个延时任务, 最后一个参数用于指定延时时间 (从当前时间起),
-     * 到达指定时间后, 任务才会被执行
+     * 通过 {@link Timer#schedule(TimerTask, long)} 方法可以提交一个延时任务,
+     * 最后一个参数用于指定延时时间 (从当前时间起), 到达指定时间后, 任务才会被执行
      * </p>
      *
      * <p>
-     * {@code schedule} 方法通过一个 {@link TimerTask} 对象执行任务, 当指定时间到达后, {@link TimerTask#run()} 方法会被执行,
-     * 和 {@link java.util.concurrent.ScheduledFuture ScheduledFuture} 类型不同, 需要在 {@link TimerTask}
-     * 中自行处理任务结果和任务状态
+     * {@code schedule} 方法通过一个 {@link TimerTask} 对象执行任务,
+     * 当指定时间到达后, {@link TimerTask#run()} 方法会被执行, 和
+     * {@link java.util.concurrent.ScheduledFuture ScheduledFuture}
+     * 类型不同, 需要在 {@link TimerTask} 中自行处理任务结果和任务状态
      * </p>
      */
     @Test
@@ -234,21 +262,25 @@ class TimerScheduleTest {
      * 按固定频率重复执行任务
      *
      * <p>
-     * 通过 {@link ScheduledExecutorService#scheduleAtFixedRate(Runnable, long, long, TimeUnit)}
-     * 方法可以按一个固定的频率重复执行某个任务, 后三个参数用于表示任务第一次执行的延迟时间和之后每次执行的间隔时间
+     * 通过 {@link java.util.concurrent.ScheduledExecutorService#scheduleAtFixedRate(
+     * Runnable, long, long, TimeUnit)
+     * ScheduledExecutorService.scheduleAtFixedRate(Runnable,long,
+     * long, TimeUnit)} 方法可以按一个固定的频率重复执行某个任务,
+     * 后三个参数用于表示任务第一次执行的延迟时间和之后每次执行的间隔时间
      * </p>
      *
      * <p>
-     * {@code scheduleAtFixedRate} 以第一次任务执行时间作为后续任务执行的基准, 即经过 {@code delay} 参数延迟后的时间,
-     * 但由于每次任务执行后才会追加下一次任务, 所以某次任务的阻塞仍有可能会影响下次任务 (例如阻塞时间超过了 {@code period})
-     * 参数设定的间隔时间, 但下一次任务会尽可能的快速执行以弥补耽搁的时间, 所以从宏观上看, {@code scheduleAtFixedRate}
-     * 方法仍可以认为是基于固定频率的
+     * {@code scheduleAtFixedRate} 方法以第一次任务执行时间作为后续任务执行的基准,
+     * 即经过 {@code delay} 参数延迟后的时间, 但由于每次任务执行后才会追加下一次任务,
+     * 所以某次任务的阻塞仍有可能会影响下次任务 (例如阻塞时间超过了 {@code period})
+     * 参数设定的间隔时间, 但下一次任务会尽可能的快速执行以弥补耽搁的时间, 所以从宏观上看,
+     * {@code scheduleAtFixedRate} 方法仍可以认为是基于固定频率的
      * </p>
      */
     @Test
     void scheduleAtFixedRate_shouldScheduleTaskWithFixedRate() {
         // 创建延时任务线程池
-        var executor = executorCreator.scheduledExecutor(0);
+        var executor = threadPool.scheduledExecutor(0);
 
         // 记录起始时间
         var startedMillis = System.currentTimeMillis();
@@ -278,15 +310,17 @@ class TimerScheduleTest {
      * 按固定频率重复执行任务
      *
      * <p>
-     * 通过 {@link Timer#scheduleAtFixedRate(TimerTask, long, long)} 方法可以按一个固定的频率重复执行某个任务, 后两个参数分别表示:
+     * 通过 {@link Timer#scheduleAtFixedRate(TimerTask, long, long)}
+     * 方法可以按一个固定的频率重复执行某个任务, 后两个参数分别表示:
      * 任务第一次执行的延迟时间以及之后每次任务执行的间隔时间
      * </p>
      *
      * <p>
-     * {@code scheduleAtFixedRate} 以第一次任务执行时间作为后续任务执行的基准, 即经过 {@code delay} 参数延迟后的时间,
-     * 但由于每次任务执行后才会追加下一次任务, 所以某次任务的阻塞仍有可能会影响下次任务 (例如阻塞时间超过了 {@code period})
-     * 参数设定的间隔时间, 但下一次任务会尽可能的快速执行以弥补耽搁的时间, 所以从宏观上看, {@code scheduleAtFixedRate}
-     * 方法仍可以认为是基于固定频率的
+     * {@code scheduleAtFixedRate} 方法以第一次任务执行时间作为后续任务执行的基准,
+     * 即经过 {@code delay} 参数延迟后的时间, 但由于每次任务执行后才会追加下一次任务,
+     * 所以某次任务的阻塞仍有可能会影响下次任务 (例如阻塞时间超过了 {@code period})
+     * 参数设定的间隔时间, 但下一次任务会尽可能的快速执行以弥补耽搁的时间,
+     * 所以从宏观上看, {@code scheduleAtFixedRate} 方法仍可以认为是基于固定频率的
      * </p>
      */
     @Test
@@ -324,19 +358,23 @@ class TimerScheduleTest {
      * 按固定间隔时间重复执行任务
      *
      * <p>
-     * 通过 {@link ScheduledExecutorService#scheduleWithFixedDelay(Runnable, long, long, TimeUnit)}
-     * 方法可以按一个固定的频率重复执行某个任务, 后三个参数用于表示任务第一次执行的延迟时间和之后每次执行的间隔时间
+     * 通过 {@link java.util.concurrent.ScheduledExecutorService#scheduleWithFixedDelay(
+     * Runnable, long, long, TimeUnit)
+     * ScheduledExecutorService.scheduleWithFixedDelay(Runnable, long,
+     * long, TimeUnit)} 方法可以按一个固定的频率重复执行某个任务,
+     * 后三个参数用于表示任务第一次执行的延迟时间和之后每次执行的间隔时间
      * </p>
      *
      * <p>
-     * {@code scheduleWithFixedDelay} 是以上一次任务执行时间来计算下一次任务执行的时间的, 即 {@code delay}
-     * 参数表示的是两次任务的间隔时间, 所以如果一次任务的执行时间超过了 {@code delay} 参数, 则后续的任务都会受到影响
+     * {@code scheduleWithFixedDelay} 方法是以上一次任务执行时间来计算下一次任务执行的时间的,
+     * 即 {@code delay} 参数表示的是两次任务的间隔时间, 所以如果一次任务的执行时间超过了
+     * {@code delay} 参数, 则后续的任务都会受到影响
      * </p>
      */
     @Test
     void scheduleWithFixedDelay_shouldRunTaskWithFixedDelay() {
         // 创建延时任务线程池
-        var executor = executorCreator.scheduledExecutor(0);
+        var executor = threadPool.scheduledExecutor(0);
 
         // 记录起始时间
         var startedMillis = System.currentTimeMillis();
@@ -366,13 +404,15 @@ class TimerScheduleTest {
      * 按固定间隔时间重复执行任务
      *
      * <p>
-     * 通过 {@link Timer#schedule(TimerTask, long, long)} 方法可以按一个固定的频率重复执行某个任务,
+     * 通过 {@link Timer#schedule(TimerTask, long, long)}
+     * 方法可以按一个固定的频率重复执行某个任务,
      * 后两个参数用于表示任务第一次执行的延迟时间和之后每次执行的间隔时间
      * </p>
      *
      * <p>
-     * {@code schedule} 是以上一次任务执行时间来计算下一次任务执行的时间的, 即 {@code delay} 参数表示的是两次任务的间隔时间,
-     * 所以如果一次任务的执行时间超过了 {@code delay} 参数, 则后续的任务都会受到影响
+     * {@code schedule} 是以上一次任务执行时间来计算下一次任务执行的时间的, 即
+     * {@code delay} 参数表示的是两次任务的间隔时间, 所以如果一次任务的执行时间超过了
+     * {@code delay} 参数, 则后续的任务都会受到影响
      * </p>
      */
     @Test

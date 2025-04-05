@@ -35,7 +35,7 @@ import alvin.study.se.concurrent.util.Counter;
  * </li>
  * </ul>
  */
-public class SynchronizedTest {
+class SynchronizedTest {
     /**
      * 启动两个线程, 并且同时运行指定的任务
      *

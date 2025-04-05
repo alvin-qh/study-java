@@ -28,7 +28,7 @@ import alvin.study.se.concurrent.util.Threads;
  * 即意味着资源可被使用, 反之则表示资源不可使用
  * </p>
  */
-public class SemaphoreTest {
+class SemaphoreTest {
     /**
      * 测试 {@link Semaphore#acquire()} 和 {@link Semaphore#release()} 方法
      *
@@ -201,6 +201,9 @@ public class SemaphoreTest {
             // 启动线程
             threads[i].start();
         }
+
+        // 等待 10ms, 确认所有线程都执行到 `semaphore.acquire()` 语句
+        Thread.sleep(10);
 
         // 确认有线程在等待许可证
         then(semaphore.hasQueuedThreads()).isTrue();
