@@ -216,6 +216,8 @@
     "rlimit",
     "RSXXX",
     "runtimes",
+    "sema",
+    "semp",
     "sendfile",
     "servlet",
     "Servlets",

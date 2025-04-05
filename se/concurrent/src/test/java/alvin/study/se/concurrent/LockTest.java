@@ -418,7 +418,7 @@ public class LockTest {
                         // 通过条件对象发出通知
                         cond2.signal();
                     }
-                } catch (InterruptedException e) {
+                } catch (InterruptedException ignore) {
                     // do nothing
                 } finally {
                     // 解除锁
@@ -497,7 +497,7 @@ public class LockTest {
 
                     // 等待成功后, 增加等待成功线程数
                     waitCount.incrementAndGet();
-                } catch (InterruptedException e) {
+                } catch (InterruptedException ignore) {
                     // do nothing
                 } finally {
                     // 解除锁

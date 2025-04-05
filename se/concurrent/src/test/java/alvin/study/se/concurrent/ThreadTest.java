@@ -10,17 +10,25 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.ReentrantLock;
 
 import lombok.SneakyThrows;
 
 import org.junit.jupiter.api.Test;
 
 import alvin.study.se.concurrent.service.Fibonacci;
+import alvin.study.se.concurrent.util.Threads;
 
 /**
  * 测试 Java 线程
@@ -199,6 +207,244 @@ public class ThreadTest {
     }
 
     /**
+     * 测试 {@link Thread#sleep(long)} 方法, 使当前线程休眠指定时间
+     *
+     * <p>
+     * 休眠线程, 使当前线程休眠指定时间, 休眠结束后继续执行后续代码
+     * </p>
+     *
+     * <p>
+     * 线程休眠, 表示当前线程放弃自己的执行时间窗口, 等待指定时间 (`ms`)
+     * 后被唤醒
+     * </p>
+     *
+     * <p>
+     * 所谓 "休眠时间", 是一个大概的数字, 线程会在指定的休眠时间之后唤醒,
+     * 但不会精确到和指定的休眠时间一致
+     * </p>
+     *
+     * <p>
+     * 故可以出现的休眠时间为 `0` 的情况, 这并不代表线程不休眠,
+     * 线程依然会放弃自身的执行时间窗口, 等待下次被唤醒, 只是唤醒过程非常短暂
+     * </p>
+     */
+    @Test
+    @SneakyThrows
+    void sleep_shouldSleepThread() {
+        // 创建一个线程对象
+        var thread = new Thread(() -> {
+            try {
+                // 休眠 200ms 秒
+                Thread.sleep(200);
+            } catch (InterruptedException ignore) {}
+        });
+
+        // 确认此时线程未启动
+        then(thread.isAlive()).isFalse();
+
+        // 记录线程启动时间
+        var startTime = System.currentTimeMillis();
+
+        // 启动线程
+        thread.start();
+
+        // 确认线程此时已启动
+        then(thread.isAlive()).isTrue();
+
+        // 等待线程执行完成
+        thread.join();
+
+        // 确认线程执行完成时间在 200ms 左右
+        then(System.currentTimeMillis() - startTime).isBetween(200L, 220L);
+    }
+
+    /**
+     * 测试 {@link Thread#onSpinWait()} 方法, 优化空循环 (自旋等待，忙等待)
+     *
+     * <p>
+     * 所谓空循环, 指的是在循环中对某个条件进行持续检测, 在条件不满足前,
+     * 循环不会执行任何代码
+     * </p>
+     *
+     * <p>
+     * 空循环会导致大量的资源消耗, 影响性能, 并且会消耗 CPU 资源,
+     * 使得使用同一 CPU 资源的其它线程得不到执行的时间窗口,
+     * 故一般会在空循环中加入 {@code Thread.sleep(0)} 强迫线程进行切换,
+     * 故 {@code Thread.sleep(0)} 适合长时间空循环等待,
+     * 或提升空循环等待过程中同一 CPU 上所有线程的公平性
+     * </p>
+     *
+     * <p>
+     * {@link Thread#onSpinWait()} 方法, 可以看作是
+     * {@code Thread.sleep(0)} 的等效方法, 但后者会根据平台进行优化,
+     * 避免发生线程切换, 适合于短时间空循环等待
+     * </p>
+     */
+    @Test
+    @SneakyThrows
+    void onSpinWait_shouldSleepThread() {
+        // 定义原子变量, 用于标记线程是否继续执行
+        var stop = new AtomicBoolean(false);
+
+        // 创建一个线程对象
+        var thread = new Thread(() -> {
+            // 等待 `stop` 变量的值变为 `true`
+            while (!stop.get()) {
+                //
+                Thread.onSpinWait();
+            }
+        });
+
+        // 启动线程
+        thread.start();
+
+        // 启动定时器, 在 200ms 后, 将 `stop` 变量设置为 `true`
+        new Timer(true).schedule(new TimerTask() {
+            @Override
+            public void run() {
+                stop.set(true);
+            }
+        }, 500);
+
+        // 等待线程执行完成
+        thread.join();
+        then(thread.isAlive()).isFalse();
+    }
+
+    /**
+     * 测试 {@link Thread#yield()} 方法
+     *
+     * <p>
+     * {@link Thread#yield()} 方法用于提示线程调度器当前线程愿意让出 CPU 资源，
+     * 但实际行为取决于 JVM 实现，该方法主要用于调试/测试场景
+     * </p>
+     *
+     * <p>
+     * 注意：此测试中的非确定性现象（完成顺序）仅用于演示 API 用法，实际生产代码中应避免依赖
+     * {@link Thread#yield()} 的特定行为
+     * </p>
+     */
+    @Test
+    @SneakyThrows
+    void yield_shouldHintThreadScheduler() {
+        // 记录两个线程执行次数的原子变量
+        var counterA = new AtomicInteger(0);
+        var counterB = new AtomicInteger(0);
+
+        var tsA = new AtomicLong(0);
+        var tsB = new AtomicLong(0);
+
+        // 创建两个竞争线程
+        // 两个线程各自进行 `1000000` 次循环, 但后一个线程通过
+        // `Thread.yield()` 方法, 提示调度器让出当前线程执行权
+
+        // 创建第一个线程
+        var threadA = new Thread(() -> {
+            var start = System.currentTimeMillis();
+            for (int i = 0; i < 1000000; i++) {
+                counterA.incrementAndGet();
+            }
+
+            // 记录执行时间
+            tsA.set(System.currentTimeMillis() - start);
+        }, "thread-A");
+
+        // 创建第二个线程
+        var threadB = new Thread(() -> {
+            var start = System.currentTimeMillis();
+            for (int i = 0; i < 1000000; i++) {
+                // 提示调度器让出当前线程执行权
+                Thread.yield();
+                counterB.incrementAndGet();
+            }
+
+            // 记录执行时间
+            tsB.set(System.currentTimeMillis() - start);
+        }, "thread-B");
+
+        // 启动线程
+        threadA.start();
+        threadB.start();
+
+        // 等待线程结束
+        threadA.join();
+        threadB.join();
+
+        // 验证两个线程都完成了任务
+        then(counterA.get()).isEqualTo(1000000);
+        then(counterB.get()).isEqualTo(1000000);
+
+        // 由于 `yield()` 的提示作用，带 `yield` 的线程可能完成得更慢
+        // (实际结果取决于 JVM 实现)
+        then(tsA.get()).isLessThan(tsB.get());
+    }
+
+    /**
+     * 测试获取所有线程的堆栈跟踪信息
+     *
+     * <p>
+     * 在调试过程中, 往往需要获取当前正在执行线程的堆栈跟踪信息, 以便分析线程状态,
+     * 方便进行调试 (例如分析线程死锁), 通过 {@link Thread#getAllStackTraces()}
+     * 方法即可获取所有线程的堆栈跟踪信息
+     * </p>
+     *
+     * <p>
+     * {@link Thread#getAllStackTraces()} 方法返回的线程不仅包括代码中启动的线程,
+     * 也包括 JDK 自身启动的线程
+     * </p>
+     */
+    @Test
+    @SneakyThrows
+    void join_shouldWaitForThread() {
+        // 定义一个锁对象和条件对象
+        var lock = new ReentrantLock();
+        var cond = lock.newCondition();
+
+        // 定义 10 个线程
+        var threads = new Thread[10];
+
+        // 启动 10 个线程, 在每个线程中等待条件变量, 直到被唤醒
+        for (int i = 0; i < threads.length; i++) {
+            threads[i] = new Thread(() -> {
+                // 进入锁
+                lock.lock();
+                try {
+                    // 等待条件
+                    cond.await();
+                } catch (InterruptedException ignore) {
+                    // do nothing
+                } finally {
+                    // 解除锁
+                    lock.unlock();
+                }
+            });
+
+            // 启动每个线程
+            threads[i].start();
+        }
+
+        // 获取所有线程的堆栈跟踪信息
+        var traces = Thread.getAllStackTraces();
+        then(traces).isNotEmpty();
+
+        // 确认获取的线程追踪信息中包含之前启动的 10 个线程
+        then(Arrays.stream(threads).allMatch(t -> traces.keySet().contains(t))).isTrue();
+
+        // 向所有线程发出信号, 唤醒所有线程
+        lock.lock();
+        try {
+            cond.signalAll();
+        } finally {
+            lock.unlock();
+        }
+
+        // 等待所有线程执行完成
+        Threads.joinAll(threads, 1000);
+        // 再次获取线程的堆栈跟踪信息, 不再包括已结束的线程
+        then(Thread.getAllStackTraces().size()).isEqualTo(traces.size() - threads.length);
+    }
+
+    /**
      * 测试启动虚拟线程
      *
      * <p>
@@ -268,7 +514,7 @@ public class ThreadTest {
                 // 发起 HTTP 请求, 并获取响应对象, 保存到 `responseRef` 对象中
                 responseRef.set(
                     client.send(request, HttpResponse.BodyHandlers.ofString()));
-            } catch (IOException | InterruptedException e) {
+            } catch (IOException | InterruptedException ignore) {
                 responseRef.set(null);
             }
         });
@@ -325,7 +571,7 @@ public class ThreadTest {
                 // 发起 HTTP 请求, 并获取响应对象, 保存到 `responseRef` 对象中
                 return Optional.of(
                     client.send(request, HttpResponse.BodyHandlers.ofString()));
-            } catch (IOException | InterruptedException e) {
+            } catch (IOException | InterruptedException ignore) {
                 return Optional.empty();
             }
         });
@@ -408,7 +654,7 @@ public class ThreadTest {
                         // 发起 HTTP 请求, 并获取响应对象, 保存到 `responseRef` 对象中
                         responseRef.set(
                             client.send(request, HttpResponse.BodyHandlers.ofString()));
-                    } catch (IOException | InterruptedException e) {}
+                    } catch (IOException | InterruptedException ignore) {}
                 });
 
         // 等待线程结束
@@ -499,7 +745,7 @@ public class ThreadTest {
 
                         // 抛出异常
                         throw new RuntimeException("thread cause exception");
-                    } catch (InterruptedException e) {}
+                    } catch (InterruptedException ignore) {}
                 });
 
         // 确认线程属性
