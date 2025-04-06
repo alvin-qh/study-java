@@ -14,7 +14,7 @@ import alvin.study.springboot.graphql.builder.UserBuilder;
 import alvin.study.springboot.graphql.core.exception.NotFoundException;
 import alvin.study.springboot.graphql.util.security.PasswordUtil;
 
-public class UserMutationTest extends WebTest {
+class UserMutationTest extends WebTest {
     @Autowired
     private UserService userService;
 

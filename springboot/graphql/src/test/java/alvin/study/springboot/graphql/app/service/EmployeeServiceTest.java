@@ -19,7 +19,7 @@ import alvin.study.springboot.graphql.infra.entity.Department;
 import alvin.study.springboot.graphql.infra.entity.DepartmentEmployee;
 import alvin.study.springboot.graphql.infra.entity.Employee;
 
-public class EmployeeServiceTest extends IntegrationTest {
+class EmployeeServiceTest extends IntegrationTest {
     @Autowired
     private EmployeeService employeeService;
 

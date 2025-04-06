@@ -9,7 +9,7 @@ import alvin.study.springboot.graphql.builder.EmployeeBuilder;
 import alvin.study.springboot.graphql.infra.entity.Department;
 import alvin.study.springboot.graphql.infra.entity.Employee;
 
-public class EmployeeQueryTest extends WebTest {
+class EmployeeQueryTest extends WebTest {
     @Test
     void query_shouldFindEmployeeById() {
         Department department1, department2, department3;

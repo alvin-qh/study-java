@@ -13,7 +13,7 @@ import alvin.study.springboot.graphql.builder.OrgBuilder;
 import alvin.study.springboot.graphql.infra.entity.Org;
 import alvin.study.springboot.graphql.infra.mapper.OrgMapper;
 
-public class OrgLoaderTest extends IntegrationTest {
+class OrgLoaderTest extends IntegrationTest {
     @Autowired
     private OrgMapper orgMapper;
 

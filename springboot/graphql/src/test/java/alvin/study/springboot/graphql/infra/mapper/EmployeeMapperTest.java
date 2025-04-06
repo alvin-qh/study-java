@@ -14,7 +14,7 @@ import alvin.study.springboot.graphql.core.graphql.relay.Pagination;
 import alvin.study.springboot.graphql.infra.entity.Department;
 import alvin.study.springboot.graphql.infra.entity.Employee;
 
-public class EmployeeMapperTest extends IntegrationTest {
+class EmployeeMapperTest extends IntegrationTest {
     @Autowired
     private EmployeeMapper employeeMapper;
 

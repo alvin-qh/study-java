@@ -25,7 +25,7 @@ import alvin.study.springboot.graphql.infra.entity.Employee;
 import alvin.study.springboot.graphql.infra.mapper.DepartmentEmployeeMapper;
 
 @Slf4j
-public class EmployeeMutationTest extends WebTest {
+class EmployeeMutationTest extends WebTest {
     @Autowired
     private EmployeeService employeeService;
 

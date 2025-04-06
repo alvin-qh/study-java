@@ -49,7 +49,7 @@ import alvin.study.springboot.spel.util.TemplatedExpressionParser;
 @SpringBootTest
 @ContextConfiguration
 @SuppressWarnings("unchecked")
-public class ExpressionsTest {
+class ExpressionsTest {
     /**
      * 注入模板解析对象
      */

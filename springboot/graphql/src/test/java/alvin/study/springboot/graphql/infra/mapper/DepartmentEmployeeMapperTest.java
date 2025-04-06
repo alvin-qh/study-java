@@ -15,7 +15,7 @@ import alvin.study.springboot.graphql.builder.EmployeeBuilder;
 import alvin.study.springboot.graphql.infra.entity.Department;
 import alvin.study.springboot.graphql.infra.entity.Employee;
 
-public class DepartmentEmployeeMapperTest extends IntegrationTest {
+class DepartmentEmployeeMapperTest extends IntegrationTest {
     @Autowired
     private DepartmentEmployeeMapper departmentEmployeeMapper;
 

@@ -13,7 +13,7 @@ import alvin.study.springboot.graphql.builder.UserBuilder;
 import alvin.study.springboot.graphql.infra.entity.User;
 import alvin.study.springboot.graphql.infra.mapper.UserMapper;
 
-public class UserLoaderTest extends IntegrationTest {
+class UserLoaderTest extends IntegrationTest {
     @Autowired
     private UserMapper userMapper;
 

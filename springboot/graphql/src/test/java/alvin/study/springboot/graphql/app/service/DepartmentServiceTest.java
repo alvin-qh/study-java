@@ -18,7 +18,7 @@ import alvin.study.springboot.graphql.core.graphql.relay.Pagination;
 import alvin.study.springboot.graphql.infra.entity.Department;
 import alvin.study.springboot.graphql.infra.entity.Employee;
 
-public class DepartmentServiceTest extends IntegrationTest {
+class DepartmentServiceTest extends IntegrationTest {
     @Autowired
     private DepartmentService departmentService;
 

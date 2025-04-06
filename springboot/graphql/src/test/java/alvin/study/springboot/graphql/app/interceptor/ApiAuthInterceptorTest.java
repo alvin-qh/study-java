@@ -30,7 +30,7 @@ import alvin.study.springboot.graphql.infra.entity.Org;
 import alvin.study.springboot.graphql.infra.entity.User;
 import alvin.study.springboot.graphql.util.security.Jwt;
 
-public class ApiAuthInterceptorTest extends IntegrationTest {
+class ApiAuthInterceptorTest extends IntegrationTest {
     private static final String PASSWORD = "test~123";
 
     @Autowired

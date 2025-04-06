@@ -11,7 +11,7 @@ import alvin.study.springboot.graphql.IntegrationTest;
 import alvin.study.springboot.graphql.builder.OrgBuilder;
 import alvin.study.springboot.graphql.core.exception.NotFoundException;
 
-public class OrgServiceTest extends IntegrationTest {
+class OrgServiceTest extends IntegrationTest {
     @Autowired
     private OrgService orgService;
 

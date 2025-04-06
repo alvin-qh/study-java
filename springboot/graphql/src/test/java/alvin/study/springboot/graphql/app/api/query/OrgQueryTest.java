@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import alvin.study.springboot.graphql.WebTest;
 
-public class OrgQueryTest extends WebTest {
+class OrgQueryTest extends WebTest {
     @Test
     void query_shouldReturnOrg() {
         qlTester().documentName("org")

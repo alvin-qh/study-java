@@ -20,7 +20,7 @@ import alvin.study.springboot.ds.core.http.common.ResponseDto;
 /**
  * 测试 {@link ConfigController} 类型
  */
-public class ConfigControllerTest extends IntegrationTest {
+class ConfigControllerTest extends IntegrationTest {
     // 定义响应数据返回类型
     private static final ParameterizedTypeReference<ResponseDto<ConfigDto>> RESP_TYPE
         = new ParameterizedTypeReference<>() {};

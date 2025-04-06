@@ -1,15 +1,15 @@
 package alvin.study.se.ratelimit;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 /**
  * 测试 {@link SlidingWindowRateLimiter} 类型, 通过滑动窗口进行限流
  */
-public class SlidingWindowRateLimiterTest extends RateLimiterTest {
+class SlidingWindowRateLimiterTest extends RateLimiterTest {
     /**
      * 测试 {@link SlidingWindowRateLimiter#tryAcquire(int)} 方法, 通过滑动窗口进行限流
      *

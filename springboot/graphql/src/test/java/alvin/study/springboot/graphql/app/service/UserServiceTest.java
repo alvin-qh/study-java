@@ -13,7 +13,7 @@ import alvin.study.springboot.graphql.core.exception.ErrorCode;
 import alvin.study.springboot.graphql.core.exception.NotFoundException;
 import alvin.study.springboot.graphql.util.security.Jwt;
 
-public class UserServiceTest extends IntegrationTest {
+class UserServiceTest extends IntegrationTest {
     @Autowired
     private UserService userService;
 

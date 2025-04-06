@@ -13,7 +13,7 @@ import alvin.study.springboot.graphql.builder.DepartmentBuilder;
 import alvin.study.springboot.graphql.infra.entity.Department;
 import alvin.study.springboot.graphql.infra.mapper.DepartmentMapper;
 
-public class DepartmentLoaderTest extends IntegrationTest {
+class DepartmentLoaderTest extends IntegrationTest {
     @Autowired
     private DepartmentMapper departmentMapper;
 

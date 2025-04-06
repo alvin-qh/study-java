@@ -1,12 +1,5 @@
 package alvin.study.testing.testng;
 
-import org.testng.annotations.Test;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotEquals;
@@ -18,6 +11,13 @@ import static org.testng.Assert.assertThrows;
 import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.fail;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+import org.testng.annotations.Test;
+
 /**
  * 测试 TestNG 的断言库
  *
@@ -25,7 +25,7 @@ import static org.testng.Assert.fail;
  * TestNG 是一个和 JUnit 相似的测试框架, 适用范围也较为广泛
  * </p>
  */
-public class AssertionTest {
+class AssertionTest {
     /**
      * 测试 TestNG 的断言
      *

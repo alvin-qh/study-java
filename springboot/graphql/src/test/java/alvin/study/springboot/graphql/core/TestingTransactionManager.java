@@ -21,7 +21,8 @@ import lombok.RequiredArgsConstructor;
  *
  * <p>
  * 该类型对象通过
- * {@code TestingConfig.testingTransactionManager(PlatformTransactionManager)} 方法进行装配, 产生的对象交由 Bean 容器管理
+ * {@code TestingConfig.testingTransactionManager(PlatformTransactionManager)}
+ * 方法进行装配, 产生的对象交由 Bean 容器管理
  * </p>
  */
 @RequiredArgsConstructor

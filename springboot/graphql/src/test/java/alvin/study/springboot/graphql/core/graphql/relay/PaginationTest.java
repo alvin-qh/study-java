@@ -9,7 +9,15 @@ import org.junit.jupiter.api.Test;
 
 import alvin.study.springboot.graphql.IntegrationTest;
 
-public class PaginationTest extends IntegrationTest {
+/**
+ * 测试 {@link Pagination} 类型
+ *
+ * <p>
+ * {@link Pagination} 类型用于表示分页信息, 用于将 GraphQL 的 Relay
+ * 分页数据转换为 MyBatis 框架的分页信息
+ * </p>
+ */
+class PaginationTest extends IntegrationTest {
     @Value("${spring.data.web.pageable.default-page-size}")
     private int defaultPageSize;
 
@@ -19,12 +27,20 @@ public class PaginationTest extends IntegrationTest {
     @Autowired
     private Pagination pagination;
 
+    /**
+     * 测试从 {@code application.yml} 文件中读取
+     * `spring.data.web.pageable.max-page-size` 属性
+     */
     @Test
     void getDefaultPageSize_shouldGetDefaultPageSize() {
         var size = pagination.getDefaultPageSize();
         then(size).isEqualTo(defaultPageSize);
     }
 
+    /**
+     * 测试从 {@code application.yml} 文件中读取
+     * `spring.data.web.pageable.default-page-size` 属性
+     */
     @Test
     void getMaxPageSize_shouldGetMaxPageSize() {
         var size = pagination.getMaxPageSize();

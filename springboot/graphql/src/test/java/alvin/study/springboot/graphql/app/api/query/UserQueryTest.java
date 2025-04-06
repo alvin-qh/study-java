@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import alvin.study.springboot.graphql.WebTest;
 import alvin.study.springboot.graphql.builder.UserBuilder;
 
-public class UserQueryTest extends WebTest {
+class UserQueryTest extends WebTest {
     @Test
     void query_shouldFindUserById() {
         var expectedUser = newBuilder(UserBuilder.class).create();

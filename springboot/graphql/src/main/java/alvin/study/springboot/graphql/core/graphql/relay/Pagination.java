@@ -17,6 +17,10 @@ import alvin.study.springboot.graphql.core.exception.InputException;
 
 /**
  * 辅助分页工具类
+ *
+ * <p>
+ * 用于将 GraphQL 的 Relay 分页数据转换为 MyBatis 框架的分页信息
+ * </p>
  */
 @Getter
 @Component
@@ -83,10 +87,19 @@ public class Pagination {
      * </p>
      */
     public final class PageBuilder<T> {
+        // 表示从指定游标之后将要获取的记录数
         private Integer first;
+
+        // 表示游标, 将从该游标之后取 `first` 条记录
         private Integer after;
+
+        // 表示从指定游标之前将要获取的记录数
         private Integer last;
+
+        // 表示游标, 将从该游标之前取 `last` 条记录
         private Integer before;
+
+        // 表示排序规则
         private List<String> orders;
 
         public PageBuilder<T> withFirst(Integer first) {

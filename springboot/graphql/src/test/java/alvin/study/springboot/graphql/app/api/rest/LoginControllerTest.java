@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import alvin.study.springboot.graphql.WebTest;
 import alvin.study.springboot.graphql.util.security.Jwt;
 
-public class LoginControllerTest extends WebTest {
+class LoginControllerTest extends WebTest {
     @Autowired
     private WebTestClient client;
 
