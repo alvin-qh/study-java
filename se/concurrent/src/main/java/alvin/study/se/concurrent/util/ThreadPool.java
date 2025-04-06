@@ -227,4 +227,39 @@ public final class ThreadPool implements AutoCloseable {
         recordHistory(executor);
         return executor;
     }
+
+    /**
+     * 创建一个用于执行虚拟线程的线程池执行器对象
+     *
+     * <p>
+     * 一般情况下, 无需为虚拟线程创建线程池, 这是由于虚拟线程的特性决定的,
+     * 虚拟线程的低开销, 可以支持创建数量较大的虚拟线程,
+     * 故一般情况下无需通过线程池来管理虚拟线程
+     * </p>
+     *
+     * <p>
+     * 但如果要控制任务数量, 则也可以通过线程池的消息队列来进行控制,
+     * 由于 Java 的 "虚拟线程" 和 "平台线程" 的 API 接口一致,
+     * 所以只需要在创建 {@link ThreadPoolExecutor} 对象时,
+     * 指定 {@link java.util.concurrent.ThreadFactory
+     * ThreadFactory} 参数, 并传入虚拟线程的线程构造工厂即可
+     * </p>
+     *
+     * @return 用于执行虚拟线程的线程池执行器对象
+     */
+
+    public ExecutorService virtualThreadExecutor() {
+        // 通过虚拟线程工厂创建线程池对象
+        var executor = new ThreadPoolExecutor(
+            0,
+            MAX_THREAD_COUNT,
+            60,
+            TimeUnit.SECONDS,
+            new ArrayBlockingQueue<>(MAX_THREAD_COUNT),
+            Thread.ofVirtual().factory());
+
+        // 存储线程池对象以便适时关闭
+        recordHistory(executor);
+        return executor;
+    }
 }

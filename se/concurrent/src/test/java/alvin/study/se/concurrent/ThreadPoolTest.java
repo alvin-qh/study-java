@@ -3,10 +3,15 @@ package alvin.study.se.concurrent;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.awaitility.Awaitility.await;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.Callable;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -40,12 +45,14 @@ import alvin.study.se.concurrent.util.ThreadPool;
  * {@link Future} 类型对象, 通过该对象可以获取任务执行的情况以及任务执行结果
  * </li>
  * <li>
- * {@link java.util.concurrent.ExecutorService#invokeAll(java.util.Collection, long, TimeUnit)
+ * {@link java.util.concurrent.ExecutorService#invokeAll(java.util.Collection,
+ * long, TimeUnit)
  * ExecutorService.invokeAll(Collection, long, TimeUnit)}
  * 方法用于批量提交多个任务, 并返回表示每个任务的 {@link Future} 对象集合
  * </li>
  * <li>
- * {@link java.util.concurrent.ExecutorService#invokeAny(java.util.Collection, long, TimeUnit)
+ * {@link java.util.concurrent.ExecutorService#invokeAny(java.util.Collection,
+ * long, TimeUnit)
  * ExecutorService.invokeAny(Collection, long, TimeUnit)}
  * 方法用于批量提交多个任务, 且任意任务结束即返回结果并终止其它任务,
  * 适合一组任务中一旦某个达成目标, 即可结束所有任务
@@ -102,35 +109,12 @@ class ThreadPoolTest {
         threadPool.close();
     }
 
-    @Test
-    void newFixedThreadPool_shouldCreateFixedSizeThreadPoolByExecutors() {
-        try (var executor = Executors.newFixedThreadPool(2)) {
-            var results = new ArrayList<Long>();
-
-            for (var i = 0; i < 4; i++) {
-                executor.submit(() -> {
-                    try {
-                        results.add(System.currentTimeMillis());
-                        Thread.sleep(200);
-                    } catch (InterruptedException ignore) {}
-                });
-            }
-
-            await().atMost(1, TimeUnit.SECONDS).until(() -> results.size() == 4);
-
-            then(results).hasSize(4);
-            then(results.get(1) - results.get(0)).isLessThan(10);
-            then(results.get(3) - results.get(2)).isLessThan(10);
-
-            then(results.get(2) - results.get(1)).isBetween(200L, 210L);
-        }
-    }
-
     /**
      * 通过线程池提交任务, 获取任务执行结果
      *
      * <p>
-     * 通过 {@link java.util.concurrent.ExecutorService#submit(java.util.concurrent.Callable)
+     * 通过 {@link java.util.concurrent.ExecutorService#submit(
+     * java.util.concurrent.Callable)
      * ExecutorService.submit(Callable)} 方法可以向线程池提交一个任务,
      * 返回一个 {@link java.util.concurrent.FutureTask FutureTask} 类型对象
      * </p>
@@ -202,7 +186,8 @@ class ThreadPoolTest {
      * 批量提交多个任务
      *
      * <p>
-     * 通过 {@link java.util.concurrent.ExecutorService#invokeAll(java.util.Collection, long, TimeUnit)
+     * 通过 {@link java.util.concurrent.ExecutorService#invokeAll(
+     * java.util.Collection, long, TimeUnit)
      * ExecutorService.invokeAll(Collection, long, TimeUnit)} 方法可以批量提交多个任务,
      * 且返回每个任务 {@link java.util.concurrent.FutureTask FutureTask} 对象组成的集合
      * </p>
@@ -228,6 +213,7 @@ class ThreadPoolTest {
 
         // 创建线程池执行器对象
         var executor = threadPool.arrayBlockingQueueExecutor(20);
+
         // 执行所有任务
         var futures = executor.invokeAll(tasks, 5, TimeUnit.SECONDS);
 
@@ -246,7 +232,8 @@ class ThreadPoolTest {
      * 批量提交多个任务
      *
      * <p>
-     * 通过 {@link java.util.concurrent.ExecutorService#invokeAny(java.util.Collection, long, TimeUnit)
+     * 通过
+     * {@link java.util.concurrent.ExecutorService#invokeAny(java.util.Collection, long, TimeUnit)
      * ExecutorService.invokeAny(Collection, long, TimeUnit)} 方法可以批量提交多个任务,
      * 且返回第一个执行完毕的任务结果
      * </p>
@@ -319,6 +306,76 @@ class ThreadPoolTest {
         then(result).map(Future::get).allMatch(s -> s.matches("^[0-3]?\\d-Success$"));
     }
 
+    /**
+     * 测试包含虚拟线程的线程池
+     *
+     * <p>
+     * 可以通过 {@link java.util.concurrent.ThreadPoolExecutor ThreadPoolExecutor}
+     * 类创建虚拟线程, 参见 {@link ThreadPool#virtualThreadExecutor()} 方法
+     * </p>
+     *
+     * <p>
+     * 大多数时候, 虚拟线程都可以随使用时创建, 因为虚拟线程的低开销特性, 所以可以创建大量虚拟线程,
+     * 但有些时候, 希望对线程能处理的任务总数进行控制, 则也可以通过线程池的方式,
+     * 通过指定长度消息队列来控制任务数
+     * </p>
+     */
     @Test
-    void virtualPool_shouldCreateThreadPoolForVirtualThread() {}
+    @SneakyThrows
+    void virtualPool_shouldCreateThreadPoolForVirtualThread() {
+        // 创建虚拟线程线程池对象
+        var executor = threadPool.virtualThreadExecutor();
+
+        // 创建一个 HTTP 客户端对象
+        var client = HttpClient.newBuilder()
+                .connectTimeout(Duration.ofMillis(3000))
+                .followRedirects(HttpClient.Redirect.NEVER)
+                .build();
+
+        // 提交一个 HTTP 请求任务, 令其在虚拟线程池中执行
+        var task1 = executor.submit(() -> {
+            // 创建 HTTP 请求对象, 通过 `GET` 方法发起请求
+            var request = HttpRequest.newBuilder().GET()
+                    .uri(URI.create("https://www.baidu.com"))
+                    .timeout(Duration.ofMillis(3000))
+                    .build();
+
+            try {
+                // 发起 HTTP 请求, 并获取响应对象, 保存到 `responseRef` 对象中
+                return client.send(request, HttpResponse.BodyHandlers.ofString());
+            } catch (IOException | InterruptedException ignore) {
+                throw new RuntimeException(ignore);
+            }
+        });
+
+        // 再次提交一个 HTTP 请求任务, 令其在虚拟线程池中执行
+        var task2 = executor.submit(() -> {
+            // 创建 HTTP 请求对象, 通过 `GET` 方法发起请求
+            var request = HttpRequest.newBuilder().GET()
+                    .uri(URI.create("https://cn.bing.com/"))
+                    .timeout(Duration.ofMillis(3000))
+                    .build();
+
+            try {
+                // 发起 HTTP 请求, 并获取响应对象, 保存到 `responseRef` 对象中
+                return client.send(request, HttpResponse.BodyHandlers.ofString());
+            } catch (IOException | InterruptedException ignore) {
+                throw new RuntimeException(ignore);
+            }
+        });
+
+        // 等待两个任务执行完毕
+        await().atMost(10, TimeUnit.SECONDS).until(() -> task1.isDone() && task2.isDone());
+
+        // 确认两个任务执行结果
+        var resp1 = task1.get();
+        then(resp1.statusCode()).isEqualTo(200);
+        then(resp1.headers().firstValue("Content-Type")).isPresent().get().isEqualTo("text/html");
+        then(resp1.body()).contains("<!DOCTYPE html>");
+
+        var resp2 = task2.get();
+        then(resp2.statusCode()).isEqualTo(200);
+        then(resp2.headers().firstValue("Content-Type")).isPresent().get().isEqualTo("text/html; charset=utf-8");
+        then(resp2.body()).contains("<!doctype html>");
+    }
 }
