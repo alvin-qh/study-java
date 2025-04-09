@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 
 import lombok.SneakyThrows;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import alvin.study.se.concurrent.delay.DelayedValue;
@@ -64,17 +63,7 @@ import alvin.study.se.concurrent.util.ThreadPool;
  * 类型来表示时间
  * </p>
  */
-class TimerScheduleTest {
-    private final ThreadPool threadPool = new ThreadPool();
-
-    /**
-     * 每次测试结束后执行, 用于关闭线程池
-     */
-    @AfterEach
-    void afterEach() {
-        threadPool.close();
-    }
-
+class ScheduledExecutorServiceTest {
     /**
      * 测试延时队列
      *
@@ -166,12 +155,14 @@ class TimerScheduleTest {
      * </li>
      * </ul>
      * </p>
+     *
+     * @see ThreadPool#scheduledExecutor(int)
      */
     @Test
     @SneakyThrows
     void scheduleFuture_shouldScheduleTaskAfterWhile() {
         // 创建延时任务线程池
-        try (var executor = threadPool.scheduledExecutor(0)) {
+        try (var executor = ThreadPool.scheduledExecutor(0)) {
             // 记录起始时间
             var startedMillis = System.currentTimeMillis();
 
@@ -276,31 +267,34 @@ class TimerScheduleTest {
      * 参数设定的间隔时间, 但下一次任务会尽可能的快速执行以弥补耽搁的时间, 所以从宏观上看,
      * {@code scheduleAtFixedRate} 方法仍可以认为是基于固定频率的
      * </p>
+     *
+     * @see ThreadPool#scheduledExecutor(int)
      */
     @Test
     void scheduleAtFixedRate_shouldScheduleTaskWithFixedRate() {
-        // 创建延时任务线程池
-        var executor = threadPool.scheduledExecutor(0);
+        // 记录每次任务执行时间的集合
+        var records = new ArrayList<Long>();
 
         // 记录起始时间
         var startedMillis = System.currentTimeMillis();
 
-        // 记录每次任务执行时间的集合
-        var records = new ArrayList<Long>();
+        // 创建延时任务线程池
+        try (var executor = ThreadPool.scheduledExecutor(0)) {
 
-        // 启动一个固定频率的定时器任务
-        var future = executor.scheduleAtFixedRate(
-            // 记录执行时间
-            () -> records.add(System.currentTimeMillis()),
-            // 设置执行延迟时间和重复执行频率
-            100, 200, TimeUnit.MILLISECONDS);
+            // 启动一个固定频率的定时器任务
+            var future = executor.scheduleAtFixedRate(
+                // 记录执行时间
+                () -> records.add(System.currentTimeMillis()),
+                // 设置执行延迟时间和重复执行频率
+                100, 200, TimeUnit.MILLISECONDS);
 
-        // 等待定时器执行 3 次 (最大耗时约 600ms) 以后, 取消定时器
-        await().atMost(600, TimeUnit.MILLISECONDS).untilAsserted(() -> then(records).hasSize(3));
-        future.cancel(false);
+            // 等待定时器执行 3 次 (最大耗时约 600ms) 以后, 取消定时器
+            await().atMost(600, TimeUnit.MILLISECONDS).untilAsserted(() -> then(records).hasSize(3));
+            future.cancel(false);
 
-        // 确认 3 此任务共耗时 500ms~600ms (第一次间隔 100ms, 后两次均间隔 200ms, 共 500ms)
-        then(System.currentTimeMillis() - startedMillis).isGreaterThanOrEqualTo(500).isLessThan(600);
+            // 确认 3 此任务共耗时 500ms~600ms (第一次间隔 100ms, 后两次均间隔 200ms, 共 500ms)
+            then(System.currentTimeMillis() - startedMillis).isGreaterThanOrEqualTo(500).isLessThan(600);
+        }
 
         // 确认每次任务执行间隔时间
         then(records).map(n -> (n - startedMillis) / 100).containsExactly(1L, 3L, 5L);
@@ -370,34 +364,36 @@ class TimerScheduleTest {
      * 即 {@code delay} 参数表示的是两次任务的间隔时间, 所以如果一次任务的执行时间超过了
      * {@code delay} 参数, 则后续的任务都会受到影响
      * </p>
+     *
+     * @see ThreadPool#scheduledExecutor(int)
      */
     @Test
     void scheduleWithFixedDelay_shouldRunTaskWithFixedDelay() {
-        // 创建延时任务线程池
-        var executor = threadPool.scheduledExecutor(0);
+        // 记录每次任务执行时间的集合
+        var records = new ArrayList<Long>();
 
         // 记录起始时间
         var startedMillis = System.currentTimeMillis();
 
-        // 记录每次任务执行时间的集合
-        var records = new ArrayList<Long>();
+        // 创建延时任务线程池
+        try (var executor = ThreadPool.scheduledExecutor(0)) {
+            // 启动一个固定频率的定时器任务
+            var future = executor.scheduleWithFixedDelay(
+                // 记录执行时间
+                () -> records.add(System.currentTimeMillis()),
+                // 设置执行延迟时间和重复执行频率
+                100, 200, TimeUnit.MILLISECONDS);
 
-        // 启动一个固定频率的定时器任务
-        var future = executor.scheduleWithFixedDelay(
-            // 记录执行时间
-            () -> records.add(System.currentTimeMillis()),
-            // 设置执行延迟时间和重复执行频率
-            100, 200, TimeUnit.MILLISECONDS);
+            // 等待定时器执行 3 次 (最大耗时 600ms) 以后, 取消定时器
+            await().atMost(600, TimeUnit.MILLISECONDS).untilAsserted(() -> then(records).hasSize(3));
+            future.cancel(false);
 
-        // 等待定时器执行 3 次 (最大耗时 600ms) 以后, 取消定时器
-        await().atMost(600, TimeUnit.MILLISECONDS).untilAsserted(() -> then(records).hasSize(3));
-        future.cancel(false);
+            // 确认 3 此任务共耗时 5s (第一次间隔 1s, 后两次均间隔 2s, 共 5s)
+            then(System.currentTimeMillis() - startedMillis).isGreaterThanOrEqualTo(500).isLessThan(600);
 
-        // 确认 3 此任务共耗时 5s (第一次间隔 1s, 后两次均间隔 2s, 共 5s)
-        then(System.currentTimeMillis() - startedMillis).isGreaterThanOrEqualTo(500).isLessThan(600);
-
-        // 确认每次任务执行间隔时间
-        then(records).map(n -> (n - startedMillis) / 100).containsExactly(1L, 3L, 5L);
+            // 确认每次任务执行间隔时间
+            then(records).map(n -> (n - startedMillis) / 100).containsExactly(1L, 3L, 5L);
+        }
     }
 
     /**

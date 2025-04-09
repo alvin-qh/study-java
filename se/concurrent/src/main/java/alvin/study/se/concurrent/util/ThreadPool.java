@@ -1,8 +1,5 @@
 package alvin.study.se.concurrent.util;
 
-import java.lang.ref.WeakReference;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
@@ -86,39 +83,14 @@ import java.util.concurrent.TimeUnit;
  * ThreadPoolExecutor} 类在使用上会复杂一些, 但更加灵活
  * </p>
  */
-public final class ThreadPool implements AutoCloseable {
+public final class ThreadPool {
     // 允许的最大线程数
     private static final int MAX_THREAD_COUNT = 1024;
 
-    // 记录已创建的 ExecutorService 对象的集合
-    private List<WeakReference<ExecutorService>> executorRefs;
-
     /**
-     * 关闭创建器对象, 销毁已经创建过的 {@link ExecutorService} 对象
+     * 私有构造器, 禁止实例化对象
      */
-    @Override
-    public void close() {
-        if (executorRefs != null) {
-            for (var ref : executorRefs) {
-                var executor = ref.get();
-                if (executor != null) {
-                    executor.shutdown();
-                }
-            }
-        }
-    }
-
-    /**
-     * 记录创建的 {@link ExecutorService} 对象
-     *
-     * @param executor 已创建的 {@link ExecutorService} 对象
-     */
-    private void recordHistory(ExecutorService executor) {
-        if (executorRefs == null) {
-            executorRefs = new LinkedList<>();
-        }
-        executorRefs.add(new WeakReference<>(executor));
-    }
+    private ThreadPool() {}
 
     /**
      * 通过阻塞队列创建线程池
@@ -136,7 +108,7 @@ public final class ThreadPool implements AutoCloseable {
      * @param queueSize 任务队列的长度
      * @return 线程池执行器对象
      */
-    public ExecutorService arrayBlockingQueueExecutor(int queueSize) {
+    public static ExecutorService arrayBlockingQueueExecutor(int queueSize) {
         if (queueSize <= 0) {
             throw new IllegalArgumentException("queueSize must great than 0");
         }
@@ -148,7 +120,7 @@ public final class ThreadPool implements AutoCloseable {
         // 设置核心线程数和最大线程数一致, 所以线程池不会销毁线程也不会增加线程
         // 使用 ArrayBlockingQueue 保证不会无休止的增加任务
         // 淘汰策略为: 从任务队列中淘汰一个最早的任务, 以容纳新任务 (默认规则是丢弃新任务)
-        var executor = new ThreadPoolExecutor(
+        return new ThreadPoolExecutor(
             maxThread,
             maxThread,
             0,
@@ -159,10 +131,6 @@ public final class ThreadPool implements AutoCloseable {
                 queue.poll();
                 queue.offer(runnable);
             });
-
-        // 存储线程池对象以便适时关闭
-        recordHistory(executor);
-        return executor;
     }
 
     /**
@@ -186,7 +154,7 @@ public final class ThreadPool implements AutoCloseable {
      * @param maxThreads 允许同时运行的最大线程数, 如果为 {@code 0}, 则使用默认线程数
      * @return 线程池执行器对象
      */
-    public ExecutorService synchronousQueueExecutor(int maxThreads) {
+    public static ExecutorService synchronousQueueExecutor(int maxThreads) {
         if (maxThreads <= 0) {
             maxThreads = MAX_THREAD_COUNT;
         }
@@ -196,16 +164,12 @@ public final class ThreadPool implements AutoCloseable {
         // maxThreads 表示最大线程数, 当有任务提交, 且线程池中无空闲线程时, 会产生新的线程对齐进行处理, 最多产生 maxThreads 个线程
         // 产生的线程在 60 秒内可以被后续任务复用, 空闲超过该时间后, 线程销毁
         // 未设置淘汰策略, 所以线程达到最大限度后, 增加任务会导致异常抛出
-        var executor = new ThreadPoolExecutor(
+        return new ThreadPoolExecutor(
             0,
             maxThreads,
             60,
             TimeUnit.SECONDS,
             new SynchronousQueue<>());
-
-        // 存储线程池对象以便适时关闭
-        recordHistory(executor);
-        return executor;
     }
 
     /**
@@ -214,18 +178,14 @@ public final class ThreadPool implements AutoCloseable {
      * @param maxThreads 最大线程数, 如果为 {@code 0}, 则使用默认线程数
      * @return 用于执行延时异步任务的线程池执行器对象
      */
-    public ScheduledExecutorService scheduledExecutor(int maxThreads) {
+    public static ScheduledExecutorService scheduledExecutor(int maxThreads) {
         if (maxThreads <= 0) {
             // 获取当前 CPU 的逻辑内核数 (Logical Kernel)
             maxThreads = Runtime.getRuntime().availableProcessors();
         }
 
         // 实例化延迟任务线程池对象
-        var executor = new ScheduledThreadPoolExecutor(maxThreads);
-
-        // 存储线程池对象以便适时关闭
-        recordHistory(executor);
-        return executor;
+        return new ScheduledThreadPoolExecutor(maxThreads);
     }
 
     /**
@@ -248,18 +208,14 @@ public final class ThreadPool implements AutoCloseable {
      * @return 用于执行虚拟线程的线程池执行器对象
      */
 
-    public ExecutorService virtualThreadExecutor() {
+    public static ExecutorService virtualThreadExecutor() {
         // 通过虚拟线程工厂创建线程池对象
-        var executor = new ThreadPoolExecutor(
+        return new ThreadPoolExecutor(
             0,
             MAX_THREAD_COUNT,
             60,
             TimeUnit.SECONDS,
             new ArrayBlockingQueue<>(MAX_THREAD_COUNT),
             Thread.ofVirtual().factory());
-
-        // 存储线程池对象以便适时关闭
-        recordHistory(executor);
-        return executor;
     }
 }

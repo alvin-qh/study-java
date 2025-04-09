@@ -19,7 +19,6 @@ import java.util.stream.IntStream;
 
 import lombok.SneakyThrows;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import alvin.study.se.concurrent.service.Fibonacci;
@@ -99,16 +98,6 @@ import alvin.study.se.concurrent.util.ThreadPool;
  * </p>
  */
 class ThreadPoolTest {
-    private final ThreadPool threadPool = new ThreadPool();
-
-    /**
-     * 在每个测试之后执行, 关闭线程池
-     */
-    @AfterEach
-    void afterEach() {
-        threadPool.close();
-    }
-
     /**
      * 通过线程池提交任务, 获取任务执行结果
      *
@@ -118,21 +107,24 @@ class ThreadPoolTest {
      * ExecutorService.submit(Callable)} 方法可以向线程池提交一个任务,
      * 返回一个 {@link java.util.concurrent.FutureTask FutureTask} 类型对象
      * </p>
+     *
+     * @see ThreadPool#arrayBlockingQueueExecutor(int)
      */
     @Test
     @SneakyThrows
     void futureTask_shouldCreateFutureTaskBySubmitThreadPool() {
         // 创建线程池执行器对象
-        var executor = threadPool.arrayBlockingQueueExecutor(20);
+        try (var executor = ThreadPool.arrayBlockingQueueExecutor(20)) {
 
-        // 提交一个任务
-        var task = executor.submit(() -> Fibonacci.calculate(20));
+            // 提交一个任务
+            var task = executor.submit(() -> Fibonacci.calculate(20));
 
-        // 等待任务执行完毕
-        await().atMost(5, TimeUnit.SECONDS).until(task::isDone);
+            // 等待任务执行完毕
+            await().atMost(5, TimeUnit.SECONDS).until(task::isDone);
 
-        // 确认任务结果
-        then(task.get()).isEqualTo(6765);
+            // 确认任务结果
+            then(task.get()).isEqualTo(6765);
+        }
     }
 
     /**
@@ -141,6 +133,8 @@ class ThreadPoolTest {
      * <p>
      * 本例中通过循环依次提交多个任务到线程池
      * </p>
+     *
+     * @see ThreadPool#arrayBlockingQueueExecutor(int)
      */
     @Test
     void multiFutureTasks_shouldSubmitMultiTasks() {
@@ -151,22 +145,23 @@ class ThreadPoolTest {
         var resultCount = new AtomicInteger();
 
         // 创建线程池执行器对象
-        var executor = threadPool.arrayBlockingQueueExecutor(20);
+        try (var executor = ThreadPool.arrayBlockingQueueExecutor(20)) {
 
-        // 循环 20 次, 提交 20 个任务
-        for (var i = 1; i <= 20; i++) {
-            var n = i;
+            // 循环 20 次, 提交 20 个任务
+            for (var i = 1; i <= 20; i++) {
+                var n = i;
 
-            // 将任务提交返回的 FutureTask 对象保存到集合中
-            tasks.add(executor.submit(() -> {
-                try {
-                    // 执行计算
-                    return Fibonacci.calculate(n + 1);
-                } finally {
-                    // 增加任务计数器
-                    resultCount.incrementAndGet();
-                }
-            }));
+                // 将任务提交返回的 FutureTask 对象保存到集合中
+                tasks.add(executor.submit(() -> {
+                    try {
+                        // 执行计算
+                        return Fibonacci.calculate(n + 1);
+                    } finally {
+                        // 增加任务计数器
+                        resultCount.incrementAndGet();
+                    }
+                }));
+            }
         }
 
         // 等待任务全部结束
@@ -176,10 +171,9 @@ class ThreadPoolTest {
         then(tasks).allMatch(Future::isDone);
 
         // 确认任务计算结果
-        then(tasks).map(Future::get)
-                .containsExactly(
-                    1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144,
-                    233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946);
+        then(tasks).map(Future::get).containsExactly(
+            1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144,
+            233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946);
     }
 
     /**
@@ -191,6 +185,8 @@ class ThreadPoolTest {
      * ExecutorService.invokeAll(Collection, long, TimeUnit)} 方法可以批量提交多个任务,
      * 且返回每个任务 {@link java.util.concurrent.FutureTask FutureTask} 对象组成的集合
      * </p>
+     *
+     * @see ThreadPool#arrayBlockingQueueExecutor(int)
      */
     @Test
     @SneakyThrows
@@ -212,20 +208,21 @@ class ThreadPoolTest {
                 .toList();
 
         // 创建线程池执行器对象
-        var executor = threadPool.arrayBlockingQueueExecutor(20);
+        try (var executor = ThreadPool.arrayBlockingQueueExecutor(20)) {
 
-        // 执行所有任务
-        var futures = executor.invokeAll(tasks, 5, TimeUnit.SECONDS);
+            // 执行所有任务
+            var futures = executor.invokeAll(tasks, 5, TimeUnit.SECONDS);
 
-        // 等待任务全部结束
-        await().atMost(5, TimeUnit.SECONDS).until(() -> resultCount.get() == 20);
+            // 等待任务全部结束
+            await().atMost(5, TimeUnit.SECONDS).until(() -> resultCount.get() == 20);
 
-        // 确认所有的任务都执行完毕
-        then(futures).allMatch(Future::isDone);
+            // 确认所有的任务都执行完毕
+            then(futures).allMatch(Future::isDone);
 
-        // 确认任务计算结果
-        then(futures).map(Future::get).containsExactly(1, 2, 3, 5, 8, 13, 21,
-            34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946);
+            // 确认任务计算结果
+            then(futures).map(Future::get).containsExactly(1, 2, 3, 5, 8, 13, 21,
+                34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946);
+        }
     }
 
     /**
@@ -242,6 +239,8 @@ class ThreadPoolTest {
      * 在多个提交的任务中, 一旦有一个成功执行完毕, 则其它的任务均被取消,
      * 例如在多个数据表中查找一条数据, 一旦一个任务成功完成, 则其它任务就无需继续执行
      * </p>
+     *
+     * @see ThreadPool#arrayBlockingQueueExecutor(int)
      */
     @Test
     @SneakyThrows
@@ -259,18 +258,21 @@ class ThreadPoolTest {
                 .toList();
 
         // 创建线程池执行器对象
-        var executor = threadPool.arrayBlockingQueueExecutor(20);
+        try (var executor = ThreadPool.arrayBlockingQueueExecutor(20)) {
 
-        // 执行任务集合, 持续执行 500ms, 返回第一个执行成功任务的结果, 其余任务都被取消
-        var result = executor.invokeAny(tasks, 200, TimeUnit.MILLISECONDS);
+            // 执行任务集合, 持续执行 500ms, 返回第一个执行成功任务的结果, 其余任务都被取消
+            var result = executor.invokeAny(tasks, 200, TimeUnit.MILLISECONDS);
 
-        // 确认任务计算结果
-        then(result).matches("^[1-2]?\\d-Success-Sleep-1\\d{2}$");
+            // 确认任务计算结果
+            then(result).matches("^[1-2]?\\d-Success-Sleep-1\\d{2}$");
+        }
     }
 
     /**
      * 测试以 {@link java.util.concurrent.SynchronousQueue SynchronousQueue}
      * 为任务队列的线程池
+     *
+     * @see ThreadPool#synchronousQueueExecutor(int)
      */
     @Test
     @SneakyThrows
@@ -294,16 +296,17 @@ class ThreadPoolTest {
                 .toList();
 
         // 创建线程池执行器对象, 使用 SynchronousQueue 作为任务队列
-        var executor = threadPool.synchronousQueueExecutor(0);
+        try (var executor = ThreadPool.synchronousQueueExecutor(0)) {
 
-        // 执行集合中所有任务, 共执行 1s, 实际应该在 150~200ms 内执行完
-        var result = executor.invokeAll(tasks, 1, TimeUnit.SECONDS);
+            // 执行集合中所有任务, 共执行 1s, 实际应该在 150~200ms 内执行完
+            var result = executor.invokeAll(tasks, 1, TimeUnit.SECONDS);
 
-        // 等待任务执行完毕
-        await().atMost(1, TimeUnit.SECONDS).until(() -> resultCount.get() == taskCount);
+            // 等待任务执行完毕
+            await().atMost(1, TimeUnit.SECONDS).until(() -> resultCount.get() == taskCount);
 
-        // 确认任务执行结果
-        then(result).map(Future::get).allMatch(s -> s.matches("^[0-3]?\\d-Success$"));
+            // 确认任务执行结果
+            then(result).map(Future::get).allMatch(s -> s.matches("^[0-3]?\\d-Success$"));
+        }
     }
 
     /**
@@ -324,58 +327,58 @@ class ThreadPoolTest {
     @SneakyThrows
     void virtualPool_shouldCreateThreadPoolForVirtualThread() {
         // 创建虚拟线程线程池对象
-        var executor = threadPool.virtualThreadExecutor();
-
-        // 创建一个 HTTP 客户端对象
-        var client = HttpClient.newBuilder()
-                .connectTimeout(Duration.ofMillis(3000))
-                .followRedirects(HttpClient.Redirect.NEVER)
-                .build();
-
-        // 提交一个 HTTP 请求任务, 令其在虚拟线程池中执行
-        var task1 = executor.submit(() -> {
-            // 创建 HTTP 请求对象, 通过 `GET` 方法发起请求
-            var request = HttpRequest.newBuilder().GET()
-                    .uri(URI.create("https://www.baidu.com"))
-                    .timeout(Duration.ofMillis(3000))
+        try (var executor = ThreadPool.virtualThreadExecutor()) {
+            // 创建一个 HTTP 客户端对象
+            var client = HttpClient.newBuilder()
+                    .connectTimeout(Duration.ofMillis(3000))
+                    .followRedirects(HttpClient.Redirect.NEVER)
                     .build();
 
-            try {
-                // 发起 HTTP 请求, 并获取响应对象, 保存到 `responseRef` 对象中
-                return client.send(request, HttpResponse.BodyHandlers.ofString());
-            } catch (IOException | InterruptedException ignore) {
-                throw new RuntimeException(ignore);
-            }
-        });
+            // 提交一个 HTTP 请求任务, 令其在虚拟线程池中执行
+            var task1 = executor.submit(() -> {
+                // 创建 HTTP 请求对象, 通过 `GET` 方法发起请求
+                var request = HttpRequest.newBuilder().GET()
+                        .uri(URI.create("https://www.baidu.com"))
+                        .timeout(Duration.ofMillis(3000))
+                        .build();
 
-        // 再次提交一个 HTTP 请求任务, 令其在虚拟线程池中执行
-        var task2 = executor.submit(() -> {
-            // 创建 HTTP 请求对象, 通过 `GET` 方法发起请求
-            var request = HttpRequest.newBuilder().GET()
-                    .uri(URI.create("https://cn.bing.com/"))
-                    .timeout(Duration.ofMillis(3000))
-                    .build();
+                try {
+                    // 发起 HTTP 请求, 并获取响应对象, 保存到 `responseRef` 对象中
+                    return client.send(request, HttpResponse.BodyHandlers.ofString());
+                } catch (IOException | InterruptedException ignore) {
+                    throw new RuntimeException(ignore);
+                }
+            });
 
-            try {
-                // 发起 HTTP 请求, 并获取响应对象, 保存到 `responseRef` 对象中
-                return client.send(request, HttpResponse.BodyHandlers.ofString());
-            } catch (IOException | InterruptedException ignore) {
-                throw new RuntimeException(ignore);
-            }
-        });
+            // 再次提交一个 HTTP 请求任务, 令其在虚拟线程池中执行
+            var task2 = executor.submit(() -> {
+                // 创建 HTTP 请求对象, 通过 `GET` 方法发起请求
+                var request = HttpRequest.newBuilder().GET()
+                        .uri(URI.create("https://cn.bing.com/"))
+                        .timeout(Duration.ofMillis(3000))
+                        .build();
 
-        // 等待两个任务执行完毕
-        await().atMost(10, TimeUnit.SECONDS).until(() -> task1.isDone() && task2.isDone());
+                try {
+                    // 发起 HTTP 请求, 并获取响应对象, 保存到 `responseRef` 对象中
+                    return client.send(request, HttpResponse.BodyHandlers.ofString());
+                } catch (IOException | InterruptedException ignore) {
+                    throw new RuntimeException(ignore);
+                }
+            });
 
-        // 确认两个任务执行结果
-        var resp1 = task1.get();
-        then(resp1.statusCode()).isEqualTo(200);
-        then(resp1.headers().firstValue("Content-Type")).isPresent().get().isEqualTo("text/html");
-        then(resp1.body()).contains("<!DOCTYPE html>");
+            // 等待两个任务执行完毕
+            await().atMost(10, TimeUnit.SECONDS).until(() -> task1.isDone() && task2.isDone());
 
-        var resp2 = task2.get();
-        then(resp2.statusCode()).isEqualTo(200);
-        then(resp2.headers().firstValue("Content-Type")).isPresent().get().isEqualTo("text/html; charset=utf-8");
-        then(resp2.body()).contains("<!doctype html>");
+            // 确认两个任务执行结果
+            var resp1 = task1.get();
+            then(resp1.statusCode()).isEqualTo(200);
+            then(resp1.headers().firstValue("Content-Type")).isPresent().get().isEqualTo("text/html");
+            then(resp1.body()).contains("<!DOCTYPE html>");
+
+            var resp2 = task2.get();
+            then(resp2.statusCode()).isEqualTo(200);
+            then(resp2.headers().firstValue("Content-Type")).isPresent().get().isEqualTo("text/html; charset=utf-8");
+            then(resp2.body()).contains("<!doctype html>");
+        }
     }
 }

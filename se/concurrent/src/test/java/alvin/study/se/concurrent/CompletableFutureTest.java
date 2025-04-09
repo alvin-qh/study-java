@@ -19,7 +19,6 @@ import java.util.concurrent.locks.LockSupport;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import alvin.study.se.concurrent.service.BlockedService;
@@ -53,16 +52,6 @@ import alvin.study.se.concurrent.util.ThreadPool;
  * </p>
  */
 class CompletableFutureTest {
-    private final ThreadPool threadPool = new ThreadPool();
-
-    /**
-     * 在每个测试之后执行, 关闭线程池
-     */
-    @AfterEach
-    void afterEach() {
-        threadPool.close();
-    }
-
     /**
      * 执行异步任务
      *
@@ -131,15 +120,16 @@ class CompletableFutureTest {
         var service = new BlockedService(new Model(1L, "Alvin"));
 
         // 创建线程池执行器对象
-        var executor = threadPool.arrayBlockingQueueExecutor(20);
+        try (var executor = ThreadPool.arrayBlockingQueueExecutor(20)) {
 
-        // 启动异步任务
-        var future = CompletableFuture.supplyAsync(() -> service.loadModel(1L), executor);
+            // 启动异步任务
+            var future = CompletableFuture.supplyAsync(() -> service.loadModel(1L), executor);
 
-        // 获取异步执行方法的返回值, 并确认返回值正确
-        // 异步任务使用约 1s 执行完毕返回结果
-        var model = future.get(1100, TimeUnit.MILLISECONDS);
-        then(model).isPresent().get().extracting("id", "name").containsExactly(1L, "Alvin");
+            // 获取异步执行方法的返回值, 并确认返回值正确
+            // 异步任务使用约 1s 执行完毕返回结果
+            var model = future.get(1100, TimeUnit.MILLISECONDS);
+            then(model).isPresent().get().extracting("id", "name").containsExactly(1L, "Alvin");
+        }
     }
 
     /**
@@ -802,77 +792,78 @@ class CompletableFutureTest {
         var service = new BlockedService();
 
         // 创建线程池对象, 使用大量线程保证并发性, 即每个任务均有一个线程来执行 (IO 密集型)
-        var executor = threadPool.synchronousQueueExecutor(0);
+        try (var executor = ThreadPool.synchronousQueueExecutor(0)) {
 
-        // 根任务: 产生一系列随机数据, 模拟从网络抓取数据的情形
-        var f0 = CompletableFuture.supplyAsync(() -> {
-            try {
-                // 等待通知, 启动任务
-                synchronized (service) {
-                    service.wait();
+            // 根任务: 产生一系列随机数据, 模拟从网络抓取数据的情形
+            var f0 = CompletableFuture.supplyAsync(() -> {
+                try {
+                    // 等待通知, 启动任务
+                    synchronized (service) {
+                        service.wait();
+                    }
+                    // 生成 1000 个数据
+                    return generateModels(1000);
+                } catch (InterruptedException ignore) {
+                    return List.<Model>of();
                 }
-                // 生成 1000 个数据
-                return generateModels(1000);
-            } catch (InterruptedException ignore) {
-                return List.<Model>of();
+            }, executor);
+
+            // 任务 1.1: 筛选 id 为偶数的任务
+            var f1_1 = f0.thenComposeAsync(
+                models -> CompletableFuture.supplyAsync(
+                    () -> models.stream().filter(m -> m.id() % 2 == 0).toList()),
+                executor);
+
+            // 任务 1.2: 存储 id 为偶数的任务
+            var f1_2 = f1_1.thenComposeAsync(models -> saveModels(service, models, executor), executor);
+
+            // 任务 2.1: 筛选 id 为奇数的任务
+            var f2_1 = f0.thenComposeAsync(
+                models -> CompletableFuture.supplyAsync(() -> models.stream().filter(m -> m.id() % 2 != 0).toList()),
+                executor);
+
+            // 任务 2.2: 存储 id 为奇数的任务
+            var f2_2 = f2_1.thenComposeAsync(models -> saveModels(service, models, executor), executor);
+
+            // 任务 3: 合并两部分 id
+            var f3_1 = f1_2.thenCombineAsync(
+                f2_2,
+                (ids1, ids2) -> Stream.concat(ids1.stream(), ids2.stream()).sorted().toList(),
+                executor);
+
+            // 任务 3.2: 根据 id 读取数据
+            var f3_2 = f3_1.thenComposeAsync(ids -> loadModels(service, ids, executor), executor);
+
+            // 确认各个任务所被依赖的任务个数
+            then(f0.getNumberOfDependents()).isEqualTo(2);
+            then(f1_1.getNumberOfDependents()).isEqualTo(1);
+            then(f1_2.getNumberOfDependents()).isEqualTo(1);
+            then(f2_1.getNumberOfDependents()).isEqualTo(1);
+            then(f2_2.getNumberOfDependents()).isEqualTo(1);
+            then(f3_1.getNumberOfDependents()).isEqualTo(1);
+            then(f3_2.getNumberOfDependents()).isEqualTo(0);
+
+            // 发出通知, 令 T0 任务开始执行
+            synchronized (service) {
+                service.notify();
             }
-        },
-            executor);
 
-        // 任务 1.1: 筛选 id 为偶数的任务
-        var f1_1 = f0.thenComposeAsync(
-            models -> CompletableFuture.supplyAsync(() -> models.stream().filter(m -> m.id() % 2 == 0).toList()),
-            executor);
+            // 获取最后一个任务的结果, 当该任务完成后, 之前的所有任务均已完成
+            // 整个任务耗时约 2s, 即所有的对象存储和读取均为并发执行
+            var results = f3_2.get(2200, TimeUnit.MILLISECONDS);
 
-        // 任务 1.2: 存储 id 为偶数的任务
-        var f1_2 = f1_1.thenComposeAsync(models -> saveModels(service, models, executor), executor);
+            // 确认各个任务的状态, 都已经结束
+            then(f0.isDone()).isTrue();
+            then(f1_1.isDone()).isTrue();
+            then(f1_2.isDone()).isTrue();
+            then(f2_1.isDone()).isTrue();
+            then(f2_2.isDone()).isTrue();
+            then(f3_1.isDone()).isTrue();
+            then(f3_2.isDone()).isTrue();
 
-        // 任务 2.1: 筛选 id 为奇数的任务
-        var f2_1 = f0.thenComposeAsync(
-            models -> CompletableFuture.supplyAsync(() -> models.stream().filter(m -> m.id() % 2 != 0).toList()),
-            executor);
-
-        // 任务 2.2: 存储 id 为奇数的任务
-        var f2_2 = f2_1.thenComposeAsync(models -> saveModels(service, models, executor), executor);
-
-        // 任务 3: 合并两部分 id
-        var f3_1 = f1_2.thenCombineAsync(
-            f2_2,
-            (ids1, ids2) -> Stream.concat(ids1.stream(), ids2.stream()).sorted().toList(),
-            executor);
-
-        // 任务 3.2: 根据 id 读取数据
-        var f3_2 = f3_1.thenComposeAsync(ids -> loadModels(service, ids, executor), executor);
-
-        // 确认各个任务所被依赖的任务个数
-        then(f0.getNumberOfDependents()).isEqualTo(2);
-        then(f1_1.getNumberOfDependents()).isEqualTo(1);
-        then(f1_2.getNumberOfDependents()).isEqualTo(1);
-        then(f2_1.getNumberOfDependents()).isEqualTo(1);
-        then(f2_2.getNumberOfDependents()).isEqualTo(1);
-        then(f3_1.getNumberOfDependents()).isEqualTo(1);
-        then(f3_2.getNumberOfDependents()).isEqualTo(0);
-
-        // 发出通知, 令 T0 任务开始执行
-        synchronized (service) {
-            service.notify();
+            // 确认任务执行结果
+            then(results).hasSize(1000).containsAnyElementsOf(f0.get());
         }
-
-        // 获取最后一个任务的结果, 当该任务完成后, 之前的所有任务均已完成
-        // 整个任务耗时约 2s, 即所有的对象存储和读取均为并发执行
-        var results = f3_2.get(2200, TimeUnit.MILLISECONDS);
-
-        // 确认各个任务的状态, 都已经结束
-        then(f0.isDone()).isTrue();
-        then(f1_1.isDone()).isTrue();
-        then(f1_2.isDone()).isTrue();
-        then(f2_1.isDone()).isTrue();
-        then(f2_2.isDone()).isTrue();
-        then(f3_1.isDone()).isTrue();
-        then(f3_2.isDone()).isTrue();
-
-        // 确认任务执行结果
-        then(results).hasSize(1000).containsAnyElementsOf(f0.get());
     }
 
     /**
@@ -903,7 +894,9 @@ class CompletableFutureTest {
      * @param models  {@link Model} 对象集合
      * @return 异步任务对象, 执行结果为已保存对象的 id 集合
      */
-    private CompletableFuture<List<Long>> saveModels(BlockedService service, List<Model> models,
+    private CompletableFuture<List<Long>> saveModels(
+            BlockedService service,
+            List<Model> models,
             Executor executor) {
         // 将模型对象集合转为存储模型对象的任务
         return models.stream().reduce(
