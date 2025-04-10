@@ -10,6 +10,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -73,8 +74,8 @@ class ThreadPoolTest {
     @Test
     @SneakyThrows
     void futureTask_shouldCreateFutureTaskBySubmitThreadPool() {
-        // 创建线程池执行器对象
-        try (var executor = ThreadPool.arrayBlockingQueueExecutor(20)) {
+        // 创建线程池执行器对象, 等待线程池执行结束
+        try (var executor = ThreadPool.arrayBlockingQueueExecutor(1)) {
 
             // 提交一个任务
             var task = executor.submit(() -> Fibonacci.calculate(20));
@@ -99,12 +100,12 @@ class ThreadPoolTest {
     @Test
     void multiFutureTasks_shouldSubmitMultiTasks() {
         // 保存 FutureTask 的集合对象
-        var tasks = new ArrayList<Future<Integer>>();
+        var results = new ArrayList<Future<Integer>>();
 
         // 任务计数器, 计算已完成任务数
         var resultCount = new AtomicInteger();
 
-        // 创建线程池执行器对象
+        // 创建线程池执行器对象, 并等待任务执行完毕后关闭
         try (var executor = ThreadPool.arrayBlockingQueueExecutor(20)) {
 
             // 循环 20 次, 提交 20 个任务
@@ -112,7 +113,7 @@ class ThreadPoolTest {
                 var n = i;
 
                 // 将任务提交返回的 FutureTask 对象保存到集合中
-                tasks.add(executor.submit(() -> {
+                results.add(executor.submit(() -> {
                     try {
                         // 执行计算
                         return Fibonacci.calculate(n + 1);
@@ -124,14 +125,14 @@ class ThreadPoolTest {
             }
         }
 
-        // 等待任务全部结束
-        await().atMost(5, TimeUnit.SECONDS).until(() -> resultCount.get() == 20);
+        // 确认所有的任务都被执行
+        then(resultCount).hasValue(20);
 
         // 确认所有的任务都执行完毕
-        then(tasks).allMatch(Future::isDone);
+        then(results).allMatch(Future::isDone);
 
         // 确认任务计算结果
-        then(tasks).map(Future::get).containsExactly(
+        then(results).map(Future::get).containsExactly(
             1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144,
             233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946);
     }
@@ -167,22 +168,24 @@ class ThreadPoolTest {
                 })
                 .toList();
 
-        // 创建线程池执行器对象
+        List<Future<Integer>> results = null;
+
+        // 创建线程池执行器对象, 并等待任务执行完毕后关闭
         try (var executor = ThreadPool.arrayBlockingQueueExecutor(20)) {
-
             // 执行所有任务
-            var futures = executor.invokeAll(tasks, 5, TimeUnit.SECONDS);
-
-            // 等待任务全部结束
-            await().atMost(5, TimeUnit.SECONDS).until(() -> resultCount.get() == 20);
-
-            // 确认所有的任务都执行完毕
-            then(futures).allMatch(Future::isDone);
-
-            // 确认任务计算结果
-            then(futures).map(Future::get).containsExactly(1, 2, 3, 5, 8, 13, 21,
-                34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946);
+            results = executor.invokeAll(tasks, 5, TimeUnit.SECONDS);
         }
+
+        // 确认所有的任务都执行完毕
+        then(results).hasSize(tasks.size());
+        then(results).allMatch(Future::isDone);
+
+        // 确认任务计算结果
+        then(results).map(Future::get)
+                .containsExactly(
+                    1, 2, 3, 5, 8, 13, 21,
+                    34, 55, 89, 144, 233, 377, 610,
+                    987, 1597, 2584, 4181, 6765, 10946);
     }
 
     /**
@@ -217,15 +220,16 @@ class ThreadPoolTest {
                 })
                 .toList();
 
-        // 创建线程池执行器对象
+        String result = null;
+
+        // 创建线程池执行器对象, 并等待任务执行完毕后关闭
         try (var executor = ThreadPool.arrayBlockingQueueExecutor(20)) {
-
             // 执行任务集合, 持续执行 500ms, 返回第一个执行成功任务的结果, 其余任务都被取消
-            var result = executor.invokeAny(tasks, 200, TimeUnit.MILLISECONDS);
-
-            // 确认任务计算结果
-            then(result).matches("^[1-2]?\\d-Success-Sleep-1\\d{2}$");
+            result = executor.invokeAny(tasks, 200, TimeUnit.MILLISECONDS);
         }
+
+        // 确认任务计算结果
+        then(result).matches("^[1-2]?\\d-Success-Sleep-1\\d{2}$");
     }
 
     /**
@@ -236,7 +240,7 @@ class ThreadPoolTest {
      */
     @Test
     @SneakyThrows
-    void cachedPool_shouldSubmitTaskIntoThreadPoolWithSynchronousQueue() {
+    void synchronousQueueExecutor_shouldSubmitTaskIntoThreadPoolWithSynchronousQueue() {
         // 任务计数器, 计算已完成任务数
         var resultCount = new AtomicInteger();
 
@@ -255,18 +259,18 @@ class ThreadPoolTest {
                 })
                 .toList();
 
-        // 创建线程池执行器对象, 使用 SynchronousQueue 作为任务队列
+        List<Future<String>> results;
+
+        // 创建线程池执行器对象, 使用 SynchronousQueue 作为任务队列, 并等待所有任务执行完毕后关闭
         try (var executor = ThreadPool.synchronousQueueExecutor(0)) {
-
             // 执行集合中所有任务, 共执行 1s, 实际应该在 150~200ms 内执行完
-            var result = executor.invokeAll(tasks, 1, TimeUnit.SECONDS);
-
-            // 等待任务执行完毕
-            await().atMost(1, TimeUnit.SECONDS).until(() -> resultCount.get() == taskCount);
-
-            // 确认任务执行结果
-            then(result).map(Future::get).allMatch(s -> s.matches("^[0-3]?\\d-Success$"));
+            results = executor.invokeAll(tasks, 1, TimeUnit.SECONDS);
         }
+
+        // 确认任务执行结果
+        then(results).hasSize(tasks.size())
+                .map(Future::get)
+                .allMatch(s -> s.matches("^[0-3]?\\d-Success$"));
     }
 
     /**
@@ -286,16 +290,18 @@ class ThreadPoolTest {
     @Test
     @SneakyThrows
     void virtualPool_shouldCreateThreadPoolForVirtualThread() {
-        // 创建虚拟线程线程池对象
-        try (var executor = ThreadPool.virtualThreadExecutor()) {
-            // 创建一个 HTTP 客户端对象
-            var client = HttpClient.newBuilder()
-                    .connectTimeout(Duration.ofMillis(3000))
-                    .followRedirects(HttpClient.Redirect.NEVER)
-                    .build();
+        // 创建一个 HTTP 客户端对象
+        var client = HttpClient.newBuilder()
+                .connectTimeout(Duration.ofMillis(3000))
+                .followRedirects(HttpClient.Redirect.NEVER)
+                .build();
 
+        Future<HttpResponse<String>> task1, task2;
+
+        // 创建虚拟线程线程池对象, 并等待所有任务执行完毕后关闭
+        try (var executor = ThreadPool.virtualThreadExecutor()) {
             // 提交一个 HTTP 请求任务, 令其在虚拟线程池中执行
-            var task1 = executor.submit(() -> {
+            task1 = executor.submit(() -> {
                 // 创建 HTTP 请求对象, 通过 `GET` 方法发起请求
                 var request = HttpRequest.newBuilder().GET()
                         .uri(URI.create("https://www.baidu.com"))
@@ -311,7 +317,7 @@ class ThreadPoolTest {
             });
 
             // 再次提交一个 HTTP 请求任务, 令其在虚拟线程池中执行
-            var task2 = executor.submit(() -> {
+            task2 = executor.submit(() -> {
                 // 创建 HTTP 请求对象, 通过 `GET` 方法发起请求
                 var request = HttpRequest.newBuilder().GET()
                         .uri(URI.create("https://cn.bing.com/"))
@@ -325,20 +331,17 @@ class ThreadPoolTest {
                     throw new RuntimeException(ignore);
                 }
             });
-
-            // 等待两个任务执行完毕
-            await().atMost(10, TimeUnit.SECONDS).until(() -> task1.isDone() && task2.isDone());
-
-            // 确认两个任务执行结果
-            var resp1 = task1.get();
-            then(resp1.statusCode()).isEqualTo(200);
-            then(resp1.headers().firstValue("Content-Type")).isPresent().get().isEqualTo("text/html");
-            then(resp1.body()).contains("<!DOCTYPE html>");
-
-            var resp2 = task2.get();
-            then(resp2.statusCode()).isEqualTo(200);
-            then(resp2.headers().firstValue("Content-Type")).isPresent().get().isEqualTo("text/html; charset=utf-8");
-            then(resp2.body()).contains("<!doctype html>");
         }
+
+        // 确认两个任务执行结果
+        var resp1 = task1.get();
+        then(resp1.statusCode()).isEqualTo(200);
+        then(resp1.headers().firstValue("Content-Type")).isPresent().get().isEqualTo("text/html");
+        then(resp1.body()).contains("<!DOCTYPE html>");
+
+        var resp2 = task2.get();
+        then(resp2.statusCode()).isEqualTo(200);
+        then(resp2.headers().firstValue("Content-Type")).isPresent().get().isEqualTo("text/html; charset=utf-8");
+        then(resp2.body()).contains("<!doctype html>");
     }
 }

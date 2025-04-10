@@ -3,10 +3,12 @@ package alvin.study.se.concurrent;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.awaitility.Awaitility.await;
 
+import java.util.List;
 import java.util.concurrent.CountedCompleter;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinPool.ForkJoinWorkerThreadFactory;
 import java.util.concurrent.ForkJoinWorkerThread;
+import java.util.concurrent.Future;
 import java.util.concurrent.RecursiveTask;
 import java.util.concurrent.TimeUnit;
 
@@ -14,6 +16,7 @@ import org.junit.jupiter.api.Test;
 
 import alvin.study.se.concurrent.task.EvenRecursiveTask;
 import alvin.study.se.concurrent.task.EventConutedCompleter;
+import alvin.study.se.concurrent.util.SystemInfo;
 
 /**
  * 演示 Fork/Join线程池
@@ -22,6 +25,12 @@ import alvin.study.se.concurrent.task.EventConutedCompleter;
  * Fork/Join 框架由 {@link ForkJoinPool} 线程池类型,
  * {@link java.util.concurrent.ForkJoinTask ForkJoinTask}
  * 任务类型以及 {@link ForkJoinWorkerThread} 工作线程类型组成
+ * </p>
+ *
+ * <p>
+ * {@link ForkJoinPool} 类型实现了
+ * {@link java.util.concurrent.ExecutorService
+ * ExecutorService} 接口, 参见 {@link ExecutorServiceTest}
  * </p>
  *
  * <p>
@@ -45,8 +54,9 @@ import alvin.study.se.concurrent.task.EventConutedCompleter;
  *
  * <p>
  * 若一个线程工作队列中的任务执行完毕, 进入"空闲"状态后,
- * 该线程会从其它工作线程的队列"窃取"一个任务来执行, 从而保证整体的并发性, 其中,
- * 工作线程总是从其队列的头部获取任务, 而空闲线程是从其它工作线程队列的"尾部"窃取任务
+ * 该线程会从其它工作线程的队列"窃取"一个任务来执行, 从而保证整体的并发性,
+ * 其中, 工作线程总是从其队列的头部获取任务, 而空闲线程是从其它工作线程队列的
+ * "尾部" 窃取任务
  * </p>
  *
  * <p>
@@ -68,7 +78,7 @@ class ForkJoinPoolTest {
      *
      * <p>
      * 通过 {@link ForkJoinPool} 类的构造器来创建 Fork/Join 线程池对象,
-     * 其参数包括:
+     * 相关构造器参数包括:
      *
      * <ul>
      * <li>
@@ -176,7 +186,9 @@ class ForkJoinPoolTest {
         var ctx = new EvenRecursiveTask.Context();
 
         // 获取当前系统的逻辑内核数
-        var kernelCount = Runtime.getRuntime().availableProcessors();
+        var kernelCount = SystemInfo.cpuCount();
+
+        Future<List<Integer>> result = null;
 
         // 创建 Fork/Join 线程池
         try (var pool = new ForkJoinPool(
@@ -191,21 +203,20 @@ class ForkJoinPoolTest {
             60,
             TimeUnit.SECONDS)) {
             // 提交计算任务, 计算 1~10000 之间的所有偶数
-            var task = pool.submit(new EvenRecursiveTask(ctx, 1, 10000));
-
-            // 等待所有数值均已被计算过
-            await().atMost(2, TimeUnit.SECONDS)
-                    .untilAsserted(() -> then(ctx.getComputedTimes()).isEqualTo(10000));
-
-            // 确定任务已结束
-            then(task.isDone()).isTrue();
-
-            // 确认计算结果为 5000 个数值, 且均为偶数
-            then(task.get()).hasSize(5000).allMatch(n -> n % 2 == 0);
-
-            // 确认共产生了 7711 个任务
-            then(ctx.getForkCount()).isEqualTo(7711);
+            result = pool.submit(new EvenRecursiveTask(ctx, 1, 10000));
         }
+
+        // 确定任务已结束
+        then(result.isDone()).isTrue();
+
+        // 确认计算结果为 5000 个数值, 且均为偶数
+        then(result.get()).hasSize(5000).allMatch(n -> n % 2 == 0);
+
+        // 确认所有数值均已被计算过
+        then(ctx.getComputedTimes()).isEqualTo(10000);
+
+        // 确认共产生了 7711 个任务
+        then(ctx.getForkCount()).isEqualTo(7711);
     }
 
     /**

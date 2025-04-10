@@ -40,7 +40,7 @@ class ExecutorsTest {
     void newSingleThreadExecutor_shouldExecuteTaskInSingleThread() {
         var threadIds = new ArrayList<Long>();
 
-        // 创建一个单线程线程池
+        // 创建一个单线程线程池, 并等待所有任务执行完毕后, 关闭线程池
         try (var executor = Executors.newSingleThreadExecutor()) {
             // 向线程池中加入 10 个任务
             for (var i = 0; i < 10; i++) {
@@ -48,20 +48,8 @@ class ExecutorsTest {
                     synchronized (threadIds) {
                         // 在集合中记录当前线程的 ID
                         threadIds.add(Thread.currentThread().threadId());
-
-                        // 发送通知, 表示线程结束
-                        threadIds.notify();
                     }
                 });
-            }
-
-            // 等待所有线程发送通知, 且 10 个线程都写入了自己的线程 ID
-            while (threadIds.size() < 10) {
-                synchronized (threadIds) {
-                    if (threadIds.size() < 10) {
-                        threadIds.wait();
-                    }
-                }
             }
         }
 
@@ -95,31 +83,24 @@ class ExecutorsTest {
     @Test
     @SneakyThrows
     void newSingleThreadScheduledExecutor_shouldExecuteScheduleTask() {
-        // 创建一个单线程的定时线程池
+        // 定义数组, 并在数组第一项记录任务开始执行的时间
+        var timer = new long[] { 0L, 0L };
+
+        // 创建一个单线程的定时线程池, 并等待所有任务执行完毕后, 关闭线程池
         try (var executor = Executors.newSingleThreadScheduledExecutor()) {
-            // 定义数组, 并在数组第一项记录任务开始执行的时间
-            var timer = new long[] {
-                System.currentTimeMillis(),
-                0L
-            };
+            timer[0] = System.currentTimeMillis();
 
             // 向线程池中加入一个任务, 该任务在 100ms 后执行
-            var future = executor.schedule(() -> {
+            executor.schedule(() -> {
                 synchronized (timer) {
                     // 记录任务执行时间
                     timer[1] = System.currentTimeMillis();
-
-                    // 发送通知, 表示任务执行完毕
-                    timer.notify();
                 }
             }, 100, TimeUnit.MILLISECONDS);
-
-            // 等待任务执行完毕
-            future.get();
-
-            // 确认任务在 100ms 后执行
-            then(timer[1] - timer[0]).isGreaterThanOrEqualTo(100L);
         }
+
+        // 确认任务在 100ms 后执行
+        then(timer[1] - timer[0]).isGreaterThanOrEqualTo(100L);
     }
 
     /**
@@ -148,6 +129,7 @@ class ExecutorsTest {
     void newSingleThreadScheduledExecutor_shouldExecutePeriodicTask() {
         var threadIds = new ArrayList<Long>();
 
+        // 创建线程池, 并等待所有任务执行完毕后, 关闭线程池
         try (var executor = Executors.newThreadPerTaskExecutor(Thread.ofPlatform().factory())) {
             // 向线程池中加入 10 个任务
             for (var i = 0; i < 10; i++) {
@@ -155,20 +137,8 @@ class ExecutorsTest {
                     synchronized (threadIds) {
                         // 在集合中记录当前线程的 ID
                         threadIds.add(Thread.currentThread().threadId());
-
-                        // 发送通知, 表示线程结束
-                        threadIds.notify();
                     }
                 });
-            }
-
-            // 等待所有线程发送通知, 且 10 个线程都写入了自己的线程 ID
-            while (threadIds.size() < 10) {
-                synchronized (threadIds) {
-                    if (threadIds.size() < 10) {
-                        threadIds.wait();
-                    }
-                }
             }
         }
 
@@ -213,6 +183,7 @@ class ExecutorsTest {
     void newVirtualThreadPerTaskExecutor_shouldExecutePeriodicTaskByVirtualThread() {
         var threadIds = new ArrayList<Long>();
 
+        // 创建线程池, 并等待所有任务执行完毕后, 关闭线程池
         try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
             // 向虚拟线程池中加入 10 个任务
             for (var i = 0; i < 10; i++) {
@@ -220,20 +191,8 @@ class ExecutorsTest {
                     synchronized (threadIds) {
                         // 在集合中记录当前虚拟线程的 ID
                         threadIds.add(Thread.currentThread().threadId());
-
-                        // 发送通知, 表示虚拟线程结束
-                        threadIds.notify();
                     }
                 });
-            }
-        }
-
-        // 等待所有虚拟线程发送通知, 且 10 个线程都写入了自己的虚拟线程 ID
-        for (var i = 0; i < 10; i++) {
-            synchronized (threadIds) {
-                if (threadIds.size() < 10) {
-                    threadIds.wait();
-                }
             }
         }
 
@@ -286,20 +245,8 @@ class ExecutorsTest {
                     synchronized (threadIds) {
                         // 在集合中记录当前虚拟线程的 ID
                         threadIds.add(Thread.currentThread().threadId());
-
-                        // 发送通知, 表示虚拟线程结束
-                        threadIds.notify();
                     }
                 });
-            }
-        }
-
-        // 等待所有虚拟线程发送通知, 且 10 个线程都写入了自己的虚拟线程 ID
-        for (var i = 0; i < cpuCount * 2; i++) {
-            synchronized (threadIds) {
-                if (threadIds.size() < 10) {
-                    threadIds.wait();
-                }
             }
         }
 

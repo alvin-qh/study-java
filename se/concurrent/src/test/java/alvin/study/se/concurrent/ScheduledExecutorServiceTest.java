@@ -4,6 +4,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 import static org.awaitility.Awaitility.await;
 
 import java.util.ArrayList;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import lombok.SneakyThrows;
@@ -81,29 +82,31 @@ class ScheduledExecutorServiceTest {
     @Test
     @SneakyThrows
     void scheduleFuture_shouldScheduleTaskAfterWhile() {
+        long timer = 0L;
+
+        ScheduledFuture<Long> result1, result2, result3;
+
         // 创建延时任务线程池
         try (var executor = ThreadPool.scheduledExecutor(0)) {
             // 记录起始时间
-            var startedMillis = System.currentTimeMillis();
+            timer = System.currentTimeMillis();
 
             // 提交 3 个延时任务, 为每个任务设置延时时间, 任务结果为 Record 类型对象
-            var future1 = executor.schedule(System::currentTimeMillis, 200, TimeUnit.MILLISECONDS);
-            var future2 = executor.schedule(System::currentTimeMillis, 100, TimeUnit.MILLISECONDS);
-            var future3 = executor.schedule(System::currentTimeMillis, 210, TimeUnit.MILLISECONDS);
-
-            // 确认整体任务执行完毕耗时 2100ms, 即最后一个任务执行的时间
-            await().atMost(1, TimeUnit.SECONDS)
-                    .until(() -> future1.isDone() && future2.isDone() && future3.isDone());
-
-            then(System.currentTimeMillis() - startedMillis)
-                    .isGreaterThanOrEqualTo(210)
-                    .isLessThan(310);
-
-            // 确认每个任务的延时时间, 和设定的延时时间一致
-            then(future1.get() - startedMillis).isGreaterThanOrEqualTo(200).isLessThan(210);
-            then(future2.get() - startedMillis).isGreaterThanOrEqualTo(100).isLessThan(110);
-            then(future3.get() - startedMillis).isGreaterThanOrEqualTo(210).isLessThan(220);
+            result1 = executor.schedule(System::currentTimeMillis, 200, TimeUnit.MILLISECONDS);
+            result2 = executor.schedule(System::currentTimeMillis, 100, TimeUnit.MILLISECONDS);
+            result3 = executor.schedule(System::currentTimeMillis, 210, TimeUnit.MILLISECONDS);
         }
+
+        // 确认整体任务执行完毕耗时 2100ms, 即最后一个任务执行的时间
+        then(result1.isDone() && result2.isDone() && result3.isDone()).isTrue();
+
+        // 确认任务执行时间范围
+        then(System.currentTimeMillis() - timer).isBetween(210L, 310L);
+
+        // 确认每个任务的延时时间, 和设定的延时时间一致
+        then(result1.get() - timer).isGreaterThanOrEqualTo(200).isLessThan(210);
+        then(result2.get() - timer).isGreaterThanOrEqualTo(100).isLessThan(110);
+        then(result3.get() - timer).isGreaterThanOrEqualTo(210).isLessThan(220);
     }
 
     /**
@@ -133,28 +136,28 @@ class ScheduledExecutorServiceTest {
         var records = new ArrayList<Long>();
 
         // 记录起始时间
-        var startedMillis = System.currentTimeMillis();
+        var timer = System.currentTimeMillis();
 
         // 创建延时任务线程池
         try (var executor = ThreadPool.scheduledExecutor(0)) {
-
-            // 启动一个固定频率的定时器任务
-            var future = executor.scheduleAtFixedRate(
+            // 启动一个固定频率的定时器任务, 设置执行延迟时间和重复执行频率
+            var result = executor.scheduleAtFixedRate(() -> {
                 // 记录执行时间
-                () -> records.add(System.currentTimeMillis()),
-                // 设置执行延迟时间和重复执行频率
-                100, 200, TimeUnit.MILLISECONDS);
+                records.add(System.currentTimeMillis());
+            }, 100, 200, TimeUnit.MILLISECONDS);
 
             // 等待定时器执行 3 次 (最大耗时约 600ms) 以后, 取消定时器
             await().atMost(600, TimeUnit.MILLISECONDS).untilAsserted(() -> then(records).hasSize(3));
-            future.cancel(false);
 
-            // 确认 3 此任务共耗时 500ms~600ms (第一次间隔 100ms, 后两次均间隔 200ms, 共 500ms)
-            then(System.currentTimeMillis() - startedMillis).isGreaterThanOrEqualTo(500).isLessThan(600);
+            // 取消定时器执行
+            result.cancel(false);
         }
 
+        // 确认 3 此任务共耗时 500ms~600ms (第一次间隔 100ms, 后两次均间隔 200ms, 共 500ms)
+        then(System.currentTimeMillis() - timer).isBetween(500L, 600L);
+
         // 确认每次任务执行间隔时间
-        then(records).map(n -> (n - startedMillis) / 100).containsExactly(1L, 3L, 5L);
+        then(records).map(n -> (n - timer) / 100).containsExactly(1L, 3L, 5L);
     }
 
     /**
@@ -182,26 +185,26 @@ class ScheduledExecutorServiceTest {
         var records = new ArrayList<Long>();
 
         // 记录起始时间
-        var startedMillis = System.currentTimeMillis();
+        var timer = System.currentTimeMillis();
 
         // 创建延时任务线程池
         try (var executor = ThreadPool.scheduledExecutor(0)) {
-            // 启动一个固定频率的定时器任务
-            var future = executor.scheduleWithFixedDelay(
+            // 启动一个固定频率的定时器任务, 设置执行延迟时间和重复执行频率
+            var result = executor.scheduleWithFixedDelay(() -> {
                 // 记录执行时间
-                () -> records.add(System.currentTimeMillis()),
-                // 设置执行延迟时间和重复执行频率
-                100, 200, TimeUnit.MILLISECONDS);
+                records.add(System.currentTimeMillis());
+            }, 100, 200, TimeUnit.MILLISECONDS);
 
             // 等待定时器执行 3 次 (最大耗时 600ms) 以后, 取消定时器
             await().atMost(600, TimeUnit.MILLISECONDS).untilAsserted(() -> then(records).hasSize(3));
-            future.cancel(false);
 
-            // 确认 3 此任务共耗时 5s (第一次间隔 1s, 后两次均间隔 2s, 共 5s)
-            then(System.currentTimeMillis() - startedMillis).isGreaterThanOrEqualTo(500).isLessThan(600);
-
-            // 确认每次任务执行间隔时间
-            then(records).map(n -> (n - startedMillis) / 100).containsExactly(1L, 3L, 5L);
+            result.cancel(false);
         }
+
+        // 确认 3 此任务共耗时 5s (第一次间隔 1s, 后两次均间隔 2s, 共 5s)
+        then(System.currentTimeMillis() - timer).isBetween(500L, 600L);
+
+        // 确认每次任务执行间隔时间
+        then(records).map(n -> (n - timer) / 100).containsExactly(1L, 3L, 5L);
     }
 }
