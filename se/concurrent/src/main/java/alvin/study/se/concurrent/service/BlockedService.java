@@ -18,7 +18,7 @@ import lombok.SneakyThrows;
 @NoArgsConstructor
 public class BlockedService {
     // 每次操作需要等待的时间, 单位毫秒
-    private static final long DELAY_MILLS = 1000;
+    private static final long DELAY_MILLS = 100;
 
     // 保存 id 和模型对象对应关系的 Map 对象
     private final Map<Long, Model> modelMap = new ConcurrentHashMap<>();

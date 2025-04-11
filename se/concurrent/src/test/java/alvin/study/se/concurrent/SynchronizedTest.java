@@ -10,6 +10,7 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
 import alvin.study.se.concurrent.util.Counter;
+import alvin.study.se.concurrent.util.TimeIt;
 
 /**
  * 测试线程互斥
@@ -317,13 +318,13 @@ class SynchronizedTest {
         // 测试等待超时的情况
         synchronized (mutex) {
             // 记录等待前的时间
-            var ts = System.currentTimeMillis();
+            var timeit = TimeIt.start();
 
             // 执行等待, 等待 `100ms`
             mutex.wait(100);
 
             // 等待时间应该大于等于 `100ms`, 表示等待失败
-            then(System.currentTimeMillis() - ts).isGreaterThanOrEqualTo(100);
+            then(timeit.since()).isGreaterThanOrEqualTo(100);
         }
 
         // 测试等待成功的情况
@@ -344,13 +345,13 @@ class SynchronizedTest {
             thread.start();
 
             // 记录等待前的时间
-            var ts = System.currentTimeMillis();
+            var timeit = TimeIt.start();
 
             // 执行等待, 等待 `100ms`
             mutex.wait(100, 100);
 
             // 等待时间应该小于 `100ms`, 表示等待成功
-            then(System.currentTimeMillis() - ts).isLessThan(100);
+            then(timeit.since()).isLessThan(100);
         }
     }
 }

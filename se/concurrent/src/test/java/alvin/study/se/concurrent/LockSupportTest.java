@@ -19,29 +19,31 @@ class LockSupportTest {
      * 将线程阻塞指定的时间
      *
      * <p>
-     * 通过 {@link LockSupport#parkNanos(long)} 方法可以将当前线程阻塞指定的时间
-     * (时间单位为纳秒), 并在等待指定时间后唤醒线程, 该方法类似于
+     * 通过 {@link LockSupport#parkNanos(long)}
+     * 方法可以将当前线程阻塞指定的时间 (时间单位为纳秒),
+     * 并在等待指定时间后唤醒线程, 该方法类似于
      * {@link Thread#sleep(long)} 方法
      * </p>
      *
      * <p>
-     * 和 {@link Thread#sleep(long)} 方法不同, {@code parkNanos} 方法更为底层,
-     * 而 {@code sleep} 方法是借助 {@link LockSupport#park()} 和自旋锁实现,
-     * 会对系统资源有占用
+     * 和 {@link Thread#sleep(long)} 方法不同, {@code parkNanos}
+     * 方法更为底层, 而 {@code sleep} 方法是借助
+     * {@link LockSupport#park()} 和自旋锁实现, 会对系统资源有占用
      * </p>
      *
      * <p>
-     * {@link Thread#sleep(long)} 方法在线程 {@code interrupt} 后会抛出
-     * {@link InterruptedException} 异常来中断阻塞, 而
-     * {@link LockSupport#parkNanos(long)} 方法只是结束阻塞, 继续执行后续代码,
-     * 但线程状态已经为 {@code interrupted} (即 {@link Thread#isInterrupted()})
-     * 会返回 {@code true}
+     * {@link Thread#sleep(long)} 方法在线程 {@code interrupt}
+     * 后会抛出 {@link InterruptedException} 异常来中断阻塞, 而
+     * {@link LockSupport#parkNanos(long)} 方法只是结束阻塞,
+     * 继续执行后续代码, 但线程状态已经为 {@code interrupted}
+     * (即 {@link Thread#isInterrupted()}) 会返回 {@code true}
      * </p>
      *
      * <p>
      * 在执行 {@link LockSupport#parkNanos(long)} 过程中的线程状态为
-     * {@code TIMED_WAITING}, 这一点和执行 {@link Thread#sleep(long)} 方法以及
-     * {@link Object#wait(long)} 是一致的
+     * {@code TIMED_WAITING}, 这一点和执行
+     * {@link Thread#sleep(long)} 方法以及 {@link Object#wait(long)}
+     * 是一致的
      * </p>
      */
     @Test
@@ -59,7 +61,8 @@ class LockSupportTest {
         thread.join();
 
         // 确认线程整个执行时间为 1s
-        then(TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNanos)).isBetween(100L, 110L);
+        then(TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNanos))
+                .isBetween(100L, 110L);
     }
 
     /**
@@ -80,7 +83,9 @@ class LockSupportTest {
     void parkUntil_shouldSuspendThreadToSpecifiedTime() {
         var thread = new Thread(() -> {
             // 设置当前时间 2s 后为阻塞结束时间
-            var deadline = Instant.now().plus(100, ChronoUnit.MILLIS).toEpochMilli();
+            var deadline = Instant.now()
+                    .plus(100, ChronoUnit.MILLIS)
+                    .toEpochMilli();
 
             // 阻塞当前线程直到指定的结束时间
             LockSupport.parkUntil(deadline);
@@ -93,7 +98,8 @@ class LockSupportTest {
         thread.join();
 
         // 确认线程整个执行时间为 100ms±10ms
-        then(TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNanos)).isBetween(90L, 110L);
+        then(TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNanos))
+                .isBetween(90L, 110L);
     }
 
     /**
@@ -129,7 +135,8 @@ class LockSupportTest {
         thread.join();
 
         // 确认被阻塞线程需要 100ms 后解除阻塞
-        then(TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNanos)).isEqualTo(100L);
+        then(TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNanos))
+                .isEqualTo(100L);
     }
 
     /**

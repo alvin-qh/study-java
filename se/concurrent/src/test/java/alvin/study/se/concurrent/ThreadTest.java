@@ -29,6 +29,7 @@ import org.junit.jupiter.api.Test;
 
 import alvin.study.se.concurrent.service.Fibonacci;
 import alvin.study.se.concurrent.util.Threads;
+import alvin.study.se.concurrent.util.TimeIt;
 
 /**
  * 测试 Java 线程
@@ -243,7 +244,7 @@ class ThreadTest {
         then(thread.isAlive()).isFalse();
 
         // 记录线程启动时间
-        var startTime = System.currentTimeMillis();
+        var timeit = TimeIt.start();
 
         // 启动线程
         thread.start();
@@ -255,7 +256,7 @@ class ThreadTest {
         thread.join();
 
         // 确认线程执行完成时间在 200ms 左右
-        then(System.currentTimeMillis() - startTime).isBetween(200L, 220L);
+        then(timeit.since()).isBetween(200L, 220L);
     }
 
     /**
@@ -340,18 +341,20 @@ class ThreadTest {
 
         // 创建第一个线程
         var threadA = new Thread(() -> {
-            var start = System.currentTimeMillis();
+            var timeit = TimeIt.start();
+
             for (int i = 0; i < 1000000; i++) {
                 counterA.incrementAndGet();
             }
 
             // 记录执行时间
-            tsA.set(System.currentTimeMillis() - start);
+            tsA.set(timeit.since());
         }, "thread-A");
 
         // 创建第二个线程
         var threadB = new Thread(() -> {
-            var start = System.currentTimeMillis();
+            var timeit = TimeIt.start();
+
             for (int i = 0; i < 1000000; i++) {
                 // 提示调度器让出当前线程执行权
                 Thread.yield();
@@ -359,7 +362,7 @@ class ThreadTest {
             }
 
             // 记录执行时间
-            tsB.set(System.currentTimeMillis() - start);
+            tsB.set(timeit.since());
         }, "thread-B");
 
         // 启动线程

@@ -10,6 +10,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.Test;
 
+import alvin.study.se.concurrent.util.TimeIt;
+
 /**
  * 测试通过 {@link Timer} 类处理进行定时任务
  *
@@ -49,11 +51,15 @@ class TimerTest {
         // 定义定时器任务类
         class RecordTask extends TimerTask {
             // 记录任务执行时间
-            private long executionTime;
+            private TimeIt timeit = TimeIt.start();
+
+            // 记录任务是否完成
+            private boolean done = false;
 
             @Override
             public void run() {
-                executionTime = System.currentTimeMillis();
+                this.timeit.restart();
+                this.done = true;
             }
 
             /**
@@ -61,21 +67,21 @@ class TimerTest {
              *
              * @return 任务是否完成
              */
-            public boolean isDone() { return executionTime != 0; }
+            public boolean isDone() { return this.done; }
 
             /**
              * 获取任务执行时间
              *
              * @return 任务何时执行完毕的毫秒数
              */
-            public long getExecutionTime() { return executionTime; }
+            public TimeIt getExecutionTime() { return this.timeit; }
         }
 
         // 定义定时器对象
         var timer = new Timer();
 
         // 记录起始时间
-        var startedMillis = System.currentTimeMillis();
+        var timeit = TimeIt.start();
 
         // 提交 3 个延时任务, 为每个任务设置延时时间, 任务结果为 Record 类型对象
         var task1 = new RecordTask();
@@ -87,17 +93,17 @@ class TimerTest {
         var task3 = new RecordTask();
         timer.schedule(task3, 210);
 
-        // 确认整体任务执行完毕耗时 2100ms, 即最后一个任务执行的时间
-        await().atMost(3, TimeUnit.SECONDS)
+        // 确认整体任务执行完毕耗时 210ms, 即最后一个任务执行的时间
+        await().atMost(1, TimeUnit.SECONDS)
                 .until(() -> task1.isDone() && task2.isDone() && task3.isDone());
 
         // 取消定时任务
         timer.cancel();
 
         // 确认每个任务的延时时间, 和设定的延时时间一致
-        then(task1.getExecutionTime() - startedMillis).isGreaterThanOrEqualTo(200).isLessThan(210);
-        then(task2.getExecutionTime() - startedMillis).isGreaterThanOrEqualTo(100).isLessThan(110);
-        then(task3.getExecutionTime() - startedMillis).isGreaterThanOrEqualTo(210).isLessThan(220);
+        then(timeit.since(task1.getExecutionTime())).isBetween(200L, 210L);
+        then(timeit.since(task2.getExecutionTime())).isBetween(100L, 110L);
+        then(timeit.since(task3.getExecutionTime())).isBetween(210L, 220L);
     }
 
     /**
@@ -123,19 +129,19 @@ class TimerTest {
         var timer = new Timer();
 
         // 记录任务执行时间的集合
-        var records = new ArrayList<Long>();
+        var records = new ArrayList<TimeIt>();
 
         // 实例化任务对象
         var task = new TimerTask() {
             @Override
             public void run() {
                 // 记录执行时间
-                records.add(System.currentTimeMillis());
+                records.add(TimeIt.start());
             }
         };
 
         // 记录程序执行的起始时间
-        var startedMillis = System.currentTimeMillis();
+        var timeit = TimeIt.start();
 
         // 开始执行任务, 第一次 100ms 后执行, 之后每 200ms 重复执行一次
         timer.scheduleAtFixedRate(task, 100, 200);
@@ -148,7 +154,8 @@ class TimerTest {
         timer.cancel();
 
         // 确认每次任务的时间间隔
-        then(records).map(n -> (n - startedMillis) / 100).containsExactly(1L, 3L, 5L);
+        then(records).map(t -> timeit.since(t) / 100)
+                .containsExactly(1L, 3L, 5L);
     }
 
     /**
@@ -172,19 +179,19 @@ class TimerTest {
         var timer = new Timer();
 
         // 记录任务执行时间的集合
-        var records = new ArrayList<Long>();
+        var records = new ArrayList<TimeIt>();
 
         // 实例化任务对象
         var task = new TimerTask() {
             @Override
             public void run() {
                 // 记录执行时间
-                records.add(System.currentTimeMillis());
+                records.add(TimeIt.start());
             }
         };
 
         // 记录程序执行的起始时间
-        var startedMillis = System.currentTimeMillis();
+        var timeit = TimeIt.start();
 
         // 开始执行任务, 第一次 100ms 后执行, 之后每 200ms 重复执行一次
         timer.schedule(task, 100, 200);
@@ -197,6 +204,7 @@ class TimerTest {
         timer.cancel();
 
         // 确认每次任务的时间间隔
-        then(records).map(n -> (n - startedMillis) / 100).containsExactly(1L, 3L, 5L);
+        then(records).map(t -> timeit.since(t) / 100)
+                .containsExactly(1L, 3L, 5L);
     }
 }

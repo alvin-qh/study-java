@@ -10,6 +10,8 @@ import lombok.Data;
 
 import org.junit.jupiter.api.Test;
 
+import alvin.study.se.concurrent.util.TimeIt;
+
 /**
  * 测试在并发环境下的 {@link java.util.stream.Stream Stream} 对象
  *
@@ -40,9 +42,7 @@ class ParallelStreamTest {
      */
     @Test
     void parallelStream_shouldCalculateByParallelStream() {
-        /**
-         * 用于保存数据和线程 ID 的类型
-         */
+        // 用于保存数据和线程 ID 的类型
         @Data
         class Record {
             // 该对象的值
@@ -58,7 +58,7 @@ class ParallelStreamTest {
                 .toList();
 
         // 记录起始时间
-        var timestamp = System.currentTimeMillis();
+        var timeit = TimeIt.start();
 
         // 通过并行的 Stream 通过多线程处理数据
         // 本例中使用了 filter 算子, 用于过滤值为奇数的对象
@@ -66,6 +66,7 @@ class ParallelStreamTest {
             try {
                 // 模拟数据处理时间
                 Thread.sleep(100);
+
                 // 过滤数据
                 if (r.getValue() % 2 == 0) {
                     // 记录执行该方法的线程 id
@@ -73,6 +74,7 @@ class ParallelStreamTest {
                     return true;
                 }
             } catch (InterruptedException ignored) {}
+
             return false;
         }).toList();
 
@@ -82,7 +84,8 @@ class ParallelStreamTest {
         await().atMost(10 * 100, TimeUnit.MILLISECONDS)
                 .untilAsserted(() -> then(results).hasSize(5));
 
-        then(System.currentTimeMillis() - timestamp).isLessThan(500);
+        // 确认整体执行时间, 即使只有 2 个线程, 这个过程也会减少到 500ms
+        then(timeit.since()).isLessThan(500);
 
         // 查看执行任务的线程 id, 这里共使用了 5 个线程, 即每个线程处理 2 个对
         var threadIds = results.stream().map(Record::getThreadId).distinct().toList();

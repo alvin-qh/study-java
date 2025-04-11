@@ -1,10 +1,12 @@
 package alvin.study.se.concurrent;
 
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.awaitility.Awaitility.await;
 
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import lombok.SneakyThrows;
@@ -12,6 +14,7 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
 import alvin.study.se.concurrent.util.SystemInfo;
+import alvin.study.se.concurrent.util.TimeIt;
 
 class ExecutorsTest {
     /**
@@ -86,23 +89,26 @@ class ExecutorsTest {
     @SneakyThrows
     void newSingleThreadScheduledExecutor_shouldExecuteScheduleTask() {
         // 定义数组, 并在数组第一项记录任务开始执行的时间
-        var timestamps = new long[] { 0L, 0L };
+        var timeits = new TimeIt[] {
+            TimeIt.start(),
+            TimeIt.start()
+        };
 
         // 创建一个单线程的定时线程池, 并等待所有任务执行完毕后, 关闭线程池
         try (var executor = Executors.newSingleThreadScheduledExecutor()) {
-            timestamps[0] = System.currentTimeMillis();
+            timeits[0].restart();
 
             // 向线程池中加入一个任务, 该任务在 100ms 后执行
             executor.schedule(() -> {
-                synchronized (timestamps) {
+                synchronized (timeits) {
                     // 记录任务执行时间
-                    timestamps[1] = System.currentTimeMillis();
+                    timeits[1].restart();
                 }
             }, 100, TimeUnit.MILLISECONDS);
         }
 
         // 确认任务在 100ms 后执行
-        then(timestamps[1] - timestamps[0]).isGreaterThanOrEqualTo(100L);
+        then(timeits[0].since() - timeits[1].since()).isGreaterThanOrEqualTo(100L);
     }
 
     /**
@@ -257,5 +263,142 @@ class ExecutorsTest {
 
         // 确认 10 个虚拟线程的 ID 都不相同, 即每个任务都在不同的虚拟线程中执行
         then(Set.copyOf(threadIds)).hasSize(cpuCount);
+    }
+
+    /**
+     * 测试延时任务线程池执行器, 在固定时间延迟后执行任务
+     *
+     * <p>
+     * 通过 {@link Executors#newScheduledThreadPool(int)}
+     * 方法可以可以创建一个延时任务线程池执行器, 通过该执行器可以提交一个延时任务,
+     * 并指定该任务执行的延时时间, 通过参数可指定线程池的最大线程数量
+     * </p>
+     *
+     * <p>
+     * 而通过 {@link Executors#newScheduledThreadPool(int,
+     * java.util.concurrent.ThreadFactory)
+     * Executors.newScheduledThreadPool(int, ThreadFactory)}
+     * 方法则可以指定一个线程工厂方法, 用于为线程池创建线程
+     * (例如创建为虚拟线程)
+     * </p>
+     *
+     * @see Executors#newScheduledThreadPool(int)
+     * @see Executors#newScheduledThreadPool(int, java.util.concurrent.ThreadFactory)
+     *      Executors.newScheduledThreadPool(int, ThreadFactory)
+     */
+    @Test
+    @SneakyThrows
+    void newScheduledThreadPool_shouldExecuteTaskAfterWhile() {
+        var timeit = TimeIt.start();
+
+        ScheduledFuture<Long> future1, future2, future3;
+
+        try (var executor = Executors.newScheduledThreadPool(SystemInfo.cpuCount())) {
+            timeit.restart();
+
+            // 提交 3 个延时任务, 为每个任务设置延时时间, 任务结果为 Record 类型对象
+            future1 = executor.schedule(() -> timeit.since(), 200, TimeUnit.MILLISECONDS);
+            future2 = executor.schedule(() -> timeit.since(), 100, TimeUnit.MILLISECONDS);
+            future3 = executor.schedule(() -> timeit.since(), 210, TimeUnit.MILLISECONDS);
+        }
+
+        // 确认 3 个任务都执行完毕
+        then(future1.isDone() && future2.isDone() && future3.isDone()).isTrue();
+
+        // 确认任务执行时间范围
+        then(timeit.since()).isBetween(210L, 310L);
+
+        // 确认每个任务的延时时间, 和设定的延时时间一致
+        then(future1.get()).isBetween(200L, 210L);
+        then(future2.get()).isBetween(100L, 110L);
+        then(future3.get()).isBetween(210L, 220L);
+    }
+
+    /**
+     * 测试延时任务线程池执行器, 按固定频率重复执行任务
+     *
+     * <p>
+     * 通过 {@link Executors#newScheduledThreadPool(int)} 创建的线程池执行器,
+     * 也可以按指定的固定频率去重复执行某个任务, 直到显式取消该任务的继续重复执行
+     * </p>
+     *
+     * @see Executors#newScheduledThreadPool(int)
+     * @see Executors#newScheduledThreadPool(int, java.util.concurrent.ThreadFactory)
+     *      Executors.newScheduledThreadPool(int, ThreadFactory)
+     */
+    @Test
+    void newScheduledThreadPool_shouldScheduleTaskWithFixedRate() {
+        // 记录起始时间
+        var timeit = TimeIt.start();
+
+        // 记录每次任务执行时间的集合
+        var records = new ArrayList<Long>();
+
+        // 创建延时任务线程池
+        try (var executor = Executors.newScheduledThreadPool(SystemInfo.cpuCount())) {
+            timeit.restart();
+
+            // 启动一个固定频率的定时器任务, 设置执行延迟时间和重复执行频率
+            var future = executor.scheduleAtFixedRate(() -> {
+                records.add(timeit.since() / 100);
+            }, 100, 200, TimeUnit.MILLISECONDS);
+
+            // 等待定时器执行 3 次 (最大耗时约 600ms) 以后, 取消定时器
+            await().atMost(600, TimeUnit.MILLISECONDS)
+                    .untilAsserted(() -> then(records).hasSize(3));
+
+            // 取消定时器执行
+            future.cancel(false);
+        }
+
+        // 确认 3 此任务共耗时 500ms~600ms (第一次间隔 100ms, 后两次均间隔 200ms, 共 500ms)
+        then(timeit.since()).isBetween(500L, 600L);
+
+        // 确认每次任务执行间隔时间
+        then(records).containsExactly(1L, 3L, 5L);
+    }
+
+    /**
+     * 测试延时任务线程池执行器, 按固定间隔时间重复执行任务
+     *
+     * <p>
+     * 通过 {@link Executors#newScheduledThreadPool(int)} 创建的线程池执行器,
+     * 也可以按固定的延迟间隔时间, 重复去执行某个任务, 直到显式取消该任务的继续重复执行
+     * </p>
+     *
+     * @see Executors#newScheduledThreadPool(int)
+     * @see Executors#newScheduledThreadPool(int, java.util.concurrent.ThreadFactory)
+     *      Executors.newScheduledThreadPool(int, ThreadFactory)
+     */
+    @Test
+    void scheduledPoolExecutor_shouldRunTaskWithFixedDelay() {
+        // 记录起始时间
+        var timeit = TimeIt.start();
+
+        // 记录每次任务执行时间的集合
+        var records = new ArrayList<Long>();
+
+        // 创建延时任务线程池
+        try (var executor = Executors.newScheduledThreadPool(SystemInfo.cpuCount())) {
+            timeit.restart();
+
+            // 启动一个固定频率的定时器任务, 设置执行延迟时间和重复执行频率
+            var result = executor.scheduleWithFixedDelay(() -> {
+                // 记录执行时间
+                records.add(timeit.since() / 100);
+            }, 100, 200, TimeUnit.MILLISECONDS);
+
+            // 等待定时器执行 3 次 (最大耗时 600ms) 以后, 取消定时器
+            await().atMost(600, TimeUnit.MILLISECONDS)
+                    .untilAsserted(() -> then(records).hasSize(3));
+
+            result.cancel(false);
+        }
+
+        // 确认 3 此任务共耗时 5s (第一次间隔 1s, 后两次均间隔 2s, 共 5s)
+        then(timeit.since()).isBetween(500L, 600L);
+
+        // 确认每次任务执行间隔时间
+        then(records).containsExactly(1L, 3L, 5L);
     }
 }

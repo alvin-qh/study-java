@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import alvin.study.se.concurrent.util.BlockingQueue;
 import alvin.study.se.concurrent.util.Threads;
+import alvin.study.se.concurrent.util.TimeIt;
 
 /**
  * 测试 {@link Semaphore} 类
@@ -50,7 +51,7 @@ class SemaphoreTest {
         var threads = new Thread[MAX_THREADS];
 
         // 记录线程执行结果
-        var results = new ArrayList<Long>();
+        var records = new ArrayList<TimeIt>();
 
         // 同时启动 4 个线程, 在每个线程中通过信号量获取许可证, 并在成功获取到许可证后,
         // 记录获取到许可证的时间
@@ -65,8 +66,8 @@ class SemaphoreTest {
                     semaphore.acquire();
                     try {
                         // 获取到许可证后, 记录获取到许可证的时间
-                        synchronized (results) {
-                            results.add(System.currentTimeMillis());
+                        synchronized (records) {
+                            records.add(TimeIt.start());
                         }
 
                         // 休眠 100ms 后, 释放获取到的许可证, 故后续再要获取许可证,
@@ -85,11 +86,11 @@ class SemaphoreTest {
         then(Threads.joinAll(threads, 1000)).isTrue();
 
         // 确认结果的前两项和后两项的时间差值, 应该在 0ms 左右
-        then(results.get(1) - results.get(0)).isBetween(0L, 10L);
-        then(results.get(3) - results.get(2)).isBetween(0L, 10L);
+        then(records.get(0).since(records.get(0))).isBetween(0L, 10L);
+        then(records.get(2).since(records.get(3))).isBetween(0L, 10L);
 
         // 确认结果的第三项和第四项的时间差值, 应该在 100ms 左右
-        then(results.get(2) - results.get(1)).isBetween(100L, 110L);
+        then(records.get(1).since(records.get(3))).isBetween(100L, 110L);
     }
 
     /**

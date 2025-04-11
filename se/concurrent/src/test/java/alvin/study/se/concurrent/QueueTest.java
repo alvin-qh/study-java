@@ -10,6 +10,7 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
 import alvin.study.se.concurrent.delay.DelayedValue;
+import alvin.study.se.concurrent.util.TimeIt;
 
 public class QueueTest {
     /**
@@ -52,25 +53,27 @@ public class QueueTest {
         queue.offer(new DelayedValue<>(3, 210, TimeUnit.MILLISECONDS));
 
         // 记录当前时间
-        var millis = System.currentTimeMillis();
+        var timeit = TimeIt.start();
 
         // 出队, 因为此时无元素到达延时时间, 所以返回值为 null
         then(queue.poll()).isNull();
 
-        // 休眠 1s 后再次出队, 此时可以出队延时时间为 1s 的元素
+        // 休眠 100ms 后再次出队, 此时可以出队延时时间为 100ms 的元素
         Thread.sleep(100);
         then(queue.poll()).extracting("value").isEqualTo(2);
 
         // 继续出队, 因为此时无元素到达延时时间, 所以返回值为 null
         then(queue.poll()).isNull();
 
-        // 通过 take 方法, 阻塞直到有元素出队, 此时出队延时为 2s 的元素
+        // 通过 take 方法, 阻塞直到有元素出队, 此时出队延时为 200ms 的元素
         then(queue.take()).extracting("value").isEqualTo(1);
 
-        // 继续出队, 并设定超时时间为 110ms, 此时出队延时时间为 2.1s 的元素
-        then(queue.poll(110, TimeUnit.MILLISECONDS)).extracting("value").isEqualTo(3);
+        // 继续出队, 并设定超时时间为 110ms, 此时出队延时时间为 210ms 的元素
+        then(queue.poll(110, TimeUnit.MILLISECONDS))
+                .extracting("value")
+                .isEqualTo(3);
 
-        // 确认整体出队耗时 2100ms, 为延时时间最久的元素出队时间
-        then(System.currentTimeMillis() - millis).isGreaterThanOrEqualTo(210).isLessThan(220);
+        // 确认整体出队耗时 210ms 左右, 为延时时间最久的元素出队时间
+        then(timeit.since()).isBetween(210L, 220L);
     }
 }

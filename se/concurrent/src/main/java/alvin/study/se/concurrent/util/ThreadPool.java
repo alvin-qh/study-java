@@ -85,7 +85,7 @@ import java.util.concurrent.TimeUnit;
  */
 public final class ThreadPool {
     // 允许的最大线程数
-    private static final int MAX_THREAD_COUNT = 1024;
+    public static final int MAX_THREAD_COUNT = 1024;
 
     /**
      * 私有构造器, 禁止实例化对象
@@ -93,28 +93,31 @@ public final class ThreadPool {
     private ThreadPool() {}
 
     /**
-     * 通过阻塞队列创建线程池
+     * 创建一个有界任务队列线程池执行器
      *
      * <p>
-     * 通过 {@link ArrayBlockingQueue} 作为线程池的消息队列,
+     * 该方法创建的线程池通过 {@link ArrayBlockingQueue} 作为任务队列,
      * 该队列的特点是可设置队列最大长度
      * </p>
      *
      * <p>
      * 所以一旦使用 {@link ArrayBlockingQueue} 作为线程池的消息队列,
-     * 则需要同步设置消息队列满时的淘汰策略
+     * 则需要同步设置消息队列满时的淘汰策略, 以便在任务队列满时,
+     * 再加入新任务时, 如何淘汰一个已有任务或新任务
      * </p>
      *
+     * @param maxThread 线程池最大线程数
      * @param queueSize 任务队列的长度
      * @return 线程池执行器对象
      */
-    public static ExecutorService arrayBlockingQueueExecutor(int queueSize) {
+    public static ExecutorService fixedPoolExecutor(int maxThread, int queueSize) {
         if (queueSize <= 0) {
             throw new IllegalArgumentException("queueSize must great than 0");
         }
 
-        // 获取当前系统的 CPU 逻辑核心数 (Logical Kernel)
-        var maxThread = Runtime.getRuntime().availableProcessors();
+        if (maxThread <= 0) {
+            throw new IllegalArgumentException("maxThread must great than 0");
+        }
 
         // 实例化线程池对象
         // 设置核心线程数和最大线程数一致, 所以线程池不会销毁线程也不会增加线程
@@ -134,34 +137,48 @@ public final class ThreadPool {
     }
 
     /**
-     * 创建一个通过 {@link SynchronousQueue} 作为任务队列的线程池
+     * 创建一个有界任务队列线程池执行器
      *
      * <p>
-     * {@link SynchronousQueue} 队列不存储实际的元素, 每向队列添加一个消息,
-     * 需要有线程立即将该消息消费掉, 否则会继续添加消息会失败
+     * 和 {@link #fixedPoolExecutor(int, int)} 方法不同,
+     * 该方法会以当前系统的 CPU 核心数作为线程池的最大线程数
      * </p>
      *
+     * @see #fixedPoolExecutor(int, int)
+     *
+     * @param queueSize 队列大小
+     * @return 线程池对象
+     */
+    public static ExecutorService fixedPoolExecutor(int queueSize) {
+        return fixedPoolExecutor(SystemInfo.cpuCount(), queueSize);
+    }
+
+    /**
+     * 创建一个立即执行任务的线程池执行器
+     *
      * <p>
-     * 这种特性放在线程池场景中, 即每个任务都必须立即有一个线程对其进行执行,
+     * 该线程池通过 {@link SynchronousQueue} 类型作为任务队列,
+     * 该队列的特点是不会缓存任何任务, 即每个任务都必须立即有一个线程对其进行执行,
      * 否则就以拒绝任务来处理
      * </p>
      *
      * <p>
-     * 为避免线程过多, 需通过设置最大线程数来控制线程池中允许的最大线程数,
-     * 默认为 {@link ThreadPool#MAX_THREAD_COUNT}
+     * 该线程池适合大量 IO 密集型任务, 任务的立即执行可以有效提升系统的响应速度,
+     * 但又由于 IO 密集型任务, 也不会导致 CPU 大量占用导致的执行效率低下
      * </p>
      *
-     * @param maxThreads 允许同时运行的最大线程数, 如果为 {@code 0}, 则使用默认线程数
+     * @param maxThreads 允许同时运行的最大线程数
      * @return 线程池执行器对象
      */
-    public static ExecutorService synchronousQueueExecutor(int maxThreads) {
+    public static ExecutorService synchronousTaskExecutor(int maxThreads) {
         if (maxThreads <= 0) {
-            maxThreads = MAX_THREAD_COUNT;
+            throw new IllegalArgumentException("maxThread must great than 0");
         }
 
         // 实例化线程池对象
         // 核心线程数为 0, 表示如果无任务时, 没有活动线程
-        // maxThreads 表示最大线程数, 当有任务提交, 且线程池中无空闲线程时, 会产生新的线程对齐进行处理, 最多产生 maxThreads 个线程
+        // maxThreads 表示最大线程数, 当有任务提交, 且线程池中无空闲线程时,
+        // 会产生新的线程对其进行处理, 最多产生 maxThreads 个线程
         // 产生的线程在 60 秒内可以被后续任务复用, 空闲超过该时间后, 线程销毁
         // 未设置淘汰策略, 所以线程达到最大限度后, 增加任务会导致异常抛出
         return new ThreadPoolExecutor(
@@ -173,19 +190,46 @@ public final class ThreadPool {
     }
 
     /**
+     * 创建一个立即执行任务的线程池执行器
+     *
+     * <p>
+     * 和 {@link #synchronousQueueExecutor()} 方法的区别在于,
+     * 将最大线程数设置为 {@link #MAX_THREAD_COUNT}
+     * </p>
+     *
+     * @return 线程池对象
+     */
+    public static ExecutorService synchronousTaskExecutor() {
+        return synchronousTaskExecutor(MAX_THREAD_COUNT);
+    }
+
+    /**
      * 创建一个用于执行延时异步任务的线程池执行器对象
      *
-     * @param maxThreads 最大线程数, 如果为 {@code 0}, 则使用默认线程数
+     * @param maxThreads 线程池最大线程数
      * @return 用于执行延时异步任务的线程池执行器对象
      */
-    public static ScheduledExecutorService scheduledExecutor(int maxThreads) {
+    public static ScheduledExecutorService scheduledPoolExecutor(int maxThreads) {
         if (maxThreads <= 0) {
-            // 获取当前 CPU 的逻辑内核数 (Logical Kernel)
-            maxThreads = Runtime.getRuntime().availableProcessors();
+            throw new IllegalArgumentException("maxThread must great than 0");
         }
 
         // 实例化延迟任务线程池对象
         return new ScheduledThreadPoolExecutor(maxThreads);
+    }
+
+    /**
+     * 创建一个用于执行延时异步任务的线程池执行器对象
+     *
+     * <p>
+     * 和 {@link #scheduledPoolExecutor()} 方法的区别在于,
+     * 将最大线程数设置为 CPU 核心数
+     * </p>
+     *
+     * @return 用于执行延时异步任务的线程池执行器对象
+     */
+    public static ScheduledExecutorService scheduledPoolExecutor() {
+        return scheduledPoolExecutor(SystemInfo.cpuCount());
     }
 
     /**
