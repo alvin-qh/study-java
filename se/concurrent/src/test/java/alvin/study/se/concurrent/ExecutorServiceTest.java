@@ -267,7 +267,7 @@ class ExecutorServiceTest {
     }
 
     /**
-     * 测试 {@link ExecutorService#shutdown()} 方法, 关闭执行器
+     * 测试关闭执行器
      *
      * <p>
      * {@link ExecutorService#shutdown()} 方法会关闭当前执行器对象,
@@ -300,11 +300,12 @@ class ExecutorServiceTest {
             results.add(
                 executor.submit(() -> {
                     try {
-                        // 每个任务休眠 20 毫秒
-                        Thread.sleep(20);
                         return String.format("%d", index);
-                    } catch (InterruptedException ignore) {
-                        return "";
+                    } finally {
+                        try {
+                            // 任务执行后, 休眠 20ms
+                            Thread.sleep(20);
+                        } catch (InterruptedException ignore) {}
                     }
                 }));
         }
@@ -328,6 +329,207 @@ class ExecutorServiceTest {
         while (!executor.isTerminated()) {
             Thread.onSpinWait();
         }
+
+        // 确认执行的任务总数
+        then(results).hasSize(10);
+
+        // 确认所有任务执行完毕
+        then(results.stream().allMatch(Future::isDone)).isTrue();
+
+        // 确认所有任务执行结果
+        then(results.stream()).map(Future::get).containsExactly(
+            "1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
+    }
+
+    /**
+     * 测试立即关闭执行器
+     *
+     * <p>
+     * {@link ExecutorService#shutdownNow()} 方法会关闭当前执行器对象,
+     * 当执行器被关闭后, 其将不再接受新的任务, 且已提交但尚未执行的任务
+     * (即仍位于任务队列中的任务) 也会被取消
+     * </p>
+     *
+     * <p>
+     * 如果向一个已经关闭的执行器继续提交任务, 则会引发
+     * {@link RejectedExecutionException} 异常, 表示此次任务提交被拒绝
+     * </p>
+     *
+     * <p>
+     * 一旦当前任务被执行完毕后, 执行器对象自动终止, 此时
+     * {@link ExecutorService#isTerminated()} 方法返回 {@code true}
+     * </p>
+     */
+    @Test
+    @SneakyThrows
+    void shutdownNow_shouldShutdownExecutorImmediately() {
+        var results = new ArrayList<Future<String>>();
+
+        // 创建单线程线程池执行器对象, 并等待任务执行完毕后关闭
+        var executor = Executors.newSingleThreadExecutor();
+
+        // 向执行器提交 10 个任务
+        for (var i = 0; i < 10; i++) {
+            var index = i + 1;
+
+            results.add(
+                executor.submit(() -> {
+                    try {
+                        return String.format("%d", index);
+                    } finally {
+                        try {
+                            // 任务执行后, 休眠 20ms
+                            Thread.sleep(100);
+                        } catch (InterruptedException ignore) {}
+                    }
+                }));
+        }
+
+        // 确认执行器目前尚未关闭
+        then(executor.isShutdown()).isFalse();
+
+        // 关闭执行器
+        executor.shutdownNow();
+
+        // 确认执行器已经关闭
+        then(executor.isShutdown()).isTrue();
+
+        // 确认执行器关闭后继续提交任务会抛出异常
+        thenThrownBy(() -> executor.submit(() -> "")).isInstanceOf(RejectedExecutionException.class);
+
+        // 确认此时执行器已经终止
+        then(executor.isTerminated()).isTrue();
+
+        // 确认执行的任务总数
+        then(results).hasSize(10);
+
+        // 确认只有一个任务执行完毕
+        then(results.stream().filter(Future::isDone).count()).isEqualTo(1L);
+
+        // 确认只有一个任务执行完毕, 返回结果
+        then(results.stream()).filteredOn(Future::isDone)
+                .map(Future::get)
+                .containsExactly("1");
+    }
+
+    /**
+     * 测试等待执行器结束
+     *
+     * <p>
+     * 通过 {@link ExecutorService#awaitTermination(long, TimeUnit)} 方法可以等待执行器直到终止
+     * </p>
+     *
+     * <p>
+     * 调用 {@link ExecutorService#awaitTermination(long, TimeUnit)} 方法前, 需要先执行
+     * {@link ExecutorService#shutdown()} 方法, 方能使执行器在稍后停止, 否则
+     * {@link ExecutorService#awaitTermination(long, TimeUnit)} 方法会一直阻塞
+     * </p>
+     */
+    @Test
+    @SneakyThrows
+    void awaitTermination_shouldWaitAllTasksWasCompleted() {
+        var results = new ArrayList<Future<String>>();
+
+        // 创建单线程线程池执行器对象, 并等待任务执行完毕后关闭
+        var executor = Executors.newSingleThreadExecutor();
+
+        // 向执行器提交 10 个任务
+        for (var i = 0; i < 10; i++) {
+            var index = i + 1;
+
+            results.add(
+                executor.submit(() -> {
+                    try {
+                        return String.format("%d", index);
+                    } finally {
+                        try {
+                            // 任务执行后, 休眠 20ms
+                            Thread.sleep(20);
+                        } catch (InterruptedException ignore) {}
+                    }
+                }));
+        }
+
+        // 确认执行器目前尚未关闭
+        then(executor.isShutdown()).isFalse();
+
+        // 关闭执行器
+        executor.shutdown();
+
+        // 确认执行器已经关闭
+        then(executor.isShutdown()).isTrue();
+
+        // 确认在 1 秒内, 所有任务将执行完毕
+        then(executor.awaitTermination(1, TimeUnit.SECONDS)).isTrue();
+
+        // 确认此时执行器已经终止
+        then(executor.isTerminated()).isTrue();
+
+        // 确认执行的任务总数
+        then(results).hasSize(10);
+
+        // 确认所有任务执行完毕
+        then(results.stream().allMatch(Future::isDone)).isTrue();
+
+        // 确认所有任务执行结果
+        then(results.stream()).map(Future::get).containsExactly(
+            "1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
+    }
+
+    /**
+     * 测试关闭执行器对象
+     *
+     * <p>
+     * 通过 {@link ExecutorService#close()} 方法可以关闭执行器对象, 该方法在
+     * JDK 19 版本时加入， 通过实现 {@link AutoCloseable} 接口实现，
+     * 故也可以通过 {@code try (...) {}} 语法在代码块结束后自动关闭执行器对象
+     * </p>
+     *
+     * <p>
+     * {@link ExecutorService#close()} 方法本质上是先执行
+     * {@link ExecutorService#shutdown()} 方法, 再通过类似
+     * {@link ExecutorService#awaitTermination(long, TimeUnit)}
+     * 方法等待执行器终止, 所以 {@link ExecutorService#close()}
+     * 方法的结果就是将已经开始执行以及已经提交到消息队列的任务执行完毕,
+     * 并随后关闭执行器对象
+     * </p>
+     */
+    @Test
+    @SneakyThrows
+    void close_shouldCloseExecutor() {
+        var results = new ArrayList<Future<String>>();
+
+        // 创建单线程线程池执行器对象, 并等待任务执行完毕后关闭
+        var executor = Executors.newSingleThreadExecutor();
+
+        // 向执行器提交 10 个任务
+        for (var i = 0; i < 10; i++) {
+            var index = i + 1;
+
+            results.add(
+                executor.submit(() -> {
+                    try {
+                        return String.format("%d", index);
+                    } finally {
+                        try {
+                            // 任务执行后, 休眠 20ms
+                            Thread.sleep(20);
+                        } catch (InterruptedException ignore) {}
+                    }
+                }));
+        }
+
+        // 确认执行器目前尚未关闭
+        then(executor.isShutdown()).isFalse();
+
+        // 关闭执行器
+        executor.close();
+
+        // 确认执行器已经关闭
+        then(executor.isShutdown()).isTrue();
+
+        // 确认此时执行器已经终止
+        then(executor.isTerminated()).isTrue();
 
         // 确认执行的任务总数
         then(results).hasSize(10);
