@@ -234,6 +234,7 @@ class QueueUtilsTest {
         // 创建新线程, 在线程内进行入队操作
         var thread = new Thread(() -> {
             var ts = System.currentTimeMillis();
+
             // 产生 5 个有序元素, 依次入队
             for (var e : createRangedElements(0, 5, false)) {
                 try {

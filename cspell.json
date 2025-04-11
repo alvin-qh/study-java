@@ -251,6 +251,8 @@
     "thiz",
     "threadpool",
     "thymeleaf",
+    "timeit",
+    "timeits",
     "tmpdir",
     "ulimits",
     "Uninterruptibly",
