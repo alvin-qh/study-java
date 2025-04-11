@@ -30,6 +30,8 @@ import java.util.stream.StreamSupport;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import alvin.study.se.concurrent.util.SystemInfo;
+
 /**
  * 测试 {@link Spliterator} 对象, 即可分割迭代器对象
  *
@@ -367,7 +369,7 @@ class SpliteratorTest {
     @Test
     void parallel_shouldUseSpliteratorInThreadPool() {
         // 建立线程池对象
-        var processorCount = Runtime.getRuntime().availableProcessors();
+        var processorCount = SystemInfo.cpuCount();
         try (var executor = new ThreadPoolExecutor(
             processorCount,
             processorCount,

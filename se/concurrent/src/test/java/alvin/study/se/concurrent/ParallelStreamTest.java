@@ -6,6 +6,8 @@ import static org.awaitility.Awaitility.await;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
+import lombok.Data;
+
 import org.junit.jupiter.api.Test;
 
 /**
@@ -38,16 +40,16 @@ class ParallelStreamTest {
      */
     @Test
     void parallelStream_shouldCalculateByParallelStream() {
-        // 用于保存数据和线程 ID 的类型
+        /**
+         * 用于保存数据和线程 ID 的类型
+         */
+        @Data
         class Record {
             // 该对象的值
             final int value;
+
             // 处理该对象的线程 ID
             long threadId;
-
-            public Record(int value) {
-                this.value = value;
-            }
         }
 
         // 生成 10 个 Record 对象
@@ -56,7 +58,7 @@ class ParallelStreamTest {
                 .toList();
 
         // 记录起始时间
-        var ts = System.currentTimeMillis();
+        var timestamp = System.currentTimeMillis();
 
         // 通过并行的 Stream 通过多线程处理数据
         // 本例中使用了 filter 算子, 用于过滤值为奇数的对象
@@ -65,9 +67,9 @@ class ParallelStreamTest {
                 // 模拟数据处理时间
                 Thread.sleep(100);
                 // 过滤数据
-                if (r.value % 2 == 0) {
+                if (r.getValue() % 2 == 0) {
                     // 记录执行该方法的线程 id
-                    r.threadId = Thread.currentThread().threadId();
+                    r.setThreadId(Thread.currentThread().threadId());
                     return true;
                 }
             } catch (InterruptedException ignored) {}
@@ -80,14 +82,14 @@ class ParallelStreamTest {
         await().atMost(10 * 100, TimeUnit.MILLISECONDS)
                 .untilAsserted(() -> then(results).hasSize(5));
 
-        then(System.currentTimeMillis() - ts).isLessThan(500);
+        then(System.currentTimeMillis() - timestamp).isLessThan(500);
 
         // 查看执行任务的线程 id, 这里共使用了 5 个线程, 即每个线程处理 2 个对
-        var threadIds = results.stream().map(r -> r.threadId).distinct().toList();
+        var threadIds = results.stream().map(Record::getThreadId).distinct().toList();
         then(threadIds).hasSize(5);
 
         // 确认执行结果
-        var evens = results.stream().map(r -> r.value).toList();
+        var evens = results.stream().map(Record::getValue).toList();
         then(evens).containsExactlyInAnyOrder(0, 2, 4, 6, 8);
     }
 }

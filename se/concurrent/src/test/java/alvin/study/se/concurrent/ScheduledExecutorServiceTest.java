@@ -145,7 +145,8 @@ class ScheduledExecutorServiceTest {
             }, 100, 200, TimeUnit.MILLISECONDS);
 
             // 等待定时器执行 3 次 (最大耗时约 600ms) 以后, 取消定时器
-            await().atMost(600, TimeUnit.MILLISECONDS).untilAsserted(() -> then(records).hasSize(3));
+            await().atMost(600, TimeUnit.MILLISECONDS)
+                    .untilAsserted(() -> then(records).hasSize(3));
 
             // 取消定时器执行
             result.cancel(false);

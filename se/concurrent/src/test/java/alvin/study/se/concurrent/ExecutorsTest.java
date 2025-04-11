@@ -11,6 +11,8 @@ import lombok.SneakyThrows;
 
 import org.junit.jupiter.api.Test;
 
+import alvin.study.se.concurrent.util.SystemInfo;
+
 class ExecutorsTest {
     /**
      * 测试单线程线程池
@@ -235,7 +237,7 @@ class ExecutorsTest {
     @SneakyThrows
     void newFixedThreadPool_shouldExecuteTasksByFixedThreadCount() {
         // 获取 CPU 逻辑核心数
-        var cpuCount = Runtime.getRuntime().availableProcessors();
+        var cpuCount = SystemInfo.cpuCount();
 
         var threadIds = new ArrayList<Long>();
 
