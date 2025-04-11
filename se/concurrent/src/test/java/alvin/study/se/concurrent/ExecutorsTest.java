@@ -84,23 +84,23 @@ class ExecutorsTest {
     @SneakyThrows
     void newSingleThreadScheduledExecutor_shouldExecuteScheduleTask() {
         // 定义数组, 并在数组第一项记录任务开始执行的时间
-        var timer = new long[] { 0L, 0L };
+        var timestamps = new long[] { 0L, 0L };
 
         // 创建一个单线程的定时线程池, 并等待所有任务执行完毕后, 关闭线程池
         try (var executor = Executors.newSingleThreadScheduledExecutor()) {
-            timer[0] = System.currentTimeMillis();
+            timestamps[0] = System.currentTimeMillis();
 
             // 向线程池中加入一个任务, 该任务在 100ms 后执行
             executor.schedule(() -> {
-                synchronized (timer) {
+                synchronized (timestamps) {
                     // 记录任务执行时间
-                    timer[1] = System.currentTimeMillis();
+                    timestamps[1] = System.currentTimeMillis();
                 }
             }, 100, TimeUnit.MILLISECONDS);
         }
 
         // 确认任务在 100ms 后执行
-        then(timer[1] - timer[0]).isGreaterThanOrEqualTo(100L);
+        then(timestamps[1] - timestamps[0]).isGreaterThanOrEqualTo(100L);
     }
 
     /**

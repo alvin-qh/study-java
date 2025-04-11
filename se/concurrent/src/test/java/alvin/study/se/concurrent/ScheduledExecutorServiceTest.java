@@ -82,15 +82,13 @@ class ScheduledExecutorServiceTest {
     @Test
     @SneakyThrows
     void scheduleFuture_shouldScheduleTaskAfterWhile() {
-        long timer = 0L;
+        // 记录起始时间
+        long timestamp = System.currentTimeMillis();
 
         ScheduledFuture<Long> result1, result2, result3;
 
         // 创建延时任务线程池
         try (var executor = ThreadPool.scheduledExecutor(0)) {
-            // 记录起始时间
-            timer = System.currentTimeMillis();
-
             // 提交 3 个延时任务, 为每个任务设置延时时间, 任务结果为 Record 类型对象
             result1 = executor.schedule(System::currentTimeMillis, 200, TimeUnit.MILLISECONDS);
             result2 = executor.schedule(System::currentTimeMillis, 100, TimeUnit.MILLISECONDS);
@@ -101,12 +99,12 @@ class ScheduledExecutorServiceTest {
         then(result1.isDone() && result2.isDone() && result3.isDone()).isTrue();
 
         // 确认任务执行时间范围
-        then(System.currentTimeMillis() - timer).isBetween(210L, 310L);
+        then(System.currentTimeMillis() - timestamp).isBetween(210L, 310L);
 
         // 确认每个任务的延时时间, 和设定的延时时间一致
-        then(result1.get() - timer).isGreaterThanOrEqualTo(200).isLessThan(210);
-        then(result2.get() - timer).isGreaterThanOrEqualTo(100).isLessThan(110);
-        then(result3.get() - timer).isGreaterThanOrEqualTo(210).isLessThan(220);
+        then(result1.get() - timestamp).isGreaterThanOrEqualTo(200).isLessThan(210);
+        then(result2.get() - timestamp).isGreaterThanOrEqualTo(100).isLessThan(110);
+        then(result3.get() - timestamp).isGreaterThanOrEqualTo(210).isLessThan(220);
     }
 
     /**
@@ -136,7 +134,7 @@ class ScheduledExecutorServiceTest {
         var records = new ArrayList<Long>();
 
         // 记录起始时间
-        var timer = System.currentTimeMillis();
+        var timestamp = System.currentTimeMillis();
 
         // 创建延时任务线程池
         try (var executor = ThreadPool.scheduledExecutor(0)) {
@@ -154,10 +152,10 @@ class ScheduledExecutorServiceTest {
         }
 
         // 确认 3 此任务共耗时 500ms~600ms (第一次间隔 100ms, 后两次均间隔 200ms, 共 500ms)
-        then(System.currentTimeMillis() - timer).isBetween(500L, 600L);
+        then(System.currentTimeMillis() - timestamp).isBetween(500L, 600L);
 
         // 确认每次任务执行间隔时间
-        then(records).map(n -> (n - timer) / 100).containsExactly(1L, 3L, 5L);
+        then(records).map(n -> (n - timestamp) / 100).containsExactly(1L, 3L, 5L);
     }
 
     /**
@@ -185,7 +183,7 @@ class ScheduledExecutorServiceTest {
         var records = new ArrayList<Long>();
 
         // 记录起始时间
-        var timer = System.currentTimeMillis();
+        var timestamp = System.currentTimeMillis();
 
         // 创建延时任务线程池
         try (var executor = ThreadPool.scheduledExecutor(0)) {
@@ -202,9 +200,9 @@ class ScheduledExecutorServiceTest {
         }
 
         // 确认 3 此任务共耗时 5s (第一次间隔 1s, 后两次均间隔 2s, 共 5s)
-        then(System.currentTimeMillis() - timer).isBetween(500L, 600L);
+        then(System.currentTimeMillis() - timestamp).isBetween(500L, 600L);
 
         // 确认每次任务执行间隔时间
-        then(records).map(n -> (n - timer) / 100).containsExactly(1L, 3L, 5L);
+        then(records).map(n -> (n - timestamp) / 100).containsExactly(1L, 3L, 5L);
     }
 }
