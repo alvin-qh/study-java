@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
 
 import alvin.study.se.concurrent.task.EvenRecursiveTask;
-import alvin.study.se.concurrent.task.EventConutedCompleter;
+import alvin.study.se.concurrent.task.EventCountedCompleter;
 import alvin.study.se.concurrent.util.SystemInfo;
 
 /**
@@ -44,8 +44,8 @@ import alvin.study.se.concurrent.util.SystemInfo;
  * </p>
  *
  * <p>
- * 与 {@link java.util.concurrent.ScheduledThreadPoolExecutor
- * ScheduledThreadPoolExecutor} 相比, {@link ForkJoinPool}
+ * 与 {@link java.util.concurrent.ThreadPoolExecutor
+ * ThreadPoolExecutor} 相比, {@link ForkJoinPool}
  * 会为每一个线程创建一个任务队列, 拆解后的任务会分配到各个线程的队列中,
  * 而且 {@code ScheduledThreadPoolExecutor}
  * 线程池中的任务之间并无先后关联, {@code ForkJoinPool}
@@ -54,13 +54,13 @@ import alvin.study.se.concurrent.util.SystemInfo;
  *
  * <p>
  * 若一个线程工作队列中的任务执行完毕, 进入"空闲"状态后,
- * 该线程会从其它工作线程的队列"窃取"一个任务来执行, 从而保证整体的并发性,
+ * 该线程会从其它工作线程的队列 "窃取" 一个任务来执行, 从而保证整体的并发性,
  * 其中, 工作线程总是从其队列的头部获取任务, 而空闲线程是从其它工作线程队列的
  * "尾部" 窃取任务
  * </p>
  *
  * <p>
- * Fork/Join 线程池应该用于"计算密集型"任务的分解和处理, 而非 IO 密集型,
+ * Fork/Join 线程池应该用于 "计算密集型" 任务的分解和处理, 而非 IO 密集型,
  * 因为 IO 的阻塞并不会实际占用 CPU 资源, 但会占用线程池中的线程,
  * 而 Fork/Join 模式父任务会等待子任务结束, 从而导致连锁的阻塞情况
  * </p>
@@ -188,7 +188,7 @@ class ForkJoinPoolTest {
         // 获取当前系统的逻辑内核数
         var kernelCount = SystemInfo.cpuCount();
 
-        Future<List<Integer>> result = null;
+        Future<List<Integer>> future;
 
         // 创建 Fork/Join 线程池
         try (var pool = new ForkJoinPool(
@@ -203,14 +203,14 @@ class ForkJoinPoolTest {
             60,
             TimeUnit.SECONDS)) {
             // 提交计算任务, 计算 1~10000 之间的所有偶数
-            result = pool.submit(new EvenRecursiveTask(ctx, 1, 10000));
+            future = pool.submit(new EvenRecursiveTask(ctx, 1, 10000));
         }
 
         // 确定任务已结束
-        then(result.isDone()).isTrue();
+        then(future.isDone()).isTrue();
 
         // 确认计算结果为 5000 个数值, 且均为偶数
-        then(result.get()).hasSize(5000).allMatch(n -> n % 2 == 0);
+        then(future.get()).hasSize(5000).allMatch(n -> n % 2 == 0);
 
         // 确认所有数值均已被计算过
         then(ctx.getComputedTimes()).isEqualTo(10000);
@@ -301,7 +301,8 @@ class ForkJoinPoolTest {
     @Test
     void countedCompleter_shouldMarkTaskAsCompletedWithCounter() throws Exception {
         // 提交计算任务, 计算 1~10000 之间的所有偶数
-        var task = ForkJoinPool.commonPool().submit(new EventConutedCompleter(null, 1, 10000));
+        var task = ForkJoinPool.commonPool()
+                .submit(new EventCountedCompleter(null, 1, 10000));
 
         // 等待所有数值均已被计算过
         await().atMost(12, TimeUnit.SECONDS).until(task::isDone);

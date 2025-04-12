@@ -58,6 +58,7 @@ public class EvenRecursiveTask extends RecursiveTask<List<Integer>> {
     // 要计算数值的结束值, 本例中要计算 start ~ end 区间内所有数值中包含的偶数结果
     private final int end;
 
+    // 上下文对象, 记录 fork 任务被执行的次数和计算任务被执行的次数
     private Context context;
 
     /**

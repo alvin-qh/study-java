@@ -13,7 +13,7 @@ import java.util.stream.Stream;
  * 从 {@link CountedCompleter} 类继承, 任务结果为 {@code List<Integer>} 类型值
  * </p>
  */
-public class EventConutedCompleter extends CountedCompleter<List<Integer>> {
+public class EventCountedCompleter extends CountedCompleter<List<Integer>> {
     // 要计算数值的起始值
     private final int start;
 
@@ -34,7 +34,7 @@ public class EventConutedCompleter extends CountedCompleter<List<Integer>> {
      * @param start  计算任务区间范围起始值
      * @param end    计算任务区间范围结束值
      */
-    public EventConutedCompleter(CountedCompleter<List<Integer>> parent, int start, int end) {
+    public EventCountedCompleter(CountedCompleter<List<Integer>> parent, int start, int end) {
         super(parent);
         this.start = start;
         this.end = end;
@@ -63,10 +63,10 @@ public class EventConutedCompleter extends CountedCompleter<List<Integer>> {
             addToPendingCount(2);
 
             // 构建分支 1, 计算前一半数值, 并执行分支, 保存子任务引用
-            child1 = new EventConutedCompleter(this, start, mid).fork();
+            child1 = new EventCountedCompleter(this, start, mid).fork();
 
             // 构建分支 2, 计算后一半数值, 并执行分支, 保存子任务引用
-            child2 = new EventConutedCompleter(this, mid + 1, end).fork();
+            child2 = new EventCountedCompleter(this, mid + 1, end).fork();
         }
 
         // 当前任务结束, 尝试结束根任务
