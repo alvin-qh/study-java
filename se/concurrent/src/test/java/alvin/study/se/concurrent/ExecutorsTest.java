@@ -1,9 +1,13 @@
 package alvin.study.se.concurrent;
 
+import static org.assertj.core.api.Assertions.fail;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 import static org.awaitility.Awaitility.await;
 
+import java.io.IOException;
+import java.security.PrivilegedAction;
+import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -594,17 +598,66 @@ class ExecutorsTest {
         }
     }
 
+    /**
+     * 测试将 {@link Runnable} 或 {@link PrivilegedAction} 接口对象包装为
+     * {@link java.util.concurrent.Callable Callable} 接口对象
+     *
+     * <p>
+     * {@link java.util.concurrent.Callable Callable} 对象是 {@link Runnable}
+     * 对象的子接口, 它表示一个可以返回结果的任务
+     * </p>
+     *
+     * <p>
+     * 有些时候, 异步调用只提供了 {@link java.util.concurrent.Callable} 接口参数,
+     * 但任务却是 {@link Runnable} 或 {@link PrivilegedAction} 接口对象,
+     * 此时就需要将 {@link Runnable} 或 {@link PrivilegedAction}
+     * 接口对象包装为 {@link java.util.concurrent.Callable} 接口对象
+     * </p>
+     *
+     * <p>
+     * 对于 {@link Runnable} 接口对象, 可以通过 {@link Executors#callable(Runnable)}
+     * 方法进行包装, 返回 {@link java.util.concurrent.Callable Callable}
+     * 接口对象. 调用 {@link java.util.concurrent.Callable#call() Callable.call()}
+     * 方法时, 会返回 {@code null} 值
+     * </p>
+     *
+     * <p>
+     * 也可以通过 {@link Executors#callable(Runnable, Object)}
+     * 方法对 {@link Runnable} 接口对象进行包装, 并通过第二个参数指定返回值,
+     * 调用 {@link java.util.concurrent.Callable#call() Callable.call()}
+     * 方法时, 会返回该参数指定的返回值
+     * </p>
+     *
+     * <p>
+     * 对于 {@link PrivilegedAction} 接口对象, 可以通过
+     * {@link Executors#callable(PrivilegedAction)} 方法进行包装,
+     * 调用 {@link java.util.concurrent.Callable#call()} 方法时,
+     * 会返回 {@link PrivilegedAction#run()} 方法本身的返回值
+     * </p>
+     *
+     * <p>
+     * 而对于 {@link PrivilegedExceptionAction} 接口对象, 可以通过
+     * {@link Executors#callable(PrivilegedExceptionAction)}
+     * 方法进行包装, 允许在 {@link PrivilegedAction#run()}
+     * 方法本身的返回值中抛出任意异常
+     * </p>
+     */
     @Test
     @SneakyThrows
-    void ss() {
+    void callable_shouldWrapRunnableOrActionInstanceToCallableInstance() {
+        // 用于记录调用中产生的记录
         var record = new AtomicReference<Object>(null);
 
+        // 1. 通过 `Runnable` 接口对象进行包装
         var caller = Executors.callable(() -> {
+            // 存入记录
             record.set("1 - Executed");
         });
 
+        // 调用 `Callable` 接口对象的 `call()` 方法
         var result = caller.call();
 
+        // 确认返回值为 `null`
         then(result).isNull();
 
         then(record.get()).isEqualTo("1 - Executed");
@@ -615,13 +668,35 @@ class ExecutorsTest {
 
         result = caller.call();
 
-        then(result).isEqualTo("2 - Result");
-
         then(record.get()).isEqualTo("2 - Executed");
 
-        caller = Executors.callable(() -> {
+        then(result).isEqualTo("2 - Result");
+
+        caller = Executors.callable((PrivilegedAction<Object>) () -> {
             record.set("3 - Executed");
             return "3 - Result";
         });
+
+        result = caller.call();
+
+        then(record.get()).isEqualTo("3 - Executed");
+
+        then(result).isEqualTo("3 - Result");
+
+        caller = Executors.callable((PrivilegedExceptionAction<Object>) () -> {
+            if (record.get() != null) {
+                throw new IOException("test");
+            }
+
+            record.set("4 - Executed");
+            return "4 - Result";
+        });
+
+        try {
+            result = caller.call();
+            fail();
+        } catch (Exception e) {
+            then(e).isInstanceOf(IOException.class);
+        }
     }
 }
