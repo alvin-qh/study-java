@@ -16,15 +16,16 @@ import jakarta.ws.rs.core.MediaType;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
+import io.quarkus.qute.CheckedTemplate;
+import io.quarkus.qute.Location;
+import io.quarkus.qute.Template;
+import io.quarkus.qute.TemplateInstance;
+
 import lombok.extern.slf4j.Slf4j;
 
 import alvin.study.quarkus.util.StringUtil;
 import alvin.study.quarkus.web.endpoint.model.UserDto;
 import alvin.study.quarkus.web.persist.entity.Gender;
-import io.quarkus.qute.CheckedTemplate;
-import io.quarkus.qute.Location;
-import io.quarkus.qute.Template;
-import io.quarkus.qute.TemplateInstance;
 
 /**
  * 演示 Quarkus 的后端渲染
@@ -125,11 +126,10 @@ public class TemplatedResource {
             @QueryParam("gender") @DefaultValue("MALE") String gender,
             @QueryParam("birthday") String birthday) {
         try {
-            var user = UserDto.builder()
-                    .name(Objects.requireNonNullElse(name, applicationName))
-                    .gender(Gender.valueOf(gender))
-                    .birthday(StringUtil.emptyThenMapping(birthday, LocalDate::parse))
-                    .build();
+            var user = new UserDto(
+                Objects.requireNonNullElse(name, applicationName),
+                Gender.valueOf(gender),
+                StringUtil.emptyThenMapping(birthday, LocalDate::parse));
             // 通过模板对象的渲染方法, 传递确定的对象类型渲染模板
             return Templates.checkedTemplate(user);
         } catch (IllegalArgumentException | DateTimeParseException e) {

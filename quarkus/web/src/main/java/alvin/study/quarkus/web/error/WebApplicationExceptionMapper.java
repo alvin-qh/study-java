@@ -3,14 +3,6 @@ package alvin.study.quarkus.web.error;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.resteasy.reactive.common.util.MediaTypeHelper;
-
-import alvin.study.quarkus.util.StringUtil;
-import alvin.study.quarkus.web.endpoint.model.ErrorDto;
-import io.quarkus.qute.CheckedTemplate;
-import io.quarkus.qute.TemplateInstance;
-import io.quarkus.runtime.util.ExceptionUtil;
-import io.vertx.core.http.HttpServerRequest;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
@@ -19,8 +11,20 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.StatusType;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
+
+import org.jboss.resteasy.reactive.common.util.MediaTypeHelper;
+
+import io.vertx.core.http.HttpServerRequest;
+
+import io.quarkus.qute.CheckedTemplate;
+import io.quarkus.qute.TemplateInstance;
+import io.quarkus.runtime.util.ExceptionUtil;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import alvin.study.quarkus.util.StringUtil;
+import alvin.study.quarkus.web.endpoint.model.ErrorDto;
 
 /**
  * 自定义异常处理
@@ -169,11 +173,10 @@ public class WebApplicationExceptionMapper implements ExceptionMapper<Exception>
      * @return 表示错误的对象
      */
     private ErrorDto createJsonErrorResponse(StatusType errorStatus, String errorDetails) {
-        return ErrorDto.builder()
-                .message(errorStatus.getReasonPhrase())
-                .detail(errorDetails)
-                .status(errorStatus.getStatusCode())
-                .build();
+        return new ErrorDto(
+            errorStatus.getStatusCode(),
+            errorStatus.getReasonPhrase(),
+            errorDetails);
     }
 
     /**
@@ -189,11 +192,10 @@ public class WebApplicationExceptionMapper implements ExceptionMapper<Exception>
      */
     private TemplateInstance createHtmlErrorContent(Response.StatusType errorStatus, String errorDetails) {
         return Templates.error(
-            ErrorDto.builder()
-                    .status(errorStatus.getStatusCode())
-                    .message(errorStatus.getReasonPhrase())
-                    .detail(errorDetails)
-                    .build());
+            new ErrorDto(
+                errorStatus.getStatusCode(),
+                errorStatus.getReasonPhrase(),
+                errorDetails));
     }
 
     /**

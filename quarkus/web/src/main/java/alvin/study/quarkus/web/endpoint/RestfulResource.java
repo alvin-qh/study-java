@@ -75,18 +75,16 @@ public class RestfulResource {
     @Path("users")
     public List<UserDto> users() {
         return List.of(
-            UserDto.builder()
-                    .id("001")
-                    .name("Alvin")
-                    .gender(Gender.MALE)
-                    .birthday(LocalDate.of(1981, 3, 17))
-                    .build(),
-            UserDto.builder()
-                    .id("002")
-                    .name("Emma")
-                    .gender(Gender.FEMALE)
-                    .birthday(LocalDate.of(1985, 3, 29))
-                    .build());
+            new UserDto(
+                "001",
+                "Alvin",
+                Gender.MALE,
+                LocalDate.of(1981, 3, 17)),
+            new UserDto(
+                "002",
+                "Emma",
+                Gender.FEMALE,
+                LocalDate.of(1985, 3, 29)));
     }
 
     /**
@@ -102,22 +100,12 @@ public class RestfulResource {
         var id = UUID.randomUUID().toString();
 
         // 创建实体对象
-        var entity = User.builder()
-                .id(id)
-                .name(user.name())
-                .birthday(user.birthday())
-                .gender(user.gender())
-                .build();
+        var entity = new User(id, user.name(), user.birthday(), user.gender());
 
         // 存储实体对象
         dataSource.save(id, entity);
 
         // 返回结果
-        return UserDto.builder()
-                .id(entity.id())
-                .name(entity.name())
-                .birthday(entity.birthday())
-                .gender(entity.gender())
-                .build();
+        return new UserDto(entity.id(), entity.name(), entity.gender(), entity.birthday());
     }
 }

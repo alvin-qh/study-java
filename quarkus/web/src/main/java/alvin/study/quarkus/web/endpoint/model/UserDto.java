@@ -6,8 +6,6 @@ import java.time.Period;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import lombok.Builder;
-
 import alvin.study.quarkus.web.persist.entity.Gender;
 
 /**
@@ -22,12 +20,15 @@ import alvin.study.quarkus.web.persist.entity.Gender;
  * 本例中通过 {@code resources:ValidationMessages_*.properties} 文件来指定错误信息
  * </p>
  */
-@Builder
 public record UserDto(
         String id,
         @NotBlank String name,
-        @NotNull LocalDate birthday,
-        @NotNull Gender gender) {
+        @NotNull Gender gender,
+        @NotNull LocalDate birthday) {
+    public UserDto(String name, Gender gender, LocalDate birthday) {
+        this(null, name, gender, birthday);
+    }
+
     public boolean isOlderThan(int age) {
         if (birthday == null) {
             return false;

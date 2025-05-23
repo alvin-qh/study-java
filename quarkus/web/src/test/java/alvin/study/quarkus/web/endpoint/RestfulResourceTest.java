@@ -8,6 +8,17 @@ import static org.hamcrest.Matchers.is;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.inject.Inject;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.Response.Status;
+
+import io.restassured.common.mapper.TypeRef;
+import io.restassured.http.ContentType;
+
+import io.quarkus.hibernate.validator.runtime.jaxrs.ViolationReport.Violation;
+import io.quarkus.test.junit.QuarkusTest;
+
 import org.junit.jupiter.api.Test;
 
 import alvin.study.quarkus.web.endpoint.model.ErrorDto;
@@ -16,14 +27,6 @@ import alvin.study.quarkus.web.interceptor.Response;
 import alvin.study.quarkus.web.persist.DataSource;
 import alvin.study.quarkus.web.persist.entity.Gender;
 import alvin.study.quarkus.web.persist.entity.User;
-import io.quarkus.hibernate.validator.runtime.jaxrs.ViolationReport.Violation;
-import io.quarkus.test.junit.QuarkusTest;
-import io.restassured.common.mapper.TypeRef;
-import io.restassured.http.ContentType;
-import jakarta.inject.Inject;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.ws.rs.core.HttpHeaders;
-import jakarta.ws.rs.core.Response.Status;
 
 /**
  * 测试 {@link RestfulResource} 类, RESTful API 调用
@@ -145,13 +148,13 @@ class RestfulResourceTest {
                     new UserDto(
                         "001",
                         "Alvin",
-                        LocalDate.of(1981, 3, 17),
-                        Gender.MALE),
+                        Gender.MALE,
+                        LocalDate.of(1981, 3, 17)),
                     new UserDto(
                         "002",
                         "Emma",
-                        LocalDate.of(1985, 3, 29),
-                        Gender.FEMALE));
+                        Gender.FEMALE,
+                        LocalDate.of(1985, 3, 29)));
     }
 
     /**
@@ -166,12 +169,7 @@ class RestfulResourceTest {
         // 发送 POST 请求
         var resp = given().when()
                 .contentType(ContentType.JSON)
-                .body(
-                    UserDto.builder()
-                            .name("Alvin")
-                            .birthday(LocalDate.of(1981, 3, 17))
-                            .gender(Gender.MALE)
-                            .build())
+                .body(new UserDto("Alvin", Gender.MALE, LocalDate.of(1981, 3, 17)))
                 .post("restful/users")
                 .then()
                 .statusCode(Status.CREATED.getStatusCode()) // 确认返回 201 状态码
@@ -223,10 +221,7 @@ class RestfulResourceTest {
                 .contentType(ContentType.JSON)
                 .body(
                     // 少传递一个 name 参数, 这样会导致 UserDto 的 name 属性 NotBlank 生效, 导致验证失败
-                    UserDto.builder()
-                            .birthday(LocalDate.of(1981, 3, 17))
-                            .gender(Gender.MALE)
-                            .build())
+                    new UserDto(null, Gender.MALE, LocalDate.of(1981, 3, 17)))
                 .post("restful/users")
                 .then()
                 .statusCode(Status.BAD_REQUEST.getStatusCode()) // 确认返回 201 状态码
@@ -267,10 +262,7 @@ class RestfulResourceTest {
                 .contentType(ContentType.JSON)
                 .body(
                     // 少传递一个 name 参数, 这样会导致 UserDto 的 name 属性 NotBlank 生效, 导致验证失败
-                    UserDto.builder()
-                            .birthday(LocalDate.of(1981, 3, 17))
-                            .gender(Gender.MALE)
-                            .build())
+                    new UserDto(null, Gender.MALE, LocalDate.of(1981, 3, 17)))
                 .post("restful/users")
                 .then()
                 .statusCode(Status.BAD_REQUEST.getStatusCode()) // 确认返回 201 状态码

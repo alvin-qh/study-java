@@ -2,12 +2,10 @@ package alvin.study.quarkus.web.endpoint.model;
 
 import java.util.List;
 
-import lombok.Builder;
-
-import alvin.study.quarkus.util.ObjectUtil;
 import io.quarkus.hibernate.validator.runtime.jaxrs.ViolationReport.Violation;
 
-@Builder
+import alvin.study.quarkus.util.ObjectUtil;
+
 public record ErrorDto(int status, String message, String detail, List<Violation> violations) {
     public ErrorDto {
         violations = List.copyOf(ObjectUtil.nullElse(violations, List.of()));

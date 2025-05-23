@@ -3,15 +3,18 @@ package alvin.study.quarkus.web.interceptor;
 import java.io.IOException;
 import java.time.Instant;
 
-import alvin.study.quarkus.web.endpoint.model.ErrorDto;
-import io.quarkus.hibernate.validator.runtime.jaxrs.ViolationReport;
-import io.quarkus.qute.TemplateInstance;
-import io.vertx.core.http.HttpServerRequest;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.ext.Provider;
 import jakarta.ws.rs.ext.WriterInterceptor;
 import jakarta.ws.rs.ext.WriterInterceptorContext;
+
+import io.vertx.core.http.HttpServerRequest;
+
+import io.quarkus.hibernate.validator.runtime.jaxrs.ViolationReport;
+import io.quarkus.qute.TemplateInstance;
+
+import alvin.study.quarkus.web.endpoint.model.ErrorDto;
 
 /**
  * 定义写拦截器
@@ -32,12 +35,11 @@ public class ResponseWrapperInterceptor implements WriterInterceptor {
             payload = resolveResponseEntity(payload);
             // 如果响应内容为一个 DTO 对象 (也包括 ErrorDto 对象), 则将其包装为 Response 对象返回
             context.setEntity(
-                Response.builder()
-                        .ok(!(payload instanceof ErrorDto))
-                        .payload(payload)
-                        .path(request.uri())
-                        .timestamp(Instant.now())
-                        .build());
+                new Response<>(
+                    !(payload instanceof ErrorDto),
+                    payload,
+                    request.uri(),
+                    Instant.now()));
         }
 
         // 处理下一个 WriteInterceptor 拦截器
@@ -52,11 +54,7 @@ public class ResponseWrapperInterceptor implements WriterInterceptor {
      */
     private Object resolveResponseEntity(Object payload) {
         if (payload instanceof ViolationReport vr) {
-            payload = ErrorDto.builder()
-                    .status(vr.getStatus())
-                    .message(vr.getTitle())
-                    .violations(vr.getViolations())
-                    .build();
+            payload = new ErrorDto(vr.getStatus(), vr.getTitle(), vr.getViolations());
         }
 
         return payload;
