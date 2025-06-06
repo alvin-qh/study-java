@@ -14,6 +14,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -50,13 +51,13 @@ import alvin.study.springboot.springdoc.util.security.PasswordEncoder;
  */
 public class CustomRequestFilter extends OncePerRequestFilter {
     // 拦截 swagger 访问的 URL 匹配器
-    private final AntPathRequestMatcher[] swaggerUrlMatchers;
+    private final PathPatternRequestMatcher[] swaggerUrlMatchers;
 
     // 拦截 api 访问的 URL 匹配器
-    private final AntPathRequestMatcher[] apiUrlMatchers;
+    private final PathPatternRequestMatcher[] apiUrlMatchers;
 
     // 需要排除拦截的 URL 匹配器
-    private final AntPathRequestMatcher[] excludeRequestMatchers;
+    private final PathPatternRequestMatcher[] excludeRequestMatchers;
 
     // 注入用户服务对象 (swagger 用户处理)
     private final UserDetailsService userDetailsService;
@@ -102,10 +103,10 @@ public class CustomRequestFilter extends OncePerRequestFilter {
      * @param urlPatterns URL 匹配字符串数组
      * @return {@link AntPathRequestMatcher} 数组
      */
-    private static AntPathRequestMatcher[] buildMatchers(String[] urlPatterns) {
-        var matchers = new AntPathRequestMatcher[urlPatterns.length];
+    private static PathPatternRequestMatcher[] buildMatchers(String[] urlPatterns) {
+        var matchers = new PathPatternRequestMatcher[urlPatterns.length];
         for (var i = 0; i < urlPatterns.length; i++) {
-            matchers[i] = new AntPathRequestMatcher(urlPatterns[i]);
+            matchers[i] = PathPatternRequestMatcher.withDefaults().matcher(urlPatterns[i]);
         }
         return matchers;
     }
@@ -117,7 +118,7 @@ public class CustomRequestFilter extends OncePerRequestFilter {
      * @param request  请求对象
      * @return 是否匹配成功
      */
-    private static boolean checkIfMatcherMatches(AntPathRequestMatcher[] matchers, HttpServletRequest request) {
+    private static boolean checkIfMatcherMatches(PathPatternRequestMatcher[] matchers, HttpServletRequest request) {
         for (var matcher : matchers) {
             if (matcher.matches(request)) {
                 return true;
