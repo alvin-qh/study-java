@@ -1,5 +1,8 @@
 package alvin.study.se.mail;
 
+import java.util.Date;
+import java.util.Properties;
+
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
@@ -11,15 +14,14 @@ import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
 
-import java.util.Date;
-import java.util.Properties;
-
 /**
  * 通过 {@code jakarta} ({@code javax}) 邮件 API 发送邮件
  */
 public class SimpleMailClientBuilder {
     // 指定 SSL Socket 工厂类
+    @SuppressWarnings("unused")
     private static final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
+
     // 指定邮件正文内容编码格式
     private static final String HTML_CONTENT_TYPE = "text/html; charset=UTF-8";
 
@@ -40,7 +42,7 @@ public class SimpleMailClientBuilder {
     // 是否需要回执
     private boolean fallback = false;
     // 是否开启 TLS 协议
-    private boolean startTlsEnable = true;
+    private boolean startTlsEnable = false;
     // 使用邮件服务的协议
     private String protocol = "smtp";
 
@@ -188,7 +190,7 @@ public class SimpleMailClientBuilder {
         props.put("mail.smtp.port", smtpPort);
         props.put("mail.smtp.socketFactory.port", smtpPort);
         props.put("mail.smtp.ssl.checkserveridentity", true);
-        props.put("mail.smtp.socketFactory.class", SSL_FACTORY);
+        // props.put("mail.smtp.socketFactory.class", SSL_FACTORY);
         props.put("mail.smtp.socketFactory.fallback", fallback);
         props.put("mail.transport.protocol", protocol);
         return props;

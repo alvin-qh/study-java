@@ -11,7 +11,11 @@ import org.junit.jupiter.api.Test;
  * </p>
  *
  * <p>
- * 本例中使用 SMTP 协议进行邮件发送, 所以邮件服务开启 SMTP 协议支持
+ * 本例通过 MailDev 作为邮件服务, 需通过 Docker 启动, 需执行
+ *
+ * <pre>
+ * 
+ * </pre>
  * </p>
  */
 class MailClientTest {
@@ -22,7 +26,7 @@ class MailClientTest {
     @Disabled
     void send_shouldSendMailByMailClient() throws Exception {
         // 创建邮件发送客户端对象
-        var client = new SimpleMailClientBuilder("smtp.163.com", 994, "quhao317@163.com", "****").build();
+        var client = new SimpleMailClientBuilder("localhost", 994, "quhao317@163.com", "1234567").build();
 
         // 发送邮件
         client.send(

@@ -21,13 +21,31 @@
         <artifactId>jakarta.mail-api</artifactId>
         <version>${version.jakarta-mail}</version>
       </dependency>
+      <dependency>
+        <groupId>jakarta.activation</groupId>
+        <artifactId>jakarta.activation-api</artifactId>
+        <version>${version.jakarta-activation}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.angus</groupId>
+        <artifactId>jakarta.mail</artifactId>
+        <version>${version.angus-mail}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
   <dependencies>
     <dependency>
       <groupId>jakarta.mail</groupId>
-        <artifactId>jakarta.mail-api</artifactId>
+      <artifactId>jakarta.mail-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.activation</groupId>
+      <artifactId>jakarta.activation-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.angus</groupId>
+      <artifactId>jakarta.mail</artifactId>
     </dependency>
   </dependencies>
 </project>
