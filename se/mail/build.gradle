@@ -1,3 +1,5 @@
 dependencies {
   implementation "jakarta.mail:jakarta.mail-api:${VER_JAKARTA_MAIL}"
+  implementation "jakarta.activation:jakarta.activation-api:${VER_JAKARTA_ACTIVATION}"
+  implementation "org.eclipse.angus:jakarta.mail:${VER_ANGUS_MAIL}"
 }

@@ -29,6 +29,7 @@
     <module>jooq</module>
     <module>shiro</module>
     <module>graphql</module>
+    <module>mail</module>
   </modules>
 
   <dependencyManagement>

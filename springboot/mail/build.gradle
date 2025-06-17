@@ -1,0 +1,20 @@
+springBoot {
+  mainClass = "alvin.study.springboot.mail.Main"
+}
+
+bootJar {
+  exclude "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA", "META-INF/*.MF"
+
+  // 配置 MANIFEST.MF 文件内容
+  manifest {
+    attributes "Implementation-Title": "Study Spring Boot Mail"
+    attributes "Implementation-Version": projectVersion.version
+  }
+
+  archiveBaseName = project.group
+  archiveFileName = "alvin.study.springboot-mail.${archiveExtension.get()}"
+}
+
+dependencies {
+  implementation "org.springframework.boot:spring-boot-starter-mail"
+}

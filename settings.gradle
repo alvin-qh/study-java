@@ -101,6 +101,7 @@ include(
   ":springboot:shiro",
   ":springboot:springdoc",
   ":springboot:graphql",
+  ":springboot:mail",
 )
 
 include(

@@ -1,0 +1,26 @@
+services:
+  maildev:
+    # nacos 配置存储数据库
+    image: maildev/maildev:2.2.1
+    hostname: maildev
+    container_name: maildev
+    restart: always
+    privileged: true
+    deploy:
+      resources:
+        limits:
+          cpus: "1.00"
+          memory: 256M
+        reservations:
+          memory: 128M
+    env_file:
+      - ./env/maildev.env
+    ports:
+      - "994:994"
+      - "8765:8765"
+    networks:
+      - maildev_network
+networks:
+  maildev_network:
+volumes:
+  maildev_data:

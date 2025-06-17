@@ -1,0 +1,28 @@
+#
+# https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#application-properties.core
+#
+# 配置 SpringBoot
+spring:
+  application:
+    name: study-springboot-mail
+
+  # 测试用邮件发送配置
+  mail:
+    host: localhost
+    username: quhao317@163.com
+    password: 1234567
+    default-encoding: UTF-8
+    protocol: smtp
+    port: 994
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: false
+          starttls:
+            enable: false
+            required: false
+          socketFactory:
+            class:
+            fallback: false

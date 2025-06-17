@@ -1,6 +1,5 @@
-package alvin.study.springboot.spel;
+package alvin.study.springboot.mail;
 
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -13,18 +12,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * </p>
  */
 @SpringBootApplication
-public class Main implements CommandLineRunner {
+public class Main {
     /**
      * 启动应用程序的主方法
      *
      * @param args 命令行参数
      */
     public static void main(String[] args) {
-        System.setProperty("Log4jContextSelector", "org.apache.logging.log4j.core.async.AsyncLoggerContextSelector");
-
-        SpringApplication.run(Main.class, args);
+        new SpringApplication(Main.class).run(args);
     }
-
-    @Override
-    public void run(String... args) throws Exception {}
 }

@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
  * 本例通过 MailDev 作为邮件服务, 需通过 Docker 启动, 需执行
  *
  * <pre>
- * 
+ * docker compose -f se/mail/docker/docker-compose.yml up
  * </pre>
  * </p>
  */

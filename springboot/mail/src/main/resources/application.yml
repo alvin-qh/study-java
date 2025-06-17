@@ -1,0 +1,28 @@
+#
+# https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#application-properties.core
+#
+# 配置 SpringBoot
+spring:
+  application:
+    name: study-springboot-mail
+
+  # 用邮件发送配置
+  mail:
+    host: smtp.163.com
+    username: quhao317@163.com
+    password: TASYCTIQYEZFGNSW
+    default-encoding: UTF-8
+    protocol: smtps
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+          starttls:
+            enable: true
+            required: true
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+            fallback: false
+            port: 994
