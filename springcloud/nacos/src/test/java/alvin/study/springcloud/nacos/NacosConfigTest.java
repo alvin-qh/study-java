@@ -68,6 +68,9 @@ class NacosConfigTest extends BaseTest {
         var event = new Object();
         var changeItems = new ArrayList<>();
 
+        // 修改配置信息
+        assert nacosUtil.publishConfig(CONFIG_DATA_ID, CONFIG_GROUP, loadTestChangedConfig(), ConfigType.YAML);
+
         // 增加监听器, 监听配置改变事件回调
         nacosUtil.addConfigListener(CONFIG_DATA_ID, CONFIG_GROUP, new AbstractConfigChangeListener() {
             /**
@@ -90,15 +93,12 @@ class NacosConfigTest extends BaseTest {
             }
         });
 
-        // 修改配置信息
-        assert nacosUtil.publishConfig(CONFIG_DATA_ID, CONFIG_GROUP, loadTestChangedConfig(), ConfigType.YAML);
-
         // 等待事件通知回调函数结束
         synchronized (event) {
             event.wait(5000);
         }
 
-        // 确认收到了了一条配置项更改通知
+        // 确认收到了一条配置项更改通知
         then(changeItems).containsExactly("common.search_url:https://www.google.com");
 
         // 确认配置对象被正确刷新

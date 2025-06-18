@@ -69,7 +69,7 @@
     <!-- End dev dependencies -->
 
     <!-- Begin test dependencies -->
-    <version.junit>5.12.1</version.junit>
+    <version.junit>5.13.1</version.junit>
     <version.junit-pioneer>2.3.0</version.junit-pioneer>
     <version.testng>7.11.0</version.testng>
     <version.hamcrest>3.0</version.hamcrest>
