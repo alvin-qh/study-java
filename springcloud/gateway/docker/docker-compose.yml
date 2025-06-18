@@ -1,7 +1,7 @@
 services:
   # 启动 nacos 实例
   nacos:
-    image: nacos/nacos-server:v2.5.1
+    image: nacos/nacos-server:v3.0.1
     hostname: nacos
     container_name: nacos
     env_file:
@@ -11,6 +11,7 @@ services:
       - "8848:8848"
       - "9848:9848"
       - "9849:9849"
+      - "8888:8888"
     volumes:
       - ./nacos_logs:/home/nacos/logs
     privileged: true

@@ -173,6 +173,7 @@ services:
       - "8848:8848"
       - "9848:9848"
       - "9849:9849"
+      - "8888:8888"
     networks:
       - nacos_network
     depends_on:
