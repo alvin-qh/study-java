@@ -10,10 +10,17 @@ import org.junit.jupiter.api.Test;
 
 import alvin.study.springboot.mail.IntegrationTest;
 
+/**
+ * 测试 Springboot 发送邮件功能
+ */
 class TestSendMail extends IntegrationTest {
+    // 注入邮件发送对象
     @Autowired
     private JavaMailSender mailSender;
 
+    /**
+     * 测试发送邮件功能
+     */
     @Test
     @SneakyThrows
     void send_shouldSendMail() {

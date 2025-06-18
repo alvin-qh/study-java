@@ -6,6 +6,10 @@ spring:
   application:
     name: study-springboot-mail
 
+  main:
+    banner-mode: off
+    allow-bean-definition-overriding: true
+
   # 测试用邮件发送配置
   mail:
     host: localhost

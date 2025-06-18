@@ -62,8 +62,8 @@
 
     <version.springdoc>2.8.5</version.springdoc>
 
-    <version.quarkus>3.19.2</version.quarkus>
-    <version.rest-assured>5.5.1</version.rest-assured>
+    <version.quarkus>3.23.3</version.quarkus>
+    <version.rest-assured>5.5.5</version.rest-assured>
 
     <version.optaplanner>10.0.0</version.optaplanner>
     <!-- End dev dependencies -->
