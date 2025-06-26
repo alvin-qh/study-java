@@ -56,7 +56,7 @@
     <version.mybatis-plus>3.5.10.1</version.mybatis-plus>
     <version.flyway>11.4.1</version.flyway>
 
-    <version.spring-boot>3.5.0</version.spring-boot>
+    <version.spring-boot>3.5.3</version.spring-boot>
     <version.spring-cloud>2025.0.0</version.spring-cloud>
     <version.alibaba-cloud>2023.0.1.0</version.alibaba-cloud>
 
