@@ -1,11 +1,11 @@
-buildscript {
-  // 遍历所有的依赖
-  configurations["classpath"].resolutionStrategy.eachDependency {
-      if (requested.group.startsWith("org.jooq") && requested.name.startsWith("jooq")) {
-          useVersion "${VER_JOOQ}"
-      }
-  }
-}
+// buildscript {
+//   // 遍历所有的依赖
+//   configurations["classpath"].resolutionStrategy.eachDependency {
+//       if (requested.group.startsWith("org.jooq") && requested.name.startsWith("jooq")) {
+//           useVersion "${VER_JOOQ}"
+//       }
+//   }
+// }
 
 // 需要将 Spring 依赖的 JOOQ 版本进行替换, 参见 settings.gradle 中 buildscript 部分的配置
 plugins {

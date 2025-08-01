@@ -31,73 +31,73 @@
     <version.jakarta-servlet>6.1.0</version.jakarta-servlet>
     <version.jakarta-xml>4.0.2</version.jakarta-xml>
     <version.auth-jwt>4.5.0</version.auth-jwt>
-    <version.picocli>4.7.6</version.picocli>
+    <version.picocli>4.7.7</version.picocli>
     <version.guice>7.0.0</version.guice>
-    <version.jackson>2.18.3</version.jackson>
-    <version.modelmapper>3.2.2</version.modelmapper>
-    <version.akka>3.2.2</version.akka>
-    <version.jetty>12.0.16</version.jetty>
-    <version.shiro>2.0.2</version.shiro>
-    <version.graphql-java>22.0</version.graphql-java>
-    <version.context-propagation>1.1.2</version.context-propagation>
+    <version.jackson>2.19.2</version.jackson>
+    <version.modelmapper>3.2.4</version.modelmapper>
+    <version.akka>2.10.7</version.akka>
+    <version.jetty>12.0.23</version.jetty>
+    <version.shiro>2.0.5</version.shiro>
+    <version.graphql-java>24.0</version.graphql-java>
+    <version.context-propagation>1.1.3</version.context-propagation>
 
-    <version.slf4j>2.0.16</version.slf4j>
-    <version.log4j>2.24.3</version.log4j>
+    <version.slf4j>2.0.17</version.slf4j>
+    <version.log4j>2.25.1</version.log4j>
     <version.disruptor>4.0.0</version.disruptor>
 
-    <version.guava>33.4.5-jre</version.guava>
-    <version.lombok>1.18.36</version.lombok>
-    <version.commons-codec>1.18.0</version.commons-codec>
+    <version.guava>33.4.8-jre</version.guava>
+    <version.lombok>1.18.38</version.lombok>
+    <version.commons-codec>1.19.0</version.commons-codec>
     <version.commons-pool2>2.12.1</version.commons-pool2>
 
     <version.h2>2.3.232</version.h2>
-    <version.hikari-cp>6.2.1</version.hikari-cp>
-    <version.jooq>3.20.2</version.jooq>
-    <version.mybatis-plus>3.5.10.1</version.mybatis-plus>
-    <version.flyway>11.4.1</version.flyway>
+    <version.hikari-cp>7.0.0</version.hikari-cp>
+    <version.jooq>3.20.5</version.jooq>
+    <version.mybatis-plus>3.5.12</version.mybatis-plus>
+    <version.flyway>11.10.5</version.flyway>
 
-    <version.spring-boot>3.5.3</version.spring-boot>
+    <version.spring-boot>3.5.4</version.spring-boot>
     <version.spring-cloud>2025.0.0</version.spring-cloud>
-    <version.alibaba-cloud>2023.0.1.0</version.alibaba-cloud>
+    <version.alibaba-cloud>2023.0.3.3</version.alibaba-cloud>
 
-    <version.springdoc>2.8.5</version.springdoc>
+    <version.springdoc>2.8.9</version.springdoc>
 
-    <version.quarkus>3.23.3</version.quarkus>
+    <version.quarkus>3.25.0</version.quarkus>
     <version.rest-assured>5.5.5</version.rest-assured>
 
-    <version.optaplanner>10.0.0</version.optaplanner>
+    <version.optaplanner>10.1.0</version.optaplanner>
     <!-- End dev dependencies -->
 
     <!-- Begin test dependencies -->
-    <version.junit>5.13.1</version.junit>
+    <version.junit>5.12.2</version.junit>
     <version.junit-pioneer>2.3.0</version.junit-pioneer>
     <version.testng>7.11.0</version.testng>
     <version.hamcrest>3.0</version.hamcrest>
     <version.assertj>3.27.3</version.assertj>
-    <version.mockito>5.16.1</version.mockito>
+    <version.mockito>5.18.0</version.mockito>
     <version.javafaker>1.0.2</version.javafaker>
     <version.awaitility>4.3.0</version.awaitility>
     <version.p6spy>3.9.1</version.p6spy>
-    <version.spring-security-test>6.4.4</version.spring-security-test>
-    <version.spring-graphql-test>1.3.4</version.spring-graphql-test>
+    <version.spring-security-test>6.5.2</version.spring-security-test>
+    <version.spring-graphql-test>1.4.1</version.spring-graphql-test>
     <!-- End test dependencies -->
 
     <!-- 定义插件版本 -->
-    <version.maven-compiler>3.13.0</version.maven-compiler>
-    <version.maven-surefire>3.5.2</version.maven-surefire>
-    <version.maven-failsafe>3.5.2</version.maven-failsafe>
-    <version.maven-exec>3.5.0</version.maven-exec>
+    <version.maven-compiler>3.14.0</version.maven-compiler>
+    <version.maven-surefire>3.5.3</version.maven-surefire>
+    <version.maven-failsafe>3.5.3</version.maven-failsafe>
+    <version.maven-exec>3.5.1</version.maven-exec>
     <version.maven-jar>3.4.2</version.maven-jar>
     <version.maven-dependency>3.8.1</version.maven-dependency>
-    <version.maven-assembly>3.7.0</version.maven-assembly>
+    <version.maven-assembly>3.7.1</version.maven-assembly>
     <version.maven-shade>3.6.0</version.maven-shade>
     <version.maven-flyway>${version.flyway}</version.maven-flyway>
     <version.maven-jooq>${version.jooq}</version.maven-jooq>
-    <version.maven-build-helper>3.6.0</version.maven-build-helper>
+    <version.maven-build-helper>3.6.1</version.maven-build-helper>
     <version.maven-resources>3.3.1</version.maven-resources>
     <version.maven-jandex>1.2.3</version.maven-jandex>
     <version.maven-versions>2.18.0</version.maven-versions>
-    <version.maven-enforcer>3.5.0</version.maven-enforcer>
+    <version.maven-enforcer>3.6.1</version.maven-enforcer>
   </properties>
 
   <!-- 包含子项目所在的路径名 -->

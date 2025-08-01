@@ -19,13 +19,13 @@
   <dependencies>
     <dependency>
       <groupId>com.typesafe.akka</groupId>
-      <artifactId>akka-actor-typed_2.13</artifactId>
+      <artifactId>akka-actor-typed</artifactId>
       <version>${version.akka}</version>
     </dependency>
 
     <dependency>
       <groupId>com.typesafe.akka</groupId>
-      <artifactId>akka-actor-testkit-typed_2.13</artifactId>
+      <artifactId>akka-actor-testkit-typed</artifactId>
       <version>${version.akka}</version>
       <scope>test</scope>
     </dependency>
