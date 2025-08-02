@@ -265,7 +265,6 @@ public final class Streams {
      * @param omitNull 是否过滤结果中为 {@code null} 的元素
      * @return 转换后的 {@link List} 对象
      */
-    @SuppressWarnings("unchecked")
     public static <T, R> List<T> flatList(
             Stream<? extends R> stream,
             Function<? super R, Stream<? extends T>> mapper,
