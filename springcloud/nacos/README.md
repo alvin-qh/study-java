@@ -208,5 +208,4 @@ public class DemoService {
 }
 ```
 
-如果无法正确访问服务发现, 检查是否依赖的库不全, 增加 `org.springframework.cloud:spring-cloud-starter-loadbalancer`
-依赖后在此尝试
+如果无法正确访问服务发现, 检查是否依赖的库不全, 增加 `org.springframework.cloud:spring-cloud-starter-loadbalancer` 依赖后再次尝试

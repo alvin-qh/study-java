@@ -21,34 +21,36 @@ spring:
 
     # 配置 Spring Cloud Gateway
     gateway:
-      # 定义转发规则
-      routes:
-        # 规则 1, 通过 PATH 断言判断是否需要转发
-        - id: path_router
-          # 要转发的目标地址, 目标地址可以为 http://, https:// 和 lb:// 等
-          # lb 表示通过服务发现进行转发, 后面跟所注册的服务名
-          uri: lb://gateway-backend
-          # 定义转发断言
-          predicates:
-            # Path 断言用于将访问指定路径的请求进行转发, 参数为要判断的路径
-            - Path=/backend/**
-          # 定义转发过滤器
-          filters:
-            # StripPrefix 表示转发前对 URL 进行重写, 去掉指定数量的层数
-            # 本例中去掉第一层路径, 即 /backend/a/b 的访问会重写为 /a/b
-            - StripPrefix=1
+      server:
+        webflux:
+          # 定义转发规则
+          routes:
+            # 规则 1, 通过 PATH 断言判断是否需要转发
+            - id: path_router
+              # 要转发的目标地址, 目标地址可以为 http://, https:// 和 lb:// 等
+              # lb 表示通过服务发现进行转发, 后面跟所注册的服务名
+              uri: lb://gateway-backend
+              # 定义转发断言
+              predicates:
+                # Path 断言用于将访问指定路径的请求进行转发, 参数为要判断的路径
+                - Path=/backend/**
+              # 定义转发过滤器
+              filters:
+                # StripPrefix 表示转发前对 URL 进行重写, 去掉指定数量的层数
+                # 本例中去掉第一层路径, 即 /backend/a/b 的访问会重写为 /a/b
+                - StripPrefix=1
 
-        # 规则 2, 通过 JWT 断言判断是否需要转发
-        - id: jwt_router
-          uri: lb://gateway-backend
-          predicates:
-            - Path=/auth/**
-            # JWT 断言为自定义断言, 参见 alvin.study.core.gateway.predicate.JWTRoutePredicateFactory 定义
-            # 指定的配置参数用逗号隔开依次传递
-            # 该断言会将所有具备 Authorization 请求头, 且内容为 JWT 凭证, 且凭证的 audience 字段为 third-part 的请求进行转发
-            - JWT=Authorization,HMAC256,TS#1}'v(xo{5QhU]*~>3CHEBk)|MLqRe,third-part
-          # filters:
-          # - RewritePath=/(?<segment>.*),/auth/user/$\{segment}
+            # 规则 2, 通过 JWT 断言判断是否需要转发
+            - id: jwt_router
+              uri: lb://gateway-backend
+              predicates:
+                - Path=/auth/**
+                # JWT 断言为自定义断言, 参见 alvin.study.core.gateway.predicate.JWTRoutePredicateFactory 定义
+                # 指定的配置参数用逗号隔开依次传递
+                # 该断言会将所有具备 Authorization 请求头, 且内容为 JWT 凭证, 且凭证的 audience 字段为 third-part 的请求进行转发
+                - JWT=Authorization,HMAC256,TS#1}'v(xo{5QhU]*~>3CHEBk)|MLqRe,third-part
+              # filters:
+              # - RewritePath=/(?<segment>.*),/auth/user/$\{segment}
 
 # 指定 Gateway 服务绑定的端口号
 server:
