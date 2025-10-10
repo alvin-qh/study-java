@@ -44,7 +44,7 @@ public class UserRepository {
      * @param user {@link User} 对象
      */
     public void insertUser(User user) {
-        userStorage.compute(user.id(), (key, value) -> {
+        userStorage.compute(user.id(), (_, value) -> {
             if (value != null) {
                 throw new IllegalArgumentException("id %d already exists");
             }
@@ -63,7 +63,7 @@ public class UserRepository {
      * @param user {@link User} 对象
      */
     public void updateUser(User user) {
-        userStorage.compute(user.id(), (key, value) -> {
+        userStorage.compute(user.id(), (_, value) -> {
             if (value == null) {
                 throw new IllegalArgumentException("id %d not exists");
             }

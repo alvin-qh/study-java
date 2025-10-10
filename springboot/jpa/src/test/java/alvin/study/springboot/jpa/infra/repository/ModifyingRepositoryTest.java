@@ -36,12 +36,12 @@ class ModifyingRepositoryTest extends IntegrationTest {
     @SneakyThrows
     void updatePasswordById_shouldUpdateEntity() {
         long id;
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             // 创建 User 对象并获取其 id 属性
             id = newBuilder(UserBuilder.class).create().getId();
         }
 
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             // 将 id 匹配的实体对象 password 属性改为新值 cspell: disable-next-line
             repository.updatePasswordById(id, passwordUtil.encrypt("xxxyyyzzz"));
         }
@@ -64,7 +64,7 @@ class ModifyingRepositoryTest extends IntegrationTest {
     void deleteAllByAccount_shouldDeleteEntities() {
         String account;
 
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             // 创建 User 对象并获取 account 属性值
             account = newBuilder(UserBuilder.class).create().getAccount();
         }
@@ -73,7 +73,7 @@ class ModifyingRepositoryTest extends IntegrationTest {
         var users = repository.findAllByAccount(account);
         then(users).hasSize(1);
 
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             // 通过 account 属性删除所有对应的 User 对象
             repository.deleteAllByAccount(account);
         }

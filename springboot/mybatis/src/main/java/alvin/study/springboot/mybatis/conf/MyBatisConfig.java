@@ -97,7 +97,7 @@ public class MyBatisConfig extends DefaultSqlInjector {
      */
     @Bean
     ConfigurationCustomizer configurationCustomizer() {
-        return configuration -> {
+        return _ -> {
             // 对 Mybatis 进行设置
         };
     }

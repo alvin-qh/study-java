@@ -54,7 +54,7 @@ class AuditingTest extends IntegrationTest {
         Department department;
 
         // 实例化一个新实体对象, 该实体对象具备审计字段支持
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             department = newBuilder(DepartmentBuilder.class).create();
         }
 
@@ -84,7 +84,7 @@ class AuditingTest extends IntegrationTest {
         Department department;
 
         // 在当前上下文中持久化实体对象
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             department = newBuilder(DepartmentBuilder.class).create();
         }
 
@@ -93,7 +93,7 @@ class AuditingTest extends IntegrationTest {
 
         User user;
         // 持久化一个新的用户实体
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             user = newBuilder(UserBuilder.class).create();
         }
 
@@ -101,7 +101,7 @@ class AuditingTest extends IntegrationTest {
         context.set(Context.USER, user);
 
         // 进行一次实体的更新操作
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             department = refreshEntity(department);
             department.setName("HR");
         }
@@ -134,7 +134,7 @@ class AuditingTest extends IntegrationTest {
         Department department;
 
         // 持久化实体对象
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             department = newBuilder(DepartmentBuilder.class).create();
         }
 

@@ -65,7 +65,7 @@ class AssertionTest {
      */
     @Test
     void fail_shouldFailedTestProcess() {
-        try (var ignored = new ByteArrayOutputStream()) {
+        try (var _ = new ByteArrayOutputStream()) {
             // do io operation
         } catch (IOException e) {
             fail("cannot perform here");

@@ -147,7 +147,7 @@ public abstract class IntegrationTest {
         tableCleaner.clearAllTables("schema_version");
 
         // 创建测试用实体
-        try (var ignore = txManager.begin(false)) {
+        try (var _ = txManager.begin(false)) {
             // 创建 builder 构建实体对象, 构建当前组织和当前用户对象
             org = newBuilder(OrgBuilder.class).create();
             user = newBuilder(UserBuilder.class).withOrgId(org.getId()).create();

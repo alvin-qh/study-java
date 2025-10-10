@@ -152,7 +152,7 @@ public class ExecutorHandler implements Interceptor {
             }
 
             // 将新的 BoundSql 对象设置到新的 MappedStatement 对象中
-            var newMappedStatement = newMappedStatement(mappedStatement, parameterObject -> newBoundSql);
+            var newMappedStatement = newMappedStatement(mappedStatement, _ -> newBoundSql);
 
             // 将新的 MappedStatement 对象设置到参数列表中
             args[0] = newMappedStatement;

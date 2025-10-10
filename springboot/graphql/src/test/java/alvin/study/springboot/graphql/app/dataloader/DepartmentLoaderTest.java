@@ -21,7 +21,7 @@ class DepartmentLoaderTest extends IntegrationTest {
     void apply_shouldLoadDepartments() {
         Department department1, department2, department3;
 
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             department1 = newBuilder(DepartmentBuilder.class).create();
             department2 = newBuilder(DepartmentBuilder.class).create();
             department3 = newBuilder(DepartmentBuilder.class).create();

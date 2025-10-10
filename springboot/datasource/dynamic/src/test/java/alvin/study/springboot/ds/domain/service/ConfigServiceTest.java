@@ -3,10 +3,10 @@ package alvin.study.springboot.ds.domain.service;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
-import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.BadSqlGrammarException;
+
+import org.junit.jupiter.api.Test;
 
 import alvin.study.springboot.ds.IntegrationTest;
 import alvin.study.springboot.ds.app.domain.service.ConfigService;
@@ -37,8 +37,8 @@ class ConfigServiceTest extends IntegrationTest {
         var config = configService.createConfig("test-org-1");
 
         // 将数据源切换到新 org 对应的数据源
-        try (var s = DataSourceContext.switchTo(config.getDbName())) {
-            try (var tx = beginTx(false)) {
+        try (var _ = DataSourceContext.switchTo(config.getDbName())) {
+            try (var _ = beginTx(false)) {
                 // 在指定数据源内创建 Data 实体对象
                 var entity = new DataEntity();
                 entity.setName("test-name-" + config.getDbName());
@@ -50,7 +50,7 @@ class ConfigServiceTest extends IntegrationTest {
         thenThrownBy(() -> dataRepository.selectAll()).isInstanceOf(BadSqlGrammarException.class);
 
         // 切换到指定 org 对应的数据源
-        try (var s = DataSourceContext.switchTo(config.getDbName())) {
+        try (var _ = DataSourceContext.switchTo(config.getDbName())) {
             // 查询 data
             var datas = dataRepository.selectAll();
 

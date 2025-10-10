@@ -52,7 +52,7 @@ class AssertionTest {
      */
     @Test
     void fail_shouldCauseUnconditionalFail() {
-        try (var out = new ByteArrayOutputStream()) {
+        try (var _ = new ByteArrayOutputStream()) {
             // 执行测试代码
         } catch (IOException e) {
             fail("cannot perform here");

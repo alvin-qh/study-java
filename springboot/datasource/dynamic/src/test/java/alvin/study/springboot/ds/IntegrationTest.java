@@ -4,9 +4,6 @@ import java.time.Duration;
 
 import jakarta.servlet.ServletContext;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient;
@@ -18,6 +15,9 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.reactive.server.WebTestClient.RequestBodySpec;
 import org.springframework.test.web.reactive.server.WebTestClient.RequestHeadersSpec;
 import org.springframework.test.web.reactive.server.WebTestClient.RequestHeadersUriSpec;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import alvin.study.springboot.ds.conf.TestingConfig;
 import alvin.study.springboot.ds.core.TableCleaner;
@@ -98,14 +98,14 @@ public abstract class IntegrationTest {
     @BeforeEach
     protected void beforeEach() {
         // 清理默认数据源对应的数据库
-        try (var ignore = DataSourceContext.switchTo(null)) {
+        try (var _ = DataSourceContext.switchTo(null)) {
             // 将除了 schema_version 以外的表内容清空
             tableCleaner.clearAllTables("schema_version");
         }
 
         // 清理其它数据源对应的数据库
         for (var lookupKey : dynamicDataSource.getAllLookupKeys()) {
-            try (var ignore = DataSourceContext.switchTo(lookupKey)) {
+            try (var _ = DataSourceContext.switchTo(lookupKey)) {
                 // 将除了 schema_version 以外的表内容清空
                 tableCleaner.clearAllTables("schema_version");
             }

@@ -21,7 +21,7 @@ class OrgLoaderTest extends IntegrationTest {
     void apply_shouldLoadOrgs() {
         Org org1, org2, org3;
 
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             org1 = newBuilder(OrgBuilder.class).create();
             org2 = newBuilder(OrgBuilder.class).create();
             org3 = newBuilder(OrgBuilder.class).create();

@@ -150,7 +150,7 @@ public class SpringDocConfig {
     @Bean
     OperationCustomizer operationCustomizer() {
         // 返回 OperationCustomizer 接口对象 (lambda 形式), 对指定的操作进行个性化处理
-        return (operation, handlerMethod) -> customizeOperation(operation, "path");
+        return (operation, _) -> customizeOperation(operation, "path");
     }
 
     /**
@@ -164,7 +164,7 @@ public class SpringDocConfig {
         // 读取操作的所有响应, 并处理其中 200 响应的内容
         var content = operation.getResponses().get("200").getContent();
         // 遍历每个相应内容, 进行个性化处理
-        content.forEach((contentType, mediaType) -> mediaType.schema(customizeSchema(mediaType.getSchema(), path)));
+        content.forEach((_, mediaType) -> mediaType.schema(customizeSchema(mediaType.getSchema(), path)));
         return operation;
     }
 

@@ -24,7 +24,7 @@ public class DefaultDataSourceAnnotationAdvice {
      */
     @Around("@annotation(alvin.study.springboot.ds.core.data.DefaultDataSource)")
     public Object around(ProceedingJoinPoint jp) throws Throwable {
-        try (var ignore = DataSourceContext.switchTo(null)) {
+        try (var _ = DataSourceContext.switchTo(null)) {
             return jp.proceed();
         }
     }

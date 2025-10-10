@@ -328,7 +328,7 @@ class CacheTest {
         // 设定最大权重和为 8
         var cache = CacheBuilder.newBuilder()
                 .maximumWeight(8L)
-                .weigher((Long key, User val) -> val.id().intValue())
+                .weigher((Long _, User val) -> val.id().intValue())
                 .build();
         // 确认此时缓存内容为空
         then(cache.size()).isEqualTo(0);

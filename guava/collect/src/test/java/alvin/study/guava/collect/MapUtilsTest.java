@@ -667,7 +667,7 @@ class MapUtilsTest {
     void toImmutableEnumMap_shouldMakeImmutableEnumMapCollectors() {
         // 通过枚举数组产生一个 Stream 对象, 并通过 toImmutableEnumMap 将其转为 ImmutableMap 对象
         var monthMap = Arrays.stream(Month.values())
-                .collect(Maps.toImmutableEnumMap(m -> m, Enum::name, (o, n) -> n));
+                .collect(Maps.toImmutableEnumMap(m -> m, Enum::name, (_, n) -> n));
 
         // 确认得到的 ImmutableMap 符合预期
         then(monthMap)
@@ -733,7 +733,7 @@ class MapUtilsTest {
         var map = Maps.newLinkedHashMap(ImmutableMap.of("A", 100, "B", 200, "C", 300));
 
         // 将 Map 中每个 Entry 的 Value 进行转换
-        var transformedMap = Maps.transformEntries(map, (key, value) -> 50 + value);
+        var transformedMap = Maps.transformEntries(map, (_, value) -> 50 + value);
         // 确认返回的 Map 对象包含 Value 被转换后的 Entries
         then(transformedMap).containsExactly(
             entry("A", 150),

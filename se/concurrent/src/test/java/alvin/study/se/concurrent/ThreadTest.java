@@ -642,7 +642,7 @@ class ThreadTest {
 
         var thread = Thread.ofVirtual()
                 .name("virtual-thread")
-                .uncaughtExceptionHandler((t, err) -> {
+                .uncaughtExceptionHandler((_, _) -> {
                     // log.exception(t);
                 })
                 .inheritInheritableThreadLocals(false)

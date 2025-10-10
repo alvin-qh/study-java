@@ -2,16 +2,12 @@ package alvin.study.misc.jackson.decode;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonCreator.Mode;
-import com.fasterxml.jackson.core.JsonParser.Feature;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.exc.JsonNodeException;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * 将 JSON 字符串生成为对象的解码器类
@@ -39,16 +35,18 @@ public class Decoder {
         var builder = JsonMapper
                 .builder()
                 .addModules(
-                    new JavaTimeModule(),
-                    new ParameterNamesModule(Mode.PROPERTIES))
+                // new JavaTimeModule(),
+                // new ParameterNamesModule(Mode.PROPERTIES)
+                )
                 .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
                 .disable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
-                // 允许注释 (非标准)
-                .configure(Feature.ALLOW_COMMENTS, true)
-                // 允许没有引号的字段名 (非标准)
-                .configure(Feature.ALLOW_UNQUOTED_FIELD_NAMES, true)
-                // 允许单引号 (非标准)
-                .configure(Feature.ALLOW_SINGLE_QUOTES, true);
+        // 允许注释 (非标准)
+        // .configure(Feature.ALLOW_COMMENTS, true)
+        // 允许没有引号的字段名 (非标准)
+        // .configure(Feature.ALLOW_UNQUOTED_FIELD_NAMES, true)
+        // 允许单引号 (非标准)
+        // .configure(Feature.ALLOW_SINGLE_QUOTES, true)
+        ;
 
         if (unwrapRootValue) {
             // 支持 @JsonRootName 设置的根属性名
@@ -66,7 +64,7 @@ public class Decoder {
      * @param valueType POJO 对象类型
      * @return POJO 对象实例
      */
-    public <T> T fromJson(String json, Class<T> valueType) throws JsonProcessingException {
+    public <T> T fromJson(String json, Class<T> valueType) throws JsonNodeException {
         return mapper.readValue(json, valueType);
     }
 
@@ -78,7 +76,7 @@ public class Decoder {
      * @param typeRef POJO 对象类型
      * @return POJO 对象实例
      */
-    public <T> T fromJson(String json, TypeReference<T> typeRef) throws JsonProcessingException {
+    public <T> T fromJson(String json, TypeReference<T> typeRef) throws JsonNodeException {
         return mapper.readValue(json, typeRef);
     }
 
@@ -90,7 +88,7 @@ public class Decoder {
      * @param javaType POJO 对象类型
      * @return POJO 对象实例
      */
-    public <T> T fromJson(String json, JavaType javaType) throws JsonProcessingException {
+    public <T> T fromJson(String json, JavaType javaType) throws JsonNodeException {
         return mapper.readValue(json, javaType);
     }
 

@@ -208,7 +208,7 @@ public final class Streams {
                 if (omitKeyNull && key == null) {
                     return;
                 }
-                map.merge(key, valueMapper.apply(entity), (left, right) -> right);
+                map.merge(key, valueMapper.apply(entity), (_, val) -> val);
             },
             // 集合合并函数
             (left, right) -> {

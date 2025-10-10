@@ -32,9 +32,9 @@ class DataRepositoryTest extends IntegrationTest {
     @Test
     void insert_shouldInsertDataIntoDifferentDB() {
         // 切换到 db1 数据源
-        try (var s = DataSourceContext.switchTo(DataSourceTarget.db1)) {
+        try (var _ = DataSourceContext.switchTo(DataSourceTarget.db1)) {
             // 启动事务
-            try (var tx = beginTx(false)) {
+            try (var _ = beginTx(false)) {
                 // 插入数据
                 var entity = new DataEntity();
                 entity.setName("name_for_db1");
@@ -44,9 +44,9 @@ class DataRepositoryTest extends IntegrationTest {
         }
 
         // 切换到 db2 数据源
-        try (var s = DataSourceContext.switchTo(DataSourceTarget.db2)) {
+        try (var _ = DataSourceContext.switchTo(DataSourceTarget.db2)) {
             // 启动事务
-            try (var tx = beginTx(false)) {
+            try (var _ = beginTx(false)) {
                 // 插入数据
                 var entity = new DataEntity();
                 entity.setName("name_for_db2");
@@ -56,7 +56,7 @@ class DataRepositoryTest extends IntegrationTest {
         }
 
         // 切换到 db1 数据源, 查询数据, 确保该 db1 数据库中仅包含指定数据
-        try (var s = DataSourceContext.switchTo(DataSourceTarget.db1)) {
+        try (var _ = DataSourceContext.switchTo(DataSourceTarget.db1)) {
             var entities = repository.selectAll();
             then(entities)
                     .hasSize(1)
@@ -66,7 +66,7 @@ class DataRepositoryTest extends IntegrationTest {
         }
 
         // 切换到 db2 数据源, 查询数据, 确保该 db2 数据库中仅包含指定数据
-        try (var s = DataSourceContext.switchTo(DataSourceTarget.db2)) {
+        try (var _ = DataSourceContext.switchTo(DataSourceTarget.db2)) {
             var entities = repository.selectAll();
             then(entities)
                     .hasSize(1)

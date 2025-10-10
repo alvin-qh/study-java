@@ -70,7 +70,7 @@ public class ConfigService extends BaseService {
 
             // 配置不存在, 则创建对应的数据库, 切换数据源, 并进行初始化操作
             var dbName = "db_" + org;
-            try (var s = DataSourceContext.switchTo(dbName)) {
+            try (var _ = DataSourceContext.switchTo(dbName)) {
                 var tx = beginTransaction();
                 try {
                     migration.migrateBusinessDB(dbName);

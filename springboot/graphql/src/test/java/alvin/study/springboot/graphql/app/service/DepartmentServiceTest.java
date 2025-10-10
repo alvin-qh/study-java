@@ -59,7 +59,7 @@ class DepartmentServiceTest extends IntegrationTest {
         Department department1, department2, department3;
         Employee employee1, employee2;
 
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             department1 = newBuilder(DepartmentBuilder.class).create();
             department2 = newBuilder(DepartmentBuilder.class).create();
             department3 = newBuilder(DepartmentBuilder.class).create();
@@ -118,7 +118,7 @@ class DepartmentServiceTest extends IntegrationTest {
     void listByIds_shouldFindDepartmentById() {
         Department department1, department2, department3;
 
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             department1 = newBuilder(DepartmentBuilder.class).create();
             department2 = newBuilder(DepartmentBuilder.class).create();
             department3 = newBuilder(DepartmentBuilder.class).create();
@@ -140,7 +140,7 @@ class DepartmentServiceTest extends IntegrationTest {
         Department parent;
         Department child1, child2, child3, child4, child5;
 
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             parent = newBuilder(DepartmentBuilder.class).create();
 
             child1 = newBuilder(DepartmentBuilder.class)

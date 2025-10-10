@@ -32,7 +32,7 @@ class EmployeeServiceTest extends IntegrationTest {
     @Test
     void create_shouldCreateEmployee() {
         Department department;
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             department = newBuilder(DepartmentBuilder.class).create();
         }
 
@@ -69,7 +69,7 @@ class EmployeeServiceTest extends IntegrationTest {
         Department department;
         Employee employee1, employee2, employee3, employee4;
 
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             department = newBuilder(DepartmentBuilder.class).create();
 
             employee1 = newBuilder(EmployeeBuilder.class).create();
@@ -133,7 +133,7 @@ class EmployeeServiceTest extends IntegrationTest {
     void update_shouldUpdateExistEmployee() {
         Department department1, department2;
 
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             department1 = newBuilder(DepartmentBuilder.class).create();
             department2 = newBuilder(DepartmentBuilder.class).create();
         }

@@ -14,11 +14,12 @@ import java.util.stream.IntStream;
 
 import org.assertj.core.api.Condition;
 import org.assertj.core.api.InstanceOfAssertFactories;
-import org.junit.jupiter.api.Test;
 
 import com.github.javafaker.Faker;
 
 import lombok.RequiredArgsConstructor;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * 博客帖子分类枚举
@@ -133,7 +134,7 @@ class GroupingByTest {
                             e.getKey(),
                             likeHolder.getLikes(),
                             IntStream.range(0, n + 1) // 第几个帖子就有几条回复
-                                    .mapToObj(ignore -> faker.regexify("[A-Za-z\\-,. ]{20,50}"))
+                                    .mapToObj(_ -> faker.regexify("[A-Za-z\\-,. ]{20,50}"))
                                     .toList())))
                 .toList();
     }

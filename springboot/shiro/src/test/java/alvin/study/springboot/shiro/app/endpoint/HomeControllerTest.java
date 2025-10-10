@@ -36,7 +36,7 @@ class HomeControllerTest extends IntegrationTest {
      */
     @Test
     void getHome_shouldReturn200Ok() {
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             // 添加正确的角色和权限
             addPermissions(currentUser(), "ANY_ONE", List.of());
         }
@@ -63,7 +63,7 @@ class HomeControllerTest extends IntegrationTest {
     @Test
     @Transactional
     void getHome_shouldReturn401IfNoAuthorizationHeader() {
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             // 添加正确的角色和权限
             addPermissions(currentUser(), "ANY_ONE", List.of());
         }
@@ -85,7 +85,7 @@ class HomeControllerTest extends IntegrationTest {
      */
     @Test
     void getHome_shouldReturn401IfRoleNotMatch() {
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             // 添加正确的角色和权限
             addPermissions(currentUser(), "ADMIN", List.of());
         }
@@ -140,7 +140,7 @@ class HomeControllerTest extends IntegrationTest {
     @Test
     void getMenu_shouldReturn200Ok() {
         // 构建测试数据
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             var role = newBuilder(RoleBuilder.class).withName("USER").create();
 
             // 随机将角色授予用户或用户所在的组

@@ -72,7 +72,7 @@ class OrgRepositoryTest extends IntegrationTest {
         var orgName = makeUniqueName("alvin.edu");
 
         // 启动事务, 持久化一个实体对象
-        var rec = contextManager.txr(c -> repository.newRecord(r -> r.setName(orgName).store()));
+        var rec = contextManager.txr(_ -> repository.newRecord(r -> r.setName(orgName).store()));
 
         // 确认持久化操作成功
         var mayOrg = repository.selectById(rec.getId());

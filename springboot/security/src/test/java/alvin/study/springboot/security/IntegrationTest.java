@@ -198,7 +198,7 @@ public abstract class IntegrationTest {
         tableCleaner.clearAllTables("schema_version");
 
         // 创建测试用实体
-        try (var ignore = txManager.begin(false)) {
+        try (var _ = txManager.begin(false)) {
             // 当前用户对象
             currentUser = newBuilder(UserBuilder.class)
                     .withPassword(RAW_PASSWORD)

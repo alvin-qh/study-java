@@ -200,7 +200,7 @@ class RangeMapTest {
             var rangeMap = createRangeMap();
 
             // 在已有对象上合并新的键值对, 会导致对区间的拆分
-            rangeMap.merge(Range.closed(15, 30), "D", (v1, v2) -> v2);
+            rangeMap.merge(Range.closed(15, 30), "D", (_, v) -> v);
             // 确认合并结果包含的键值对, 包括拆分的区间
             then(rangeMap.asMapOfRanges()).containsExactly(
                 entry(Range.openClosed(1, 5), "A"),
@@ -221,7 +221,7 @@ class RangeMapTest {
 
             // 在已有对象上合并新的键值对, 会导致对区间的拆分
             // 在键区间重复时, 返回 null 值, 则会将重复部分拆分出来后删除
-            rangeMap.merge(Range.closed(15, 30), "D", (v1, v2) -> null);
+            rangeMap.merge(Range.closed(15, 30), "D", (_, _) -> null);
             // 确认合并结果包含的键值对, 其中重复的部分已被删除, 不同的部分得以保留
             then(rangeMap.asMapOfRanges()).containsExactly(
                 entry(Range.openClosed(1, 5), "A"),

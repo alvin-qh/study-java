@@ -26,7 +26,7 @@ class EmployeeMapperTest extends IntegrationTest {
         Department department;
         Employee employee1, employee2, employee3, employee4, employee5;
 
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             department = newBuilder(DepartmentBuilder.class).create();
 
             employee1 = newBuilder(EmployeeBuilder.class).create();

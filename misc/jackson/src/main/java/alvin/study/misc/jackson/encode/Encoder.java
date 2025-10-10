@@ -2,20 +2,16 @@ package alvin.study.misc.jackson.encode;
 
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
 import alvin.study.misc.jackson.pojo.User;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.MapperFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectWriter;
+import tools.jackson.databind.SerializationFeature;
+import tools.jackson.databind.exc.JsonNodeException;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.ser.std.SimpleBeanPropertyFilter;
+import tools.jackson.databind.ser.std.SimpleFilterProvider;
 
 /**
  * 将对象转为 JSON 的编码器类
@@ -47,18 +43,19 @@ public final class Encoder {
     private static ObjectMapper buildObjectMapper(boolean wrapRootValue) {
         var builder = JsonMapper.builder()
                 .addModules(
-                    // 启用 Java 时间日期模块
-                    new JavaTimeModule(),
-                    // 启用 JDK 8 模块
-                    new Jdk8Module())
+                // 启用 Java 时间日期模块
+                // new JavaTimeModule(),
+                // 启用 JDK 8 模块
+                // new Jdk8Module()
+                )
                 // 日期时间以字符串而不是 timestamp 输出
-                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+                // .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
                 // 空类型不抛出错误
                 .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
                 // 遇到未知属性不抛出错误
                 .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
                 // 重写枚举的 toString 方法, 针对于枚举中不包含标记为 @JsonValue 注解字段的情况
-                .enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING)
+                // .enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING)
                 // 允许强制转义非 ASCII 字符, 将非 ASCII 字符转为 UNICODE 表示格式
                 // .enable(JsonWriteFeature.ESCAPE_NON_ASCII)
                 // 是否允许通过 @JsonView 注解进行不同的序列化
@@ -70,8 +67,9 @@ public final class Encoder {
         }
 
         return builder.build()
-                // JSON 中不包含 null 值
-                .setSerializationInclusion(Include.NON_NULL);
+        // JSON 中不包含 null 值
+        // .setSerializationInclusion(Include.NON_NULL)
+        ;
     }
 
     /**
@@ -81,7 +79,7 @@ public final class Encoder {
      * @return JSON 字符串
      * @see ObjectMapper#writeValueAsBytes(Object)
      */
-    public String toJson(Object obj) throws JsonProcessingException {
+    public String toJson(Object obj) throws JsonNodeException {
         ObjectWriter writer = null;
         if (this.views != null) {
             // 如果设置了 View, 则根据 view 类型创建 writer
@@ -123,6 +121,7 @@ public final class Encoder {
             SimpleBeanPropertyFilter.serializeAllExcept(Set.of(excludeFields)) // 添加一个过滤器
         );
 
+        mapper.setfi;
         mapper.setFilterProvider(provider);
     }
 }

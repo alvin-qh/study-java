@@ -11,9 +11,10 @@ import jakarta.persistence.PersistenceException;
 
 import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
 import org.hibernate.Session;
-import org.junit.jupiter.api.Test;
 
 import lombok.SneakyThrows;
+
+import org.junit.jupiter.api.Test;
 
 import alvin.study.springboot.jpa.IntegrationTest;
 import alvin.study.springboot.jpa.builder.DepartmentBuilder;
@@ -33,7 +34,7 @@ class TenantingTest extends IntegrationTest {
     void tenanting_shouldTenantedFilterWorked() {
         var orgs = new ArrayList<Org>();
 
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             for (var i = 0; i < 10; i++) {
                 var org = newBuilder(OrgBuilder.class).create();
                 orgs.add(org);
@@ -48,7 +49,7 @@ class TenantingTest extends IntegrationTest {
             var context = CustomRequestAttributes.register(new WebContext());
             context.set(Context.ORG, org);
 
-            try (var ignore = beginTx(true)) {
+            try (var _ = beginTx(true)) {
                 var session = em.unwrap(Session.class);
                 session.enableFilter("tenantFilter").setParameter("orgId", org.getId());
 

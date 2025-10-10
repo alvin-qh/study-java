@@ -34,7 +34,7 @@ services:
       start_period: 10s
   # 启动 3 个 nacos 实例
   nacos1:
-    image: nacos/nacos-server:v3.0.3
+    image: nacos/nacos-server:v3.1.0
     hostname: nacos1
     container_name: nacos1
     env_file:
@@ -68,7 +68,7 @@ services:
       retries: 5
       start_period: 10s
   nacos2:
-    image: nacos/nacos-server:v3.0.3
+    image: nacos/nacos-server:v3.1.0
     hostname: nacos2
     container_name: nacos2
     env_file:
@@ -100,7 +100,7 @@ services:
       retries: 5
       start_period: 10s
   nacos3:
-    image: nacos/nacos-server:v3.0.3
+    image: nacos/nacos-server:v3.1.0
     hostname: nacos3
     container_name: nacos3
     env_file:

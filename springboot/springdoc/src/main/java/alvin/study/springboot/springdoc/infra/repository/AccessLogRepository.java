@@ -23,7 +23,7 @@ public class AccessLogRepository extends BaseRepository<List<AccessLog>> {
      */
     public synchronized void insert(AccessLog log) {
         var storage = getStorage(NAME_ACCESS_LOGS);
-        var logs = storage.putIfAbsent(log.getUsername(), k -> new ArrayList<>());
+        var logs = storage.putIfAbsent(log.getUsername(), _ -> new ArrayList<>());
         logs.add(log);
     }
 

@@ -64,7 +64,7 @@ public abstract class IntegrationTest {
         var context = CustomRequestAttributes.register(new WebContext());
 
         // 构建 ORG, USER 对象存入上下文
-        dsl.transaction(c -> {
+        dsl.transaction(_ -> {
             var org = dsl.newRecord(ORG);
             org.setName(makeUniqueName("alvin.edu")).store();
             context.set(Context.ORG, org);

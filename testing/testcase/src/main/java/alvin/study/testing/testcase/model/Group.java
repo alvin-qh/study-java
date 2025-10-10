@@ -1,12 +1,14 @@
 package alvin.study.testing.testcase.model;
 
+import java.io.Serializable;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.Getter;
 import lombok.SneakyThrows;
 
-import java.io.Serializable;
-import java.util.List;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * 用于测试的组实体类型

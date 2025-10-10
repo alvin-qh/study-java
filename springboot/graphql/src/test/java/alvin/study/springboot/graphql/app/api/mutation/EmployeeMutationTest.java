@@ -41,7 +41,7 @@ class EmployeeMutationTest extends WebTest {
 
         log.info("------------------------------------------------------------------------------------------");
 
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             department1 = newBuilder(DepartmentBuilder.class).create();
             department2 = newBuilder(DepartmentBuilder.class).create();
             department3 = newBuilder(DepartmentBuilder.class).create();
@@ -102,7 +102,7 @@ class EmployeeMutationTest extends WebTest {
         Department department1, department2, department3;
         Employee employee;
 
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             employee = newBuilder(EmployeeBuilder.class).create();
 
             department1 = newBuilder(DepartmentBuilder.class).create();
@@ -156,7 +156,7 @@ class EmployeeMutationTest extends WebTest {
         Department department1, department2, department3;
         Employee employee;
 
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             employee = newBuilder(EmployeeBuilder.class).create();
 
             department1 = newBuilder(DepartmentBuilder.class).create();

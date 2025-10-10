@@ -244,7 +244,7 @@ class SpliteratorTest {
                 .isEqualTo(10);
 
         // 处理掉一个元素
-        sp.tryAdvance(n -> {});
+        sp.tryAdvance(_ -> {});
         // 确认 getExactSizeIfKnown 方法的结果和 estimateSize 一致
         then(sp.getExactSizeIfKnown())
                 .isEqualTo(sp.estimateSize())
@@ -549,8 +549,8 @@ class SpliteratorTest {
                 then(sp.estimateSize()).isEqualTo(0);
                 then(sp.getExactSizeIfKnown()).isEqualTo(0);
 
-                then(sp.tryAdvance(n -> fail())).isFalse();
-                sp.forEachRemaining(n -> fail());
+                then(sp.tryAdvance(_ -> fail())).isFalse();
+                sp.forEachRemaining(_ -> fail());
 
                 then(sp.trySplit()).isNull();
                 then(sp.characteristics()).isEqualTo(Spliterator.SIZED | Spliterator.SUBSIZED);
@@ -565,8 +565,8 @@ class SpliteratorTest {
                 then(sp.estimateSize()).isEqualTo(0);
                 then(sp.getExactSizeIfKnown()).isEqualTo(0);
 
-                then(sp.tryAdvance((IntConsumer) n -> fail())).isFalse();
-                sp.forEachRemaining((IntConsumer) n -> fail());
+                then(sp.tryAdvance((IntConsumer) _ -> fail())).isFalse();
+                sp.forEachRemaining((IntConsumer) _ -> fail());
 
                 then(sp.trySplit()).isNull();
                 then(sp.characteristics()).isEqualTo(Spliterator.SIZED | Spliterator.SUBSIZED);
@@ -581,8 +581,8 @@ class SpliteratorTest {
                 then(sp.estimateSize()).isEqualTo(0);
                 then(sp.getExactSizeIfKnown()).isEqualTo(0);
 
-                then(sp.tryAdvance((LongConsumer) n -> fail())).isFalse();
-                sp.forEachRemaining((LongConsumer) n -> fail());
+                then(sp.tryAdvance((LongConsumer) _ -> fail())).isFalse();
+                sp.forEachRemaining((LongConsumer) _ -> fail());
 
                 then(sp.trySplit()).isNull();
                 then(sp.characteristics()).isEqualTo(Spliterator.SIZED | Spliterator.SUBSIZED);
@@ -597,8 +597,8 @@ class SpliteratorTest {
                 then(sp.estimateSize()).isEqualTo(0);
                 then(sp.getExactSizeIfKnown()).isEqualTo(0);
 
-                then(sp.tryAdvance((DoubleConsumer) n -> fail())).isFalse();
-                sp.forEachRemaining((DoubleConsumer) n -> fail());
+                then(sp.tryAdvance((DoubleConsumer) _ -> fail())).isFalse();
+                sp.forEachRemaining((DoubleConsumer) _ -> fail());
 
                 then(sp.trySplit()).isNull();
                 then(sp.characteristics()).isEqualTo(Spliterator.SIZED | Spliterator.SUBSIZED);

@@ -21,7 +21,7 @@ class UserLoaderTest extends IntegrationTest {
     void apply_shouldLoadUsers() {
         User user1, user2, user3;
 
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             user1 = newBuilder(UserBuilder.class).create();
 
             user2 = newBuilder(UserBuilder.class).create();

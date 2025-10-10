@@ -717,7 +717,7 @@ class CompletableFutureTest {
                     return models;
                 }),
             // 如何合并每次 reduce 产生的结果, 因为 reduce 是发生在一个集合对象上, 所以 r1, r2 表示同一个对象, 无需合并
-            (r1, r2) -> r2);
+            (_, r2) -> r2);
 
         // 获取一组异步任务的执行结果
         // 异步任务使用约 300ms 执行完毕返回结果 (3 个并行任务, 每个任务需 100ms)
@@ -794,7 +794,7 @@ class CompletableFutureTest {
                 })),
             // 如何合并每次 reduce 产生的结果, 因为 reduce 是发生在一个集合对象上,
             // 所以 r1, r2 表示同一个对象, 无需合并
-            (r1, r2) -> r2);
+            (_, r2) -> r2);
 
         // 获取一组异步任务的执行结果
         // 异步任务使用约 300ms 执行完毕返回结果 (3 个串行任务, 每个任务需 100ms)
@@ -937,7 +937,7 @@ class CompletableFutureTest {
                 // 将产生的整数值装箱
                 .boxed()
                 // 打乱顺序
-                .sorted((l, r) -> rand.nextInt(-1, 1))
+                .sorted((_, _) -> rand.nextInt(-1, 1))
                 // 将每个整数值转为 Model 类型对象
                 .map(id -> new Model(id, String.format("Name-%d", id)))
                 .toList();
@@ -970,7 +970,7 @@ class CompletableFutureTest {
                     return results;
                 },
                 executor),
-            (a, b) -> b);
+            (_, b) -> b);
     }
 
     /**
@@ -995,7 +995,7 @@ class CompletableFutureTest {
                     return models;
                 },
                 executor),
-            (a, b) -> b);
+            (_, b) -> b);
     }
 
     /**
@@ -1083,7 +1083,8 @@ class CompletableFutureTest {
 
             // 任务 2.1: 筛选 id 为奇数的任务
             var f2_1 = f0.thenComposeAsync(
-                models -> CompletableFuture.supplyAsync(() -> models.stream().filter(m -> m.id() % 2 != 0).toList()),
+                models -> CompletableFuture
+                        .supplyAsync(() -> models.stream().filter(m -> m.id() % 2 != 0).toList()),
                 executor);
 
             // 任务 2.2: 存储 id 为奇数的任务

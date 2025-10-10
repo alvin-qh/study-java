@@ -38,7 +38,7 @@ class UserRepositoryTest extends IntegrationTest {
         flushEntityManager();
 
         // 上下文切换到新租户
-        try (var ignore = switchContext(org, null)) {
+        try (var _ = switchContext(org, null)) {
             var users = repository.findAll();
             then(users).hasSize(10);
 

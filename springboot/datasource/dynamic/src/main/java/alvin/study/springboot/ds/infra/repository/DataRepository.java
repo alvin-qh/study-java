@@ -19,7 +19,7 @@ import alvin.study.springboot.ds.infra.repository.common.BaseRepository;
 @Repository
 public class DataRepository extends BaseRepository {
     // 映射字段和对象属性的对象
-    private static final RowMapper<DataEntity> ROW_MAPPER = (rs, row) -> {
+    private static final RowMapper<DataEntity> ROW_MAPPER = (rs, _) -> {
         var entity = new DataEntity();
         entity.setId(rs.getLong("id"));
         entity.setName(rs.getString("name"));

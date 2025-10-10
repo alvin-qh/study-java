@@ -18,7 +18,7 @@ import alvin.study.springboot.ds.infra.repository.common.BaseRepository;
 @Repository
 public class ConfigRepository extends BaseRepository {
     // 映射字段和对象属性的对象
-    private static final RowMapper<ConfigEntity> ROW_MAPPER = (rs, row) -> {
+    private static final RowMapper<ConfigEntity> ROW_MAPPER = (rs, _) -> {
         var entity = new ConfigEntity();
         entity.setId(rs.getLong("id"));
         entity.setOrg(rs.getString("org"));

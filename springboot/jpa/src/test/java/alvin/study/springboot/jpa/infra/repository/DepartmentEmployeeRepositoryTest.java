@@ -59,7 +59,7 @@ class DepartmentEmployeeRepositoryTest extends IntegrationTest {
         flushEntityManager();
 
         // 上下文切换到新租户
-        try (var ignore = switchContext(org, null)) {
+        try (var _ = switchContext(org, null)) {
             var departmentEmployees = repository.findAll();
             then(departmentEmployees).hasSize(10);
 

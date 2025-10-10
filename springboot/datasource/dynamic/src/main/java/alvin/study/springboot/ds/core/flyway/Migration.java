@@ -29,7 +29,7 @@ public class Migration {
      * @param dbName 要执行 migrate 操作的数据库名
      */
     public void migrateBusinessDB(String dbName) {
-        try (var ignore = DataSourceContext.switchTo(dbName)) {
+        try (var _ = DataSourceContext.switchTo(dbName)) {
             Flyway.configure()
                     .dataSource(dataSource)
                     .baselineOnMigrate(true)
@@ -44,7 +44,7 @@ public class Migration {
      * 对默认数据源对应的库进行 migrate 操作
      */
     public void migrateCommonDB() {
-        try (var ignore = DataSourceContext.switchToDefault()) {
+        try (var _ = DataSourceContext.switchToDefault()) {
             Flyway.configure()
                     .dataSource(dataSource)
                     .baselineOnMigrate(true)

@@ -31,7 +31,7 @@ public class FaireCounter {
         }
 
         // 将所属分组的计数次数加 `1`
-        this.counter.compute(group, (k, v) -> {
+        this.counter.compute(group, (_, v) -> {
             if (v == null) {
                 v = 0;
             }

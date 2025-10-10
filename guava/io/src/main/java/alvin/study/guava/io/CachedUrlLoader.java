@@ -165,7 +165,7 @@ public class CachedUrlLoader implements AutoCloseable {
         // 释放缓存 Map 对象
         if (localCacheMap != null) {
             // 删除已有的缓存文件
-            localCacheMap.forEach((uri, info) -> {
+            localCacheMap.forEach((_, info) -> {
                 try {
                     Files.delete(info.getPath());
                 } catch (IOException ignored) {}

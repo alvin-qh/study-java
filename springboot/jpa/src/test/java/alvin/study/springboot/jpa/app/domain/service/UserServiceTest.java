@@ -30,7 +30,7 @@ class UserServiceTest extends IntegrationTest {
         var password = "aabbccdd"; // cspell: disable-line
 
         User user;
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             // 根据所给的 account 和 password 创建 User 对象
             user = newBuilder(UserBuilder.class)
                     .withAccount(account)

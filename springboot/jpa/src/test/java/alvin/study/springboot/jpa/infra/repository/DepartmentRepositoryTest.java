@@ -2,10 +2,10 @@ package alvin.study.springboot.jpa.infra.repository;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
-import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import org.junit.jupiter.api.Test;
 
 import alvin.study.springboot.jpa.IntegrationTest;
 import alvin.study.springboot.jpa.builder.DepartmentBuilder;
@@ -34,7 +34,7 @@ class DepartmentRepositoryTest extends IntegrationTest {
         var expected = newBuilder(DepartmentBuilder.class).build();
 
         // 启动测试事务
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             // 持久化实体对象
             repository.save(expected);
         }
@@ -56,12 +56,12 @@ class DepartmentRepositoryTest extends IntegrationTest {
     @Test
     void update_shouldUpdateEntity() {
         long id;
-        try (var ignored = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             // 创建一个实体对象并保存其 id 属性
             id = newBuilder(DepartmentBuilder.class).name("RD").create().getId();
         }
 
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             // 根据 id 属性查询实体对象
             var mayDepartment = repository.findById(id);
             // 确认 name 属性为修改前的值
@@ -71,7 +71,7 @@ class DepartmentRepositoryTest extends IntegrationTest {
             mayDepartment.get().setName("Sales");
         }
 
-        try (var ignore = beginTx(true)) {
+        try (var _ = beginTx(true)) {
             // 根据 id 属性查询实体对象
             var mayDepartment = repository.findById(id);
 
@@ -91,12 +91,12 @@ class DepartmentRepositoryTest extends IntegrationTest {
     void delete_shouldDeleteEntity() {
         long id;
 
-        try (var ignored = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             // 创建一个实体对象并保存其 id 属性
             id = newBuilder(DepartmentBuilder.class).create().getId();
         }
 
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             // 根据 id 属性查询实体对象
             var mayDepartment = repository.findById(id);
 
@@ -107,7 +107,7 @@ class DepartmentRepositoryTest extends IntegrationTest {
             repository.delete(mayDepartment.get());
         }
 
-        try (var ignore = beginTx(true)) {
+        try (var _ = beginTx(true)) {
             // 根据 id 属性查询实体对象
             var mayDepartment = repository.findById(id);
 
@@ -137,7 +137,7 @@ class DepartmentRepositoryTest extends IntegrationTest {
         flushEntityManager();
 
         // 上下文切换到新租户
-        try (var ignore = switchContext(org, null)) {
+        try (var _ = switchContext(org, null)) {
             // 查询所有的部门实体对象
             var departments = repository.findAll();
             // 确认当前租户下有 10 个部门实体对象

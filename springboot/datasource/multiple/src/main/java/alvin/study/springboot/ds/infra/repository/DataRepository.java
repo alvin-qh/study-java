@@ -17,7 +17,7 @@ import java.util.Optional;
  */
 @Repository
 public class DataRepository extends BaseRepository {
-    private static final RowMapper<DataEntity> ROW_MAPPER = (rs, row) -> {
+    private static final RowMapper<DataEntity> ROW_MAPPER = (rs, _) -> {
         var entity = new DataEntity();
         entity.setId(rs.getLong("id"));
         entity.setName(rs.getString("name"));

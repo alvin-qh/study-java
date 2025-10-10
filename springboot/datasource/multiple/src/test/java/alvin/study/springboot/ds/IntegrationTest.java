@@ -65,7 +65,7 @@ public abstract class IntegrationTest {
     @BeforeEach
     protected void beforeEach() {
         for (var target : DataSourceTarget.values()) {
-            try (var ignore = DataSourceContext.switchTo(target)) {
+            try (var _ = DataSourceContext.switchTo(target)) {
                 // 将除了 schema_version 以外的表内容清空
                 tableCleaner.clearAllTables("schema_version");
             }

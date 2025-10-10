@@ -48,7 +48,7 @@ public class UppercaseDirective implements SchemaDirectiveWiring {
      */
     @Override
     public GraphQLFieldDefinition onField(SchemaDirectiveWiringEnvironment<GraphQLFieldDefinition> env) {
-        var dataFetcher = DataFetcherFactories.wrapDataFetcher(env.getFieldDataFetcher(), (dataFetcherEnv, value) -> {
+        var dataFetcher = DataFetcherFactories.wrapDataFetcher(env.getFieldDataFetcher(), (_, value) -> {
             if (value instanceof String s) {
                 return s.toUpperCase();
             }

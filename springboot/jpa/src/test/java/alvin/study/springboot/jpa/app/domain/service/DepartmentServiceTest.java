@@ -36,7 +36,7 @@ class DepartmentServiceTest extends IntegrationTest {
         var namePrefix = "DEPT-";
 
         // 创建 5 个部门, 每个部门下面创建 10 个子部门
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             for (var i = 0; i < 5; i++) {
                 // 创建部门实体对象
                 var department = newBuilder(DepartmentBuilder.class)
@@ -89,7 +89,7 @@ class DepartmentServiceTest extends IntegrationTest {
         var namePrefix = "DEPT-";
 
         // 创建 5 个部门, 每个部门下面创建 10 个子部门
-        try (var ignore = beginTx(false)) {
+        try (var _ = beginTx(false)) {
             for (var i = 0; i < 5; i++) {
                 // 创建部门实体对象
                 var department = newBuilder(DepartmentBuilder.class)
