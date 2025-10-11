@@ -209,7 +209,7 @@ class ThreadPoolTest {
                 // 创建 HTTP 请求对象, 通过 `GET` 方法发起请求
                 var request = HttpRequest.newBuilder().GET()
                         .uri(URI.create("https://www.baidu.com"))
-                        .timeout(Duration.ofMillis(3000))
+                        .timeout(Duration.ofMillis(30000))
                         .build();
 
                 try {

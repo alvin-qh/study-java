@@ -25,12 +25,12 @@
       <dependency>
         <groupId>com.graphql-java</groupId>
         <artifactId>graphql-java-extended-scalars</artifactId>
-        <version>${version.graphql-jav0a-extended}</version>
+        <version>${version.graphql-java-extended}</version>
       </dependency>
       <dependency>
         <groupId>com.graphql-java</groupId>
         <artifactId>graphql-java-extended-validation</artifactId>
-        <version>${version.graphql-jav0a-extended}</version>
+        <version>${version.graphql-java-extended}</version>
       </dependency>
       <dependency>
         <groupId>com.baomidou</groupId>

@@ -39,7 +39,7 @@
     <version.jetty>12.1.2</version.jetty>
     <version.shiro>2.0.5</version.shiro>
     <version.graphql-java>24.3</version.graphql-java>
-    <version.graphql-jav0a-extended>24.0</version.graphql-jav0a-extended>
+    <version.graphql-java-extended>24.0</version.graphql-java-extended>
     <version.context-propagation>1.1.3</version.context-propagation>
 
     <version.slf4j>2.0.17</version.slf4j>
@@ -53,7 +53,7 @@
 
     <version.h2>2.4.240</version.h2>
     <version.hikari-cp>7.0.2</version.hikari-cp>
-    <version.jooq>3.20.5</version.jooq>
+    <version.jooq>3.20.8</version.jooq>
     <version.mybatis-plus>3.5.14</version.mybatis-plus>
     <version.flyway>11.13.3</version.flyway>
 
