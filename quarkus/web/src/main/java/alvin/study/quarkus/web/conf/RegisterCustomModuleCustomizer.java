@@ -16,8 +16,8 @@ import io.quarkus.jackson.ObjectMapperCustomizer;
 public class RegisterCustomModuleCustomizer implements ObjectMapperCustomizer {
     @Override
     public void customize(ObjectMapper mapper) {
-        mapper.setSerializationInclusion(Include.NON_NULL)
-                .setSerializationInclusion(Include.NON_EMPTY)
+        mapper.setDefaultPropertyInclusion(Include.NON_NULL)
+                .setDefaultPropertyInclusion(Include.NON_EMPTY)
                 .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
                 .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
                 .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
