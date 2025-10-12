@@ -101,6 +101,6 @@ public abstract class WebTest extends IntegrationTest {
 
     protected String formatDatetime(Instant instant) {
         return instant.atZone(ZoneOffset.UTC)
-                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"));
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'.000Z'"));
     }
 }

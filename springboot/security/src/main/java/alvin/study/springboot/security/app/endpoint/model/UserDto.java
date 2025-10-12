@@ -13,7 +13,7 @@ import alvin.study.springboot.security.infra.entity.UserType;
  * 登录用户信息类型
  */
 @Data
-@NoArgsConstructor(access = AccessLevel.MODULE)
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor
 public class UserDto implements Serializable {
     /**

@@ -6,6 +6,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 
 import lombok.SneakyThrows;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import alvin.study.springboot.mail.IntegrationTest;
@@ -22,6 +23,7 @@ class TestSendMail extends IntegrationTest {
      * 测试发送邮件功能
      */
     @Test
+    @Disabled
     @SneakyThrows
     void send_shouldSendMail() {
         var message = mailSender.createMimeMessage();

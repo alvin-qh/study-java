@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
  * 登录表单类
  */
 @Data
-@NoArgsConstructor(access = AccessLevel.MODULE)
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor
 public class LoginForm implements Serializable {
     /**

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
  * 返回 Token 信息的类型
  */
 @Data
-@NoArgsConstructor(access = AccessLevel.MODULE)
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor
 public class TokenDto implements Serializable {
     /**

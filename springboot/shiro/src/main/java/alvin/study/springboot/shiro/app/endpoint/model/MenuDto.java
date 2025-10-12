@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
  * 菜单信息类型
  */
 @Data
-@NoArgsConstructor(access = AccessLevel.MODULE)
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor
 public class MenuDto implements Serializable {
     // 菜单项集合
@@ -25,7 +25,7 @@ public class MenuDto implements Serializable {
      * 菜单项类型
      */
     @Data
-    @NoArgsConstructor(access = AccessLevel.MODULE)
+    @NoArgsConstructor(access = AccessLevel.PACKAGE)
     @AllArgsConstructor
     public static class MenuItemDto implements Serializable {
         /**

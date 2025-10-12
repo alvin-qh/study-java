@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
  * 首页信息类型
  */
 @Data
-@NoArgsConstructor(access = AccessLevel.MODULE)
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor
 public class HomeDto implements Serializable {
     /**
