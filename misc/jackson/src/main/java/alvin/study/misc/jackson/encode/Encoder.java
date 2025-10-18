@@ -2,7 +2,6 @@ package alvin.study.misc.jackson.encode;
 
 import java.util.Set;
 
-import alvin.study.misc.jackson.pojo.User;
 import tools.jackson.databind.DeserializationFeature;
 import tools.jackson.databind.MapperFeature;
 import tools.jackson.databind.ObjectMapper;
@@ -12,6 +11,8 @@ import tools.jackson.databind.exc.JsonNodeException;
 import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.databind.ser.std.SimpleBeanPropertyFilter;
 import tools.jackson.databind.ser.std.SimpleFilterProvider;
+
+import alvin.study.misc.jackson.pojo.User;
 
 /**
  * 将对象转为 JSON 的编码器类
@@ -121,7 +122,6 @@ public final class Encoder {
             SimpleBeanPropertyFilter.serializeAllExcept(Set.of(excludeFields)) // 添加一个过滤器
         );
 
-        mapper.setfi;
-        mapper.setFilterProvider(provider);
+        mapper.serializationConfig().withFilters(provider);
     }
 }
