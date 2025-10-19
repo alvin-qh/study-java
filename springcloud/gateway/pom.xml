@@ -26,6 +26,11 @@
         <artifactId>java-jwt</artifactId>
         <version>${version.auth-jwt}</version>
       </dependency>
+      <dependency>
+        <groupId>commons-codec</groupId>
+        <artifactId>commons-codec</artifactId>
+        <version>${version.commons-codec}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -43,6 +48,10 @@
     <dependency>
       <groupId>com.auth0</groupId>
       <artifactId>java-jwt</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
     </dependency>
   </dependencies>
 </project>

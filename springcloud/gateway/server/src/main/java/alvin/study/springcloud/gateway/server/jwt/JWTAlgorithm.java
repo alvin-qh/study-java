@@ -1,15 +1,17 @@
 package alvin.study.springcloud.gateway.server.jwt;
 
-import com.auth0.jwt.algorithms.Algorithm;
-import lombok.SneakyThrows;
-import org.apache.commons.codec.binary.Base64;
-
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
+
+import org.apache.commons.codec.binary.Base64;
+
+import com.auth0.jwt.algorithms.Algorithm;
+
+import lombok.SneakyThrows;
 
 /**
  * JWT 签名算法枚举
@@ -53,15 +55,15 @@ public enum JWTAlgorithm {
     @SneakyThrows
     public Algorithm build(String securityKey) {
         return switch (this) {
-            case RSA256 -> Algorithm.RSA256(null, decodeRSAPrivateKey(securityKey));
-            case RSA384 -> Algorithm.RSA384(null, decodeRSAPrivateKey(securityKey));
-            case RSA512 -> Algorithm.RSA512(null, decodeRSAPrivateKey(securityKey));
-            case ECDSA256 -> Algorithm.ECDSA256(null, decodeECPrivateKey(securityKey));
-            case ECDSA384 -> Algorithm.ECDSA384(null, decodeECPrivateKey(securityKey));
-            case ECDSA512 -> Algorithm.ECDSA512(null, decodeECPrivateKey(securityKey));
-            case HMAC256 -> Algorithm.HMAC256(securityKey);
-            case HMAC384 -> Algorithm.HMAC384(securityKey);
-            case HMAC512 -> Algorithm.HMAC512(securityKey);
+        case RSA256 -> Algorithm.RSA256(null, decodeRSAPrivateKey(securityKey));
+        case RSA384 -> Algorithm.RSA384(null, decodeRSAPrivateKey(securityKey));
+        case RSA512 -> Algorithm.RSA512(null, decodeRSAPrivateKey(securityKey));
+        case ECDSA256 -> Algorithm.ECDSA256(null, decodeECPrivateKey(securityKey));
+        case ECDSA384 -> Algorithm.ECDSA384(null, decodeECPrivateKey(securityKey));
+        case ECDSA512 -> Algorithm.ECDSA512(null, decodeECPrivateKey(securityKey));
+        case HMAC256 -> Algorithm.HMAC256(securityKey);
+        case HMAC384 -> Algorithm.HMAC384(securityKey);
+        case HMAC512 -> Algorithm.HMAC512(securityKey);
         };
     }
 
@@ -74,7 +76,7 @@ public enum JWTAlgorithm {
      * @throws InvalidKeySpecException
      */
     private RSAPrivateKey decodeRSAPrivateKey(String securityKey)
-        throws InvalidKeySpecException, NoSuchAlgorithmException {
+            throws InvalidKeySpecException, NoSuchAlgorithmException {
         // 将密钥字符串进行解码, 获取原始 Byte 数据
         var keyData = Base64.decodeBase64(securityKey);
         // 产生 RSA 密钥对象
@@ -90,7 +92,7 @@ public enum JWTAlgorithm {
      * @throws InvalidKeySpecException
      */
     private ECPrivateKey decodeECPrivateKey(String securityKey)
-        throws InvalidKeySpecException, NoSuchAlgorithmException {
+            throws InvalidKeySpecException, NoSuchAlgorithmException {
         // 将密钥字符串进行解码, 获取原始 Byte 数据
         var keyData = Base64.decodeBase64(securityKey);
         // 产生 EC 密钥对象
