@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+
 import com.google.common.base.Strings;
 
 import lombok.EqualsAndHashCode;
@@ -19,7 +20,6 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.ToString;
 
-import alvin.study.misc.jackson.encode.Encoder;
 import alvin.study.misc.jackson.pojo.view.InternalView;
 import alvin.study.misc.jackson.pojo.view.PublicView;
 
@@ -27,19 +27,13 @@ import alvin.study.misc.jackson.pojo.view.PublicView;
  * 通过视图控制 JSON 序列化结果
  *
  * <p>
- * 本例演示了如何通过 {@link JsonView @JsonView} 注解, 将不同的视图设置, 可以将同一个对象序列化为不同的 JSON 字符串
+ * 本例演示了如何通过 {@link JsonView @JsonView} 注解, 将不同的视图设置,
+ * 可以将同一个对象序列化为不同的 JSON 字符串
  * </p>
  *
  * <p>
- * 要按照视图序列化对象, 需要在 {@code ObjectMapper} 序列化时, 通过视图创建 {@link com.fasterxml.jackson.databind.ObjectWriter
- * ObjectWriter} 对象, 参考: {@link com.fasterxml.jackson.databind.ObjectMapper#writerWithView(Class)
- * ObjectMapper.writerWithView(Class)} 方法以及 {@link Encoder#toJson(Object)
- * Encoder.toJson(Object)} 方法
- * </p>
- *
- * <p>
- * 另外, 当前 POJO 对象应该可以根据不同 JSON 字段 (如: {@code mobile} 或者 {@code encodedMobile}
- * 字段反序列化对象
+ * 另外, 当前 POJO 对象应该可以根据不同 JSON 字段 (如: {@code mobile}
+ * 或者 {@code encodedMobile} 字段反序列化对象
  * </p>
  */
 @Getter
@@ -52,7 +46,10 @@ public class User {
     // 加密的初始化向量
     private static final byte[] IV = "c558Gq0YQK2QUlMc".getBytes();
 
+    @JsonView({ PublicView.class, InternalView.class })
     private final Long id;
+
+    @JsonView({ PublicView.class, InternalView.class })
     private final String username;
 
     // 该字段不自动序列化, 而是通过 @JsonGetter 注解的 getter 方法序列化

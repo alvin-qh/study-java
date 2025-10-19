@@ -6,21 +6,22 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import com.google.common.base.Strings;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-import alvin.study.misc.jackson.encode.Encoder;
-
 /**
- * 本例演示了 JSON 字段过滤器, 即通过 {@link JsonFilter @JsonFilter} 注解指定过滤器, 控制 POJO 类到 JSON 转换的字段.
+ * 本例演示了 JSON 字段过滤器, 即通过 {@link JsonFilter @JsonFilter} 注解指定过滤器,
+ * 控制 POJO 类到 JSON 转换的字段.
  *
  * <p>
- * 要使用过滤器, 首先得注册一个过滤器, 参照 {@link Encoder#addFilter(String, String...)
- * Encoder.addFilter(String, String...)} 方法. 注册过滤器后, 即可通过 {@link JsonFilter @JsonFilter}
- * 注解在 POJO 类上应用过滤器. 注意, 需要两边定义匹配的过滤器标识
+ * 要使用过滤器, 首先得注册一个过滤器, 参照
+ * {@link tools.jackson.databind.json.JsonMapper.Builder#filterProvider(tools.jackson.databind.ser.FilterProvider)
+ * JsonMapper.Builder.filterProvider(FilterProvider)} 方法, 注册过滤器后,
+ * 即可通过 {@link JsonFilter @JsonFilter} 注解在 POJO 类上应用过滤器. 注意, 需要两边定义匹配的过滤器标识
  * </p>
  */
 @Getter

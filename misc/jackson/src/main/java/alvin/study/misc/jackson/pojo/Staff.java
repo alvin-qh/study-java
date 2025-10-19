@@ -1,5 +1,6 @@
 package alvin.study.misc.jackson.pojo;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -70,8 +71,13 @@ public class Staff {
      * <p>
      * 由于 Jackson 是通过反射方式调用该构造器, 所以该构造器可以设置为任意访问修饰符
      * </p>
+     *
+     * <p>
+     * 从 Jackson 3.x 版本开始, 无需定义默认构造器, Jackson 会自动匹配合适的参数构造器
+     * 创建对象
+     * </p>
      */
-    Staff() {}
+    // Staff() {}
 
     /**
      * 该构造器用于正常途径构造一个 POJO 对象
@@ -81,6 +87,7 @@ public class Staff {
      * @param gender   性别属性
      * @param birthday 生日属性
      */
+    @JsonCreator
     public Staff(Long id, String name, String gender, SimpleDate birthday, boolean valid) {
         this.id = id;
         this.name = name;
