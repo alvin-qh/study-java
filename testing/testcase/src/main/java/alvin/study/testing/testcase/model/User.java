@@ -3,11 +3,10 @@ package alvin.study.testing.testcase.model;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
-
-import tools.jackson.databind.ObjectMapper;
 
 /**
  * 用于测试的用户实体类型

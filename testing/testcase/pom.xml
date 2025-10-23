@@ -14,22 +14,11 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>tools.jackson</groupId>
-        <artifactId>jackson-bom</artifactId>
-        <version>${version.jackson}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
   <dependencies>
     <dependency>
-      <groupId>tools.jackson.core</groupId>
+      <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
+      <optional>true</optional>
     </dependency>
   </dependencies>
 </project>
