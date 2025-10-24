@@ -31,6 +31,8 @@ import org.junitpioneer.jupiter.json.JsonSource;
 import org.junitpioneer.jupiter.json.Property;
 import org.junitpioneer.jupiter.params.IntRangeSource;
 
+import lombok.SneakyThrows;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -249,7 +251,8 @@ class ParameterizeTest {
      * </p>
      */
     @BeforeAll
-    static void createJsonFile() throws Exception {
+    @SneakyThrows
+    static void createJsonFile() {
         var file = new File("user.json");
         if (!file.exists()) {
             file.createNewFile();

@@ -4,11 +4,12 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.time.LocalDate;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.hash.BloomFilter;
+
+import lombok.SneakyThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -147,7 +148,8 @@ class BloomFilterTest {
      * </p>
      */
     @Test
-    void persist_shouldSaveAndReadBloomFilterInIOStream() throws IOException {
+    @SneakyThrows
+    void persist_shouldSaveAndReadBloomFilterInIOStream() {
         var filter = BloomFilter.create(Person.makeFunnel(), 10000, 0.001);
 
         filter.put(new Person(

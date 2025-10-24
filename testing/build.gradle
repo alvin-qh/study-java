@@ -23,8 +23,9 @@ subprojects {
   }
 
   dependencies {
+    implementation platform("com.fasterxml.jackson.core:jackson-core:${VER_JACKSON2}")
     implementation "com.google.guava:guava:${VER_GUAVA}"
     testImplementation "org.junit.jupiter:junit-jupiter:${VER_JUNIT}"
-    testRuntimeOnly "org.junit.platform:junit-platform-launcher:${VER_JUNIT_LAUNCHER}"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher:${VER_JUNIT_PLATFORM}"
   }
 }

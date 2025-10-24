@@ -36,6 +36,6 @@ subprojects {
     runtimeOnly "com.lmax:disruptor:${VER_DISRUPTOR}"
     testImplementation "org.springframework.boot:spring-boot-starter-test",
                        "org.assertj:assertj-core:${VER_ASSERTJ}"
-    testRuntimeOnly "org.junit.platform:junit-platform-launcher:${VER_JUNIT_LAUNCHER}"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher:${VER_JUNIT_PLATFORM}"
   }
 }

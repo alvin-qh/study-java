@@ -7,6 +7,6 @@ subprojects {
     implementation "com.google.guava:guava:${VER_GUAVA}"
     testImplementation "org.junit.jupiter:junit-jupiter:${VER_JUNIT}",
                        "org.assertj:assertj-core:${VER_ASSERTJ}"
-    testRuntimeOnly "org.junit.platform:junit-platform-launcher:${VER_JUNIT_LAUNCHER}"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher:${VER_JUNIT_PLATFORM}"
   }
 }

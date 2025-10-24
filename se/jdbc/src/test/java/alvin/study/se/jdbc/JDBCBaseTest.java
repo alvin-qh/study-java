@@ -1,16 +1,19 @@
 package alvin.study.se.jdbc;
 
-import alvin.study.se.jdbc.datasource.ConnectionManager;
-import alvin.study.se.jdbc.datasource.DataSourceBuilder;
-import alvin.study.se.jdbc.flyway.Migration;
+import javax.sql.DataSource;
+
 import com.zaxxer.hikari.HikariDataSource;
+
+import lombok.SneakyThrows;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
-import javax.sql.DataSource;
-import java.sql.SQLException;
+import alvin.study.se.jdbc.datasource.ConnectionManager;
+import alvin.study.se.jdbc.datasource.DataSourceBuilder;
+import alvin.study.se.jdbc.flyway.Migration;
 
 /**
  * JDBC 测试超类类型
@@ -53,7 +56,8 @@ public abstract class JDBCBaseTest {
      * 在每次测试执行前执行, 初始化数据库连接, 并准备数据表
      */
     @BeforeEach
-    protected void beforeEach() throws SQLException {
+    @SneakyThrows
+    protected void beforeEach() {
         // 初始化连接管理器对象
         connectionManager.initialize(dataSource);
     }
@@ -62,7 +66,8 @@ public abstract class JDBCBaseTest {
      * 在每次测试执行后执行, 关闭数据库连接
      */
     @AfterEach
-    protected void afterEach() throws SQLException {
+    @SneakyThrows
+    protected void afterEach() {
         connectionManager.close();
     }
 

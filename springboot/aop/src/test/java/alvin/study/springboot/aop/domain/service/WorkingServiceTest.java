@@ -6,24 +6,22 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import org.assertj.core.api.Condition;
-import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.google.common.base.Objects;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+
+import org.junit.jupiter.api.Test;
 
 import alvin.study.springboot.aop.IntegrationTest;
 import alvin.study.springboot.aop.aspect.AnnotationAdvice;
@@ -31,6 +29,8 @@ import alvin.study.springboot.aop.aspect.Message;
 import alvin.study.springboot.aop.aspect.Message.Step;
 import alvin.study.springboot.aop.aspect.MethodAdvice;
 import alvin.study.springboot.aop.domain.model.Worker;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * 测试 AOP
@@ -138,7 +138,7 @@ class WorkingServiceTest extends IntegrationTest {
                         "(alvin.study.springboot.aop.domain.model.Worker)";
 
         // 期待的异常对象
-        var exception = new JsonParseException(objectMapper.createParser("{}"), "test");
+        var exception = JacksonException.wrapWithPath(new IOException(), null);
 
         // 对目标对象的字段进行 mock 操作, 以便能引发期待的异常
         var spyObjectMapper = spy(objectMapper);
@@ -150,7 +150,7 @@ class WorkingServiceTest extends IntegrationTest {
         var worker = new Worker("Alvin", "Engineer");
 
         // 期待的异常对象
-        thenThrownBy(() -> service.work(worker)).isInstanceOf(JsonProcessingException.class);
+        thenThrownBy(() -> service.work(worker)).isInstanceOf(JacksonException.class);
 
         // 确认各个阶段拦截器工作正常
         then(mqForMethodAdvice.poll(0, TimeUnit.SECONDS))
@@ -219,7 +219,7 @@ class WorkingServiceTest extends IntegrationTest {
                         "(alvin.study.springboot.aop.domain.model.Worker)";
 
         // 期待的异常对象
-        var exception = new JsonParseException(objectMapper.createParser("{}"), "test");
+        var exception = JacksonException.wrapWithPath(new IOException(), null);
 
         // 对目标对象的字段进行 mock 操作, 以便能引发期待的异常
         var spyObjectMapper = spy(objectMapper);
@@ -231,7 +231,7 @@ class WorkingServiceTest extends IntegrationTest {
         var worker = new Worker("Alvin", "Engineer");
 
         // 期待的异常对象
-        thenThrownBy(() -> service.workWithTransactional(worker)).isInstanceOf(JsonProcessingException.class);
+        thenThrownBy(() -> service.workWithTransactional(worker)).isInstanceOf(JacksonException.class);
 
         // 确认各个阶段拦截器工作正常
         then(mqForAnnotationAdvice.poll(0, TimeUnit.SECONDS))

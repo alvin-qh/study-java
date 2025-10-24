@@ -6,12 +6,11 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import alvin.study.misc.jackson.pojo.common.SimpleDate;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.DeserializationFeature;
 import tools.jackson.databind.SerializationFeature;
 import tools.jackson.databind.json.JsonMapper;
-
-import alvin.study.misc.jackson.pojo.common.SimpleDate;
 
 /**
  * 测试 {@link Staff} 类型的 JSON 序列化和反序列化
@@ -75,7 +74,7 @@ class StaffTest {
      * </p>
      */
     @Test
-    void toJson_shouldEncodeProductObjectToJson() throws Exception {
+    void toJson_shouldEncodeProductObjectToJson() {
         var mapper = JsonMapper.builder()
                 .enable(SerializationFeature.INDENT_OUTPUT)
                 .build();
@@ -93,7 +92,7 @@ class StaffTest {
      * </p>
      */
     @Test
-    void toJson_shouldEncodeProductListToJson() throws Exception {
+    void toJson_shouldEncodeProductListToJson() {
         var mapper = JsonMapper.builder()
                 .enable(SerializationFeature.INDENT_OUTPUT)
                 .build();
@@ -122,7 +121,7 @@ class StaffTest {
      * </p>
      */
     @Test
-    void fromJson_shouldDecodeJsonToProductObject() throws Exception {
+    void fromJson_shouldDecodeJsonToProductObject() {
         var mapper = JsonMapper.builder()
                 .disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)
                 .build();
@@ -155,7 +154,7 @@ class StaffTest {
      * </p>
      */
     @Test
-    void fromJson_shouldDecodeJsonToProductListByTypeReferenceArgument() throws Exception {
+    void fromJson_shouldDecodeJsonToProductListByTypeReferenceArgument() {
         var mapper = JsonMapper.builder()
                 .disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)
                 .build();

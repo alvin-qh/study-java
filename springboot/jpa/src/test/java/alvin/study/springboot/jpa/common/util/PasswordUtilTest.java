@@ -2,9 +2,11 @@ package alvin.study.springboot.jpa.common.util;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
-import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.SneakyThrows;
+
+import org.junit.jupiter.api.Test;
 
 import alvin.study.springboot.jpa.IntegrationTest;
 import alvin.study.springboot.jpa.util.security.PasswordUtil;
@@ -20,7 +22,8 @@ class PasswordUtilTest extends IntegrationTest {
      * 测试密码生成器生成密码是否正确
      */
     @Test
-    void encrypt_shouldPasswordEncrypt() throws Exception {
+    @SneakyThrows
+    void encrypt_shouldPasswordEncrypt() {
         var expected = "c926d53ca183e8bb5a369e8752b4ed574304bf1f15d680b8304f3251306915ec";
 
         var pass = passwordUtil.encrypt("admin@123");

@@ -55,7 +55,7 @@ class ProductTest {
      * </p>
      */
     @Test
-    void toJson_shouldEncodeProductObjectToJson() throws Exception {
+    void toJson_shouldEncodeProductObjectToJson() {
         var mapper = JsonMapper.builder()
                 // 表示在序列化时, 将 Product 对象整体包裹为 JSON 的一个属性值,
                 // 该属性值的名称通过 @JsonRootName 注解指定
@@ -86,7 +86,7 @@ class ProductTest {
      * </p>
      */
     @Test
-    void fromJson_shouldDecodeJsonToProductObject() throws Exception {
+    void fromJson_shouldDecodeJsonToProductObject() {
         var mapper = JsonMapper.builder()
                 // 表示在反序列化时, 将 JSON 的指定属性值反序列化为 Product 对象, 该属性值的名称通过 @JsonRootName 注解指定
                 .enable(DeserializationFeature.UNWRAP_ROOT_VALUE)

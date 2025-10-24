@@ -90,7 +90,7 @@ class StandardIoTest {
      */
     @Test
     @StdIo({ "Hello", "World" })
-    void stdin_shouldSetContentIntoOutputStream(StdIn in) throws Exception {
+    void stdin_shouldSetContentIntoOutputStream(StdIn in) {
         var lines = new ArrayList<String>();
 
         // 实例化 Scanner 对象用于读取 System.in 内容

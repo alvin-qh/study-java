@@ -4,6 +4,9 @@ version = "1.0-SNAPSHOT"
 subprojects {
   test {
     systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
+    jvmArgs "--enable-preview",
+            "--add-opens", "java.base/java.util=ALL-UNNAMED",
+            "--add-opens", "java.base/java.lang=ALL-UNNAMED"
   }
 
   dependencies {

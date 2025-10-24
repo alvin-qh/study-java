@@ -3,13 +3,14 @@ package alvin.study.guava.io;
 import static org.assertj.core.api.BDDAssertions.then;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.PosixFilePermissions;
 
 import com.google.common.io.MoreFiles;
+
+import lombok.SneakyThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -50,7 +51,8 @@ class ByteSinkTest {
      * </p>
      */
     @Test
-    void write_shouldWriteByteArrayIntoByteSink() throws IOException {
+    @SneakyThrows
+    void write_shouldWriteByteArrayIntoByteSink() {
         // 创建一个临时文件
         var attrs = PosixFilePermissions.asFileAttribute(
             PosixFilePermissions.fromString("rw-------"));
@@ -83,7 +85,8 @@ class ByteSinkTest {
      * </p>
      */
     @Test
-    void writeFrom_shouldWriteIntoByteSinkFromInputStream() throws IOException {
+    @SneakyThrows
+    void writeFrom_shouldWriteIntoByteSinkFromInputStream() {
         // 创建一个临时文件
         var attrs = PosixFilePermissions.asFileAttribute(
             PosixFilePermissions.fromString("rw-------"));
@@ -128,7 +131,8 @@ class ByteSinkTest {
      * </p>
      */
     @Test
-    void openStream_shouldOpenOutputStreamFromByteSink() throws IOException {
+    @SneakyThrows
+    void openStream_shouldOpenOutputStreamFromByteSink() {
         // 创建一个临时文件
         var attrs = PosixFilePermissions.asFileAttribute(
             PosixFilePermissions.fromString("rw-------"));

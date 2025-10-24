@@ -2,7 +2,7 @@ package alvin.study.guava.reflect;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
-import java.io.IOException;
+import lombok.SneakyThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +16,8 @@ class ClassFinderTest {
      * 测试 {@link ClassFinder#inPackage(String)} 方法
      */
     @Test
-    void inPackage_shouldFindClassInPackageByPackageName() throws IOException {
+    @SneakyThrows
+    void inPackage_shouldFindClassInPackageByPackageName() {
         // 查找 alvin.study.future 包下所有类
         var classes = ClassFinder.inPackage(
             "alvin.study.guava.reflect.model");

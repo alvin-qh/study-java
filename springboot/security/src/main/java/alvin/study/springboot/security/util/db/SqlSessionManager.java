@@ -87,7 +87,7 @@ public class SqlSessionManager {
          * </p>
          */
         @Override
-        public void close() throws Exception {
+        public void close() {
             SqlSessionUtils.closeSqlSession(sqlSession, sqlSessionTemplate.getSqlSessionFactory());
         }
 

@@ -1,17 +1,19 @@
 package alvin.study.se.jdbc.mptt;
 
-import alvin.study.se.jdbc.mptt.model.MPTT;
-import alvin.study.se.jdbc.mptt.model.MPTTTree;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.tuple;
+import static org.assertj.core.api.BDDAssertions.then;
 
-import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
-import static org.assertj.core.api.Assertions.tuple;
-import static org.assertj.core.api.BDDAssertions.then;
+import lombok.SneakyThrows;
+
+import org.junit.jupiter.api.Test;
+
+import alvin.study.se.jdbc.mptt.model.MPTT;
+import alvin.study.se.jdbc.mptt.model.MPTTTree;
 
 /**
  * 测试通过 {@link MPTTTree} 类型来处理数据记录, 将数据整理为一颗树
@@ -26,7 +28,8 @@ class MPTTTreeTest extends MPTTBaseTest {
      * 通过 {@link MPTT} 类型数据集合创建 {@link MPTTTree} 类型对象
      */
     @Test
-    void buildTree_shouldBuildTreeStructByMPTTRecords() throws SQLException {
+    @SneakyThrows
+    void buildTree_shouldBuildTreeStructByMPTTRecords() {
         // 构建 MPTT 树记录
         createMptt(buildTree());
 
@@ -55,7 +58,8 @@ class MPTTTreeTest extends MPTTBaseTest {
      * 测试对 {@link MPTTTree} 类型对象的各种操作
      */
     @Test
-    void treeOperation_shouldOperateTree() throws SQLException {
+    @SneakyThrows
+    void treeOperation_shouldOperateTree() {
         // 构建 MPTT 树记录
         createMptt(buildTree());
 

@@ -13,6 +13,8 @@ import org.junitpioneer.jupiter.resource.New;
 import org.junitpioneer.jupiter.resource.Shared;
 import org.junitpioneer.jupiter.resource.TemporaryDirectory;
 
+import lombok.SneakyThrows;
+
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -106,9 +108,10 @@ class InjectingResourcesTest {
      * @param tmpDir 创建的共享临时目录对象
      */
     @Test
+    @SneakyThrows
     @Order(1)
     void new_shouldCreateSharedTempDirResourceWrite(
-            @Shared(factory = TemporaryDirectory.class, name = "shared-tmp-dir") Path tmpDir) throws Exception {
+            @Shared(factory = TemporaryDirectory.class, name = "shared-tmp-dir") Path tmpDir) {
         // 确认临时路径已被创建
         then(Files.exists(tmpDir)).isTrue();
 
@@ -158,9 +161,10 @@ class InjectingResourcesTest {
      * @param tmpDir 创建的共享临时目录对象
      */
     @Test
+    @SneakyThrows
     @Order(2)
     void new_shouldCreateSharedTempDirResourceRead(
-            @Shared(factory = TemporaryDirectory.class, name = "shared-tmp-dir") Path tmpDir) throws Exception {
+            @Shared(factory = TemporaryDirectory.class, name = "shared-tmp-dir") Path tmpDir) {
         // 确认临时路径已被创建
         then(Files.exists(tmpDir)).isTrue();
 

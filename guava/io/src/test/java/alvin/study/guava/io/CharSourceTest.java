@@ -2,7 +2,6 @@ package alvin.study.guava.io;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
-import java.io.IOException;
 import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -16,6 +15,8 @@ import com.google.common.io.CharSource;
 import com.google.common.io.LineProcessor;
 import com.google.common.io.MoreFiles;
 import com.google.common.io.Resources;
+
+import lombok.SneakyThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -83,7 +84,8 @@ class CharSourceTest {
      * </p>
      */
     @Test
-    void wrap_shouldWrapCharSequenceToCharSource() throws IOException {
+    @SneakyThrows
+    void wrap_shouldWrapCharSequenceToCharSource() {
         // 将字符串包装为 CharSource 对象
         var source = CharSource.wrap("Hello Guava");
 
@@ -129,7 +131,8 @@ class CharSourceTest {
      * </p>
      */
     @Test
-    void read_shouldReadStringsFromCharSources() throws IOException {
+    @SneakyThrows
+    void read_shouldReadStringsFromCharSources() {
         // 将多行字符串包装为 CharSource 对象
         var source = CharSource.wrap("""
             Line1
@@ -185,7 +188,8 @@ class CharSourceTest {
      * </p>
      */
     @Test
-    void copyTo_shouldCopyCharSourceIntoAppendableObject() throws IOException {
+    @SneakyThrows
+    void copyTo_shouldCopyCharSourceIntoAppendableObject() {
         // 将字符串包装为 CharSource 对象
         var source = CharSource.wrap("Hello Guava");
 
@@ -210,7 +214,8 @@ class CharSourceTest {
      * </p>
      */
     @Test
-    void copyTo_shouldCopyFromCharSourceToCharSink() throws IOException {
+    @SneakyThrows
+    void copyTo_shouldCopyFromCharSourceToCharSink() {
         // 将字符串包装为 CharSource 对象
         var source = CharSource.wrap("Hello Guava");
 
@@ -244,7 +249,8 @@ class CharSourceTest {
      * </p>
      */
     @Test
-    void concat_shouldJoinCharResourcesToOne() throws IOException {
+    @SneakyThrows
+    void concat_shouldJoinCharResourcesToOne() {
         // 创建 3 个 CharSource 对象
         var source1 = CharSource.wrap("abc");
         var source2 = CharSource.wrap("def");
@@ -264,7 +270,8 @@ class CharSourceTest {
      * </p>
      */
     @Test
-    void empty_shouldCreateAnEmptyCharSource() throws IOException {
+    @SneakyThrows
+    void empty_shouldCreateAnEmptyCharSource() {
         var source = CharSource.empty();
 
         // 确认 CharSource 为空
@@ -290,7 +297,8 @@ class CharSourceTest {
      * </p>
      */
     @Test
-    void openStream_shouldOpenCharSourceAsInputStream() throws IOException {
+    @SneakyThrows
+    void openStream_shouldOpenCharSourceAsInputStream() {
         // 将字符串包装为 CharSource 对象
         var source = CharSource.wrap("Hello Guava");
 
@@ -321,7 +329,8 @@ class CharSourceTest {
      * </p>
      */
     @Test
-    void asCharSource_shouldConvertByteSourceToCharSource() throws IOException {
+    @SneakyThrows
+    void asCharSource_shouldConvertByteSourceToCharSource() {
         var cSource = CharSource.wrap("Hello Guava");
 
         // 将字符数据源转为字节数据源对象

@@ -1,5 +1,7 @@
 package alvin.study.se.mail;
 
+import lombok.SneakyThrows;
+
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -23,8 +25,9 @@ class MailClientTest {
      * 测试 {@link MailClient#send(String, String, String, String)} 方法, 发送一封邮件
      */
     @Test
+    @SneakyThrows
     @Disabled
-    void send_shouldSendMailByMailClient() throws Exception {
+    void send_shouldSendMailByMailClient() {
         // 创建邮件发送客户端对象
         var client = new SimpleMailClientBuilder("localhost", 994, "quhao317@163.com", "1234567").build();
 

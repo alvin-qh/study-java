@@ -23,6 +23,8 @@ import com.google.common.collect.MultimapBuilder;
 import com.google.common.hash.BloomFilter;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 
+import lombok.SneakyThrows;
+
 import org.junit.jupiter.api.Test;
 
 import alvin.study.guava.cache.model.User;
@@ -375,7 +377,8 @@ class CacheTest {
      * </p>
      */
     @Test
-    void time_shouldCacheElementEvictionByCreatedTime() throws Exception {
+    @SneakyThrows
+    void time_shouldCacheElementEvictionByCreatedTime() {
         // 构建缓存对象, 并指定 load 方法如何从数据源读取对象
         // 设定每个被缓存对象的过期时间为 2 秒
         var cache = CacheBuilder.newBuilder()
@@ -422,7 +425,8 @@ class CacheTest {
      * </p>
      */
     @Test
-    void time_shouldCacheElementEvictionByAccessedTime() throws Exception {
+    @SneakyThrows
+    void time_shouldCacheElementEvictionByAccessedTime() {
         // 构建缓存对象, 并指定 load 方法如何从数据源读取对象
         // 设定每个被缓存对象的过期时间为 200 毫秒
         var cache = CacheBuilder.newBuilder()
@@ -722,7 +726,8 @@ class CacheTest {
      * </p>
      */
     @Test
-    void refresh_shouldReloadCacheByEvent() throws Exception {
+    @SneakyThrows
+    void refresh_shouldReloadCacheByEvent() {
         repository.insertUser(new User(1L, "Alvin"));
         repository.insertUser(new User(2L, "Emma"));
         repository.insertUser(new User(3L, "Lucy"));

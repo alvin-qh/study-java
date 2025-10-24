@@ -1,10 +1,12 @@
 package alvin.study.se.security.util;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Objects;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import lombok.SneakyThrows;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * 测试 {@link RSAKeyReader} 类型
@@ -17,7 +19,8 @@ class RSAKeyReaderTest {
      * 测试 {@link RSAKeyReader#readPrivateKey()} 方法, 从 {@code /keyfile/key} 文件中读取私钥数据
      */
     @Test
-    void readPrivateKey_shouldReadPrivateKeyFromFile() throws Exception {
+    @SneakyThrows
+    void readPrivateKey_shouldReadPrivateKeyFromFile() {
         // 依据 basename 创建对象
         var keyReader = new RSAKeyReader(keyFile);
 
@@ -30,7 +33,8 @@ class RSAKeyReaderTest {
      * 测试 {@link RSAKeyReader#readPublicKey()} 方法, 从 {@code /keyfile/key.pub} 文件中读取公钥数据
      */
     @Test
-    void readPublicKey_shouldReadPublicKeyFromFile() throws Exception {
+    @SneakyThrows
+    void readPublicKey_shouldReadPublicKeyFromFile() {
         // 依据 basename 创建对象
         var keyReader = new RSAKeyReader(keyFile);
 

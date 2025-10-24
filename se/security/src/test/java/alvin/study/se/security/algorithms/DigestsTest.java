@@ -1,7 +1,6 @@
 package alvin.study.se.security.algorithms;
 
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,7 +9,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Objects;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import lombok.SneakyThrows;
+
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 /**
  * 测试 {@link Digests} 类型
@@ -42,6 +44,8 @@ class DigestsTest {
     /**
      * 测试 {@link Digests#digest(java.io.InputStream)} 方法, 对一个输入流内容进行摘要
      */
+    @ParameterizedTest
+    @SneakyThrows
     @CsvSource({
         "MD2,87dd9942e6de4fda3858795ba8dc01d7",
         "MD5,daf9789eaf9524f44fc03ccd7489461d",
@@ -51,8 +55,7 @@ class DigestsTest {
         "SHA384,a0d03a758c69700255f2e7247a537b6cfb5276f3cc48ccbba2b29e6743c97366f17cb5bdd2fec557901126f3483caa03",
         "SHA512,417501790168a59e443a140fcfad38b617bc4694460c6e30015fb30f0ba61646bb8a36b301c61a9b5f6ef50c379b2960d78919e9be4ddd758916981f01f8d655"
     })
-    @ParameterizedTest
-    void digest_shouldEncodeInputStreamDigest(String algorithmName, String expectedHash) throws Exception {
+    void digest_shouldEncodeInputStreamDigest(String algorithmName, String expectedHash) {
         // 获取保存测试数据的文件资源
         var file = new File(Objects.requireNonNull(getClass().getResource("/data/test-data.txt")).getFile());
         then(file.exists()).isTrue();
@@ -73,6 +76,8 @@ class DigestsTest {
     /**
      * 测试 {@link Digests#digest(java.nio.file.Path) Digests.digest(Path)} 方法, 对一个文件内容进行摘要
      */
+    @ParameterizedTest
+    @SneakyThrows
     @CsvSource({
         "MD2,87dd9942e6de4fda3858795ba8dc01d7",
         "MD5,daf9789eaf9524f44fc03ccd7489461d",
@@ -82,8 +87,7 @@ class DigestsTest {
         "SHA384,a0d03a758c69700255f2e7247a537b6cfb5276f3cc48ccbba2b29e6743c97366f17cb5bdd2fec557901126f3483caa03",
         "SHA512,417501790168a59e443a140fcfad38b617bc4694460c6e30015fb30f0ba61646bb8a36b301c61a9b5f6ef50c379b2960d78919e9be4ddd758916981f01f8d655"
     })
-    @ParameterizedTest
-    void digest_shouldEncodeFileDigest(String algorithmName, String expectedHash) throws Exception {
+    void digest_shouldEncodeFileDigest(String algorithmName, String expectedHash) {
         // 获取保存测试数据的文件资源
         var path = Paths.get(Objects.requireNonNull(getClass().getResource("/data/test-data.txt")).getFile());
         then(Files.exists(path)).isTrue();

@@ -1,14 +1,16 @@
 package alvin.study.se.process;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledOnOs;
-import org.junit.jupiter.api.condition.OS;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.awaitility.Awaitility.await;
 
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.awaitility.Awaitility.await;
+import lombok.SneakyThrows;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 /**
  * 测试 {@link ProcessUtil} 进程操作工具类
@@ -23,8 +25,9 @@ class ProcessUtilTest {
      * </p>
      */
     @Test
+    @SneakyThrows
     @EnabledOnOs({ OS.MAC, OS.LINUX })
-    void exec_shouldStartProcess() throws Exception {
+    void exec_shouldStartProcess() {
         // 启动进程
         var process = ProcessUtil.exec("echo", "Hello World");
 
@@ -46,8 +49,9 @@ class ProcessUtilTest {
      * </p>
      */
     @Test
+    @SneakyThrows
     @EnabledOnOs({ OS.MAC, OS.LINUX })
-    void kill_shouldTerminalProcess() throws Exception {
+    void kill_shouldTerminalProcess() {
         // 启动一个持续执行的进程
         var process = ProcessUtil.exec("watch", "-n 1", "ps");
 
@@ -65,7 +69,7 @@ class ProcessUtilTest {
 
         // 再次根据进程 id 查询进程, 确认无法查询到
         await().atMost(1, TimeUnit.SECONDS)
-            .until(() -> ProcessUtil.process(process.pid()), Optional::isEmpty);
+                .until(() -> ProcessUtil.process(process.pid()), Optional::isEmpty);
     }
 
     /**
@@ -73,8 +77,9 @@ class ProcessUtilTest {
      * ProcessUtil.allProcesses(Predicate)} 方法, 获取符合条件的所有进程信息对象
      */
     @Test
+    @SneakyThrows
     @EnabledOnOs({ OS.MAC, OS.LINUX })
-    void allProcesses_shouldListAllProcesses() throws Exception {
+    void allProcesses_shouldListAllProcesses() {
         // 启动一个持续执行的进程
         var process = ProcessUtil.exec("watch", "-n 1", "ps");
 
@@ -95,7 +100,8 @@ class ProcessUtilTest {
      * ProcessUtil.children(long, Predicate)} 方法, 获取符合条件的子进程信息对象
      */
     @Test
-    void children_shouldGetChildProcesses() throws Exception {
+    @SneakyThrows
+    void children_shouldGetChildProcesses() {
         // 启动一个持续执行的进程, 该进程为当前 java 进程的子进程
         var process = ProcessUtil.exec("watch", "-n 1", "ps");
 

@@ -26,7 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
                     @NonNull HttpServletRequest request,
                     @NonNull HttpServletResponse response,
                     @NonNull Object handler,
-                    @Nullable Exception ex) throws Exception {
+                    @Nullable Exception ex) {
                 if (!"test".equals(env)) {
                     ContextHolder.reset();
                 }

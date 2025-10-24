@@ -4,9 +4,6 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.google.common.annotations.VisibleForTesting;
 
 import lombok.AllArgsConstructor;
@@ -15,6 +12,7 @@ import alvin.study.springboot.aop.aspect.AnnotationAdvice;
 import alvin.study.springboot.aop.aspect.MethodAdvice;
 import alvin.study.springboot.aop.aspect.Transactional;
 import alvin.study.springboot.aop.domain.model.Worker;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * 包含被拦截方法的类
@@ -38,7 +36,7 @@ public class WorkingService {
      * @return 字符串
      * @throws JsonProcessingException
      */
-    public String work(Worker worker) throws JsonProcessingException {
+    public String work(Worker worker) {
         return objectMapper.writeValueAsString(worker);
     }
 
@@ -50,7 +48,7 @@ public class WorkingService {
      * @throws JsonProcessingException
      */
     @Transactional
-    public String workWithTransactional(Worker worker) throws JsonProcessingException {
+    public String workWithTransactional(Worker worker) {
         return objectMapper.writeValueAsString(worker);
     }
 

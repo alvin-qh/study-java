@@ -6,6 +6,8 @@ import org.junitpioneer.jupiter.RetryingTest;
 
 import com.google.common.util.concurrent.Monitor;
 
+import lombok.SneakyThrows;
+
 import org.junit.jupiter.api.Test;
 
 /**
@@ -27,7 +29,8 @@ class MonitorTest {
      * </p>
      */
     @RetryingTest(3)
-    void parallelAdd_shouldAddInMultiThreadWithoutLock() throws Exception {
+    @SneakyThrows
+    void parallelAdd_shouldAddInMultiThreadWithoutLock() {
         // 定义计数器对象
         var counter = new Counter();
 
@@ -74,7 +77,8 @@ class MonitorTest {
      * </p>
      */
     @Test
-    void monitor_shouldAddInMultiThreadWithoutMonit() throws Exception {
+    @SneakyThrows
+    void monitor_shouldAddInMultiThreadWithoutMonit() {
         // 定义计数器对象
         var counter = new Counter();
 

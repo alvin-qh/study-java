@@ -3,7 +3,6 @@ package alvin.study.guava.io;
 import static org.assertj.core.api.BDDAssertions.then;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -12,6 +11,8 @@ import java.nio.file.attribute.PosixFilePermissions;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.MoreFiles;
+
+import lombok.SneakyThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -58,7 +59,8 @@ class CharSinkTest {
      * </p>
      */
     @Test
-    void write_shouldWriteCharSequenceIntoCharSink() throws IOException {
+    @SneakyThrows
+    void write_shouldWriteCharSequenceIntoCharSink() {
         // 创建一个临时文件
         var attrs = PosixFilePermissions.asFileAttribute(
             PosixFilePermissions.fromString("rw-------"));
@@ -90,7 +92,8 @@ class CharSinkTest {
      * </p>
      */
     @Test
-    void writeFrom_shouldWriteIntoCharSinkFromReader() throws IOException {
+    @SneakyThrows
+    void writeFrom_shouldWriteIntoCharSinkFromReader() {
         // 创建一个临时文件
         var attrs = PosixFilePermissions.asFileAttribute(
             PosixFilePermissions.fromString("rw-------"));
@@ -124,7 +127,8 @@ class CharSinkTest {
      * </p>
      */
     @Test
-    void writeLines_shouldWriteMultiLinesIntoCharSink() throws IOException {
+    @SneakyThrows
+    void writeLines_shouldWriteMultiLinesIntoCharSink() {
         // 创建一个临时文件
         var attrs = PosixFilePermissions.asFileAttribute(
             PosixFilePermissions.fromString("rw-------"));
@@ -178,7 +182,8 @@ class CharSinkTest {
      * </p>
      */
     @Test
-    void openStream_shouldOpenOutputStreamFromCharSink() throws IOException {
+    @SneakyThrows
+    void openStream_shouldOpenOutputStreamFromCharSink() {
         // 创建一个临时文件
         var attrs = PosixFilePermissions.asFileAttribute(
             PosixFilePermissions.fromString("rw-------"));

@@ -6,6 +6,8 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import lombok.SneakyThrows;
+
 import org.junit.jupiter.api.Test;
 
 /**
@@ -86,7 +88,8 @@ class MatchersTest {
      * {@link Matchers.AnnotatedWithType AnnotatedWithType} 匹配器
      */
     @Test
-    void annotatedWith_shouldMatcherWorkedWithAnnotationType() throws Exception {
+    @SneakyThrows
+    void annotatedWith_shouldMatcherWorkedWithAnnotationType() {
         // 实例化匹配器对象, 设置期待的注解类型
         var matcher = Matchers.annotatedWith(TestAnnotation.class);
 
@@ -104,7 +107,8 @@ class MatchersTest {
      * AnnotatedWith} 匹配器
      */
     @Test
-    void annotatedWith_shouldMatcherWorkedWithAnnotationInstance() throws Exception {
+    @SneakyThrows
+    void annotatedWith_shouldMatcherWorkedWithAnnotationInstance() {
         // 实例化匹配器对象, 设置期待的注解对象
         var anno = TestClass.class.getAnnotation(TestAnnotation.class);
         var matcher = Matchers.annotatedWith(anno);
@@ -224,7 +228,8 @@ class MatchersTest {
      * 匹配器
      */
     @Test
-    void returns_shouldMatcherWorked() throws Exception {
+    @SneakyThrows
+    void returns_shouldMatcherWorked() {
         // 获取指定方法
         var method = TestClass.class.getMethod("equals", Object.class);
 

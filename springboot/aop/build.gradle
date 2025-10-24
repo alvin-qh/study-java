@@ -16,7 +16,6 @@ bootJar {
 
 dependencies {
   implementation "org.springframework.boot:spring-boot-starter-aop",
-                 "com.fasterxml.jackson.core:jackson-databind:${VER_JACKSON}",
-                 "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${VER_JACKSON}",
-                 "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${VER_JACKSON}"
+                 "tools.jackson.core:jackson-core",
+                 "tools.jackson.core:jackson-databind"
 }

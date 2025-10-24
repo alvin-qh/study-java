@@ -14,7 +14,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.web.client.RestTemplate;
 
 import com.alibaba.nacos.api.config.ConfigType;
-import com.alibaba.nacos.api.exception.NacosException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.SneakyThrows;
@@ -74,7 +73,7 @@ class NacosNamingTest extends BaseTest {
      * </p>
      */
     @Test
-    void getAllInstance_shouldGetRegisteredInstances() throws Exception {
+    void getAllInstance_shouldGetRegisteredInstances() {
         await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> {
             // 获取已注册的服务集合
             var instances = nacosUtil.getAllInstance(applicationName, NAMING_GROUP);
@@ -94,7 +93,8 @@ class NacosNamingTest extends BaseTest {
      */
     @Test
     @SuppressWarnings("unchecked")
-    void discover_shouldVisitServiceByName() throws NacosException {
+    @SneakyThrows
+    void discover_shouldVisitServiceByName() {
         // 向配置中心发布一个配置项
         assert nacosUtil.publishConfig(CONFIG_DATA_ID, CONFIG_GROUP, loadTestConfig(), ConfigType.YAML);
 

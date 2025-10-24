@@ -16,6 +16,8 @@ import com.google.common.io.Files;
 import com.google.common.io.MoreFiles;
 import com.google.common.io.RecursiveDeleteOption;
 
+import lombok.SneakyThrows;
+
 import org.junit.jupiter.api.Test;
 
 /**
@@ -54,6 +56,7 @@ class FileUtilsTest {
      * </p>
      *
      * @param dir 表示要删除的目录的 {@link Path} 对象
+     * @throws IOException
      */
     static void deleteDirs(Path dir) throws IOException {
         MoreFiles.deleteRecursively(dir, RecursiveDeleteOption.ALLOW_INSECURE);
@@ -64,6 +67,7 @@ class FileUtilsTest {
      * {@link #deleteDirs(Path)} 的重载方法, 以 {@link File} 对象为参数
      *
      * @param dir 表示要删除的目录的 {@link File} 对象
+     * @throws IOException
      */
     static void deleteDirs(File dir) throws IOException {
         deleteDirs(dir.toPath());
@@ -82,7 +86,8 @@ class FileUtilsTest {
      * </p>
      */
     @Test
-    void createParentDirs_shouldCreateParentDirsOfFile() throws IOException {
+    @SneakyThrows
+    void createParentDirs_shouldCreateParentDirsOfFile() {
         // 包含文件的目录
         var parentPath = new File("test/aa/bb/cc");
 
@@ -122,7 +127,8 @@ class FileUtilsTest {
      * </p>
      */
     @Test
-    void createParentDirectories_shouldCreateParentDirsOfPath() throws IOException {
+    @SneakyThrows
+    void createParentDirectories_shouldCreateParentDirsOfPath() {
         // 包含文件的目录
         var parentPath = Path.of("test/aa/bb/cc");
 
@@ -216,7 +222,8 @@ class FileUtilsTest {
      * </p>
      */
     @Test
-    void readWriter_shouldGetFileWithOrWithoutExtension() throws IOException {
+    @SneakyThrows
+    void readWriter_shouldGetFileWithOrWithoutExtension() {
         // 创建临时文件
         var file = File.createTempFile("guava-test", ".bin");
         file.deleteOnExit();
@@ -247,7 +254,8 @@ class FileUtilsTest {
      * </p>
      */
     @Test
-    void readLines_shouldReadMultiLinesFromFile() throws IOException {
+    @SneakyThrows
+    void readLines_shouldReadMultiLinesFromFile() {
         var file = File.createTempFile("guava-test", ".txt");
         var sink = Files.asCharSink(file, StandardCharsets.UTF_8);
 
@@ -274,7 +282,8 @@ class FileUtilsTest {
      * </p>
      */
     @Test
-    void map_shouldCreateMemoryMappingFile() throws IOException {
+    @SneakyThrows
+    void map_shouldCreateMemoryMappingFile() {
         // 创建临时文件
         var file = File.createTempFile("guava-test", ".mm");
         file.deleteOnExit();
@@ -315,7 +324,8 @@ class FileUtilsTest {
      * </p>
      */
     @Test
-    void touch_shouldCreateNewEmptyFilesAsFileObject() throws IOException {
+    @SneakyThrows
+    void touch_shouldCreateNewEmptyFilesAsFileObject() {
         var file = File.createTempFile("guava-test", ".dat");
 
         try {
@@ -339,7 +349,8 @@ class FileUtilsTest {
      * </p>
      */
     @Test
-    void touch_shouldCreateNewEmptyFilesAsPathObject() throws IOException {
+    @SneakyThrows
+    void touch_shouldCreateNewEmptyFilesAsPathObject() {
         var file = java.nio.file.Files.createTempFile("guava-test", ".dat");
 
         try {
@@ -407,7 +418,8 @@ class FileUtilsTest {
      * </p>
      */
     @Test
-    void move_shouldMoveFile() throws IOException {
+    @SneakyThrows
+    void move_shouldMoveFile() {
         var srcFile = new File("test/aa/a.dat");
         var dstFile = new File("test/bb/b.dat");
 
@@ -443,7 +455,8 @@ class FileUtilsTest {
      * </p>
      */
     @Test
-    void move_shouldWriteAndReadFile() throws IOException {
+    @SneakyThrows
+    void move_shouldWriteAndReadFile() {
         // 用于读写的数据
         var data = "Hello Guava".getBytes(StandardCharsets.UTF_8);
 
@@ -470,7 +483,8 @@ class FileUtilsTest {
      * </p>
      */
     @Test
-    void listFiles_shouldListFilesAndSubdirectoriesByGivenPath() throws IOException {
+    @SneakyThrows
+    void listFiles_shouldListFilesAndSubdirectoriesByGivenPath() {
         // 定义父一级目录
         var parent = Path.of("test");
 

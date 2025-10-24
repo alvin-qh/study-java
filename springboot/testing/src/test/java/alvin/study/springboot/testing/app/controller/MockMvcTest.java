@@ -13,6 +13,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import lombok.SneakyThrows;
+
 import org.junit.jupiter.api.Test;
 
 /**
@@ -87,7 +89,8 @@ class MockMvcTest {
      * </p>
      */
     @Test
-    void mockMvc_shouldGetResponse() throws Exception {
+    @SneakyThrows
+    void mockMvc_shouldGetResponse() {
         mockMvc.perform(get("/testing?name={name}&clock={clock}", "Alvin", CLOCK))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -146,7 +149,8 @@ class MockMvcTest {
      * </p>
      */
     @Test
-    void mockMvc_shouldGetResponseWithoutQueryParameters() throws Exception {
+    @SneakyThrows
+    void mockMvc_shouldGetResponseWithoutQueryParameters() {
         mockMvc.perform(get("/testing"))
                 .andDo(print())
                 .andExpect(status().isBadRequest())

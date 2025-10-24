@@ -17,14 +17,13 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import lombok.extern.slf4j.Slf4j;
 
 import alvin.study.springboot.aop.aspect.Message.Step;
 import alvin.study.springboot.aop.domain.model.Worker;
 import alvin.study.springboot.aop.domain.service.WorkingService;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * 定义用于拦截具备指定注解方法的切面类型

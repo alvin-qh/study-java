@@ -18,6 +18,8 @@ import java.util.List;
 
 import org.testng.annotations.Test;
 
+import lombok.SneakyThrows;
+
 /**
  * 测试 TestNG 的断言库
  *
@@ -158,7 +160,8 @@ class AssertionTest {
      * </p>
      */
     @Test(timeOut = 100)
-    void timeout_shouldTestExecutionTimeout() throws InterruptedException {
+    @SneakyThrows
+    void timeout_shouldTestExecutionTimeout() {
         // 断言执行时间是否在 100ms 以内
         Thread.sleep(90);
     }

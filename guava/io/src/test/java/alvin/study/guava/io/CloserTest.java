@@ -4,10 +4,11 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import com.google.common.io.Closer;
+
+import lombok.SneakyThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -39,7 +40,8 @@ class CloserTest {
      * 接口对象进行统一关闭
      */
     @Test
-    void closer_shouldCloseCloseableObject() throws IOException {
+    @SneakyThrows
+    void closer_shouldCloseCloseableObject() {
         // 创建 Closer 对象
         var closer = Closer.create();
 

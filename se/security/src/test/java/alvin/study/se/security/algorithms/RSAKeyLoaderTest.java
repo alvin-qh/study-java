@@ -1,12 +1,10 @@
 package alvin.study.se.security.algorithms;
 
-import org.apache.commons.codec.binary.Base64;
-import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.security.spec.InvalidKeySpecException;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.apache.commons.codec.binary.Base64;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * 测试 {@link RSAKeyLoader} 类型, 将指定格式的文本数据转为公私钥字节串数据
@@ -46,7 +44,7 @@ class RSAKeyLoaderTest {
      * 测试 {@link RSAKeyLoader#decodePublicKey(String)} 方法, 将指定格式的公钥文本数据转为字节串
      */
     @Test
-    void decodePublicKey_shouldDecodePublicKeyFromBase64String() throws InvalidKeySpecException, IOException {
+    void decodePublicKey_shouldDecodePublicKeyFromBase64String() {
         var keyData = RSAKeyLoader.decodePublicKey(PUBLIC_KEY);
         var keyStr = Base64.encodeBase64String(keyData);
 
@@ -60,7 +58,7 @@ class RSAKeyLoaderTest {
      * 测试 {@link RSAKeyLoader#decodePrivateKey(String)} 方法, 将指定格式的私钥文本数据转为字节串
      */
     @Test
-    void decodePrivateKey_shouldDecodePrivateKeyFromBase64String() throws InvalidKeySpecException, IOException {
+    void decodePrivateKey_shouldDecodePrivateKeyFromBase64String() {
         var keyData = RSAKeyLoader.decodePrivateKey(PRIVATE_KEY);
         var keyStr = Base64.encodeBase64String(keyData);
 

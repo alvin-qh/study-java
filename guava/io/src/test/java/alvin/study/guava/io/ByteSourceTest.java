@@ -4,7 +4,6 @@ import static org.assertj.core.api.BDDAssertions.then;
 import static org.awaitility.Awaitility.await;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
@@ -20,6 +19,8 @@ import com.google.common.io.ByteSource;
 import com.google.common.io.MoreFiles;
 import com.google.common.io.Resources;
 import com.google.common.primitives.Bytes;
+
+import lombok.SneakyThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -91,7 +92,8 @@ class ByteSourceTest {
      * </p>
      */
     @Test
-    void wrap_shouldWrapByteArrayToByteSource() throws IOException {
+    @SneakyThrows
+    void wrap_shouldWrapByteArrayToByteSource() {
         var data = "Hello Guava".getBytes(StandardCharsets.UTF_8);
         // 将 byte 数组包装为 ByteSource 对象
         var source = ByteSource.wrap(data);
@@ -120,7 +122,8 @@ class ByteSourceTest {
      * </p>
      */
     @Test
-    void read_shouldReadDataFromByteSources() throws IOException {
+    @SneakyThrows
+    void read_shouldReadDataFromByteSources() {
         var data = "Hello Guava".getBytes(StandardCharsets.UTF_8);
         // 将 byte 数组包装为 ByteSource 对象
         var source = ByteSource.wrap(data);
@@ -165,7 +168,8 @@ class ByteSourceTest {
      * </p>
      */
     @Test
-    void copyTo_shouldCopyByteSourceIntoOutputStream() throws IOException {
+    @SneakyThrows
+    void copyTo_shouldCopyByteSourceIntoOutputStream() {
         var data = "Hello Guava".getBytes(StandardCharsets.UTF_8);
         // 将 byte 数组包装为 ByteSource 对象
         var source = ByteSource.wrap(data);
@@ -191,7 +195,8 @@ class ByteSourceTest {
      * </p>
      */
     @Test
-    void copyTo_shouldCopyFromByteSourceToByteSink() throws IOException {
+    @SneakyThrows
+    void copyTo_shouldCopyFromByteSourceToByteSink() {
         var data = "Hello Guava".getBytes(StandardCharsets.UTF_8);
         // 将 byte 数组包装为 ByteSource 对象
         var source = ByteSource.wrap(data);
@@ -227,7 +232,8 @@ class ByteSourceTest {
      * </p>
      */
     @Test
-    void concat_shouldJoinByteResourcesToOne() throws IOException {
+    @SneakyThrows
+    void concat_shouldJoinByteResourcesToOne() {
         var data1 = "abc".getBytes(StandardCharsets.UTF_8);
         var data2 = "def".getBytes(StandardCharsets.UTF_8);
         var data3 = "ghi".getBytes(StandardCharsets.UTF_8);
@@ -254,7 +260,8 @@ class ByteSourceTest {
      * </p>
      */
     @Test
-    void hash_shouldCalculateHashCodeForByteSource() throws IOException {
+    @SneakyThrows
+    void hash_shouldCalculateHashCodeForByteSource() {
         var data = "Hello Guava".getBytes(StandardCharsets.UTF_8);
         // 将 byte 数组包装为 ByteSource 对象
         var source = ByteSource.wrap(data);
@@ -277,7 +284,8 @@ class ByteSourceTest {
      * </p>
      */
     @Test
-    void slice_shouldSplitByteSourceIntoMultiple() throws IOException {
+    @SneakyThrows
+    void slice_shouldSplitByteSourceIntoMultiple() {
         var data = "1234567890".getBytes(StandardCharsets.UTF_8);
         // 将 byte 数组包装为 ByteSource 对象
         var source = ByteSource.wrap(data);
@@ -303,7 +311,8 @@ class ByteSourceTest {
      * </p>
      */
     @Test
-    void empty_shouldCreateAnEmptyByteSource() throws IOException {
+    @SneakyThrows
+    void empty_shouldCreateAnEmptyByteSource() {
         var source = ByteSource.empty();
 
         // 确认 ByteSource 为空
@@ -329,7 +338,8 @@ class ByteSourceTest {
      * </p>
      */
     @Test
-    void openStream_shouldOpenByteSourceAsInputStream() throws IOException {
+    @SneakyThrows
+    void openStream_shouldOpenByteSourceAsInputStream() {
         var data = "Hello Guava".getBytes(StandardCharsets.UTF_8);
         // 将 byte 数组包装为 ByteSource 对象
         var source = ByteSource.wrap(data);
@@ -354,7 +364,8 @@ class ByteSourceTest {
      * </p>
      */
     @Test
-    void loadHTML_shouldLoadHTMLByCache() throws IOException {
+    @SneakyThrows
+    void loadHTML_shouldLoadHTMLByCache() {
         // 创建 CacheLoader 对象
         try (var loader = new CachedUrlLoader()) {
             // 确认网络资源数据尚未被缓存
@@ -401,7 +412,8 @@ class ByteSourceTest {
      * </p>
      */
     @Test
-    void asCharSource_shouldConvertByteSourceToCharSource() throws IOException {
+    @SneakyThrows
+    void asCharSource_shouldConvertByteSourceToCharSource() {
         var bSource = ByteSource.wrap("Hello Guava".getBytes(StandardCharsets.UTF_8));
 
         // 将字节数据源转为字符数据源对象

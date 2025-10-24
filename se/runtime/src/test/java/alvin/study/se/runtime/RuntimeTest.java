@@ -7,6 +7,8 @@ import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
+import lombok.SneakyThrows;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
@@ -54,8 +56,9 @@ class RuntimeTest {
      * </p>
      */
     @Test
+    @SneakyThrows
     @EnabledOnOs({ OS.MAC, OS.LINUX })
-    void exec_shouldStartNewProcessByCommandLine() throws Exception {
+    void exec_shouldStartNewProcessByCommandLine() {
         // 通过命令行 echo Hello Java 启动 echo 进程
         var process = runtime.exec(new String[] { "echo", "Hello Java" });
 

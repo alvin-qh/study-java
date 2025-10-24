@@ -33,7 +33,8 @@
     <version.auth-jwt>4.5.0</version.auth-jwt>
     <version.picocli>4.7.7</version.picocli>
     <version.guice>7.0.0</version.guice>
-    <version.jackson>3.0.0</version.jackson>
+    <version.jackson>3.0.1</version.jackson>
+    <version.jackson2>2.20.0</version.jackson2>
     <version.modelmapper>3.2.5</version.modelmapper>
     <version.akka>2.10.9</version.akka>
     <version.jetty>12.1.2</version.jetty>
@@ -57,7 +58,7 @@
     <version.mybatis-plus>3.5.14</version.mybatis-plus>
     <version.flyway>11.13.3</version.flyway>
 
-    <version.spring-boot>3.5.6</version.spring-boot>
+    <version.spring-boot>3.5.7</version.spring-boot>
     <version.spring-cloud>2025.0.0</version.spring-cloud>
     <version.alibaba-cloud>2025.0.0.0-preview</version.alibaba-cloud>
 

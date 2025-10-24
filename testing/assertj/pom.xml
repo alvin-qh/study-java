@@ -14,11 +14,6 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <dependencyManagement>
-    <dependencies>
-    </dependencies>
-  </dependencyManagement>
-
   <dependencies>
     <dependency>
       <groupId>alvin.study</groupId>
@@ -34,10 +29,6 @@
   </dependencies>
 
   <build>
-    <pluginManagement>
-      <plugins>
-      </plugins>
-    </pluginManagement>
     <plugins>
       <plugin>
         <!-- 设置源码路径插件 -->

@@ -12,7 +12,6 @@ import org.springframework.core.ParameterizedTypeReference;
 
 import com.alibaba.nacos.api.config.ConfigChangeEvent;
 import com.alibaba.nacos.api.config.ConfigType;
-import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.client.config.listener.impl.AbstractConfigChangeListener;
 
 import lombok.SneakyThrows;
@@ -57,7 +56,8 @@ class NacosConfigTest extends BaseTest {
      * </p>
      */
     @Test
-    void listener_shouldListenedConfigChanged() throws Exception {
+    @SneakyThrows
+    void listener_shouldListenedConfigChanged() {
         // 发布一条配置信息
         assert nacosUtil.publishConfig(CONFIG_DATA_ID, CONFIG_GROUP, loadTestConfig(), ConfigType.YAML);
 
@@ -109,7 +109,8 @@ class NacosConfigTest extends BaseTest {
      * 测试 {@code ApplicationConfigController#getConfig()} 方法, 获取配置信息
      */
     @Test
-    void getConfig_shouldReturn200Ok() throws NacosException {
+    @SneakyThrows
+    void getConfig_shouldReturn200Ok() {
         // 发布一条配置信息
         assert nacosUtil.publishConfig(CONFIG_DATA_ID, CONFIG_GROUP, loadTestConfig(), ConfigType.YAML);
 

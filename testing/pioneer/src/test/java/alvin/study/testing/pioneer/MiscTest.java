@@ -13,6 +13,8 @@ import org.junitpioneer.jupiter.ReportEntry;
 import org.junitpioneer.jupiter.ReportEntry.PublishCondition;
 import org.junitpioneer.jupiter.Stopwatch;
 
+import lombok.SneakyThrows;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -54,8 +56,10 @@ class MiscTest {
      * </p>
      */
     @Test
+    @SneakyThrows
+
     @Stopwatch
-    void measuring_shouldRecordMeasuringRunTime() throws Exception {
+    void measuring_shouldRecordMeasuringRunTime() {
         Thread.sleep(1000);
     }
 

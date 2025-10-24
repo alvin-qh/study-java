@@ -22,6 +22,8 @@ import com.google.common.collect.Queues;
 import com.google.common.graph.Traverser;
 import com.google.common.io.Files;
 
+import lombok.SneakyThrows;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -67,6 +69,8 @@ class FileTraverserTest {
 
     /**
      * 构造器, 创建测试目录
+     *
+     * @throws IOException
      */
     public FileTraverserTest() throws IOException {
         // 创建临时路径, 作为测试根路径
@@ -94,7 +98,8 @@ class FileTraverserTest {
      * 在每次测试开始前, 创建用于测试的目录和文件
      */
     @BeforeEach
-    void createFileTree() throws IOException {
+    @SneakyThrows
+    void createFileTree() {
         // 定义要创建的文件列表
         var files = new File[] {
             new File(parent, "1.txt"),
@@ -325,7 +330,8 @@ class FileTraverserTest {
      * </p>
      */
     @Test
-    void newDirectoryStream_shouldListFileByDirectoryStream() throws IOException {
+    @SneakyThrows
+    void newDirectoryStream_shouldListFileByDirectoryStream() {
         var files = Lists.<File>newArrayList();
 
         // 定义用于广度优先遍历的队列
@@ -395,7 +401,8 @@ class FileTraverserTest {
      * </p>
      */
     @Test
-    void list_shouldListFilesByNIO() throws IOException {
+    @SneakyThrows
+    void list_shouldListFilesByNIO() {
         var files = Lists.<File>newArrayList();
 
         // 定义用于广度优先遍历的队列
@@ -473,7 +480,8 @@ class FileTraverserTest {
      * </p>
      */
     @Test
-    void walk_shouldListFilesUsingFileWalk() throws IOException {
+    @SneakyThrows
+    void walk_shouldListFilesUsingFileWalk() {
         List<File> files;
 
         // 获取指定路径下, 包括子文件夹的所有内容
@@ -528,7 +536,8 @@ class FileTraverserTest {
      * </p>
      */
     @Test
-    void walkTree_shouldListFilesUsingFileWalkTree() throws IOException {
+    @SneakyThrows
+    void walkTree_shouldListFilesUsingFileWalkTree() {
         var files = Lists.<File>newArrayList();
 
         java.nio.file.Files.walkFileTree(parent.toPath(), new SimpleFileVisitor<>() {
@@ -589,6 +598,7 @@ class FileTraverserTest {
      * </p>
      */
     @Test
+    @SneakyThrows
     void fileTraverser_shouldVisitAllFilesByGuava() {
         // 可以直接获取文件的树形结构遍历器, 但为了保证结果稳定, 本例中不采用
         // var traverser = Files.fileTraverser();

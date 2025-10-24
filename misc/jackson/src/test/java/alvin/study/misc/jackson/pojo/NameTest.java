@@ -4,8 +4,6 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Set;
 
-import lombok.SneakyThrows;
-
 import org.junit.jupiter.api.Test;
 
 import tools.jackson.databind.json.JsonMapper;
@@ -60,7 +58,6 @@ class NameTest {
      * </p>
      */
     @Test
-    @SneakyThrows
     void toJson_shouldEncodeObjectToJsonWithNonFilter() {
         // 产生一个基本过滤器 Provider 对象
         var provider = new SimpleFilterProvider()
@@ -107,7 +104,7 @@ class NameTest {
      * </p>
      */
     @Test
-    void toJson_shouldEncodeObjectToJsonWithPropertiesFilter() throws Exception {
+    void toJson_shouldEncodeObjectToJsonWithPropertiesFilter() {
         // 产生一个基本过滤器 Provider 对象
         var provider = new SimpleFilterProvider()
                 .addFilter(

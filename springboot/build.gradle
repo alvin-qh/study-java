@@ -28,6 +28,7 @@ subprojects {
   }
 
   dependencies {
+    implementation platform("tools.jackson:jackson-bom:${VER_JACKSON}")
     implementation "org.springframework.boot:spring-boot-starter",
                    "org.springframework.boot:spring-boot-starter-log4j2",
                    "com.google.guava:guava:${VER_GUAVA}"
@@ -36,6 +37,7 @@ subprojects {
     runtimeOnly "com.lmax:disruptor:${VER_DISRUPTOR}"
     testImplementation "org.springframework.boot:spring-boot-starter-test",
                        "org.assertj:assertj-core:${VER_ASSERTJ}"
-    testRuntimeOnly "org.junit.platform:junit-platform-launcher:${VER_JUNIT_LAUNCHER}"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher:${VER_JUNIT_PLATFORM}",
+                    "org.junit.platform:junit-platform-engine:${VER_JUNIT_PLATFORM}"
   }
 }

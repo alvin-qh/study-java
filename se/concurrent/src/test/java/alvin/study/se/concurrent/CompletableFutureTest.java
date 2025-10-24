@@ -127,7 +127,8 @@ class CompletableFutureTest {
      * </p>
      */
     @Test
-    void supplyAsync_shouldExecuteTaskByCustomExecutorAndGetResult() throws Exception {
+    @SneakyThrows
+    void supplyAsync_shouldExecuteTaskByCustomExecutorAndGetResult() {
         var service = new BlockedService(new Model(1L, "Alvin"));
 
         // 创建线程池执行器对象
@@ -199,7 +200,8 @@ class CompletableFutureTest {
      * </p>
      */
     @Test
-    void get_shouldExecuteTaskAndGetResultInTimePeriod() throws Exception {
+    @SneakyThrows
+    void get_shouldExecuteTaskAndGetResultInTimePeriod() {
         var service = new BlockedService(new Model(1L, "Alvin"));
 
         var timeit = TimeIt.start();
@@ -671,7 +673,8 @@ class CompletableFutureTest {
      * </p>
      */
     @Test
-    void thenCombine_shouldCombineMultipleAsyncTasksWorkAtSameTime() throws Exception {
+    @SneakyThrows
+    void thenCombine_shouldCombineMultipleAsyncTasksWorkAtSameTime() {
         var service = new BlockedService(
             new Model(1L, "Alvin"),
             new Model(2L, "Emma"),
@@ -888,7 +891,8 @@ class CompletableFutureTest {
      * </p>
      */
     @Test
-    void acceptEither_shouldGetResultBetweenTwoTasksWhichReturnedFirst() throws Exception {
+    @SneakyThrows
+    void acceptEither_shouldGetResultBetweenTwoTasksWhichReturnedFirst() {
         var service = new BlockedService(
             new Model(1L, "Alvin"),
             new Model(2L, "Emma"));

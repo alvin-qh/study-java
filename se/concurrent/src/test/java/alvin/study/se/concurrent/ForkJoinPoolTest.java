@@ -12,6 +12,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.RecursiveTask;
 import java.util.concurrent.TimeUnit;
 
+import lombok.SneakyThrows;
+
 import org.junit.jupiter.api.Test;
 
 import alvin.study.se.concurrent.task.EvenRecursiveTask;
@@ -181,7 +183,8 @@ class ForkJoinPoolTest {
      * </p>
      */
     @Test
-    void forkAndJoin_shouldCreateForkJoinThreadPoolAndSubmitTasks() throws Exception {
+    @SneakyThrows
+    void forkAndJoin_shouldCreateForkJoinThreadPoolAndSubmitTasks() {
         // 创建一个上下文对象, 用于记录 fork 出的任务数量和计算次数
         var ctx = new EvenRecursiveTask.Context();
 
@@ -299,7 +302,8 @@ class ForkJoinPoolTest {
      * @see EventConutedCompleter
      */
     @Test
-    void countedCompleter_shouldMarkTaskAsCompletedWithCounter() throws Exception {
+    @SneakyThrows
+    void countedCompleter_shouldMarkTaskAsCompletedWithCounter() {
         // 提交计算任务, 计算 1~10000 之间的所有偶数
         var task = ForkJoinPool.commonPool()
                 .submit(new EventCountedCompleter(null, 1, 10000));

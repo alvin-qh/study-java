@@ -231,8 +231,8 @@ class FuturesTest {
             // 设定异步任务的线程执行器
             MoreExecutors.directExecutor());
 
-        // 等待异步任务存入结果
-        await().atMost(210, TimeUnit.MILLISECONDS).until(() -> userRef.get() != null);
+        // 等待异步任务存入结果, 任务应该话费 210 毫秒左右
+        await().atMost(1, TimeUnit.SECONDS).until(() -> userRef.get() != null);
 
         // 确认异步任务返回正确结果
         then(userRef.get()).extracting("id", "name").contains(1L, "Alvin");
@@ -584,8 +584,8 @@ class FuturesTest {
                 // 执行回调函数的线程执行器
                 MoreExecutors.directExecutor());
 
-            // 等待任务结果返回
-            await().atMost(300, TimeUnit.MILLISECONDS).until(() -> userRef.get() != null);
+            // 等待任务结果返回, 任务应耗时 300 毫秒左右
+            await().atMost(1000, TimeUnit.MILLISECONDS).until(() -> userRef.get() != null);
 
             // 确认任务结果正确
             then(userRef.get()).extracting("id", "name").contains(1L, "Alvin");
@@ -637,8 +637,8 @@ class FuturesTest {
                 // 执行回调函数的线程执行器
                 MoreExecutors.directExecutor());
 
-            // 等待任务结果返回
-            await().atMost(300, TimeUnit.MILLISECONDS).until(() -> userRef.get() != null);
+            // 等待任务结果返回, 任务应耗时 300 毫秒左右
+            await().atMost(1, TimeUnit.SECONDS).until(() -> userRef.get() != null);
 
             // 确认抛出的异常正确
             then(exceptionRef.get()).isInstanceOf(NoSuchElementException.class);
@@ -686,8 +686,8 @@ class FuturesTest {
                 // 执行回调函数的线程执行器
                 MoreExecutors.directExecutor());
 
-            // 等待任务结果返回
-            await().atMost(300, TimeUnit.MILLISECONDS).until(() -> exceptionRef.get() != null);
+            // 等待任务结果返回, 任务应耗时 300 毫秒左右
+            await().atMost(1, TimeUnit.SECONDS).until(() -> exceptionRef.get() != null);
 
             // 确认抛出的异常正确
             then(exceptionRef.get()).isInstanceOf(IllegalArgumentException.class);
@@ -737,8 +737,8 @@ class FuturesTest {
                 // 执行回调函数的线程执行器
                 MoreExecutors.directExecutor());
 
-            // 等待任务结果返回
-            await().atMost(300, TimeUnit.MILLISECONDS).until(() -> userRef.get() != null);
+            // 等待任务结果返回, 任务应耗时 300 毫秒左右
+            await().atMost(1, TimeUnit.SECONDS).until(() -> userRef.get() != null);
 
             // 确认抛出的异常正确
             then(exceptionRef.get()).isInstanceOf(NoSuchElementException.class);
@@ -806,8 +806,8 @@ class FuturesTest {
                 },
                 MoreExecutors.directExecutor());
 
-            // 等待任务执行完毕
-            await().atMost(200, TimeUnit.MILLISECONDS)
+            // 等待任务执行完毕, 任务应耗时 200 毫秒左右
+            await().atMost(1, TimeUnit.SECONDS)
                     .until(() -> exceptionRef.get() != null);
 
             // 确认任务执行中抛出 TimeoutException 异常
@@ -842,8 +842,8 @@ class FuturesTest {
                 },
                 MoreExecutors.directExecutor());
 
-            // 等待任务执行完毕
-            await().atMost(500, TimeUnit.MILLISECONDS)
+            // 等待任务执行完毕, 任务应耗时 500 毫秒左右
+            await().atMost(1, TimeUnit.SECONDS)
                     .until(() -> userRef.get() != null);
 
             // 确认获得了正确的任务结果

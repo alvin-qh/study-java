@@ -59,7 +59,7 @@ public class ApiHandlerInterceptor implements HandlerInterceptor {
     public boolean preHandle(
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
-            @NonNull Object handler) throws Exception {
+            @NonNull Object handler) {
         log.info("Visiting \"{}\"", request.getRequestURI());
 
         // 获取 X-Org-Code 请求头, 获取组织代码

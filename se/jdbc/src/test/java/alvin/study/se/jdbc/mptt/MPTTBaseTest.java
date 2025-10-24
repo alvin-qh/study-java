@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.SneakyThrows;
+
 import org.junit.jupiter.api.BeforeEach;
 
 import alvin.study.se.jdbc.JDBCBaseTest;
@@ -24,7 +26,8 @@ abstract class MPTTBaseTest extends JDBCBaseTest {
      */
     @Override
     @BeforeEach
-    protected void beforeEach() throws SQLException {
+    @SneakyThrows
+    protected void beforeEach() {
         super.beforeEach();
 
         var conn = getConnectionManager().get();

@@ -5,6 +5,8 @@ import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import lombok.SneakyThrows;
+
 import org.junit.jupiter.api.Test;
 
 import alvin.study.springboot.graphql.WebTest;
@@ -70,7 +72,8 @@ class UserMutationTest extends WebTest {
     }
 
     @Test
-    void updateUser_shouldUpdateExistUser() throws Exception {
+    @SneakyThrows
+    void updateUser_shouldUpdateExistUser() {
         var expectedUser = newBuilder(UserBuilder.class).create();
 
         var input = new UserMutation.UserInput(

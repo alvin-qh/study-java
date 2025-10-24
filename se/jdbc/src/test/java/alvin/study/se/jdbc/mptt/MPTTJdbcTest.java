@@ -1,12 +1,13 @@
 package alvin.study.se.jdbc.mptt;
 
-import alvin.study.se.jdbc.mptt.model.MPTT;
-import org.junit.jupiter.api.Test;
-
-import java.sql.SQLException;
-
 import static org.assertj.core.api.Assertions.tuple;
 import static org.assertj.core.api.BDDAssertions.then;
+
+import lombok.SneakyThrows;
+
+import org.junit.jupiter.api.Test;
+
+import alvin.study.se.jdbc.mptt.model.MPTT;
 
 /**
  * 测试通过 MPTT 在数据表中建立树结构
@@ -21,7 +22,8 @@ class MPTTJdbcTest extends MPTTBaseTest {
      * 测试构建 MPTT 数据表记录
      */
     @Test
-    void createMptt_shouldCreateRecordAsTree() throws SQLException {
+    @SneakyThrows
+    void createMptt_shouldCreateRecordAsTree() {
         // 构建 MPTT 树记录
         createMptt(buildTree());
 
@@ -45,7 +47,8 @@ class MPTTJdbcTest extends MPTTBaseTest {
      * 查询指定节点记录的所有子孙节点记录
      */
     @Test
-    void findChildren_shouldFindAllChildrenOfParentRecord() throws SQLException {
+    @SneakyThrows
+    void findChildren_shouldFindAllChildrenOfParentRecord() {
         // 构建 MPTT 树记录
         createMptt(buildTree());
 
@@ -67,7 +70,8 @@ class MPTTJdbcTest extends MPTTBaseTest {
      * 测试查找两个 {@link MPTT} 类型对象对应的树节点之间的"路径"
      */
     @Test
-    void findPath_shouldFindRecordsInPath() throws SQLException {
+    @SneakyThrows
+    void findPath_shouldFindRecordsInPath() {
         // 构建 MPTT 树记录
         createMptt(buildTree());
 
@@ -99,7 +103,8 @@ class MPTTJdbcTest extends MPTTBaseTest {
      * 查询记录中的叶子节点, 即树中最后一层的节点
      */
     @Test
-    void findLeaves_shouldFindAllLeafRecords() throws SQLException {
+    @SneakyThrows
+    void findLeaves_shouldFindAllLeafRecords() {
         // 构建 MPTT 树记录
         createMptt(buildTree());
 
@@ -118,7 +123,8 @@ class MPTTJdbcTest extends MPTTBaseTest {
      * 查询直属子节点 (即只包含子节点, 不包含孙节点)
      */
     @Test
-    void findImmediateChildren_shouldImmediateChildRecords() throws SQLException {
+    @SneakyThrows
+    void findImmediateChildren_shouldImmediateChildRecords() {
         // 构建 MPTT 树记录
         createMptt(buildTree());
 
@@ -138,7 +144,8 @@ class MPTTJdbcTest extends MPTTBaseTest {
      * 将一个节点记录作为"兄弟节点"加入
      */
     @Test
-    void createAsSibling_shouldCreateSiblingRecord() throws SQLException {
+    @SneakyThrows
+    void createAsSibling_shouldCreateSiblingRecord() {
         // 构建 MPTT 树记录
         createMptt(buildTree());
 

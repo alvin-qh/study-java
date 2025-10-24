@@ -1,16 +1,19 @@
 package alvin.study.se.security.algorithms;
 
-import alvin.study.se.security.util.DataGenerator;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import lombok.SneakyThrows;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+
+import alvin.study.se.security.util.DataGenerator;
 
 /**
  * 测试 {@link Ciphers} 类型, 使用对称和非对称方式对数据进行加密
@@ -21,6 +24,8 @@ class CiphersTest {
      * {@link Ciphers#decrypt(java.security.Key, byte[]) Ciphers.decrypt(Key, byte[])} 方法, 根据
      * 所给的算法名称对字节串进行对称加解密
      */
+    @ParameterizedTest
+    @SneakyThrows
     @CsvSource({
         "DES",
         "DES/CBC/NoPadding",
@@ -50,8 +55,7 @@ class CiphersTest {
         "RC2/CBC/PKCS5Padding",
         "RC4"
     })
-    @ParameterizedTest
-    void symmetric_shouldEncryptAndDecryptBytes(String algorithmsName) throws Exception {
+    void symmetric_shouldEncryptAndDecryptBytes(String algorithmsName) {
         // 产生测试数据
         var data = DataGenerator.generate(1315);
         then(data).hasSize(1315);
@@ -79,6 +83,8 @@ class CiphersTest {
      * {@link Ciphers#decrypt(java.security.Key, InputStream, OutputStream)
      * Ciphers.decrypt(Key, InputStream, OutputStream)} 方法, 根据所给的算法名称对输入流进行对称加解密
      */
+    @ParameterizedTest
+    @SneakyThrows
     @CsvSource({
         "DES",
         "DES/CBC/NoPadding",
@@ -108,8 +114,7 @@ class CiphersTest {
         "RC2/CBC/PKCS5Padding",
         "RC4"
     })
-    @ParameterizedTest
-    void symmetric_shouldEncryptFromInputStreamAndDecryptToOutputStream(String algorithmsName) throws Exception {
+    void symmetric_shouldEncryptFromInputStreamAndDecryptToOutputStream(String algorithmsName) {
         // 产生测试数据
         var data = DataGenerator.generate(1315);
         then(data).hasSize(1315);
@@ -164,7 +169,8 @@ class CiphersTest {
      * </p>
      */
     @Test
-    void signature_shouldSignAndVerityFromBytesByRSA() throws Exception {
+    @SneakyThrows
+    void signature_shouldSignAndVerityFromBytesByRSA() {
         // 产生测试数据
         var data = DataGenerator.generate(1315);
         then(data).hasSize(1315);
@@ -196,7 +202,8 @@ class CiphersTest {
      * </p>
      */
     @Test
-    void signature_shouldSignAndVerityFromInputStreamByRSA() throws Exception {
+    @SneakyThrows
+    void signature_shouldSignAndVerityFromInputStreamByRSA() {
         // 产生测试数据
         var data = DataGenerator.generate(1315);
         then(data).hasSize(1315);
@@ -228,13 +235,14 @@ class CiphersTest {
      * 注意: 一般来说, 对于非对称加密, 公钥用于加密和验签, 而私钥用于解密和签名
      * </p>
      */
+    @ParameterizedTest
+    @SneakyThrows
     @CsvSource({
         "RSA",
         "RSA/ECB/PKCS1Padding",
         "RSA/ECB/OAEPWithSHA-256AndMGF1Padding",
     })
-    @ParameterizedTest
-    void asymmetric_shouldEncryptAndDecryptBytes(String algorithmsName) throws Exception {
+    void asymmetric_shouldEncryptAndDecryptBytes(String algorithmsName) {
         // 产生测试数据
         var data = DataGenerator.generate(1315);
         then(data).hasSize(1315);
@@ -281,13 +289,14 @@ class CiphersTest {
      * 注意: 一般来说, 对于非对称加密, 公钥用于加密和验签, 而私钥用于解密和签名
      * </p>
      */
+    @ParameterizedTest
+    @SneakyThrows
     @CsvSource({
         "RSA",
         "RSA/ECB/PKCS1Padding",
         "RSA/ECB/OAEPWithSHA-256AndMGF1Padding",
     })
-    @ParameterizedTest
-    void asymmetric_shouldEncryptFromInputStreamAndDecryptToOutputStream(String algorithmsName) throws Exception {
+    void asymmetric_shouldEncryptFromInputStreamAndDecryptToOutputStream(String algorithmsName) {
         // 产生测试数据
         var data = DataGenerator.generate(1315);
         then(data).hasSize(1315);

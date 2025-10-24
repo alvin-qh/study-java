@@ -42,7 +42,7 @@ class PersonTest {
      * </p>
      */
     @Test
-    void toJson_shouldEncodeObjectToJson() throws Exception {
+    void toJson_shouldEncodeObjectToJson() {
         var mapper = new ObjectMapper();
 
         // 将对象序列化为 JSON 字符串, 确认序列化结果符合预期
@@ -60,7 +60,7 @@ class PersonTest {
      * </p>
      */
     @Test
-    void fromJson_shouldDecodeJsonToObject() throws Exception {
+    void fromJson_shouldDecodeJsonToObject() {
         var mapper = new ObjectMapper();
 
         // 将 JSON 字符串反序列化为对象, 确认反序列化结果符合预期

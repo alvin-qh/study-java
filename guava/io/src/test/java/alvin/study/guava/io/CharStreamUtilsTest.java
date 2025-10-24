@@ -17,6 +17,8 @@ import com.google.common.collect.Lists;
 import com.google.common.io.CharStreams;
 import com.google.common.io.LineProcessor;
 
+import lombok.SneakyThrows;
+
 import org.junit.jupiter.api.Test;
 
 /**
@@ -51,7 +53,8 @@ class CharStreamUtilsTest {
      * </p>
      */
     @Test
-    void toString_shouldReadCharactersFromReadableIntoString() throws IOException {
+    @SneakyThrows
+    void toString_shouldReadCharactersFromReadableIntoString() {
         try (var reader = asReader("Hello Guava")) {
             // 从 Readable 对象中读取字符串
             var s = CharStreams.toString(reader);
@@ -75,7 +78,8 @@ class CharStreamUtilsTest {
      * </p>
      */
     @Test
-    void readLines_shouldReadLinesFromReadable() throws IOException {
+    @SneakyThrows
+    void readLines_shouldReadLinesFromReadable() {
         // 测试通过 Reader 读取行字符串集合
         try (var reader = asReader("""
             Line1
@@ -125,7 +129,8 @@ class CharStreamUtilsTest {
      * </p>
      */
     @Test
-    void asWriter_shouldWrapAppendableIntoWriterObject() throws IOException {
+    @SneakyThrows
+    void asWriter_shouldWrapAppendableIntoWriterObject() {
         // 创建 Appendable 类型对象
         var builder = new StringBuilder();
 
@@ -148,7 +153,8 @@ class CharStreamUtilsTest {
      * </p>
      */
     @Test
-    void nullWriter_shouldCreateWriterForWriteNothing() throws IOException {
+    @SneakyThrows
+    void nullWriter_shouldCreateWriterForWriteNothing() {
         try (var writer = CharStreams.nullWriter()) {
             writer.write("Hello Guava");
             writer.write('.');
@@ -165,7 +171,8 @@ class CharStreamUtilsTest {
      * </p>
      */
     @Test
-    void copy_shouldCopyCharactersFromReadableIntoAppendable() throws IOException {
+    @SneakyThrows
+    void copy_shouldCopyCharactersFromReadableIntoAppendable() {
         try (var reader = asReader("Hello Guava")) {
             var builder = new StringBuilder();
             var len = CharStreams.copy(reader, builder);
@@ -189,7 +196,8 @@ class CharStreamUtilsTest {
      * </p>
      */
     @Test
-    void skipFully_shouldSkipCharactersFromReadable() throws IOException {
+    @SneakyThrows
+    void skipFully_shouldSkipCharactersFromReadable() {
         // 定义一个管道, 获取读取管道数据的输入流
         try (var pi = new PipedInputStream()) {
             // 将一个输出流连接到管道, 用于向管道写入数据

@@ -7,10 +7,9 @@ import java.security.Security;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import tools.jackson.databind.ObjectMapper;
-
 import alvin.study.misc.jackson.pojo.view.InternalView;
 import alvin.study.misc.jackson.pojo.view.PublicView;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * 测试 {@link User} 类型的 JSON 序列化以及反序列化操作
@@ -55,7 +54,7 @@ class UserTest {
      * 测试通过 {@link PublicView} 视图序列化 {@link User} 对象
      */
     @Test
-    void toJson_shouldEncodeUserObjectToJsonWithPublicView() throws Exception {
+    void toJson_shouldEncodeUserObjectToJsonWithPublicView() {
         // 序列化对象, 使用 PublicView 视图标识
         var mapper = new ObjectMapper();
         var writer = mapper.writerWithView(PublicView.class);
@@ -69,7 +68,7 @@ class UserTest {
      * 测试通过 {@link InternalView} 视图序列化 {@link User} 对象
      */
     @Test
-    void toJson_shouldEncodeUserObjectToJsonWithInternalView() throws Exception {
+    void toJson_shouldEncodeUserObjectToJsonWithInternalView() {
         // 序列化对象, 使用 InternalView 视图标识
         var mapper = new ObjectMapper();
         var writer = mapper.writerWithView(InternalView.class);
@@ -89,7 +88,7 @@ class UserTest {
      * </p>
      */
     @Test
-    void fromJson_shouldDecodePublicViewJsonToUserObject() throws Exception {
+    void fromJson_shouldDecodePublicViewJsonToUserObject() {
         var mapper = new ObjectMapper();
 
         // 将对象序列化为 JSON 字符串, 确认序列化结果符合预期
@@ -107,7 +106,7 @@ class UserTest {
      * </p>
      */
     @Test
-    void fromJson_shouldDecodeInternalViewJsonToUserObject() throws Exception {
+    void fromJson_shouldDecodeInternalViewJsonToUserObject() {
         var mapper = new ObjectMapper();
 
         // 将对象序列化为 JSON 字符串, 确认序列化结果符合预期

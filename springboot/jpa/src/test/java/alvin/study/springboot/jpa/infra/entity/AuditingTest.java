@@ -4,11 +4,11 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 import java.time.Duration;
 
-import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import lombok.SneakyThrows;
+
+import org.junit.jupiter.api.Test;
 
 import alvin.study.springboot.jpa.IntegrationTest;
 import alvin.study.springboot.jpa.builder.DepartmentBuilder;
@@ -80,7 +80,8 @@ class AuditingTest extends IntegrationTest {
      * @see javax.persistence.Column#updatable()
      */
     @Test
-    void auditing_shouldUpdateModifyUpdatedAt() throws Exception {
+    @SneakyThrows
+    void auditing_shouldUpdateModifyUpdatedAt() {
         Department department;
 
         // 在当前上下文中持久化实体对象

@@ -12,11 +12,13 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.Objects;
 
+import com.google.common.io.ByteStreams;
+
+import lombok.SneakyThrows;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import com.google.common.io.ByteStreams;
 
 import alvin.study.misc.jwt.util.RSAKeyLoader;
 
@@ -114,7 +116,8 @@ class JWTsTest {
      * {@link JWTs#verify(String, String[], String, String)} 验证 JWT 字符串
      */
     @Test
-    void verify_shouldEncodeJWTByRS256Signature() throws Exception {
+    @SneakyThrows
+    void verify_shouldEncodeJWTByRS256Signature() {
         // 通过一个私钥对象创建 JWT 工具类, 并编码 JWT 字符串
         var jwt = JWTs.createByRS(readPrivateKey());
         var token = jwt.encode(

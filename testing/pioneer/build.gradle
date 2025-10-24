@@ -6,6 +6,7 @@ test {
 
 dependencies {
   implementation project(":testing:testcase")
+  implementation "com.fasterxml.jackson.core:jackson-databind"
   testImplementation ("org.junit-pioneer:junit-pioneer:${VER_JUNIT_PIONEER}") {
     exclude group: "org.junit.jupiter", module: "*"
     exclude group: "org.junit.platform", module: "*"

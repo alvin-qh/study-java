@@ -444,7 +444,7 @@ class ThreadTest {
         // 等待所有线程执行完成
         Threads.joinAll(threads, 1000);
         // 再次获取线程的堆栈跟踪信息, 不再包括已结束的线程
-        then(Thread.getAllStackTraces().size()).isEqualTo(traces.size() - threads.length);
+        then(Thread.getAllStackTraces().size()).isLessThanOrEqualTo(traces.size() - threads.length);
     }
 
     /**

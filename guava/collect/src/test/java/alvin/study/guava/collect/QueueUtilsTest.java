@@ -12,6 +12,8 @@ import com.google.common.collect.ContiguousSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 
+import lombok.SneakyThrows;
+
 import org.junit.jupiter.api.Test;
 
 /**
@@ -227,7 +229,8 @@ class QueueUtilsTest {
      * </p>
      */
     @Test
-    void newArrayBlockingQueue_shouldCreateArrayBlockingQueue() throws InterruptedException {
+    @SneakyThrows
+    void newArrayBlockingQueue_shouldCreateArrayBlockingQueue() {
         // 创建 ArrayBlockingQueue 对象, 队列最大容量为 1
         var deque = Queues.<Integer>newArrayBlockingQueue(1);
 
@@ -331,7 +334,8 @@ class QueueUtilsTest {
      * </p>
      */
     @Test
-    void newPriorityBlockingQueue_shouldCreatePriorityBlockingQueue() throws InterruptedException {
+    @SneakyThrows
+    void newPriorityBlockingQueue_shouldCreatePriorityBlockingQueue() {
         // 创建阻塞优先队列
         var priQue = Queues.<Integer>newPriorityBlockingQueue();
 
@@ -380,7 +384,8 @@ class QueueUtilsTest {
      * </p>
      */
     @Test
-    void drain_shouldDrainedElementsFromBlockingQueue() throws InterruptedException {
+    @SneakyThrows
+    void drain_shouldDrainedElementsFromBlockingQueue() {
         // 定义一个元素上限为 5 的阻塞循环队列
         var que = Queues.<Integer>newArrayBlockingQueue(5);
 
@@ -493,7 +498,8 @@ class QueueUtilsTest {
      * </p>
      */
     @Test
-    void linkedQueue_shouldCreateLinkedBlockingQueue() throws InterruptedException {
+    @SneakyThrows
+    void linkedQueue_shouldCreateLinkedBlockingQueue() {
         // 测试阻塞式链表单端队列
         {
             // 定义一个阻塞式链表队列
@@ -572,7 +578,8 @@ class QueueUtilsTest {
      * </p>
      */
     @Test
-    void newSynchronousQueue_shouldCreateSynchronousQueue() throws InterruptedException {
+    @SneakyThrows
+    void newSynchronousQueue_shouldCreateSynchronousQueue() {
         // 创建一个同步队列
         var que = Queues.<Integer>newSynchronousQueue();
 

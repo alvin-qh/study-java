@@ -91,7 +91,8 @@ class ByteStreamUtilsTest {
      * </p>
      */
     @Test
-    void read_shouldReadBytesFromInputStreamIntoByteArray() throws IOException {
+    @SneakyThrows
+    void read_shouldReadBytesFromInputStreamIntoByteArray() {
         try (var in = asStream("Hello Guava")) {
             var data = new byte[100];
 
@@ -126,7 +127,8 @@ class ByteStreamUtilsTest {
      * </p>
      */
     @Test
-    void readBytes_shouldReadObjectFromInputStream() throws IOException {
+    @SneakyThrows
+    void readBytes_shouldReadObjectFromInputStream() {
         var srcObj = new Staff(1L, "Alvin");
 
         // 通过已有对象产生一个输入流
@@ -181,7 +183,8 @@ class ByteStreamUtilsTest {
      * </p>
      */
     @Test
-    void readFully_shouldReadEnoughBytesFromInputStream() throws Exception {
+    @SneakyThrows
+    void readFully_shouldReadEnoughBytesFromInputStream() {
         // 定义一个管道, 获取读取管道数据的输入流
         try (var pi = new PipedInputStream()) {
             // 将一个输出流连接到管道, 用于向管道写入数据
@@ -242,7 +245,8 @@ class ByteStreamUtilsTest {
      * </p>
      */
     @Test
-    void skipFully_shouldReadBytesFromInputStream() throws Exception {
+    @SneakyThrows
+    void skipFully_shouldReadBytesFromInputStream() {
         // 定义一个管道, 获取读取管道数据的输入流
         try (var pi = new PipedInputStream()) {
             // 将一个输出流连接到管道, 用于向管道写入数据
@@ -289,7 +293,8 @@ class ByteStreamUtilsTest {
      * </p>
      */
     @Test
-    void toByteArray_shouldReadBytesStreamIntoByteArray() throws IOException {
+    @SneakyThrows
+    void toByteArray_shouldReadBytesStreamIntoByteArray() {
         try (var in = asStream("Hello Guava")) {
             // 读取输入流, 得到保存输入流全部内容的数组
             var bytes = ByteStreams.toByteArray(in);
@@ -309,7 +314,8 @@ class ByteStreamUtilsTest {
      * </p>
      */
     @Test
-    void copy_shouldCopyBytesFromInputStreamIntoOutputStream() throws IOException {
+    @SneakyThrows
+    void copy_shouldCopyBytesFromInputStreamIntoOutputStream() {
         try (var in = asStream("Hello Guava")) {
             try (var out = new ByteArrayOutputStream()) {
                 // 读取输入流, 将其全部内容拷贝到一个输出流中
@@ -349,7 +355,8 @@ class ByteStreamUtilsTest {
      * </p>
      */
     @Test
-    void copy_shouldCopyBytesFromByteBufferIntoOutputStream() throws IOException {
+    @SneakyThrows
+    void copy_shouldCopyBytesFromByteBufferIntoOutputStream() {
         // 定义文件权限对象
         // 权限为当前用户可读写, 其它用户和组无权限
         var fileAttrs = PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rw-------"));
@@ -390,7 +397,8 @@ class ByteStreamUtilsTest {
      * </p>
      */
     @Test
-    void limit_shouldLimitSizeOfBytesForInputStream() throws IOException {
+    @SneakyThrows
+    void limit_shouldLimitSizeOfBytesForInputStream() {
         var srcIn = asStream("Hello Guava");
 
         // 包装 srcIn 对象, 限制只能从输入流中读取 5 字节
@@ -436,7 +444,8 @@ class ByteStreamUtilsTest {
      * </p>
      */
     @Test
-    void newDataOutputAndInput_shouldCreateDataOutput() throws IOException {
+    @SneakyThrows
+    void newDataOutputAndInput_shouldCreateDataOutput() {
         // 测试通过连续内存空间写入和读取各种类型数据
         {
             var output = ByteStreams.newDataOutput();
@@ -479,7 +488,8 @@ class ByteStreamUtilsTest {
      * </p>
      */
     @Test
-    void exhaust_shouldReadAndDiscardAllDataFromInputStream() throws IOException {
+    @SneakyThrows
+    void exhaust_shouldReadAndDiscardAllDataFromInputStream() {
         try (var is = asStream("Hello Guava")) {
             var len = ByteStreams.exhaust(is);
             then(len).isEqualTo(11);
@@ -495,7 +505,8 @@ class ByteStreamUtilsTest {
      * </p>
      */
     @Test
-    void nullOutputStream_shouldReadAndDiscardAllDataFromInputStream() throws IOException {
+    @SneakyThrows
+    void nullOutputStream_shouldReadAndDiscardAllDataFromInputStream() {
         try (var os = ByteStreams.nullOutputStream()) {
             os.write("Hello Guava".getBytes(StandardCharsets.UTF_8));
         }
