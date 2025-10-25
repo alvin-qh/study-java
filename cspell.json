@@ -123,6 +123,7 @@
     "itoa",
     "Jacksonized",
     "jandex",
+    "javaagent",
     "javac",
     "Javadoc",
     "javafaker",
