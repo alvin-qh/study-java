@@ -1,3 +1,4 @@
 dependencies {
-  testImplementation "org.awaitility:awaitility:${VER_AWAITILITY}"
+  testImplementation "org.junit-pioneer:junit-pioneer:${VER_JUNIT_PIONEER}",
+                     "org.awaitility:awaitility:${VER_AWAITILITY}"
 }

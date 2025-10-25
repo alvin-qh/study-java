@@ -9,6 +9,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,8 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
+
+import org.junitpioneer.jupiter.RetryingTest;
 
 import lombok.SneakyThrows;
 
@@ -191,7 +194,7 @@ class ThreadPoolTest {
      *
      * @see ThreadPool#virtualThreadExecutor()
      */
-    @Test
+    @RetryingTest(3)
     @SneakyThrows
     void virtualThreadExecutor_shouldCreateThreadPoolForVirtualThread() {
         // 创建一个 HTTP 客户端对象
@@ -214,7 +217,7 @@ class ThreadPoolTest {
 
                 try {
                     // 发起 HTTP 请求, 并获取响应对象, 保存到 `responseRef` 对象中
-                    return client.send(request, HttpResponse.BodyHandlers.ofString());
+                    return client.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
                 } catch (IOException | InterruptedException ignore) {
                     throw new RuntimeException(ignore);
                 }
@@ -224,13 +227,13 @@ class ThreadPoolTest {
             future2 = executor.submit(() -> {
                 // 创建 HTTP 请求对象, 通过 `GET` 方法发起请求
                 var request = HttpRequest.newBuilder().GET()
-                        .uri(URI.create("https://cn.bing.com/"))
-                        .timeout(Duration.ofMillis(3000))
+                        .uri(URI.create("https://www.163.com/"))
+                        .timeout(Duration.ofMillis(30000))
                         .build();
 
                 try {
                     // 发起 HTTP 请求, 并获取响应对象, 保存到 `responseRef` 对象中
-                    return client.send(request, HttpResponse.BodyHandlers.ofString());
+                    return client.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
                 } catch (IOException | InterruptedException ignore) {
                     throw new RuntimeException(ignore);
                 }
