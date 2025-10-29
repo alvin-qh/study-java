@@ -1,6 +1,12 @@
 group = "alvin.study.quarkus"
 version = "1.0-SNAPSHOT"
 
+test {
+  jvmArgs "--enable-preview",
+          "--add-opens", "java.base/java.util=ALL-UNNAMED",
+          "--add-opens", "java.base/java.lang=ALL-UNNAMED"
+}
+
 subprojects {
   test {
     systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
